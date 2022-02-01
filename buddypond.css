@@ -1,0 +1,8 @@
+table {
+  border: solid;
+  text-align: left;
+  width: 100%;
+}
+table td {
+  padding: 5px;
+}

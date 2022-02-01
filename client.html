@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <script src="jquery.js"></script>
+    <script src="buddypond.js"></script>
+    <link rel="stylesheet" href="buddypond.css"/>
+    <script>
+      $(document).ready(function(){
+        console.log('Buddy Pond loaded.');
+
+        $('.command').on('click', function(){
+          $('.apiResult').val('');
+
+          var command = $(this).attr('data-command');
+
+          switch(command) {
+            case 'authBuddy':
+              buddypond.authBuddy($('#buddyname').val(), $('#buddypassword').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                $('.qtokenid').val(data)
+                console.log(err, data)
+              });
+            break;
+            case 'getBuddyList':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.getBuddyList(function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'sendMessage':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.sendMessage($('#message_buddyname').val(), $('#message_buddytext').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+
+          case 'getMessages':
+            buddypond.qtokenid = $('.qtokenid').val();
+            buddypond.getMessages($('#getmessages_buddyname').val(), function(err, data){
+              console.log("Buddy pond api returns");
+              $('.apiResult').val(JSON.stringify(data, true, 2))
+              console.log(err, data)
+            });
+          break;
+
+          case 'addBuddy':
+            buddypond.qtokenid = $('.qtokenid').val();
+            buddypond.addBuddy($('#addbuddy_buddyname').val(), function(err, data){
+              console.log("Buddy pond api returns");
+              $('.apiResult').val(JSON.stringify(data, true, 2))
+              console.log(err, data)
+            });
+          break;
+
+          case 'removeBuddy':
+            buddypond.qtokenid = $('.qtokenid').val();
+            buddypond.removeBuddy($('#removebuddy_buddyname').val(), function(err, data){
+              console.log("Buddy pond api returns");
+              $('.apiResult').val(JSON.stringify(data, true, 2))
+              console.log(err, data)
+            });
+          break;
+
+          case 'approveBuddy':
+            buddypond.qtokenid = $('.qtokenid').val();
+            buddypond.removeBuddy($('#approvebuddy_buddyname').val(), function(err, data){
+              console.log("Buddy pond api returns");
+              $('.apiResult').val(JSON.stringify(data, true, 2))
+              console.log(err, data)
+            });
+          break;
+
+          case 'denyBuddy':
+            buddypond.qtokenid = $('.qtokenid').val();
+            buddypond.removeBuddy($('#denybuddy_buddyname').val(), function(err, data){
+              console.log("Buddy pond api returns");
+              $('.apiResult').val(JSON.stringify(data, true, 2))
+              console.log(err, data)
+            });
+          break;
+
+
+          default:
+            console.log('default command case')
+            // code block
+          }
+
+        });
+      });
+    </script>
+
+  </head>
+  <body>
+    Buddy Pond Client
+    <table>
+      <tr>
+        <th>Command</th>
+        <th>Parameters</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <td>buddy.authBuddy</td>
+        <td>
+          buddyname: <input id="buddyname" type="text" value="Marak"/>
+          buddypassword: <input id="buddypassword" value="asd" type="text"/>
+        </td>
+        <td><button data-command="authBuddy" class="command">Send Request</button></td>
+      </tr>
+
+      <tr>
+        <td>buddy.getBuddyList</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+        </td>
+        <td><button data-command="getBuddyList" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.sendMessage</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="message_buddyname" type="text" value="Marak"/>
+          buddytext: <input id="message_buddytext" value="hello" type="text"/>
+        </td>
+        <td><button data-command="sendMessage" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.getMessages</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="getmessages_buddyname" type="text" value="Marak,Dave,Larry"/>
+        </td>
+        <td><button data-command="getMessages" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.addBuddy</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="addbuddy_buddyname" type="text" value="Marak"/>
+        </td>
+        <td><button data-command="addBuddy" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.removeBuddy</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="removebuddy_buddyname" type="text" value="Marak"/>
+        </td>
+        <td><button data-command="removeBuddy" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.approveBuddy</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="approvebuddy_buddyname" type="text" value="Marak"/>
+        </td>
+        <td><button data-command="approveBuddy" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>buddy.denyBuddy</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="denybuddy_buddyname" type="text" value="Marak"/>
+        </td>
+        <td><button data-command="denyBuddy" class="command">Send Request</button></td>
+
+      </tr>
+
+
+    </table>
+    <hr/>
+    <textarea class="apiResult" cols="120" rows="10">
+    </textarea>
+    
+  </body>
+  
+</html>
