@@ -67,7 +67,7 @@
 
           case 'approveBuddy':
             buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.removeBuddy($('#approvebuddy_buddyname').val(), function(err, data){
+            buddypond.approveBuddy($('#approvebuddy_buddyname').val(), function(err, data){
               console.log("Buddy pond api returns");
               $('.apiResult').val(JSON.stringify(data, true, 2))
               console.log(err, data)
@@ -76,7 +76,7 @@
 
           case 'denyBuddy':
             buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.removeBuddy($('#denybuddy_buddyname').val(), function(err, data){
+            buddypond.denyBuddy($('#denybuddy_buddyname').val(), function(err, data){
               console.log("Buddy pond api returns");
               $('.apiResult').val(JSON.stringify(data, true, 2))
               console.log(err, data)

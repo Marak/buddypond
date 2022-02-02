@@ -214,8 +214,8 @@ var JQD = (function($, window, document, undefined) {
             handle: 'div.window_top'
           }).resizable({
             containment: 'parent',
-            minWidth: 400,
-            minHeight: 200
+            minWidth: 220,
+            minHeight: 110
           });
         });
 

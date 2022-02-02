@@ -13,32 +13,57 @@ desktop.windowIndex = {};
 
 desktop.openChats = {};
 
-desktop.load = function loadDesktop() {
-  $('.sendBuddyMessage').on('click', function(){
-    let message = {};
-    var form = $(this).parent();
-    console.log('fff', form)
-    message.text = $('.buddy_message_text', form).val();
-    message.to = $('.buddy_message_to', form).val();
-    message.from = $('.buddy_message_from', form).val();
-    // empty text area input
-    $('.buddy_message_text', form).val('');
-    console.log('send the buddy message', message);
-    buddypond.sendMessage(message.to, message.text, function(err, data){
-      console.log("buddypond.sendMessage returns", err, data);
-      console.log(err, data)
-    });
+desktop.sendBuddyMessage = function sendBuddyMessage (context) {
+  let message = {};
+  var form = $(context).parent();
+  message.text = $('.buddy_message_text', form).val();
+  message.to = $('.buddy_message_to', form).val();
+  message.from = $('.buddy_message_from', form).val();
+  if (message.text.trim() === "") {
+    return;
+  }
+
+  console.log('send the buddy message', message);
+  // TODO: have console display more info about event
+  $('.console').val(JSON.stringify(message, true, 2));
+
+  // empty text area input
+  $('.buddy_message_text', form).val('');
+  buddypond.sendMessage(message.to, message.text, function(err, data){
+    console.log("buddypond.sendMessage returns", err, data);
+    console.log(err, data)
   });
+}
+
+desktop.load = function loadDesktop() {
+
+  $('.sendBuddyMessage').on('click', function(){
+    desktop.sendBuddyMessage(this)
+  });
+
   $('.sendBuddyRequest').on('click', function(){
     var buddyName = $('.buddy_request_name').val();
     $('.buddy_request_name').val('');
-    console.log('send the buddy request', buddyName);
+    // console.log('send the buddy request', buddyName);
     buddypond.addBuddy(buddyName, function(err, data){
       console.log("buddypond.addBuddy returns", err, data);
       console.log(err, data)
     });
   });
-  
+
+  $('.buddy_message_text').bind("enterKey",function(e){
+    desktop.sendBuddyMessage(this)
+  });
+
+  $('.buddy_message_text').keyup(function(e){
+      if (e.shiftKey==1) {
+        return false;
+      }
+      if(e.keyCode == 13)
+      {
+          $(this).trigger("enterKey");
+      }
+  });
 }
 
 desktop.refresh = function refreshDesktop () {
@@ -65,7 +90,9 @@ desktop.openWindow = function openWindow (windowType, context) {
 
     //JDQX.openWindow($(windowKey));
     $(windowKey).show();
-    
+    $(windowKey).css('width', 600)
+    $(windowKey).css('height', 400)
+
     desktop.windowIndex[context] = windowType;
 
     let chat_window_id = Object.keys(desktop.windowIndex).indexOf(context);
@@ -78,10 +105,12 @@ desktop.openWindow = function openWindow (windowType, context) {
     // TODO: buddypond.me
     $('.buddy_message_from', windowKey).val(buddypond.me);
 
+    let rightPadding = chat_window_id * 10;
+    let topPadding = chat_window_id * 10;
     // TODO: dynamic position, pick a spot
     $(windowKey).position({
       my: "left top",
-      at: "right top",
+      at: 'right+' + rightPadding + ' top+' + topPadding,
       of: "#window_buddylist"
     });
 
@@ -109,6 +138,9 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, 3000);
         return;
       }
+      if (data.buddylist.length > 0) {
+        $('.you_have_no_buddies').hide();
+      }
       $('.buddylist').html('');
       if (data.buddylist) {
         desktop.buddyListDataCache[str] = true;
@@ -124,21 +156,57 @@ desktop.updateBuddyList = function updateBuddyList () {
       }
 
       if (data.buddyrequests) {
+
         // desktop.buddyListDataCache[str] = true;
-        data.buddyrequests.forEach(function(buddy){
-          $('.pendingBuddyRequests').append('<li><a class="buddyRequest" href="#">' + buddy + '</a></li>')
-        })
+        $('.pendingIncomingBuddyRequests').html('');
+        $('.pendingOutgoingBuddyRequests').html('');
+
+        for (let buddy in data.buddyrequests) {
+          let buddyrequest = data.buddyrequests[buddy];
+          // console.log('buddyrequest', buddy, buddyrequest)
+          buddyrequest = JSON.parse(buddyrequest);
+          // TODO: top list is buddies, button list is requests ( with buttons )
+          if (buddyrequest.to === buddypond.me) {
+            $('.pendingIncomingBuddyRequests').append('<li>' + buddyrequest.from + ' - <a href="#" class="approveBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Approve</a> / <a href="#" class="denyBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Deny</a> </li>')
+          } else {
+            $('.pendingOutgoingBuddyRequests').append('<li>' + buddyrequest.to + '</li>')
+          }
+        }
         $('.apiResult').val(JSON.stringify(data, true, 2))
-        // render buddy list
+
+        if ($('.pendingIncomingBuddyRequests li').length == 0) {
+          $('.pendingIncomingBuddyRequestsHolder').hide();
+        } else {
+          $('.pendingIncomingBuddyRequestsHolder').show();
+        }
+
+        if ($('.pendingOutgoingBuddyRequests li').length == 0) {
+          $('.pendingOutgoingBuddyRequestsHolder').hide();
+        } else {
+          $('.pendingOutgoingBuddyRequestsHolder').show();
+        }
+
+        // TODO: remove links in real-time from client for approve / deny ( no lags or double clicks )
+        $('.denyBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
+          buddypond.denyBuddy($(this).attr('data-buddyname'), function(err, data){
+            $('.apiResult').val(JSON.stringify(data, true, 2))
+          });
+          return false;
+        });
+        
+        $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
+          buddypond.approveBuddy($(this).attr('data-buddyname'), function(err, data){
+            $('.apiResult').val(JSON.stringify(data, true, 2))
+          });
+          return false;
+        });
       }
 
       setTimeout(function(){
         desktop.updateBuddyList();
       }, 3000);
-      
-      
-    });
 
+    });
 
   }
   
@@ -193,7 +261,11 @@ desktop.updateMessages = function updateMessages () {
       for (let key in html) {
         $('.chat_messages', key).html('');
         $('.chat_messages', key).append(html[key]);
+        // scrolls to bottom of messages on new messages
+        let el = $('.chat_messages', key)
+        $(el).scrollTop($(el)[0].scrollHeight);
       }
+
       setTimeout(function(){
         desktop.updateMessages();
       }, 3000);

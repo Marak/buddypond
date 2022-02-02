@@ -29,7 +29,7 @@ buddypond.removeBuddy = function addBuddy (buddyname, cb) {
   })
 }
 
-buddypond.approveBuddy = function approveBuddy () {
+buddypond.approveBuddy = function approveBuddy (buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/approve', 'POST', {
     buddyname: buddyname
   }, function(err, data){
@@ -37,7 +37,7 @@ buddypond.approveBuddy = function approveBuddy () {
   })
 }
 
-buddypond.denyBuddy = function denyBuddy () {
+buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/deny', 'POST', {
     buddyname: buddyname
   }, function(err, data){

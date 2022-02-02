@@ -260,28 +260,41 @@ div.ui-resizable-handle {
   left: 0;
   right: 0;
   bottom: 0;
+  float: left;
 }
 
 .window_content {
-  background: url(../images/gui/window_content.gif) repeat-y;
+  /*
+  background: #000;
+  color: #00FF41;
+  */
   line-height: 1.5;
   overflow: auto;
+  float: left;
   top: 32px;
-  left: 1px;
+  left: 0px;
   right: 1px;
   bottom: 23px;
 }
 
 .window_aside {
+  /*
+  background: #000;
+  color: #00FF41;
+  */
   float: left;
   font-size: 11px;
   padding: 10px 12px 10px 10px;
-  width: 150px;
+  width: 120px;
 }
 
 .window_main {
-  background: #fff;
-  margin: 0 0 0 173px;
+  /*
+  background: #000;
+  color: #00FF41;
+  */
+  margin: 0 0 0 0px;
+  padding: 6px;
   min-height: 100%;
 }
 
@@ -512,10 +525,10 @@ th.shrink {
 
 #desktop {
   overflow: hidden;
-  top: 26px;
+  top: 0px;
   left: 0;
   right: 0;
-  bottom: 41px;
+  bottom: 0px;
 }
 
 #wrapper {
@@ -527,9 +540,95 @@ th.shrink {
   min-height: 500px;
 }
 
-/* buddypond ui elements */
+
+/* buddypond desktop ui elements */
+
+
+.pointer {
+  cursor: pointer;
+}
+
+.smaller {
+  font-size: 8px;
+}
 
 .console {
   width: 100%;
   height: 100%;
+}
+
+.loginForm {
+  padding: 16px;
+}
+
+.loginForm table td {
+  padding: 6px;
+}
+
+.loginButton {
+  width: 300px;
+}
+
+.desktopButton {
+  background-color: black;
+  color: #00FF41;
+  cursor: pointer;
+  border: none;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 4px;
+}
+
+.desktopButton:hover {
+  color: #008F11;
+}
+
+.addBuddyForm {
+  /*
+  position: absolute;
+  bottom: 10px;
+  */
+}
+
+.chat_messages {
+  /*max-height: 222px;*/
+  height: 100%;
+  overflow: auto;
+}
+
+.chat_send_message_form {
+  
+}
+
+.buddyListHolder {
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+
+.buddylist a:hover {
+  cursor: pointer;
+}
+
+.splash {
+  /* width: 1200px; */
+  padding-top: 16px;
+  padding-left: 33px;
+  
+}
+
+.splashImage {
+  position: absolute;
+  right: 55px;
+  float: right;
+  text-align: center;
+}
+
+.me_title {
+  float: left;
+  text-align: center;
 }
