@@ -46,7 +46,7 @@ buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
 }
 
 buddypond.getBuddyList = function getBuddyList (cb) {
-  apiRequest('/buddies', 'POST', {}, function(err, data){
+  apiRequest('/buddies', 'GET', {}, function(err, data){
     cb(err, data);
   })
 }
@@ -62,6 +62,22 @@ buddypond.sendMessage = function sendMessage (buddyname, buddytext, cb) {
 
 buddypond.getMessages = function getMessages (buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/message', 'GET', {
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
+  apiRequest('/ponds/' + pondname + '/message', 'POST', {
+    pondname: pondname,
+    pondtext: pondtext
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.pondGetMessages = function pondGetMessages (pondname, cb) {
+  apiRequest('/ponds/' + pondname + '/message', 'GET', {
   }, function(err, data){
     cb(err, data);
   })

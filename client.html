@@ -10,6 +10,7 @@
         $('.command').on('click', function(){
           $('.apiResult').val('');
 
+          // var module = $(this).attr('data-module') || 'buddy';
           var command = $(this).attr('data-command');
 
           switch(command) {
@@ -37,52 +38,62 @@
                 console.log(err, data)
               });
             break;
-
-          case 'getMessages':
-            buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.getMessages($('#getmessages_buddyname').val(), function(err, data){
-              console.log("Buddy pond api returns");
-              $('.apiResult').val(JSON.stringify(data, true, 2))
-              console.log(err, data)
-            });
-          break;
-
-          case 'addBuddy':
-            buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.addBuddy($('#addbuddy_buddyname').val(), function(err, data){
-              console.log("Buddy pond api returns");
-              $('.apiResult').val(JSON.stringify(data, true, 2))
-              console.log(err, data)
-            });
-          break;
-
-          case 'removeBuddy':
-            buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.removeBuddy($('#removebuddy_buddyname').val(), function(err, data){
-              console.log("Buddy pond api returns");
-              $('.apiResult').val(JSON.stringify(data, true, 2))
-              console.log(err, data)
-            });
-          break;
-
-          case 'approveBuddy':
-            buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.approveBuddy($('#approvebuddy_buddyname').val(), function(err, data){
-              console.log("Buddy pond api returns");
-              $('.apiResult').val(JSON.stringify(data, true, 2))
-              console.log(err, data)
-            });
-          break;
-
-          case 'denyBuddy':
-            buddypond.qtokenid = $('.qtokenid').val();
-            buddypond.denyBuddy($('#denybuddy_buddyname').val(), function(err, data){
-              console.log("Buddy pond api returns");
-              $('.apiResult').val(JSON.stringify(data, true, 2))
-              console.log(err, data)
-            });
-          break;
-
+            case 'getMessages':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.getMessages($('#getmessages_buddyname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'addBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.addBuddy($('#addbuddy_buddyname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'removeBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.removeBuddy($('#removebuddy_buddyname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'approveBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.approveBuddy($('#approvebuddy_buddyname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'denyBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.denyBuddy($('#denybuddy_buddyname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+          case 'pondSendMessage':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.pondSendMessage($('#message_pondname').val(), $('#message_pondtext').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'pondGetMessages':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.pondGetMessages($('#getmessages_pondname').val(), function(err, data){
+                console.log("Buddy pond api returns");
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
 
           default:
             console.log('default command case')
@@ -180,6 +191,28 @@
         <td><button data-command="denyBuddy" class="command">Send Request</button></td>
 
       </tr>
+
+      <tr>
+        <td>pond.sendMessage</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          pondname: <input id="message_pondname" type="text" value="Pond"/>
+          pondtext: <input id="message_pondtext" value="Hello Pond!" type="text"/>
+        </td>
+        <td><button data-command="pondSendMessage" class="command">Send Request</button></td>
+
+      </tr>
+
+      <tr>
+        <td>pond.getMessages</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          pondname: <input id="getmessages_pondname" type="text" value="Pond"/>
+        </td>
+        <td><button data-command="pondGetMessages" class="command">Send Request</button></td>
+
+      </tr>
+
 
 
     </table>
