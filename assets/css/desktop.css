@@ -570,6 +570,7 @@ a:hover {
 
 .error {
   border-color: red;
+  color: red;
 }
 
 .pointer {

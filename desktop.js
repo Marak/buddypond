@@ -15,6 +15,8 @@ desktop.windowIndex = {};
 desktop.openChats = {};
 
 desktop.MAX_CONSOLE_OUTPUT = 5;
+desktop.DEFAULT_AJAX_TIMER = 1000;
+
 desktop.log = function logDesktop () {
   let consoleItems = $('.console li').length;
   if (consoleItems > desktop.MAX_CONSOLE_OUTPUT) {
@@ -56,6 +58,8 @@ desktop.load = function loadDesktop() {
     $('#dock').append(dockStr);
   }
 
+  $('.logoutLink').hide();
+
   $('#window_login').css('width', 800);
   $('#window_login').css('height', 400);
 
@@ -71,8 +75,6 @@ desktop.load = function loadDesktop() {
 
   $('#window_interdemoncable').css('left', 777);
   $('#window_interdemoncable').css('top', 30);
-
-
 
   desktop.renderDockElement('login');
 
@@ -99,6 +101,15 @@ desktop.load = function loadDesktop() {
       console.log("buddypond.addBuddy returns", err, data);
       console.log(err, data)
     });
+  });
+
+  $('.loginLink').on('click', function(){
+    $('#window_login').show();
+    $('#buddyname').focus();
+  });
+
+  $('.logoutLink').on('click', function(){
+    document.location = 'index.html';
   });
 
   $('.inviteBuddy').on('click', function(){
@@ -202,6 +213,9 @@ desktop.auth = function authDesktop (buddyname) {
       return;
     }
     $('#me_title').html('Welcome - ' + buddyname);
+    $('.logoutLink').show();
+    $('.loginLink').hide();
+
     desktop.log('buddypond.authBuddy <-', data);
     $('.console').val()
     $('.qtokenid').val(data);
@@ -263,7 +277,7 @@ desktop.updateBuddyList = function updateBuddyList () {
         desktop.log(err);
         setTimeout(function(){
           desktop.updateBuddyList();
-        }, 3000); // TODO: expotential backoff algo
+        }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
       let str = JSON.stringify(data);
@@ -272,7 +286,7 @@ desktop.updateBuddyList = function updateBuddyList () {
       if (desktop.buddyListDataCache[str]) {
         setTimeout(function(){
           desktop.updateBuddyList();
-        }, 3000);
+        }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
 
@@ -337,6 +351,7 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         // TODO: remove links in real-time from client for approve / deny ( no lags or double clicks )
         $('.denyBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
+          $(this).parent().hide();
           buddypond.denyBuddy($(this).attr('data-buddyname'), function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))
           });
@@ -344,6 +359,7 @@ desktop.updateBuddyList = function updateBuddyList () {
         });
 
         $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
+          $(this).parent().hide();
           buddypond.approveBuddy($(this).attr('data-buddyname'), function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))
           });
@@ -353,7 +369,7 @@ desktop.updateBuddyList = function updateBuddyList () {
 
       setTimeout(function(){
         desktop.updateBuddyList();
-      }, 3000);
+      }, desktop.DEFAULT_AJAX_TIMER);
 
     });
 
@@ -384,7 +400,7 @@ desktop.updateMessages = function updateMessages () {
         desktop.log(err);
         setTimeout(function(){
           desktop.updateMessages();
-        }, 3000); // TODO: expotential backoff algo
+        }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
 
@@ -395,7 +411,7 @@ desktop.updateMessages = function updateMessages () {
       if (desktop.buddyMessageCache[str]) {
         setTimeout(function(){
           desktop.updateMessages();
-        }, 3000);
+        }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
       //console.log('Rendering Messages List');
@@ -442,7 +458,7 @@ desktop.updateMessages = function updateMessages () {
 
       setTimeout(function(){
         desktop.updateMessages();
-      }, 3000);
+      }, desktop.DEFAULT_AJAX_TIMER);
       
     });
 
