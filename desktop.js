@@ -37,6 +37,41 @@ desktop.log = function logDesktop () {
 
 desktop.load = function loadDesktop() {
 
+
+  // clone window_buddy_message_0 ten times
+  // clone icon_dock_buddy_message_0 ten times 
+  // this creates 10 windows available for chatting with buddies
+  let clone = $('#window_buddy_message_0').html();
+  let dockItemClone = $('#icon_dock_buddy_message_0').html();
+
+  for (let i = 1; i<11; i++) {
+    let buddyChatStr = '<div id="window_buddy_message_' + i +'" class="abs window buddy_message" data-window-index="' + i + '">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
+    $('#desktop').append(buddyChatStr);
+    let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
+    dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
+    $('#desktop').append(buddyChatStr);
+    $('#dock').append(dockStr);
+  }
+
+  $('#window_login').css('width', 800)
+  $('#window_login').css('height', 400)
+  
+  $('#window_login').show();
+  $('#window_login').css('left', 222)
+  $('#window_login').css('top', 111)
+
+  desktop.renderDockElement('login');
+
+  $('#buddyname').focus();
+
+  $('form').on('submit', function(){
+    return false;
+  });
+
+  $('.loginButton').on('click', function(){
+    desktop.auth($('#buddyname').val());
+  });
+
   $('.sendBuddyMessage').on('click', function(){
     desktop.sendBuddyMessage(this)
   });
@@ -123,6 +158,38 @@ desktop.openWindow = function openWindow (windowType, context) {
 
   }
 
+}
+
+desktop.auth = function authDesktop (buddyname) {
+  desktop.log('buddypond.authBuddy ->', buddyname);
+  $('#buddypassword').removeClass('error');
+  buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
+    console.log("Buddy pond api returns", err, data);
+    if (data === false) {
+      $('#buddypassword').addClass('error');
+      return;
+    }
+    $('#me_title').html('Welcome - ' + buddyname);
+    desktop.log('buddypond.authBuddy <-', data);
+    $('.console').val()
+    $('.qtokenid').val(data);
+    if (data === false) {
+      // TODO: alert UI, try again
+    } else {
+      buddypond.qtokenid = data;
+      $('#window_login').hide();
+      $('#login_desktop_icon').hide();
+      $('#logout_desktop_icon').show();
+      $('#window_buddylist').show();
+      $('#window_buddylist').css('width', 220)
+      $('#window_buddylist').css('height', 440)
+      $('#window_buddylist').css('left', 666)
+      $('#window_buddylist').css('top', 111)
+      desktop.renderDockElement('buddylist');
+      desktop.removeDockElement('login')
+    }
+    console.log(err, data)
+  });
 }
 
 desktop.sendBuddyMessage = function sendBuddyMessage (context) {
