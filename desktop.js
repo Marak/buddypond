@@ -13,26 +13,26 @@ desktop.windowIndex = {};
 
 desktop.openChats = {};
 
-desktop.sendBuddyMessage = function sendBuddyMessage (context) {
-  let message = {};
-  var form = $(context).parent();
-  message.text = $('.buddy_message_text', form).val();
-  message.to = $('.buddy_message_to', form).val();
-  message.from = $('.buddy_message_from', form).val();
-  if (message.text.trim() === "") {
-    return;
+desktop.MAX_CONSOLE_OUTPUT = 5;
+desktop.log = function logDesktop () {
+  let consoleItems = $('.console li').length;
+  if (consoleItems > desktop.MAX_CONSOLE_OUTPUT) {
+    $('.console li').get(0).remove();
+    // $('.console').html(consoleContent);
   }
-
-  console.log('send the buddy message', message);
-  // TODO: have console display more info about event
-  $('.console').val(JSON.stringify(message, true, 2));
-
-  // empty text area input
-  $('.buddy_message_text', form).val('');
-  buddypond.sendMessage(message.to, message.text, function(err, data){
-    console.log("buddypond.sendMessage returns", err, data);
-    console.log(err, data)
-  });
+  let output = '';
+  arguments[0] = '<span class="purple">' + arguments[0] + '</span>';
+  for (let arg in arguments) {
+    let str = arguments[arg];
+    if (typeof str === 'object') {
+      str = JSON.stringify(str, true, 2)
+    }
+    
+    output += (str + ', '); 
+  }
+  let now = new Date();
+  let dateString = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+  $('.console').append('<li>' + dateString + ': ' + output + '</li>');
 }
 
 desktop.load = function loadDesktop() {
@@ -44,8 +44,9 @@ desktop.load = function loadDesktop() {
   $('.sendBuddyRequest').on('click', function(){
     var buddyName = $('.buddy_request_name').val();
     $('.buddy_request_name').val('');
-    // console.log('send the buddy request', buddyName);
+    desktop.log('buddypond.addBuddy ->', buddyName)
     buddypond.addBuddy(buddyName, function(err, data){
+      desktop.log('buddypond.addBuddy <-', data)
       console.log("buddypond.addBuddy returns", err, data);
       console.log(err, data)
     });
@@ -64,6 +65,8 @@ desktop.load = function loadDesktop() {
           $(this).trigger("enterKey");
       }
   });
+  $('.buddyListHolder').hide();
+  $('#logout_desktop_icon').hide();
 }
 
 desktop.refresh = function refreshDesktop () {
@@ -81,6 +84,10 @@ desktop.openWindow = function openWindow (windowType, context) {
     console.log('reopen window id', window_id)
     // TODO: check to see if window is min, if so, open it from dock
     // $('#window_buddy_message_' + window_id).show();
+    let chat_window_id = Object.keys(desktop.windowIndex).indexOf(context);
+    console.log('chat_window_id', chat_window_id)
+
+    desktop.renderDockElement('buddy_message_' + chat_window_id, context);
     JQD.util.window_flat();
     $('#window_buddy_message_' + window_id).show().addClass('window_stack');
   } else {
@@ -91,7 +98,7 @@ desktop.openWindow = function openWindow (windowType, context) {
     //JDQX.openWindow($(windowKey));
     $(windowKey).show();
     $(windowKey).css('width', 600)
-    $(windowKey).css('height', 400)
+    $(windowKey).css('height', 440)
 
     desktop.windowIndex[context] = windowType;
 
@@ -118,6 +125,28 @@ desktop.openWindow = function openWindow (windowType, context) {
 
 }
 
+desktop.sendBuddyMessage = function sendBuddyMessage (context) {
+  let message = {};
+  var form = $(context).parent();
+  message.text = $('.buddy_message_text', form).val();
+  message.to = $('.buddy_message_to', form).val();
+  message.from = $('.buddy_message_from', form).val();
+  if (message.text.trim() === "") {
+    return;
+  }
+
+  console.log('send the buddy message', message);
+  // TODO: have console display more info about event
+  $('.console').val(JSON.stringify(message, true, 2));
+
+  // empty text area input
+  $('.buddy_message_text', form).val('');
+  buddypond.sendMessage(message.to, message.text, function(err, data){
+    console.log("buddypond.sendMessage returns", err, data);
+    console.log(err, data)
+  });
+}
+
 desktop.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
@@ -130,7 +159,7 @@ desktop.updateBuddyList = function updateBuddyList () {
     // update buddylist html
     buddypond.getBuddyList(function(err, data){
       let str = JSON.stringify(data);
-
+      desktop.log('buddypond.getBuddyList', str);
       // TODO: use key count for garbage collection and trim if size grows
       if (desktop.buddyListDataCache[str]) {
         setTimeout(function(){
@@ -138,6 +167,9 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, 3000);
         return;
       }
+      $('.buddy_list_not_connected').hide();
+      $('.buddyListHolder').show();
+      
       if (data.buddylist.length > 0) {
         $('.you_have_no_buddies').hide();
       }
@@ -193,7 +225,7 @@ desktop.updateBuddyList = function updateBuddyList () {
           });
           return false;
         });
-        
+
         $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
           buddypond.approveBuddy($(this).attr('data-buddyname'), function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -243,10 +275,16 @@ desktop.updateMessages = function updateMessages () {
       // $('.buddylist').html('');
       desktop.updateMessages[str] = true;
       let html = {};
+      
+      if (data.messages.length === 0) {
+        
+      } else {
+        $('.no_chat_messages').hide();
+      }
+
       data.messages.forEach(function(message){
         var keys = Object.keys(desktop.openChats);
         // get context window index
-        
         let buddyKey = message.from;
         if (buddyKey === buddypond.me) {
           buddyKey = message.to;
@@ -255,7 +293,13 @@ desktop.updateMessages = function updateMessages () {
         var windowKey = '#window_buddy_message_' + index;
         //console.log('writting message to ', windowKey, message)
         html[windowKey] = html[windowKey] || '';
-        html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+        
+        if (message.from === buddypond.me) {
+          html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+        } else {
+          html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
+        }
+        
       });
 
       for (let key in html) {
@@ -274,6 +318,20 @@ desktop.updateMessages = function updateMessages () {
 
   }
 }
+
+desktop.removeDockElement = function (windowType, context) {
+  var dockElement = '#icon_dock_' + windowType;
+  $(dockElement).hide();
+  return;
+  if ($(dockElement).is(':hidden')) {
+    $(dockElement).remove().appendTo('#dock');
+    $(dockElement).show('fast');
+  }
+  if (context) {
+    $('.dock_title', dockElement).html(context);
+  }
+}
+
 
 desktop.renderDockElement = function (windowType, context) {
   var dockElement = '#icon_dock_' + windowType;

@@ -20,18 +20,19 @@ window.top.location = 'ie.html';
 <body>
 <div class="abs" id="wrapper">
   <div class="abs" id="desktop">
-    <a class="abs icon" style="left:20px;top:20px;" href="#icon_dock_buddylist">
-      <img src="assets/images/icons/icon_32_computer.png" />
+    <a class="abs icon" style="left:20px;top:40px;" href="#icon_dock_buddylist">
+      <img src="assets/images/icons/icon_32_network.png" />
       Buddy List
     </a>
-    <a class="abs icon" style="left:20px;top:100px;" href="#icon_dock_login">
+    <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_console">
+      <img src="assets/images/icons/icon_32_computer.png" />
+      Console
+    </a>
+    <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
       <img src="assets/images/icons/icon_32_drive.png" />
       Login
     </a>
-    <a class="abs icon" style="left:20px;top:180px;" href="#icon_dock_console">
-      <img src="assets/images/icons/icon_32_drive.png" />
-      Console
-    </a>
+    
        <!--
        <a class="abs icon" style="left:20px;top:180px;" href="#icon_dock_disc">
          <img src="assets/images/icons/icon_32_disc.png" />
@@ -42,8 +43,6 @@ window.top.location = 'ie.html';
          Network
        </a>
          -->
-    
-    
 
     <div id="window_login" class="abs window">
       <div class="abs window_inner">
@@ -77,18 +76,15 @@ window.top.location = 'ie.html';
               <br/>
               <div class="loginForm">
                 <form method="POST" action="/login">
-                  
                   <table>
                     <tr>
                       <td><label for="buddyname">Buddy Name:</label></td>
                       <td><input id="buddyname" name="buddyname" type="text" size="16"/></td>
                     </tr>
-
                     <tr>
                       <td><label for="buddypassword">Buddy Password:</label></td>
                       <td><input id="buddypassword" name="buddypassword" type="password" size="16"/></td>
                     </tr>
-
                   </table>
                    <br/>
                    <button type="submit" class="loginButton desktopButton">Login</button>
@@ -123,11 +119,9 @@ window.top.location = 'ie.html';
           </span>
         </div>
         <div class="abs window_content">
-          <div class="window_aside">
-            Hello. You look nice today!
-          </div>
           <div class="window_main">
-            <textarea cols="20" rows="20" class="console"></textarea>
+            <ul class="console">
+            </ul>
           </div>
         </div>
         <div class="abs window_bottom">
@@ -152,8 +146,18 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main">
+            <div class="buddy_list_not_connected">
+              You'll need to login in order to access your Buddy List.
+            </div>
             <div class="buddyListHolder">
+              <div align="center">Hello. You look nice today!</div>
+              <br/>
               <h2>Buddies</h2>
+              <span class="you_have_no_buddies">
+                You don't have buddies yet!<br/><br/>
+                You can always add yer buddy:<br/><br/>
+                <a href="#/addbuddy/Marak" class="sendBuddyRequest">Marak</a> <- Click Here To Add
+              </span>
               <ul class="buddylist">
               </ul>
               <br/>
@@ -177,13 +181,6 @@ window.top.location = 'ie.html';
                   <button class="sendBuddyRequest desktopButton" type="submit">Send Buddy Request</button>
                 </form>
               </div>
-              <span class="you_have_no_buddies">
-                <br/>
-                <br/>
-                You don't have buddies yet!<br/><br/>
-                You can always add yer buddy:<br/><br/>
-                <a href="#/addbuddy/Marak" class="sendBuddyRequest">Marak</a> <- Click Here To Add
-              </span>
             </div>
           </div>
         </div>
@@ -208,20 +205,22 @@ window.top.location = 'ie.html';
           </span>
         </div>
         <div class="abs window_content">
-          <div class="window_aside">
-            Hello. You look nice today!
-          </div>
           <div class="window_main">
-            <div class="chat_messages">
-            </div>
-            <hr/>
-            <div class="chat_send_message_form">
-              <form method="POST" action="">
-                <textarea name="buddy_message_text" class="buddy_message_text" rows="4" cols="44"></textarea>
-                <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
-                <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
-                <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
-              </form>
+            <div class="chatMessagesHolder">
+              <div class="no_chat_messages">
+                Your conversation has just started. You can send a message to your buddy below.
+              </div>
+              <div class="chat_messages">
+              </div>
+              <hr/>
+              <div class="chat_send_message_form">
+                <form method="POST" action="">
+                  <textarea name="buddy_message_text" class="buddy_message_text" rows="4" cols="44"></textarea>
+                  <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
+                  <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
+                  <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -232,49 +231,9 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
-    <div id="window_buddy_message_1" class="abs window buddy_message" data-window-index="1">
-      <div class="abs window_inner">
-        <div class="window_top">
-          <span class="float_left">
-            <img src="assets/images/icons/icon_16_computer.png" />
-            <span class="window-context-title">Chat</span>
-          </span>
-          <span class="float_right">
-            <a href="#" class="window_min"></a>
-            <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_buddy_message_1" class="window_close"></a>
-          </span>
-        </div>
-
-        <div class="abs window_content">
-          <div class="window_aside">
-            Hello. You look nice today!
-          </div>
-          <div class="window_main">
-            <div class="chat_messages">
-            </div>
-            <hr/>
-            <div class="chat_send_message_form">
-              <form method="POST" action="">
-                <textarea name="buddy_message_text" class="buddy_message_text" rows="4" cols="44"></textarea>
-                <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
-                <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
-                <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
-              </form>
-            </div>
-          </div>
-
-        <div class="abs window_bottom">
-          Build: v4.20.69
-        </div>
-      </div>
-      <span class="abs ui-resizable-handle ui-resizable-se"></span>
-    </div>
   </div>
   <div class="abs" id="bar_top">
     <span class="me_title" id="me_title">Welcome</span>
-    
-    
     <span class="float_right" id="clock"></span>
     <ul class="float_right">
       <li>
@@ -287,14 +246,6 @@ window.top.location = 'ie.html';
             <a href="http://github.com/marak">Home Page</a>
           </li>
         </ul>
-        
-        <!--
-          
-          <li>
-            <a href="https://github.com/sponsors/Marak">Sponsor</a>
-          </li>
-          
-        -->
       </li>
     </ul>
     <!--
@@ -303,8 +254,6 @@ window.top.location = 'ie.html';
     <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
     <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
     -->
-    
-    
   </div>
   <div class="abs" id="bar_bottom">
     <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
@@ -343,15 +292,6 @@ window.top.location = 'ie.html';
           </span>
         </a>
       </li>
-      <li id="icon_dock_buddy_message_1">
-        <a href="#window_buddy_message_1">
-          <img src="assets/images/icons/icon_22_network.png" />
-          <span class="dock_title">
-            Chat with Y
-          </span>
-        </a>
-      </li>
-      
     </ul>
   </div>
 </div>
@@ -367,6 +307,22 @@ window.top.location = 'ie.html';
 
 <script>
   $(document).ready(function(){
+
+    // clone window_buddy_message_0 ten times
+    // clone icon_dock_buddy_message_0 ten times 
+    // this creates 10 windows available for chatting with buddies
+    let clone = $('#window_buddy_message_0').html();
+    let dockItemClone = $('#icon_dock_buddy_message_0').html();
+
+    for (let i = 1; i<11; i++) {
+      let buddyChatStr = '<div id="window_buddy_message_' + i +'" class="abs window buddy_message" data-window-index="' + i + '">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
+      $('#desktop').append(buddyChatStr);
+      let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
+      dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
+      $('#desktop').append(buddyChatStr);
+      $('#dock').append(dockStr);
+    }
+
     desktop.load();
     desktop.refresh();
 
@@ -376,41 +332,48 @@ window.top.location = 'ie.html';
     $('#window_login').show();
     $('#window_login').css('left', 222)
     $('#window_login').css('top', 111)
-    
+
     // $('#window_console').show();
 
     desktop.renderDockElement('login');
     // desktop.renderDockElement('console');
 
+    /*
     $( "#window_console" ).position({
       my: "left top",
       at: "right top",
       of: "#window_login"
     });
-    
+    */
+
     $('#buddyname').focus();
     $('form').on('submit', function(){
       return false;
     });
-    
+
     $('.loginButton').on('click', function(){
       let buddyname = $('#buddyname').val();
+      desktop.log('buddypond.authBuddy ->', buddyname);
       buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
         console.log("Buddy pond api returns");
         $('#me_title').html('Welcome - ' + buddyname);
-        $('.console').val(JSON.stringify(data, true, 2))
+        desktop.log('buddypond.authBuddy <-', data);
+        $('.console').val()
         $('.qtokenid').val(data);
         if (data === false) {
           // TODO: alert UI, try again
         } else {
           buddypond.qtokenid = data;
           $('#window_login').hide();
+          $('#login_desktop_icon').hide();
+          $('#logout_desktop_icon').show();
           $('#window_buddylist').show();
           $('#window_buddylist').css('width', 220)
           $('#window_buddylist').css('height', 440)
           $('#window_buddylist').css('left', 666)
           $('#window_buddylist').css('top', 111)
           desktop.renderDockElement('buddylist');
+          desktop.removeDockElement('login')
         }
         console.log(err, data)
       });

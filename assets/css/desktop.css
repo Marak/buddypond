@@ -543,6 +543,19 @@ th.shrink {
 
 /* buddypond desktop ui elements */
 
+a:hover {
+  cursor: pointer;
+  color: purple;
+}
+
+.purple {
+  color: purple;
+}
+
+.green {
+  color: #0D0208;
+}
+
 
 .pointer {
   cursor: pointer;
@@ -552,9 +565,15 @@ th.shrink {
   font-size: 8px;
 }
 
+.datetime {
+  font-size: 8px;
+  font-decoration: italic;
+}
+
 .console {
   width: 100%;
   height: 100%;
+  margin: 16px;
 }
 
 .loginForm {
@@ -595,23 +614,25 @@ th.shrink {
 }
 
 .chat_messages {
-  /*max-height: 222px;*/
-  height: 100%;
+  height: 240px;
   overflow: auto;
 }
 
 .chat_send_message_form {
+  position: absolute;
+  float: bottom;
+  bottom: 0px;
+  left: 16px;
   
 }
 
-.buddyListHolder {
+.chatMessagesHolder {
   padding-top: 16px;
   padding-left: 16px;
 }
 
-
-.buddylist a:hover {
-  cursor: pointer;
+.buddyListHolder {
+  padding-left: 16px;
 }
 
 .splash {
