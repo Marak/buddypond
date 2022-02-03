@@ -1,3 +1,4 @@
+
 /*
 
   Buddy Pond Desktop Client
@@ -27,16 +28,18 @@ desktop.log = function logDesktop () {
     if (typeof str === 'object') {
       str = JSON.stringify(str, true, 2)
     }
-    
     output += (str + ', '); 
   }
+  output = output.substr(0, output.length - 2);
   let now = new Date();
   let dateString = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
   $('.console').append('<li>' + dateString + ': ' + output + '</li>');
+  //let el = $('.console_holder')
+  //$(el).scrollTop($(el).scrollHeight);
 }
 
 desktop.load = function loadDesktop() {
-
+  // desktop.loadYoutubeEmbeds();
 
   // clone window_buddy_message_0 ten times
   // clone icon_dock_buddy_message_0 ten times 
@@ -53,12 +56,23 @@ desktop.load = function loadDesktop() {
     $('#dock').append(dockStr);
   }
 
-  $('#window_login').css('width', 800)
-  $('#window_login').css('height', 400)
-  
+  $('#window_login').css('width', 800);
+  $('#window_login').css('height', 400);
+
   $('#window_login').show();
-  $('#window_login').css('left', 222)
-  $('#window_login').css('top', 111)
+  $('#window_login').css('left', 222);
+  $('#window_login').css('top', 111);
+
+  $('#window_mtv').css('width', 644);
+  $('#window_mtv').css('height', 666);
+
+  $('#window_interdemoncable').css('width', 644);
+  $('#window_interdemoncable').css('height', 666);
+
+  $('#window_interdemoncable').css('left', 777);
+  $('#window_interdemoncable').css('top', 30);
+
+
 
   desktop.renderDockElement('login');
 
@@ -87,6 +101,19 @@ desktop.load = function loadDesktop() {
     });
   });
 
+  $('.inviteBuddy').on('click', function(){
+    alert('TODO: Add Import Buddies from Twitter feature');
+    return false;
+  });
+
+  $('.ponderMTV').on('click', function(){
+    desktop.playRandomVideo(mtvPlayer, desktop.ytPlaylist);
+  });
+
+  $('.ponderInterdemoncable').on('click', function(){
+    desktop.playRandomVideo(interDemonCableplayer, desktop.interdemoncable);
+  });
+
   $('.buddy_message_text').bind("enterKey",function(e){
     desktop.sendBuddyMessage(this)
   });
@@ -113,7 +140,6 @@ desktop.refresh = function refreshDesktop () {
 desktop.openWindow = function openWindow (windowType, context) {
   
   desktop.openChats[context] = true;
-  
   if (desktop.windowIndex[context]) {
     let window_id = Object.keys(desktop.windowIndex).indexOf(context);
     console.log('reopen window id', window_id)
@@ -165,6 +191,12 @@ desktop.auth = function authDesktop (buddyname) {
   $('#buddypassword').removeClass('error');
   buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
     console.log("Buddy pond api returns", err, data);
+
+    if (err) {
+      alert('server is down. please try again in a moment.');
+      return;
+    }
+
     if (data === false) {
       $('#buddypassword').addClass('error');
       return;
@@ -222,11 +254,20 @@ desktop.updateBuddyList = function updateBuddyList () {
       desktop.updateBuddyList();
     }, 10);
   } else {
-
+    desktop.log('buddypond.getBuddyList -> ' + buddypond.me);
     // update buddylist html
+    $('.buddy_list_not_connected').hide();
+    $('.buddyListHolder').show();
     buddypond.getBuddyList(function(err, data){
+      if (err) {
+        desktop.log(err);
+        setTimeout(function(){
+          desktop.updateBuddyList();
+        }, 3000); // TODO: expotential backoff algo
+        return;
+      }
       let str = JSON.stringify(data);
-      desktop.log('buddypond.getBuddyList', str);
+      desktop.log('buddypond.getBuddyList <-', str);
       // TODO: use key count for garbage collection and trim if size grows
       if (desktop.buddyListDataCache[str]) {
         setTimeout(function(){
@@ -234,24 +275,31 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, 3000);
         return;
       }
-      $('.buddy_list_not_connected').hide();
-      $('.buddyListHolder').show();
-      
+
       if (data.buddylist.length > 0) {
         $('.you_have_no_buddies').hide();
       }
+      // a buddy request counts as a buddy in UX ( for now )
+      if (Object.keys(data.buddyrequests).length > 0) {
+        $('.you_have_no_buddies').hide();
+      }
       $('.buddylist').html('');
+      $('.loading').remove();
       if (data.buddylist) {
-        desktop.buddyListDataCache[str] = true;
-        data.buddylist.forEach(function(buddy){
-          $('.buddylist').append('<li><a class="messageBuddy" href="#">' + buddy + '</a></li>')
-        })
-        $('.apiResult').val(JSON.stringify(data, true, 2))
-        // render buddy list
-        $('.messageBuddy').on('click', function(){
-          let context = $(this).html();
-          desktop.openWindow('chat', context)
-        });
+        if (data.buddylist.length === 0) {
+          $('.buddylist').html('No buddies yet');
+        } else {
+          desktop.buddyListDataCache[str] = true;
+          data.buddylist.forEach(function(buddy){
+            $('.buddylist').append('<li><a class="messageBuddy" href="#">' + buddy + '</a></li>')
+          })
+          $('.apiResult').val(JSON.stringify(data, true, 2))
+          // render buddy list
+          $('.messageBuddy').on('click', function(){
+            let context = $(this).html();
+            desktop.openWindow('chat', context)
+          });
+        }
       }
 
       if (data.buddyrequests) {
@@ -259,6 +307,7 @@ desktop.updateBuddyList = function updateBuddyList () {
         // desktop.buddyListDataCache[str] = true;
         $('.pendingIncomingBuddyRequests').html('');
         $('.pendingOutgoingBuddyRequests').html('');
+        $('.loading').remove();
 
         for (let buddy in data.buddyrequests) {
           let buddyrequest = data.buddyrequests[buddy];
@@ -271,6 +320,7 @@ desktop.updateBuddyList = function updateBuddyList () {
             $('.pendingOutgoingBuddyRequests').append('<li>' + buddyrequest.to + '</li>')
           }
         }
+
         $('.apiResult').val(JSON.stringify(data, true, 2))
 
         if ($('.pendingIncomingBuddyRequests li').length == 0) {
@@ -308,7 +358,7 @@ desktop.updateBuddyList = function updateBuddyList () {
     });
 
   }
-  
+
 }
 
 desktop.updateMessages = function updateMessages () {
@@ -327,8 +377,19 @@ desktop.updateMessages = function updateMessages () {
       return;
     }
     // console.log('subscribedBuddies', subscribedBuddies.toString())
+    desktop.log('buddypond.getMessages ->', subscribedBuddies.toString());
     buddypond.getMessages(subscribedBuddies.toString(), function(err, data){
-      // console.log("buddypond.getMessages returns");
+
+      if (err) {
+        desktop.log(err);
+        setTimeout(function(){
+          desktop.updateMessages();
+        }, 3000); // TODO: expotential backoff algo
+        return;
+      }
+
+      desktop.log('buddypond.getMessages <-', data);
+
       let str = JSON.stringify(data);
       // TODO: use key count for garbage collection and trim if size grows
       if (desktop.buddyMessageCache[str]) {
@@ -342,11 +403,13 @@ desktop.updateMessages = function updateMessages () {
       // $('.buddylist').html('');
       desktop.updateMessages[str] = true;
       let html = {};
-      
+
+      // TODO: this should apply per conversation, not global for all users
       if (data.messages.length === 0) {
-        
+        $('.chat_messages').hide();
       } else {
         $('.no_chat_messages').hide();
+        $('.chat_messages').show();
       }
 
       data.messages.forEach(function(message){
@@ -358,6 +421,7 @@ desktop.updateMessages = function updateMessages () {
         }
         let index = keys.indexOf(buddyKey);
         var windowKey = '#window_buddy_message_' + index;
+
         //console.log('writting message to ', windowKey, message)
         html[windowKey] = html[windowKey] || '';
         
@@ -366,7 +430,6 @@ desktop.updateMessages = function updateMessages () {
         } else {
           html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
         }
-        
       });
 
       for (let key in html) {
@@ -399,7 +462,6 @@ desktop.removeDockElement = function (windowType, context) {
   }
 }
 
-
 desktop.renderDockElement = function (windowType, context) {
   var dockElement = '#icon_dock_' + windowType;
   if ($(dockElement).is(':hidden')) {
@@ -411,3 +473,89 @@ desktop.renderDockElement = function (windowType, context) {
   }
 }
 
+desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
+
+  let keys = playlist;
+  let key =   keys[Math.floor(Math.random() * keys.length)];
+
+  if (_player) {
+    let yt_id = key;
+    desktop.log('Playing Youtube ID: ', yt_id)
+    _player.loadVideoById(yt_id);
+    setTimeout(function(){
+      if (_player.play) {
+        _player.play();
+      }
+    }, 5000)
+    // CURRENT_VIDEO_URL = result.youtube.url;
+  }
+};
+
+desktop.loadYoutubeEmbeds = function loadYoutubeEmbeds () {
+
+
+};
+
+
+let interDemonCableplayer, mtvPlay;
+
+// Remark: youtube embed client REQUIRES the following methods be public
+// TODO: better control and exports of pubic methods here to desktop
+function onPlayerReady(event) {
+  // event.target.playVideo();
+}
+
+function onPlayerStateChange(event) {
+  if (event.data == 0) {
+    desktop.playRandomVideo(mtvPlayer, desktop.ytPlaylist)
+  }
+}
+function stopVideo() {
+  mtvPlayer.stopVideo();
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady2(event) {
+  // event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+function onPlayerStateChange2(event) {
+  if (event.data == 0) {
+    desktop.playRandomVideo(interDemonCableplayer, desktop.interdemoncable)
+  }
+}
+function stopVideo2() {
+  interDemonCableplayer.stopVideo();
+}
+
+function onYouTubeIframeAPIReady() {
+
+  mtvPlayer = new YT.Player('mtvPlayer', {
+    height: '390',
+    width: '640',
+    videoId: 'rZhbnty03U4',
+    playerVars: { 'autoplay': 0, 'controls': 1 },
+    host: 'http://www.youtube.com',
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    },
+    origin: window.document.location.origin
+  });
+
+  interDemonCableplayer = new YT.Player('interDemonCableplayer', {
+    height: '390',
+    width: '640',
+    videoId: 'rZhbnty03U4',
+    playerVars: { 'autoplay': 0, 'controls': 1 },
+    host: 'http://www.youtube.com',
+    events: {
+      'onReady': onPlayerReady2,
+      'onStateChange': onPlayerStateChange2
+    },
+    origin: window.document.location.origin
+  });
+}

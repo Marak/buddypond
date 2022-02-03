@@ -102,6 +102,7 @@ div.ui-resizable-handle {
   background-repeat: repeat;
   border: 1px solid #fff;
   padding: 5px 0 5px;
+  color: #00FF41;
 }
 
 .icon.ui-draggable-dragging {
@@ -543,6 +544,17 @@ th.shrink {
 
 /* buddypond desktop ui elements */
 
+button {
+  color: #00FF41;
+  background-color: black;
+}
+
+button:hover {
+  cursor: pointer;
+  color: purple;
+}
+
+
 a:hover {
   cursor: pointer;
   color: purple;
@@ -591,6 +603,19 @@ a:hover {
   width: 300px;
 }
 
+.desktopInput {
+  width: 140px;
+  padding: 8px;
+  text-decoration: none;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 4px;
+}
+
+.sendBuddyRequest {
+  width: 160px;
+}
+
 .desktopButton {
   background-color: black;
   color: #00FF41;
@@ -607,6 +632,61 @@ a:hover {
 
 .desktopButton:hover {
   color: #008F11;
+  background-color: grey;
+  animation-name: desktopButton;
+  animation-duration: 1.1111s;
+  opacity: 0.7;
+  animation-iteration-count: infinite;
+}
+
+.loginButton:hover {
+  color: #008F11;
+  background-color: grey;
+  animation-name: loginButton;
+  animation-duration: 1.1111s;
+  opacity: 0.7;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loginButton {
+  from {background-color: #000000;}
+  to {background-color: #00FF41;}
+}
+
+
+@keyframes desktopButton {
+  from {background-color: blue;}
+  to {background-color: yellow;}
+}
+
+@keyframes example {
+  from {background-color: blue;}
+  to {background-color: yellow;}
+}
+
+.orb {
+  cursor: pointer;
+  border: solid;
+}
+
+.orb img {
+  cursor: pointer;
+}
+
+
+.orb:hover {
+  width: 100px;
+  height: 100px;
+  background-color: grey;
+  animation-name: example;
+  animation-duration: 1.111s;
+  opacity: 0.7;
+  animation-iteration-count: infinite;
+}
+
+@keyframes example {
+  from {background-color: blue;}
+  to {background-color: yellow;}
 }
 
 .addBuddyForm {

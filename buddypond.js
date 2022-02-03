@@ -94,7 +94,7 @@ function apiRequest (uri, method, data, cb) {
     dataType: 'json',
     error: function (data, res){
       console.log('AJAX error', data, res);
-      cb(new Error('ajax error'), data);
+      cb(new Error('ajax connection error. retrying request shortly.'), data);
     },
     timeout: function(err, res){
       console.log('AJAX timeout');

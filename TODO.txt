@@ -1,0 +1,59 @@
+- no_chat_messages being hid globally instead of local per user
+
+- add loading / waiting for add first buddy
+- add client-side render for approve / deny buddy ( hide link)
+- ensure youtube players player.stop() on close window event ( not minimize event )
+
+- fix HTML injection by using jQuery.text on nodes
+  - use css class and .text() instead of string concats
+
+- add logout link
+
+- add min display time to loading gifs ( to avoid flicker )
+- fix scroll top issue with console output ( scroll to bottom like chat )
+- add login UX for splash ( matrix style something if pos )
+
+- add midi fighter pad with sound fx
+  - goose sound effect
+
+X - investigate local yt player not working for certain videos?
+  - file:// only 
+  
+  issue seems related to specific youtube ids not working on file://
+  current work-around is to use http server for localhost
+  possible work-around for local is to destroy and remove youtube iframe per video load
+  this will mean not using loadVideoById, but instead injecting new frame per video
+  mtvPlayer.loadVideoById('1m-KtU88K9Y')
+  mtvPlayer.loadVideoById('pNGEqGvz-ds')
+
+- add local storage for holding qtoken
+
+- create icons for connected / disconnected
+- create icons for data pulse ( drop in and drop out)
+
+1/2 - rig up console to show events ( div instead of textarea )
+
+X - fix UX around no buddies / pending buddies ( remove no buddies if pending )
+X - add UX error for when login password is fail
+X - add UX error handler for when server is down on login
+X - add ability to recover from failed connection
+
+X - fix styling on date time chat and set chat name colors
+  X - backbg with green text?
+
+X - convert window_buddy_message_0 into function to generate N chat windows ( cap at 10 for now )
+X - fix default size of buddy list ( more vertie less hortie )
+
+X - rendering UX for add buddy form
+X - rendering UX for pending buddy requests
+X - chat window text input should have fixed bottom position
+X - add user name to title after login
+
+
+
+After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
+
+This is the way. Use Lua and Luv.it to achieve Utopia HTTP routing.
+
+see: https://github.com/luvitrocks/utopia
+
