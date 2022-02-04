@@ -67,14 +67,6 @@ desktop.load = function loadDesktop() {
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
 
-  $('#window_mtv').css('width', 644);
-  $('#window_mtv').css('height', 666);
-
-  $('#window_interdemoncable').css('width', 644);
-  $('#window_interdemoncable').css('height', 666);
-
-  $('#window_interdemoncable').css('left', 777);
-  $('#window_interdemoncable').css('top', 30);
 
   desktop.renderDockElement('login');
 
@@ -115,14 +107,6 @@ desktop.load = function loadDesktop() {
   $('.inviteBuddy').on('click', function(){
     alert('TODO: Add Import Buddies from Twitter feature');
     return false;
-  });
-
-  $('.ponderMTV').on('click', function(){
-    desktop.playRandomVideo(mtvPlayer, desktop.ytPlaylist);
-  });
-
-  $('.ponderInterdemoncable').on('click', function(){
-    desktop.playRandomVideo(interDemonCableplayer, desktop.interdemoncable);
   });
 
   $('.buddy_message_text').bind("enterKey",function(e){
@@ -489,23 +473,7 @@ desktop.renderDockElement = function (windowType, context) {
   }
 }
 
-desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
 
-  let keys = playlist;
-  let key =   keys[Math.floor(Math.random() * keys.length)];
-
-  if (_player) {
-    let yt_id = key;
-    desktop.log('Playing Youtube ID: ', yt_id)
-    _player.loadVideoById(yt_id);
-    setTimeout(function(){
-      if (_player.play) {
-        _player.play();
-      }
-    }, 5000)
-    // CURRENT_VIDEO_URL = result.youtube.url;
-  }
-};
 
 desktop.loadYoutubeEmbeds = function loadYoutubeEmbeds () {
 
@@ -513,65 +481,6 @@ desktop.loadYoutubeEmbeds = function loadYoutubeEmbeds () {
 };
 
 
-let interDemonCableplayer, mtvPlay;
+let interDemonCableplayer, mtvPlayer;
 
-// Remark: youtube embed client REQUIRES the following methods be public
-// TODO: better control and exports of pubic methods here to desktop
-function onPlayerReady(event) {
-  // event.target.playVideo();
-}
 
-function onPlayerStateChange(event) {
-  if (event.data == 0) {
-    desktop.playRandomVideo(mtvPlayer, desktop.ytPlaylist)
-  }
-}
-function stopVideo() {
-  mtvPlayer.stopVideo();
-}
-
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady2(event) {
-  // event.target.playVideo();
-}
-
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-function onPlayerStateChange2(event) {
-  if (event.data == 0) {
-    desktop.playRandomVideo(interDemonCableplayer, desktop.interdemoncable)
-  }
-}
-function stopVideo2() {
-  interDemonCableplayer.stopVideo();
-}
-
-function onYouTubeIframeAPIReady() {
-
-  mtvPlayer = new YT.Player('mtvPlayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
-    },
-    origin: window.document.location.origin
-  });
-
-  interDemonCableplayer = new YT.Player('interDemonCableplayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': onPlayerReady2,
-      'onStateChange': onPlayerStateChange2
-    },
-    origin: window.document.location.origin
-  });
-}

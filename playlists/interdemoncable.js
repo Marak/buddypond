@@ -1,4 +1,4 @@
-desktop.interdemoncable = [
+desktop.interdemoncable.playlist = [
   "hSQLhNYltBM",
   "AKMzMZWRKVc",
   "cBqrfITE9RA",
@@ -756,7 +756,6 @@ desktop.interdemoncable = [
   "LYSPaCiKpQw",
   "GSHPgVREQsQ",
   "nWcLVjdLMFA",
-  "Ouic91zx-zI",
   "kx4PpeP9XrQ",
   "5EWEkJA5GM0",
   "uNxirkHMGws",
