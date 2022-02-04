@@ -1,22 +1,30 @@
 - no_chat_messages being hid globally instead of local per user
 
-- add loading / waiting for add first buddy
-- add client-side render for approve / deny buddy ( hide link)
 - ensure youtube players player.stop() on close window event ( not minimize event )
 
 - fix HTML injection by using jQuery.text on nodes
   - use css class and .text() instead of string concats
-
-- add logout link
+- add emojis to chat ( utf-8 support)
 
 - add min display time to loading gifs ( to avoid flicker )
 - fix scroll top issue with console output ( scroll to bottom like chat )
-- add login UX for splash ( matrix style something if pos )
+
+- create icons for connected / disconnected
+- create icons for data pulse ( drop in and drop out)
+
+- add local storage for holding qtoken
+- ensure that subscriberList is updated on chat window close
+  - requires adding hook to jquery.desktop.js event
+
+- https://github.com/OneSignal/emoji-picker
+
+1/2 - rig up console to show events ( div instead of textarea )
 
 - add midi fighter pad with sound fx
   - goose sound effect
+  
 
-X - investigate local yt player not working for certain videos?
+1/2 - investigate local yt player not working for certain videos?
   - file:// only 
   
   issue seems related to specific youtube ids not working on file://
@@ -26,12 +34,11 @@ X - investigate local yt player not working for certain videos?
   mtvPlayer.loadVideoById('1m-KtU88K9Y')
   mtvPlayer.loadVideoById('pNGEqGvz-ds')
 
-- add local storage for holding qtoken
-
-- create icons for connected / disconnected
-- create icons for data pulse ( drop in and drop out)
-
-1/2 - rig up console to show events ( div instead of textarea )
+X - add client-side render for approve / deny buddy ( hide link)
+X - add logout link
+X - add login / logout links to toolbar
+X - add loading / waiting for add first buddy
+X - add login UX for splash ( matrix style something if pos )
 
 X - fix UX around no buddies / pending buddies ( remove no buddies if pending )
 X - add UX error for when login password is fail
