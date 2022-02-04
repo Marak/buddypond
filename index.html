@@ -315,16 +315,19 @@ window.top.location = 'ie.html';
 <script src="assets/js/jquery.desktop.js"></script>
 <script src="buddypond.js"></script>
 <script src="desktop.js"></script>
-<script src="modules/desktop.interdemoncable.js"></script>
-<script src="modules/desktop.mtv.js"></script>
+<script src="apps/desktop.buddylist.js"></script>
+<script src="apps/desktop.pond.js"></script>
+<script src="apps/desktop.interdemoncable.js"></script>
+<script src="apps/desktop.mtv.js"></script>
 <script src="playlists/mtv.js"></script>
 <script src="playlists/interdemoncable.js"></script>
 
 <script>
   $(document).ready(function(){
     desktop.load();
-    desktop.interdemoncable.load();
-    desktop.mtv.load();
+    desktop.buddylist.load();
+    // desktop.interdemoncable.load();
+    // desktop.mtv.load();
     desktop.refresh();
   });
 </script>
