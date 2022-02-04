@@ -12,6 +12,8 @@ window.top.location = 'ie.html';
 <![endif]-->
 <link rel="stylesheet" href="assets/css/reset.css" />
 <link rel="stylesheet" href="assets/css/desktop.css" />
+<link href="assets/emoji-picker/css/emoji.css" rel="stylesheet">
+
 
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="assets/css/ie.css" />
@@ -214,10 +216,54 @@ window.top.location = 'ie.html';
               <hr/>
               <div class="chat_send_message_form">
                 <form method="POST" action="">
-                  <textarea name="buddy_message_text" class="buddy_message_text" rows="4" cols="44"></textarea>
+                  <textarea name="buddy_message_text" class="buddy_message_text" data-emojiable="true" rows="4" cols="44"></textarea>
                   <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
                   <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
                   <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+    <div id="window_buddypond" class="abs window pond_message" data-window-index="0">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
+            <span class="window-context-title">Pond</span>
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_pond_message_0" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_aside">
+            <h1>aside</h1>
+          </div>
+          <div class="window_main">
+            <div class="chatMessagesHolder">
+              <div class="no_chat_messages">
+                The pond is fresh. There are no messages yet. You can send a message to this pond below.
+              </div>
+              <div class="chat_messages">
+                <img src="assets/images/animations/loading.gif" width="200" height="200"/>
+              </div>
+              <hr/>
+              <div class="pond_send_message_form">
+                <form method="POST" action="">
+                  <textarea name="pond_message_text" class="pond_message_text" rows="4" cols="44"></textarea>
+                  <input name="pond_message_from"  class="pond_message_from" type="hidden"/>
+                  <input name="pond_message_to"  class="pond_message_to" type="hidden"/><br/>
+                  <button class="sendPondMessage desktopButton" type="submit">Send Message</button>
                 </form>
               </div>
             </div>
@@ -291,8 +337,8 @@ window.top.location = 'ie.html';
       </li>
       <li id="icon_dock_buddypond">
         <a href="#window_buddypond">
-          <img height="22" width="22" src="assets/images/icons/icon_pond.png" />
-          Buddy Pond
+          <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
+          Pond
         </a>
       </li>
       <li id="icon_dock_buddy_message_0">
@@ -322,6 +368,15 @@ window.top.location = 'ie.html';
 <script src="playlists/mtv.js"></script>
 <script src="playlists/interdemoncable.js"></script>
 
+
+<!-- Begin emoji-picker JavaScript -->
+<script src="assets/emoji-picker/js/config.js"></script>
+<script src="assets/emoji-picker/js/util.js"></script>
+<script src="assets/emoji-picker/js/jquery.emojiarea.js"></script>
+<script src="assets/emoji-picker/js/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+
 <script>
   $(document).ready(function(){
     desktop.load();
@@ -329,6 +384,19 @@ window.top.location = 'ie.html';
     // desktop.interdemoncable.load();
     // desktop.mtv.load();
     desktop.refresh();
+
+      
+      // Initializes and creates emoji set from sprite sheet
+      window.emojiPicker = new EmojiPicker({
+        emojiable_selector: '[data-emojiable=true]',
+        assetsPath: 'assets/emoji-picker/img/',
+        popupButtonClasses: 'fa fa-smile-o'
+      });
+      // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+      // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+      // It can be called as many times as necessary; previously converted input fields will not be converted again
+      window.emojiPicker.discover();
+    
   });
 </script>
 
