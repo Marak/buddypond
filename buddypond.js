@@ -83,6 +83,29 @@ buddypond.pondGetMessages = function pondGetMessages (pondname, cb) {
   })
 }
 
+buddypond.getHandshake = function getHandShake (handshakename, cb) {
+  apiRequest('/handshakes/' + handshakename, 'GET', {
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.offerHandshake = function offerHandshake (handshakename, data, cb) {
+  apiRequest('/handshakes/' + handshakename + '/offer', 'POST', {
+    offer: data
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.answerHandshake = function answerHandshake (handshakename, data, cb) {
+  apiRequest('/handshakes/' + handshakename + '/answer', 'POST', {
+    answer: data
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
 function apiRequest (uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
   let headers = {
@@ -92,14 +115,8 @@ function apiRequest (uri, method, data, cb) {
   if (buddypond.qtokenid) {
     data.qtokenid = buddypond.qtokenid
   }
-
+  // console.log('sending', data)
   $.ajax({
-    beforeSend: function (jqXHR, settings) {
-      if (buddypond.qtokenid) {
-        //jqXHR.setRequestHeader('qtokenid', buddypond.qtokenid);
-      }
-      //jqXHR.setRequestHeader('Access-Control-Allow-Origin', 'http://buddypond.com');
-    },
     "headers": {
        "accept": "application/json"
     },
@@ -122,5 +139,3 @@ function apiRequest (uri, method, data, cb) {
     }
   });
 }
-
-
