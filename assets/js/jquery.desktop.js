@@ -170,7 +170,7 @@ var JQD = (function($, window, document, undefined) {
 
         // Respond to double-click.
         d.on('dblclick', 'a.icon', function() {
-          JDQX.openWindow($(this))
+          JDQX.openWindow(this)
         });
 
         // Make icons draggable.
@@ -182,19 +182,9 @@ var JQD = (function($, window, document, undefined) {
         });
 
         // Taskbar buttons.
+        // TODO: JDQX.maxWindow
         d.on('click', '#dock a', function() {
-          // Get the link's target.
-          var x = $($(this).attr('href'));
-
-          // Hide, if visible.
-          if (x.is(':visible')) {
-            x.hide();
-          }
-          else {
-            // Bring window to front.
-            JQD.util.window_flat();
-            x.show().addClass('window_stack');
-          }
+          JDQX.maxWindow(this);
         });
 
         // Focus active window.
@@ -238,7 +228,7 @@ var JQD = (function($, window, document, undefined) {
 
         // Minimize the window.
         d.on('click', 'a.window_min', function() {
-          $(this).closest('div.window').hide();
+          JDQX.minWindow(this);
         });
 
         // Maximize or restore the window.
@@ -248,8 +238,7 @@ var JQD = (function($, window, document, undefined) {
 
         // Close the window.
         d.on('click', 'a.window_close', function() {
-          $(this).closest('div.window').hide();
-          $($(this).attr('href')).hide('fast');
+          JDQX.closeWindow(this);
         });
 
         // Show desktop button, ala Windows OS.
@@ -361,18 +350,51 @@ var JDQX = {};
 JDQX.openWindow = function openWindow (context) {
 
   // Get the link's target.
-  var x = $(context).attr('href');
-  var y = $(x).find('a').attr('href');
-  console.log('JDQX x,y', x, y);
+  var iconDock = $(context).attr('href');
+  var appWindow = $(iconDock).find('a').attr('href');
+  var appName = appWindow.replace('#window_', '');
+  //var x = $(context).attr('href');
+  //var y = $(x).find('a').attr('href');
+  console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
   // Show the taskbar button.
-  if ($(x).is(':hidden')) {
-    $(x).remove().appendTo('#dock');
-    $(x).show('fast');
+  if ($(iconDock).is(':hidden')) {
+    $(iconDock).remove().appendTo('#dock');
+    $(iconDock).show('fast');
   }
 
   // Bring window to front.
   JQD.util.window_flat();
-  $(y).addClass('window_stack').show();
-  
-  
+  $(appWindow).addClass('window_stack').show();
+
+  // check to see if desktop[appName].openWindow method is available,
+  // if so, call this method
+  // this is used to allow apps to have custom openWindow events 
+  if (desktop[appName] && desktop[appName].openWindow)
+    desktop[appName].openWindow();
 };
+
+JDQX.minWindow = function minWindow (el) {
+  $(el).closest('div.window').hide();
+  
+  // alert('minWindow');
+}
+
+JDQX.maxWindow = function maxWindow (el) {
+  // Get the link's target.
+  var x = $($(el).attr('href'));
+
+  // Hide, if visible.
+  if (x.is(':visible')) {
+    x.hide();
+  }
+  else {
+    // Bring window to front.
+    JQD.util.window_flat();
+    x.show().addClass('window_stack');
+  }
+}
+
+JDQX.closeWindow = function closeWindow (el) {
+  $(el).closest('div.window').hide();
+  $($(el).attr('href')).hide('fast');
+}

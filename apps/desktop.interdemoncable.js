@@ -2,6 +2,8 @@ desktop.interdemoncable = {};
 
 desktop.interdemoncable.load = function () {
 
+  desktop.log('Loading: app.interdemoncable')
+
   var tag = document.createElement('script');
   tag.src = "http://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -68,55 +70,40 @@ desktop.interdemoncable.load = function () {
   $('#window_interdemoncable').css('top', 30);
 };
 
-
 desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
-
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
-
   if (_player) {
     let yt_id = key;
-    desktop.log('Playing Youtube ID: ', yt_id)
+    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
     _player.loadVideoById(yt_id);
     setTimeout(function(){
       if (_player.play) {
         _player.play();
       }
     }, 5000)
-    // CURRENT_VIDEO_URL = result.youtube.url;
   }
 };
 
 // Remark: youtube embed client REQUIRES the following methods be public
-// TODO: better control and exports of pubic methods here to desktop
-function onPlayerReady(event) {
+function mtvPlayerReady(event) {
   // event.target.playVideo();
 }
 
-function onPlayerStateChange(event) {
+function mtvPlayerStateChange(event) {
   if (event.data == 0) {
     desktop.playRandomVideo(desktop.mtv.player, desktop.ytPlaylist)
   }
 }
-function stopVideo() {
-  desktop.mtv.player.stopVideo();
-}
 
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady2(event) {
+function interDemonPlayerReady(event) {
   // event.target.playVideo();
 }
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-function onPlayerStateChange2(event) {
+function interDemonPlayerStateChange(event) {
   if (event.data == 0) {
     desktop.playRandomVideo(desktop.interdemoncable.player, desktop.interdemoncable.playlist)
   }
-}
-function stopVideo2() {
-  interdemoncable.stopVideo();
 }
 
 function onYouTubeIframeAPIReady() {
@@ -128,8 +115,8 @@ function onYouTubeIframeAPIReady() {
     playerVars: { 'autoplay': 0, 'controls': 1 },
     host: 'http://www.youtube.com',
     events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
+      'onReady': mtvPlayerReady,
+      'onStateChange': mtvPlayerStateChange
     },
     origin: window.document.location.origin
   });
@@ -141,8 +128,8 @@ function onYouTubeIframeAPIReady() {
     playerVars: { 'autoplay': 0, 'controls': 1 },
     host: 'http://www.youtube.com',
     events: {
-      'onReady': onPlayerReady2,
-      'onStateChange': onPlayerStateChange2
+      'onReady': interDemonPlayerReady,
+      'onStateChange': interDemonPlayerStateChange
     },
     origin: window.document.location.origin
   });

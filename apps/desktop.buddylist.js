@@ -2,6 +2,8 @@ desktop.buddylist = {};
 
 desktop.buddylist.load = function desktopLoadBuddyList () {
 
+  desktop.log('Loading: app.buddylist')
+
   // clone window_buddy_message_0 ten times
   // clone icon_dock_buddy_message_0 ten times 
   // this creates 10 windows available for chatting with buddies
@@ -17,8 +19,13 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     $('#dock').append(dockStr);
   }
 
+  $('.sendMessageForm').on('submit', function(){
+    return false;
+  })
+
   $('.sendBuddyMessage').on('click', function(){
-    desktop.sendBuddyMessage(this)
+    desktop.buddylist.sendMessage(this);
+    return false;
   });
 
   $('.sendBuddyRequest').on('click', function(){
@@ -27,8 +34,6 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     desktop.log('buddypond.addBuddy ->', buddyName)
     buddypond.addBuddy(buddyName, function(err, data){
       desktop.log('buddypond.addBuddy <-', data)
-      console.log("buddypond.addBuddy returns", err, data);
-      console.log(err, data)
     });
   });
 
@@ -37,74 +42,59 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     return false;
   });
 
+  $('.buddyListHolder').hide();
+  $('#buddyname').focus();
+
   $('.buddy_message_text').bind("enterKey",function(e){
-    desktop.sendBuddyMessage(this)
+    desktop.buddylist.sendMessage(this);
+    return false;
   });
 
   $('.buddy_message_text').keyup(function(e){
       if (e.shiftKey==1) {
         return false;
       }
-      if(e.keyCode == 13)
-      {
-          $(this).trigger("enterKey");
+      if (e.keyCode == 13) {
+        $(this).trigger("enterKey");
+        return false;
       }
   });
-  $('.buddyListHolder').hide();
-  $('#buddyname').focus();
 
-}
+  $('.startVideoCall').on('click', function(){
+    desktop.videochat.peer(true);
+    // buddypond.videochat.peer...
+  });
 
-desktop.openWindow = function openWindow (windowType, context) {
-  
-  desktop.openChats[context] = true;
-  if (desktop.windowIndex[context]) {
-    let window_id = Object.keys(desktop.windowIndex).indexOf(context);
-    console.log('reopen window id', window_id)
-    // TODO: check to see if window is min, if so, open it from dock
-    // $('#window_buddy_message_' + window_id).show();
-    let chat_window_id = Object.keys(desktop.windowIndex).indexOf(context);
-    console.log('chat_window_id', chat_window_id)
+  $('.acceptVideoCall').on('click', function(){
+    desktop.videochat.peer();
+    // buddypond.videochat.peer...
+  });
 
-    desktop.renderDockElement('buddy_message_' + chat_window_id, context);
-    JQD.util.window_flat();
-    $('#window_buddy_message_' + window_id).show().addClass('window_stack');
-  } else {
-    var windowKey = '#window_buddy_message_' + Object.keys(desktop.windowIndex).length;
-    console.log('showing window', windowKey)
-    $('.window-context-title', windowKey).html(context);
+  $('.declineVideoCall').on('click', function(){
+    //desktop.videochat.peer();
+    // buddypond.videochat.peer...
+  });
 
-    //JDQX.openWindow($(windowKey));
-    $(windowKey).show();
-    $(windowKey).css('width', 600)
-    $(windowKey).css('height', 440)
-
-    desktop.windowIndex[context] = windowType;
-
-    let chat_window_id = Object.keys(desktop.windowIndex).indexOf(context);
-    console.log('chat_window_id', chat_window_id)
-
-    desktop.renderDockElement('buddy_message_' + chat_window_id, context);
-
-    $('.buddy_message_to', windowKey).val(context)
-
-    // TODO: buddypond.me
-    $('.buddy_message_from', windowKey).val(buddypond.me);
-
-    let rightPadding = chat_window_id * 10;
-    let topPadding = chat_window_id * 10;
-    // TODO: dynamic position, pick a spot
-    $(windowKey).position({
-      my: "left top",
-      at: 'right+' + rightPadding + ' top+' + topPadding,
-      of: "#window_buddylist"
+  var tag = document.createElement('script');
+  tag.src = "assets/js/emojipicker.js";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  tag.onload = function() {
+    new EmojiPicker({
+        trigger: [
+            {
+                selector: '.emojiPicker',
+                insertInto: '.buddy_message_text'
+            }
+        ],
+        closeButton: true,
+        //specialButtons: green
     });
-
   }
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 }
 
-desktop.sendBuddyMessage = function sendBuddyMessage (context) {
+desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
   let message = {};
   var form = $(context).parent();
   message.text = $('.buddy_message_text', form).val();
@@ -114,15 +104,14 @@ desktop.sendBuddyMessage = function sendBuddyMessage (context) {
     return;
   }
 
-  console.log('send the buddy message', message);
   // TODO: have console display more info about event
   $('.console').val(JSON.stringify(message, true, 2));
 
   // empty text area input
   $('.buddy_message_text', form).val('');
+  $('.emoji-wysiwyg-editor').html("");
   buddypond.sendMessage(message.to, message.text, function(err, data){
-    console.log("buddypond.sendMessage returns", err, data);
-    console.log(err, data)
+    console.log('buddypond.sendMessage', err, data)
   });
 }
 
@@ -134,9 +123,9 @@ desktop.updateBuddyList = function updateBuddyList () {
       desktop.updateBuddyList();
     }, 10);
   } else {
-    desktop.log('buddypond.getBuddyList -> ' + buddypond.me);
-    // update buddylist html
     $('.buddy_list_not_connected').hide();
+    // TODO: move this to buddy pond scope
+    $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
     buddypond.getBuddyList(function(err, data){
       if (err) {
@@ -147,7 +136,6 @@ desktop.updateBuddyList = function updateBuddyList () {
         return;
       }
       let str = JSON.stringify(data);
-      desktop.log('buddypond.getBuddyList <-', str);
       // TODO: use key count for garbage collection and trim if size grows
       if (desktop.buddyListDataCache[str]) {
         setTimeout(function(){
@@ -177,7 +165,9 @@ desktop.updateBuddyList = function updateBuddyList () {
           // render buddy list
           $('.messageBuddy').on('click', function(){
             let context = $(this).html();
-            desktop.openWindow('chat', context)
+            let windowKey = desktop.openWindow('buddy_message', context)
+            $('.buddy_message_to', windowKey).val(context)
+            $('.buddy_message_from', windowKey).val(buddypond.me);
           });
         }
       }
@@ -191,7 +181,6 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         for (let buddy in data.buddyrequests) {
           let buddyrequest = data.buddyrequests[buddy];
-          // console.log('buddyrequest', buddy, buddyrequest)
           buddyrequest = JSON.parse(buddyrequest);
           // TODO: top list is buddies, button list is requests ( with buttons )
           if (buddyrequest.to === buddypond.me) {
@@ -243,90 +232,68 @@ desktop.updateBuddyList = function updateBuddyList () {
 
 }
 
-desktop.updateMessages = function updateMessages () {
+desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
 
-  if (!buddypond.qtokenid) {
-    // no session, wait five seconds and try again
-    setTimeout(function(){
-      desktop.updateMessages();
-    }, 10);
-  } else {
-    var subscribedBuddies = Object.keys(desktop.openChats)
-    if (subscribedBuddies.length === 0) {
-      setTimeout(function(){
-        desktop.updateMessages();
-      }, 10);
+    // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
+
+    let str = JSON.stringify(data);
+    // TODO: use key count for garbage collection and trim if size grows
+    if (desktop.buddyMessageCache[str]) {
+      cb(new Error('Will not re-render for cached data'))
       return;
     }
-    // console.log('subscribedBuddies', subscribedBuddies.toString())
-    desktop.log('buddypond.getMessages ->', subscribedBuddies.toString());
-    buddypond.getMessages(subscribedBuddies.toString(), function(err, data){
+    //desktop.buddyMessageCache[str] = true;
+    let html = {};
+    // TODO: this should apply per conversation, not global for all users
+    if (data.messages.length === 0) {
+      $('.chat_messages').hide();
+    } else {
+      $('.no_chat_messages').hide();
+      $('.chat_messages').show();
+    }
 
-      if (err) {
-        desktop.log(err);
-        setTimeout(function(){
-          desktop.updateMessages();
-        }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
+    data.messages.forEach(function(message){
+      // route message based on incoming type / format
+      // default message.type is undefined and defaults to "text" type
+      if (message.type === 'videoChat' && message.from !== buddypond.me) {
+        if (message.offer) {
+          // TODO: popup video modal with accept / decline
+          alert('Incoming call. Accept or Decline.')
+          showIncomingCallWindow();
+        }
         return;
       }
 
-      desktop.log('buddypond.getMessages <-', data);
-
-      let str = JSON.stringify(data);
-      // TODO: use key count for garbage collection and trim if size grows
-      if (desktop.buddyMessageCache[str]) {
-        setTimeout(function(){
-          desktop.updateMessages();
-        }, desktop.DEFAULT_AJAX_TIMER);
+      if (message.type === 'pond') {
         return;
       }
-      //console.log('Rendering Messages List');
-      //console.log(data)
-      // $('.buddylist').html('');
-      desktop.updateMessages[str] = true;
-      let html = {};
 
-      // TODO: this should apply per conversation, not global for all users
-      if (data.messages.length === 0) {
-        $('.chat_messages').hide();
+      // TODO: invert control and only process message.type = 'text'
+      //       move message.type = 'videoChat' to desktop.videochat.js controller
+      var keys = Object.keys(desktop.openWindows['buddy_message']);
+      // get context window index
+
+      let buddyKey = message.from;
+      if (buddyKey === buddypond.me) {
+        buddyKey = message.to;
+      }
+      let index = keys.indexOf(buddyKey);
+      var windowKey = '#window_buddy_message_' + index;
+
+      html[windowKey] = html[windowKey] || '';
+      if (message.from === buddypond.me) {
+        html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
       } else {
-        $('.no_chat_messages').hide();
-        $('.chat_messages').show();
+        html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
       }
-
-      data.messages.forEach(function(message){
-        var keys = Object.keys(desktop.openChats);
-        // get context window index
-        let buddyKey = message.from;
-        if (buddyKey === buddypond.me) {
-          buddyKey = message.to;
-        }
-        let index = keys.indexOf(buddyKey);
-        var windowKey = '#window_buddy_message_' + index;
-
-        //console.log('writting message to ', windowKey, message)
-        html[windowKey] = html[windowKey] || '';
-        
-        if (message.from === buddypond.me) {
-          html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
-        } else {
-          html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
-        }
-      });
-
-      for (let key in html) {
-        $('.chat_messages', key).html('');
-        $('.chat_messages', key).append(html[key]);
-        // scrolls to bottom of messages on new messages
-        let el = $('.chat_messages', key)
-        $(el).scrollTop($(el)[0].scrollHeight);
-      }
-
-      setTimeout(function(){
-        desktop.updateMessages();
-      }, desktop.DEFAULT_AJAX_TIMER);
-
     });
 
-  }
+    for (let key in html) {
+      $('.chat_messages', key).html('');
+      $('.chat_messages', key).append(html[key]);
+      // scrolls to bottom of messages on new messages
+      let el = $('.chat_messages', key)
+      $(el).scrollTop($(el)[0].scrollHeight);
+    }
+    cb(null, true);
 }

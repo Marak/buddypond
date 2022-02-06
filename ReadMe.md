@@ -2,9 +2,8 @@
 ## a pond for buddies
 
  - Peer to Peer Buddy Messaging
+ - Video and Audio Calls
  - Doesn't store your data
- - Unencrypted messages
- - Unencrypted chat rooms
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API

@@ -12,7 +12,6 @@ window.top.location = 'ie.html';
 <![endif]-->
 <link rel="stylesheet" href="assets/css/reset.css" />
 <link rel="stylesheet" href="assets/css/desktop.css" />
-<link href="assets/emoji-picker/css/emoji.css" rel="stylesheet">
 
 
 <!--[if lt IE 9]>
@@ -30,10 +29,6 @@ window.top.location = 'ie.html';
     <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_buddypond">
       <img src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
-    </a>
-    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_console">
-      <img src="assets/images/icons/icon_console.png" />
-      Console
     </a>
     <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
       <img src="assets/images/icons/icon_32_computer.png" />
@@ -58,7 +53,7 @@ window.top.location = 'ie.html';
               <h1>Welcome to Buddy Pond!</h1>
               <em>Peer to Peer Buddy Messaging</em>
               <br/>
-              <em>Unencrypted messages and chat rooms</em>
+              <em>Video and Voice Calls</em>
               <br/>
               <em>We don't' store your data</em>
               <br/>
@@ -71,15 +66,20 @@ window.top.location = 'ie.html';
               <br/>
               <div class="loginForm">
                 <form method="POST" action="/login">
-                  <table>
-                    <tr>
-                      <td><label for="buddyname">Buddy Name:</label></td>
-                      <td><input id="buddyname" name="buddyname" type="text" size="16"/></td>
-                    </tr>
-                    <tr>
-                      <td><label for="buddypassword">Buddy Password:</label></td>
-                      <td><input id="buddypassword" name="buddypassword" type="password" size="16"/></td>
-                    </tr>
+                  <table class="buddyLoginTable">
+                    <tbody>
+                      <tr>
+                        <td><label for="buddyname">Buddy Name:</label></td>
+                        <td>
+                          <input id="buddyname" name="buddyname" type="text" size="16" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><label for="buddypassword">Buddy Password:</label></td>
+                        <td><input id="buddypassword" name="buddypassword" type="password" size="16"/></td>
+                      </tr>
+                      <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
+                    </tbody>
                   </table>
                    <br/>
                    <button type="submit" class="loginButton desktopButton">Login</button>
@@ -206,6 +206,8 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main">
+            <img class="acceptVideoCall" title="Accept Video Call" src="assets/images/icons/phonebooth.png" />
+            <img class="acceptVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" />
             <div class="chatMessagesHolder">
               <div class="no_chat_messages">
                 Your conversation has just started. You can send a message to your buddy below.
@@ -215,8 +217,9 @@ window.top.location = 'ie.html';
               </div>
               <hr/>
               <div class="chat_send_message_form">
-                <form method="POST" action="">
-                  <textarea name="buddy_message_text" class="buddy_message_text" data-emojiable="true" rows="4" cols="44"></textarea>
+                <form class="sendMessageForm" method="POST" action="#">
+                  <textarea name="buddy_message_text" class="buddy_message_text" class="two"></textarea>
+                  <img class="emojiPicker" src="assets/images/icons/emoji-glasses.png" width="16" height="16"/>
                   <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
                   <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
                   <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
@@ -232,7 +235,7 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
-    <div id="window_buddypond" class="abs window pond_message" data-window-index="0">
+    <div id="window_pond" class="abs window pond_message" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
@@ -246,11 +249,51 @@ window.top.location = 'ie.html';
           </span>
         </div>
         <div class="abs window_content">
-          <div class="window_aside">
-            <h1>aside</h1>
-          </div>
           <div class="window_main">
-            <div class="chatMessagesHolder">
+            <div class="buddy_pond_not_connected">
+              You'll need to login in order to access the Buddy Pond.
+            </div>
+            <div class="pondNameList">
+              <h1>Join Pond</h1>
+              <p>
+              A pond is a room where lots of buddies can chat with each others. Your Buddy Name won't be revealed to the pond unless you send a message.</p>
+              <br/>
+              <h2>Pond Name</h2>
+              <label for="customPondName">
+                <input id="customPondName" name="customPondName" class="customPondName" type="text" size="16"/>
+              </label>
+              <br/>
+              <br/>
+              <button type="submit" class="joinPond">Join Pond</button>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+    <div id="window_pond_message_0" class="abs window pond_message" data-window-index="0">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
+            <span class="window-context-title">Pond</span>
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_pond_message_0" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main">
+            <div class="buddy_pond_not_connected">
+              You'll need to login in order to access the Buddy Pond.
+            </div>
+            <div class="pondMessagesHolder">
               <div class="no_chat_messages">
                 The pond is fresh. There are no messages yet. You can send a message to this pond below.
               </div>
@@ -267,6 +310,39 @@ window.top.location = 'ie.html';
                 </form>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+    <div id="window_incoming_call" class="abs window incoming_call" data-window-index="0">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
+            <span class="window-context-title">Incoming Call</span>
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_pond_message_0" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main" align="center">
+            <br/>
+            <br/>
+            
+            <h2>Incoming call from Marak</h2>
+            <br/>
+            <form method="POST" action="">
+              <button class="aacceptVideoCall desktopButton" type="submit">Accept</button>
+              <button class="adeclineIncomingCall desktopButton" type="submit">Decline</button>
+            </form>
           </div>
         </div>
         <div class="abs window_bottom">
@@ -308,8 +384,6 @@ window.top.location = 'ie.html';
     <!--
     <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
     <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
-    <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
-    <span class="float_right"><img height="16" width="16" src="assets/images/animations/pixel-animator.gif"/></span>
     -->
   </div>
   <div class="abs" id="bar_bottom">
@@ -323,12 +397,6 @@ window.top.location = 'ie.html';
           Login
         </a>
       </li>
-      <li id="icon_dock_console">
-        <a href="#window_console">
-          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
-          Console
-        </a>
-      </li>
       <li id="icon_dock_buddylist">
         <a href="#window_buddylist">
           <img height="22" width="22" src="assets/images/icons/icon_buddylist.png" />
@@ -336,7 +404,7 @@ window.top.location = 'ie.html';
         </a>
       </li>
       <li id="icon_dock_buddypond">
-        <a href="#window_buddypond">
+        <a href="#window_pond">
           <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
           Pond
         </a>
@@ -349,6 +417,16 @@ window.top.location = 'ie.html';
           </span>
         </a>
       </li>
+      <li id="icon_dock_pond_message_0">
+        <a href="#window_pond_message_0">
+          <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
+          
+          <span class="dock_title">
+            Chat with X
+          </span>
+        </a>
+      </li>
+      
     </ul>
   </div>
 </div>
@@ -361,41 +439,43 @@ window.top.location = 'ie.html';
 <script src="assets/js/jquery.desktop.js"></script>
 <script src="buddypond.js"></script>
 <script src="desktop.js"></script>
+<script src="apps/desktop.login.js"></script>
 <script src="apps/desktop.buddylist.js"></script>
 <script src="apps/desktop.pond.js"></script>
+<script src="apps/desktop.console.js"></script>
 <script src="apps/desktop.interdemoncable.js"></script>
 <script src="apps/desktop.mtv.js"></script>
+<script src="apps/desktop.videochat.js"></script>
 <script src="playlists/mtv.js"></script>
 <script src="playlists/interdemoncable.js"></script>
 
-
-<!-- Begin emoji-picker JavaScript -->
-<script src="assets/emoji-picker/js/config.js"></script>
-<script src="assets/emoji-picker/js/util.js"></script>
-<script src="assets/emoji-picker/js/jquery.emojiarea.js"></script>
-<script src="assets/emoji-picker/js/emoji-picker.js"></script>
-<!-- End emoji-picker JavaScript -->
-
-
 <script>
   $(document).ready(function(){
+    desktop.log('jQuery Desktop initialized');
+    desktop.log('Now loading apps');
     desktop.load();
+    desktop.console.load();
     desktop.buddylist.load();
-    // desktop.interdemoncable.load();
-    // desktop.mtv.load();
+    desktop.pond.load();
+    desktop.interdemoncable.load();
+    desktop.mtv.load();
+    desktop.videochat.load();
     desktop.refresh();
-
-      
-      // Initializes and creates emoji set from sprite sheet
-      window.emojiPicker = new EmojiPicker({
-        emojiable_selector: '[data-emojiable=true]',
-        assetsPath: 'assets/emoji-picker/img/',
-        popupButtonClasses: 'fa fa-smile-o'
+    desktop.log('Buddy Pond v4.20.69 loaded')
+    /*
+    function showIncomingCallWindow () {
+      $('#window_incoming_call').show();
+      $('#window_incoming_call').css('width', 333);
+      $('#window_incoming_call').css('height', 222);
+      $('#window_incoming_call').position({
+        my: "left top",
+        at: 'right+' + 111 + ' top+' + 66,
+        of: "#window_buddylist"
       });
-      // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
-      // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
-      // It can be called as many times as necessary; previously converted input fields will not be converted again
-      window.emojiPicker.discover();
+    }
+
+    showIncomingCallWindow();
+    */
     
   });
 </script>

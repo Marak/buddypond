@@ -1,5 +1,4 @@
 - no_chat_messages being hid globally instead of local per user
-
 - ensure youtube players player.stop() on close window event ( not minimize event )
 
 - fix HTML injection by using jQuery.text on nodes
@@ -16,7 +15,10 @@
 - ensure that subscriberList is updated on chat window close
   - requires adding hook to jquery.desktop.js event
 
-- https://github.com/OneSignal/emoji-picker
+X - connect up window_pond_chat ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
+X - https://github.com/OneSignal/emoji-picker
+X - emoji inputs not clearing text after send, missing click input cursor
+X - adjust emoji picker css and placement for buddy send message
 
 1/2 - rig up console to show events ( div instead of textarea )
 

@@ -573,6 +573,10 @@ a:hover {
   color: red;
 }
 
+.invalidPassword {
+  display: none;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -697,6 +701,13 @@ a:hover {
   */
 }
 
+.buddy_message_text {
+  width: 100%;
+  height: 50px;
+}
+
+.emoji-menu { bottom: 111px!important; }
+
 .chat_messages {
   height: 240px;
   overflow: auto;
@@ -707,6 +718,14 @@ a:hover {
   float: bottom;
   bottom: 0px;
   left: 16px;
+  width: 80%;
+}
+
+.pond_send_message_form {
+  position: absolute;
+  float: bottom;
+  bottom: 0px;
+  left: 10px;
   
 }
 
@@ -736,4 +755,41 @@ a:hover {
 .me_title {
   float: left;
   text-align: center;
+}
+
+.emojiPicker {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.emojiPicker:hover {
+  cursor: pointer;
+  opacity: 0.44;
+}
+
+.startVideoCall {
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  right: 16px;
+  top: 16px;
+}
+
+.startVideoCall:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.acceptVideoCall {
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  right: 48px;
+  top: 16px;
+}
+
+.acceptVideoCall:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }

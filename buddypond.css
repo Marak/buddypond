@@ -1,8 +1,22 @@
 table {
-  border: solid;
   text-align: left;
   width: 100%;
 }
 table td {
   padding: 5px;
+  margin: 5px;
+}
+
+table tr {
+  vertical-align: top;
+  height: 40px;
+}
+
+
+
+table tr:nth-child(even) {
+}
+
+table tr:nth-child(odd) {
+  background-color: #eee;
 }

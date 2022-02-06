@@ -3,7 +3,6 @@ let buddypond = {}
 buddypond.endpoint = 'http://buddypond.com:8080/api/v3';
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
-  console.log(me, password)
   apiRequest('/auth', 'POST', {
     buddyname: me,
     buddypassword: password
@@ -51,18 +50,17 @@ buddypond.getBuddyList = function getBuddyList (cb) {
   })
 }
 
-buddypond.sendMessage = function sendMessage (buddyname, buddytext, cb) {
-  apiRequest('/buddies/' + buddyname + '/message', 'POST', {
-    buddyname: buddyname,
-    buddytext: buddytext
+buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
+  apiRequest('/messages/sendMessage', 'POST', {
+    buddyname: buddyName,
+    text: text
   }, function(err, data){
     cb(err, data);
   })
 }
 
-buddypond.getMessages = function getMessages (buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/message', 'GET', {
-  }, function(err, data){
+buddypond.getMessages = function getMessages (params, cb) {
+  apiRequest('/messages/getMessages', 'POST', params, function(err, data){
     cb(err, data);
   })
 }
@@ -106,16 +104,41 @@ buddypond.answerHandshake = function answerHandshake (handshakename, data, cb) {
   })
 }
 
+buddypond.clearHandshake = function clearHandshake (handshakename, cb) {
+  apiRequest('/handshakes/' + handshakename + '/clear', 'POST', {
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.startVideoCall = function sendMessage (buddyname, buddytext, cb) {
+  apiRequest('/buddies/' + buddyname + '/message', 'POST', {
+    type: 'videoCall',
+    buddyname: buddyname,
+    buddytext: 'start'
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.endVideoCall = function sendMessage (buddyname, buddytext, cb) {
+  apiRequest('/buddies/' + buddyname + '/message', 'POST', {
+    type: 'videoCall',
+    buddyname: buddyname,
+    buddytext: 'end'
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
 function apiRequest (uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
   let headers = {
      "accept": "application/json"
   };
-
   if (buddypond.qtokenid) {
     data.qtokenid = buddypond.qtokenid
   }
-  // console.log('sending', data)
   $.ajax({
     "headers": {
        "accept": "application/json"
@@ -126,15 +149,12 @@ function apiRequest (uri, method, data, cb) {
     method: method,
     dataType: 'json',
     error: function (data, res){
-      console.log('AJAX error', data, res);
       cb(new Error('ajax connection error. retrying request shortly.'), data);
     },
     timeout: function(err, res){
-      console.log('AJAX timeout');
-      cb(err, res);
+      cb(new Error('AJAX timeout'), res);
     },
     success: function (data){
-      // console.log('got back', null, data)
       cb(null, data)
     }
   });

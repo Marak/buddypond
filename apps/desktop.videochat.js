@@ -2,10 +2,13 @@ desktop.videochat = {};
 
 desktop.videochat.load = function loadVideochat () {
 
+  desktop.log('Loading: app.videochat')
+
   var tag = document.createElement('script');
   tag.src = "assets/js/simplepeer.min.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 
 }
 
@@ -49,6 +52,7 @@ function gotMedia (stream) {
 
 desktop.videochat.peer = function peerVideoChat (isHost) {
   
+  desktop.log('Attempting WebRTC peer. isHost:', isHost);
   // TODO: add get devices code
   const p = desktop.videochat.webrtc = new SimplePeer({
      initiator: isHost,
@@ -69,7 +73,7 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
          }
 
          function pollHandshake () {
-           console.log('offer made, polling handshake for answer')
+           desktop.log('offer made, polling handshake for answer')
            // makes offer
            // setInterval to query API until response
            buddypond.getHandshake('Marak/Dave', function(err, data){
@@ -86,13 +90,22 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
              }
            });
          }
-         pollHandshake();
+
+         // offer has been sent, send message to buddy to accept the connection
+         buddypond.sendMessage('Bob', { type: 'videoCall' }, function(err, data){
+           console.log("Buddy pond api returns");
+           $('.apiResult').val(JSON.stringify(data, true, 2))
+           console.log(err, data)
+           pollHandshake();
+         });
+
        });
      } else {
        // TODO: get handshake, perform retry logic if no exists
        // signal using the data back from redis
        // if not host, call API to set answer in existing redis handshake
-       alert('client is answering handshake')
+       desktop.log('client is answering handshake');
+       console.log('client is answering handshake');
        buddypond.answerHandshake('Marak/Dave', JSON.stringify(data), function(err){
          if (err) {
            console.log(err);
@@ -104,8 +117,6 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
        });
        
      }
-       
-
      console.log('SIGNAL', JSON.stringify(data))
      //document.querySelector('#outgoing').textContent = JSON.stringify(data)
    });
@@ -139,11 +150,23 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
 
    p.on('connect', () => {
      console.log('CONNECT')
-     p.send('whatever' + Math.random())
+     desktop.log('WebRTC peer connection established.');
+     
+     // send message to expire this handshake connection in redis
+     // this ensures that old handshakes are not reused if browser reloads
+     desktop.log('buddypond.clearHandshake -> videoCall');
+     /*
+     buddypond.clearHandshake('Bob', { type: 'videoCall', buddytext: 'end' }, function(err, data){
+       console.log("Buddy pond api returns");
+       $('.apiResult').val(JSON.stringify(data, true, 2))
+       p.send('whatever' + Math.random())
+       
+     });
+     */
    });
 
    p.on('data', data => {
      console.log('data: ' + data)
    });
-  
+
 }
