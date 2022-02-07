@@ -22,6 +22,8 @@ desktop.log = console.log;
 
 desktop.load = function loadDesktop() {
 
+  $('.desktopConnected').hide();
+
   $('form').on('submit', function(){
     return false;
   });
@@ -56,11 +58,21 @@ desktop.refresh = function refreshDesktop () {
   desktop.updateMessages();
 }
 
+//
+//
+// desktop.openWindow() function is used to create instances of a window class
+// this allows for multiple window instances to share the same logic
+// as of today, windowType can be "buddy_chat" or "pond_chat"
+// this implies there are already HTML elements named window_buddy_chat_0 and window_pond_chat_0
+// these will be incremented by 1 for each window , etc window_buddy_chat_1, window_buddy_chat_2
+// in the future we can have other windowTypes
+// for most applications you won't need this method and you can just 
+// use $(window_id).hide() or $(window_id).show() instead
+//
+//
 desktop.openWindow = function openWindow (windowType, context, position) {
 
-  // as of today, windowType could be "buddy_chat" or "pond_chat"
-  // this implies there are HTML elements named window_buddy_chat_0 and window_pond_chat_0
-  // these will be incremented by 1 for each window , etc window_buddy_chat_1, window_buddy_chat_2
+  let windowTypes = ['buddy_message', 'pond_chat']
   desktop.log('desktop.openWindow', windowType, context)
   // console.log('desktop.openWindows', desktop.openWindows)
   desktop.openWindows = desktop.openWindows || {};
@@ -68,8 +80,16 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 
   desktop.windowIndex = desktop.windowIndex || {};
   desktop.windowIndex[windowType] = desktop.windowIndex[windowType] || {};
-
   desktop.openWindows[windowType][context] = true;
+
+  if (windowType === 'buddy_message') {
+    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
+  }
+
+  if (windowType === 'pond_chat') {
+    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
+  }
+
   if (desktop.windowIndex[windowType][context]) {
     let window_id = Object.keys(desktop.windowIndex[windowType]).indexOf(context);
     console.log('reopen window id', window_id)
@@ -81,6 +101,8 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     var windowKey = '#window_' + windowType +'_' + Object.keys(desktop.windowIndex[windowType]).length;
     console.log('showing window', windowKey)
     $('.window-context-title', windowKey).html(context);
+    $('.window-context-title', windowKey).html(context);
+    $(windowKey).attr('data-window-context', context);
 
     //JDQX.openWindow($(windowKey));
     $(windowKey).show();
@@ -104,6 +126,27 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 
   }
   return windowKey;
+}
+
+//
+// desktop.closeWindow() function is used to close instanced windows
+// in most cases you can just use $(window_id).hide()
+// The current logic here is for ensuring subscribed buddies and pond lists
+// are updated with the user closes the window in the UI
+// This is to ensure UI is only polling for messages for windows that are actually open
+//
+desktop.closeWindow = function openWindow (windowType, context) {
+  desktop.openWindows = desktop.openWindows || {};
+  desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
+  delete desktop.openWindows[windowType][context];
+
+  if (windowType === 'buddy_message') {
+    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
+  }
+
+  if (windowType === 'pond_chat') {
+    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
+  }
 }
 
 desktop.updateMessages = function updateMessages () {

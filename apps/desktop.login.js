@@ -36,7 +36,8 @@ desktop.login.auth = function authDesktop (buddyname) {
       $('#window_buddylist').css('height', 440)
       $('#window_buddylist').css('left', 666)
       $('#window_buddylist').css('top', 111)
-      
+      $('.desktopConnected').show();
+      $('.desktopDisconnected').hide();
       desktop.renderDockElement('buddylist');
       desktop.removeDockElement('login')
     }

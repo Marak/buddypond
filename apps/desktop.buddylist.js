@@ -11,7 +11,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   let dockItemClone = $('#icon_dock_buddy_message_0').html();
 
   for (let i = 1; i<11; i++) {
-    let buddyChatStr = '<div id="window_buddy_message_' + i +'" class="abs window buddy_message" data-window-index="' + i + '">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
+    let buddyChatStr = '<div id="window_buddy_message_' + i +'" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
     $('#desktop').append(buddyChatStr);
     let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
     dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
@@ -122,6 +122,7 @@ desktop.updateBuddyList = function updateBuddyList () {
     setTimeout(function(){
       desktop.updateBuddyList();
     }, 10);
+    return;
   } else {
     $('.buddy_list_not_connected').hide();
     // TODO: move this to buddy pond scope

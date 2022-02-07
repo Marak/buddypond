@@ -101,7 +101,7 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 let defaultPondOpened = false;
 
 desktop.pond.updateMessages = function updatePondMessages (data, cb) {
-  console.log('desktop.pond.updateMessages', data)
+  // console.log('desktop.pond.updateMessages', data)
   $('.buddy_pond_not_connected').hide();
 
   $('.pondNameList').show();

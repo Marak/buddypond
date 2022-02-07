@@ -369,8 +369,9 @@ JDQX.openWindow = function openWindow (context) {
   // check to see if desktop[appName].openWindow method is available,
   // if so, call this method
   // this is used to allow apps to have custom openWindow events 
-  if (desktop[appName] && desktop[appName].openWindow)
+  if (desktop[appName] && desktop[appName].openWindow) {
     desktop[appName].openWindow();
+  }
 };
 
 JDQX.minWindow = function minWindow (el) {
@@ -395,6 +396,13 @@ JDQX.maxWindow = function maxWindow (el) {
 }
 
 JDQX.closeWindow = function closeWindow (el) {
-  $(el).closest('div.window').hide();
+  let closestWindow = $(el).closest('div.window');
+  closestWindow.hide();
   $($(el).attr('href')).hide('fast');
+  let windowType = $(closestWindow).attr('data-window-type');
+  let windowContext = $(closestWindow).attr('data-window-context');
+  console.log('JDQX.closeWindow', windowType, windowContext);
+  if (windowType && windowContext) {
+    desktop.closeWindow(windowType, windowContext);
+  }
 }
