@@ -11,12 +11,16 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   let dockItemClone = $('#icon_dock_buddy_message_0').html();
 
   for (let i = 1; i<11; i++) {
-    let buddyChatStr = '<div id="window_buddy_message_' + i +'" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
+    let window_id = 'window_buddy_message_' + i;
+    let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
     $('#desktop').append(buddyChatStr);
     let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
     dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
     $('#desktop').append(buddyChatStr);
     $('#dock').append(dockStr);
+    // register these new elements into the windowPool
+    // these ids are used later when desktop.openWindow('buddy_message') is called
+    desktop.windowPool['buddy_message'].push(window_id)
   }
 
   $('.sendMessageForm').on('submit', function(){
@@ -166,7 +170,11 @@ desktop.updateBuddyList = function updateBuddyList () {
           // render buddy list
           $('.messageBuddy').on('click', function(){
             let context = $(this).html();
-            let windowKey = desktop.openWindow('buddy_message', context)
+            let position = {};
+            position.my = position.my || "left top";
+            position.at = position.at || 'left+33 top+33';
+            let windowId = desktop.openWindow('buddy_message', context, position);
+            let windowKey = '#' + windowId;
             $('.buddy_message_to', windowKey).val(context)
             $('.buddy_message_from', windowKey).val(buddypond.me);
           });
@@ -240,9 +248,10 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     let str = JSON.stringify(data);
     // TODO: use key count for garbage collection and trim if size grows
     if (desktop.buddyMessageCache[str]) {
-      cb(new Error('Will not re-render for cached data'))
-      return;
+      //cb(new Error('Will not re-render for cached data'))
+      //return;
     }
+    console.log('buddylist update messages', data.me, data.messages.length);
     //desktop.buddyMessageCache[str] = true;
     let html = {};
     // TODO: this should apply per conversation, not global for all users
@@ -256,6 +265,9 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     data.messages.forEach(function(message){
       // route message based on incoming type / format
       // default message.type is undefined and defaults to "text" type
+
+      // TODO: invert control and only process message.type = 'text'
+      //       move message.type = 'videoChat' to desktop.videochat.js controller
       if (message.type === 'videoChat' && message.from !== buddypond.me) {
         if (message.offer) {
           // TODO: popup video modal with accept / decline
@@ -269,26 +281,37 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
         return;
       }
 
-      // TODO: invert control and only process message.type = 'text'
-      //       move message.type = 'videoChat' to desktop.videochat.js controller
-      var keys = Object.keys(desktop.openWindows['buddy_message']);
-      // get context window index
 
       let buddyKey = message.from;
       if (buddyKey === buddypond.me) {
         buddyKey = message.to;
       }
-      let index = keys.indexOf(buddyKey);
-      var windowKey = '#window_buddy_message_' + index;
 
-      html[windowKey] = html[windowKey] || '';
+      //
+      // New messages are coming in from server, we'll need to render them
+      //
+
+      // Get all the open buddy_message windows
+      let openBuddyWindows = desktop.openWindows['buddy_message'];
+
+      // Find the specific window which is open for this buddy
+      let windowId = '#' + openBuddyWindows[buddyKey]
+      console.log('rendering messages to buddy window', windowId)
+
+      // accumulate all the message html so we can perform a single document write,
+      // instead of a document write per message
+      html[windowId] = html[windowId] || '';
       if (message.from === buddypond.me) {
-        html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+        html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
       } else {
-        html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
+        html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
       }
     });
 
+    //
+    // All messages have been processed and HTML has been accumulated
+    // Iterate through the generated HTML and write to the correct windows
+    //
     for (let key in html) {
       $('.chat_messages', key).html('');
       $('.chat_messages', key).append(html[key]);
