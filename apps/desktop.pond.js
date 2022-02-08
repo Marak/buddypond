@@ -8,12 +8,18 @@ desktop.pond.load = function loadPond () {
   let dockItemClone = $('#icon_dock_pond_message_0').html();
 
   for (let i = 1; i<11; i++) {
-    let pondChatStr = '<div id="window_pond_message_' + i +'" class="abs window pond_message" data-window-index="' + i + '">' + clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i) + '</div>'
+    
+    let window_id = 'window_pond_message_' + i;
+    let pondChatStr = '<div id="' + window_id + '" class="abs window pond_message" data-window-index="' + i + '" data-window-type="pond_message">' + clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i) + '</div>'
+    //let pondChatStr = '<div id="window_pond_message_' + i +'" class="abs window pond_message" data-window-index="' + i + '">' + clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i) + '</div>'
     $('#desktop').append(pondChatStr);
     let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + i)
     dockStr = '<li id="icon_dock_pond_message_' + i +'">' + dockStr + '</li>'
     $('#desktop').append(pondChatStr);
     $('#dock').append(dockStr);
+    // register these new elements into the windowPool
+    // these ids are used later when desktop.openWindow('buddy_message') is called
+    desktop.windowPool['pond_message'].push(window_id)
   }
 
   // $('.pondMessagesHolder').hide();
@@ -33,6 +39,7 @@ desktop.pond.load = function loadPond () {
   */
 
   $('.sendPondMessage').on('click', function(){
+    alert('fdge')
     desktop.pond.sendMessage(this);
     return false;
   })
@@ -64,6 +71,11 @@ desktop.pond.openWindow = function () {
   // when pond app loads, open default pond for all buddies
   let rightPadding = 10;
   let topPadding = 10;
+  
+  if (!buddypond.qtokenid) {
+    return;
+  }
+  
   let windowKey = desktop.openWindow('pond_message', 'Lily', {
     of: "#window_pond"
   });
@@ -92,6 +104,7 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
   // empty text area input
   $('.pond_message_text', form).val('');
   // $('.emoji-wysiwyg-editor').html("");
+  console.log('sending the message to pond', message)
   buddypond.pondSendMessage(message.to, message.text, function(err, data){
     console.log('buddypond.pondSendMessage', err, data)
   });
@@ -101,7 +114,8 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 let defaultPondOpened = false;
 
 desktop.pond.updateMessages = function updatePondMessages (data, cb) {
-  // console.log('desktop.pond.updateMessages', data)
+  
+  console.log('desktop.pond.updateMessages', data)
   $('.buddy_pond_not_connected').hide();
 
   $('.pondNameList').show();
@@ -118,8 +132,11 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     cb(new Error('Will not re-render for cached data'))
     return;
   }
-  //desktop.buddyMessageCache[str] = true;
+
   let html = {};
+
+  /*
+  //desktop.buddyMessageCache[str] = true;
   // TODO: this should apply per conversation, not global for all users
   if (data.messages.length === 0) {
     $('.chat_messages').hide();
@@ -127,7 +144,8 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     $('.no_chat_messages').hide();
     $('.chat_messages').show();
   }
-
+  */
+  
   data.messages.forEach(function(message){
 
     // route message based on incoming type / format
@@ -137,20 +155,20 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
       return;
     }
 
-    // TODO: invert control and only process message.type = 'text'
-    //       move message.type = 'videoChat' to desktop.videochat.js controller
+    /*
     var keys = Object.keys(desktop.openWindows['pond_message']);
-    // get context window index
-
     let pondKey = message.to;
     let index = keys.indexOf(pondKey);
     var windowKey = '#window_pond_message_' + index;
+    */
+    let openPondWindows = desktop.openWindows['pond_message'];
+    let windowId = '#' + openPondWindows[message.to]
 
-    html[windowKey] = html[windowKey] || '';
+    html[windowId] = html[windowId] || '';
     if (message.from === buddypond.me) {
-      html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+      html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
     } else {
-      html[windowKey] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
+      html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
     }
   });
 
@@ -158,8 +176,9 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     $('.chat_messages', key).html('');
     $('.chat_messages', key).append(html[key]);
     // scrolls to bottom of messages on new messages
-    let el = $('.chat_messages', key)
-    $(el).scrollTop($(el)[0].scrollHeight);
+    //let el = $('.chat_messages', key)
+    //$(el).scrollTop($(el)[0].scrollHeight);
+    
   }
   cb(null, true);
 }

@@ -64,21 +64,6 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
       }
   });
 
-  $('.startVideoCall').on('click', function(){
-    desktop.videochat.peer(true);
-    // buddypond.videochat.peer...
-  });
-
-  $('.acceptVideoCall').on('click', function(){
-    desktop.videochat.peer();
-    // buddypond.videochat.peer...
-  });
-
-  $('.declineVideoCall').on('click', function(){
-    //desktop.videochat.peer();
-    // buddypond.videochat.peer...
-  });
-
   var tag = document.createElement('script');
   tag.src = "assets/js/emojipicker.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -148,8 +133,10 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
+      desktop.buddyListDataCache = {};
 
-      if (data.buddylist.length > 0) {
+      let buddies = Object.keys(data.buddylist);
+      if (buddies.length > 0) {
         $('.you_have_no_buddies').hide();
       }
       // a buddy request counts as a buddy in UX ( for now )
@@ -158,12 +145,18 @@ desktop.updateBuddyList = function updateBuddyList () {
       }
       $('.buddylist').html('');
       $('.loading').remove();
-      if (data.buddylist) {
-        if (data.buddylist.length === 0) {
+      if (buddies) {
+        if (buddies.length === 0) {
           $('.buddylist').html('No buddies yet');
         } else {
           desktop.buddyListDataCache[str] = true;
-          data.buddylist.forEach(function(buddy){
+          buddies.forEach(function(buddyKey){
+            let buddy = buddyKey.replace('buddies/', '');
+            let profile = JSON.parse(data.buddylist[buddyKey]);
+            if (profile.isCalling) {
+              showCallWindow(buddy, true);
+            }
+            console.log('ppp', profile);
             $('.buddylist').append('<li><a class="messageBuddy" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -251,7 +244,7 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       //cb(new Error('Will not re-render for cached data'))
       //return;
     }
-    console.log('buddylist update messages', data.me, data.messages.length);
+    console.log('desktop.buddylist.updateMessages', data);
     //desktop.buddyMessageCache[str] = true;
     let html = {};
     // TODO: this should apply per conversation, not global for all users
@@ -266,14 +259,30 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       // route message based on incoming type / format
       // default message.type is undefined and defaults to "text" type
 
+      // TODO: move to desktop.videochat.updateMessages()
       // TODO: invert control and only process message.type = 'text'
       //       move message.type = 'videoChat' to desktop.videochat.js controller
-      if (message.type === 'videoChat' && message.from !== buddypond.me) {
-        if (message.offer) {
-          // TODO: popup video modal with accept / decline
-          alert('Incoming call. Accept or Decline.')
-          showIncomingCallWindow();
+      if (message.type === 'videocall' && message.from !== buddypond.me) {
+        // TODO: popup video modal with accept / decline
+        // alert('Incoming call. Accept or Decline.')
+
+        if (!desktop.videochat.CALL_IN_PROGRESS) {
+          showCallWindow();
+          desktop.videochat.CALL_IN_PROGRESS = true;
+        } else {
+          // do nothing for now
+          // in the future, we can detect if this is from another user and show call waiting
+          // in the future, we can also prevent video start for users already on call
         }
+        
+        if (message.text === 'end') {
+          
+        }
+
+        if (message.text === 'decline') {
+          closeCallWindow();
+        }
+
         return;
       }
 

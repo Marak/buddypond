@@ -207,7 +207,7 @@ window.top.location = 'ie.html';
         <div class="abs window_content">
           <div class="window_main">
             <img class="acceptVideoCall" title="Accept Video Call" src="assets/images/icons/phonebooth.png" />
-            <img class="acceptVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" />
+            <img class="startVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" />
             <div class="chatMessagesHolder">
               <div class="no_chat_messages">
                 Your conversation has just started. You can send a message to your buddy below.
@@ -319,7 +319,7 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
-    <div id="window_incoming_call" class="abs window incoming_call" data-window-index="0">
+    <div id="window_video_call" class="abs window incoming_call" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
@@ -335,14 +335,31 @@ window.top.location = 'ie.html';
         <div class="abs window_content">
           <div class="window_main" align="center">
             <br/>
+            <div class="webCamWindow">
+            </div>
             <br/>
             
-            <h2>Incoming call from Marak</h2>
-            <br/>
-            <form method="POST" action="">
-              <button class="aacceptVideoCall desktopButton" type="submit">Accept</button>
-              <button class="adeclineIncomingCall desktopButton" type="submit">Decline</button>
-            </form>
+            <div class="callInProgress">
+              <h2>CALL IS NOW IN PROGRESS</h2>
+            </div>
+            <div class="incomingCall">
+              <h2>Incoming call from <span class="buddyName">Marak</span></h2>
+              <br/>
+              <form method="POST" action="">
+                <button class="acceptIncomingCall desktopButton" type="submit">Accept</button>
+                <button class="declineIncomingCall desktopButton" type="submit">Decline</button>
+              </form>
+            </div>
+            
+            <div class="outgoingCall">
+              <h2>Outgoing call to <span class="buddyName">Marak</span></h2>
+              <br/>
+              <form method="POST" action="">
+                <button class="acceptIncomingCall desktopButton" type="submit">Accept</button>
+                <button class="declineIncomingCall desktopButton" type="submit">Decline</button>
+              </form>
+            </div>
+            
           </div>
         </div>
         <div class="abs window_bottom">
@@ -459,24 +476,14 @@ window.top.location = 'ie.html';
     desktop.console.load();
     desktop.buddylist.load();
     desktop.pond.load();
-    desktop.interdemoncable.load();
-    desktop.mtv.load();
+    //desktop.interdemoncable.load();
+    //desktop.mtv.load();
     desktop.videochat.load();
     desktop.refresh();
     desktop.log('Buddy Pond v4.20.69 loaded')
     /*
-    function showIncomingCallWindow () {
-      $('#window_incoming_call').show();
-      $('#window_incoming_call').css('width', 333);
-      $('#window_incoming_call').css('height', 222);
-      $('#window_incoming_call').position({
-        my: "left top",
-        at: 'right+' + 111 + ' top+' + 66,
-        of: "#window_buddylist"
-      });
-    }
 
-    showIncomingCallWindow();
+    showCallWindow();
     */
     
   });

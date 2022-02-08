@@ -59,6 +59,31 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   })
 }
 
+buddypond.callBuddy = function callBuddy (buddyName, text, cb) {
+  apiRequest('/buddies/' + buddyName + '/call', 'POST', {
+    buddyname: buddyName,
+    text: text
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.endCall = function endCall (buddyname, cb) {
+  apiRequest('/buddies/' + buddyname + '/endcall', 'POST', {
+    buddyname: buddyname
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.declineCall = function declineCall (buddyname, cb) {
+  apiRequest('/buddies/' + buddyname + '/declinecall', 'POST', {
+    buddyname: buddyname
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
 buddypond.getMessages = function getMessages (params, cb) {
   apiRequest('/messages/getMessages', 'POST', params, function(err, data){
     cb(err, data);
@@ -111,26 +136,6 @@ buddypond.clearHandshake = function clearHandshake (handshakename, cb) {
   })
 }
 
-buddypond.startVideoCall = function sendMessage (buddyname, buddytext, cb) {
-  apiRequest('/buddies/' + buddyname + '/message', 'POST', {
-    type: 'videoCall',
-    buddyname: buddyname,
-    buddytext: 'start'
-  }, function(err, data){
-    cb(err, data);
-  })
-}
-
-buddypond.endVideoCall = function sendMessage (buddyname, buddytext, cb) {
-  apiRequest('/buddies/' + buddyname + '/message', 'POST', {
-    type: 'videoCall',
-    buddyname: buddyname,
-    buddytext: 'end'
-  }, function(err, data){
-    cb(err, data);
-  })
-}
-
 function apiRequest (uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
   let headers = {
@@ -148,6 +153,7 @@ function apiRequest (uri, method, data, cb) {
     data: data,
     method: method,
     dataType: 'json',
+    timeout: 7,
     error: function (data, res){
       cb(new Error('ajax connection error. retrying request shortly.'), data);
     },

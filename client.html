@@ -37,7 +37,7 @@
             break;
             case 'pondSendMessage':
               buddypond.qtokenid = $('.qtokenid').val();
-              buddypond.pondSendMessage($('#message_pondname').val(), $('#message_text').val(), function(err, data){
+              buddypond.pondSendMessage($('#message_pondname').val(), $('#message_pondtext').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
                 console.log(err, data)
               });
@@ -77,6 +77,27 @@
             case 'denyBuddy':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.denyBuddy($('#denybuddy_buddyname').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'callBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.callBuddy($('#callbuddy_buddyname').val(), $('#callbuddy_text').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'endCall':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.endCall($('#endcallbuddy_buddyname').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'declineCall':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.declineCall($('#endcallbuddy_buddyname').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
                 console.log(err, data)
               });
@@ -173,7 +194,8 @@
           <br/>
           <br/>
           Gets messages from `buddyname` AND OR `buddypond`.<br/>
-          To get messages from multiple buddies or ponds simulatenously, `buddyname`  AND OR `buddypond` can be sent as lists.<br/> Example: `Marak,Dave,Larry`
+          Messages may be fetched from multiple buddies or ponds simulatenously<br/>
+          `buddyname`  AND OR `buddypond` can be sent as lists.<br/> Example: `Marak,Dave,Larry`
         </td>
         <td><button data-command="getMessages" class="command">Send Request</button></td>
       </tr>
@@ -209,6 +231,32 @@
         </td>
         <td><button data-command="denyBuddy" class="command">Send Request</button></td>
       </tr>
+      <tr>
+        <td>buddy.call</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="callbuddy_buddyname" type="text" value="Dave"/>
+          text: <input id="callbuddy_buddytext" type="text" value="Calling you"/>
+        </td>
+        <td><button data-command="callBuddy" class="command">Send Request</button></td>
+      </tr>
+      <tr>
+        <td>buddy.endCall</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="endcallbuddy_buddyname" type="text" value="Dave"/>
+        </td>
+        <td><button data-command="endCall" class="command">Send Request</button></td>
+      </tr>
+      <tr>
+        <td>buddy.declineCall</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="declinecallbuddy_buddyname" type="text" value="Dave"/>
+        </td>
+        <td><button data-command="declineCall" class="command">Send Request</button></td>
+      </tr>
+      
       <tr>
         <td>handshake.offerHandshake</td>
         <td>

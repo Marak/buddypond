@@ -799,3 +799,9 @@ a:hover {
   opacity: 0.6;
   cursor: pointer;
 }
+
+.webCamWindow {
+  border: solid;
+  width: 220px;
+  height: 220px;
+}

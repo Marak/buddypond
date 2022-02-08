@@ -1,5 +1,7 @@
 desktop.videochat = {};
 
+desktop.videochat.CALL_IN_PROGRESS = false;
+
 desktop.videochat.load = function loadVideochat () {
 
   desktop.log('Loading: app.videochat')
@@ -9,6 +11,31 @@ desktop.videochat.load = function loadVideochat () {
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+  $('.startVideoCall').on('click', function(){
+    let buddyName = $(this).attr('data-buddyname');
+    desktop.videochat.peer(true, buddyName);
+    // buddypond.videochat.peer...
+  });
+
+  $('.acceptIncomingCall').on('click', function(){
+    let buddyName = $(this).attr('data-buddyname');
+    desktop.videochat.peer(false, buddyName);
+    // buddypond.videochat.peer...
+  });
+
+  $('.declineIncomingCall').on('click', function(){
+    closeCallWindow();
+    if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
+      desktop.videochat.webrtc.destroy();
+    }
+    let buddyName = $(this).attr('data-buddyname');
+    buddypond.declineCall('Dave', function(err, data){
+      $('.apiResult').val(JSON.stringify(data, true, 2))
+      console.log(err, data)
+    });
+    //desktop.videochat.peer();
+    // buddypond.videochat.peer...
+  });
 
 }
 
@@ -50,7 +77,7 @@ function gotMedia (stream) {
 
 */
 
-desktop.videochat.peer = function peerVideoChat (isHost) {
+desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
   
   desktop.log('Attempting WebRTC peer. isHost:', isHost);
   // TODO: add get devices code
@@ -60,11 +87,18 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
    });
 
    p.on('error', err => console.log('error', err)); 
- 
+
+   p.on('close', function(err){
+     // TODO: set some property in profile?
+     closeCallWindow();
+   }); 
    p.on('signal', data => {
      console.log('SIGNAL', JSON.stringify(data))
 
      if (isHost) {
+
+       showCallWindow();
+
        // if host, call API to set offer in new redis handshake
        // make sure that previous answer is always cleared when making new offer
        buddypond.offerHandshake('Marak/Dave', JSON.stringify(data), function(err){
@@ -92,7 +126,7 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
          }
 
          // offer has been sent, send message to buddy to accept the connection
-         buddypond.sendMessage('Bob', { type: 'videoCall' }, function(err, data){
+         buddypond.callBuddy('Marak', 'hello and hey', function(err, data){
            console.log("Buddy pond api returns");
            $('.apiResult').val(JSON.stringify(data, true, 2))
            console.log(err, data)
@@ -143,10 +177,12 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
      pollHandshake2();
    }
 
+   /*
    document.querySelector('form').addEventListener('submit', ev => {
      ev.preventDefault()
      p.signal(JSON.parse(document.querySelector('#incoming').value))
    });
+   */
 
    p.on('connect', () => {
      console.log('CONNECT')
@@ -163,10 +199,42 @@ desktop.videochat.peer = function peerVideoChat (isHost) {
        
      });
      */
+     desktop.videochat.CALL_IN_PROGRESS = true;
+     $('.callInProgress', '#window_video_call').show();
    });
 
    p.on('data', data => {
      console.log('data: ' + data)
    });
 
+}
+
+function closeCallWindow () {
+  $('#window_video_call').hide();
+  desktop.videochat.CALL_IN_PROGRESS = false;
+}
+
+function showCallWindow (buddy, incoming) {
+  $('#window_video_call').show();
+
+  $('.callInProgress').hide();
+
+  if (incoming) {
+    $('.outgoingCall').hide();
+    $('.incomingCall').show();
+  } else {
+    $('.incomingCall').hide();
+    $('.outgoingCall').show();
+    $('.window-context-title', '#window_video_call').html('Outgoing Call');
+  }
+  // bring newly opened window to front
+  JQD.util.window_flat();
+  $('#window_video_call').addClass('window_stack').show();
+  $('#window_video_call').css('width', 333);
+  $('#window_video_call').css('height', 444);
+  $('#window_video_call').position({
+    my: "right top",
+    at: 'left-' + 33 + ' top+' + 0,
+    of: "#window_buddylist"
+  });
 }

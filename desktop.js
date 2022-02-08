@@ -5,7 +5,7 @@
 */
 
 let desktop = {};
-desktop.DEFAULT_AJAX_TIMER = 1000;
+desktop.DEFAULT_AJAX_TIMER = 3000;
 
 desktop.buddyListDataCache = {};
 desktop.buddyMessageCache = {};
@@ -62,8 +62,8 @@ desktop.refresh = function refreshDesktop () {
 //
 // desktop.openWindow() function is used to create instances of a window class
 // this allows for multiple window instances to share the same logic
-// as of today, windowType can be "buddy_message" or "pond_chat"
-// this implies there are already HTML elements named window_buddy_message_0 and window_pond_chat_0
+// as of today, windowType can be "buddy_message" or "pond_message"
+// this implies there are already HTML elements named window_buddy_message_0 and window_pond_message_0
 // these will be incremented by 1 for each window , etc window_buddy_message_1, window_buddy_message_2
 // in the future we can have other windowTypes
 // for most applications you won't need this method and you can just 
@@ -72,11 +72,11 @@ desktop.refresh = function refreshDesktop () {
 //
 desktop.windowPool = {}
 desktop.windowPool['buddy_message'] = [];
-desktop.windowPool['pond_chat'] = [];
+desktop.windowPool['pond_message'] = [];
 
 desktop.openWindow = function openWindow (windowType, context, position) {
 
-  let windowTypes = ['buddy_message', 'pond_chat']
+  let windowTypes = ['buddy_message', 'pond_message']
   desktop.log('desktop.openWindow', windowType, context)
 
   desktop.openWindows = desktop.openWindows || {};
@@ -101,7 +101,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     $(windowKey).show().addClass('window_stack');
   } else {
     // TODO: max windows message
-    windowKey = desktop.windowPool['buddy_message'].pop();
+    windowKey = desktop.windowPool[windowType].pop();
     if (!windowKey) {
       alert('Too many chat windows. Please close some windows.');
       return;
@@ -112,6 +112,10 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     $('.window-context-title', windowId).html(context);
     $('.window-context-title', windowId).html(context);
     $(windowId).attr('data-window-context', context);
+
+    $('.startVideoCall', windowId).attr('data-buddyname', context);
+    $('.acceptVideoCall', windowId).attr('data-buddyname', context);
+
 
     $(windowId).show();
     $(windowId).css('width', 600)
@@ -164,7 +168,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
   }
 
-  if (windowType === 'pond_chat') {
+  if (windowType === 'pond_message') {
     desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
   }
 
@@ -200,7 +204,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
     desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
   }
 
-  if (windowType === 'pond_chat') {
+  if (windowType === 'pond_message') {
     desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
   }
 }
@@ -236,7 +240,10 @@ desktop.updateMessages = function updateMessages () {
     // call buddypond.getMessages() to get buddy messages data
     //
     // console.log('sending params', params)
+    console.log('calling, buddylist.getMessages', params);
+    
     buddypond.getMessages(params, function(err, data){
+      console.log('calling back, buddylist.getMessages');
 
       if (err) {
         throw err;
@@ -247,8 +254,9 @@ desktop.updateMessages = function updateMessages () {
       // once we have the messages data, call desktop.buddylist.updateMessages() 
       // to delegate message data to app's internal updateMessages() function
       //
+      console.log('calling, buddylist.updateMessages');
       desktop.buddylist.updateMessages(data, function(err){
-
+        console.log('calling back, buddylist.updateMessages');
         if (err) {
           throw err;
         }
@@ -260,8 +268,9 @@ desktop.updateMessages = function updateMessages () {
         //
         // Remark: In the future we could iterate through all Apps .updateMessages() functions
         //         instead of having two hard-coded loops here
+        console.log('calling, pond.updateMessages');
         desktop.pond.updateMessages(data, function(err){
-
+          console.log('calling back, pond.updateMessages');
           if (err) {
             throw err;
           }
