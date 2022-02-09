@@ -39,7 +39,6 @@ desktop.pond.load = function loadPond () {
   */
 
   $('.sendPondMessage').on('click', function(){
-    alert('fdge')
     desktop.pond.sendMessage(this);
     return false;
   })
@@ -60,14 +59,25 @@ desktop.pond.load = function loadPond () {
   });
 
   $('.joinPond').on('click', function(){
-    desktop.openWindow('pond_message', $('.customPondName').val())
+    if ($('.customPondName').val().length === 0) {
+      $('.customPondName').addClass('error');
+    } else {
+      $('.customPondName').removeClass('error');
+      desktop.openWindow('pond_message', $('.customPondName').val())
+      desktop.pond.openWindow($('.customPondName').val())
+    }
   });
 
 };
 
 let pondOpened = false;
 
-desktop.pond.openWindow = function () {
+desktop.pond.openWindow = function (context) {
+  
+  if(!context) {
+    context = "Lily";
+  } 
+
   // when pond app loads, open default pond for all buddies
   let rightPadding = 10;
   let topPadding = 10;
@@ -75,13 +85,14 @@ desktop.pond.openWindow = function () {
   if (!buddypond.qtokenid) {
     return;
   }
-  
-  let windowKey = desktop.openWindow('pond_message', 'Lily', {
+  let windowKey = desktop.openWindow('pond_message', context, {
     of: "#window_pond"
   });
-  $('.pond_message_to').val('Lily');
-
-  $('.window-context-title', windowKey).html('Lily Pond');
+  let windowId = '#' + windowKey;
+  $('.window-context-title', windowId).html(context + ' Pond');
+  $('.pond_message_text', windowId).focus();
+  $('.pond_message_to', windowId).val(context)
+  $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;
   // TODO: doc element title
   // $('.dock_title', dockElement).html(context);
@@ -90,6 +101,7 @@ desktop.pond.openWindow = function () {
 
 desktop.pond.sendMessage = function sendPondMessage (context) {
   let message = {};
+  console.log('desktop.pond.sendMessage context', context);
   var form = $(context).parent();
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
@@ -114,8 +126,8 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 let defaultPondOpened = false;
 
 desktop.pond.updateMessages = function updatePondMessages (data, cb) {
-  
-  console.log('desktop.pond.updateMessages', data)
+
+  // console.log('desktop.pond.updateMessages', data)
   $('.buddy_pond_not_connected').hide();
 
   $('.pondNameList').show();
@@ -123,7 +135,7 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
 
   if (!defaultPondOpened && pondOpened) {
     defaultPondOpened = true;
-    desktop.openWindow('pond_message', 'Lily')
+    desktop.openWindow('pond_message', 'Lily');
   }
 
   let str = JSON.stringify(data);
@@ -135,17 +147,6 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
 
   let html = {};
 
-  /*
-  //desktop.buddyMessageCache[str] = true;
-  // TODO: this should apply per conversation, not global for all users
-  if (data.messages.length === 0) {
-    $('.chat_messages').hide();
-  } else {
-    $('.no_chat_messages').hide();
-    $('.chat_messages').show();
-  }
-  */
-  
   data.messages.forEach(function(message){
 
     // route message based on incoming type / format
@@ -175,10 +176,10 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
   for (let key in html) {
     $('.chat_messages', key).html('');
     $('.chat_messages', key).append(html[key]);
+    $('.no_chat_messages', key).hide();
     // scrolls to bottom of messages on new messages
-    //let el = $('.chat_messages', key)
-    //$(el).scrollTop($(el)[0].scrollHeight);
-    
+    let el = $('.chat_messages', key)
+    $(el).scrollTop($(el)[0].scrollHeight);
   }
   cb(null, true);
 }

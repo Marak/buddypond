@@ -544,10 +544,12 @@ th.shrink {
 
 /* buddypond desktop ui elements */
 
+/*
 button {
   color: #00FF41;
   background-color: black;
 }
+*/
 
 button:hover {
   cursor: pointer;
@@ -628,10 +630,13 @@ a:hover {
 }
 
 .desktopButton {
+  /*
   background-color: black;
   color: #00FF41;
+  */
   cursor: pointer;
-  border: none;
+  border: solid;
+  border-width: 1px;
   padding: 8px;
   text-align: center;
   text-decoration: none;
@@ -643,17 +648,18 @@ a:hover {
 
 .desktopButton:hover {
   color: #008F11;
-  background-color: grey;
-  animation-name: desktopButton;
-  animation-duration: 1.1111s;
+  background-color: #FFF;
+  filter: drop-shadow(5px 5px 2px #4444dd);
+  animation-name: rainbow;
+  animation-duration: 2.1111s;
   opacity: 0.7;
   animation-iteration-count: infinite;
 }
 
 .loginButton:hover {
   color: #008F11;
-  background-color: grey;
-  animation-name: loginButton;
+  background-color: #FFF;
+  animation-name: rainbow;
   animation-duration: 1.1111s;
   opacity: 0.7;
   animation-iteration-count: infinite;
@@ -741,7 +747,8 @@ a:hover {
 }
 
 .buddyListHolder {
-  padding-left: 16px;
+  text-align: left;
+  width: 75%;
 }
 
 .splash {
@@ -804,4 +811,170 @@ a:hover {
   border: solid;
   width: 220px;
   height: 220px;
+}
+
+
+
+.demo{
+  width:400px;
+  height:400px;
+  font-size:5em;
+  float:left;
+  text-align:center;
+}
+
+.rainbow-bg{
+		animation: rainbow-bg 2.5s linear;
+		animation-iteration-count: infinite;
+}
+
+.rainbow-border-active{
+  border-width: 2px;
+		animation: rainbow-border 7.77s linear;
+		animation-iteration-count: infinite;
+}
+
+
+.rainbow-border:hover{
+  border-width: 2px;
+		animation: rainbow-border 7.77s linear;
+		animation-iteration-count: infinite;
+}
+
+.rainbow{
+		animation: rainbow 2.5s linear;
+		animation-iteration-count: infinite;
+}
+
+.rainbowLink:hover {
+		animation: rainbow 2.5s linear;
+		animation-iteration-count: infinite;
+}
+
+
+@keyframes rainbow-bg{
+		100%,0%{
+			background-color: rgb(255,0,0);
+		}
+		8%{
+			background-color: rgb(255,127,0);
+		}
+		16%{
+			background-color: rgb(255,255,0);
+		}
+		25%{
+			background-color: rgb(127,255,0);
+		}
+		33%{
+			background-color: rgb(0,255,0);
+		}
+		41%{
+			background-color: rgb(0,255,127);
+		}
+		50%{
+			background-color: rgb(0,255,255);
+		}
+		58%{
+			background-color: rgb(0,127,255);
+		}
+		66%{
+			background-color: rgb(0,0,255);
+		}
+		75%{
+			background-color: rgb(127,0,255);
+		}
+		83%{
+			background-color: rgb(255,0,255);
+		}
+		91%{
+			background-color: rgb(255,0,127);
+		}
+}
+
+@keyframes rainbow{
+		100%,0%{
+			color: rgb(255,0,0);
+		}
+		8%{
+			color: rgb(255,127,0);
+		}
+		16%{
+			color: rgb(255,255,0);
+		}
+		25%{
+			color: rgb(127,255,0);
+		}
+		33%{
+			color: rgb(0,255,0);
+		}
+		41%{
+			color: rgb(0,255,127);
+		}
+		50%{
+			color: rgb(0,255,255);
+		}
+		58%{
+			color: rgb(0,127,255);
+		}
+		66%{
+			color: rgb(0,0,255);
+		}
+		75%{
+			color: rgb(127,0,255);
+		}
+		83%{
+			color: rgb(255,0,255);
+		}
+		91%{
+			color: rgb(255,0,127);
+		}
+}
+
+@keyframes rainbow-border{
+		100%,0%{
+			border-color: rgb(255,0,0);
+		}
+		8%{
+			border-color: rgb(255,127,0);
+		}
+		16%{
+			border-color: rgb(255,255,0);
+		}
+		25%{
+			border-color: rgb(127,255,0);
+		}
+		33%{
+			border-color: rgb(0,255,0);
+		}
+		41%{
+			border-color: rgb(0,255,127);
+		}
+		50%{
+			border-color: rgb(0,255,255);
+		}
+		58%{
+			border-color: rgb(0,127,255);
+		}
+		66%{
+			border-color: rgb(0,0,255);
+		}
+		75%{
+			border-color: rgb(127,0,255);
+		}
+		83%{
+			border-color: rgb(255,0,255);
+		}
+		91%{
+			border-color: rgb(255,0,127);
+		}
+}
+
+.pondNameList {
+  padding: 16px;
+}
+
+.loading {
+  width: 111px;
+  height: 111px;
+  opacity: 0.5555;
 }

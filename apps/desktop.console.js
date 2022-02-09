@@ -43,7 +43,7 @@ desktop.console.log = function logDesktop () {
   output = output.substr(0, output.length - 2);
   let now = new Date();
   
-  let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
+  let dateString = DateFormat.format.date(new Date(), "HH:mm:ss");
   $('.console').append('<li>' + dateString + ': ' + output + '</li>');
   // TODO: fix scrollTop issue ( should scroll to bottom )
   let el = $('.console li');

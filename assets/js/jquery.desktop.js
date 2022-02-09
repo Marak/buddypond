@@ -117,15 +117,18 @@ var JQD = (function($, window, document, undefined) {
           ].join(',');
 
           if (!$(ev.target).closest(tags).length) {
-            JQD.util.clear_active();
-            ev.preventDefault();
-            ev.stopPropagation();
+            if (!$(ev.target).hasClass('chat_messages') && !$(ev.target).hasClass('message')) {
+              JQD.util.clear_active();
+              ev.preventDefault();
+              ev.stopPropagation();
+            }
           }
         });
 
         // Cancel right-click.
         d.on('contextmenu', function() {
-          return false;
+          // console.log('right click is disabled in jquery.desktop.js file. you can turn it back on for fun.');
+          //return false;
         });
 
         // Relative or remote links?
@@ -401,8 +404,19 @@ JDQX.closeWindow = function closeWindow (el) {
   $($(el).attr('href')).hide('fast');
   let windowType = $(closestWindow).attr('data-window-type');
   let windowContext = $(closestWindow).attr('data-window-context');
-  console.log('JDQX.closeWindow', windowType, windowContext);
+  let windowId = $(closestWindow).attr('id').replace('window_', '');
+
+  // console.log('JDQX.closeWindow', windowId, windowType, windowContext);
+
+  // this calls close events for instaniated window types( which require a context )
   if (windowType && windowContext) {
     desktop.closeWindow(windowType, windowContext);
   }
+
+  // check to see if the App which made this window supports a .closeWindow() method
+  // this covers Apps which are not instanced
+  if (desktop[windowId] && desktop[windowId].closeWindow) {
+    desktop[windowId].closeWindow();
+  }
+
 }

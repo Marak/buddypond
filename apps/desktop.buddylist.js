@@ -33,8 +33,15 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   });
 
   $('.sendBuddyRequest').on('click', function(){
-    var buddyName = $('.buddy_request_name').val();
+    $('.you_have_no_buddies').html('Buddy Request Sent!');
+    var buddyName = $('.buddy_request_name').val() || $(this).html();
+    if (!buddyName) {
+      $('.buddy_request_name').addClass('error')
+      return;
+    }
+    $('.buddy_request_name').removeClass('error')
     $('.buddy_request_name').val('');
+    $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>')
     desktop.log('buddypond.addBuddy ->', buddyName)
     buddypond.addBuddy(buddyName, function(err, data){
       desktop.log('buddypond.addBuddy <-', data)
@@ -63,6 +70,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
         return false;
       }
   });
+    /*
 
   var tag = document.createElement('script');
   tag.src = "assets/js/emojipicker.js";
@@ -80,6 +88,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     });
   }
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    */
 
 }
 
@@ -104,6 +113,20 @@ desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
   });
 }
 
+desktop.buddylistProfileState = {
+  "updates": {
+    /*
+    "buddies/Tara": {
+      "newMessages":false,
+      "isAwesome":true
+    },
+    "buddies/Larry": {
+      "newMessages":false
+    }
+    */
+  }
+};
+
 desktop.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
@@ -117,14 +140,34 @@ desktop.updateBuddyList = function updateBuddyList () {
     // TODO: move this to buddy pond scope
     $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
-    buddypond.getBuddyList(function(err, data){
-      if (err) {
+
+    //ex: let buddyProfile = { "Dave": { "newMessages": true } };
+    buddypond.getBuddyList(desktop.buddylistProfileState, function(err, data){
+      if (err || typeof data !== 'object') {
         desktop.log(err);
         setTimeout(function(){
           desktop.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
+
+      desktop.buddylistProfileState = { updates: {}};
+
+      //
+      // process notifications for buddy
+      //
+      let buddylist = data.buddylist;
+      Object.keys(buddylist).forEach(function(b){
+        let profile = JSON.parse(buddylist[b]);
+        if (profile.newMessages === true) {
+          let buddyName = b.replace('buddies/', '');
+          desktop.openWindow('buddy_message', buddyName)
+        }
+      });
+      //
+      // end notifications processing
+      //
+
       let str = JSON.stringify(data);
       // TODO: use key count for garbage collection and trim if size grows
       if (desktop.buddyListDataCache[str]) {
@@ -147,35 +190,40 @@ desktop.updateBuddyList = function updateBuddyList () {
       $('.loading').remove();
       if (buddies) {
         if (buddies.length === 0) {
-          $('.buddylist').html('No buddies yet');
+          $('.buddylist').html('No buddies yet.');
         } else {
+          desktop.buddyListDataCache = {};
           desktop.buddyListDataCache[str] = true;
           buddies.forEach(function(buddyKey){
             let buddy = buddyKey.replace('buddies/', '');
             let profile = JSON.parse(data.buddylist[buddyKey]);
-            if (profile.isCalling) {
-              showCallWindow(buddy, true);
+            let newMessages = '';
+            if (profile.newMessages) {
+              newMessages = '<span>💬</span>';
             }
-            console.log('ppp', profile);
-            $('.buddylist').append('<li><a class="messageBuddy" href="#">' + buddy + '</a></li>')
+            if (desktop.videochat.loaded && profile.isCalling) {
+              openCallWindow(buddy, true);
+            }
+            $('.buddylist').append('<li>' + newMessages +'<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
           // render buddy list
           $('.messageBuddy').on('click', function(){
-            let context = $(this).html();
             let position = {};
             position.my = position.my || "left top";
             position.at = position.at || 'left+33 top+33';
-            let windowId = desktop.openWindow('buddy_message', context, position);
-            let windowKey = '#' + windowId;
-            $('.buddy_message_to', windowKey).val(context)
-            $('.buddy_message_from', windowKey).val(buddypond.me);
+            let context = $(this).html();
+            let windowKey = desktop.openWindow('buddy_message', context, position);
+            let windowId = '#' + windowKey;
+            $('.buddy_message_text', windowId).focus();
+            $('.buddy_message_to', windowId).val(context)
+            $('.buddy_message_from', windowId).val(buddypond.me);
           });
         }
       }
 
       if (data.buddyrequests) {
-
+        // desktop.buddyListDataCache = {}
         // desktop.buddyListDataCache[str] = true;
         $('.pendingIncomingBuddyRequests').html('');
         $('.pendingOutgoingBuddyRequests').html('');
@@ -217,7 +265,11 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
           $(this).parent().hide();
-          buddypond.approveBuddy($(this).attr('data-buddyname'), function(err, data){
+          
+          let buddyName = $(this).attr('data-buddyname');
+          $('.buddylist').append('<li><a class="messageBuddy rainbowLink" href="#">' + buddyName + '</a></li>');
+          
+          buddypond.approveBuddy(buddyName, function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))
           });
           return false;
@@ -238,58 +290,17 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
 
     // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
 
-    let str = JSON.stringify(data);
-    // TODO: use key count for garbage collection and trim if size grows
-    if (desktop.buddyMessageCache[str]) {
-      //cb(new Error('Will not re-render for cached data'))
-      //return;
-    }
-    console.log('desktop.buddylist.updateMessages', data);
+    // console.log('desktop.buddylist.updateMessages', data);
     //desktop.buddyMessageCache[str] = true;
     let html = {};
     // TODO: this should apply per conversation, not global for all users
-    if (data.messages.length === 0) {
-      $('.chat_messages').hide();
-    } else {
-      $('.no_chat_messages').hide();
-      $('.chat_messages').show();
-    }
-
     data.messages.forEach(function(message){
       // route message based on incoming type / format
       // default message.type is undefined and defaults to "text" type
 
-      // TODO: move to desktop.videochat.updateMessages()
-      // TODO: invert control and only process message.type = 'text'
-      //       move message.type = 'videoChat' to desktop.videochat.js controller
-      if (message.type === 'videocall' && message.from !== buddypond.me) {
-        // TODO: popup video modal with accept / decline
-        // alert('Incoming call. Accept or Decline.')
-
-        if (!desktop.videochat.CALL_IN_PROGRESS) {
-          showCallWindow();
-          desktop.videochat.CALL_IN_PROGRESS = true;
-        } else {
-          // do nothing for now
-          // in the future, we can detect if this is from another user and show call waiting
-          // in the future, we can also prevent video start for users already on call
-        }
-        
-        if (message.text === 'end') {
-          
-        }
-
-        if (message.text === 'decline') {
-          closeCallWindow();
-        }
-
-        return;
-      }
-
       if (message.type === 'pond') {
         return;
       }
-
 
       let buddyKey = message.from;
       if (buddyKey === buddypond.me) {
@@ -302,19 +313,19 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
 
       // Get all the open buddy_message windows
       let openBuddyWindows = desktop.openWindows['buddy_message'];
-
       // Find the specific window which is open for this buddy
-      let windowId = '#' + openBuddyWindows[buddyKey]
-      console.log('rendering messages to buddy window', windowId)
+      let windowId = '#' + openBuddyWindows[buddyKey];
+      // console.log('rendering messages to buddy window', windowId)
 
       // accumulate all the message html so we can perform a single document write,
       // instead of a document write per message
       html[windowId] = html[windowId] || '';
       if (message.from === buddypond.me) {
-        html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+        html[windowId] += '<span class="datetime message">' + message.ctime + ' </span><span class="message">' + message.from + ': ' + message.text + '</span><br/>';
       } else {
-        html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
+        html[windowId] += '<span class="datetime message">' + message.ctime + ' </span><span class="message purple">' + message.from + ': ' + message.text + '</span><br/>';
       }
+      desktop.processedMessages.push(message.uuid);
     });
 
     //
@@ -322,7 +333,8 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     // Iterate through the generated HTML and write to the correct windows
     //
     for (let key in html) {
-      $('.chat_messages', key).html('');
+      // $('.chat_messages', key).html('');
+      $('.no_chat_messages', key).hide();
       $('.chat_messages', key).append(html[key]);
       // scrolls to bottom of messages on new messages
       let el = $('.chat_messages', key)

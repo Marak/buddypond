@@ -68,3 +68,7 @@ desktop.mtv.load = function () {
   $('#window_mtv').css('width', 644);
   $('#window_mtv').css('height', 666);
 };
+
+desktop.mtv.closeWindow = function () {
+  desktop.mtv.player.pauseVideo();
+}

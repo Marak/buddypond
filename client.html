@@ -7,11 +7,12 @@
       $(document).ready(function(){
         console.log('Buddy Pond loaded.');
 
-        $('.command').on('click', function(){
-          $('.apiResult').val('');
+        $('#getbuddy_profile').val('{"updates": {"buddies/Dave":{"newMessages":true,"isAwesome":true},"buddies/Larry":{"newMessages":false}}}')
 
+        function submitRequest (command) {
+          $('.apiResult').val('');
           // var module = $(this).attr('data-module') || 'buddy';
-          var command = $(this).attr('data-command');
+          
 
           switch(command) {
             case 'authBuddy':
@@ -23,7 +24,7 @@
             break;
             case 'getBuddyList':
               buddypond.qtokenid = $('.qtokenid').val();
-              buddypond.getBuddyList(function(err, data){
+              buddypond.getBuddyList(JSON.parse($('#getbuddy_profile').val()), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
                 console.log(err, data)
               });
@@ -81,6 +82,20 @@
                 console.log(err, data)
               });
             break;
+            case 'sendBuddySignal':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.sendBuddySignal($('#sendbuddy_signal_buddyname').val(), $('#sendbuddy_signal_data').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+            case 'getBuddySignal':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.getBuddySignal($('#getbuddy_signal_buddyname').val(), $('#getbuddy_signal_data').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
             case 'callBuddy':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.callBuddy($('#callbuddy_buddyname').val(), $('#callbuddy_text').val(), function(err, data){
@@ -109,7 +124,6 @@
                 console.log(err, data)
               });
             break;
-
             case 'answerHandshake':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.answerHandshake($('#handshake_answer_name').val(), $('#handshake_answer_answer').val(), function(err, data){
@@ -117,7 +131,6 @@
                 console.log(err, data)
               });
             break;
-
             case 'offerHandshake':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.offerHandshake($('#handshake_offer_name').val(), $('#handshake_offer_offer').val(), function(err, data){
@@ -137,8 +150,13 @@
           default:
             console.log('default command case')
             // code block
-          }
+          }          
+        }
+        submitRequest('authBuddy');
 
+        $('.command').on('click', function(){
+          var command = $(this).attr('data-command');
+          submitRequest(command);
         });
       });
     </script>
@@ -164,6 +182,8 @@
         <td>buddy.getBuddyList</td>
         <td>
           qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          profile updates: <input id="getbuddy_profile" value="" type="text" size="88"/>
+          
         </td>
         <td><button data-command="getBuddyList" class="command">Send Request</button></td>
       </tr>
@@ -230,6 +250,23 @@
           buddyname: <input id="denybuddy_buddyname" type="text" value="Marak"/>
         </td>
         <td><button data-command="denyBuddy" class="command">Send Request</button></td>
+      </tr>
+      <tr>
+        <td>buddy.getBuddySignal</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="getbuddy_signal_buddyname" type="text" value="Marak"/>
+        </td>
+        <td><button data-command="getBuddySignal" class="command">Send Request</button></td>
+      </tr>
+      <tr>
+        <td>buddy.sendBuddySignal</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="sendbuddy_signal_buddyname" type="text" value="Marak"/><br/>
+          data: <input id="sendbuddy_signal_data" type="text" value="{ type: 'offer', etc: 'foo' }"/><br/>
+        </td>
+        <td><button data-command="sendBuddySignal" class="command">Send Request</button></td>
       </tr>
       <tr>
         <td>buddy.call</td>

@@ -30,6 +30,7 @@ window.top.location = 'ie.html';
       <img src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
     </a>
+    
     <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
       <img src="assets/images/icons/icon_32_computer.png" />
       Login
@@ -71,12 +72,12 @@ window.top.location = 'ie.html';
                       <tr>
                         <td><label for="buddyname">Buddy Name:</label></td>
                         <td>
-                          <input id="buddyname" name="buddyname" type="text" size="16" />
+                          <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" />
                         </td>
                       </tr>
                       <tr>
                         <td><label for="buddypassword">Buddy Password:</label></td>
-                        <td><input id="buddypassword" name="buddypassword" type="password" size="16"/></td>
+                        <td><input class="" id="buddypassword" name="buddypassword" type="password" size="16"/></td>
                       </tr>
                       <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
                     </tbody>
@@ -127,6 +128,31 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
+    <div id="window_mirror" class="abs window">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img height="16" width="16" src="assets/images/icons/icon_console.png" />
+            Mirror
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_mirror" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main mirrorVideoHolder">
+            <video autoplay="true" id="mirrorVideo"> </video>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
     <div id="window_buddylist" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
@@ -145,42 +171,49 @@ window.top.location = 'ie.html';
             <div class="buddy_list_not_connected">
               You'll need to login in order to access your Buddy List.
             </div>
-            <div class="buddyListHolder">
-              <div align="left">Hello. You look nice today!</div>
+            <div align="center">
+              <div>Hello. You look nice today!</div>
               <br/>
               <img class="loading" src="assets/images/animations/loading.gif" width="200" height="200"/>
-              <h2>Buddies</h2>
-              <span class="you_have_no_buddies">
-                You don't have buddies yet!<br/><br/>
-                You can always add yer buddy:<br/><br/>
-                <a href="#/addbuddy/Marak" class="sendBuddyRequest">Marak</a> <- Click Here To Add
-              </span>
-              <ul class="buddylist">
-              </ul>
-              <br/>
-              <div class="pendingIncomingBuddyRequestsHolder">
-                <h3>New Buddy Requests</h3>
-                <div class="pendingIncomingBuddyRequests">
+              <div class="buddyListHolder">
+                <h2>Buddies</h2>
+                <span class="you_have_no_buddies">
+                  You don't have buddies yet!<br/><br/>
+                  You can always add <a href="#/addbuddy/Marak" class="sendBuddyRequest rainbowLink">Marak</a><br/>
+                  <a href="#/addbuddy/Marak" class="sendBuddyRequest rainbowLink">Marak</a> <- Click To Add
+                  <br/>
+                  <br/>
+                </span>
+                <ul class="buddylist">
+                </ul>
+                <br/>
+                <div class="pendingIncomingBuddyRequestsHolder">
+                  <h3>New Buddy Requests</h3>
+                  <div class="pendingIncomingBuddyRequests">
+                  </div>
+                  <br/>
                 </div>
-                <br/>
-              </div>
-              <div class="pendingOutgoingBuddyRequestsHolder">
-                <h3>Pending Buddy Requests</h3>
-                <div class="pendingOutgoingBuddyRequests">
+                <div class="pendingOutgoingBuddyRequestsHolder">
+                  <h3>Pending Buddy Requests</h3>
+                  <div class="pendingOutgoingBuddyRequests">
+                  </div>
+                  <br/>
+                  <br/>
                 </div>
-                <br/>
-                <br/>
               </div>
               <div class="addBuddyForm">
                 <form method="POST" action="#">
-                  <label for="buddy_request_name">Add Buddy:</label><br/>
-                  <input id="buddy_request_name" value="Marak" class="buddy_request_name desktopInput" name="buddy_request_name" type="text" size="16"/><br/>
+                  <label for="buddy_request_name">Send Buddy Request:</label><br/>
+                  <input id="buddy_request_name" placeholder="enter buddy name..." value="" class="rainbow-border buddy_request_name desktopInput" name="buddy_request_name" type="text" size="16"/><br/>
                   <button class="sendBuddyRequest desktopButton" type="submit">Send Buddy Request</button>
                 </form>
+                <br/>
+                <div class="inviteBuddyHolder">
+                  <span>Don't know any Buddy Names?</span><br/>
+                  <span><a class="inviteBuddy rainbowLink" href="#invite-buddy">Invite a Buddy!</a></span>
+                </div>
               </div>
-              <br/>
-              <span>Don't know any Buddy Names?</span><br/>
-              <span><a class="inviteBuddy" href="#invite-buddy">Invite a Buddy!</a></span>
+              
             </div>
           </div>
         </div>
@@ -206,14 +239,16 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main">
+            <!--
             <img class="acceptVideoCall" title="Accept Video Call" src="assets/images/icons/phonebooth.png" />
+            -->
             <img class="startVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" />
             <div class="chatMessagesHolder">
               <div class="no_chat_messages">
-                Your conversation has just started. You can send a message to your buddy below.
+                Your conversation has just started. You can send a message using the form below.
               </div>
               <div class="chat_messages">
-                <img src="assets/images/animations/loading.gif" width="200" height="200"/>
+                <!-- <img src="assets/images/animations/loading.gif" width="200" height="200"/> -->
               </div>
               <hr/>
               <div class="chat_send_message_form">
@@ -245,7 +280,7 @@ window.top.location = 'ie.html';
           <span class="float_right">
             <a href="#" class="window_min"></a>
             <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_pond_message_0" class="window_close"></a>
+            <a href="#icon_dock_buddypond" class="window_close"></a>
           </span>
         </div>
         <div class="abs window_content">
@@ -254,17 +289,20 @@ window.top.location = 'ie.html';
               You'll need to login in order to access the Buddy Pond.
             </div>
             <div class="pondNameList">
-              <h1>Join Pond</h1>
-              <p>
-              A pond is a room where lots of buddies can chat with each others. Your Buddy Name won't be revealed to the pond unless you send a message.</p>
+              <h2>Join Pond</h2>
               <br/>
-              <h2>Pond Name</h2>
               <label for="customPondName">
-                <input id="customPondName" name="customPondName" class="customPondName" type="text" size="16"/>
+                <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"  placeholder="enter pond name..."type="text" size="16"/>
               </label>
               <br/>
+              <button type="submit" class="joinPond desktopButton">Join Pond</button>
               <br/>
-              <button type="submit" class="joinPond">Join Pond</button>
+              <br/>
+              <p>
+              A pond is a room where many buddies can chat with each other.
+              </p> 
+              <br/>
+              <p>Your Buddy Name won't be revealed to the pond unless you send it message.</p>
             </div>
           </div>
         </div>
@@ -298,7 +336,7 @@ window.top.location = 'ie.html';
                 The pond is fresh. There are no messages yet. You can send a message to this pond below.
               </div>
               <div class="chat_messages">
-                <img src="assets/images/animations/loading.gif" width="200" height="200"/>
+                <!-- <img src="assets/images/animations/loading.gif" width="200" height="200"/> -->
               </div>
               <hr/>
               <div class="pond_send_message_form">
@@ -336,6 +374,11 @@ window.top.location = 'ie.html';
           <div class="window_main" align="center">
             <br/>
             <div class="webCamWindow">
+              <video id="webcamVideo" width="320" height="240" controls>
+                Your browser does not support the video tag.
+              </video>
+              <!--<video id="webcamLocal"/> -->
+              
             </div>
             <br/>
             
@@ -398,10 +441,29 @@ window.top.location = 'ie.html';
         </ul>
       </li>
     </ul>
-    <span class="desktopConnected float_right">Connection Established</span>
-    <span class="desktopDisconnected float_right">Disconnected</span>
-    <!--
-    -->
+
+
+    <ul class="float_right">
+      <li>
+        <a class="menu_trigger" href="#">
+          <span class="desktopConnected float_right">Connection Established</span>
+          <span class="desktopDisconnected float_right">Disconnected</span>
+          
+        </a>
+        <ul class="menu">
+          <li>
+            Conection Started: <span class="connection_ctime"></span> <br/>
+            Total Packets Sent <span class="connection_packets_sent"></span> <br/>
+            Total Packets Recieved <span class="connection_packets_recieved"></span> <br/>
+          </li>
+          <li>
+            Average Packet Response Time: 33ms <br/>
+            Server Load <span class="">Low</span> <br/>
+          </li>
+          
+        </ul>
+      </li>
+    </ul>
   </div>
   <div class="abs" id="bar_bottom">
     <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
@@ -437,18 +499,14 @@ window.top.location = 'ie.html';
       <li id="icon_dock_pond_message_0">
         <a href="#window_pond_message_0">
           <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
-          
           <span class="dock_title">
             Chat with X
           </span>
         </a>
       </li>
-      
     </ul>
   </div>
 </div>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery-ui.min.js"></script>
 <script src="assets/js/jquery.dateformat.js"></script>
 
 <script>
@@ -476,16 +534,12 @@ window.top.location = 'ie.html';
     desktop.console.load();
     desktop.buddylist.load();
     desktop.pond.load();
+    desktop.login.load();
     //desktop.interdemoncable.load();
     //desktop.mtv.load();
     desktop.videochat.load();
     desktop.refresh();
     desktop.log('Buddy Pond v4.20.69 loaded')
-    /*
-
-    showCallWindow();
-    */
-    
   });
 </script>
 

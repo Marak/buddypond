@@ -1,5 +1,16 @@
 desktop.login = {};
 
+desktop.login.load = function loadDesktopLogin () {
+  
+  let localToken = localStorage.getItem("qtokenid");
+  if (localToken) {
+    buddypond.qtokenid = localToken;
+    buddypond.me = localStorage.getItem("me")
+    desktop.login.success();
+  }
+
+}
+
 desktop.login.auth = function authDesktop (buddyname) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
@@ -12,39 +23,52 @@ desktop.login.auth = function authDesktop (buddyname) {
 
     desktop.log('buddypond.authBuddy <- qtokenid', data);
 
-    if (data === false) {
+    desktop.log('Authentication successful');
+
+    localStorage.setItem("qtokenid", data);
+    localStorage.setItem("me", buddypond.me);
+
+    if (data.success === false) {
       $('#buddypassword').addClass('error');
       $('.buddyLoginTable .invalidPassword').show()
       return;
-    }
-    desktop.log('Authentication successful')
-    $('#me_title').html('Welcome - ' + buddyname);
-    $('.logoutLink').show();
-    $('.loginLink').hide();
-
-    $('.console').val()
-    $('.qtokenid').val(data);
-    if (data === false) {
-      // TODO: alert UI, try again
     } else {
       buddypond.qtokenid = data;
-      $('#window_login').hide();
-      $('#login_desktop_icon').hide();
-      $('#logout_desktop_icon').show();
-      $('#window_buddylist').show();
-      $('#window_buddylist').css('width', 220)
-      $('#window_buddylist').css('height', 440)
-      $('#window_buddylist').css('left', 666)
-      $('#window_buddylist').css('top', 111)
-      $('.desktopConnected').show();
-      $('.desktopDisconnected').hide();
-      desktop.renderDockElement('buddylist');
-      desktop.removeDockElement('login')
+      desktop.login.success();
     }
     console.log(err, data)
   });
 }
 
+desktop.login.success = function desktopLoginSuccess () {
+  $('#me_title').html('Welcome - ' + buddypond.me);
+  $('.logoutLink').show();
+  $('.loginLink').hide();
+  // $('.qtokenid').val(data);
+  $('#window_login').hide();
+  $('#login_desktop_icon').hide();
+  $('#logout_desktop_icon').show();
+  $('#window_buddylist').show();
+  $('#window_buddylist').css('width', 220)
+  $('#window_buddylist').css('height', 440)
+  $('#window_buddylist').css('left', 666)
+  $('#window_buddylist').css('top', 111)
+  $('.desktopConnected').show();
+  $('.desktopDisconnected').hide();
+  desktop.renderDockElement('buddylist');
+  desktop.removeDockElement('login');
+  let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
+  $('.connection_ctime').html(dateString)
+  $('.connection_packets_sent').html("1")
+  $('.connection_packets_recieved').html("1")
+}
+
 desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('#buddyname').focus();
+}
+
+desktop.login.logoutDesktop = function logoutDesktop () {
+  localStorage.removeItem('qtokenid')
+  localStorage.removeItem('me')
+  document.location = ".";
 }

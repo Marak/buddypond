@@ -1,11 +1,20 @@
-- no_chat_messages being hid globally instead of local per user
-- ensure youtube players player.stop() on close window event ( not minimize event )
+X - fix error when trying to login with no password and no username
+X - fix error when attempting to join pond with no name
+X - add back fresh pond / fresh chat default messages
+X - no_chat_messages being hid globally instead of local per user
+X - ensure youtube players player.stop() on close window event ( not minimize event )
+
+
+- finish webrtc video
+- cleanup codebase ( documentation and DRY )
+
+- add UX indactor for ajax disconnect with desktop.log
+- enter events for joining pond by custom name
 
 - fix HTML injection by using jQuery.text on nodes
   - use css class and .text() instead of string concats
 - add emojis to chat ( utf-8 support)
 
-- add min display time to loading gifs ( to avoid flicker )
 - fix scroll top issue with console output ( scroll to bottom like chat )
 
 - create icons for connected / disconnected
@@ -15,7 +24,7 @@
 - ensure that subscriberList is updated on chat window close
   - requires adding hook to jquery.desktop.js event
 
-X - connect up window_pond_chat ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
+X - connect up window_pond_message ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
 X - https://github.com/OneSignal/emoji-picker
 X - emoji inputs not clearing text after send, missing click input cursor
 X - adjust emoji picker css and placement for buddy send message
@@ -24,7 +33,12 @@ X - adjust emoji picker css and placement for buddy send message
 
 - add midi fighter pad with sound fx
   - goose sound effect
-  
+- add simple paint app
+- add simple notes
+- add fx to mirror app ( finish basic mirror app )
+
+? - add min display time to loading gifs ( to avoid flicker )
+
 
 1/2 - investigate local yt player not working for certain videos?
   - file:// only 

@@ -85,6 +85,10 @@ desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
   }
 };
 
+desktop.interdemoncable.closeWindow = function () {
+  desktop.interdemoncable.player.pauseVideo();
+}
+
 // Remark: youtube embed client REQUIRES the following methods be public
 function mtvPlayerReady(event) {
   // event.target.playVideo();

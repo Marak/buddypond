@@ -1,6 +1,6 @@
 let buddypond = {}
 
-buddypond.endpoint = 'http://buddypond.com:8080/api/v3';
+buddypond.endpoint = 'https://buddypond.com/api/v3';
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
   apiRequest('/auth', 'POST', {
@@ -20,7 +20,7 @@ buddypond.addBuddy = function addBuddy (buddyname, cb) {
   })
 }
 
-buddypond.removeBuddy = function addBuddy (buddyname, cb) {
+buddypond.removeBuddy = function removeBuddy (buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/remove', 'POST', {
     buddyname: buddyname
   }, function(err, data){
@@ -44,17 +44,32 @@ buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
   })
 }
 
-buddypond.getBuddyList = function getBuddyList (cb) {
-  apiRequest('/buddies', 'GET', {}, function(err, data){
+buddypond.getBuddyList = function getBuddyList (profileUpdates, cb) {
+  apiRequest('/buddies', 'POST', profileUpdates, function(err, data){
     cb(err, data);
   })
 }
 
 buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
-  apiRequest('/messages/sendMessage', 'POST', {
+  apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
     text: text
   }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.sendBuddySignal = function sendBuddySignal (buddyname, signal, cb) {
+  apiRequest('/buddies/' + buddyname + '/signal', 'POST', {
+    buddyname: buddyname,
+    data: signal
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.getBuddySignal = function getBuddySignal (buddyname, cb) {
+  apiRequest('/buddies/' + buddyname + '/signal', 'GET', {}, function(err, data){
     cb(err, data);
   })
 }
@@ -91,16 +106,9 @@ buddypond.getMessages = function getMessages (params, cb) {
 }
 
 buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
-  apiRequest('/ponds/' + pondname + '/message', 'POST', {
+  apiRequest('/messages/pond/' + pondname, 'POST', {
     pondname: pondname,
     pondtext: pondtext
-  }, function(err, data){
-    cb(err, data);
-  })
-}
-
-buddypond.pondGetMessages = function pondGetMessages (pondname, cb) {
-  apiRequest('/ponds/' + pondname + '/message', 'GET', {
   }, function(err, data){
     cb(err, data);
   })
@@ -142,7 +150,11 @@ function apiRequest (uri, method, data, cb) {
      "accept": "application/json"
   };
   if (buddypond.qtokenid) {
-    data.qtokenid = buddypond.qtokenid
+    data = data || {};
+    data.qtokenid = buddypond.qtokenid;
+  }
+  if (method === "POST") {
+    data = JSON.stringify(data);
   }
   $.ajax({
     "headers": {
@@ -152,6 +164,7 @@ function apiRequest (uri, method, data, cb) {
     url: url,
     data: data,
     method: method,
+    contentType: "application/json; charset=utf-8",
     dataType: 'json',
     timeout: 7,
     error: function (data, res){
