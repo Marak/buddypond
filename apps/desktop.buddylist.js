@@ -159,13 +159,31 @@ desktop.updateBuddyList = function updateBuddyList () {
       let buddylist = data.buddylist;
       Object.keys(buddylist).forEach(function(b){
         let profile = JSON.parse(buddylist[b]);
-        if (profile.newMessages === true) {
+        if (profile && profile.newMessages === true) {
           let buddyName = b.replace('buddies/', '');
           desktop.openWindow('buddy_message', buddyName)
         }
       });
       //
       // end notifications processing
+      //
+
+      //
+      // process incomingcall for buddy
+      //
+      Object.keys(buddylist).forEach(function(b){
+        let profile = JSON.parse(buddylist[b]);
+        if (profile && profile.isCalling === true) {
+          let buddyName = b.replace('buddies/', '');
+          desktop.buddylistProfileState.updates[b] = desktop.buddylistProfileState.updates[b] || {};
+          desktop.buddylistProfileState.updates[b].isCalling = false;
+          desktop.videochat.startCall(false, buddyName, function(err, re){
+            // console.log('call has started', err, re)
+          });
+        }
+      });
+      //
+      // end incomingcall processing
       //
 
       let str = JSON.stringify(data);
@@ -198,12 +216,14 @@ desktop.updateBuddyList = function updateBuddyList () {
             let buddy = buddyKey.replace('buddies/', '');
             let profile = JSON.parse(data.buddylist[buddyKey]);
             let newMessages = '';
-            if (profile.newMessages) {
+            if (profile && profile.newMessages) {
               newMessages = '<span>💬</span>';
             }
-            if (desktop.videochat.loaded && profile.isCalling) {
+            /*
+            if (desktop.videochat.loaded && profile && profile.isCalling) {
               openCallWindow(buddy, true);
             }
+            */
             $('.buddylist').append('<li>' + newMessages +'<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -310,12 +330,12 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       //
       // New messages are coming in from server, we'll need to render them
       //
-
       // Get all the open buddy_message windows
       let openBuddyWindows = desktop.openWindows['buddy_message'];
       // Find the specific window which is open for this buddy
       let windowId = '#' + openBuddyWindows[buddyKey];
       // console.log('rendering messages to buddy window', windowId)
+      // console.log('writing new message to ', windowId, message.from, message.to)
 
       // accumulate all the message html so we can perform a single document write,
       // instead of a document write per message

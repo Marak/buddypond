@@ -144,10 +144,6 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     $('.window-context-title', windowId).html(context);
     $(windowId).attr('data-window-context', context);
 
-    //$('.startVideoCall', windowId).attr('data-buddyname', context);
-    //$('.acceptVideoCall', windowId).attr('data-buddyname', context);
-
-
     $(windowId).show();
     $(windowId).css('width', 600)
     $(windowId).css('height', 440)
@@ -234,28 +230,28 @@ desktop.closeWindow = function openWindow (windowType, context) {
   // for example: desktop.windowPool['buddy_message'].push(desktop.openWindows['buddy_message']['Marak'])
   desktop.windowPool[windowType].push(desktop.openWindows[windowType][context])
 
-  // TODO: replace delete statements ???
-  //
-  // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
-  //
-  delete desktop.openWindows[windowType][context];
-  delete desktop.windowIndex[windowType][context]
 
 
   if (windowType === 'buddy_message') {
     desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
     // remove newMessages notification for this buddy
-    console.log('buddyPond.readMessages');
-      
     // TODO: move this to buddylist.closeWindw()
     desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
     desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
-    
+    $('.chat_messages', '#' + desktop.openWindows[windowType][context]).html('');
   }
 
   if (windowType === 'pond_message') {
     desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
   }
+
+  // TODO: replace delete statements ?
+  //
+  // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
+  //
+  delete desktop.openWindows[windowType][context];
+  delete desktop.windowIndex[windowType][context];
+
 }
 
 //

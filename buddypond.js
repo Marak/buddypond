@@ -61,7 +61,6 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
 
 buddypond.sendBuddySignal = function sendBuddySignal (buddyname, signal, cb) {
   apiRequest('/buddies/' + buddyname + '/signal', 'POST', {
-    buddyname: buddyname,
     data: signal
   }, function(err, data){
     cb(err, data);
@@ -78,6 +77,14 @@ buddypond.callBuddy = function callBuddy (buddyName, text, cb) {
   apiRequest('/buddies/' + buddyName + '/call', 'POST', {
     buddyname: buddyName,
     text: text
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.endBuddyCall = function endBuddyCall (buddyName, cb) {
+  apiRequest('/buddies/' + buddyName + '/endcall', 'POST', {
+    buddyname: buddyName,
   }, function(err, data){
     cb(err, data);
   })

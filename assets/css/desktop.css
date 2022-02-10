@@ -789,6 +789,20 @@ a:hover {
   top: 16px;
 }
 
+.endVideoCall {
+  opacity: 0.4;
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  right: 64px;
+  top: 16px;
+}
+
+.endVideoCall:hover {
+  opacity: 0.4;
+  cursor: pointer;
+}
+
 .startVideoCall:hover {
   opacity: 0.6;
   cursor: pointer;
@@ -977,4 +991,20 @@ a:hover {
   width: 111px;
   height: 111px;
   opacity: 0.5555;
+}
+
+#mirrorVideoMe {
+  width: 444px;
+  height: 444px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+#mirrorVideoBuddy {
+  width: 444px;
+  height: 444px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }

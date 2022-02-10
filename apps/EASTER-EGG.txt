@@ -1,0 +1,16 @@
+Ideas for community apps:
+
+- Boss Button
+  - Goes full screen quickly with some work looking image
+
+- Hacker Mode
+  - Does https://geekprank.com/hacker/ like functionality ( pretend hacking screens )
+  - Auto-coder with typing input
+
+- MS Paint Clone
+  - simple canvas paint program
+    - colors
+    - shapes
+    - text
+    - export to bmp
+    ?? could iframe and load vendor lib?

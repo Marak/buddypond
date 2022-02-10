@@ -143,7 +143,8 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main mirrorVideoHolder">
-            <video autoplay="true" id="mirrorVideo"> </video>
+            <video autoplay="true" id="mirrorVideoMe"> </video><br/>
+            <video autoplay="true" id="mirrorVideoBuddy"> </video><br/>
           </div>
         </div>
         <div class="abs window_bottom">
@@ -242,7 +243,8 @@ window.top.location = 'ie.html';
             <!--
             <img class="acceptVideoCall" title="Accept Video Call" src="assets/images/icons/phonebooth.png" />
             -->
-            <img class="startVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" />
+            <img class="endVideoCall" title="End Video Call" height="20" width="20" src="assets/images/icons/icon_portal.png" class="context" />
+            <img class="startVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" class="context" />
             <div class="chatMessagesHolder">
               <div class="no_chat_messages">
                 Your conversation has just started. You can send a message using the form below.
@@ -537,6 +539,7 @@ window.top.location = 'ie.html';
     desktop.login.load();
     //desktop.interdemoncable.load();
     //desktop.mtv.load();
+    $('#window_mirror').show();
     desktop.videochat.load();
     desktop.refresh();
     desktop.log('Buddy Pond v4.20.69 loaded')
