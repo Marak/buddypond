@@ -1,12 +1,27 @@
 desktop.login = {};
 
 desktop.login.load = function loadDesktopLogin () {
-  
+
+  desktop.renderDockElement('login');
+
   let localToken = localStorage.getItem("qtokenid");
+  let me = localStorage.getItem("me");
   if (localToken) {
-    buddypond.qtokenid = localToken;
-    buddypond.me = localStorage.getItem("me")
-    desktop.login.success();
+    buddypond.verifyToken(me, localToken, function(err, data){
+      if (err) {
+        alert('server is down. please try again in a moment.');
+      }
+      if (data === false) {
+        desktop.login.logoutDesktop();
+        desktop.login.openWindow();
+      } else {
+        buddypond.qtokenid = localToken;
+        buddypond.me = me;
+        desktop.login.success();
+      }
+    });
+  } else {
+    desktop.login.openWindow();
   }
 
 }
@@ -28,7 +43,7 @@ desktop.login.auth = function authDesktop (buddyname) {
     localStorage.setItem("qtokenid", data);
     localStorage.setItem("me", buddypond.me);
 
-    if (data.success === false) {
+    if (data === false) {
       $('#buddypassword').addClass('error');
       $('.buddyLoginTable .invalidPassword').show()
       return;
@@ -64,6 +79,14 @@ desktop.login.success = function desktopLoginSuccess () {
 }
 
 desktop.login.openWindow = function desktopLoginOpenWindow () {
+  $('.desktopConnected').hide();
+  $('.logoutLink').hide();
+  $('#logout_desktop_icon').hide();
+  $('#window_login').show();
+  $('#window_login').css('width', 800);
+  $('#window_login').css('height', 400);
+  $('#window_login').css('left', 222);
+  $('#window_login').css('top', 111);
   $('#buddyname').focus();
 }
 

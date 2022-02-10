@@ -1,11 +1,26 @@
+client-side render for buddy list names missing click trigger
+
+- add online / offline status notification
+  - dont allow video call to offline buddy
+- video window goes fullscreen on call start
+- cleanup webrtc connection / signal messages in desktop console log
+- add UX / reminder about pasword update / no reset link!
+
+- remove blink login icon from desktop when not logged in ( dynamic icon render? )
+
+- better newMessages = true for UX interaction ( window click / window restore )
+X - add local storage for holding qtoken
+X - ensure that subscriberList is updated on chat window close
+  X - requires adding hook to jquery.desktop.js event
+X - finish webrtc video
 X - fix error when trying to login with no password and no username
 X - fix error when attempting to join pond with no name
 X - add back fresh pond / fresh chat default messages
 X - no_chat_messages being hid globally instead of local per user
 X - ensure youtube players player.stop() on close window event ( not minimize event )
 
+- fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
 
-- finish webrtc video
 - cleanup codebase ( documentation and DRY )
 
 - add UX indactor for ajax disconnect with desktop.log
@@ -20,15 +35,6 @@ X - ensure youtube players player.stop() on close window event ( not minimize ev
 - create icons for connected / disconnected
 - create icons for data pulse ( drop in and drop out)
 
-- add local storage for holding qtoken
-- ensure that subscriberList is updated on chat window close
-  - requires adding hook to jquery.desktop.js event
-
-X - connect up window_pond_message ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
-X - https://github.com/OneSignal/emoji-picker
-X - emoji inputs not clearing text after send, missing click input cursor
-X - adjust emoji picker css and placement for buddy send message
-
 1/2 - rig up console to show events ( div instead of textarea )
 
 - add midi fighter pad with sound fx
@@ -39,16 +45,19 @@ X - adjust emoji picker css and placement for buddy send message
 
 ? - add min display time to loading gifs ( to avoid flicker )
 
-
 1/2 - investigate local yt player not working for certain videos?
   - file:// only 
-  
   issue seems related to specific youtube ids not working on file://
   current work-around is to use http server for localhost
   possible work-around for local is to destroy and remove youtube iframe per video load
   this will mean not using loadVideoById, but instead injecting new frame per video
   mtvPlayer.loadVideoById('1m-KtU88K9Y')
   mtvPlayer.loadVideoById('pNGEqGvz-ds')
+
+X - connect up window_pond_message ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
+X - https://github.com/OneSignal/emoji-picker
+X - emoji inputs not clearing text after send, missing click input cursor
+X - adjust emoji picker css and placement for buddy send message
 
 X - add client-side render for approve / deny buddy ( hide link)
 X - add logout link
@@ -71,8 +80,6 @@ X - rendering UX for add buddy form
 X - rendering UX for pending buddy requests
 X - chat window text input should have fixed bottom position
 X - add user name to title after login
-
-
 
 After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
 

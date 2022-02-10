@@ -2,7 +2,7 @@ desktop.buddylist = {};
 
 desktop.buddylist.load = function desktopLoadBuddyList () {
 
-  desktop.log('Loading: app.buddylist')
+  desktop.log('Loading:', 'App.buddylist');
 
   // clone window_buddy_message_0 ten times
   // clone icon_dock_buddy_message_0 ten times 
@@ -140,9 +140,13 @@ desktop.updateBuddyList = function updateBuddyList () {
     // TODO: move this to buddy pond scope
     $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
-
+    let localUpdatedState = {};
+    for (var p in desktop.buddylistProfileState) {
+      localUpdatedState[p] = desktop.buddylistProfileState[p];
+    }
+    desktop.buddylistProfileState = { updates: {}};
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
-    buddypond.getBuddyList(desktop.buddylistProfileState, function(err, data){
+    buddypond.getBuddyList(localUpdatedState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
         setTimeout(function(){
@@ -150,8 +154,6 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
-
-      desktop.buddylistProfileState = { updates: {}};
 
       //
       // process notifications for buddy
@@ -177,6 +179,8 @@ desktop.updateBuddyList = function updateBuddyList () {
           let buddyName = b.replace('buddies/', '');
           desktop.buddylistProfileState.updates[b] = desktop.buddylistProfileState.updates[b] || {};
           desktop.buddylistProfileState.updates[b].isCalling = false;
+          // TODO: add isOnCall flag? another icon?
+          //.      needs separate event?
           desktop.videochat.startCall(false, buddyName, function(err, re){
             // console.log('call has started', err, re)
           });
@@ -215,6 +219,10 @@ desktop.updateBuddyList = function updateBuddyList () {
           buddies.forEach(function(buddyKey){
             let buddy = buddyKey.replace('buddies/', '');
             let profile = JSON.parse(data.buddylist[buddyKey]);
+            let isCalling = '';
+            if (profile && profile.isCalling) {
+              isCalling = '<span>📞</span>';
+            }
             let newMessages = '';
             if (profile && profile.newMessages) {
               newMessages = '<span>💬</span>';
@@ -224,7 +232,7 @@ desktop.updateBuddyList = function updateBuddyList () {
               openCallWindow(buddy, true);
             }
             */
-            $('.buddylist').append('<li>' + newMessages +'<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
+            $('.buddylist').append('<li>' + newMessages + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
           // render buddy list
@@ -254,9 +262,9 @@ desktop.updateBuddyList = function updateBuddyList () {
           buddyrequest = JSON.parse(buddyrequest);
           // TODO: top list is buddies, button list is requests ( with buttons )
           if (buddyrequest.to === buddypond.me) {
-            $('.pendingIncomingBuddyRequests').append('<li>' + buddyrequest.from + ' - <a href="#" class="approveBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Approve</a> / <a href="#" class="denyBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Deny</a> </li>')
+            $('.pendingIncomingBuddyRequests').append('<li>' + buddyrequest.from + ' - <a href="#" class="approveBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Approve</a> / <a href="#" class="denyBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Remove</a> </li>')
           } else {
-            $('.pendingOutgoingBuddyRequests').append('<li>' + buddyrequest.to + '</li>')
+            $('.pendingOutgoingBuddyRequests').append('<li>' + buddyrequest.to + ' - <a href="#" class="denyBuddyRequest pointer" data-buddyname="' + buddyrequest.to +'">Remove</a></li>')
           }
         }
 
@@ -275,7 +283,8 @@ desktop.updateBuddyList = function updateBuddyList () {
         }
 
         // TODO: remove links in real-time from client for approve / deny ( no lags or double clicks )
-        $('.denyBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
+        //  '.pendingIncomingBuddyRequests'
+        $('.denyBuddyRequest').on('click', function(){
           $(this).parent().hide();
           buddypond.denyBuddy($(this).attr('data-buddyname'), function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))

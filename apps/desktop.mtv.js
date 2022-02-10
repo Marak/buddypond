@@ -3,7 +3,7 @@ desktop.mtv = {};
 desktop.mtv.player = null;
 desktop.mtv.load = function () {
 
-  desktop.log('Loading: app.mtv')
+  desktop.log('Loading:', 'App.mtv')
 
   var tag = document.createElement('script');
   tag.src = "http://www.youtube.com/iframe_api";

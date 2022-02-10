@@ -2,7 +2,7 @@ desktop.interdemoncable = {};
 
 desktop.interdemoncable.load = function () {
 
-  desktop.log('Loading: app.interdemoncable')
+  desktop.log('Loading: App.interdemoncable')
 
   var tag = document.createElement('script');
   tag.src = "http://www.youtube.com/iframe_api";

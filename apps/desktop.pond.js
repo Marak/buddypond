@@ -2,7 +2,7 @@ desktop.pond = {};
 
 desktop.pond.load = function loadPond () {
 
-  desktop.log('Loading: app.pond')
+  desktop.log('Loading:', 'App.pond')
 
   let clone = $('#window_pond_message_0').html();
   let dockItemClone = $('#icon_dock_pond_message_0').html();

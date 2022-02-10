@@ -5,7 +5,7 @@ desktop.videochat.CURRENT_CALLER = null;
 
 desktop.videochat.load = function loadVideochat () {
   desktop.videochat.loaded = true;
-  desktop.log('Loading: app.videochat');
+  desktop.log('Loading:', 'App.videochat');
 
   var tag = document.createElement('script');
   tag.src = "assets/js/simplepeer.min.js";
@@ -23,26 +23,6 @@ desktop.videochat.load = function loadVideochat () {
     desktop.videochat.endCall(buddyName);
   });
 
-  $('.acceptIncomingCall').on('click', function(){
-    let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    alert(buddyName)
-    // desktop.videochat.peer(false, buddyName);
-    // buddypond.videochat.peer...
-  });
-
-  /*
-  $('.declineIncomingCall').on('click', function(){
-    closeCallWindow();
-    if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
-      desktop.videochat.webrtc.destroy();
-    }
-    // alert(desktop.videochat.CURRENT_CALLER)
-    buddypond.declineCall(desktop.videochat.CURRENT_CALLER, function(err, data){
-      $('.apiResult').val(JSON.stringify(data, true, 2))
-      console.log(err, data)
-    });
-  });
-  */
 }
 
 desktop.videochat.pollSignal = true;
@@ -55,15 +35,13 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
     return false;
   }
 
-  /*
-  if (!desktop.videochat.webrtc) {
-    return false;
-  }
-  */
-
   $('.endVideoCall').css('opacity', '1');
   $('.startVideoCall').css('opacity', '0.4');
   desktop.videochat.CALL_IN_PROGRESS = true;
+
+  $('#window_mirror').show();
+  JQD.util.window_flat();
+  $('#window_mirror').addClass('window_stack').show();
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
     console.log('got back call buddy', err, re)
@@ -79,9 +57,8 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
     if (!desktop.videochat.pollSignal) {
       return;
     }
-    console.log('getting signal for me')
     buddypond.getBuddySignal(buddypond.me, function(err, data){
-      console.log('buddy.getBuddySignal', err, data);
+      // console.log('buddy.getBuddySignal', err, data);
       if (data && desktop.videochat.webrtc) {
         desktop.log('You sent you a Signal to: ' + buddyName + ' ' + data.type);
         desktop.videochat.webrtc.signal(data);
@@ -91,36 +68,6 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
       }, 1000);
     });
   }
-}
-
-desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
-  if (!desktop.videochat.CALL_IN_PROGRESS) {
-    return false;
-  }
-  desktop.videochat.CALL_IN_PROGRESS = false;
-  if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
-    desktop.videochat.webrtc.destroy();
-  }
-
-  if (desktop.videochat.localStream && desktop.videochat.localStream.getTracks) {
-    desktop.videochat.localStream.getTracks().forEach(function(track) {
-      track.stop();
-    });
-  }
-
-  if (desktop.videochat.remoteStream && desktop.videochat.remoteStream.getTracks) {
-    desktop.videochat.remoteStream.getTracks().forEach(function(track) {
-      track.stop();
-    });
-  }
-
-  desktop.videochat.pollSignal = false;
-  $('.startVideoCall').css('opacity', '1');
-  $('.endVideoCall').css('opacity', '0.4');
-  // clear signal polling timer
-  // clear out webrtc connections
-  buddypond.endBuddyCall(buddyName, function fireAndForget(){
-  });
 }
 
 desktop.videochat.addLocalCamera = function videoChatAddLocalCamera () {
@@ -160,7 +107,6 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
 
    p.on('signal', data => {
      desktop.log(buddyName + ' sent you a Signal: ' + data.type);
-     // TODO: move this line into setter method?
      console.log('sending signal to ', buddyName, data)
      buddypond.sendBuddySignal(buddyName, data, function(err, result){
        console.log('buddy.sendBuddySignal', err, result);
@@ -175,8 +121,6 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
    p.on('close', function(err){
      desktop.log('WebRTC peer connection with ' + buddyName + ' is closed');
      desktop.videochat.endCall(buddyName);
-     // TODO: set some property in profile?
-     // closeCallWindow();
    }); 
 
    p.on('connect', () => {
@@ -189,6 +133,42 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
      console.log('WebRTC data: ' + data)
    });
 
+}
+
+desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
+
+  desktop.videochat.pollSignal = false;
+  $('.startVideoCall').css('opacity', '1');
+  $('.endVideoCall').css('opacity', '0.4');
+  $('#window_mirror').hide();
+
+  if (!desktop.videochat.CALL_IN_PROGRESS) {
+    return false;
+  }
+  desktop.videochat.CALL_IN_PROGRESS = false;
+  desktop.buddylistProfileState.updates["buddies/" + buddyName] = desktop.buddylistProfileState.updates["buddies/" + buddyName] || {};
+  desktop.buddylistProfileState.updates["buddies/" + buddyName].isCalling = false;
+  if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
+    desktop.videochat.webrtc.destroy();
+  }
+
+  if (desktop.videochat.localStream && desktop.videochat.localStream.getTracks) {
+    desktop.videochat.localStream.getTracks().forEach(function(track) {
+      track.stop();
+    });
+  }
+
+  if (desktop.videochat.remoteStream && desktop.videochat.remoteStream.getTracks) {
+    desktop.videochat.remoteStream.getTracks().forEach(function(track) {
+      track.stop();
+    });
+  }
+
+  // clear signal polling timer
+  // clear out webrtc connections
+  buddypond.endBuddyCall(buddyName, function fireAndForget(){
+    // TODO: move to setter
+  });
 }
 
 function closeCallWindow () {

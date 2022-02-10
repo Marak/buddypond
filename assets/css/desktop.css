@@ -1008,3 +1008,7 @@ a:hover {
   left: 0px;
   top: 0px;
 }
+
+video {
+  padding: 16px;
+}

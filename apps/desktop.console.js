@@ -38,9 +38,9 @@ desktop.console.log = function logDesktop () {
     if (typeof str === 'object') {
       str = JSON.stringify(str, true, 2)
     }
-    output += (str + ', '); 
+    output += (str + ' ');
   }
-  output = output.substr(0, output.length - 2);
+  // output = output.substr(0, output.length - 2);
   let now = new Date();
   
   let dateString = DateFormat.format.date(new Date(), "HH:mm:ss");

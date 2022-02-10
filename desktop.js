@@ -41,20 +41,6 @@ desktop.log = console.log;
 // calling desktop.load() will start the Buddy Pond Desktop Client
 desktop.load = function loadDesktop() {
 
-  // hide elements related to logging out
-  $('.desktopConnected').hide();
-  $('.logoutLink').hide();
-  $('#logout_desktop_icon').hide();
-
-  // TODO: move this to openWindow() function
-
-    $('#window_login').css('width', 800);
-    $('#window_login').css('height', 400);
-    $('#window_login').show();
-    $('#window_login').css('left', 222);
-    $('#window_login').css('top', 111);
-    desktop.renderDockElement('login');
-
   // cancel all form submits
   $('form').on('submit', function(){
     return false;
@@ -364,12 +350,10 @@ desktop.updateMessages = function updateMessages () {
   }
 }
 
-
 // TODO: implement these methods
-desktop.createDesktopIcon = function (name) {};
-desktop.createDockIcon = function () {};
-desktop.createWindow = function () {};
-
+desktop.renderDockIcon = function () {}; // creates icon for dock bar ( min / max )
+desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
+desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 
 desktop.removeDockElement = function (windowType, context) {
   var dockElement = '#icon_dock_' + windowType;

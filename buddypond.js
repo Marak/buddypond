@@ -12,6 +12,16 @@ buddypond.authBuddy = function authBuddy (me, password, cb) {
   })
 }
 
+buddypond.verifyToken = function verifyToken (me, qtokenid, cb) {
+  apiRequest('/verifyToken', 'POST', {
+    buddyname: me,
+    qtokenid: qtokenid
+  }, function(err, data){
+    buddypond.me = me;
+    cb(err, data);
+  })
+}
+
 buddypond.addBuddy = function addBuddy (buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/addbuddy', 'POST', {
     buddyname: buddyname
