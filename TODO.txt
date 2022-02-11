@@ -6,6 +6,12 @@ client-side render for buddy list names missing click trigger
 - cleanup webrtc connection / signal messages in desktop console log
 - add UX / reminder about pasword update / no reset link!
 
+- if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+
+- add screensharing instead of camera as source
+  - await navigator.mediaDevices.getDisplayMedia
+- have ability to add / remove camera share during call, same with screen
+
 - remove blink login icon from desktop when not logged in ( dynamic icon render? )
 
 - better newMessages = true for UX interaction ( window click / window restore )

@@ -216,8 +216,6 @@ desktop.closeWindow = function openWindow (windowType, context) {
   // for example: desktop.windowPool['buddy_message'].push(desktop.openWindows['buddy_message']['Marak'])
   desktop.windowPool[windowType].push(desktop.openWindows[windowType][context])
 
-
-
   if (windowType === 'buddy_message') {
     desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
     // remove newMessages notification for this buddy

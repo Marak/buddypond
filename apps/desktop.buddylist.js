@@ -140,13 +140,8 @@ desktop.updateBuddyList = function updateBuddyList () {
     // TODO: move this to buddy pond scope
     $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
-    let localUpdatedState = {};
-    for (var p in desktop.buddylistProfileState) {
-      localUpdatedState[p] = desktop.buddylistProfileState[p];
-    }
-    desktop.buddylistProfileState = { updates: {}};
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
-    buddypond.getBuddyList(localUpdatedState, function(err, data){
+    buddypond.getBuddyList(desktop.buddylistProfileState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
         setTimeout(function(){
@@ -154,13 +149,14 @@ desktop.updateBuddyList = function updateBuddyList () {
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
+      desktop.buddylistProfileState = { updates: {}};
 
       //
       // process notifications for buddy
       //
       let buddylist = data.buddylist;
       Object.keys(buddylist).forEach(function(b){
-        let profile = JSON.parse(buddylist[b]);
+        let profile = buddylist[b];
         if (profile && profile.newMessages === true) {
           let buddyName = b.replace('buddies/', '');
           desktop.openWindow('buddy_message', buddyName)
@@ -174,7 +170,7 @@ desktop.updateBuddyList = function updateBuddyList () {
       // process incomingcall for buddy
       //
       Object.keys(buddylist).forEach(function(b){
-        let profile = JSON.parse(buddylist[b]);
+        let profile = buddylist[b];
         if (profile && profile.isCalling === true) {
           let buddyName = b.replace('buddies/', '');
           desktop.buddylistProfileState.updates[b] = desktop.buddylistProfileState.updates[b] || {};
@@ -218,11 +214,20 @@ desktop.updateBuddyList = function updateBuddyList () {
           desktop.buddyListDataCache[str] = true;
           buddies.forEach(function(buddyKey){
             let buddy = buddyKey.replace('buddies/', '');
-            let profile = JSON.parse(data.buddylist[buddyKey]);
+            let profile = data.buddylist[buddyKey];
+
+            let isConnected = '';
+            if (profile && profile.isConnected) {
+              isConnected = '<span>§§§</span>';
+            }
+
+            // phone call icon next to buddy name
             let isCalling = '';
             if (profile && profile.isCalling) {
               isCalling = '<span>📞</span>';
             }
+
+            // new messages chat icon next to buddy name
             let newMessages = '';
             if (profile && profile.newMessages) {
               newMessages = '<span>💬</span>';
@@ -232,7 +237,7 @@ desktop.updateBuddyList = function updateBuddyList () {
               openCallWindow(buddy, true);
             }
             */
-            $('.buddylist').append('<li>' + newMessages + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
+            $('.buddylist').append('<li>' + isConnected + newMessages + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
           // render buddy list

@@ -14,3 +14,7 @@ Ideas for community apps:
     - text
     - export to bmp
     ?? could iframe and load vendor lib?
+    
+- Games
+  - small games to pack in main distribution
+  - pick js1k winners / entries?
