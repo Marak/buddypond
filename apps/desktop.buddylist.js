@@ -212,13 +212,26 @@ desktop.updateBuddyList = function updateBuddyList () {
         } else {
           desktop.buddyListDataCache = {};
           desktop.buddyListDataCache[str] = true;
+          buddies = buddies.sort(function(a, b){
+            let profileA = data.buddylist[a];
+            let profileB = data.buddylist[b];
+            if (!profileB.isConnected) {
+              return -1;
+            }
+
+            if (!profileA.isConnected) {
+              return 1;
+            }
+          });
           buddies.forEach(function(buddyKey){
             let buddy = buddyKey.replace('buddies/', '');
             let profile = data.buddylist[buddyKey];
 
             let isConnected = '';
             if (profile && profile.isConnected) {
-              isConnected = '<span>§§§</span>';
+              isConnected = '<span>🟢</span>';
+            } else {
+              isConnected = '<span>🟠</span>';
             }
 
             // phone call icon next to buddy name
