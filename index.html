@@ -128,7 +128,7 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
-    <div id="window_mirror" class="abs window">
+    <div id="window_mirror" class="abs window" align="center">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
@@ -144,7 +144,12 @@ window.top.location = 'ie.html';
         <div class="abs window_content">
           <div class="window_main mirrorVideoHolder">
             <video autoplay="true" id="mirrorVideoMe"> </video><br/>
-            <video autoplay="true" id="mirrorVideoBuddy"> </video><br/>
+            Camera Source
+            <select name="selectCamera" class="selectCamera">
+            </select>
+            Audio Source
+            <select name="selectAudio" class="selectAudio">
+            </select>
           </div>
         </div>
         <div class="abs window_bottom">
@@ -449,9 +454,11 @@ window.top.location = 'ie.html';
     <ul class="float_right">
       <li>
         <a class="menu_trigger" href="#">
+          <!--
           <span class="desktopConnected float_right">Connection Established</span>
+            -->
+          <span class="totalConnected float_right"><span class="totalConnectedCount">0</span> Users Connected</span>
           <span class="desktopDisconnected float_right">Disconnected</span>
-          
         </a>
         <ul class="menu">
           <li>
@@ -523,6 +530,7 @@ window.top.location = 'ie.html';
 <script src="apps/desktop.buddylist.js"></script>
 <script src="apps/desktop.pond.js"></script>
 <script src="apps/desktop.console.js"></script>
+<script src="apps/desktop.mirror.js"></script>
 <script src="apps/desktop.interdemoncable.js"></script>
 <script src="apps/desktop.mtv.js"></script>
 <script src="apps/desktop.videochat.js"></script>
@@ -538,9 +546,10 @@ window.top.location = 'ie.html';
     desktop.buddylist.load();
     desktop.pond.load();
     desktop.login.load();
+    //desktop.mirror.load();
     //desktop.interdemoncable.load();
     //desktop.mtv.load();
-    desktop.videochat.load();
+    //desktop.videochat.load();
     desktop.refresh();
     desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
   });

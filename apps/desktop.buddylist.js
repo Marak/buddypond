@@ -196,6 +196,8 @@ desktop.updateBuddyList = function updateBuddyList () {
       }
       desktop.buddyListDataCache = {};
 
+      $('.totalConnectedCount').html(data.system.totalIsConnected);
+
       let buddies = Object.keys(data.buddylist);
       if (buddies.length > 0) {
         $('.you_have_no_buddies').hide();
@@ -250,7 +252,7 @@ desktop.updateBuddyList = function updateBuddyList () {
               openCallWindow(buddy, true);
             }
             */
-            $('.buddylist').append('<li>' + isConnected + newMessages + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
+            $('.buddylist').append('<li>' + newMessages + isConnected + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>')
           })
           $('.apiResult').val(JSON.stringify(data, true, 2))
           // render buddy list

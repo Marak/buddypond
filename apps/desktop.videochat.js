@@ -171,6 +171,17 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
   });
 }
 
+// TODO: 
+desktop.videochat.replaceStream = function replaceStream (index) {
+  /*
+
+    peer.replaceTrack(oldTrack, newTrack, stream)
+    Replace a MediaStreamTrack with another track. Must also pass the MediaStream that the old track was attached to.
+
+  */
+}
+
+
 function closeCallWindow () {
   $('#window_video_call').hide();
   desktop.videochat.CALL_IN_PROGRESS = false;
@@ -203,4 +214,5 @@ function openCallWindow (buddy, incoming) {
     at: 'left-' + 33 + ' top+' + 0,
     of: "#window_buddylist"
   });
+
 }

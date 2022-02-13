@@ -1,20 +1,34 @@
-client-side render for buddy list names missing click trigger
-
-- add online / offline status notification
-  - dont allow video call to offline buddy
-- video window goes fullscreen on call start
-- cleanup webrtc connection / signal messages in desktop console log
+- add ESC key to close windows
+- client-side render for buddy list names missing click trigger
+- add total users online to top nav bar
+- add data properties to "Connection Established" drop down
 - add UX / reminder about pasword update / no reset link!
+- cleanup webrtc connection / signal messages in desktop console log
 
+- video window goes fullscreen on call start
 - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
 
-- add screensharing instead of camera as source
-  - await navigator.mediaDevices.getDisplayMedia
-- have ability to add / remove camera share during call, same with screen
+- complete v1 mirror app
+  - camera switcher code
+  - mute code
+  - screen share as source code?
 
-- remove blink login icon from desktop when not logged in ( dynamic icon render? )
+- needs UX for updating password
+  - route for updating password
+  - warning about no email set, do not lose password
+
+Camera
+- dont allow video call to offline buddy
+- add screensharing instead of camera as source
+- add ability to set camera source
+- await navigator.mediaDevices.getDisplayMedia
+- have ability to add / remove camera share during call, same with screen
+- add mute buttons
 
 - better newMessages = true for UX interaction ( window click / window restore )
+- remove blink login icon from desktop when not logged in ( dynamic icon render? )
+
+X- add online / offline status notification
 X - add local storage for holding qtoken
 X - ensure that subscriberList is updated on chat window close
   X - requires adding hook to jquery.desktop.js event

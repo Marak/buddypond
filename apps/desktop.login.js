@@ -11,16 +11,26 @@ desktop.login.load = function loadDesktopLogin () {
       if (err) {
         alert('server is down. please try again in a moment.');
       }
+
+      // server is online and operational, but returned an error message to client state
+      if (data.error) {
+        alert(data.message);
+        return;
+      }
+
+      // token has not validated, log out the client
       if (data === false) {
         desktop.login.logoutDesktop();
         desktop.login.openWindow();
       } else {
+      // token is valid, show client login success
         buddypond.qtokenid = localToken;
         buddypond.me = me;
         desktop.login.success();
       }
     });
   } else {
+    $('.totalConnected').hide();
     desktop.login.openWindow();
   }
 
@@ -32,7 +42,14 @@ desktop.login.auth = function authDesktop (buddyname) {
   buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
 
     if (err) {
+      console.log('err', err, data)
       alert('server is down. please try again in a moment.');
+      return;
+    }
+
+    // server is online and operational, but returned an error message to client state
+    if (data.error) {
+      alert(data.message);
       return;
     }
 
@@ -63,11 +80,12 @@ desktop.login.success = function desktopLoginSuccess () {
   $('#window_login').hide();
   $('#login_desktop_icon').hide();
   $('#logout_desktop_icon').show();
+  $('.totalConnected').show();
   $('#window_buddylist').show();
-  $('#window_buddylist').css('width', 220)
-  $('#window_buddylist').css('height', 440)
-  $('#window_buddylist').css('left', 666)
-  $('#window_buddylist').css('top', 111)
+  $('#window_buddylist').css('width', 220);
+  $('#window_buddylist').css('height', 440);
+  $('#window_buddylist').css('left', 666);
+  $('#window_buddylist').css('top', 111);
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
   desktop.renderDockElement('buddylist');

@@ -1,14 +1,19 @@
 # buddy pond ( alpha )
 ## a pond for buddies
 
- - Peer to Peer Buddy Messaging
+ - Buddy Messaging
  - Video and Audio Calls
- - Doesn't store your data
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API
 
-### Download and Start Messaging Buddies Now
+## Quick Start
+
+Free hosted client available at: url
+
+You can sign in immediately using a new unique user name and passcode
+
+### Download locally and Start Messaging Buddies Now
 
 ### Installation
 
@@ -20,14 +25,36 @@ git clone git@github.com:Marak/buddypond-client.git
 
 *cloning the pond*
 
-### Starting Buddy Pond
+### Starting Buddy Pond from file system
 
 ```
 cd buddypond
 open index.html
 ```
 
-This will start the Buddy Pond application. Open the web interface in your local browser and you can start adding and messaging buddies!
+This will start the Buddy Pond application. Open the web interface in your local browser and you can immediately start adding and messaging buddies!
+
+### Starting Buddy Pond with HTTPS / SSL
+
+Core features like buddy list, buddy messaging, and ponds will all work locally over the `file://` protocol.
+
+More advanced features such as Video Calls or third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
+
+To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML folder and Buddy Pond will be accessible.
+
+### Deploying your Buddy Pond
+
+The easiest way to deploy Buddy Pond is to publish this entire folder to any web hosting platform. Since Buddy Pond is just static HTML, it can be hosted almost anywhere. You'll want to make sure your host has HTTPS / SSL enabled.
+
+## API Rest Client
+
+Interactive API Testing Page: /client.html
+
+JavaScript buddypond.js API client: buddypond.js
+
+API Specification Page: /api/v3
+
+Buddy Pond communicates via REST API calls to the Buddy Pond Server.
 
 ### cURL REST API Examples
 

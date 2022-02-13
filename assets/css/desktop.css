@@ -994,21 +994,31 @@ a:hover {
 }
 
 #mirrorVideoMe {
+  /*
   width: 444px;
   height: 444px;
+  */
+  /*
   position: absolute;
   right: 0px;
   top: 0px;
+  */
 }
 
 #mirrorVideoBuddy {
   width: 444px;
   height: 444px;
+  /*
   position: absolute;
   left: 0px;
   top: 0px;
+  */
 }
 
 video {
   padding: 16px;
+}
+
+.totalConnected {
+  display: none;
 }
