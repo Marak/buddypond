@@ -31,10 +31,18 @@ window.top.location = 'ie.html';
       <img src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
     </a>
-
+    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_console">
+      <img src="assets/images/icons/icon_console.png" />
+      Console
+    </a>
     <a class="abs icon" style="left:20px;top:320px;" href="#icon_dock_profile">
       <img src="assets/images/icons/icon_buddypond.png" />
       Profile
+    </a>
+
+    <a class="abs icon" style="left:160px;top:200px;" href="#icon_dock_mirror">
+      <img src="assets/images/icons/icon_buddypond.png" />
+      Mirror
     </a>
 
     <a class="abs icon pauseBackground" style="right:20px;top:40px;" href="#icon_pause_background">
@@ -173,7 +181,11 @@ window.top.location = 'ie.html';
                 </form>
               </div>
               <div id="tabs-2" align="center">
-                <p>TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers</p>
+                <p align="left"><span class="emojiIcon" title="Custom Desktop App Configurations coming soon!">🔒</span>
+                  Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
+                  <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
+                  
+                  </p>
                 <table class="data table">
                   <tr>
                     <th>
@@ -185,7 +197,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Profile
@@ -193,7 +205,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Buddy List
@@ -201,7 +213,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Buddy Pond
@@ -209,7 +221,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Console
@@ -217,7 +229,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Background
@@ -225,7 +237,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Mirror
@@ -233,7 +245,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Video Chat
@@ -241,7 +253,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Music TeleVision
@@ -249,7 +261,7 @@ window.top.location = 'ie.html';
                   </tr>
                   <tr>
                     <td>
-                      <input type="checkbox" CHECKED="checked"/>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                     </td>
                     <td>
                       Interdimensional Cable
@@ -257,9 +269,11 @@ window.top.location = 'ie.html';
                   </tr>
                 </table>
                 <br/>
-                <p>
-                  Refresh entire page to for Buddy Apps to reload.
-                </p>
+                <!--
+                  <p>
+                    Refresh entire page to for Buddy Apps to reload.
+                  </p>
+                -->
               </div>
               <div id="tabs-3">
                 <p>Simple preview of what your Buddy Profile will look like</p>
@@ -325,9 +339,11 @@ window.top.location = 'ie.html';
             Camera Source
             <select name="selectCamera" class="selectCamera">
             </select>
-            Audio Source
-            <select name="selectAudio" class="selectAudio">
-            </select>
+            <!--
+              Audio Source
+              <select name="selectAudio" class="selectAudio">
+              </select>
+            -->
           </div>
         </div>
         <div class="abs window_bottom">
@@ -670,6 +686,19 @@ window.top.location = 'ie.html';
           Buddy List
         </a>
       </li>
+      <li id="icon_dock_console">
+        <a href="#window_console">
+          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
+          Console
+        </a>
+      </li>
+      <li id="icon_dock_mirror">
+        <a href="#window_mirror">
+          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
+          Mirror
+        </a>
+      </li>
+      
       <li id="icon_dock_buddypond">
         <a href="#window_pond">
           <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
@@ -738,14 +767,12 @@ window.top.location = 'ie.html';
     desktop.profile.load();
     desktop.background.load();
     desktop.background.start();
-    // desktop.mirror.load();
+    desktop.mirror.load();
     //desktop.interdemoncable.load();
     //desktop.mtv.load();
     //desktop.videochat.load();
     /*
     $('#window_profile').show();
-    $('#window_profile').css('height', 510);
-    $('#window_profile').css('width', 440);
     */
     desktop.refresh();
     desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')

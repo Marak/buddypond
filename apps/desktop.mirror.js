@@ -16,48 +16,41 @@ desktop.mirror.devices = {
 
 desktop.mirror.load = function loadDesktopMirror () {
 
-  // desktop.createDesktopIcon()
-  //desktop.createDockIcon()
-  // desktop.createWindow()
-  $('#window_mirror').show();
   $('#window_mirror').css('width', 686);
   $('#window_mirror').css('height', 622);
   $('#window_mirror').css('left', 200);
   $('#window_mirror').css('top', 44);
 
+  /*
   $('.getDisplayMedia').on('click', function(){
     desktop.mirror.getDisplayMedia();
   });
+  */
 
   $('.selectCamera').on('change', function(){
-    let newDevice = $(this).val();
+    let newDeviceLabel = $(this).val();
     // TODO: use localstorage to set device preference
-    console.log('change device', newDevice);
-    let device = desktop.mirror.devices.videoinput[newDevice];
-    //    desktop.mirror.startCamera($(this)[0].selectedIndex)
+    desktop.mirror.startCamera(newDeviceLabel)
   });
 
+}
+
+desktop.mirror.openWindow = function openWindow () {
+
+  // when mirror loads, get local cameras and start camera with default setting
+  // this is required for enumerateDevices to have any data
   navigator.mediaDevices.getUserMedia({
     video: true
   }).then(function(stream){
     //desktop.mirror.enumerateDevices();
-    desktop.mirror.startCamera();
+    desktop.mirror.enumerateDevices(function(err, devices){
+      // console.log('starting camera with devices', devices)
+      desktop.mirror.startCamera(desktop.mirror.devices.videoinput[Object.keys(desktop.mirror.devices.videoinput)[0]].label);
+    })
   }).catch((err) => {
-    console.log('errr', err)
+    console.log('error in navigator.mediaDevices.getUserMedia', err)
   });
 
-  
-}
-
-// use for screen shares
-desktop.mirror.getDisplayMedia = function getDisplayMedia () {
-  navigator.mediaDevices.getDisplayMedia({
-    video: true
-  }).then(function(devices){
-    console.log(devices)
-  }).catch((err) => {
-    console.log('errr', err)
-  });
 }
 
 // get all camera and audio devices on local system
@@ -69,6 +62,8 @@ desktop.mirror.enumerateDevices = function enumerateDevices (cb) {
     $('.selectCamera').html('');
     devices.forEach(function(device, i){
       device.index = i;
+      desktop.mirror.alldevices = desktop.mirror.alldevices || {};
+      desktop.mirror.alldevices[device.label] = device;
       desktop.mirror.devices[device.kind] = desktop.mirror.devices[device.kind] || {};
       desktop.mirror.devices[device.kind][device.label] = device;
       if (device.kind === 'videoinput') {
@@ -86,25 +81,19 @@ desktop.mirror.enumerateDevices = function enumerateDevices (cb) {
   });
 }
 
-// opens the camera device
-desktop.mirror.startCamera = function startCamera (deviceIndex) {
-
-  if (typeof deviceIndex === 'undefined') {
-    // TODO: check to see if we have a saved default device in local storage
-    deviceIndex = 0;
-  }
-  // console.log('searching for device index', deviceIndex)
+// opens local camera device and streams it to <video> tag
+// takes in optional device label
+// if no label is provided, will default to first camera found in array
+desktop.mirror.startCamera = function startCamera (deviceLabel) {
+  //console.log('starting with device label: ', deviceLabel)
   desktop.mirror.enumerateDevices(function(err, devices){
-    // console.log('got back devices', devices);
-    let defaultDevice = desktop.mirror.defaultDevice = devices[deviceIndex];
-    // console.log('loading ', defaultDevice.label, defaultDevice.id)
+    let deviceId = desktop.mirror.devices.videoinput[deviceLabel].deviceId;
     navigator.mediaDevices.getUserMedia({
       video: {
-        'deviceId': defaultDevice.deviceId
+        'deviceId': deviceId
       },
       audio: false
-    }).then(function(stream, b, c){
-      // console.log('loading device...', defaultDevice.label);
+    }).then(function(stream){
       stream.getTracks().forEach(function(track) {
         $('.selectCamera').val(track.label)
       });
@@ -112,10 +101,9 @@ desktop.mirror.startCamera = function startCamera (deviceIndex) {
       video.srcObject = stream;
       desktop.mirror.localStream = stream;
     }).catch((err) => {
-      console.log('errr', err)
+      console.log('error in calling navigator.mediaDevices.getUserMedia', err)
     });
   });
-
 }
 
 desktop.mirror.closeWindow = function closeMirrorWindow () {
@@ -128,22 +116,15 @@ desktop.mirror.closeWindow = function closeMirrorWindow () {
   }
 };
 
-
 /*
-
-      TODO: default this html so it doesnt have to repeat for each App...
-      <a class="abs icon" style="left:20px;top:333px;" href="#icon_dock_mirror">
-        <img src="assets/images/icons/icon_32_computer.png" />
-        Mirror
-      </a>
-      
-      <li id="icon_dock_mirror">
-        <a href="#window_mirror">
-          <img src="assets/images/icons/icon_22_computer.png" />
-          Mirror
-        </a>
-      </li>
-      
-
-
+// used for screen shares
+desktop.mirror.getDisplayMedia = function getDisplayMedia () {
+  navigator.mediaDevices.getDisplayMedia({
+    video: true
+  }).then(function(devices){
+    console.log(devices)
+  }).catch((err) => {
+    console.log('errr', err)
+  });
+}
 */

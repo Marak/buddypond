@@ -22,3 +22,8 @@ desktop.profile.load = function loadDesktop() {
 
 };
 
+
+desktop.profile.openWindow = function openWindow () {
+  $('#window_profile').css('height', 510);
+  $('#window_profile').css('width', 440);
+}

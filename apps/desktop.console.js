@@ -2,22 +2,6 @@ desktop.console = {};
 desktop.console.MAX_CONSOLE_OUTPUT = 40;
 
 desktop.console.load = function loadDesktop() {
-  
-  $('#desktop').append(`
-    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_console">
-      <img src="assets/images/icons/icon_console.png" />
-      Console
-    </a>
-    `);
-
-  $('#dock').append(`
-      <li id="icon_dock_console">
-        <a href="#window_console">
-          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
-          Console
-        </a>
-      </li>
-    `);
 
   // Remark: map shortcut method for easily calling `desktop.log()` from apps
   desktop.log = desktop.console.log;

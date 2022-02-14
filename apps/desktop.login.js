@@ -115,6 +115,7 @@ desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
   $('#buddyname').focus();
+  $('#login_desktop_icon').show();
 }
 
 desktop.login.logoutDesktop = function logoutDesktop () {

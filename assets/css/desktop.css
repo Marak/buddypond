@@ -1022,3 +1022,11 @@ video {
 .totalConnected {
   display: none;
 }
+
+.emojiIcon {
+  font-size: 28px;
+}
+
+#login_desktop_icon {
+  display: none;
+}
