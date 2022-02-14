@@ -1,21 +1,30 @@
-- add ESC key to close windows
+Important UX fixes ( do later )
+
+  - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
+  - add UX / reminder about pasword update / no reset link!
+  - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+  - at least make sure UI doesnt crash, add UX indactor for ajax disconnect with desktop.log
+  
+  
+- needs UX for updating password
+  - route for updating password
+  - warning about no email set, do not lose password
+
 - client-side render for buddy list names missing click trigger
-- add total users online to top nav bar
-- add data properties to "Connection Established" drop down
-- add UX / reminder about pasword update / no reset link!
 - cleanup webrtc connection / signal messages in desktop console log
+- fix scroll top issue with console output ( scroll to bottom like chat )
+
+- remember icon position in localstorage, use if available
 
 - video window goes fullscreen on call start
-- if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+- add data properties to "Connection Established" drop down
 
 - complete v1 mirror app
   - camera switcher code
   - mute code
   - screen share as source code?
 
-- needs UX for updating password
-  - route for updating password
-  - warning about no email set, do not lose password
+- complete v1 camera app
 
 Camera
 - dont allow video call to offline buddy
@@ -25,9 +34,20 @@ Camera
 - have ability to add / remove camera share during call, same with screen
 - add mute buttons
 
-- better newMessages = true for UX interaction ( window click / window restore )
-- remove blink login icon from desktop when not logged in ( dynamic icon render? )
+- cleanup codebase ( documentation and DRY )
 
+- fix HTML injection by using jQuery.text on nodes
+  - use css class and .text() instead of string concats
+
+
+- create icons for connected / disconnected
+- create icons for data pulse ( drop in and drop out)
+
+X - add ESC key to close windows
+X - add emojis to chat ( utf-8 support)
+X - better newMessages = true for UX interaction ( window click / window restore )
+X - remove blink login icon from desktop when not logged in ( dynamic icon render? )
+X - add total users online to top nav bar
 X- add online / offline status notification
 X - add local storage for holding qtoken
 X - ensure that subscriberList is updated on chat window close
@@ -39,21 +59,8 @@ X - add back fresh pond / fresh chat default messages
 X - no_chat_messages being hid globally instead of local per user
 X - ensure youtube players player.stop() on close window event ( not minimize event )
 
-- fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
 
-- cleanup codebase ( documentation and DRY )
 
-- add UX indactor for ajax disconnect with desktop.log
-- enter events for joining pond by custom name
-
-- fix HTML injection by using jQuery.text on nodes
-  - use css class and .text() instead of string concats
-- add emojis to chat ( utf-8 support)
-
-- fix scroll top issue with console output ( scroll to bottom like chat )
-
-- create icons for connected / disconnected
-- create icons for data pulse ( drop in and drop out)
 
 1/2 - rig up console to show events ( div instead of textarea )
 
@@ -74,6 +81,7 @@ X - ensure youtube players player.stop() on close window event ( not minimize ev
   mtvPlayer.loadVideoById('1m-KtU88K9Y')
   mtvPlayer.loadVideoById('pNGEqGvz-ds')
 
+X - enter events for joining pond by custom name
 X - connect up window_pond_message ( copy and paste getMessage / sendMessage code for now, its not the same for ponds )
 X - https://github.com/OneSignal/emoji-picker
 X - emoji inputs not clearing text after send, missing click input cursor
@@ -83,7 +91,7 @@ X - add client-side render for approve / deny buddy ( hide link)
 X - add logout link
 X - add login / logout links to toolbar
 X - add loading / waiting for add first buddy
-X - add login UX for splash ( matrix style something if pos )
+XX - add login UX for splash ( matrix style something if pos )
 
 X - fix UX around no buddies / pending buddies ( remove no buddies if pending )
 X - add UX error for when login password is fail

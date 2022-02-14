@@ -9,14 +9,25 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   // this creates 10 windows available for chatting with buddies
   let clone = $('#window_buddy_message_0').html();
   let dockItemClone = $('#icon_dock_buddy_message_0').html();
-
+  let emojiTriggers = [];
+  emojiTriggers.push({
+    selector: '.emoji_picker_10',
+    insertInto: '.buddy_message_text_10'
+  });
   for (let i = 1; i<11; i++) {
+    emojiTriggers.push({
+      selector: '.emoji_picker_' + i,
+      insertInto: '.buddy_message_text_' + i
+    })
     let window_id = 'window_buddy_message_' + i;
-    let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i) + '</div>'
+    let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
+    _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
+    _clone = _clone.replace('emoji_picker_0', 'emoji_picker_' + i);
+    let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + _clone + '</div>'
+    // console.log('appending', buddyChatStr)
     $('#desktop').append(buddyChatStr);
     let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
     dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
-    $('#desktop').append(buddyChatStr);
     $('#dock').append(dockStr);
     // register these new elements into the windowPool
     // these ids are used later when desktop.openWindow('buddy_message') is called
@@ -70,25 +81,20 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
         return false;
       }
   });
-    /*
 
   var tag = document.createElement('script');
   tag.src = "assets/js/emojipicker.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
   tag.onload = function() {
+    // console.log('emojiTriggers', JSON.stringify(emojiTriggers, true, 2))
     new EmojiPicker({
-        trigger: [
-            {
-                selector: '.emojiPicker',
-                insertInto: '.buddy_message_text'
-            }
-        ],
+        trigger: emojiTriggers,
         closeButton: true,
         //specialButtons: green
     });
   }
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    */
 
 }
 
@@ -141,7 +147,7 @@ desktop.updateBuddyList = function updateBuddyList () {
     $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
-    buddypond.getBuddyList(desktop.buddylistProfileState, function(err, data){
+    buddypond.getBuddyProfile(desktop.buddylistProfileState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
         setTimeout(function(){
@@ -150,6 +156,9 @@ desktop.updateBuddyList = function updateBuddyList () {
         return;
       }
       desktop.buddylistProfileState = { updates: {}};
+
+      // updates Profile settings form
+      $('.buddy_email').val(data.email);
 
       //
       // process notifications for buddy

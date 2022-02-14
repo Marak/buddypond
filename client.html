@@ -9,27 +9,35 @@
 
         $('#getbuddy_profile').val('{"updates": {"buddies/Dave":{"newMessages":true,"isAwesome":true},"buddies/Larry":{"newMessages":false}}}')
 
+        $('#updatebuddy_profile').val('{"updates": {"password": "1234", "confirmPassword": "123" }}');
+
         function submitRequest (command) {
           $('.apiResult').val('');
           // var module = $(this).attr('data-module') || 'buddy';
-          
 
           switch(command) {
             case 'authBuddy':
               buddypond.authBuddy($('#buddyname').val(), $('#buddypassword').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
-                $('.qtokenid').val(data)
+                $('.qtokenid').val(data.qtokenid)
                 console.log(err, data)
               });
             break;
-            case 'getBuddyList':
+            case 'getBuddyProfile':
               buddypond.qtokenid = $('.qtokenid').val();
-              buddypond.getBuddyList(JSON.parse($('#getbuddy_profile').val()), function(err, data){
+              buddypond.getBuddyProfile(JSON.parse($('#getbuddy_profile').val()), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
                 console.log(err, data)
               });
             break;
-            case 'sendMessage':
+            case 'updateBuddyProfile':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.updateBuddyProfile(JSON.parse($('#updatebuddy_profile').val()), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+          case 'sendMessage':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.sendMessage($('#message_buddyname').val(), $('#message_text').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -131,21 +139,6 @@
                 console.log(err, data)
               });
             break;
-            case 'offerHandshake':
-              buddypond.qtokenid = $('.qtokenid').val();
-              buddypond.offerHandshake($('#handshake_offer_name').val(), $('#handshake_offer_offer').val(), function(err, data){
-                $('.apiResult').val(JSON.stringify(data, true, 2))
-                console.log(err, data)
-              });
-            break;
-
-           case 'clearHandshake':
-             buddypond.qtokenid = $('.qtokenid').val();
-             buddypond.clearHandshake($('#handshake_clear_name').val(), function(err, data){
-               $('.apiResult').val(JSON.stringify(data, true, 2))
-               console.log(err, data)
-             });
-           break;
 
           default:
             console.log('default command case')
@@ -179,14 +172,22 @@
         <td><button data-command="authBuddy" class="command">Send Request</button></td>
       </tr>
       <tr>
-        <td>buddy.getBuddyList</td>
+        <td>buddy.getBuddyProfile</td>
         <td>
           qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
           profile updates: <input id="getbuddy_profile" value="" type="text" size="88"/>
-          
         </td>
-        <td><button data-command="getBuddyList" class="command">Send Request</button></td>
+        <td><button data-command="getBuddyProfile" class="command">Send Request</button></td>
       </tr>
+      <tr>
+        <td>buddy.updateBuddyProfile</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          profile updates: <input id="updatebuddy_profile" value="" type="text" size="88"/>
+        </td>
+        <td><button data-command="updateBuddyProfile" class="command">Send Request</button></td>
+      </tr>
+      
       <tr>
         <td>buddy.sendMessage</td>
         <td>
@@ -292,41 +293,6 @@
           buddyname: <input id="declinecallbuddy_buddyname" type="text" value="Dave"/>
         </td>
         <td><button data-command="declineCall" class="command">Send Request</button></td>
-      </tr>
-      
-      <tr>
-        <td>handshake.offerHandshake</td>
-        <td>
-          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
-          handshakename: <input id="handshake_offer_name" type="text" value="Marak/Dave"/>
-          offer: <input id="handshake_offer_offer" value="{ hello: 'bob' }" type="text"/>
-        </td>
-        <td><button data-command="offerHandshake" class="command">Send Request</button></td>
-      </tr>
-      <tr>
-        <td>handshake.answerHandshake</td>
-        <td>
-          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
-          handshakename: <input id="handshake_answer_name" type="text" value="Marak/Dave"/>
-          answer: <input id="handshake_answer_answer" value="{ roger: 'sally' }" type="text"/>
-        </td>
-        <td><button data-command="answerHandshake" class="command">Send Request</button></td>
-      </tr>
-      <tr>
-        <td>handshake.getHandshake</td>
-        <td>
-          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
-          handshakename: <input id="handshake_name" type="text" value="Marak/Dave"/>
-        </td>
-        <td><button data-command="getHandshake" class="command">Send Request</button></td>
-      </tr>
-      <tr>
-        <td>handshake.clearHandshake</td>
-        <td>
-          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
-          handshakename: <input id="handshake_clear_name" type="text" value="Marak/Dave"/>
-        </td>
-        <td><button data-command="clearHandshake" class="command">Send Request</button></td>
       </tr>
     </table>
     <hr/>

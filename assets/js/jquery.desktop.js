@@ -105,6 +105,14 @@ var JQD = (function($, window, document, undefined) {
         // Alias to document.
         var d = $(document);
 
+        d.on('keydown', function(event) {
+          if(event.key == "Escape") {
+            // find active open window and close it
+            let topWindow = $('.window_stack').attr('id')
+            JDQX.closeWindow('#' + topWindow);
+          }
+        });
+
         // Cancel mousedown.
         d.mousedown(function(ev) {
           var tags = [
@@ -179,7 +187,7 @@ var JQD = (function($, window, document, undefined) {
         // Make icons draggable.
         d.on('mouseenter', 'a.icon', function() {
           $(this).off('mouseenter').draggable({
-            revert: true,
+            revert: false,
             containment: 'parent'
           });
         });
@@ -402,9 +410,12 @@ JDQX.closeWindow = function closeWindow (el) {
   let closestWindow = $(el).closest('div.window');
   closestWindow.hide();
   $($(el).attr('href')).hide('fast');
+
   let windowType = $(closestWindow).attr('data-window-type');
   let windowContext = $(closestWindow).attr('data-window-context');
   let windowId = $(closestWindow).attr('id').replace('window_', '');
+
+  $('#icon_dock_' + windowId).hide('fast');
 
   // console.log('JDQX.closeWindow', windowId, windowType, windowContext);
 

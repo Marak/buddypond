@@ -19,7 +19,7 @@ desktop.login.load = function loadDesktopLogin () {
       }
 
       // token has not validated, log out the client
-      if (data === false) {
+      if (data.success === false) {
         desktop.login.logoutDesktop();
         desktop.login.openWindow();
       } else {
@@ -55,18 +55,15 @@ desktop.login.auth = function authDesktop (buddyname) {
 
     desktop.log('buddypond.authBuddy <- qtokenid', data);
 
-    desktop.log('Authentication successful');
-
-    localStorage.setItem("qtokenid", data);
-    localStorage.setItem("me", buddypond.me);
-
-    if (data === false) {
+    if (data.success) {
+      desktop.log('Authentication successful');
+      localStorage.setItem("qtokenid", data.qtokenid);
+      localStorage.setItem("me", buddypond.me);
+      buddypond.qtokenid = data.qtokenid;
+      desktop.login.success();
+    } else {
       $('#buddypassword').addClass('error');
       $('.buddyLoginTable .invalidPassword').show()
-      return;
-    } else {
-      buddypond.qtokenid = data;
-      desktop.login.success();
     }
     console.log(err, data)
   });
@@ -92,8 +89,17 @@ desktop.login.success = function desktopLoginSuccess () {
   desktop.removeDockElement('login');
   let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
   $('.connection_ctime').html(dateString)
-  $('.connection_packets_sent').html("1")
-  $('.connection_packets_recieved').html("1")
+  $('.connection_packets_sent').html("1");
+  $('.connection_packets_recieved').html("1");
+
+  // start packets update interval timer
+  setInterval(function(){
+    $('.connection_packets_sent').html(buddypond.packetsSent);
+    $('.connection_packets_recieved').html(buddypond.packetsReceived);
+    $('.connection_average_response_time').html(buddypond.averageResponseTime());
+    $('.connection_last_response_time').html(buddypond.lastResponseTime());
+  }, 1000);
+
 }
 
 desktop.login.openWindow = function desktopLoginOpenWindow () {

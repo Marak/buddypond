@@ -18,3 +18,8 @@ Ideas for community apps:
 - Games
   - small games to pack in main distribution
   - pick js1k winners / entries?
+  
+- Background Manager
+  - user contributed backgrounds
+  - custom canvas animations
+  - set picture as background

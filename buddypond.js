@@ -54,8 +54,14 @@ buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
   })
 }
 
-buddypond.getBuddyList = function getBuddyList (profileUpdates, cb) {
+buddypond.getBuddyProfile = function getBuddyProfile (profileUpdates, cb) {
   apiRequest('/buddies', 'POST', profileUpdates, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.updateBuddyProfile = function updateBuddyProfile (profileUpdates, cb) {
+  apiRequest('/buddies/' + buddypond.me + '/updateProfile', 'POST', profileUpdates, function(err, data){
     cb(err, data);
   })
 }
@@ -131,35 +137,50 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
   })
 }
 
-buddypond.getHandshake = function getHandShake (handshakename, cb) {
-  apiRequest('/handshakes/' + handshakename, 'GET', {
-  }, function(err, data){
-    cb(err, data);
-  })
+//
+// "Packet" tracking here is just used for aestic purposes and not for any real calculations
+//              ( they just for decoration )
+//
+buddypond.packetsSent = 0;
+buddypond.packetsReceived = 0;
+
+buddypond.incrementPackets = function incrementPackets (key) {
+  if (buddypond[key] > 999999) {
+    buddypond[key] = 0;
+  }
+  buddypond[key]++;
 }
 
-buddypond.offerHandshake = function offerHandshake (handshakename, data, cb) {
-  apiRequest('/handshakes/' + handshakename + '/offer', 'POST', {
-    offer: data
-  }, function(err, data){
-    cb(err, data);
-  })
+//
+// Methods for tracking performance of API requests being made from Buddy Pond Client
+//
+buddypond.recentResponseTimes = [];
+
+buddypond.addPerfTime = function addPerfTime (perf) {
+  if (buddypond.recentResponseTimes.length > 55) {
+    buddypond.recentResponseTimes.shift();
+  }
+  buddypond.recentResponseTimes.push(perf);
 }
 
-buddypond.answerHandshake = function answerHandshake (handshakename, data, cb) {
-  apiRequest('/handshakes/' + handshakename + '/answer', 'POST', {
-    answer: data
-  }, function(err, data){
-    cb(err, data);
-  })
+buddypond.averageResponseTime = function averageResponseTime () {
+  let mean = 0;
+  buddypond.recentResponseTimes.forEach(function(perf){
+    let elapsed = perf.end.getTime() - perf.start.getTime();
+    mean += elapsed;
+  });
+  let average = mean / buddypond.recentResponseTimes.length;
+  return Math.floor(average) + 'ms';
 }
 
-buddypond.clearHandshake = function clearHandshake (handshakename, cb) {
-  apiRequest('/handshakes/' + handshakename + '/clear', 'POST', {
-  }, function(err, data){
-    cb(err, data);
-  })
+buddypond.lastResponseTime = function averageResponseTime () {
+  let perf = buddypond.recentResponseTimes[buddypond.recentResponseTimes.length - 1];
+  let elapsed = perf.end.getTime() - perf.start.getTime();
+  return elapsed + 'ms';
 }
+//
+// end methods for tracking API request performance
+//
 
 function apiRequest (uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
@@ -173,6 +194,9 @@ function apiRequest (uri, method, data, cb) {
   if (method === "POST") {
     data = JSON.stringify(data);
   }
+  let perf = {};
+  perf.start = new Date();
+  buddypond.incrementPackets('packetsSent');
   $.ajax({
     "headers": {
        "accept": "application/json"
@@ -191,6 +215,9 @@ function apiRequest (uri, method, data, cb) {
       cb(new Error('AJAX timeout'), res);
     },
     success: function (data){
+      buddypond.incrementPackets('packetsReceived');
+      perf.end = new Date();
+      buddypond.addPerfTime(perf);
       cb(null, data)
     }
   });

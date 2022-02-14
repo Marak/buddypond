@@ -22,6 +22,7 @@ window.top.location = 'ie.html';
 <body>
 <div class="abs" id="wrapper">
   <div class="abs" id="desktop">
+    <canvas id="c"></canvas>
     <a class="abs icon" style="left:20px;top:40px;" href="#icon_dock_buddylist">
       <img src="assets/images/icons/icon_buddylist.png" />
       Buddy List
@@ -29,6 +30,16 @@ window.top.location = 'ie.html';
     <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_buddypond">
       <img src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
+    </a>
+
+    <a class="abs icon" style="left:20px;top:320px;" href="#icon_dock_profile">
+      <img src="assets/images/icons/icon_buddypond.png" />
+      Profile
+    </a>
+
+    <a class="abs icon pauseBackground" style="right:20px;top:40px;" href="#icon_pause_background">
+      <img src="assets/images/icons/icon_buddypond.png" />
+      <span class="label">Pause Wallpaper</span>
     </a>
     
     <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
@@ -102,11 +113,178 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
+    <div id="window_profile" class="abs window">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img height="16" width="16" src="assets/images/icons/icon_dock_console.png" />
+            Profile
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_profile" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main console_holder">
+            <div id="tabs">
+              <ul>
+                <li><a href="#tabs-1">User Profile Settings</a></li>
+                <li><a href="#tabs-2">Buddy Apps</a></li>
+                <li><a href="#tabs-3">Public Profile</a></li>
+              </ul>
+              <div id="tabs-1">
+                <form class="updateProfileForm">
+                  <h2>User Profile Settings</h2>
+                  <table class="profileTable table data">
+                    <tr>
+                      <td>Username</td>
+                      <td class="me">Marak</td>
+                    </tr>
+                    <tr>
+                      <td>Avatar</td>
+                      <td class="me">
+                        <input type="file"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Email</td>
+                      <td class="me">
+                        <input type="text" size="32" name="buddy_email" class="buddy_email" value="buddy@marak.com"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Password</td>
+                      <td>
+                        <input type="password" size="32" name="buddy_password" class="buddy_password"/>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>Confirm Password</td>
+                      <td>
+                        <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
+                      </td>
+                    </tr>
+
+                  </table>
+                  <button type="submit" class="desktopButton updateProfileButton">Update Profile</button>
+                </form>
+              </div>
+              <div id="tabs-2" align="center">
+                <p>TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers</p>
+                <table class="data table">
+                  <tr>
+                    <th>
+                      Enabled
+                    </th>
+                    <th>
+                      App Name
+                    </th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                    </td>
+                    <td>
+                      Profile
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                    </td>
+                    <td>
+                      Buddy List
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled"/>
+                    </td>
+                    <td>
+                      Buddy Pond
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Console
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Background
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Mirror
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Video Chat
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Music TeleVision
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked"/>
+                    </td>
+                    <td>
+                      Interdimensional Cable
+                    </td>
+                  </tr>
+                </table>
+                <br/>
+                <p>
+                  Refresh entire page to for Buddy Apps to reload.
+                </p>
+              </div>
+              <div id="tabs-3">
+                <p>Simple preview of what your Buddy Profile will look like</p>
+                <br/>
+                <div class="border">
+                  <p>Marak</p>
+                  <p>Last Seen: 2/22/2022 14:40pm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+
     <div id="window_console" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_console.png" />
+            <img height="16" width="16" src="assets/images/icons/icon_dock_console.png" />
             Console
           </span>
           <span class="float_right">
@@ -261,8 +439,8 @@ window.top.location = 'ie.html';
               <hr/>
               <div class="chat_send_message_form">
                 <form class="sendMessageForm" method="POST" action="#">
-                  <textarea name="buddy_message_text" class="buddy_message_text" class="two"></textarea>
-                  <img class="emojiPicker" src="assets/images/icons/emoji-glasses.png" width="16" height="16"/>
+                  <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
+                  <img class="emoji_picker_0 emojiPicker" src="assets/images/icons/emoji-glasses.png" width="16" height="16"/>
                   <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
                   <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
                   <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
@@ -450,7 +628,6 @@ window.top.location = 'ie.html';
       </li>
     </ul>
 
-
     <ul class="float_right">
       <li>
         <a class="menu_trigger" href="#">
@@ -463,12 +640,13 @@ window.top.location = 'ie.html';
         <ul class="menu">
           <li>
             Conection Started: <span class="connection_ctime"></span> <br/>
-            Total Packets Sent <span class="connection_packets_sent"></span> <br/>
-            Total Packets Recieved <span class="connection_packets_recieved"></span> <br/>
+            Packets Sent <span class="connection_packets_sent"></span> <br/>
+            Packets Recieved <span class="connection_packets_recieved"></span> <br/>
           </li>
           <li>
-            Average Packet Response Time: 33ms <br/>
-            Server Load <span class="">Low</span> <br/>
+            Last Response Time: <span class="connection_last_response_time">33ms</span> <br/>
+            Average Response Time: <span class="connection_average_response_time">33ms</span> <br/>
+            <!-- Server Load <span class="">Low</span> <br/> -->
           </li>
           
         </ul>
@@ -498,6 +676,12 @@ window.top.location = 'ie.html';
           Pond
         </a>
       </li>
+      <li id="icon_dock_profile">
+        <a href="#window_profile">
+          <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
+          Profile
+        </a>
+      </li>
       <li id="icon_dock_buddy_message_0">
         <a href="#window_buddy_message_0">
           <img src="assets/images/icons/icon_22_network.png" />
@@ -524,18 +708,23 @@ window.top.location = 'ie.html';
   !window.jQuery && document.write(unescape('%3Cscript src="assets/js/jquery.ui.js"%3E%3C/script%3E'));
 </script>
 <script src="assets/js/jquery.desktop.js"></script>
+
 <script src="buddypond.js"></script>
 <script src="desktop.js"></script>
+<script src="apps/desktop.console.js"></script>
 <script src="apps/desktop.login.js"></script>
 <script src="apps/desktop.buddylist.js"></script>
 <script src="apps/desktop.pond.js"></script>
-<script src="apps/desktop.console.js"></script>
+<script src="apps/desktop.background.js"></script>
+<script src="apps/desktop.profile.js"></script>
 <script src="apps/desktop.mirror.js"></script>
 <script src="apps/desktop.interdemoncable.js"></script>
 <script src="apps/desktop.mtv.js"></script>
 <script src="apps/desktop.videochat.js"></script>
 <script src="playlists/mtv.js"></script>
 <script src="playlists/interdemoncable.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 <script>
   $(document).ready(function(){
@@ -546,10 +735,16 @@ window.top.location = 'ie.html';
     desktop.buddylist.load();
     desktop.pond.load();
     desktop.login.load();
-    //desktop.mirror.load();
+    desktop.profile.load();
+    desktop.background.load();
+    desktop.background.start();
+    // desktop.mirror.load();
     //desktop.interdemoncable.load();
     //desktop.mtv.load();
     //desktop.videochat.load();
+    $('#window_profile').show();
+    $('#window_profile').css('height', 510);
+    $('#window_profile').css('width', 440);
     desktop.refresh();
     desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
   });
