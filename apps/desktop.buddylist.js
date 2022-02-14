@@ -104,6 +104,7 @@ desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
   message.text = $('.buddy_message_text', form).val();
   message.to = $('.buddy_message_to', form).val();
   message.from = $('.buddy_message_from', form).val();
+
   if (message.text.trim() === "") {
     return;
   }
@@ -156,7 +157,7 @@ desktop.updateBuddyList = function updateBuddyList () {
         return;
       }
       desktop.buddylistProfileState = { updates: {}};
-
+      desktop.buddyListData = data;
       // updates Profile settings form
       $('.buddy_email').val(data.email);
 
@@ -323,10 +324,7 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function(){
           $(this).parent().hide();
-          
           let buddyName = $(this).attr('data-buddyname');
-          $('.buddylist').append('<li><a class="messageBuddy rainbowLink" href="#">' + buddyName + '</a></li>');
-          
           buddypond.approveBuddy(buddyName, function(err, data){
             $('.apiResult').val(JSON.stringify(data, true, 2))
           });
@@ -386,11 +384,14 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
         message.text = message.text.replace(reg, forbiddenNotes.randowFunWord())
       });
 
+      let str = '';
       if (message.from === buddypond.me) {
-        html[windowId] += '<span class="datetime message">' + message.ctime + ' </span><span class="message">' + message.from + ': ' + message.text + '</span><br/>';
+        str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
       } else {
-        html[windowId] += '<span class="datetime message">' + message.ctime + ' </span><span class="message purple">' + message.from + ': ' + message.text + '</span><br/>';
+        str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
       }
+      $('.chat_messages', windowId).append(str);
+      $('.message', windowId).last().text(message.text)
       desktop.processedMessages.push(message.uuid);
     });
 
@@ -401,7 +402,6 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     for (let key in html) {
       // $('.chat_messages', key).html('');
       $('.no_chat_messages', key).hide();
-      $('.chat_messages', key).append(html[key]);
       // scrolls to bottom of messages on new messages
       let el = $('.chat_messages', key)
       $(el).scrollTop($(el)[0].scrollHeight);

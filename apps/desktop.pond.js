@@ -15,7 +15,6 @@ desktop.pond.load = function loadPond () {
     $('#desktop').append(pondChatStr);
     let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + i)
     dockStr = '<li id="icon_dock_pond_message_' + i +'">' + dockStr + '</li>'
-    $('#desktop').append(pondChatStr);
     $('#dock').append(dockStr);
     // register these new elements into the windowPool
     // these ids are used later when desktop.openWindow('buddy_message') is called
@@ -171,17 +170,21 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     });
 
     html[windowId] = html[windowId] || '';
+
+    let str = '';
     if (message.from === buddypond.me) {
-      html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
+      str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
     } else {
-      html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
+      str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
     }
+    $('.chat_messages', windowId).append(str);
+    $('.message', windowId).last().text(message.text)
     desktop.processedMessages.push(message.uuid);
   });
 
   for (let key in html) {
     //$('.chat_messages', key).html('');
-    $('.chat_messages', key).append(html[key]);
+    // $('.chat_messages', key).append(html[key]);
     $('.no_chat_messages', key).hide();
     // scrolls to bottom of messages on new messages
     let el = $('.chat_messages', key)
