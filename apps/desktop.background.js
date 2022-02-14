@@ -7,16 +7,17 @@ desktop.background.canvas = null;
 
 desktop.background.canvasTimer = null;
 
+desktop.background.paused = false;
 desktop.background.load = function desktopLoadBuddyList () {
-  $('.pauseBackground').on('dblclick', function(){
-    if ($('.pauseBackground span').html() === 'Resume Wallpaper') {
-      $('.pauseBackground span').html('Pause Wallpaper');
-      // might be better to refactor and have actual resume
-      // TODO: fix resume so it doesnt stutter
+  $('.pauseBackground').on('click', function(){
+    if (desktop.background.paused) {
+      desktop.background.paused = false;
       desktop.background.start();
+      $('.label', '.pauseBackground ').html('Pause Wallpaper');
     } else {
+      desktop.background.paused = true;
       clearInterval(desktop.background.canvasTimer);
-      $('.pauseBackground span').html('Resume Wallpaper');
+      $('.label', '.pauseBackground ').html('Resume Wallpaper');
     }
   });
 };

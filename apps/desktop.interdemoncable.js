@@ -9,56 +9,6 @@ desktop.interdemoncable.load = function () {
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  $('#desktop').append(`
-    <a class="abs icon" style="left:20px;top:460px;" href="#icon_dock_interdemoncable">
-      <img src="assets/images/icons/icon_portal.png" />
-      Inter Dimensional Cable
-    </a>`);
-
-  $('#dock').append(`
-    <li id="icon_dock_interdemoncable">
-      <a href="#window_interdemoncable">
-        <img height="22" width="22" src="assets/images/icons/icon_portal.png" />
-        Inter Dimensional cable
-      </a>
-    </li>
-    `);
-
-    $('#desktop').append(`
-    <div id="window_interdemoncable" class="abs window">
-      <div class="abs window_inner">
-        <div class="window_top">
-          <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_portal.png" />
-            Interdimensional Cable
-          </span>
-          <span class="float_right">
-            <a href="#" class="window_min"></a>
-            <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_interdemoncable" class="window_close"></a>
-          </span>
-        </div>
-        <div class="abs window_content">
-          <div class="window_main">
-            <div id="interDemonCableplayer"></div>
-            <div align="center">
-              <a class="desktopButton ponderInterdemoncable orb" href="#">
-                <img src="assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
-              </a>
-              <br/>
-              <br/>
-              <button class="ponderInterdemoncable desktopButton">Ponder the orb for next video</button>
-            </div>
-          </div>
-        </div>
-        <div class="abs window_bottom">
-          Build: v4.20.69
-        </div>
-      </div>
-      <span class="abs ui-resizable-handle ui-resizable-se"></span>
-    </div>
-      `);
-
   $('.ponderInterdemoncable').on('click', function(){
     desktop.playRandomVideo(desktop.interdemoncable.player, desktop.interdemoncable.playlist);
   });

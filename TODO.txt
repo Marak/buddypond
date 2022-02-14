@@ -46,7 +46,7 @@ Camera
 X - add ESC key to close windows
 X - add emojis to chat ( utf-8 support)
 X - better newMessages = true for UX interaction ( window click / window restore )
-X - remove blink login icon from desktop when not logged in ( dynamic icon render? )
+XX - remove blink login icon from desktop when not logged in ( dynamic icon render? )
 X - add total users online to top nav bar
 X- add online / offline status notification
 X - add local storage for holding qtoken

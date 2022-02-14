@@ -79,7 +79,7 @@ desktop.login.success = function desktopLoginSuccess () {
   // $('.qtokenid').val(data);
   $('#window_login').hide();
   $('#login_desktop_icon').hide();
-  $('#logout_desktop_icon').show();
+  $('#profile_desktop_icon').show();
   $('.totalConnected').show();
   $('#window_buddylist').show();
   $('#window_buddylist').css('width', 220);
@@ -108,7 +108,6 @@ desktop.login.success = function desktopLoginSuccess () {
 desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
-  $('#logout_desktop_icon').hide();
   $('#window_login').show();
   $('#window_login').css('width', 800);
   $('#window_login').css('height', 400);

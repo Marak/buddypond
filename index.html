@@ -12,8 +12,7 @@ window.top.location = 'ie.html';
 <![endif]-->
 <link rel="stylesheet" href="assets/css/reset.css" />
 <link rel="stylesheet" href="assets/css/desktop.css" />
-
-
+<link rel="stylesheet" href="assets/css/jquery.ui.css">
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="assets/css/ie.css" />
 <![endif]-->
@@ -24,41 +23,46 @@ window.top.location = 'ie.html';
   <div class="abs" id="desktop">
     <canvas id="c"></canvas>
     <a class="abs icon" style="left:20px;top:40px;" href="#icon_dock_buddylist">
-      <img src="assets/images/icons/icon_buddylist.png" />
+      <span class="emojiIcon">🫂</span><br/>
       Buddy List
     </a>
     <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_buddypond">
       <img src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
     </a>
-    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_console">
-      <img src="assets/images/icons/icon_console.png" />
+    <a class="abs icon" style="left:20px;top:280px;" href="#icon_dock_console">
+      <span class="emojiIcon">💻</span><br/>
       Console
     </a>
-    <a class="abs icon" style="left:20px;top:320px;" href="#icon_dock_profile">
-      <img src="assets/images/icons/icon_buddypond.png" />
+    <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
+      <span class="emojiIcon">🗝️</span><br/>
+      Login
+    </a>
+    <a id="profile_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_profile">
+      <span class="emojiIcon">👤</span><br/>
       Profile
     </a>
-
-    <a class="abs icon" style="left:160px;top:200px;" href="#icon_dock_mirror">
-      <img src="assets/images/icons/icon_buddypond.png" />
+    <a class="abs icon" style="left:110px;top:280px;" href="#icon_dock_mirror">
+      <span class="emojiIcon">🪞</span><br/>
       Mirror
     </a>
-
-    <a class="abs icon pauseBackground" style="right:20px;top:40px;" href="#icon_pause_background">
-      <img src="assets/images/icons/icon_buddypond.png" />
-      <span class="label">Pause Wallpaper</span>
+    <a class="abs icon" style="left:20px;top:440px;" href="#icon_dock_interdemoncable">
+      <span class="emojiIcon">📡</span><br/>
+      Inter Dimensional Cable
     </a>
-    
-    <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
-      <img src="assets/images/icons/icon_32_computer.png" />
-      Login
+    <a class="abs icon" style="left:110px;top:440px;" href="#icon_dock_mtv">
+      <span class="emojiIcon">📺</span><br/>
+      Music Television
+    </a>
+    <a class="abs icon pauseBackground" style="right:20px;top:40px;" href="#icon_pause_background">
+      <span class="emojiIcon">⏯️</span><br/>
+      <span class="label">Pause Wallpaper</span>
     </a>
     <div id="window_login" data-window-type="login" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img src="assets/images/icons/icon_16_computer.png" />
+            <span class="emojiTitleBar">🗝️</span>
             Login
           </span>
           <span class="float_right">
@@ -125,7 +129,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_dock_console.png" />
+            <span class="emojiTitleBar">👤</span>
             Profile
           </span>
           <span class="float_right">
@@ -298,7 +302,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_dock_console.png" />
+            <span class="emojiTitleBar">💻</span>
             Console
           </span>
           <span class="float_right">
@@ -324,7 +328,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_console.png" />
+            <span class="emojiTitleBar">🪞</span>
             Mirror
           </span>
           <span class="float_right">
@@ -357,7 +361,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_buddylist.png" />
+            <span class="emojiTitleBar">🫂</span>
             Buddy List
           </span>
           <span class="float_right">
@@ -429,7 +433,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img src="assets/images/icons/icon_16_network.png" />
+            <span class="emojiTitleBar">🫂</span>
             <span class="window-context-title">Chat</span>
           </span>
           <span class="float_right">
@@ -456,7 +460,7 @@ window.top.location = 'ie.html';
               <div class="chat_send_message_form">
                 <form class="sendMessageForm" method="POST" action="#">
                   <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
-                  <img class="emoji_picker_0 emojiPicker" src="assets/images/icons/emoji-glasses.png" width="16" height="16"/>
+                  <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
                   <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
                   <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
                   <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
@@ -476,7 +480,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
+            <img height="16" width="16" src="assets/images/icons/icon_buddypond.png" />
             <span class="window-context-title">Pond</span>
           </span>
           <span class="float_right">
@@ -559,28 +563,91 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
+    <div id="window_mtv" class="abs window">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <span class="emojiTitleBar">📺</span>
+            Music Television
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_mtv" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main">
+            <div id="mtvPlayer"></div>
+            <div align="center">
+              <a class="desktopButton ponderMTV orb" href="#">
+                <img src="assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
+              </a>
+              <br/>
+              <br/>
+              <button class="ponderMTV desktopButton">Ponder the orb for next video</button>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+    <div id="window_interdemoncable" class="abs window">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img height="16" width="16" src="assets/images/icons/icon_portal.png" />
+            Interdimensional Cable
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_interdemoncable" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main">
+            <div id="interDemonCableplayer"></div>
+            <div align="center">
+              <a class="desktopButton ponderInterdemoncable orb" href="#">
+                <img src="assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
+              </a>
+              <br/>
+              <br/>
+              <button class="ponderInterdemoncable desktopButton">Ponder the orb for next video</button>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
     <div id="window_video_call" class="abs window incoming_call" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
             <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
-            <span class="window-context-title">Incoming Call</span>
+            <span class="window-context-title">Call in progress...</span>
           </span>
           <span class="float_right">
             <a href="#" class="window_min"></a>
             <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_pond_message_0" class="window_close"></a>
+            <a href="#icon_dock_video_call" class="window_close"></a>
           </span>
         </div>
         <div class="abs window_content">
           <div class="window_main" align="center">
             <br/>
             <div class="webCamWindow">
-              <video id="webcamVideo" width="320" height="240" controls>
-                Your browser does not support the video tag.
-              </video>
-              <!--<video id="webcamLocal"/> -->
-              
+              <video autoplay="true" id="chatVideoMe">Your browser does not support the video tag. </video><br/>
+              <video autoplay="true" id="chatVideoBuddy">Your browser does not support the video tag. </video><br/>
             </div>
             <br/>
             
@@ -604,7 +671,6 @@ window.top.location = 'ie.html';
                 <button class="declineIncomingCall desktopButton" type="submit">Decline</button>
               </form>
             </div>
-            
           </div>
         </div>
         <div class="abs window_bottom">
@@ -676,33 +742,45 @@ window.top.location = 'ie.html';
     <ul id="dock">
       <li id="icon_dock_login">
         <a href="#window_login">
-          <img src="assets/images/icons/icon_22_computer.png" />
+          <span class="emojiDockBar">🗝️</span>
           Login
         </a>
       </li>
       <li id="icon_dock_buddylist">
         <a href="#window_buddylist">
-          <img height="22" width="22" src="assets/images/icons/icon_buddylist.png" />
+          <span class="emojiDockBar">🫂</span>
           Buddy List
         </a>
       </li>
       <li id="icon_dock_console">
         <a href="#window_console">
-          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
+          <span class="emojiDockBar">💻</span>
           Console
         </a>
       </li>
       <li id="icon_dock_mirror">
         <a href="#window_mirror">
-          <img height="22" width="22" src="assets/images/icons/icon_console.png" />
+          <span class="emojiDockBar">🪞</span>
           Mirror
         </a>
       </li>
       
       <li id="icon_dock_buddypond">
         <a href="#window_pond">
-          <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
+          <span class="emojiDockBar">🌊</span>
           Pond
+        </a>
+      </li>
+      <li id="icon_dock_mtv">
+        <a href="#window_mtv">
+          <span class="emojiDockBar">📺</span>
+          Music Television
+        </a>
+      </li>
+      <li id="icon_dock_interdemoncable">
+        <a href="#window_interdemoncable">
+          <span class="emojiDockBar">📡</span>
+          Inter Dimensional cable
         </a>
       </li>
       <li id="icon_dock_profile">
@@ -753,7 +831,6 @@ window.top.location = 'ie.html';
 <script src="playlists/mtv.js"></script>
 <script src="playlists/interdemoncable.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 <script>
   $(document).ready(function(){
@@ -768,9 +845,9 @@ window.top.location = 'ie.html';
     desktop.background.load();
     desktop.background.start();
     desktop.mirror.load();
-    //desktop.interdemoncable.load();
-    //desktop.mtv.load();
-    //desktop.videochat.load();
+    desktop.interdemoncable.load();
+    desktop.mtv.load();
+    desktop.videochat.load();
     /*
     $('#window_profile').show();
     */

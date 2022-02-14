@@ -13,9 +13,14 @@ desktop.videochat.load = function loadVideochat () {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
   $('.startVideoCall').on('click', function(){
-    // TODO: where to get buddy name from?
     let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    desktop.videochat.startCall(true, buddyName);
+    // do not attempt to call buddies who are currently offline
+    
+    if (desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
+      desktop.videochat.startCall(true, buddyName);
+    } else {
+      alert('Cant call offline buddy')
+    }
   });
 
   $('.endVideoCall').on('click', function(){
@@ -39,9 +44,9 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
   $('.startVideoCall').css('opacity', '0.4');
   desktop.videochat.CALL_IN_PROGRESS = true;
 
-  $('#window_mirror').show();
+  $('#window_video_call').show();
   JQD.util.window_flat();
-  $('#window_mirror').addClass('window_stack').show();
+  $('#window_video_call').addClass('window_stack').show();
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
     console.log('got back call buddy', err, re)
@@ -77,7 +82,7 @@ desktop.videochat.addLocalCamera = function videoChatAddLocalCamera () {
   }).then(function(stream){
     desktop.videochat.webrtc.addStream(stream) // <- add streams to peer dynamically
     // console.log('got back from devices', stream);
-    var video = document.querySelector("#mirrorVideoMe");
+    var video = document.querySelector("#chatVideoMe");
     video.srcObject = stream;
     desktop.videochat.localStream = stream;
   }).catch((err) => {
@@ -100,7 +105,7 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
 
    p.on('stream', stream => {
      desktop.log(buddyName + ' Camera Connected');
-     var video = document.querySelector("#mirrorVideoBuddy");
+     var video = document.querySelector("#chatVideoBuddy");
      video.srcObject = stream;
      desktop.videochat.remoteStream = stream;
    })

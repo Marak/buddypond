@@ -823,8 +823,10 @@ a:hover {
 
 .webCamWindow {
   border: solid;
+  /*
   width: 220px;
   height: 220px;
+  */
 }
 
 
@@ -1027,6 +1029,24 @@ video {
   font-size: 28px;
 }
 
+.emojiTitleBar {
+  font-size: 16px;
+}
+
+.emojiDockBar {
+  font-size: 22px;
+}
+
+
 #login_desktop_icon {
   display: none;
 }
+
+#profile_desktop_icon {
+  display: none;
+}
+
+.emojiIcon:hover {
+  cursor: pointer;
+}
+
