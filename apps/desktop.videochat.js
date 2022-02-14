@@ -14,13 +14,15 @@ desktop.videochat.load = function loadVideochat () {
 
   $('.startVideoCall').on('click', function(){
     let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    // do not attempt to call buddies who are currently offline
-    
-    if (desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
+    desktop.videochat.startCall(true, buddyName);
+    /*
+    // TODO: do not attempt to call buddies who are currently offline
+    if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
       desktop.videochat.startCall(true, buddyName);
     } else {
-      alert('Cant call offline buddy')
+      alert('Cant call offline buddy. Try again.');
     }
+    */
   });
 
   $('.endVideoCall').on('click', function(){
@@ -40,9 +42,10 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
     return false;
   }
 
+  desktop.videochat.CALL_IN_PROGRESS = true;
+
   $('.endVideoCall').css('opacity', '1');
   $('.startVideoCall').css('opacity', '0.4');
-  desktop.videochat.CALL_IN_PROGRESS = true;
 
   $('#window_video_call').show();
   JQD.util.window_flat();
@@ -189,6 +192,7 @@ desktop.videochat.replaceStream = function replaceStream (index) {
 
 function closeCallWindow () {
   $('#window_video_call').hide();
+  $('.startVideoCall').css('opacity', '1.0');
   desktop.videochat.CALL_IN_PROGRESS = false;
 }
 

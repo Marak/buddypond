@@ -55,6 +55,9 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>')
     desktop.log('buddypond.addBuddy ->', buddyName)
     buddypond.addBuddy(buddyName, function(err, data){
+      if (!data.success) {
+        alert(data.message);
+      }
       desktop.log('buddypond.addBuddy <-', data)
     });
   });
@@ -380,8 +383,7 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       // TODO: filter message.text for html using jquery
       // filter message.text for forbidden words
       forbiddenNotes.decoded.forEach(function(fnote){
-        let reg = new RegExp(fnote, "g");
-        message.text = message.text.replace(reg, forbiddenNotes.randowFunWord())
+        message.text = message.text.replace(new RegExp("\\b"+fnote+"\\b"), forbiddenNotes.randowFunWord())
       });
 
       let str = '';

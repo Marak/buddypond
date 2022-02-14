@@ -27,7 +27,7 @@ window.top.location = 'ie.html';
       Buddy List
     </a>
     <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_buddypond">
-      <img src="assets/images/icons/icon_buddypond.png" />
+      <img class="emojiIcon" src="assets/images/icons/icon_buddypond.png" />
       Buddy Pond
     </a>
     <a class="abs icon" style="left:20px;top:280px;" href="#icon_dock_console">
@@ -75,13 +75,9 @@ window.top.location = 'ie.html';
           <div class="window_main">
             <div class="splash">
               <h1>Welcome to Buddy Pond!</h1>
-              <em>Peer to Peer Buddy Messaging</em>
+              <em>Peer to Peer Buddy Messaging and Video Calls</em>
               <br/>
-              <em>Video and Voice Calls</em>
-              <br/>
-              <em>We don't' store your data</em>
-              <br/>
-              <em>No followers or following counts, just Buddies</em>
+              <em>No followers or following counts, just Buddies!</em>
               <div class="splashImage">
                 <img src="assets/images/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
                 <br/>
@@ -447,8 +443,9 @@ window.top.location = 'ie.html';
             <!--
             <img class="acceptVideoCall" title="Accept Video Call" src="assets/images/icons/phonebooth.png" />
             -->
-            <img class="endVideoCall" title="End Video Call" height="20" width="20" src="assets/images/icons/icon_portal.png" class="context" />
-            <img class="startVideoCall" title="Start Video Call" src="assets/images/icons/phonebooth.png" class="context" />
+            <!-- <span title="End Video Call" class="endVideoCall emojiIcon context">🚫</span> -->
+            
+            <span title="Start Video Call" class="startVideoCall emojiIcon context">📞</span>
             <div class="chatMessagesHolder">
               <div class="no_chat_messages">
                 Your conversation has just started. You can send a message using the form below.
@@ -634,7 +631,7 @@ window.top.location = 'ie.html';
         <div class="window_top">
           <span class="float_left">
             <img width="16" height="16" src="assets/images/icons/icon_buddypond.png" />
-            <span class="window-context-title">Call in progress...</span>
+            <span class="window-context-title">Call in progress</span>
           </span>
           <span class="float_right">
             <a href="#" class="window_min"></a>
@@ -650,7 +647,7 @@ window.top.location = 'ie.html';
               <video autoplay="true" id="chatVideoBuddy">Your browser does not support the video tag. </video><br/>
             </div>
             <br/>
-            
+            <!--
             <div class="callInProgress">
               <h2>CALL IS NOW IN PROGRESS</h2>
             </div>
@@ -671,6 +668,7 @@ window.top.location = 'ie.html';
                 <button class="declineIncomingCall desktopButton" type="submit">Decline</button>
               </form>
             </div>
+            -->
           </div>
         </div>
         <div class="abs window_bottom">
@@ -791,7 +789,7 @@ window.top.location = 'ie.html';
       </li>
       <li id="icon_dock_buddy_message_0">
         <a href="#window_buddy_message_0">
-          <img src="assets/images/icons/icon_22_network.png" />
+          <span class="emojiDockBar">🫂</span>
           <span class="dock_title">
             Chat with X
           </span>
