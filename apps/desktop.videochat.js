@@ -47,9 +47,9 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
   $('.endVideoCall').css('opacity', '1');
   $('.startVideoCall').css('opacity', '0.4');
 
-  $('#window_video_call').show();
+  $('#window_videochat').show();
   JQD.util.window_flat();
-  $('#window_video_call').addClass('window_stack').show();
+  $('#window_videochat').addClass('window_stack').show();
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
     console.log('got back call buddy', err, re)
@@ -174,8 +174,9 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
 
   // clear signal polling timer
   // clear out webrtc connections
-  buddypond.endBuddyCall(buddyName, function fireAndForget(){
+  buddypond.endBuddyCall(buddyName, function endBuddyCall(){
     // TODO: move to setter
+    desktop.videochat.CALL_IN_PROGRESS = false;
   });
 }
 
@@ -189,11 +190,10 @@ desktop.videochat.replaceStream = function replaceStream (index) {
   */
 }
 
-
-function closeCallWindow () {
-  $('#window_video_call').hide();
+desktop.videochat.closeWindow = function closeWindow () {
+  $('#window_videochat').hide();
   $('.startVideoCall').css('opacity', '1.0');
-  desktop.videochat.CALL_IN_PROGRESS = false;
+  desktop.videochat.endCall();
 }
 
 function openCallWindow (buddy, incoming) {
@@ -201,7 +201,7 @@ function openCallWindow (buddy, incoming) {
   // desktop.openWindow('buddy_message', buddy);
   desktop.videochat.CURRENT_CALLER = buddy
 
-  $('#window_video_call').show();
+  $('#window_videochat').show();
 
   $('.callInProgress').hide();
 
@@ -211,14 +211,14 @@ function openCallWindow (buddy, incoming) {
   } else {
     $('.incomingCall').hide();
     $('.outgoingCall').show();
-    $('.window-context-title', '#window_video_call').html('Outgoing Call');
+    $('.window-context-title', '#window_videochat').html('Outgoing Call');
   }
   // bring newly opened window to front
   JQD.util.window_flat();
-  $('#window_video_call').addClass('window_stack').show();
-  $('#window_video_call').css('width', 333);
-  $('#window_video_call').css('height', 444);
-  $('#window_video_call').position({
+  $('#window_videochat').addClass('window_stack').show();
+  $('#window_videochat').css('width', 333);
+  $('#window_videochat').css('height', 444);
+  $('#window_videochat').position({
     my: "right top",
     at: 'left-' + 33 + ' top+' + 0,
     of: "#window_buddylist"

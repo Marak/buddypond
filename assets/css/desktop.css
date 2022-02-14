@@ -1050,3 +1050,6 @@ video {
   cursor: pointer;
 }
 
+.connectionDetails li {
+  padding: 11px;
+}
