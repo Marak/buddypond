@@ -54,6 +54,13 @@ buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
   })
 }
 
+buddypond.banBuddy = function banBuddy (buddyname, cb) {
+  apiRequest('/buddies/' + buddyname + '/ban', 'POST', {
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
 buddypond.getBuddyProfile = function getBuddyProfile (profileUpdates, cb) {
   apiRequest('/buddies', 'POST', profileUpdates, function(err, data){
     cb(err, data);

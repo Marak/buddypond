@@ -62,6 +62,9 @@ desktop.login.auth = function authDesktop (buddyname) {
       buddypond.qtokenid = data.qtokenid;
       desktop.login.success();
     } else {
+      if (data.banned) {
+        alert(data.message);
+      }
       $('#buddypassword').addClass('error');
       $('.buddyLoginTable .invalidPassword').show()
     }

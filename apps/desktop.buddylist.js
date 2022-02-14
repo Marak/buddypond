@@ -378,6 +378,14 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       // accumulate all the message html so we can perform a single document write,
       // instead of a document write per message
       html[windowId] = html[windowId] || '';
+
+      // TODO: filter message.text for html using jquery
+      // filter message.text for forbidden words
+      forbiddenNotes.decoded.forEach(function(fnote){
+        let reg = new RegExp(fnote, "g");
+        message.text = message.text.replace(reg, forbiddenNotes.randowFunWord())
+      });
+
       if (message.from === buddypond.me) {
         html[windowId] += '<span class="datetime message">' + message.ctime + ' </span><span class="message">' + message.from + ': ' + message.text + '</span><br/>';
       } else {
@@ -400,3 +408,4 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     }
     cb(null, true);
 }
+

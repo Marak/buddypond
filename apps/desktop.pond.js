@@ -165,16 +165,22 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     let openPondWindows = desktop.openWindows['pond_message'];
     let windowId = '#' + openPondWindows[message.to]
 
+    forbiddenNotes.decoded.forEach(function(fnote){
+      let reg = new RegExp(fnote, "g");
+      message.text = message.text.replace(reg, forbiddenNotes.randowFunWord())
+    });
+
     html[windowId] = html[windowId] || '';
     if (message.from === buddypond.me) {
       html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span>' + message.from + ': ' + message.text + '</span><br/>';
     } else {
       html[windowId] += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ': ' + message.text + '</span><br/>';
     }
+    desktop.processedMessages.push(message.uuid);
   });
 
   for (let key in html) {
-    $('.chat_messages', key).html('');
+    //$('.chat_messages', key).html('');
     $('.chat_messages', key).append(html[key]);
     $('.no_chat_messages', key).hide();
     // scrolls to bottom of messages on new messages

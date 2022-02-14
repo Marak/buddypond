@@ -14,7 +14,6 @@
         function submitRequest (command) {
           $('.apiResult').val('');
           // var module = $(this).attr('data-module') || 'buddy';
-
           switch(command) {
             case 'authBuddy':
               buddypond.authBuddy($('#buddyname').val(), $('#buddypassword').val(), function(err, data){
@@ -37,7 +36,7 @@
                 console.log(err, data)
               });
             break;
-          case 'sendMessage':
+            case 'sendMessage':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.sendMessage($('#message_buddyname').val(), $('#message_text').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -132,7 +131,14 @@
                 console.log(err, data)
               });
             break;
-            case 'answerHandshake':
+            case 'banBuddy':
+              buddypond.qtokenid = $('.qtokenid').val();
+              buddypond.banBuddy($('#banbuddy_buddyname').val(), function(err, data){
+                $('.apiResult').val(JSON.stringify(data, true, 2))
+                console.log(err, data)
+              });
+            break;
+          case 'answerHandshake':
               buddypond.qtokenid = $('.qtokenid').val();
               buddypond.answerHandshake($('#handshake_answer_name').val(), $('#handshake_answer_answer').val(), function(err, data){
                 $('.apiResult').val(JSON.stringify(data, true, 2))
@@ -251,6 +257,14 @@
           buddyname: <input id="denybuddy_buddyname" type="text" value="Marak"/>
         </td>
         <td><button data-command="denyBuddy" class="command">Send Request</button></td>
+      </tr>
+      <tr>
+        <td>buddy.banBuddy</td>
+        <td>
+          qtokenid: <input id="qtokenid" class="qtokenid" size="44" value="" type="text"/>
+          buddyname: <input id="banbuddy_buddyname" type="text" value="Dave"/>
+        </td>
+        <td><button data-command="banBuddy" class="command">Send Request</button></td>
       </tr>
       <tr>
         <td>buddy.getBuddySignal</td>

@@ -18,6 +18,7 @@ desktop.buddyMessageCache = {};
 
 // messages are processed locally by unique uuid
 // processedMessage[] is used to stored message ids which have already been processed by Desktop Client
+// TODO: trim this after it gets larger then max messages
 desktop.processedMessages = [];
 
 // windowIndex is used to keep track of all created windows
@@ -243,6 +244,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
 // delegates those messages to any applications which expose an App.updateMessaegs() function 
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
+
 desktop.updateMessages = function updateMessages () {
 
   if (!buddypond.qtokenid) {
@@ -286,8 +288,8 @@ desktop.updateMessages = function updateMessages () {
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
-      // console.log('buddypond.getMessages', err, data)
       let newMessages = [];
+      // console.log('buddypond.getMessages', err, data)
       data.messages.forEach(function(message){
         if (desktop.processedMessages.indexOf(message.uuid) === -1) {
           newMessages.push(message)
