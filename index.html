@@ -54,7 +54,7 @@ window.top.location = 'ie.html';
       <span class="emojiIcon">📺</span><br/>
       Music Television
     </a>
-    <a class="abs icon pauseBackground" style="right:20px;top:40px;" href="#icon_pause_background">
+    <a class="abs icon pauseWallpaper" style="right:20px;top:40px;" href="#icon_pause_wallpaper">
       <span class="emojiIcon">⏯️</span><br/>
       <span class="label">Pause Wallpaper</span>
     </a>
@@ -597,7 +597,7 @@ window.top.location = 'ie.html';
       <div class="abs window_inner">
         <div class="window_top">
           <span class="float_left">
-            <img height="16" width="16" src="assets/images/icons/icon_portal.png" />
+            <span class="emojiTitleBar">📡</span>
             Interdimensional Cable
           </span>
           <span class="float_right">
@@ -680,19 +680,19 @@ window.top.location = 'ie.html';
 
   </div>
   <div class="abs" id="bar_top">
-
-    <li>
-      <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
-      <ul class="menu">
-        <li>
-          <a class="loginLink" href="#">Login</a>
-        </li>
-        <li>
-          <a class="logoutLink"  href="#">Logout</a>
-        </li>
-      </ul>
-    </li>
-
+    <ul>
+      <li>
+        <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
+        <ul class="menu">
+          <li>
+            <a class="loginLink" href="#">Login</a>
+          </li>
+          <li>
+            <a class="logoutLink"  href="#">Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
     <span class="float_right" id="clock"></span>
     <ul class="float_right">
       <li>
@@ -820,7 +820,7 @@ window.top.location = 'ie.html';
 <script src="apps/desktop.login.js"></script>
 <script src="apps/desktop.buddylist.js"></script>
 <script src="apps/desktop.pond.js"></script>
-<script src="apps/desktop.background.js"></script>
+<script src="apps/desktop.wallpaper.js"></script>
 <script src="apps/desktop.profile.js"></script>
 <script src="apps/desktop.mirror.js"></script>
 <script src="apps/desktop.interdemoncable.js"></script>
@@ -840,8 +840,8 @@ window.top.location = 'ie.html';
     desktop.pond.load();
     desktop.login.load();
     desktop.profile.load();
-    desktop.background.load();
-    desktop.background.start();
+    desktop.wallpaper.load();
+    desktop.wallpaper.start();
     desktop.mirror.load();
     desktop.interdemoncable.load();
     desktop.mtv.load();
