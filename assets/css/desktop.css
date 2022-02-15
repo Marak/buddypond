@@ -1057,3 +1057,27 @@ video {
 #clock {
   color: black;
 }
+
+.loggedIn {
+  display: none;
+}
+
+.updateProfileResponse {
+  font-size: 18px;
+}
+
+#chatVideoBuddy {
+  width: 300px; 
+  height: 300px;
+}
+
+#chatVideoMe {
+  width: 300px; 
+  height: 300px;
+  float: left;
+}
+
+video {
+  margin: 0px;
+  padding: 0px;
+}

@@ -34,6 +34,11 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     desktop.windowPool['buddy_message'].push(window_id)
   }
 
+  $('#window_buddylist').css('width', 220);
+  $('#window_buddylist').css('height', 440);
+  $('#window_buddylist').css('left', 666);
+  $('#window_buddylist').css('top', 66);
+
   $('.sendMessageForm').on('submit', function(){
     return false;
   })
@@ -137,6 +142,7 @@ desktop.buddylistProfileState = {
   }
 };
 
+
 desktop.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
@@ -150,19 +156,25 @@ desktop.updateBuddyList = function updateBuddyList () {
     // TODO: move this to buddy pond scope
     $('.buddy_pond_not_connected').hide();
     $('.buddyListHolder').show();
+    $('.me').html(buddypond.me);
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
     buddypond.getBuddyProfile(desktop.buddylistProfileState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
+        // TODO: show disconnect error in UX
         setTimeout(function(){
           desktop.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
-      desktop.buddylistProfileState = { updates: {}};
       desktop.buddyListData = data;
+      desktop.buddylistProfileState = { updates: {}};
       // updates Profile settings form
-      $('.buddy_email').val(data.email);
+
+      let currentEmail = $('.buddy_email').val();
+      if (!currentEmail) {
+        $('.buddy_email').val(desktop.buddyListData.email);
+      }
 
       //
       // process notifications for buddy

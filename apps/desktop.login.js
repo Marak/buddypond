@@ -82,10 +82,6 @@ desktop.login.success = function desktopLoginSuccess () {
   $('#profile_desktop_icon').show();
   $('.totalConnected').show();
   $('#window_buddylist').show();
-  $('#window_buddylist').css('width', 220);
-  $('#window_buddylist').css('height', 440);
-  $('#window_buddylist').css('left', 666);
-  $('#window_buddylist').css('top', 111);
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
   desktop.renderDockElement('buddylist');
@@ -94,6 +90,8 @@ desktop.login.success = function desktopLoginSuccess () {
   $('.connection_ctime').html(dateString)
   $('.connection_packets_sent').html("1");
   $('.connection_packets_recieved').html("1");
+
+  $('.loggedIn').show();
 
   // start packets update interval timer
   setInterval(function(){
@@ -120,5 +118,6 @@ desktop.login.openWindow = function desktopLoginOpenWindow () {
 desktop.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid')
   localStorage.removeItem('me')
-  document.location = ".";
+  // TODO: . root?
+  document.location = "index.html";
 }

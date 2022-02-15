@@ -7,7 +7,7 @@ let forbiddenNotes = {
 };
 
 forbiddenNotes.randowFunWord = function randowFunWord () {
-  let words = ["daffodil", "chrysanthemum", "Mrs. Crabapple", "Super Nintendo Chalmers", "The Big Cheese", "paw patrol", "Cocker Spaniel", "David Hasselhoff"];
+  let words = ["daffodil", "chrysanthemum", "waffles", "puppies", "senpai", "kohai", "rainbow", "fluffy"];
   var item = words[Math.floor(Math.random()*words.length)];
   return item;
 }

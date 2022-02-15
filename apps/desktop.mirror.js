@@ -1,13 +1,5 @@
 desktop.mirror = {};
 
-//
-// The mirror will not work if navigator.mediaDevices is not available.
-// Usually, this will only occur if there is SSL / HTTPS certificate issue
-//
-if (!navigator.mediaDevices) {
-  alert('Webcam cannot be accessed: navigator.mediaDevices is undefined. \n\nAre you having HTTPS / SSL issues?');
-}
-
 desktop.mirror.devices = {
   videoinput: {},
   audioinput: {},
@@ -21,13 +13,7 @@ desktop.mirror.load = function loadDesktopMirror () {
   $('#window_mirror').css('left', 200);
   $('#window_mirror').css('top', 44);
 
-  /*
-  $('.getDisplayMedia').on('click', function(){
-    desktop.mirror.getDisplayMedia();
-  });
-  */
-
-  $('.selectCamera').on('change', function(){
+  $('.selectMirrorCamera').on('change', function(){
     let newDeviceLabel = $(this).val();
     // TODO: use localstorage to set device preference
     desktop.mirror.startCamera(newDeviceLabel)
@@ -36,6 +22,14 @@ desktop.mirror.load = function loadDesktopMirror () {
 }
 
 desktop.mirror.openWindow = function openWindow () {
+
+  //
+  // The mirror will not work if navigator.mediaDevices is not available.
+  // Usually, this will only occur if there is SSL / HTTPS certificate issue
+  //
+  if (!navigator.mediaDevices) {
+    alert('navigator.mediaDevices is undefined. \n\nAre you having HTTPS / SSL issues?');
+  }
 
   // when mirror loads, get local cameras and start camera with default setting
   // this is required for enumerateDevices to have any data
@@ -58,8 +52,8 @@ desktop.mirror.enumerateDevices = function enumerateDevices (cb) {
   navigator.mediaDevices.enumerateDevices({
     video: true
   }).then(function(devices){
-    console.log(devices)
-    $('.selectCamera').html('');
+    // console.log(devices)
+    $('.selectMirrorCamera').html('');
     devices.forEach(function(device, i){
       device.index = i;
       desktop.mirror.alldevices = desktop.mirror.alldevices || {};
@@ -68,11 +62,11 @@ desktop.mirror.enumerateDevices = function enumerateDevices (cb) {
       desktop.mirror.devices[device.kind][device.label] = device;
       if (device.kind === 'videoinput') {
         //console.log('device', device.label);
-        $('.selectCamera').append(`<option>${device.label}</option>`);
+        $('.selectMirrorCamera').append(`<option>${device.label}</option>`);
       }
       if (device.kind === 'audioinput') {
         //console.log('device', device.label);
-        $('.selectAudio').append(`<option>${device.label}</option>`);
+        // $('.selectAudio').append(`<option>${device.label}</option>`);
       }
     });
     cb(null, devices)
@@ -95,7 +89,7 @@ desktop.mirror.startCamera = function startCamera (deviceLabel) {
       audio: false
     }).then(function(stream){
       stream.getTracks().forEach(function(track) {
-        $('.selectCamera').val(track.label)
+        $('.selectMirrorCamera').val(track.label)
       });
       var video = document.querySelector("#mirrorVideoMe");
       video.srcObject = stream;

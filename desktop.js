@@ -178,6 +178,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
       $('.buddy_message_text', windowId).focus();
       $('.buddy_message_to', windowId).val(context)
       $('.buddy_message_from', windowId).val(buddypond.me);
+      // can this be removed?
       desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
       desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
     }
@@ -280,7 +281,8 @@ desktop.updateMessages = function updateMessages () {
     buddypond.getMessages(params, function(err, data){
       // console.log('calling back, buddylist.getMessages', err, data);
       if (err) {
-        console.log('error in getting messages', err)
+        console.log('error in getting messages', err);
+        // TODO: show disconnect error in UX
         // if an error has occured, give up on processing messages
         // and retry again shortly
         setTimeout(function(){

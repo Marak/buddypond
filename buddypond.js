@@ -1,6 +1,10 @@
 let buddypond = {}
 
-buddypond.endpoint = 'https://buddypond.com/api/v3';
+if (document.location.protocol === 'https:') {
+  buddypond.endpoint = 'https://buddypond.com/api/v3';
+} else {
+  buddypond.endpoint = 'http://buddypond.com/api/v3';
+}
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
   apiRequest('/auth', 'POST', {

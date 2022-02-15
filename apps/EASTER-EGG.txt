@@ -19,7 +19,11 @@ Ideas for community apps:
   - small games to pack in main distribution
   - pick js1k winners / entries?
   
-- Background Manager
-  - user contributed backgrounds
+- Wallpaper Manager
+  - user contributed wallpapers
   - custom canvas animations
-  - set picture as background
+  - set picture as wallpaper
+
+- Sound FX Board
+  - Use midi fighter button pad with sound fx
+  - add goose sound effect

@@ -3,6 +3,14 @@ desktop.videochat = {};
 desktop.videochat.CALL_IN_PROGRESS = false;
 desktop.videochat.CURRENT_CALLER = null;
 
+desktop.videochat.pollSignal = true;
+
+desktop.videochat.devices = {
+  videoinput: {},
+  audioinput: {},
+  audiooutput: {}
+};
+
 desktop.videochat.load = function loadVideochat () {
   desktop.videochat.loaded = true;
   desktop.log('Loading:', 'App.videochat');
@@ -14,15 +22,12 @@ desktop.videochat.load = function loadVideochat () {
 
   $('.startVideoCall').on('click', function(){
     let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    desktop.videochat.startCall(true, buddyName);
-    /*
     // TODO: do not attempt to call buddies who are currently offline
     if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
       desktop.videochat.startCall(true, buddyName);
     } else {
-      alert('Cant call offline buddy. Try again.');
+      alert('Cant call offline buddy. Try again later.');
     }
-    */
   });
 
   $('.endVideoCall').on('click', function(){
@@ -30,15 +35,67 @@ desktop.videochat.load = function loadVideochat () {
     desktop.videochat.endCall(buddyName);
   });
 
+  $('#window_videochat').css('width', 777);
+  $('#window_videochat').css('height', 666);
+
+  $('.selectCamera').on('change', function(){
+    let newDeviceLabel = $(this).val();
+    // TODO: use localstorage to set device preference
+    desktop.videochat.replaceStream(newDeviceLabel);
+  });
+
+  $('.selectAudio').on('change', function(){
+    let newDeviceLabel = $(this).val();
+    console.log('Changing audio is not available yet');
+    // desktop.videochat.replaceStream(newDeviceLabel);
+  });
+
 }
 
-desktop.videochat.pollSignal = true;
+// get all camera and audio devices on local system
+desktop.videochat.enumerateDevices = function enumerateDevices (cb) {
+  navigator.mediaDevices.enumerateDevices({
+    video: true,
+    audio: true
+  }).then(function(devices){
+    // console.log(devices)
+    $('.selectCamera').html('');
+    $('.selectAudio').html('');
+    devices.forEach(function(device, i){
+      // device.index = i;
+      desktop.videochat.alldevices = desktop.videochat.alldevices || {};
+      desktop.videochat.alldevices[device.label] = device;
+      desktop.videochat.devices[device.kind] = desktop.videochat.devices[device.kind] || {};
+      desktop.videochat.devices[device.kind][device.label] = device;
+      if (device.kind === 'videoinput') {
+        //console.log('device', device.label);
+        $('.selectCamera').append(`<option value="${device.label}">${device.label}</option>`);
+      }
+      if (device.kind === 'audioinput') {
+        //console.log('device', device.label);
+        $('.selectAudio').append(`<option value="${device.label}">${device.label}</option>`);
+      }
+    });
+    cb(null, devices)
+  }).catch((err) => {
+    console.log('error in navigator.mediaDevices.enumerateDevices', err)
+  });
+}
 
 desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb) {
 
+  //
+  // The videochat will not work if navigator.mediaDevices is not available.
+  // Usually, this will only occur if there is SSL / HTTPS certificate issue
+  //
+  if (!navigator.mediaDevices) {
+    alert('navigator.mediaDevices is undefined. \n\nAre you having HTTPS / SSL issues?');
+    return;
+  }
+
   // console.log('desktop.videochat.startCall', isHost, buddyName, desktop.videochat.CALL_IN_PROGRESS);
   if (desktop.videochat.CALL_IN_PROGRESS) {
-    desktop.log('Warning: Ignoring videochat.startCall() since CALL_IS_PROGRESS is true')
+    desktop.log('Warning: Ignoring videochat.startCall() since CALL_IS_PROGRESS is true');
     return false;
   }
 
@@ -52,7 +109,7 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
   $('#window_videochat').addClass('window_stack').show();
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
-    console.log('got back call buddy', err, re)
+    // console.log('got back call buddy', err, re)
     // create local webrtc peer connection,
     desktop.videochat.peer(isHost, buddyName);
     desktop.videochat.pollSignal = true;
@@ -68,7 +125,7 @@ desktop.videochat.startCall = function videoChatStartCall (isHost, buddyName, cb
     buddypond.getBuddySignal(buddypond.me, function(err, data){
       // console.log('buddy.getBuddySignal', err, data);
       if (data && desktop.videochat.webrtc) {
-        desktop.log('You sent you a Signal to: ' + buddyName + ' ' + data.type);
+        console.log('You sent you a Signal to: ' + buddyName + ' ' + data.type);
         desktop.videochat.webrtc.signal(data);
       }
       setTimeout(function(){
@@ -87,7 +144,16 @@ desktop.videochat.addLocalCamera = function videoChatAddLocalCamera () {
     // console.log('got back from devices', stream);
     var video = document.querySelector("#chatVideoMe");
     video.srcObject = stream;
+    video.muted = true;
     desktop.videochat.localStream = stream;
+
+    /*
+      // Remark: this will emulate "Mute" button functionality ( both callers )
+      desktop.videochat.localStream.getAudioTracks().forEach(function(track) {
+        track.enabled = false;
+      });
+    */
+
   }).catch((err) => {
     console.log('errr', err)
   })
@@ -96,10 +162,9 @@ desktop.videochat.addLocalCamera = function videoChatAddLocalCamera () {
 desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
   desktop.log('starting peer connection to: ' + buddyName + ' isHost: ' + isHost);
 
-  // TODO: move this line into setter method?
   if (isHost) {
-    desktop.buddylistProfileState.updates['buddies/' + buddyName] = null;
-    console.log('supdated', 'buddies/' + buddyName, desktop.buddylistProfileState.updates)
+    // can this be removed now?
+    // desktop.buddylistProfileState.updates['buddies/' + buddyName] = null;
   }
 
   const p = desktop.videochat.webrtc = new SimplePeer({
@@ -124,6 +189,8 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
    p.on('error', (err) => {
      console.log('ERROR', err)
      desktop.log('Error: WebRTC peer connection', err);
+     $('#window_console').show();
+     desktop.videochat.endCall(buddyName);
    });
 
    p.on('close', function(err){
@@ -132,9 +199,11 @@ desktop.videochat.peer = function peerVideoChat (isHost, buddyName) {
    }); 
 
    p.on('connect', () => {
-     console.log('CONNECT')
      desktop.log('WebRTC peer connection established');
-     desktop.videochat.addLocalCamera();
+     desktop.videochat.enumerateDevices(function(err, devices){
+       console.log('got back dvices that are ready', err, devices)
+       desktop.videochat.addLocalCamera();
+     });
    });
 
    p.on('data', data => {
@@ -148,17 +217,8 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
   desktop.videochat.pollSignal = false;
   $('.startVideoCall').css('opacity', '1');
   $('.endVideoCall').css('opacity', '0.4');
-  $('#window_mirror').hide();
+  $('#window_videochat').hide();
 
-  if (!desktop.videochat.CALL_IN_PROGRESS) {
-    return false;
-  }
-  desktop.videochat.CALL_IN_PROGRESS = false;
-  desktop.buddylistProfileState.updates["buddies/" + buddyName] = desktop.buddylistProfileState.updates["buddies/" + buddyName] || {};
-  desktop.buddylistProfileState.updates["buddies/" + buddyName].isCalling = false;
-  if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
-    desktop.videochat.webrtc.destroy();
-  }
 
   if (desktop.videochat.localStream && desktop.videochat.localStream.getTracks) {
     desktop.videochat.localStream.getTracks().forEach(function(track) {
@@ -172,6 +232,16 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
     });
   }
 
+  if (!desktop.videochat.CALL_IN_PROGRESS) {
+    return false;
+  }
+  desktop.videochat.CALL_IN_PROGRESS = false;
+  desktop.buddylistProfileState.updates["buddies/" + buddyName] = desktop.buddylistProfileState.updates["buddies/" + buddyName] || {};
+  desktop.buddylistProfileState.updates["buddies/" + buddyName].isCalling = false;
+  if (desktop.videochat.webrtc && desktop.videochat.webrtc.destroy) {
+    desktop.videochat.webrtc.destroy();
+  }
+
   // clear signal polling timer
   // clear out webrtc connections
   buddypond.endBuddyCall(buddyName, function endBuddyCall(){
@@ -180,48 +250,53 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
   });
 }
 
-// TODO: 
-desktop.videochat.replaceStream = function replaceStream (index) {
-  /*
 
-    peer.replaceTrack(oldTrack, newTrack, stream)
-    Replace a MediaStreamTrack with another track. Must also pass the MediaStream that the old track was attached to.
+//
+// Replaces the current video or input device with a new device while streaming
+//
+desktop.videochat.replaceStream = function replaceStream (label) {
+  desktop.videochat.localStream.getTracks().forEach(function(track) {
 
-  */
+    // only replace video devices ( for now )
+    if (track.kind !== 'video') {
+      // console.log('ignoring', track.label)
+      return;
+    }
+    let newDevice = desktop.videochat.alldevices[label]
+
+    desktop.videochat.enumerateDevices(function(err, devices){
+      navigator.mediaDevices.getUserMedia({
+        video: {
+          'deviceId': newDevice.deviceId
+        },
+        audio: false
+      }).then(function(stream){
+        stream.getTracks().forEach(function(newTrack) {
+          if (newTrack.label === label) {
+            desktop.videochat.webrtc.replaceTrack(track, newTrack, desktop.videochat.localStream);
+            var video = document.querySelector("#chatVideoMe");
+            video.srcObject = stream;
+            // desktop.videochat.localStream = stream;
+            
+            // Error: Cannot replace track that was never added.
+            // TODO: allow multiple device switching during stream
+            // desktop.videochat.webrtc.addTrack(newTrack, desktop.videochat.localStream);
+            // desktop.videochat.webrtc.removeTrack(track);
+            
+            $('.selectCamera').val(newTrack.label);
+          }
+        });
+      }).catch((err) => {
+        console.log('error in calling navigator.mediaDevices.getUserMedia', err)
+      });
+    });
+
+  });
+
 }
 
 desktop.videochat.closeWindow = function closeWindow () {
   $('#window_videochat').hide();
   $('.startVideoCall').css('opacity', '1.0');
   desktop.videochat.endCall();
-}
-
-function openCallWindow (buddy, incoming) {
-  // this is required to sub to buddies messages ( can be moved later )
-  // desktop.openWindow('buddy_message', buddy);
-  desktop.videochat.CURRENT_CALLER = buddy
-
-  $('#window_videochat').show();
-
-  $('.callInProgress').hide();
-
-  if (incoming) {
-    $('.outgoingCall').hide();
-    $('.incomingCall').show();
-  } else {
-    $('.incomingCall').hide();
-    $('.outgoingCall').show();
-    $('.window-context-title', '#window_videochat').html('Outgoing Call');
-  }
-  // bring newly opened window to front
-  JQD.util.window_flat();
-  $('#window_videochat').addClass('window_stack').show();
-  $('#window_videochat').css('width', 333);
-  $('#window_videochat').css('height', 444);
-  $('#window_videochat').position({
-    my: "right top",
-    at: 'left-' + 33 + ' top+' + 0,
-    of: "#window_buddylist"
-  });
-
 }

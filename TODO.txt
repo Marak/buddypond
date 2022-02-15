@@ -1,48 +1,42 @@
-Important UX fixes ( do later )
-
-  - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
-  - add UX / reminder about pasword update / no reset link!
-  - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
-  - at least make sure UI doesnt crash, add UX indactor for ajax disconnect with desktop.log
-  
-  
-- needs UX for updating password
-  - route for updating password
-  - warning about no email set, do not lose password
-
-- client-side render for buddy list names missing click trigger
-- cleanup webrtc connection / signal messages in desktop console log
-- fix scroll top issue with console output ( scroll to bottom like chat )
-
-- remember icon position in localstorage, use if available
-
-- video window goes fullscreen on call start
-- add data properties to "Connection Established" drop down
-
-- complete v1 mirror app
-  - camera switcher code
-  - mute code
-  - screen share as source code?
-
 - complete v1 camera app
-
 Camera
-- dont allow video call to offline buddy
-- add screensharing instead of camera as source
-- add ability to set camera source
-- await navigator.mediaDevices.getDisplayMedia
-- have ability to add / remove camera share during call, same with screen
-- add mute buttons
+  ! - camera switching code
+  ! - audio switching code
+  - have ability to add / remove camera share during call, same with screen
+  - add screensharing instead of camera as source
+  - screen share as source code?
+    - await navigator.mediaDevices.getDisplayMedia
+  - add mute buttons
+  X - dont allow video call to offline buddy
 
-- cleanup codebase ( documentation and DRY )
+, add UX indactor for ajax disconnect with desktop.log
+- fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
+X - add UX / reminder about pasword update / no reset link!
 
-- fix HTML injection by using jQuery.text on nodes
-  - use css class and .text() instead of string concats
+PUSHED to post launch
 
+  - create icons for data pulse ( drop in and drop out)
+  - warning about no email set, do not lose password
+  - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+  - cleanup webrtc connection / signal messages in desktop console log
+  - fix scroll top issue with console output ( scroll to bottom like chat )
 
-- create icons for connected / disconnected
-- create icons for data pulse ( drop in and drop out)
+  - remember icon position in localstorage, use if available
+  - cleanup codebase ( documentation and DRY )
+  - create icons for connected / disconnected
 
+X - at least make sure UI doesnt crash on disconnect
+    - should retry on getMessages and getBuddyProfile, needs UX indicator
+
+~X- video window goes fullscreen on call start
+X - client-side render for buddy list names missing click trigger
+X needs UX for updating password
+  X route for updating password
+X - complete v1 mirror app
+  X - camera switcher code
+X - add data properties to "Connection Established" drop down
+X - fix HTML injection by using jQuery.text on nodes
+  X - use css class and .text() instead of string concats
 X - add ESC key to close windows
 X - add emojis to chat ( utf-8 support)
 X - better newMessages = true for UX interaction ( window click / window restore )
@@ -59,16 +53,7 @@ X - add back fresh pond / fresh chat default messages
 X - no_chat_messages being hid globally instead of local per user
 X - ensure youtube players player.stop() on close window event ( not minimize event )
 
-
-
-
 1/2 - rig up console to show events ( div instead of textarea )
-
-- add midi fighter pad with sound fx
-  - goose sound effect
-- add simple paint app
-- add simple notes
-- add fx to mirror app ( finish basic mirror app )
 
 ? - add min display time to loading gifs ( to avoid flicker )
 
