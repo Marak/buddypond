@@ -18,12 +18,39 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
       desktop.wallpaper.pause();
     }
   });
+
+  $('.wallpaperColor').simpleColor({
+    boxHeight: 20,
+    cellWidth: 16,
+    cellHeight: 16,
+    defaultColor: "#008F11",
+    inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
+    chooserCSS: { 'border': '1px solid #660033', 'left': '-315px', 'top': '-225px' },
+    displayCSS: {  },
+    displayColorCode: true,
+    livePreview: true,
+    insert: 'before',
+    onSelect: function(hex, element) {
+      // alert("You selected #" + hex + " for input #" + element.attr('class'));
+      desktop.wallpaper.matrixTextColor = '#' + hex;
+    },
+    onCellEnter: function(hex, element) {
+      desktop.wallpaper.matrixTextColor = '#' + hex;
+      console.log("You just entered #" + hex + " for input #" + element.attr('class'));
+    },
+    onClose: function(element) {
+      // alert("color chooser closed for input #" + element.attr('class'));
+    }
+  });
+  
 };
 
 desktop.wallpaper.pause = function pauseWallpaper () {
   desktop.wallpaper.paused = true;
   clearInterval(desktop.wallpaper.canvasTimer);
 }
+
+desktop.wallpaper.matrixTextColor = "#008F11"; //green text
 
 var drops = []; // matrix specific, can move, scoped outside function to perserve position
 desktop.wallpaper.start = function startWallpaper () {
@@ -59,7 +86,7 @@ desktop.wallpaper.start = function startWallpaper () {
     ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
     ctx.fillRect(0, 0, c.width, c.height);
 
-    ctx.fillStyle = "#008F11"; //green text
+    ctx.fillStyle = desktop.wallpaper.matrixTextColor;
     ctx.font = font_size + "px arial";
     //looping over drops
     for (var i = 0; i < drops.length; i++) {

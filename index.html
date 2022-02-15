@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
 <meta name="description" content="Buddy Pond - A place for buddies to chat." />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Buddy Pond</title>
 <!--[if lt IE 7]>
 <script>
@@ -13,6 +14,7 @@ window.top.location = 'ie.html';
 <link rel="stylesheet" href="assets/css/reset.css" />
 <link rel="stylesheet" href="assets/css/desktop.css" />
 <link rel="stylesheet" href="assets/css/jquery.ui.css">
+
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="assets/css/ie.css" />
 <![endif]-->
@@ -54,10 +56,18 @@ window.top.location = 'ie.html';
       <span class="emojiIcon">📺</span><br/>
       Music Television
     </a>
-    <a class="abs icon pauseWallpaper" style="right:20px;top:40px;" href="#icon_pause_wallpaper">
+    <a class="abs icon pauseWallpaper" style="right:20px;top:40px;width:120px;" href="#icon_pause_wallpaper">
       <span class="emojiIcon">⏯️</span><br/>
       <span class="label">Pause Wallpaper</span>
     </a>
+
+    <!--
+    <a class="abs icon" style="right:20px;bottom:55px;width:120px;" href="#icon_pause_wallpaper">
+      <span class="label">Wallpaper Color</span>
+      <input type="text" class="wallpaperColor"/>
+    </a>
+    -->
+
     <div id="window_login" data-window-type="login" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
@@ -136,13 +146,14 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main console_holder">
-            <div id="tabs">
+            <div id="profileTabs">
               <ul>
                 <li><a href="#tabs-1">User Profile Settings</a></li>
                 <li><a href="#tabs-2">Buddy Apps</a></li>
                 <li><a href="#tabs-3">Public Profile</a></li>
               </ul>
               <div id="tabs-1">
+                <span class="updateProfileResponse"></span>
                 <form class="updateProfileForm">
                   <h2>User Profile Settings</h2>
                   <table class="profileTable table data">
@@ -150,16 +161,18 @@ window.top.location = 'ie.html';
                       <td>Username</td>
                       <td class="me">Marak</td>
                     </tr>
+                    <!--
                     <tr>
                       <td>Avatar</td>
                       <td class="me">
                         <input type="file"/>
                       </td>
                     </tr>
+                    -->
                     <tr>
                       <td>Email</td>
-                      <td class="me">
-                        <input type="text" size="32" name="buddy_email" class="buddy_email" value="buddy@marak.com"/>
+                      <td>
+                        <input type="text" size="32" name="buddy_email" class="buddy_email" value=""/>
                       </td>
                     </tr>
                     <tr>
@@ -175,8 +188,8 @@ window.top.location = 'ie.html';
                         <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
                       </td>
                     </tr>
-
                   </table>
+                  <br/>
                   <button type="submit" class="desktopButton updateProfileButton">Update Profile</button>
                 </form>
               </div>
@@ -279,8 +292,8 @@ window.top.location = 'ie.html';
                 <p>Simple preview of what your Buddy Profile will look like</p>
                 <br/>
                 <div class="border">
-                  <p>Marak</p>
-                  <p>Last Seen: 2/22/2022 14:40pm</p>
+                  <p class="me">Marak</p>
+                  <p>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></p>
                 </div>
               </div>
             </div>
@@ -337,7 +350,7 @@ window.top.location = 'ie.html';
           <div class="window_main mirrorVideoHolder">
             <video autoplay="true" id="mirrorVideoMe"> </video><br/>
             Camera Source
-            <select name="selectCamera" class="selectCamera">
+            <select name="selectMirrorCamera" class="selectMirrorCamera">
             </select>
             <!--
               Audio Source
@@ -371,7 +384,7 @@ window.top.location = 'ie.html';
             <div class="buddy_list_not_connected">
               You'll need to login in order to access your Buddy List.
             </div>
-            <div align="center">
+            <div class="loggedIn" align="center">
               <div>Hello. You look nice today!</div>
               <br/>
               <img class="loading" src="assets/images/animations/loading.gif" width="200" height="200"/>
@@ -491,7 +504,7 @@ window.top.location = 'ie.html';
             <div class="buddy_pond_not_connected">
               You'll need to login in order to access the Buddy Pond.
             </div>
-            <div class="pondNameList">
+            <div class="loggedIn">
               <h2>Join Pond</h2>
               <br/>
               <label for="customPondName">
@@ -641,12 +654,17 @@ window.top.location = 'ie.html';
         </div>
         <div class="abs window_content">
           <div class="window_main" align="center">
-            <br/>
             <div class="webCamWindow">
-              <video autoplay="true" id="chatVideoMe">Your browser does not support the video tag. </video><br/>
-              <video autoplay="true" id="chatVideoBuddy">Your browser does not support the video tag. </video><br/>
+              <video autoplay="true" id="chatVideoMe">Your browser does not support the video tag. </video>
+              <video autoplay="true" id="chatVideoBuddy">Your browser does not support the video tag. </video>
             </div>
             <br/>
+            Video Source
+            <select name="selectCamera" class="selectCamera">
+            </select>
+            Audio Source
+            <select name="selectAudio" class="selectAudio">
+            </select>
             <!--
             <div class="callInProgress">
               <h2>CALL IS NOW IN PROGRESS</h2>
@@ -765,7 +783,7 @@ window.top.location = 'ie.html';
       
       <li id="icon_dock_buddypond">
         <a href="#window_pond">
-          <span class="emojiDockBar">🌊</span>
+          <img height="22" width="22" src="assets/images/icons/icon_buddypond.png" />
           Pond
         </a>
       </li>
@@ -806,12 +824,13 @@ window.top.location = 'ie.html';
     </ul>
   </div>
 </div>
-<script src="assets/js/jquery.dateformat.js"></script>
 
 <script>
   !window.jQuery && document.write(unescape('%3Cscript src="assets/js/jquery.js"%3E%3C/script%3E'));
   !window.jQuery && document.write(unescape('%3Cscript src="assets/js/jquery.ui.js"%3E%3C/script%3E'));
 </script>
+<script src="assets/js/jquery.dateformat.js"></script>
+<script src="assets/js/jquery.simple-color.js"></script>
 <script src="assets/js/jquery.desktop.js"></script>
 <script src="assets/js/forbidden.notes.js"></script>
 <script src="buddypond.js"></script>
@@ -846,6 +865,7 @@ window.top.location = 'ie.html';
     desktop.interdemoncable.load();
     desktop.mtv.load();
     desktop.videochat.load();
+
     /*
     $('#window_profile').show();
     */

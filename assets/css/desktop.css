@@ -1081,3 +1081,7 @@ video {
   margin: 0px;
   padding: 0px;
 }
+
+.wallpaperColor {
+  display:none;
+}
