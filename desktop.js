@@ -87,7 +87,6 @@ desktop.refresh = function refreshDesktop () {
 desktop.openWindow = function openWindow (windowType, context, position) {
 
   let windowTypes = ['buddy_message', 'pond_message']
-  desktop.log('desktop.openWindow', windowType, context)
 
   desktop.openWindows = desktop.openWindows || {};
   desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
@@ -109,6 +108,8 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     }
     return desktop.openWindows[windowType][context];
   }
+
+  desktop.log('desktop.openWindow', windowType, context)
 
   if (desktop.windowIndex[windowType][context]) {
     let windowId = desktop.windowIndex[windowType][context];
