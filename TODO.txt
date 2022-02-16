@@ -1,6 +1,9 @@
+- fix emoji icons, cant use, make icons
+
+
 - complete v1 camera app
 Camera
-  ! - camera switching code
+  X - camera switching code
   ! - audio switching code
   - have ability to add / remove camera share during call, same with screen
   - add screensharing instead of camera as source
@@ -9,7 +12,7 @@ Camera
   - add mute buttons
   X - dont allow video call to offline buddy
 
-, add UX indactor for ajax disconnect with desktop.log
+- add UX indactor for ajax disconnect with desktop.log
 - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
 X - add UX / reminder about pasword update / no reset link!
 

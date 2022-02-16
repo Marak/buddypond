@@ -23,6 +23,7 @@ desktop.ytPlaylist = [
   'cB4dYfFgaME',
   'vSw4JQkzPsE',
   '8D5iyKXZcUQ',
-  'P6z7MuODWjA'
+  'P6z7MuODWjA',
+  '9DvGf2wE-eQ'
 ];
 

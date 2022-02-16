@@ -1027,6 +1027,8 @@ video {
 
 .emojiIcon {
   font-size: 28px;
+  height: 16px;
+  width: 16px;
 }
 
 .emojiTitleBar {

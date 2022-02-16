@@ -8,8 +8,8 @@ let desktop = {};
 // time the desktop object was created in browser
 desktop.ctime = new Date();
 
-// default timeout between AJAX requests ( 3 seconds )
-desktop.DEFAULT_AJAX_TIMER = 3000;
+// default timeout between AJAX requests ( 1 seconds )
+desktop.DEFAULT_AJAX_TIMER = 1000;
 
 // keep a cache object for buddylist data and messages to prevent re-renders
 // this is garbage collected on every updated run, so it should never grow

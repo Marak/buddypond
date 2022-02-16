@@ -25,22 +25,16 @@ desktop.pond.load = function loadPond () {
 
   $('#window_pond').css('width', 300);
   $('#window_pond').css('height', 340);
+  $('#window_pond').css('left', 33);
+  $('#window_pond').css('top', 66);
 
   $('.pondNameList').hide();
   $('.pondMessagesHolder').hide();
-  
-
-  /*
-  $('.messagePond').on('click', function(){
-    let context = $(this).html();
-    desktop.openWindow('pond_message', context);
-  });
-  */
 
   $('.sendPondMessage').on('click', function(){
     desktop.pond.sendMessage(this);
     return false;
-  })
+  });
 
   $('.pond_message_text').bind("enterKey",function(e){
     desktop.pond.sendMessage(this);
@@ -82,7 +76,7 @@ desktop.pond.openWindow = function (context) {
   let topPadding = 10;
   
   if (!buddypond.qtokenid) {
-    return;
+    // return;
   }
   let windowKey = desktop.openWindow('pond_message', context, {
     of: "#window_pond"
