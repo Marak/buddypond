@@ -131,6 +131,7 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     desktop.openWindow('pond_message', 'Lily');
   }
 
+  // TODO: can we remove this?
   let str = JSON.stringify(data);
   // TODO: use key count for garbage collection and trim if size grows
   if (desktop.buddyMessageCache[str]) {

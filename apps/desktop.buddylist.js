@@ -407,6 +407,8 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       $('.chat_messages', windowId).append(str);
       $('.message', windowId).last().text(message.text)
       desktop.processedMessages.push(message.uuid);
+      desktop.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
+      desktop.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
     });
 
     //

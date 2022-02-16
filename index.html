@@ -19,6 +19,14 @@ window.top.location = 'ie.html';
 <link rel="stylesheet" href="assets/css/ie.css" />
 <![endif]-->
 
+<!--
+<script type="text/javascript">
+  if (screen.width <= 699) {
+    document.location = "mobile.html";
+  }
+</script>
+-->
+
 </head>
 <body>
 <div class="abs" id="wrapper">
@@ -60,13 +68,6 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="assets/images/icons/icon_playpause.png" />
       <span class="label">Pause Wallpaper</span>
     </a>
-
-    <!--
-    <a class="abs icon" style="right:20px;bottom:55px;width:120px;" href="#icon_pause_wallpaper">
-      <span class="label">Wallpaper Color</span>
-      <input type="text" class="wallpaperColor"/>
-    </a>
-    -->
 
     <div id="window_login" data-window-type="login" class="abs window">
       <div class="abs window_inner">
@@ -194,7 +195,8 @@ window.top.location = 'ie.html';
                 </form>
               </div>
               <div id="tabs-2" align="center">
-                <p align="left"><span class="emojiIcon" title="Custom Desktop App Configurations coming soon!">🔒</span>
+                <p align="left">
+                  <img title="Custom Desktop App Configurations coming soon!" height="32" width="32" src="assets/images/icons/icon_locked.png" />
                   Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
                   <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
                   
@@ -305,7 +307,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
 
     <div id="window_console" class="abs window">
       <div class="abs window_inner">
@@ -849,6 +850,7 @@ window.top.location = 'ie.html';
 <script src="playlists/interdemoncable.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
+
 <script>
   $(document).ready(function(){
     desktop.log('jQuery Desktop initialized');
@@ -865,14 +867,11 @@ window.top.location = 'ie.html';
     desktop.interdemoncable.load();
     desktop.mtv.load();
     desktop.videochat.load();
-
-    /*
-    $('#window_profile').show();
-    */
     desktop.refresh();
     desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+    
   });
 </script>
-
+<div class="some-element"></div>
 </body>
 </html>

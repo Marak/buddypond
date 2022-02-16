@@ -1,5 +1,9 @@
-- fix emoji icons, cant use, make icons
-
+- add 10 more music videos to mtv
+- add wallpaper color picker to Preferences
+- adjust UI of chat messages and windowpopups
+- fix mouse events for mobile ( drag not working , double click vs click)
+- dblclick / singleclick for mobile
+- swap online / offline emoji icons for images
 
 - complete v1 camera app
 Camera
@@ -12,9 +16,8 @@ Camera
   - add mute buttons
   X - dont allow video call to offline buddy
 
-- add UX indactor for ajax disconnect with desktop.log
+- add UX indactor for ajax disconnect with desktop.log and top right bar
 - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
-X - add UX / reminder about pasword update / no reset link!
 
 PUSHED to post launch
 
@@ -30,6 +33,9 @@ PUSHED to post launch
 
 X - at least make sure UI doesnt crash on disconnect
     - should retry on getMessages and getBuddyProfile, needs UX indicator
+
+X - add UX / reminder about pasword update / no reset link!
+X - fix emoji icons, cant use, make icons
 
 ~X- video window goes fullscreen on call start
 X - client-side render for buddy list names missing click trigger

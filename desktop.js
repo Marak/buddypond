@@ -16,6 +16,7 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 desktop.buddyListDataCache = {};
 desktop.buddyMessageCache = {};
 
+
 // messages are processed locally by unique uuid
 // processedMessage[] is used to stored message ids which have already been processed by Desktop Client
 // TODO: trim this after it gets larger then max messages
@@ -173,6 +174,18 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     $(windowId).position(position);
     
     if (windowType === 'buddy_message') {
+
+      // invalidate previous processed messages for this buddy
+      desktop.processedMessages = desktop.processedMessages.filter(function(uuid){
+        if (desktop.buddyMessageCache[buddypond.me + '/' + context]) {
+          console.log('checking for uuid', uuid, 'in', desktop.buddyMessageCache[buddypond.me + '/' + context])
+          console.log(desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid))
+          if (desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
+            return false
+          }
+        }
+        return true;
+      });
 
       // TODO: move this to buddylist.openWindow function
       $('.buddy_message_text', windowId).focus();
