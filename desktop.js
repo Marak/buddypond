@@ -98,7 +98,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
   let windowKey;
 
   if (desktop.openWindows[windowType][context]) {
-    console.log('window already open, doing nothing', desktop.openWindows[windowType][context])
+    // console.log('window already open, doing nothing', desktop.openWindows[windowType][context])
     // if the window is open and not visible, it means it is minimized
     let el = ('#' + desktop.openWindows[windowType][context]);
     let dockEl = ('#' + desktop.openWindows[windowType][context]).replace('window_', 'icon_dock_');
@@ -113,7 +113,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
   if (desktop.windowIndex[windowType][context]) {
     let windowId = desktop.windowIndex[windowType][context];
     windowKey = '#' + windowId;
-    console.log('reopening window id', windowId)
+    // console.log('reopening window id', windowId)
     // TODO: check to see if window is min, if so, open it from dock
     // desktop.renderDockElement(windowType + '_' + window_id, context);
     JQD.util.window_flat();
