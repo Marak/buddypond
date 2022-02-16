@@ -10,13 +10,12 @@ desktop.mtv.load = function () {
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-
   $('.ponderMTV').on('click', function(){
     desktop.playRandomVideo(desktop.mtv.player, desktop.ytPlaylist);
   });
 
   $('#window_mtv').css('width', 644);
-  $('#window_mtv').css('height', 666);
+  $('#window_mtv').css('height', 590);
 };
 
 desktop.mtv.closeWindow = function () {

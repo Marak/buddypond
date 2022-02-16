@@ -14,10 +14,10 @@ desktop.interdemoncable.load = function () {
   });
 
   $('#window_interdemoncable').css('width', 644);
-  $('#window_interdemoncable').css('height', 666);
+  $('#window_interdemoncable').css('height', 590);
 
   $('#window_interdemoncable').css('left', 777);
-  $('#window_interdemoncable').css('top', 30);
+  $('#window_interdemoncable').css('top', 40);
 };
 
 desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
