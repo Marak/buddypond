@@ -11,6 +11,19 @@
 window.top.location = 'ie.html';
 </script>
 <![endif]-->
+
+<!-- Redirect to the mobile site for smaller screened devices -->
+<script type="text/javascript">
+  if (window.location.search === '?desktop=enabled') {
+    // if the desktop is enabled, load as normal
+  } else {
+    // if desktop enabled flag is not set, check screen size for mobile device
+    if (screen.width <= 699) {
+      document.location = "mobile.html";
+    }
+  }
+</script>
+
 <link rel="stylesheet" href="desktop/assets/css/reset.css" />
 <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
 <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
@@ -18,14 +31,6 @@ window.top.location = 'ie.html';
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="desktop/assets/css/ie.css" />
 <![endif]-->
-
-<!-- TODO: fix mobile page
-<script type="text/javascript">
-  if (screen.width <= 699) {
-    document.location = "mobile.html";
-  }
-</script>
--->
 
 </head>
 <body>
