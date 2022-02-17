@@ -16,7 +16,7 @@ desktop.videochat.load = function loadVideochat () {
   desktop.log('Loading:', 'App.videochat');
 
   var tag = document.createElement('script');
-  tag.src = "assets/js/simplepeer.min.js";
+  tag.src = "desktop/assets/js/simplepeer.min.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 

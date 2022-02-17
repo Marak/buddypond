@@ -282,7 +282,7 @@ var JQD = (function($, window, document, undefined) {
       wallpaper: function() {
         // Add wallpaper last, to prevent blocking.
         if ($('#desktop').length) {
-          $('body').prepend('<img id="wallpaper" class="abs" src="assets/images/misc/wallpaper.jpg" />');
+          $('body').prepend('<img id="wallpaper" class="abs" src="desktop/assets/images/misc/wallpaper.jpg" />');
         }
       }
     },

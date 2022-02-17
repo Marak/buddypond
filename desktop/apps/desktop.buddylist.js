@@ -91,7 +91,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   });
 
   var tag = document.createElement('script');
-  tag.src = "assets/js/emojipicker.js";
+  tag.src = "desktop/assets/js/emojipicker.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
