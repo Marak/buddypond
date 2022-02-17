@@ -15,6 +15,10 @@ We've got a free hosted client available at: [https://buddypond.com](https://bud
 
 You can sign in immediately using a new unique username and passcode.
 
+<img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/>
+
+<img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/>
+
 ## Downloading Buddy Pond
 
 If you want to run your own Buddy Pond it's very simple. Literally just open the `index.html` file in your browser.
@@ -22,8 +26,6 @@ If you want to run your own Buddy Pond it's very simple. Literally just open the
 ### Installation
 
 Download Buddy Pond as zip... [https://github.com/Marak/buddypond/archive/refs/heads/master.zip](https://github.com/Marak/buddypond/archive/refs/heads/master.zip)
-
-
 
 ...or you can use `git` to clone Buddy Pond.
 
@@ -46,7 +48,7 @@ This will start the Buddy Pond application. Open the web interface in your local
 
 The `file://` protocol should support all core features like: Buddy List, Buddy Messaging, and Ponds
 
-The `https://` protocol is required for more advanced features like: Video Calls or third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
+The `https://` protocol is required for more advanced features. Video Calls and third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
 
 To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML directory and Buddy Pond will be accessible.
 
@@ -68,29 +70,74 @@ Buddy Pond communicates via REST API calls to the Buddy Pond Server.
 
 **Open `client.html` for interactive REST examples**
 
-**Get Auth Token**
-curl -d buddyname=Dave -d buddypassword=asd "http://localhost:8080/api/v3/auth"
+**Sign Up or Get Auth Token for existing account**
+
+```
+curl -X POST "https://buddypond.com/api/v3/auth"  -H 'Content-Type: application/json' -d '{"buddyname":"Dave2","buddypassword":"asd"}'
+```
+
+Return the `qtokenid` uuid which must be used for all subsequent calls to the API session.
 
 **Send Buddy Request**
-curl -H "qtokenid: abcd1234" -X POST "http://localhost:8080/api/v3/buddies/Marak/addbuddy"
+
+```
+curl -X POST "https://buddypond.com/api/v3/buddies/Marak/addbuddy"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
+```
 
 **Send Message To Buddy**
-curl -H "qtokenid: abcd1234" -d buddytext=hello "http://localhost:8080/api/v3/buddies/Marak/message"
 
-**Get Buddy Messages**
-curl -H "qtokenid: abcd1234" "http://localhost:8080/api/v3/buddies/Marak/message"
+```
+curl -X POST "https://buddypond.com/api/v3/messages/buddy/Marak"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196", "text": "hello buddy!"}'
+
+```
+
+**Get Messages**
+
+```
+curl -X POST "https://buddypond.com/api/v3/messages/getMessages"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196", "buddyname": "Marak,Dave", "pondname": "Lily"}'
+
+```
 
 **Get Buddy List and Buddy Requests**
-curl -H "qtokenid: 27727B46-6D5B-4DC7-98CF-CFC54BF86B24" "http://localhost:8080/api/v3/buddies"
+
+```
+curl -X POST "https://buddypond.com/api/v3/buddies"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
+
+```
 
 **Approve Buddy Request**
-curl -H "qtokenid: abcd1234" POST "http://localhost:8080/api/v3/buddies/Marak/approve"
+
+```
+curl -X POST "https://buddypond.com/api/v3/buddies/Marak/approve"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
+
+```
 
 **Deny Buddy Request**
-curl -H "qtokenid: abcd1234"  POST "http://localhost:8080/api/v3/buddies/Marak/deny"
+
+```
+curl -X POST "https://buddypond.com/api/v3/buddies/Marak/deny"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
+
+```
 
 **Remove Buddy from Buddy List**
-curl -H "qtokenid: abcd1234"  POST "http://localhost:8080/api/v3/buddies/Marak/remove"
+
+```
+curl -X POST "https://buddypond.com/api/v3/buddies/Marak/remove"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
+
+```
+
+## Buddy Pond Mobile Client
+
+The mobile friendly client is in progress. We have stubs placed in `./mobile` and will have a version of Buddy Pond working for iOS a and Andriod soon. Please [reach out](https://github.com/Marak/buddypond/issues) if you can help!
+
+## Buddy Pond Backend Server
+So you've made it to the end of the `ReadMe.md`? Neat.
+
+Buddy Pond consists of a backend server and front-end client.
+
+In order to start your own private Buddy Pond ( not federated ) you can dowload the Buddy Pond Server at [https://github.com/marak/buddypond-server](https://github.com/marak/buddypond-server)
+
+Once you have your own Buddy Server running you can modify `./sdk/buddypond.js` to point to your server endpoint over HTTP.
 
 ### License
 All rights reserved Marak Squires 2022
