@@ -11,9 +11,9 @@
 
 ## Quick Start
 
-We've got a free hosted client available at: [https://buddypond.com](https://buddypond.com)
+Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
 
-You can sign in immediately using a new unique username and passcode.
+You can sign in immediately with a new unique username and passcode.
 
 <a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/></a>
 <a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/></a>
