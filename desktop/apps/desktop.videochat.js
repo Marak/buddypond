@@ -219,7 +219,6 @@ desktop.videochat.endCall = function videoChatEndCall (buddyName, cb) {
   $('.endVideoCall').css('opacity', '0.4');
   $('#window_videochat').hide();
 
-
   if (desktop.videochat.localStream && desktop.videochat.localStream.getTracks) {
     desktop.videochat.localStream.getTracks().forEach(function(track) {
       track.stop();

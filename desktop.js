@@ -109,8 +109,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     return desktop.openWindows[windowType][context];
   }
 
-  // TODO: figure out why this is spamming
-  desktop.log('desktop.openWindow', windowType, context)
+  desktop.log(`desktop.openWindow("${windowType}", "${context}")`);
 
   if (desktop.windowIndex[windowType][context]) {
     let windowId = desktop.windowIndex[windowType][context];

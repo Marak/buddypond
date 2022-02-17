@@ -109,14 +109,13 @@ desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
     return;
   }
 
-  // TODO: have console display more info about event
-  $('.console').val(JSON.stringify(message, true, 2));
+  // desktop.log(`${message.from} sent message to ${message.to}`);
 
   // empty text area input
   $('.buddy_message_text', form).val('');
   $('.emoji-wysiwyg-editor').html("");
   buddypond.sendMessage(message.to, message.text, function(err, data){
-    console.log('buddypond.sendMessage', err, data)
+    // console.log('buddypond.sendMessage', err, data)
   });
 }
 
