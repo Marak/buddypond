@@ -94,7 +94,7 @@ desktop.pond.openWindow = function (context) {
 
 desktop.pond.sendMessage = function sendPondMessage (context) {
   let message = {};
-  console.log('desktop.pond.sendMessage context', context);
+  // console.log('desktop.pond.sendMessage context', context);
   var form = $(context).parent();
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
@@ -109,9 +109,9 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
   // empty text area input
   $('.pond_message_text', form).val('');
   // $('.emoji-wysiwyg-editor').html("");
-  console.log('sending the message to pond', message)
+  //console.log('sending the message to pond', message)
   buddypond.pondSendMessage(message.to, message.text, function(err, data){
-    console.log('buddypond.pondSendMessage', err, data)
+    //console.log('buddypond.pondSendMessage', err, data)
   });
 }
 

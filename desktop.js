@@ -164,15 +164,12 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     } else {
       
     }
-    console.log('first', first)
-    console.log('openNextTo', openNextTo)
 
     position = position || {}
     position.my = position.my || "left top",
     position.at = position.at || 'right top',
     position.of = position.of || openNextTo
 
-    console.log("using position", windowId, position)
     $(windowId).position(position);
     
     if (windowType === 'buddy_message') {
@@ -180,8 +177,6 @@ desktop.openWindow = function openWindow (windowType, context, position) {
       // invalidate previous processed messages for this buddy
       desktop.processedMessages = desktop.processedMessages.filter(function(uuid){
         if (desktop.buddyMessageCache[buddypond.me + '/' + context]) {
-          console.log('checking for uuid', uuid, 'in', desktop.buddyMessageCache[buddypond.me + '/' + context])
-          console.log(desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid))
           if (desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
             return false
           }
@@ -226,7 +221,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
   desktop.openWindows = desktop.openWindows || {};
   desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
 
-  console.log('pushing window back into pool', desktop.openWindows[windowType][context])
+  // console.log('pushing window back into pool', desktop.openWindows[windowType][context])
 
   // Since the window is now closed, we can push it back into the windowPool,
   // based on it's windowType and context
