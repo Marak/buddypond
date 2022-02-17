@@ -1,29 +1,37 @@
-# buddy pond ( alpha )
-## a pond for buddies
+# Buddy Pond ( Alpha )
+## *a place for buddies*
+[https://buddypond.com](https://buddypond.com)
 
- - Buddy Messaging
+ - Instant Buddy Messaging
  - Video and Audio Calls
+ - Chat rooms ( we call them "Ponds" )
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API
 
 ## Quick Start
 
-Free hosted client available at: url
+We've got a free hosted client available at: [https://buddypond.com](https://buddypond.com)
 
-You can sign in immediately using a new unique user name and passcode
+You can sign in immediately using a new unique username and passcode.
 
-### Download locally and Start Messaging Buddies Now
+## Downloading Buddy Pond
+
+If you want to run your own Buddy Pond it's very simple. Literally just open the `index.html` file in your browser.
 
 ### Installation
 
-Download Zip File TODO
+Download Buddy Pond as zip... [https://github.com/Marak/buddypond/archive/refs/heads/master.zip](https://github.com/Marak/buddypond/archive/refs/heads/master.zip)
+
+
+
+...or you can use `git` to clone Buddy Pond.
 
 ```
 git clone  --depth 1 git@github.com:Marak/buddypond.git
 ```
 
-*cloning the pond*
+Once you have downloaded a local Buddy Pond you can start it!
 
 ### Starting Buddy Pond from file system
 
@@ -36,11 +44,11 @@ This will start the Buddy Pond application. Open the web interface in your local
 
 ### Starting Buddy Pond with HTTPS / SSL
 
-Core features like buddy list, buddy messaging, and ponds will all work locally over the `file://` protocol.
+The `file://` protocol should support all core features like: Buddy List, Buddy Messaging, and Ponds
 
-More advanced features such as Video Calls or third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
+The `https://` protocol is required for more advanced features like: Video Calls or third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
 
-To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML folder and Buddy Pond will be accessible.
+To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML directory and Buddy Pond will be accessible.
 
 ### Deploying your Buddy Pond
 
@@ -48,7 +56,7 @@ The easiest way to deploy Buddy Pond is to publish this entire folder to any web
 
 ## API Rest Client
 
-Interactive API Testing Page: /client.html
+Interactive API Testing Page: /sdk/client.html
 
 JavaScript buddypond.js API client: buddypond.js
 

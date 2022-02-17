@@ -35,6 +35,10 @@ PUSHED to post launch
   - cleanup codebase ( documentation and DRY )
   - create icons for connected / disconnected
 
+
+- youtube playrandom video should not play the same video twice ( check N times before quit )
+- youtube player should keep temporary play history for back button ( easy patch )
+
 X - at least make sure UI doesnt crash on disconnect
     - should retry on getMessages and getBuddyProfile, needs UX indicator
 
