@@ -77,6 +77,20 @@ li {
   color: black;
 }
 
+.desktopButton {
+  /*
+  background-color: black;
+  color: #00FF41;
+  */
+  cursor: pointer;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 4px;
+}
+
 .mainWindows {
   padding-top: 32px;
   
