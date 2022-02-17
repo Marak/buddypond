@@ -18,7 +18,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
     emojiTriggers.push({
       selector: '.emoji_picker_' + i,
       insertInto: '.buddy_message_text_' + i
-    })
+    });
     let window_id = 'window_buddy_message_' + i;
     let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
     _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
@@ -90,19 +90,11 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
       }
   });
 
-  var tag = document.createElement('script');
-  tag.src = "desktop/assets/js/emojipicker.js";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  tag.onload = function() {
-    // console.log('emojiTriggers', JSON.stringify(emojiTriggers, true, 2))
-    new EmojiPicker({
-        trigger: emojiTriggers,
-        closeButton: true,
-        //specialButtons: green
-    });
-  }
+  new EmojiPicker({
+      trigger: emojiTriggers,
+      closeButton: true,
+      //specialButtons: green
+  });
 
 }
 
