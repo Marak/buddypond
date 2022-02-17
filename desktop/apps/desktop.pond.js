@@ -74,11 +74,13 @@ desktop.pond.load = function loadPond () {
     }
   });
 
+  /*
   new EmojiPicker({
       trigger: emojiTriggers,
       closeButton: true,
       //specialButtons: green
   });
+  */
 
 };
 
