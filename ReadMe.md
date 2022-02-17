@@ -15,9 +15,9 @@ We've got a free hosted client available at: [https://buddypond.com](https://bud
 
 You can sign in immediately using a new unique username and passcode.
 
-<img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/>
+<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/></a>
+<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/></a>
 
-<img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/>
 
 ## Downloading Buddy Pond
 
@@ -56,27 +56,24 @@ To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *thi
 
 The easiest way to deploy Buddy Pond is to publish this entire folder to any web hosting platform. Since Buddy Pond is just static HTML, it can be hosted almost anywhere. You'll want to make sure your host has HTTPS / SSL enabled.
 
-## API Rest Client
+## Buddy Pond REST API SDK
 
-Interactive API Testing Page: /sdk/client.html
+Buddy Pond communicates via REST HTTP API calls to the Buddy Pond Server.
 
-JavaScript buddypond.js API client: buddypond.js
+Interactive API Testing Page: [https://buddypond.com/sdk/client.html](https://buddypond.com/sdk/client.html)
 
-API Specification Page: /api/v3
+JavaScript `buddypond.js` SDK API client: `./sdk/buddypond.js`
 
-Buddy Pond communicates via REST API calls to the Buddy Pond Server.
+## cURL REST API Examples
 
-### cURL REST API Examples
-
-**Open `client.html` for interactive REST examples**
 
 **Sign Up or Get Auth Token for existing account**
 
 ```
-curl -X POST "https://buddypond.com/api/v3/auth"  -H 'Content-Type: application/json' -d '{"buddyname":"Dave2","buddypassword":"asd"}'
+curl -X POST "https://buddypond.com/api/v3/auth"  -H 'Content-Type: application/json' -d '{"buddyname":"Dave","buddypassword":"asd"}'
 ```
 
-Return the `qtokenid` uuid which must be used for all subsequent calls to the API session.
+*Return the `qtokenid` uuid which must be used for all subsequent calls to the API session.*
 
 **Send Buddy Request**
 
