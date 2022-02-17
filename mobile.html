@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="description" content="Buddy Pond - A place for buddies to chat." />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Buddy Pond</title>
+<link rel="stylesheet" href="mobile/assets/css/bootstrap.min.css" />
+<link rel="stylesheet" href="mobile/assets/css/mobile.css" />
+
+</head>
+<body>
+  <div class="mainContainer">
+    <div class="row">
+      <div class="col-sm-2">
+        <ul>
+          <li>
+            <a class="abs icon" href="#app_interdimensionalcable">
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_cable_64.png" /><br/>
+              Cable
+            </a>
+          </li>
+          <li>
+            <a class="abs icon" href="#app_mtv">
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" /><br/>
+              Music
+            </a>
+          </li>
+          <li>
+            <a class="abs icon" href="#app_mirror">
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror.png" /><br/>
+              Mirror
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-10 mainWindows">
+
+        <div id="window_login" data-window-type="login" class="abs window">
+          <div class="abs window_inner">
+            <div class="abs window_content">
+              <div class="window_main">
+                <div class="splash">
+                  <h1>Welcome to Buddy Pond!</h1>
+                  <em>Peer to Peer Buddy Messaging and Video Calls</em>
+                  <br/>
+                  <em>No followers or following<br/> Just Buddies!</em>
+                  <div class="splashImage" align="center">
+                    <img src="desktop/assets/images/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
+                    <br/>
+                    <em class="smaller">This is a Buddy at the pond.</em>
+                  </div>
+                  <br/>
+                   We don't have a mobile App yet, it's on the way!<br/>
+                   Check out our <a href="https://github.com/marak/buddypond">git repo</a> to track development.
+                  <br/>
+                  Until then, why not enjoy some Interdimensional cable? <br/>
+                  Links are on the left.
+                </div>
+              </div>
+            </div>
+            <div class="abs window_bottom">
+              Build: v4.20.69
+            </div>
+          </div>
+          <span class="abs ui-resizable-handle ui-resizable-se"></span>
+        </div>
+
+        <div id="window_mirror" class="abs window" align="center">
+          <div class="abs window_content">
+            <div class="window_main mirrorVideoHolder">
+              <video autoplay="true" id="mirrorVideoMe"> </video><br/>
+              Camera Source
+              <select name="selectMirrorCamera" class="selectMirrorCamera">
+              </select>
+              <!--
+                Audio Source
+                <select name="selectAudio" class="selectAudio">
+                </select>
+              -->
+            </div>
+          </div>
+        </div>
+
+        <div id="window_mtv" class="abs window">
+          <div class="abs window_inner">
+            <div class="window_top">
+              <span class="float_left">
+                <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
+                Music Television
+              </span>
+              <span class="float_right">
+                <a href="#" class="window_min"></a>
+                <a href="#" class="window_resize"></a>
+                <a href="#icon_dock_mtv" class="window_close"></a>
+              </span>
+            </div>
+            <div class="abs window_content">
+              <div class="window_main">
+                <div id="mtvPlayer"></div>
+                <div align="center">
+                  <a class="desktopButton ponderMTV" href="#">
+                    <img class="orb" src="desktop/assets/images/orb.jpeg" width="255" height="255" title="Ponder the orb..."/>
+                  </a>
+                  <br/>
+                  <br/>
+                  <button class="ponderMTV desktopButton">Ponder the orb for next video</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="window_interdimensionalcable" class="abs window">
+          <div class="abs window_inner">
+            <div class="window_top">
+              <span class="float_left">
+                <img class="emojiIcon" src="desktop/assets/images/icons/icon_cable_64.png" />
+                Interdimensional Cable
+              </span>
+              <span class="float_right">
+                <a href="#" class="window_min"></a>
+                <a href="#" class="window_resize"></a>
+                <a href="#icon_dock_interdimensionalcable" class="window_close"></a>
+              </span>
+            </div>
+            <div class="abs window_content">
+              <div class="window_main">
+                <div id="interdimensionalcableplayer"></div>
+                <div align="center">
+                  <a class="desktopButton ponderinterdimensionalcable orb" href="#">
+                    <img src="desktop/assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
+                  </a>
+                  <br/>
+                  <br/>
+                  <button class="ponderinterdimensionalcable desktopButton">Ponder the orb for next video</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <canvas id="c"></canvas>
+
+  <script src="desktop/assets/js/jquery.js"></script>
+  <script src="desktop/assets/js/jquery.ui.js"></script>
+  <script src="desktop/assets/js/jquery.dateformat.js"></script>
+  <script src="desktop/assets/js/jquery.simple-color.js"></script>
+  <script src="mobile/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="sdk/buddypond.js"></script>
+  <script src="mobile.js"></script>
+  <script src="desktop/apps/desktop.wallpaper.js"></script>
+  <script src="desktop/apps/desktop.mirror.js"></script>
+  <script src="desktop/apps/desktop.interdimensionalcable.js"></script>
+  <script src="desktop/apps/desktop.mtv.js"></script>
+  <script src="data/mtv.js"></script>
+  <script src="data/interdimensionalcable.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      desktop.log('jQuery Desktop initialized');
+      desktop.log('Now loading apps');
+      desktop.load();
+      desktop.wallpaper.load();
+      desktop.wallpaper.start();
+      desktop.mirror.load();
+      desktop.interdimensionalcable.load();
+      desktop.mtv.load();
+      desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+    });
+  </script>
+</body>
+</html>

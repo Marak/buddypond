@@ -1,4 +1,4 @@
-desktop.interdemoncable.playlist = [
+desktop.interdimensionalcable.playlist = [
   "hSQLhNYltBM",
   "AKMzMZWRKVc",
   "cBqrfITE9RA",

@@ -1,23 +1,23 @@
-desktop.interdemoncable = {};
+desktop.interdimensionalcable = {};
 
-desktop.interdemoncable.load = function () {
+desktop.interdimensionalcable.load = function () {
 
-  desktop.log('Loading: App.interdemoncable')
+  desktop.log('Loading: App.interdimensionalcable')
 
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  $('.ponderInterdemoncable').on('click', function(){
-    desktop.playRandomVideo(desktop.interdemoncable.player, desktop.interdemoncable.playlist);
+  $('.ponderinterdimensionalcable').on('click', function(){
+    desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist);
   });
 
-  $('#window_interdemoncable').css('width', 644);
-  $('#window_interdemoncable').css('height', 590);
+  $('#window_interdimensionalcable').css('width', 644);
+  $('#window_interdimensionalcable').css('height', 590);
 
-  $('#window_interdemoncable').css('left', 777);
-  $('#window_interdemoncable').css('top', 40);
+  $('#window_interdimensionalcable').css('left', 777);
+  $('#window_interdimensionalcable').css('top', 40);
 };
 
 desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
@@ -35,8 +35,8 @@ desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
   }
 };
 
-desktop.interdemoncable.closeWindow = function () {
-  desktop.interdemoncable.player.pauseVideo();
+desktop.interdimensionalcable.closeWindow = function () {
+  desktop.interdimensionalcable.player.pauseVideo();
 }
 
 // Remark: youtube embed client REQUIRES the following methods be public
@@ -56,7 +56,7 @@ function interDemonPlayerReady(event) {
 
 function interDemonPlayerStateChange(event) {
   if (event.data == 0) {
-    desktop.playRandomVideo(desktop.interdemoncable.player, desktop.interdemoncable.playlist)
+    desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist)
   }
 }
 
@@ -75,7 +75,7 @@ function onYouTubeIframeAPIReady() {
     origin: window.document.location.origin
   });
 
-  desktop.interdemoncable.player = new YT.Player('interDemonCableplayer', {
+  desktop.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
     height: '390',
     width: '640',
     videoId: 'rZhbnty03U4',

@@ -1,5 +1,7 @@
+- add back button to interdemon cable
+
+
 - add 10 more music videos to mtv
-- add wallpaper color picker to Preferences
 - adjust UI of chat messages and windowpopups
 - fix mouse events for mobile ( drag not working , double click vs click)
 - dblclick / singleclick for mobile
@@ -20,6 +22,8 @@ Camera
 - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
 
 PUSHED to post launch
+
+  - add wallpaper color picker to Preferences
 
   - create icons for data pulse ( drop in and drop out)
   - warning about no email set, do not lose password
