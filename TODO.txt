@@ -1,6 +1,7 @@
 - add back button to interdemon cable
 
-
+- add system notifications using web api
+  - add message sound fx ( mutable )
 - add 10 more music videos to mtv
 - adjust UI of chat messages and windowpopups
 - fix mouse events for mobile ( drag not working , double click vs click)
@@ -112,8 +113,4 @@ X - chat window text input should have fixed bottom position
 X - add user name to title after login
 
 After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
-
-This is the way. Use Lua and Luv.it to achieve Utopia HTTP routing.
-
-see: https://github.com/luvitrocks/utopia
 
