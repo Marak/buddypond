@@ -2,6 +2,7 @@
 ## *a place for buddies*
 [https://buddypond.com](https://buddypond.com)
 
+ - Cloud Desktop
  - Instant Buddy Messaging
  - Video and Audio Calls
  - Chat rooms ( we call them "Ponds" )
