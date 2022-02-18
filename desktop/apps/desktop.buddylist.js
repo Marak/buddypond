@@ -159,13 +159,14 @@ desktop.updateBuddyList = function updateBuddyList () {
         return;
       }
       desktop.buddyListData = data;
-      desktop.buddylistProfileState = { updates: {}};
-      // updates Profile settings form
 
-      let currentEmail = $('.buddy_email').val();
-      if (!currentEmail) {
+      if (data.email && !buddypond.email) {
+        buddypond.email = data.email;
+        // updates Profile settings form
         $('.buddy_email').val(desktop.buddyListData.email);
       }
+
+      desktop.buddylistProfileState = { updates: {}};
 
       //
       // process notifications for buddy
