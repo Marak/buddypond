@@ -16,7 +16,7 @@ desktop.interdimensionalcable.load = function () {
   $('#window_interdimensionalcable').css('width', 644);
   $('#window_interdimensionalcable').css('height', 590);
 
-  $('#window_interdimensionalcable').css('left', 777);
+  $('#window_interdimensionalcable').css('left', 377);
   $('#window_interdimensionalcable').css('top', 40);
 };
 
