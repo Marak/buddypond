@@ -1,23 +1,24 @@
 desktop.buddylist = {};
 
+
 desktop.buddylist.load = function desktopLoadBuddyList () {
 
   desktop.log('Loading:', 'App.buddylist');
 
   // clone window_buddy_message_0 ten times
-  // clone icon_dock_buddy_message_0 ten times 
+  // clone icon_dock_buddy_message_0 ten times
   // this creates 10 windows available for chatting with buddies
   let clone = $('#window_buddy_message_0').html();
   let dockItemClone = $('#icon_dock_buddy_message_0').html();
   let emojiTriggers = [];
   emojiTriggers.push({
     selector: '.emoji_picker_10',
-    insertInto: '.buddy_message_text_10'
+    insertInto: '.active_buddy_text_area'
   });
   for (let i = 1; i<11; i++) {
     emojiTriggers.push({
       selector: '.emoji_picker_' + i,
-      insertInto: '.buddy_message_text_' + i
+      insertInto: '.active_buddy_text_area'
     });
     let window_id = 'window_buddy_message_' + i;
     let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
@@ -89,6 +90,13 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
         return false;
       }
   });
+
+  $('.buddy_message_text').on('focus', function (e) {
+    // remove active buddy text area from all other windows
+    $('.buddy_message_text').removeClass('active_buddy_text_area');
+    e.target.classList.add('active_buddy_text_area')
+  });
+
 
   new EmojiPicker({
       trigger: emojiTriggers,
@@ -416,4 +424,3 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     }
     cb(null, true);
 }
-
