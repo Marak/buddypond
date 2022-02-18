@@ -12,8 +12,18 @@ window.top.location = 'ie.html';
 </script>
 <![endif]-->
 
-<!-- Redirect to the mobile site for smaller screened devices -->
 <script type="text/javascript">
+
+  // certain websites are currently not supported as referrer
+  let notCurrentlySupportedSites = ['reddit.com', 'news.ycombinator.com'];
+  notCurrentlySupportedSites.forEach(function(site){
+    if (document.referrer.search(site) !== -1) {
+      alert(site + ' is currently not supported by Buddy Pond. \n\n Please check out our Github or try again later.')
+      document.location = 'https://duckduckgo.com/?q=happy+puppies&t=opera&iax=images&ia=images'
+    }
+  });
+
+  // redirect to the mobile site for smaller screened devices
   if (window.location.search === '?desktop=enabled') {
     // if the desktop is enabled, load as normal
   } else {
