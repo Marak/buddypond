@@ -1087,3 +1087,8 @@ video {
 .wallpaperColor {
   display:none;
 }
+
+#window_soundcloud {
+  height: 560px;
+  width: 400px;
+}

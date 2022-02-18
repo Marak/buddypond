@@ -71,6 +71,10 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror.png" />
       Mirror
     </a>
+    <a class="abs icon" style="left:20px;top:366px;" href="#icon_dock_soundcloud">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+      SoundCloud
+    </a>
     <a class="abs icon" style="left:20px;top:440px;" href="#icon_dock_interdimensionalcable">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_cable_64.png" />
       Inter Dimensional Cable
@@ -83,7 +87,6 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
       <span class="label">Pause Wallpaper</span>
     </a>
-
     <div id="window_login" data-window-type="login" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
@@ -652,6 +655,41 @@ window.top.location = 'ie.html';
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
 
+    <div id="window_soundcloud" class="abs window">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+            SoundCloud
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_soundcloud" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main">
+            <div id="soundcloudplayer">
+<iframe id="soundcloudiframe" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1397230333&color=%23df23e4&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/marak" title="marak" target="_blank" style="color: #cccccc; text-decoration: none;">marak</a> · <a href="https://soundcloud.com/marak/sets/buddy-pond-0" title="Buddy Pond 0" target="_blank" style="color: #cccccc; text-decoration: none;">Buddy Pond 0</a></div>
+            </div>
+            <br/>
+            <br/>
+            <div align="center">
+              <a class="desktopButton ponderSoundcloud orb" href="#">
+                <img src="desktop/assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
+              </a>
+              <button class="ponderSoundcloud desktopButton"><== Ponder the orb for next track</button>
+            </div>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
     <div id="window_videochat" class="abs window incoming_call" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
@@ -802,6 +840,12 @@ window.top.location = 'ie.html';
           Pond
         </a>
       </li>
+      <li id="icon_dock_soundcloud">
+        <a href="#window_soundcloud">
+          <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+          Sound Cloud
+        </a>
+      </li>
       <li id="icon_dock_mtv">
         <a href="#window_mtv">
           <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
@@ -840,6 +884,7 @@ window.top.location = 'ie.html';
   </div>
 </div>
 
+
 <script src="desktop/assets/js/jquery.js"></script>
 <script src="desktop/assets/js/jquery.ui.js"></script>
 <script src="desktop/assets/js/jquery.dateformat.js"></script>
@@ -857,6 +902,7 @@ window.top.location = 'ie.html';
 <script src="desktop/apps/desktop.profile.js"></script>
 <script src="desktop/apps/desktop.mirror.js"></script>
 <script src="desktop/apps/desktop.interdimensionalcable.js"></script>
+<script src="desktop/apps/desktop.soundcloud.js"></script>
 <script src="desktop/apps/desktop.mtv.js"></script>
 <script src="desktop/apps/desktop.videochat.js"></script>
 <script src="data/mtv.js"></script>
@@ -877,6 +923,7 @@ window.top.location = 'ie.html';
     desktop.mirror.load();
     desktop.interdimensionalcable.load();
     desktop.mtv.load();
+    desktop.soundcloud.load();
     desktop.videochat.load();
     desktop.refresh();
     desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
