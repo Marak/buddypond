@@ -415,11 +415,6 @@ JDQX.closeWindow = function closeWindow (el) {
   let windowContext = $(closestWindow).attr('data-window-context');
   let windowId = $(closestWindow).attr('id').replace('window_', '');
 
-  $('#icon_dock_' + windowId).hide('fast');
-
-  // console.log('JDQX.closeWindow', windowId, windowType, windowContext);
-
-  // this calls close events for instaniated window types( which require a context )
   if (windowType && windowContext) {
     desktop.closeWindow(windowType, windowContext);
   }
@@ -429,5 +424,11 @@ JDQX.closeWindow = function closeWindow (el) {
   if (desktop[windowId] && desktop[windowId].closeWindow) {
     desktop[windowId].closeWindow();
   }
+
+  $('#icon_dock_' + windowId).hide('fast');
+
+  // console.log('JDQX.closeWindow', windowId, windowType, windowContext);
+
+  // this calls close events for instaniated window types( which require a context )
 
 }
