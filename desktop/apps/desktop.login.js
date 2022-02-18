@@ -96,19 +96,21 @@ desktop.login.success = function desktopLoginSuccess () {
   clippy.load('Merlin', function(agent) {
      desktop.Merlin = agent;
      agent.show();
-     if (!buddypond.email || buddypond.email.length < 3) {
-       agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the Profile App!');
-       setTimeout(function(){
-         agent.hide();
-       }, 12000);
-     } else {
-       agent.speak(`Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
-       agent.animate();
-       setTimeout(function(){
-         agent.hide();
-       }, 19000);
-     }
-     agent.gestureAt(200,200);
+     setTimeout(function(){
+       if (!buddypond.email || buddypond.email.length < 3) {
+         agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the Profile App!');
+         setTimeout(function(){
+           agent.hide();
+         }, 12000);
+       } else {
+         agent.speak(`Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
+         agent.animate();
+         setTimeout(function(){
+           agent.hide();
+         }, 19000);
+       }
+       agent.gestureAt(200,200);
+     }, 3333);
    });
 
   // start packets update interval timer
