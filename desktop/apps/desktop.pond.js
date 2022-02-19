@@ -180,9 +180,7 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     let openPondWindows = desktop.openWindows['pond_message'];
     let windowId = '#' + openPondWindows[message.to]
 
-    forbiddenNotes.decoded.forEach(function(fnote){
-      message.text = message.text.replace(new RegExp("\\b"+fnote+"\\b"), forbiddenNotes.randowFunWord())
-    });
+    message.text = forbiddenNotes.filter(message.text);
 
     html[windowId] = html[windowId] || '';
 

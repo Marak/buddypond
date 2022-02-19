@@ -384,11 +384,7 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
       // instead of a document write per message
       html[windowId] = html[windowId] || '';
 
-      // TODO: filter message.text for html using jquery
-      // filter message.text for forbidden words
-      forbiddenNotes.decoded.forEach(function(fnote){
-        message.text = message.text.replace(new RegExp("\\b"+fnote+"\\b"), forbiddenNotes.randowFunWord())
-      });
+      message.text = forbiddenNotes.filter(message.text);
 
       let str = '';
       if (message.from === buddypond.me) {
