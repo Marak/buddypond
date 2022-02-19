@@ -4,7 +4,11 @@
   background-color: green;
   height: 440px;
   position: relative;
+  display: flex;
   /* seven deck */
+}
+.game-solitaire .solitaire {
+  flex: 1;
 }
 .game-solitaire .card {
   width: 71px;
