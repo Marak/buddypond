@@ -922,24 +922,55 @@ window.top.location = 'ie.html';
 <script src="data/interdimensionalcable.js"></script>
 
 <script>
+
+  /*
+
+    desktop.use() will load Buddy Pond Apps which have an App.load method
+
+    App.load() can be either sync OR async
+
+    For Example:
+
+        desktop.foo.load = function (params) {
+          // sync App.load functions *must* return a value
+          return true;
+        }
+
+        desktop.boo.load = function (params, cb) {
+          setTimeout(function(){
+            // async App.load functions *must* continue with their callback
+            cb(null, true);
+          }, 3000)
+        }
+
+    The best practice here is to first use sync App.load function signature ( desktop.foo.load )
+
+    If your App.load requires any async calls like $.load() or a third party API request,
+    you must use the async App.load function signature ( desktop.boo.load )
+
+  */
+
   $(document).ready(function(){
     desktop.log('jQuery Desktop initialized');
     desktop.log('Now loading apps');
-    desktop.load();
-    desktop.console.load();
-    desktop.buddylist.load();
-    desktop.pond.load();
-    desktop.login.load();
-    desktop.profile.load();
-    desktop.wallpaper.load();
-    desktop.wallpaper.start();
-    desktop.mirror.load();
-    desktop.interdimensionalcable.load();
-    desktop.mtv.load();
-    desktop.soundcloud.load();
-    desktop.videochat.load();
-    desktop.refresh();
-    desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+    desktop
+      .use('console')
+      .use('buddylist')
+      .use('pond')
+      .use('login')
+      .use('profile')
+      .use('wallpaper')
+      .use('mirror')
+      .use('interdimensionalcable')
+      .use('mtv')
+      .use('soundcloud')
+      .use('videochat')
+      .ready(function(err, apps){
+        // all .use(app) have completed sync / async loads
+        desktop.wallpaper.start();
+        desktop.refresh();
+        desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+      });
   });
 </script>
 <div class="some-element"></div>

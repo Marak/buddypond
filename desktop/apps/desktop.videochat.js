@@ -13,7 +13,6 @@ desktop.videochat.devices = {
 
 desktop.videochat.load = function loadVideochat () {
   desktop.videochat.loaded = true;
-  desktop.log('Loading:', 'App.videochat');
 
   var tag = document.createElement('script');
   tag.src = "desktop/assets/js/simplepeer.min.js";
@@ -49,6 +48,7 @@ desktop.videochat.load = function loadVideochat () {
     console.log('Changing audio is not available yet');
     // desktop.videochat.replaceStream(newDeviceLabel);
   });
+  return true;
 
 }
 

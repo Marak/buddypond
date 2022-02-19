@@ -5,7 +5,7 @@ desktop.console.load = function loadDesktop() {
 
   // Remark: map shortcut method for easily calling `desktop.log()` from apps
   desktop.log = desktop.console.log;
-
+  return true;
 };
 
 desktop.console.log = function logDesktop () {

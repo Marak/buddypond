@@ -2,8 +2,6 @@ desktop.interdimensionalcable = {};
 
 desktop.interdimensionalcable.load = function () {
 
-  desktop.log('Loading: App.interdimensionalcable')
-
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -18,6 +16,7 @@ desktop.interdimensionalcable.load = function () {
 
   $('#window_interdimensionalcable').css('left', 377);
   $('#window_interdimensionalcable').css('top', 40);
+  return true;
 };
 
 desktop.playRandomVideo = function playRandomVideo(_player, playlist) {

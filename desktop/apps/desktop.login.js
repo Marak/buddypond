@@ -1,6 +1,27 @@
 desktop.login = {};
 
-desktop.login.load = function loadDesktopLogin () {
+desktop.login.load = function loadDesktopLogin (params, cb) {
+
+  // cancel all form submits
+  $('form').on('submit', function(){
+    return false;
+  });
+
+  // if user clicks login button, attempt to auth with server
+  $('.loginButton').on('click', function(){
+    desktop.login.auth($('#buddyname').val());
+  });
+
+  // if user clicks on top left menu, focus on login form
+  $('.loginLink').on('click', function(){
+    $('#window_login').show();
+    $('#buddyname').focus();
+  });
+
+  // if user clicks logout link on top left menu, logout the user
+  $('.logoutLink').on('click', function(){
+    desktop.login.logoutDesktop()
+  });
 
   desktop.renderDockElement('login');
 
@@ -15,7 +36,7 @@ desktop.login.load = function loadDesktopLogin () {
       // server is online and operational, but returned an error message to client state
       if (data.error) {
         alert(data.message);
-        return;
+        return cb(null);
       }
 
       // token has not validated, log out the client
@@ -28,10 +49,12 @@ desktop.login.load = function loadDesktopLogin () {
         buddypond.me = me;
         desktop.login.success();
       }
+      return cb(null);
     });
   } else {
     $('.totalConnected').hide();
     desktop.login.openWindow();
+    return cb(null);
   }
 
 }

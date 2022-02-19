@@ -2,8 +2,6 @@ desktop.buddylist = {};
 
 desktop.buddylist.load = function desktopLoadBuddyList () {
 
-  desktop.log('Loading:', 'App.buddylist');
-
   // clone window_buddy_message_0 ten times
   // clone icon_dock_buddy_message_0 ten times 
   // this creates 10 windows available for chatting with buddies
@@ -95,6 +93,7 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
       closeButton: true,
       //specialButtons: green
   });
+  return true;
 
 }
 

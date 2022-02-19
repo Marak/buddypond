@@ -42,7 +42,7 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
       // alert("color chooser closed for input #" + element.attr('class'));
     }
   });
-  
+  return true;
 };
 
 desktop.wallpaper.pause = function pauseWallpaper () {

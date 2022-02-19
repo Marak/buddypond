@@ -18,7 +18,7 @@ desktop.mirror.load = function loadDesktopMirror () {
     // TODO: use localstorage to set device preference
     desktop.mirror.startCamera(newDeviceLabel)
   });
-
+  return true;
 }
 
 desktop.mirror.openWindow = function openWindow () {

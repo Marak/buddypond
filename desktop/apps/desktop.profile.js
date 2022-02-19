@@ -25,6 +25,7 @@ desktop.profile.load = function loadDesktop() {
     })
   })
   $("#profileTabs" ).tabs();
+  return true;
 };
 
 desktop.profile.openWindow = function openWindow () {

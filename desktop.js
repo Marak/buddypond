@@ -4,9 +4,24 @@
 
 */
 
-let desktop = {};
+const desktop = {};
+
 // time the desktop object was created in browser
 desktop.ctime = new Date();
+
+desktop.utils = {};
+
+desktop.apps = {};
+desktop.apps.loading = [];
+desktop.apps.loaded = [];
+desktop.apps.mostRecentlyLoaded = [];
+desktop.apps.loadingStartedAt = 0;
+desktop.apps.loadingEndedAt = 0;
+
+// default timeout when calling desktop.use()
+// Remark: Counts for all apps being chained by .use() at once, not the individual app loading times
+//         Currently set to Infinity since we expect everything to always load ( for now )
+desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME = Infinity;
 
 // default timeout between AJAX requests ( 1 seconds )
 desktop.DEFAULT_AJAX_TIMER = 1000;
@@ -36,34 +51,67 @@ desktop.windowPool = {}
 desktop.windowPool['buddy_message'] = [];
 desktop.windowPool['pond_message'] = [];
 
-
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
 
-// calling desktop.load() will start the Buddy Pond Desktop Client
-desktop.load = function loadDesktop() {
+desktop.use = function use(app, params) {
+  // console.log('using app', app, params)
+  if (desktop.apps.loading.length === 0) {
+    desktop.apps.mostRecentlyLoaded = [];
+    desktop.apps.loadingStartedAt = new Date();
+  }
 
-  // cancel all form submits
-  $('form').on('submit', function(){
-    return false;
+  if (!desktop[app]) {
+    throw new Error('Invalid App Name: "' + app + '"');
+  }
+  if (!desktop[app].load || typeof desktop[app].load !== 'function') {
+    throw new Error(app + '.load is not a valid function');
+  }
+
+  desktop.apps.loading.push({ name: app, params: params });
+  desktop.log("Loading", 'App.' + app);
+  // Remark: sync App.load *must* return a value or Desktop.ready will never fire
+  let result = desktop[app].load(params, function(err, re){
+    desktop.apps.loaded.push(app);
+    desktop.apps.mostRecentlyLoaded.push(app);
+    desktop.apps.loading = desktop.apps.loading.filter(function(a){
+      if (a.name === app) {
+        return false;
+      }
+      return true;
+    });
   });
 
-  // if user clicks login button, attempt to auth with server
-  $('.loginButton').on('click', function(){
-    desktop.login.auth($('#buddyname').val());
-  });
+  // if the result is not undefined, we can assume no callback was used in App.load
+  if (typeof result !== 'undefined') {
+    desktop.apps.loaded.push(app);
+    desktop.apps.mostRecentlyLoaded.push(app);
+    desktop.apps.loading = desktop.apps.loading.filter(function(a){
+      if (a.name === app) {
+        return false;
+      }
+      return true;
+    });
+  }
 
-  // if user clicks on top left menu, focus on login form
-  $('.loginLink').on('click', function(){
-    $('#window_login').show();
-    $('#buddyname').focus();
-  });
+  return this;
+}
 
-  // if user clicks logout link on top left menu, logout the user
-  $('.logoutLink').on('click', function(){
-    desktop.login.logoutDesktop()
-  });
-
+desktop.ready = function ready (finish) {
+  if (desktop.apps.loading.length > 0) {
+    setTimeout(function(){
+      if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
+        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure the assets are actually returning.')
+      }
+      desktop.ready(finish);
+    }, 10)
+  } else {
+    desktop.apps.loadingEndedAt = new Date();
+    desktop.log("Loaded", desktop.apps.loaded);
+    finish(null, desktop.loaded);
+  }
+  // console.log('what is loading status', desktop.apps.loading);
+  return this;
 }
 
 desktop.refresh = function refreshDesktop () {
