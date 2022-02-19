@@ -1,5 +1,4 @@
-desktop.games_solitaire = {};
-let winAnimationIntervals = [];
+desktop.games_solitaire = { winAnimationIntervals: [] };
 
 desktop.games_solitaire.load = function loadSolitaireGames () {
 	$('#window_games_solitaire').css('width', 662);
@@ -34,8 +33,10 @@ desktop.games_solitaire.closeWindow = function closeWindow () {
   state.finish = [];
   state.desk = [];
 
-  for (const interval of winAnimationIntervals) { clearInterval(interval); }
-  winAnimationIntervals = [];
+  for (const interval of desktop.games_solitaire.winAnimationIntervals) {
+    clearInterval(interval);
+  }
+  desktop.games_solitaire.winAnimationIntervals = [];
 
   return true;
 };
@@ -693,8 +694,10 @@ const win = (canvasWidth, canvasHeight, canvasLeft, canvasTop) => {
 	function removeAnimation(event) {
 		event.preventDefault();
 
-        for (const interval of winAnimationIntervals) { clearInterval(interval); }
-        winAnimationIntervals = [];
+        for (const interval of desktop.games_solitaire.winAnimationIntervals) {
+          clearInterval(interval);
+        }
+        desktop.games_solitaire.winAnimationIntervals = [];
 
 		canvas.parentNode.removeChild(canvas);
 		document.removeEventListener('click', removeAnimation)
