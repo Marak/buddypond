@@ -1,4 +1,5 @@
 desktop.games_solitaire = {};
+const intervals = [];
 
 desktop.games_solitaire.load = function loadSolitaireGames () {
 	$('#window_games_solitaire').css('width', 662);
@@ -17,7 +18,7 @@ desktop.games_solitaire.load = function loadSolitaireGames () {
 };
 
 desktop.games_solitaire.openWindow = function openWindow () {
-	initSolitaire();
+  initSolitaire();
   return true;
 };
 
@@ -32,6 +33,9 @@ desktop.games_solitaire.closeWindow = function closeWindow () {
   state.cards = [];
   state.finish = [];
   state.desk = [];
+
+  let interval;
+  while (interval = intervals.pop()) { clearInterval(interval); }
 
   return true;
 };
@@ -589,7 +593,6 @@ const gameFinish = () => {
 	win(width, height, left, top);
 };
 
-const intervals = [];
 const win = (canvasWidth, canvasHeight, canvasLeft, canvasTop) => {
 	const image = document.createElement('img');
 	image.src = spriteImg;
@@ -747,9 +750,6 @@ function initSolitaire() {
 
 	$(window).on('mousemove', handleMove);
 	$(window).on('mouseup', releaseMove);
-
-    let interval;
-    while (interval = intervals.pop()) { clearInterval(interval); }
 
 	resetGame();
 }
