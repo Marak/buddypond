@@ -586,7 +586,7 @@ const gameFinish = () => {
 	// game finish check
 	for (let i = 3; i >= 0; i--) {
 		const l = state.finish[i].cards.length;
-		//if (l < 13) return;
+		if (l < 13) return;
 	}
 
 	const { width, height, left, top } = gameEl.getBoundingClientRect();
