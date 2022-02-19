@@ -12,14 +12,10 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
   let dockItemClone = $('#icon_dock_buddy_message_0').html();
   let emojiTriggers = [];
   emojiTriggers.push({
-    selector: '.emoji_picker_10',
+    selector: '.emojiPicker',
     insertInto: '.active_buddy_text_area'
   });
   for (let i = 1; i<11; i++) {
-    emojiTriggers.push({
-      selector: '.emoji_picker_' + i,
-      insertInto: '.active_buddy_text_area'
-    });
     let window_id = 'window_buddy_message_' + i;
     let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
     _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
@@ -89,6 +85,10 @@ desktop.buddylist.load = function desktopLoadBuddyList () {
         $(this).trigger("enterKey");
         return false;
       }
+  });
+
+  $('.emojiPicker').on('click', function (e) {
+    e.target.parentNode?.querySelector('.buddy_message_text').focus();
   });
 
   $('.buddy_message_text').on('focus', function (e) {
