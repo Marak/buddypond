@@ -369,6 +369,14 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
         buddyKey = message.to;
       }
 
+      // first, check if this is an Agent message which gets processed first
+      if (message.type === 'agent') {
+        if (desktop.spellbook[message.text]) {
+          desktop.spellbook[message.text]();
+          return;
+        }
+      }
+
       //
       // New messages are coming in from server, we'll need to render them
       //
