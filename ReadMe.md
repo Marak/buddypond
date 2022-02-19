@@ -132,4 +132,5 @@ In order to start your own private Buddy Pond ( not federated ) you can dowload 
 Once you have your own Buddy Server running you can modify `./sdk/buddypond.js` to point to your server endpoint over HTTP.
 
 ### License
-All rights reserved Marak Squires 2022
+Buddy Pond Copyright (C) 2022 Marak Squires
+See `LICENSE` file
