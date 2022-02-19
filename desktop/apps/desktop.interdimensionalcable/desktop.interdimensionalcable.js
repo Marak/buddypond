@@ -1,22 +1,38 @@
 desktop.interdimensionalcable = {};
 
-desktop.interdimensionalcable.load = function () {
+desktop.interdimensionalcable.load = function (params, next) {
 
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  $('#shadowRender').append('<div class="interdimensionalcableWindowHolder"></div>')
+  $('.interdimensionalcableWindowHolder').load('desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.html', function (err, fragment) {
+    $('#desktop').append($('.interdimensionalcableWindowHolder').html())
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    /* 
+      we could do this, but currently it will block entire page on youtube embed load
+      this can be fixed in the future by having a pending / appLoading state on Apps
+      so that next() can be fired even if the app isnt fully ready
+      this will result in cases where user double clicks desktop icon and sees hourglass cursor spin...
+      ... until app is ready and then window opens and hourglass cursor goes away
+    
+      tag.onload = function () {
+        next();
+      }
 
-  $('.ponderinterdimensionalcable').on('click', function(){
-    desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist);
+    */
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    $('.ponderinterdimensionalcable').on('click', function(){
+      desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist);
+    });
+
+    $('#window_interdimensionalcable').css('width', 644);
+    $('#window_interdimensionalcable').css('height', 590);
+
+    $('#window_interdimensionalcable').css('left', 377);
+    $('#window_interdimensionalcable').css('top', 40);
+    next();
   });
-
-  $('#window_interdimensionalcable').css('width', 644);
-  $('#window_interdimensionalcable').css('height', 590);
-
-  $('#window_interdimensionalcable').css('left', 377);
-  $('#window_interdimensionalcable').css('top', 40);
-  return true;
 };
 
 desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
@@ -87,3 +103,6 @@ function onYouTubeIframeAPIReady() {
     origin: window.document.location.origin
   });
 }
+
+// way easier to type
+desktop.IDC = desktop.interdimensionalcable;

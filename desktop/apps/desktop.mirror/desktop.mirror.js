@@ -6,19 +6,22 @@ desktop.mirror.devices = {
   audiooutput: {}
 };
 
-desktop.mirror.load = function loadDesktopMirror () {
+desktop.mirror.load = function loadDesktopMirror (params, next) {
 
-  $('#window_mirror').css('width', 686);
-  $('#window_mirror').css('height', 622);
-  $('#window_mirror').css('left', 200);
-  $('#window_mirror').css('top', 44);
-
-  $('.selectMirrorCamera').on('change', function(){
-    let newDeviceLabel = $(this).val();
-    // TODO: use localstorage to set device preference
-    desktop.mirror.startCamera(newDeviceLabel)
-  });
-  return true;
+  $('#shadowRender').append('<div class="mirrorWindowHolder"></div>')
+  $('.mirrorWindowHolder').load('desktop/apps/desktop.mirror/desktop.mirror.html', function (err, fragment) {
+    $('#desktop').append($('.mirrorWindowHolder').html())
+    $('#window_mirror').css('width', 686);
+    $('#window_mirror').css('height', 622);
+    $('#window_mirror').css('left', 200);
+    $('#window_mirror').css('top', 44);
+    $('.selectMirrorCamera').on('change', function(){
+      let newDeviceLabel = $(this).val();
+      // TODO: use localstorage to set device preference
+      desktop.mirror.startCamera(newDeviceLabel)
+    });
+    next();
+  })
 }
 
 desktop.mirror.openWindow = function openWindow () {

@@ -1110,3 +1110,7 @@ video {
 #window_games .icon {
   color: white;
 }
+
+#shadowRender {
+  display: none;
+}

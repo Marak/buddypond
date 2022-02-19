@@ -431,40 +431,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
-    <div id="window_mirror" class="abs window" align="center">
-      <div class="abs window_inner">
-        <div class="window_top">
-          <span class="float_left">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror.png" />
-            Mirror
-          </span>
-          <span class="float_right">
-            <a href="#" class="window_min"></a>
-            <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_mirror" class="window_close"></a>
-          </span>
-        </div>
-        <div class="abs window_content">
-          <div class="window_main mirrorVideoHolder">
-            <video autoplay="true" id="mirrorVideoMe"> </video><br/>
-            Camera Source
-            <select name="selectMirrorCamera" class="selectMirrorCamera">
-            </select>
-            <!--
-              Audio Source
-              <select name="selectAudio" class="selectAudio">
-              </select>
-            -->
-          </div>
-        </div>
-        <div class="abs window_bottom">
-          Build: v4.20.69
-        </div>
-      </div>
-      <span class="abs ui-resizable-handle ui-resizable-se"></span>
-    </div>
-
     <div id="window_buddylist" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
@@ -582,7 +548,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
     <div id="window_pond" class="abs window pond_message" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
@@ -625,7 +590,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
     <div id="window_pond_message_0" class="abs window pond_message" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
@@ -669,69 +633,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
-    <div id="window_mtv" class="abs window">
-      <div class="abs window_inner">
-        <div class="window_top">
-          <span class="float_left">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
-            Music Television
-          </span>
-          <span class="float_right">
-            <a href="#" class="window_min"></a>
-            <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_mtv" class="window_close"></a>
-          </span>
-        </div>
-        <div class="abs window_content">
-          <div class="window_main">
-            <div id="mtvPlayer"></div>
-            <div align="center">
-              <a class="desktopButton ponderMTV orb" href="#">
-                <img src="desktop/assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
-              </a>
-              <button class="ponderMTV desktopButton"><== Ponder the orb for next video</button>
-            </div>
-          </div>
-        </div>
-        <div class="abs window_bottom">
-          Build: v4.20.69
-        </div>
-      </div>
-      <span class="abs ui-resizable-handle ui-resizable-se"></span>
-    </div>
-
-    <div id="window_interdimensionalcable" class="abs window">
-      <div class="abs window_inner">
-        <div class="window_top">
-          <span class="float_left">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_cable_64.png" />
-            Interdimensional Cable
-          </span>
-          <span class="float_right">
-            <a href="#" class="window_min"></a>
-            <a href="#" class="window_resize"></a>
-            <a href="#icon_dock_interdimensionalcable" class="window_close"></a>
-          </span>
-        </div>
-        <div class="abs window_content">
-          <div class="window_main">
-            <div id="interdimensionalcableplayer"></div>
-            <div align="center">
-              <a class="desktopButton ponderinterdimensionalcable orb" href="#">
-                <img src="desktop/assets/images/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
-              </a>
-              <button class="ponderinterdimensionalcable desktopButton"><== Ponder the orb for next video</button>
-            </div>
-          </div>
-        </div>
-        <div class="abs window_bottom">
-          Build: v4.20.69
-        </div>
-      </div>
-      <span class="abs ui-resizable-handle ui-resizable-se"></span>
-    </div>
-
     <div id="window_soundcloud" class="abs window">
       <div class="abs window_inner">
         <div class="window_top">
@@ -765,7 +666,6 @@ window.top.location = 'ie.html';
       </div>
       <span class="abs ui-resizable-handle ui-resizable-se"></span>
     </div>
-
     <div id="window_videochat" class="abs window incoming_call" data-window-index="0">
       <div class="abs window_inner">
         <div class="window_top">
@@ -1004,11 +904,11 @@ window.top.location = 'ie.html';
 <script src="desktop/apps/desktop.pond.js"></script>
 <script src="desktop/apps/desktop.wallpaper.js"></script>
 <script src="desktop/apps/desktop.profile.js"></script>
-<script src="desktop/apps/desktop.mirror.js"></script>
-<script src="desktop/apps/desktop.interdimensionalcable.js"></script>
+<script src="desktop/apps/desktop.mirror/desktop.mirror.js"></script>
+<script src="desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.js"></script>
 <script src="desktop/apps/desktop.soundcloud.js"></script>
 <script src="desktop/apps/desktop.spellbook.js"></script>
-<script src="desktop/apps/desktop.mtv.js"></script>
+<script src="desktop/apps/desktop.mtv/desktop.mtv.js"></script>
 <script src="desktop/apps/desktop.videochat.js"></script>
 <script src="desktop/apps/desktop.games.js"></script>
 <script src="desktop/apps/desktop.games.solitaire.js"></script>
@@ -1081,5 +981,9 @@ window.top.location = 'ie.html';
   */
 
 </script>
+  <div id="shadowRender">
+  </div>
 </body>
 </html>
+
+
