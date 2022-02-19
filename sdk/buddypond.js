@@ -3,7 +3,7 @@ let buddypond = {}
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://buddypond.com/api/v3';
 } else {
-  buddypond.endpoint = 'http://buddypond.com/api/v3';
+  buddypond.endpoint = 'https://buddypond.com/api/v3';
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
@@ -86,7 +86,7 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   })
 }
 
-buddypond.castSpell = function sendMessage (buddyName, text, cb) {
+buddypond.castSpell = function castSpell (buddyName, text, cb) {
   cb = cb || function noop (err, re) {
     console.log('buddyPond.castSpell completed noop', err, re);
   };

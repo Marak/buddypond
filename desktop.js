@@ -9,8 +9,6 @@ const desktop = {};
 // time the desktop object was created in browser
 desktop.ctime = new Date();
 
-desktop.utils = {};
-
 desktop.apps = {};
 desktop.apps.loading = [];
 desktop.apps.loaded = [];
@@ -28,6 +26,7 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 
 // keep a cache object for buddylist data and messages to prevent re-renders
 // this is garbage collected on every updated run, so it should never grow
+// TODO: can we now remove this due to processedMessages?
 desktop.buddyListDataCache = {};
 desktop.buddyMessageCache = {};
 
@@ -52,6 +51,32 @@ desktop.windowPool['pond_message'] = [];
 
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
+
+desktop.images = {};
+desktop.images.preloaded = false;
+
+// add an event handler to each image's load event in the current document and wait until all images are loaded
+// this will prevent Desktop.ready from firing before all required images are ready ( no image flicking on load )
+// this also means that the entire Desktop is blocked from being ready until *all* document images are loaded
+var imgs = document.images,
+    totalNewImages = imgs.length,
+    totalNewLoadedImages = 0;
+
+[].forEach.call(imgs, function(img) {
+  if (img.complete) {
+    imageLoaded();
+  } else {
+    img.addEventListener( 'load', imageLoaded, false );
+  }
+});
+
+function imageLoaded() {
+  totalNewLoadedImages++;
+  if (totalNewLoadedImages === totalNewImages) {
+    // all new images have loaded
+    desktop.images.preloaded = true;
+  }
+}
 
 desktop.use = function use(app, params) {
 
@@ -95,32 +120,6 @@ desktop.use = function use(app, params) {
   }
 
   return this;
-}
-
-desktop.images = {};
-desktop.images.preloaded = false;
-
-// add an event handler to each image's load event in the current document and wait until all images are loaded
-// this will prevent Desktop.ready from firing before all required images are ready ( no image flicking on load )
-// this also means that the entire Desktop is blocked from being ready until *all* document images are loaded
-var imgs = document.images,
-    totalNewImages = imgs.length,
-    totalNewLoadedImages = 0;
-
-[].forEach.call(imgs, function(img) {
-  if (img.complete) {
-    imageLoaded();
-  } else {
-    img.addEventListener( 'load', imageLoaded, false );
-  }
-});
-
-function imageLoaded() {
-  totalNewLoadedImages++;
-  if (totalNewLoadedImages === totalNewImages) {
-    // all new images have loaded
-    desktop.images.preloaded = true;
-  }
 }
 
 desktop.ready = function ready (finish) {
@@ -203,7 +202,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     }
 
     let windowId = '#' + windowKey;
-    console.log('allocating window from pool', windowId)
+    // console.log('allocating window from pool', windowId)
     $('.window-context-title', windowId).html(context);
     $('.window-context-title', windowId).html(context);
     $(windowId).attr('data-window-context', context);
@@ -388,10 +387,8 @@ desktop.updateMessages = function updateMessages () {
       //
       // Filter out any messaages which have already been processed by uuid
       // The deskop UX will only process each message once as to not re-render / flicker elements and message events
-      
 
       data.messages = newMessages;
-      
       // TODO: call all update message functions that are available instead of hard-coded list
 
         //
