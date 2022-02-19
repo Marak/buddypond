@@ -35,10 +35,7 @@ window.top.location = 'ie.html';
 </script>
 
 <link rel="stylesheet" href="desktop/assets/css/reset.css" />
-<link rel="stylesheet" href="desktop/assets/css/desktop.css" />
-<link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
-<!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="desktop/assets/css/clippy.css" media="all">
+<link rel="stylesheet" href="desktop/assets/css/loader.css" />
 
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="desktop/assets/css/ie.css" />
@@ -46,7 +43,13 @@ window.top.location = 'ie.html';
 
 </head>
 <body>
-<div class="abs" id="wrapper">
+<img id="wallpaper" class="abs" src="desktop/assets/images/misc/wallpaper.jpg" />
+<div id="loaderHolder">
+  <div id="loader"></div>
+</div>
+
+<div id="mainOverlay">
+  <div class="abs" id="wrapper">
   <div class="abs" id="desktop">
     <canvas id="c"></canvas>
     <a class="abs icon" style="left:20px;top:40px;" href="#icon_dock_buddylist">
@@ -408,7 +411,6 @@ window.top.location = 'ie.html';
             <div class="loggedIn" align="center">
               <div>Hello. You look nice today!</div>
               <br/>
-              <img class="loading" src="desktop/assets/images/animations/loading.gif" width="200" height="200"/>
               <div class="buddyListHolder">
                 <h2>Buddies</h2>
                 <span class="you_have_no_buddies">
@@ -485,7 +487,6 @@ window.top.location = 'ie.html';
                 Your conversation has just started. You can send a message using the form below.
               </div>
               <div class="chat_messages">
-                <!-- <img src="desktop/assets/images/animations/loading.gif" width="200" height="200"/> -->
               </div>
               <hr/>
               <div class="chat_send_message_form">
@@ -573,7 +574,6 @@ window.top.location = 'ie.html';
                 The pond is fresh. There are no messages yet. You can send a message to this pond below.
               </div>
               <div class="chat_messages">
-                <!-- <img src="desktop/assets/images/animations/loading.gif" width="200" height="200"/> -->
               </div>
               <hr/>
               <div class="pond_send_message_form">
@@ -895,6 +895,11 @@ window.top.location = 'ie.html';
     </ul>
   </div>
 </div>
+</div>
+
+<link rel="stylesheet" href="desktop/assets/css/desktop.css" />
+<link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
+<link rel="stylesheet" type="text/css" href="desktop/assets/css/clippy.css" media="all">
 
 <script src="desktop/assets/js/jquery.js"></script>
 <script src="desktop/assets/js/jquery.ui.js"></script>
@@ -923,6 +928,40 @@ window.top.location = 'ie.html';
 
 <script>
 
+  $(document).ready(function(){
+    let documentReadyTime = new Date();
+    desktop.log('jQuery Desktop initialized');
+    desktop.log('Now loading apps');
+    desktop
+      .use('console')
+      .use('buddylist')
+      .use('pond')
+      .use('login')
+      .use('profile')
+      .use('wallpaper')
+      .use('mirror')
+      .use('interdimensionalcable')
+      .use('mtv')
+      .use('soundcloud')
+      .use('videochat')
+      .ready(function(err, apps){
+        $('#loaderHolder').fadeOut({
+          easing: 'linear',
+          duration: 388
+        });
+        $('#mainOverlay').fadeIn({
+          easing: 'linear',
+          duration: 777,
+          complete: function(){
+            // all .use(app) have completed sync / async loads
+            desktop.wallpaper.start();
+            desktop.refresh();
+            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+          }
+        });
+      });
+  });
+
   /*
 
     desktop.use() will load Buddy Pond Apps which have an App.load method
@@ -950,29 +989,6 @@ window.top.location = 'ie.html';
 
   */
 
-  $(document).ready(function(){
-    desktop.log('jQuery Desktop initialized');
-    desktop.log('Now loading apps');
-    desktop
-      .use('console')
-      .use('buddylist')
-      .use('pond')
-      .use('login')
-      .use('profile')
-      .use('wallpaper')
-      .use('mirror')
-      .use('interdimensionalcable')
-      .use('mtv')
-      .use('soundcloud')
-      .use('videochat')
-      .ready(function(err, apps){
-        // all .use(app) have completed sync / async loads
-        desktop.wallpaper.start();
-        desktop.refresh();
-        desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-      });
-  });
 </script>
-<div class="some-element"></div>
 </body>
 </html>

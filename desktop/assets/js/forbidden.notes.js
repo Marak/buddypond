@@ -7,7 +7,7 @@ let forbiddenNotes = {
 };
 
 forbiddenNotes.randowFunWord = function randowFunWord () {
-  let words = ["daffodil", "chrysanthemum", "waffles", "puppies", "senpai", "kohai", "rainbow", "fluffy"];
+  let words = ["daffodil", "chrysanthemum", "waffles", "puppies", "senpai", "kohai", "rainbow", "fluffy", "marklar"];
   var item = words[Math.floor(Math.random()*words.length)];
   return item;
 }

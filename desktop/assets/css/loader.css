@@ -1,0 +1,88 @@
+#wallpaper {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
+#mainOverlay {
+  display: block;
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */ 
+}
+
+#loaderHolder {
+  position: absolute;
+  left: 50%;
+  top: 33%;
+}
+
+#loader {
+  position: relative;
+  left: -50%;
+  top: -33%;
+  border: 16px solid #fff; /* Matrix Grey */
+  border-top: 16px solid rgb(255,0,0); 
+  border-radius: 50%;
+  opacity: 0.77;
+  width: 120px;
+  height: 120px;
+  animation: spin 1.77s linear infinite;
+}
+
+@keyframes spin {
+	100%{
+    transform: rotate(360deg);
+    border-top: 16px solid rgb(255,0,0); 
+	}
+	0%{
+    transform: rotate(0deg); 
+    border-top: 16px solid rgb(255,0,0);
+	}
+	8%{
+    border-top: 16px solid rgb(255,127,0);
+	}
+	16%{
+    border-top: 16px solid rgb(255,255,0);
+	}
+	25%{
+    border-top: 16px solid rgb(127,255,0);
+	}
+	33%{
+    border-top: 16px solid rgb(0,255,0);
+	}
+	41%{
+    border-top: 16px solid rgb(0,255,127);
+	}
+	50%{
+    border-top: 16px solid rgb(0,255,255);
+	}
+	58%{
+    border-top: 16px solid rgb(0,127,255);
+	}
+	66%{
+    border-top: 16px solid rgb(0,0,255);
+	}
+	75%{
+    border-top: 16px solid rgb(127,0,255);
+	}
+	83%{
+    border-top: 16px solid rgb(255,0,255);
+	}
+	91%{
+    border-top: 16px solid rgb(255,0,127);
+	}
+  
+}
+

@@ -31,10 +31,9 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 desktop.buddyListDataCache = {};
 desktop.buddyMessageCache = {};
 
-
 // messages are processed locally by unique uuid
 // processedMessage[] is used to stored message ids which have already been processed by Desktop Client
-// TODO: trim this after it gets larger then max messages
+// TODO: Have the desktop trim desktop.processedMessages if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
 desktop.processedMessages = [];
 
 // windowIndex is used to keep track of all created windows
@@ -55,7 +54,7 @@ desktop.windowPool['pond_message'] = [];
 desktop.log = console.log;
 
 desktop.use = function use(app, params) {
-  // console.log('using app', app, params)
+
   if (desktop.apps.loading.length === 0) {
     desktop.apps.mostRecentlyLoaded = [];
     desktop.apps.loadingStartedAt = new Date();
@@ -70,6 +69,7 @@ desktop.use = function use(app, params) {
 
   desktop.apps.loading.push({ name: app, params: params });
   desktop.log("Loading", 'App.' + app);
+
   // Remark: sync App.load *must* return a value or Desktop.ready will never fire
   let result = desktop[app].load(params, function(err, re){
     desktop.apps.loaded.push(app);
@@ -97,11 +97,38 @@ desktop.use = function use(app, params) {
   return this;
 }
 
+desktop.images = {};
+desktop.images.preloaded = false;
+
+// add an event handler to each image's load event in the current document and wait until all images are loaded
+// this will prevent Desktop.ready from firing before all required images are ready ( no image flicking on load )
+// this also means that the entire Desktop is blocked from being ready until *all* document images are loaded
+var imgs = document.images,
+    totalNewImages = imgs.length,
+    totalNewLoadedImages = 0;
+
+[].forEach.call(imgs, function(img) {
+  if (img.complete) {
+    imageLoaded();
+  } else {
+    img.addEventListener( 'load', imageLoaded, false );
+  }
+});
+
+function imageLoaded() {
+  totalNewLoadedImages++;
+  if (totalNewLoadedImages === totalNewImages) {
+    // all new images have loaded
+    desktop.images.preloaded = true;
+  }
+}
+
 desktop.ready = function ready (finish) {
-  if (desktop.apps.loading.length > 0) {
+
+  if (!desktop.images.preloaded || desktop.apps.loading.length > 0) {
     setTimeout(function(){
       if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
-        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure the assets are actually returning.')
+        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
       }
       desktop.ready(finish);
     }, 10)
