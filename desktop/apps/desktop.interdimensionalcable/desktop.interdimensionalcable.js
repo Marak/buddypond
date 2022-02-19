@@ -2,7 +2,7 @@ desktop.interdimensionalcable = {};
 
 desktop.interdimensionalcable.load = function (params, next) {
 
-  desktop.remoteLoadAppHTML('interdimensionalcable', function (err, fragment) {
+  desktop.remoteLoadAppHTML('interdimensionalcable', function (responseText, textStatus, jqXHR) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 

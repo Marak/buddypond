@@ -7,7 +7,7 @@ desktop.mirror.devices = {
 };
 
 desktop.mirror.load = function loadDesktopMirror (params, next) {
-  desktop.remoteLoadAppHTML('mirror', function (err, fragment) {
+  desktop.remoteLoadAppHTML('mirror', function (responseText, textStatus, jqXHR) {
     $('#window_mirror').css('width', 686);
     $('#window_mirror').css('height', 622);
     $('#window_mirror').css('left', 200);

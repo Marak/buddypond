@@ -149,9 +149,9 @@ desktop.ready = function ready (finish) {
 */
 desktop.remoteLoadAppHTML = function asyncLoadAppHTMLFragment (appName, cb) {
   $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
-  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (err, fragment) {
+  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
     $('#desktop').append($(`.${appName}WindowHolder`).html())
-    cb();
+    cb(responseText, textStatus, jqXHR);
   });
 }
 
