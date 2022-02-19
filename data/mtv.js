@@ -103,6 +103,8 @@ desktop.ytPlaylist = [
   'YKfCYGqsKoU',
   '13cfz8dkWkI',
   'JASvfdG8INI',
-  '856x2xIpoZM'
+  '856x2xIpoZM',
+  'TuAetZIG0mg',
+  'JBTUgYIQGFo'
 ];
 

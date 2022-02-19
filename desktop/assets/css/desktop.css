@@ -1107,3 +1107,6 @@ video {
   width: 400px;
 }
 
+#window_games .icon {
+  color: white;
+}
