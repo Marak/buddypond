@@ -1,5 +1,5 @@
 desktop.games_solitaire = {};
-const intervals = [];
+let winAnimationIntervals = [];
 
 desktop.games_solitaire.load = function loadSolitaireGames () {
 	$('#window_games_solitaire').css('width', 662);
@@ -34,8 +34,8 @@ desktop.games_solitaire.closeWindow = function closeWindow () {
   state.finish = [];
   state.desk = [];
 
-  let interval;
-  while (interval = intervals.pop()) { clearInterval(interval); }
+  for (const interval of winAnimationIntervals) { clearInterval(interval); }
+  winAnimationIntervals = [];
 
   return true;
 };
@@ -586,7 +586,7 @@ const gameFinish = () => {
 	// game finish check
 	for (let i = 3; i >= 0; i--) {
 		const l = state.finish[i].cards.length;
-		if (l < 13) return;
+		//if (l < 13) return;
 	}
 
 	const { width, height, left, top } = gameEl.getBoundingClientRect();
@@ -676,13 +676,13 @@ const win = (canvasWidth, canvasHeight, canvasLeft, canvasTop) => {
 
 	for (let i = 0; i < 4; i++) {
 		const { left, top } = state.finish[i].el.getBoundingClientRect();
-		intervals.push(setInterval(function () {
+		winAnimationIntervals.push(setInterval(function () {
 			throwCard(left - canvasLeft, top - canvasTop);
 		}, 1000));
 		// throwCard(left - canvasLeft, top - canvasTop);
 	}
 
-	intervals.push(setInterval(function () {
+	winAnimationIntervals.push(setInterval(function () {
 		let i = 0, l = particles.length;
 		while (i < l) {
 			particles[i].update() ? i++ : l--;
@@ -692,8 +692,10 @@ const win = (canvasWidth, canvasHeight, canvasLeft, canvasTop) => {
 
 	function removeAnimation(event) {
 		event.preventDefault();
-        let interval;
-        while (interval = intervals.pop()) { clearInterval(interval); }
+
+        for (const interval of winAnimationIntervals) { clearInterval(interval); }
+        winAnimationIntervals = [];
+
 		canvas.parentNode.removeChild(canvas);
 		document.removeEventListener('click', removeAnimation)
 	}
