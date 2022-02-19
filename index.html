@@ -13,7 +13,6 @@ window.top.location = 'ie.html';
 <![endif]-->
 
 <script type="text/javascript">
-
   // certain websites are currently not supported as referrer
   let notCurrentlySupportedSites = ['reddit.com', 'news.ycombinator.com'];
   notCurrentlySupportedSites.forEach(function(site){
@@ -36,6 +35,7 @@ window.top.location = 'ie.html';
 
 <link rel="stylesheet" href="desktop/assets/css/reset.css" />
 <link rel="stylesheet" href="desktop/assets/css/loader.css" />
+<link rel="stylesheet" href="desktop/assets/css/js-solitaire.css" />
 
 <!--[if lt IE 9]>
 <link rel="stylesheet" href="desktop/assets/css/ie.css" />
@@ -87,6 +87,10 @@ window.top.location = 'ie.html';
     <a class="abs icon" style="left:110px;top:440px;" href="#icon_dock_mtv">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
       Music Television
+    </a>
+    <a class="abs icon" style="left:97px;top:181px;" href="#icon_dock_games">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
+      Games
     </a>
     <a class="abs icon pauseWallpaper" style="right:20px;top:40px;width:120px;" href="#icon_pause_wallpaper">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
@@ -305,6 +309,14 @@ window.top.location = 'ie.html';
                       Interdimensional Cable
                     </td>
                   </tr>
+                  <tr>
+                    <td>
+                      <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                    </td>
+                    <td>
+                      Games
+                    </td>
+                  </tr>
                 </table>
                 <br/>
                 <!--
@@ -348,6 +360,69 @@ window.top.location = 'ie.html';
           <div class="window_main console_holder">
             <ul class="console">
             </ul>
+          </div>
+        </div>
+        <div class="abs window_bottom">
+          Build: v4.20.69
+        </div>
+      </div>
+      <span class="abs ui-resizable-handle ui-resizable-se"></span>
+    </div>
+
+		<div id="window_games_solitaire" class="abs window" align="center">
+			<div class="abs window_inner">
+				<div class="window_top">
+					<span class="float_left">
+						<img class="emojiIcon" src="desktop/assets/images/icons/icon_games_solitaire.png" />
+						Solitaire
+					</span>
+					<span class="float_right">
+						<a href="#" class="window_min"></a>
+						<a href="#" class="window_resize"></a>
+						<a href="#icon_dock_games_solitaire" class="window_close"></a>
+					</span>
+				</div>
+				<div class="abs window_content">
+					<div class="solitaireGameHolder">
+						<div class="game-solitaire">
+							<div class="solitaire" id="js-solitaire">
+								<div id="js-finish" class="finish-deck"></div>
+								<div id="js-board" class="board-deck"></div>
+
+								<div class="deck">
+									<div id="js-deck-pile" class="deck__pile"></div>
+									<div id="js-deck-deal" class="deck__deal"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="abs window_bottom">
+					Build: v4.20.69
+				</div>
+			</div>
+			<span class="abs ui-resizable-handle ui-resizable-se"></span>
+		</div>
+
+    <div id="window_games" class="abs window" align="center">
+      <div class="abs window_inner">
+        <div class="window_top">
+          <span class="float_left">
+            <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder.png" />
+            Games
+          </span>
+          <span class="float_right">
+            <a href="#" class="window_min"></a>
+            <a href="#" class="window_resize"></a>
+            <a href="#icon_dock_games" class="window_close"></a>
+          </span>
+        </div>
+        <div class="abs window_content">
+          <div class="window_main gamesHolder">
+            <a class="abs icon" style="left: 42px; top: 10px;" href="#icon_dock_games_solitaire">
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_games_solitaire_64.png" />
+              Solitaire
+            </a>
           </div>
         </div>
         <div class="abs window_bottom">
@@ -870,6 +945,18 @@ window.top.location = 'ie.html';
           Inter Dimensional cable
         </a>
       </li>
+      <li id="icon_dock_games">
+        <a href="#window_games">
+          <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder.png" />
+          Games
+        </a>
+      </li>
+      <li id="icon_dock_games_solitaire">
+        <a href="#window_games_solitaire">
+          <img class="emojiIcon" src="desktop/assets/images/icons/icon_games_solitaire.png" />
+          Solitaire
+        </a>
+      </li>
       <li id="icon_dock_profile">
         <a href="#window_profile">
           <img class="emojiIcon" src="desktop/assets/images/icons/icon_profile_64.png" />
@@ -923,6 +1010,8 @@ window.top.location = 'ie.html';
 <script src="desktop/apps/desktop.spellbook.js"></script>
 <script src="desktop/apps/desktop.mtv.js"></script>
 <script src="desktop/apps/desktop.videochat.js"></script>
+<script src="desktop/apps/desktop.games.js"></script>
+<script src="desktop/apps/desktop.games.solitaire.js"></script>
 <script src="data/mtv.js"></script>
 <script src="data/interdimensionalcable.js"></script>
 
@@ -944,6 +1033,8 @@ window.top.location = 'ie.html';
       .use('mtv')
       .use('soundcloud')
       .use('videochat')
+      .use('games')
+      .use('games_solitaire')
       .ready(function(err, apps){
         $('#loaderHolder').fadeOut({
           easing: 'linear',
