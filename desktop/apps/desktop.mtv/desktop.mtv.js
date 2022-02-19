@@ -2,9 +2,7 @@ desktop.mtv = {};
 
 desktop.mtv.player = null;
 desktop.mtv.load = function (params, next) {
-  $('#shadowRender').append('<div class="mtvWindowHolder"></div>')
-  $('.mtvWindowHolder').load('desktop/apps/desktop.mtv/desktop.mtv.html', function (err, fragment) {
-    $('#desktop').append($('.mtvWindowHolder').html())
+  desktop.remoteLoadAppHTML('mtv', function (err, fragment) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];

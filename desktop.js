@@ -140,6 +140,21 @@ desktop.ready = function ready (finish) {
   return this;
 }
 
+/*
+  desktop.remoteLoadAppHTML() takes in a appName and contructs a uri from appName
+  the uri is then loaded with jQuery.load()
+  the results of this jQuery.load() are injected into a hidden shadow DOM and then appended into #desktop
+  this is very useful for lazy loading App assets so that the main application load size
+  does not grow as you install more Apps into the desktop
+*/
+desktop.remoteLoadAppHTML = function asyncLoadAppHTMLFragment (appName, cb) {
+  $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
+  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (err, fragment) {
+    $('#desktop').append($(`.${appName}WindowHolder`).html())
+    cb();
+  });
+}
+
 desktop.refresh = function refreshDesktop () {
   desktop.updateBuddyList();
   desktop.updateMessages();

@@ -2,9 +2,7 @@ desktop.interdimensionalcable = {};
 
 desktop.interdimensionalcable.load = function (params, next) {
 
-  $('#shadowRender').append('<div class="interdimensionalcableWindowHolder"></div>')
-  $('.interdimensionalcableWindowHolder').load('desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.html', function (err, fragment) {
-    $('#desktop').append($('.interdimensionalcableWindowHolder').html())
+  desktop.remoteLoadAppHTML('interdimensionalcable', function (err, fragment) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 

@@ -7,10 +7,7 @@ desktop.mirror.devices = {
 };
 
 desktop.mirror.load = function loadDesktopMirror (params, next) {
-
-  $('#shadowRender').append('<div class="mirrorWindowHolder"></div>')
-  $('.mirrorWindowHolder').load('desktop/apps/desktop.mirror/desktop.mirror.html', function (err, fragment) {
-    $('#desktop').append($('.mirrorWindowHolder').html())
+  desktop.remoteLoadAppHTML('mirror', function (err, fragment) {
     $('#window_mirror').css('width', 686);
     $('#window_mirror').css('height', 622);
     $('#window_mirror').css('left', 200);
@@ -21,7 +18,7 @@ desktop.mirror.load = function loadDesktopMirror (params, next) {
       desktop.mirror.startCamera(newDeviceLabel)
     });
     next();
-  })
+  });
 }
 
 desktop.mirror.openWindow = function openWindow () {
