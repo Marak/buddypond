@@ -5,9 +5,14 @@ desktop.spellbook.alert = function spellbookAlert () {
   alert('Hello Buddy. Hope you are having a wonderful day.');
 } 
 
-// instructs desktop client to log user out of the system locally
+// instructs desktop client to log buddy out of the system locally
 // this is useful if you need to sign out your account on a remote device
-desktop.spellbook.logoutUser = function logoutUser () {
+desktop.spellbook.logout = function logoutBuddy () {
+  desktop.login.logoutDesktop();
+} 
+
+desktop.spellbook.banhammer = function banBuddy () {
+  alert('You have been banned from the Mickey Mouse Club for inappropiate behavior.');
   desktop.login.logoutDesktop();
 } 
 
