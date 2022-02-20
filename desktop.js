@@ -79,7 +79,30 @@ function imageLoaded() {
   }
 }
 
+desktop.preloader = [];
 desktop.use = function use(app, params) {
+  // queue arguments for preloader
+  preloader.push({ appName: app, params: params });
+  return this;
+}
+
+desktop.ready = function ready (finish) {
+  // preload all the App folders which were requested by desktop.use()
+  let scriptArr = [];
+  preloader.forEach(function(app){
+    scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+  });
+  desktop.loadRemoteAssets(scriptArr, function(){
+    preloader.forEach(function(app){
+      desktop._use(app.appName, app.params);
+    })
+    desktop._ready(finish)
+  })
+  return this;
+}
+
+desktop._use = function _use (app, params) {
+
   params = params || {};
   if (desktop.apps.loading.length === 0) {
     desktop.apps.mostRecentlyLoaded = [];
@@ -134,15 +157,17 @@ desktop.use = function use(app, params) {
   }
 
   return this;
+
 }
 
-desktop.ready = function ready (finish) {
+desktop._ready = function _ready (finish) {
+
   if (!desktop.images.preloaded || desktop.apps.loading.length > 0) {
     setTimeout(function(){
       if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
         throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
       }
-      desktop.ready(finish);
+      desktop._ready(finish);
     }, 10)
   } else {
     desktop.apps.loadingEndedAt = new Date();
@@ -174,8 +199,8 @@ desktop.ready = function ready (finish) {
     finish(null, desktop.loaded);
   }
   return this;
-}
 
+}
 
 desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
 
