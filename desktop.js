@@ -140,6 +140,36 @@ desktop.ready = function ready (finish) {
   return this;
 }
 
+
+desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
+
+  let assets = {
+    script: [],
+    css: [],
+  };
+
+  assetArr.forEach(function(asset){
+    if (asset.split('.').pop() === 'js') {
+      assets.script.push(asset);
+      return;
+    }
+    if (asset.split('.').pop() === 'css') {
+      assets.css.push(asset);
+      return;
+    }
+    console.log('Warning: Invalid assett extention, will not load: ', script);
+  });
+
+  console.log(assets)
+  desktop.loadRemoteJS(assets.script, function(err) {
+    desktop.loadRemoteCSS(assets.css, function(err) {
+      final();
+    });
+  });
+
+}
+
+
 /*
   desktop.loadRemoteAppHtml() takes in an appName and constructs a uri from appName
   the uri is then loaded with jQuery.load()
@@ -155,7 +185,7 @@ desktop.loadRemoteAppHtml = function asyncLoadAppHTMLFragment (appName, cb) {
   });
 }
 
-desktop.loadRemoteJS = function asyncLoadAppHTMLFragment (scriptsArr, final) {
+desktop.loadRemoteJS = function loadRemoteJS (scriptsArr, final) {
 
   // filter out already injected scripts
   let existingScripts =  $('script');
@@ -194,6 +224,32 @@ desktop.loadRemoteJS = function asyncLoadAppHTMLFragment (scriptsArr, final) {
     }
   });
 
+}
+
+desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
+
+  let total = cssArr.length;
+  let completed = 0;
+
+  // if total is zero here, it means that all requested scripts have already been loaded and cached
+  if (total === 0) {
+    return final();
+  }
+  cssArr.forEach(function (cssPath) {
+    // before injecting this script into the document, lets check if its already injected
+    // by doing this, we allow Apps to reinject the same deps multiple times without reloads
+    var tag = document.createElement('link');
+    tag.href = cssPath;
+    tag.rel = "stylesheet";
+    var firstLinkTag = document.getElementsByTagName('link')[0];
+    firstLinkTag.parentNode.insertBefore(tag, firstLinkTag);
+    tag.onload = function () {
+      completed++;
+      if (completed === total) {
+        final();
+      }
+    }
+  });
 }
 
 desktop.refresh = function refreshDesktop () {
