@@ -82,18 +82,18 @@ function imageLoaded() {
 desktop.preloader = [];
 desktop.use = function use(app, params) {
   // queue arguments for preloader
-  preloader.push({ appName: app, params: params });
+  desktop.preloader.push({ appName: app, params: params });
   return this;
 }
 
 desktop.ready = function ready (finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
-  preloader.forEach(function(app){
+  desktop.preloader.forEach(function(app){
     scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
   });
   desktop.loadRemoteAssets(scriptArr, function(){
-    preloader.forEach(function(app){
+    desktop.preloader.forEach(function(app){
       desktop._use(app.appName, app.params);
     })
     desktop._ready(finish)
