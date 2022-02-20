@@ -4,6 +4,10 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
   desktop.remoteLoadAppHTML('login', function (responseText, textStatus, jqXHR) {
 
+    $('.loginForm').on('submit', function () {
+      return false;
+    });
+
     // if user clicks login button, attempt to auth with server
     $('.loginButton').on('click', function(){
       desktop.login.auth($('#buddyname').val());
