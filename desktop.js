@@ -58,7 +58,9 @@ desktop.images.preloaded = false;
 
 // add an event handler to each image's load event in the current document and wait until all images are loaded
 // this will prevent Desktop.ready from firing before all required images are ready ( no image flicking on load )
-// this also means that the entire Desktop is blocked from being ready until *all* document images are loaded
+// this also means that the entire Desktop is blocked from being ready until all current document images are loaded
+// TODO: We could add this same code inside desktop.loadRemoteAssets()
+//       to ensure images in injected HTML fragments block App injection until loaded
 var imgs = document.images,
     totalNewImages = imgs.length,
     totalNewLoadedImages = 0;
@@ -244,6 +246,12 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
 
 }
 
+// keep track of all external JS, CSS, and HTML files that have been pulled in
+desktop.loaded = {};
+desktop.loaded.scripts = [];
+desktop.loaded.css = [];
+desktop.loaded.appsHTML = {};
+
 /*
   desktop.loadRemoteAppHtml() takes in an appName and constructs a uri from appName
   the uri is then loaded with jQuery.load()
@@ -257,7 +265,9 @@ desktop.loadRemoteAppHtml = function loadRemoteAppHtml (appName, cb) {
   }
   $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
   $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
-    $('#desktop').append($(`.${appName}WindowHolder`).html())
+    let html = $(`.${appName}WindowHolder`).html();
+    desktop.loaded.appsHTML[appName] = html;
+    $('#desktop').append(html);
     cb(responseText, textStatus, jqXHR);
   });
 }
@@ -291,6 +301,7 @@ desktop.loadRemoteJS = function loadRemoteJS (scriptsArr, final) {
     // by doing this, we allow Apps to reinject the same deps multiple times without reloads
     var tag = document.createElement('script');
     tag.src = scriptPath;
+    desktop.loaded.scripts.push(scriptPath);
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     tag.onload = function () {
@@ -318,6 +329,7 @@ desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
     var tag = document.createElement('link');
     tag.href = cssPath;
     tag.rel = "stylesheet";
+    desktop.loaded.css.push(cssPath);
     var firstLinkTag = document.getElementsByTagName('link')[0];
     firstLinkTag.parentNode.insertBefore(tag, firstLinkTag);
     tag.onload = function () {

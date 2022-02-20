@@ -1,5 +1,9 @@
 desktop.spellbook = {};
 
+desktop.spellbook.load = function loadSpellBook () {
+  return true;
+}
+
 // basic alert window to client
 desktop.spellbook.alert = function spellbookAlert () {
   alert('Hello Buddy. Hope you are having a wonderful day.');
