@@ -195,8 +195,10 @@ window.top.location = 'ie.html';
 <script src="desktop/assets/js/jquery.ui.js"></script>
 <script src="desktop/assets/js/jquery.desktop.js"></script>
 <script src="desktop/assets/js/forbidden.notes.js"></script>
+
 <script src="sdk/buddypond.js"></script>
 <script src="desktop.js"></script>
+<script src="desktop/apps/desktop.spellbook/desktop.spellbook.js"></script>
 
 <script>
 
@@ -219,7 +221,7 @@ window.top.location = 'ie.html';
       .use('games', { lazy: true })
       //
       // Remark: Using the `lazy` flag here will defer Solitaire.load() until Desktop is ready
-      //         Double clicking Solitaire Icon will result in loading spinner until Solitaire.load() is complete
+      //         Double clicking Solitaire icon will result in loading spinner until Solitaire.load() is complete
       //         Using `lazy` will not block Desktop Ready on Apps which require loading large asset files
       //
       .use('solitaire', { lazy: true })
