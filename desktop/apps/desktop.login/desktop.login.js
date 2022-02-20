@@ -1,61 +1,60 @@
 desktop.login = {};
 
-desktop.login.load = function loadDesktopLogin (params, cb) {
+desktop.login.load = function loadDesktopLogin (params, next) {
 
-  // cancel all form submits
-  $('form').on('submit', function(){
-    return false;
-  });
+  desktop.remoteLoadAppHTML('login', function (responseText, textStatus, jqXHR) {
 
-  // if user clicks login button, attempt to auth with server
-  $('.loginButton').on('click', function(){
-    desktop.login.auth($('#buddyname').val());
-  });
-
-  // if user clicks on top left menu, focus on login form
-  $('.loginLink').on('click', function(){
-    $('#window_login').show();
-    $('#buddyname').focus();
-  });
-
-  // if user clicks logout link on top left menu, logout the user
-  $('.logoutLink').on('click', function(){
-    desktop.login.logoutDesktop()
-  });
-
-  desktop.renderDockElement('login');
-
-  let localToken = localStorage.getItem("qtokenid");
-  let me = localStorage.getItem("me");
-  if (localToken) {
-    buddypond.verifyToken(me, localToken, function(err, data){
-      if (err) {
-        alert('server is down. please try again in a moment.');
-      }
-
-      // server is online and operational, but returned an error message to client state
-      if (data.error) {
-        alert(data.message);
-        return cb(null);
-      }
-
-      // token has not validated, log out the client
-      if (data.success === false) {
-        desktop.login.logoutDesktop();
-        desktop.login.openWindow();
-      } else {
-      // token is valid, show client login success
-        buddypond.qtokenid = localToken;
-        buddypond.me = me;
-        desktop.login.success();
-      }
-      return cb(null);
+    // if user clicks login button, attempt to auth with server
+    $('.loginButton').on('click', function(){
+      desktop.login.auth($('#buddyname').val());
     });
-  } else {
-    $('.totalConnected').hide();
-    desktop.login.openWindow();
-    return cb(null);
-  }
+
+    // if user clicks on top left menu, focus on login form
+    $('.loginLink').on('click', function(){
+      $('#window_login').show();
+      $('#buddyname').focus();
+    });
+
+    // if user clicks logout link on top left menu, logout the user
+    $('.logoutLink').on('click', function(){
+      desktop.login.logoutDesktop()
+    });
+
+    desktop.renderDockElement('login');
+
+    let localToken = localStorage.getItem("qtokenid");
+    let me = localStorage.getItem("me");
+    if (localToken) {
+      buddypond.verifyToken(me, localToken, function(err, data){
+        if (err) {
+          alert('server is down. please try again in a moment.');
+        }
+
+        // server is online and operational, but returned an error message to client state
+        if (data.error) {
+          alert(data.message);
+          return next(null);
+        }
+
+        // token has not validated, log out the client
+        if (data.success === false) {
+          desktop.login.logoutDesktop();
+          desktop.login.openWindow();
+        } else {
+        // token is valid, show client login success
+          buddypond.qtokenid = localToken;
+          buddypond.me = me;
+          desktop.login.success();
+        }
+        return next(null);
+      });
+    } else {
+      $('.totalConnected').hide();
+      desktop.login.openWindow();
+      return next(null);
+    }
+
+  });
 
 }
 

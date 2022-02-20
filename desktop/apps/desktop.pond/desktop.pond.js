@@ -1,85 +1,88 @@
 desktop.pond = {};
 
-desktop.pond.load = function loadPond () {
+desktop.pond.load = function loadPond (params, next) {
 
-  let clone = $('#window_pond_message_0').html();
-  let dockItemClone = $('#icon_dock_pond_message_0').html();
-  let emojiTriggers = [];
-  emojiTriggers.push({
-    selector: '.pond_emoji_picker_10',
-    insertInto: '.pond_message_text_10'
-  });
+  desktop.remoteLoadAppHTML('pond', function (responseText, textStatus, jqXHR) {
 
-  for (let i = 1; i<11; i++) {
+    let clone = $('#window_pond_message_0').html();
+    let dockItemClone = $('#icon_dock_pond_message_0').html();
+    let emojiTriggers = [];
     emojiTriggers.push({
-      selector: '.pond_emoji_picker_' + i,
-      insertInto: '.pond_message_text_' + i
+      selector: '.pond_emoji_picker_10',
+      insertInto: '.pond_message_text_10'
     });
 
-    let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i)
-    _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + i);
-    _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker_' + i);
+    for (let i = 1; i<11; i++) {
+      emojiTriggers.push({
+        selector: '.pond_emoji_picker_' + i,
+        insertInto: '.pond_message_text_' + i
+      });
 
-    let window_id = 'window_pond_message_' + i;
-    let pondChatStr = '<div id="' + window_id + '" class="abs window pond_message" data-window-index="' + i + '" data-window-type="pond_message">' + _clone + '</div>'
+      let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i)
+      _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + i);
+      _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker_' + i);
 
-    $('#desktop').append(pondChatStr);
-    let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + i)
-    dockStr = '<li id="icon_dock_pond_message_' + i +'">' + dockStr + '</li>'
-    $('#dock').append(dockStr);
-    // register these new elements into the windowPool
-    // these ids are used later when desktop.openWindow('buddy_message') is called
-    desktop.windowPool['pond_message'].push(window_id)
-  }
+      let window_id = 'window_pond_message_' + i;
+      let pondChatStr = '<div id="' + window_id + '" class="abs window pond_message" data-window-index="' + i + '" data-window-type="pond_message">' + _clone + '</div>'
 
-  // $('.pondMessagesHolder').hide();
-
-  $('#window_pond').css('width', 300);
-  $('#window_pond').css('height', 340);
-  $('#window_pond').css('left', 33);
-  $('#window_pond').css('top', 66);
-
-  $('.pondNameList').hide();
-  $('.pondMessagesHolder').hide();
-
-  $('.sendPondMessage').on('click', function(){
-    desktop.pond.sendMessage(this);
-    return false;
-  });
-
-  $('.pond_message_text').bind("enterKey",function(e){
-    desktop.pond.sendMessage(this);
-    return false;
-  });
-
-  $('.pond_message_text').keyup(function(e){
-      if (e.shiftKey==1) {
-        return false;
-      }
-      if (e.keyCode == 13) {
-        $(this).trigger("enterKey");
-        return false;
-      }
-  });
-
-  $('.joinPond').on('click', function(){
-    if ($('.customPondName').val().length === 0) {
-      $('.customPondName').addClass('error');
-    } else {
-      $('.customPondName').removeClass('error');
-      desktop.openWindow('pond_message', $('.customPondName').val())
-      desktop.pond.openWindow($('.customPondName').val())
+      $('#desktop').append(pondChatStr);
+      let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + i)
+      dockStr = '<li id="icon_dock_pond_message_' + i +'">' + dockStr + '</li>'
+      $('#dock').append(dockStr);
+      // register these new elements into the windowPool
+      // these ids are used later when desktop.openWindow('buddy_message') is called
+      desktop.windowPool['pond_message'].push(window_id)
     }
-  });
 
-  /*
-  new EmojiPicker({
-      trigger: emojiTriggers,
-      closeButton: true,
-      //specialButtons: green
+    // $('.pondMessagesHolder').hide();
+
+    $('#window_pond').css('width', 300);
+    $('#window_pond').css('height', 340);
+    $('#window_pond').css('left', 33);
+    $('#window_pond').css('top', 66);
+
+    $('.pondNameList').hide();
+    $('.pondMessagesHolder').hide();
+
+    $('.sendPondMessage').on('click', function(){
+      desktop.pond.sendMessage(this);
+      return false;
+    });
+
+    $('.pond_message_text').bind("enterKey",function(e){
+      desktop.pond.sendMessage(this);
+      return false;
+    });
+
+    $('.pond_message_text').keyup(function(e){
+        if (e.shiftKey==1) {
+          return false;
+        }
+        if (e.keyCode == 13) {
+          $(this).trigger("enterKey");
+          return false;
+        }
+    });
+
+    $('.joinPond').on('click', function(){
+      if ($('.customPondName').val().length === 0) {
+        $('.customPondName').addClass('error');
+      } else {
+        $('.customPondName').removeClass('error');
+        desktop.openWindow('pond_message', $('.customPondName').val())
+        desktop.pond.openWindow($('.customPondName').val())
+      }
+    });
+
+    /*
+    new EmojiPicker({
+        trigger: emojiTriggers,
+        closeButton: true,
+        //specialButtons: green
+    });
+    */
+    next();
   });
-  */
-  return true;
 
 };
 

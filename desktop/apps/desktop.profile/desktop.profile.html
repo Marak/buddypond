@@ -1,0 +1,184 @@
+<div id="window_profile" class="abs window">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_profile_64.png" />
+        Profile
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_profile" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main console_holder">
+        <div id="profileTabs">
+          <ul>
+            <li><a href="#tabs-1">User Profile Settings</a></li>
+            <li><a href="#tabs-2">Buddy Apps</a></li>
+            <li><a href="#tabs-3">Public Profile</a></li>
+          </ul>
+          <div id="tabs-1">
+            <span class="updateProfileResponse"></span>
+            <form class="updateProfileForm">
+              <h2>User Profile Settings</h2>
+              <table class="profileTable table data">
+                <tr>
+                  <td>Username</td>
+                  <td class="me">Marak</td>
+                </tr>
+                <!--
+                <tr>
+                  <td>Avatar</td>
+                  <td class="me">
+                    <input type="file"/>
+                  </td>
+                </tr>
+                -->
+                <tr>
+                  <td>Email</td>
+                  <td>
+                    <input type="text" size="32" name="buddy_email" class="buddy_email" value=""/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Password</td>
+                  <td>
+                    <input type="password" size="32" name="buddy_password" class="buddy_password"/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Confirm Password</td>
+                  <td>
+                    <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
+                  </td>
+                </tr>
+              </table>
+              <br/>
+              <button type="submit" class="desktopButton updateProfileButton">Update Profile</button>
+            </form>
+          </div>
+          <div id="tabs-2" align="center">
+            <p align="left">
+              <img title="Custom Desktop App Configurations coming soon!" height="32" width="32" src="desktop/assets/images/icons/icon_locked.png" />
+              Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
+              <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
+              
+              </p>
+            <table class="data table">
+              <tr>
+                <th>
+                  Enabled
+                </th>
+                <th>
+                  App Name
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Profile
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Buddy List
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Buddy Pond
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Console
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Background
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Mirror
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Video Chat
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Music TeleVision
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Interdimensional Cable
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Games
+                </td>
+              </tr>
+            </table>
+            <br/>
+            <!--
+              <p>
+                Refresh entire page to for Buddy Apps to reload.
+              </p>
+            -->
+          </div>
+          <div id="tabs-3">
+            <p>Simple preview of what your Buddy Profile will look like</p>
+            <br/>
+            <div class="border">
+              <p class="me">Marak</p>
+              <p>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>
+

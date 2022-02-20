@@ -1,18 +1,20 @@
 desktop.soundcloud = {};
 
-desktop.soundcloud.load = function loadSoundcloud () {
-  $('.ponderSoundcloud').on('click', function(){
-    desktop.soundcloud.widget.play();
-    desktop.soundcloud.widget.next();
+desktop.soundcloud.load = function loadSoundcloud (params, next) {
+  desktop.remoteLoadAppHTML('soundcloud', function (responseText, textStatus, jqXHR) {
+    $('.ponderSoundcloud').on('click', function(){
+      desktop.soundcloud.widget.play();
+      desktop.soundcloud.widget.next();
+    });
+    $('.selectPlaylist').on('change', function(){
+      $('#soundcloudiframe').remove();
+      $('#soundcloudplayer').html('');
+      desktop.soundcloud.embeded = false;
+      $('#window_soundcloud').show();
+      desktop.soundcloud.openWindow($(this).val());
+    });
+    next();
   });
-  $('.selectPlaylist').on('change', function(){
-    $('#soundcloudiframe').remove();
-    $('#soundcloudplayer').html('');
-    desktop.soundcloud.embeded = false;
-    $('#window_soundcloud').show();
-    desktop.soundcloud.openWindow($(this).val());
-  })
-  return true;
 }
 
 desktop.soundcloud.embeded = false;

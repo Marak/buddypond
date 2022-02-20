@@ -1,0 +1,62 @@
+<div id="window_login" data-window-type="login" class="abs window">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_key_64.png" />
+        Desktop Login
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_login" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main">
+        <div class="splash">
+          <h1>Welcome to Buddy Pond!</h1>
+          <em>Peer to Peer Buddy Messaging and Video Calls</em>
+          <br/>
+          <em>No followers or following counts, just Buddies!</em>
+          <div class="splashImage">
+            <img src="desktop/assets/images/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
+            <br/>
+            <em class="smaller">This is a Buddy at the pond.</em>
+          </div>
+          <br/>
+          <div class="loginForm">
+            <form method="POST" action="/login">
+              <table class="buddyLoginTable">
+                <tbody>
+                  <tr>
+                    <td><label for="buddyname">Buddy Name:</label></td>
+                    <td>
+                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="buddypassword">Buddy Password:</label></td>
+                    <td><input class="" id="buddypassword" name="buddypassword" type="password" size="16"/></td>
+                  </tr>
+                  <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
+                </tbody>
+              </table>
+               <br/>
+               <button type="submit" class="loginButton desktopButton">Login</button>
+            </form>
+          </div>
+          <br/>
+           <ul>
+             <li>New Users just pick a name and password</li>
+             <li><strong>The login is the password</strong></li>
+             <li><em>There is no registration process</em></li>
+           </ul>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

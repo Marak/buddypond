@@ -1,0 +1,117 @@
+<div id="window_buddylist" class="abs window">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+        Buddy List
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_buddylist" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main">
+        <div class="buddy_list_not_connected">
+          You'll need to login in order to access your Buddy List.
+        </div>
+        <div class="loggedIn" align="center">
+          <div>Hello. You look nice today!</div>
+          <br/>
+          <div class="buddyListHolder">
+            <h2>Buddies</h2>
+            <span class="you_have_no_buddies">
+              It's time to add buddies.<br/><br/>
+              Why not invite a friend?<br/><br/>
+              <a href="#/addbuddy/Marak" class="sendBuddyRequest rainbowLink">Marak</a> wants to be buddies!<br/>
+              <a href="#/addbuddy/Marak" class="sendBuddyRequest rainbowLink">Marak</a> <- Click To Add
+              <br/>
+              <br/>
+            </span>
+            <div class="pendingIncomingBuddyRequestsHolder">
+              <h3>New Buddy Requests</h3>
+              <div class="pendingIncomingBuddyRequests">
+              </div>
+              <br/>
+            </div>
+            <ul class="buddylist">
+            </ul>
+            <br/>
+            <div class="pendingOutgoingBuddyRequestsHolder">
+              <h3>Pending Buddy Requests</h3>
+              <div class="pendingOutgoingBuddyRequests">
+              </div>
+              <br/>
+              <br/>
+            </div>
+          </div>
+          <div class="addBuddyForm">
+            <form method="POST" action="#">
+              <label for="buddy_request_name">Send Buddy Request:</label><br/>
+              <input id="buddy_request_name" placeholder="enter buddy name..." value="" class="rainbow-border buddy_request_name desktopInput" name="buddy_request_name" type="text" size="16"/><br/>
+              <button class="sendBuddyRequest desktopButton" type="submit">Send Buddy Request</button>
+            </form>
+            <br/>
+            <div class="inviteBuddyHolder">
+              <span>Don't know any Buddy Names?</span><br/>
+              <span><a class="inviteBuddy rainbowLink" href="#invite-buddy">Invite a Buddy!</a></span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>
+
+<div id="window_buddy_message_0" class="abs window buddy_message" data-window-index="0" data-window-type="buddy_message">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+        <span class="window-context-title">Chat</span>
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_buddy_message_0" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main">
+        <!--
+        <img class="acceptVideoCall" title="Accept Video Call" src="desktop/assets/images/icons/phonebooth.png" />
+        -->
+        <!-- <span title="End Video Call" class="endVideoCall emojiIcon context">🚫</span> -->
+        
+        <img title="Start Video Call"  class="startVideoCall context" src="desktop/assets/images/icons/icon_phone.png" />
+        <div class="chatMessagesHolder">
+          <div class="no_chat_messages">
+            Your conversation has just started. You can send a message using the form below.
+          </div>
+          <div class="chat_messages">
+          </div>
+          <hr/>
+          <div class="chat_send_message_form">
+            <form class="sendMessageForm" method="POST" action="#">
+              <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
+              <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+              <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
+              <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
+              <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

@@ -1,11 +1,12 @@
 desktop.console = {};
 desktop.console.MAX_CONSOLE_OUTPUT = 40;
 
-desktop.console.load = function loadDesktop() {
-
-  // Remark: map shortcut method for easily calling `desktop.log()` from apps
-  desktop.log = desktop.console.log;
-  return true;
+desktop.console.load = function loadDesktop (params, next) {
+  desktop.remoteLoadAppHTML('console', function (responseText, textStatus, jqXHR) {
+    // Remark: map shortcut method for easily calling `desktop.log()` from apps
+    desktop.log = desktop.console.log;
+    next();
+  });
 };
 
 desktop.console.log = function logDesktop () {
@@ -31,6 +32,6 @@ desktop.console.log = function logDesktop () {
   $('.console').append('<li>' + dateString + ': ' + output + '</li>');
   // TODO: fix scrollTop issue ( should scroll to bottom )
   let el = $('.console li');
-  $('.console').scrollTop($(el)[0].scrollHeight + 300);
+  //$('.console').scrollTop($(el)[0].scrollHeight + 300);
 }
 

@@ -1,107 +1,108 @@
 desktop.buddylist = {};
 
 
-desktop.buddylist.load = function desktopLoadBuddyList () {
+desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
-  // clone window_buddy_message_0 ten times
-  // clone icon_dock_buddy_message_0 ten times
-  // this creates 10 windows available for chatting with buddies
-  let clone = $('#window_buddy_message_0').html();
-  let dockItemClone = $('#icon_dock_buddy_message_0').html();
-  let emojiTriggers = [];
-  emojiTriggers.push({
-    selector: '.emojiPicker',
-    insertInto: '.active_buddy_text_area'
-  });
-  for (let i = 1; i<11; i++) {
-    let window_id = 'window_buddy_message_' + i;
-    let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
-    _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
-    _clone = _clone.replace('emoji_picker_0', 'emoji_picker_' + i);
-    let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + _clone + '</div>'
-    // console.log('appending', buddyChatStr)
-    $('#desktop').append(buddyChatStr);
-    let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
-    dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
-    $('#dock').append(dockStr);
-    // register these new elements into the windowPool
-    // these ids are used later when desktop.openWindow('buddy_message') is called
-    desktop.windowPool['buddy_message'].push(window_id)
-  }
-
-  $('#window_buddylist').css('width', 220);
-  $('#window_buddylist').css('height', 440);
-  $('#window_buddylist').css('left', 666);
-  $('#window_buddylist').css('top', 66);
-
-  $('.sendMessageForm').on('submit', function(){
-    return false;
-  })
-
-  $('.sendBuddyMessage').on('click', function(){
-    desktop.buddylist.sendMessage(this);
-    return false;
-  });
-
-  $('.sendBuddyRequest').on('click', function(){
-    $('.you_have_no_buddies').html('Buddy Request Sent!');
-    var buddyName = $('.buddy_request_name').val() || $(this).html();
-    if (!buddyName) {
-      $('.buddy_request_name').addClass('error')
-      return;
-    }
-    $('.buddy_request_name').removeClass('error')
-    $('.buddy_request_name').val('');
-    $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>')
-    desktop.log('buddypond.addBuddy ->', buddyName)
-    buddypond.addBuddy(buddyName, function(err, data){
-      if (!data.success) {
-        alert(data.message);
-      }
-      desktop.log('buddypond.addBuddy <-', data)
+  desktop.remoteLoadAppHTML('buddylist', function (responseText, textStatus, jqXHR) {
+    // clone window_buddy_message_0 ten times
+    // clone icon_dock_buddy_message_0 ten times
+    // this creates 10 windows available for chatting with buddies
+    let clone = $('#window_buddy_message_0').html();
+    let dockItemClone = $('#icon_dock_buddy_message_0').html();
+    let emojiTriggers = [];
+    emojiTriggers.push({
+      selector: '.emojiPicker',
+      insertInto: '.active_buddy_text_area'
     });
-  });
+    for (let i = 1; i<11; i++) {
+      let window_id = 'window_buddy_message_' + i;
+      let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
+      _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
+      _clone = _clone.replace('emoji_picker_0', 'emoji_picker_' + i);
+      let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + _clone + '</div>'
+      // console.log('appending', buddyChatStr)
+      $('#desktop').append(buddyChatStr);
+      let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
+      dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
+      $('#dock').append(dockStr);
+      // register these new elements into the windowPool
+      // these ids are used later when desktop.openWindow('buddy_message') is called
+      desktop.windowPool['buddy_message'].push(window_id)
+    }
 
-  $('.inviteBuddy').on('click', function(){
-    alert('TODO: Add Import Buddies from Twitter feature');
-    return false;
-  });
+    $('#window_buddylist').css('width', 220);
+    $('#window_buddylist').css('height', 440);
+    $('#window_buddylist').css('left', 666);
+    $('#window_buddylist').css('top', 66);
 
-  $('.buddyListHolder').hide();
-  $('#buddyname').focus();
+    $('.sendMessageForm').on('submit', function(){
+      return false;
+    })
 
-  $('.buddy_message_text').bind("enterKey",function(e){
-    desktop.buddylist.sendMessage(this);
-    return false;
-  });
+    $('.sendBuddyMessage').on('click', function(){
+      desktop.buddylist.sendMessage(this);
+      return false;
+    });
 
-  $('.buddy_message_text').keyup(function(e){
-      if (e.shiftKey==1) {
-        return false;
+    $('.sendBuddyRequest').on('click', function(){
+      $('.you_have_no_buddies').html('Buddy Request Sent!');
+      var buddyName = $('.buddy_request_name').val() || $(this).html();
+      if (!buddyName) {
+        $('.buddy_request_name').addClass('error')
+        return;
       }
-      if (e.keyCode == 13) {
-        $(this).trigger("enterKey");
-        return false;
-      }
-  });
+      $('.buddy_request_name').removeClass('error')
+      $('.buddy_request_name').val('');
+      $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>')
+      desktop.log('buddypond.addBuddy ->', buddyName)
+      buddypond.addBuddy(buddyName, function(err, data){
+        if (!data.success) {
+          alert(data.message);
+        }
+        desktop.log('buddypond.addBuddy <-', data)
+      });
+    });
 
-  $('.emojiPicker').on('click', function (e) {
-    e.target.parentNode?.querySelector('.buddy_message_text').focus();
-  });
+    $('.inviteBuddy').on('click', function(){
+      alert('TODO: Add Import Buddies from Twitter feature');
+      return false;
+    });
 
-  $('.buddy_message_text').on('focus', function (e) {
-    // remove active buddy text area from all other windows
-    $('.buddy_message_text').removeClass('active_buddy_text_area');
-    e.target.classList.add('active_buddy_text_area')
-  });
+    $('.buddyListHolder').hide();
+    $('#buddyname').focus();
 
+    $('.buddy_message_text').bind("enterKey",function(e){
+      desktop.buddylist.sendMessage(this);
+      return false;
+    });
 
-  new EmojiPicker({
-      trigger: emojiTriggers,
-      closeButton: true,
-      //specialButtons: green
+    $('.buddy_message_text').keyup(function(e){
+        if (e.shiftKey==1) {
+          return false;
+        }
+        if (e.keyCode == 13) {
+          $(this).trigger("enterKey");
+          return false;
+        }
+    });
+
+    $('.emojiPicker').on('click', function (e) {
+      e.target.parentNode?.querySelector('.buddy_message_text').focus();
+    });
+
+    $('.buddy_message_text').on('focus', function (e) {
+      // remove active buddy text area from all other windows
+      $('.buddy_message_text').removeClass('active_buddy_text_area');
+      e.target.classList.add('active_buddy_text_area')
+    });
+
+    new EmojiPicker({
+        trigger: emojiTriggers,
+        closeButton: true,
+        //specialButtons: green
+    });
+    next();
   });
-  return true;
 
 }
 
