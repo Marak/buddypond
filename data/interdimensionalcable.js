@@ -1823,7 +1823,6 @@ desktop.interdimensionalcable.playlist = [
   "dEgGEoRcl_8",
   "kPu-yI3baLs",
   "a1rgIqCJgF4",
-  "nzIDxuC1lj0",
   "DaIzhJ5JAXE",
   "J9g4YsGpO-A",
   "T58lGKREubo",
@@ -1892,5 +1891,11 @@ desktop.interdimensionalcable.playlist = [
   "g83vlSmY7uA",
   'P6z7MuODWjA',
   '_oaIpAvsEaQ',
-  'XijzELLGGmY'
+  'XijzELLGGmY',
+  'QPRiEzsGYAM',
+  'Mw6kAyLFh1E',
+  'AYm8GOYY0Uo',
+  'U8dmkI5l8Zs',
+  'MZZ4_lOz8dw',
+  'WBgDP43Abeg'
 ];
