@@ -356,7 +356,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     if (desktop.openWindows.buddy_message[first]) {
       openNextTo = '#' + desktop.openWindows.buddy_message[first];
     } else {
-      
+      // do nothing
     }
 
     position = position || {}
@@ -377,14 +377,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
         }
         return true;
       });
-
-      // TODO: move this to buddylist.openWindow function
-      $('.buddy_message_text', windowId).focus();
-      $('.buddy_message_to', windowId).val(context)
-      $('.buddy_message_from', windowId).val(buddypond.me);
-      // can this be removed?
-      desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
-      desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
+      desktop.buddylist.onWindowOpen(windowId, context);
     }
 
   }
@@ -435,7 +428,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
     desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
   }
 
-  // TODO: replace delete statements ?
+  // TODO: replace delete statements?
   //
   // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
   //

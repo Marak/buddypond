@@ -450,3 +450,21 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
     }
     cb(null, true);
 }
+
+//
+// desktop.buddylist.onWindowOpen() is called when a desktop.openWindow() instances opens
+//
+desktop.buddylist.onWindowOpen = function (windowId, context) {
+  // Remark: this will switch context when new window opens during existing conversation
+  //         could be considered either good or bad UX behavior
+  //         current decisions is to have user bring attention to the new conversation immediately
+  //         this way receiving user will immediately make context
+  ///        switch decision ( respond to new window or switch back to original )
+  $('.buddy_message_text', windowId).focus();
+  $('.buddy_message_to', windowId).val(context)
+  $('.buddy_message_from', windowId).val(buddypond.me);
+
+  // can these lines now be removed?
+  desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
+  desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
+}
