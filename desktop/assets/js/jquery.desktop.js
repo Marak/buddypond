@@ -361,11 +361,24 @@ jQuery(document).ready(function() {
 // extended JDQ functions added by Marak
 var JDQX = {};
 JDQX.openWindow = function openWindow (context) {
-
-  // Get the link's target.
   var iconDock = $(context).attr('href');
-  var appWindow = $(iconDock).find('a').attr('href');
-  var appName = appWindow.replace('#window_', '');
+  var appName = iconDock.replace('#icon_dock_', '');
+  let appWindow = '#window_' + appName;
+
+  if (desktop[appName] && desktop[appName].deferredLoad) {
+    // TODO: in the future we could check if its App.isLoadingDefered...etc
+    //       if not, we could start an App.load event in response to click
+
+    // set global cursor to spinning progress icon
+    document.querySelectorAll('*').forEach(function(node) {
+      node.style.cursor = 'progress';
+    });
+
+    // set a flag to indicate this App should open when defered loading completes
+    desktop[appName].openWhenLoaded = true;
+    return;
+  }
+
   //var x = $(context).attr('href');
   //var y = $(x).find('a').attr('href');
   // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
@@ -389,8 +402,6 @@ JDQX.openWindow = function openWindow (context) {
 
 JDQX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
-  
-  // alert('minWindow');
 }
 
 JDQX.maxWindow = function maxWindow (el) {

@@ -231,7 +231,12 @@ window.top.location = 'ie.html';
       .use('soundcloud')
       .use('videochat')
       .use('games')
-      .use('solitaire')
+      //
+      // Remark: Using the `lazy` flag here will defer Solitaire.load() until Desktop is ready
+      //         Double clicking Solitaire Icon will result in loading spinner until Solitaire.load() is complete
+      //         This is useful for not blocking Desktop Ready on Apps which require loading large assets files
+      //
+      .use('solitaire', { lazy: true })
       .ready(function(err, apps){
         $('#loaderHolder').fadeOut({
           easing: 'linear',

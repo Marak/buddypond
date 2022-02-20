@@ -12,6 +12,7 @@ desktop.ctime = new Date();
 desktop.apps = {};
 desktop.apps.loading = [];
 desktop.apps.loaded = [];
+desktop.apps.deferred = [];
 desktop.apps.mostRecentlyLoaded = [];
 desktop.apps.loadingStartedAt = 0;
 desktop.apps.loadingEndedAt = 0;
@@ -79,7 +80,7 @@ function imageLoaded() {
 }
 
 desktop.use = function use(app, params) {
-
+  params = params || {};
   if (desktop.apps.loading.length === 0) {
     desktop.apps.mostRecentlyLoaded = [];
     desktop.apps.loadingStartedAt = new Date();
@@ -90,6 +91,20 @@ desktop.use = function use(app, params) {
   }
   if (!desktop[app].load || typeof desktop[app].load !== 'function') {
     throw new Error(app + '.load is not a valid function');
+  }
+  if (params.lazy) {
+    // Remark: Right now we are actually only doing *deferred loading* and not true *lazy loading*
+    //         A deferred load is a load automatically executed after Desktop Ready
+    //         A true lazy load would be in response to a User Interaction ( like Desktop Icon double click )
+    //
+    // TODO: Implement lazy loading in addition to defered loading ( calling App.load() in response to click )
+    desktop[app].lazyLoad = true;
+    desktop[app].deferredLoad = true;
+  }
+
+  if (desktop[app].lazyLoad) {
+    desktop.apps.deferred.push(app);
+    return this;
   }
 
   desktop.apps.loading.push({ name: app, params: params });
@@ -131,6 +146,30 @@ desktop.ready = function ready (finish) {
         throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
       }
       desktop.ready(finish);
+      // now that all Apps and their assets have loaded, lets load any deferred Apps
+      desktop.apps.deferred.forEach(function(app){
+        // fire and forget them all
+        // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
+        desktop[app].load({}, function lazyNoop(){
+          desktop[app].deferredLoad = false;
+          if (desktop[app].openWhenLoaded) {
+            if (desktop[app].openWindow) {
+              desktop[app].openWindow(app);
+              let key = '#window_' + app;
+              $(key).show();
+              JQD.util.window_flat();
+              $(key).show().addClass('window_stack');
+              // TODO: loading status cursor indicator should be per App, not global
+              document.querySelectorAll('*').forEach(function(node) {
+                node.style.cursor = 'pointer';
+              });
+            } else {
+              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
+            }
+          }
+        })
+      });
+      desktop.apps.deferred = [];
     }, 10)
   } else {
     desktop.apps.loadingEndedAt = new Date();
