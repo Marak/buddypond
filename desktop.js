@@ -125,7 +125,6 @@ desktop.use = function use(app, params) {
 }
 
 desktop.ready = function ready (finish) {
-
   if (!desktop.images.preloaded || desktop.apps.loading.length > 0) {
     setTimeout(function(){
       if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
@@ -451,11 +450,15 @@ desktop.updateMessages = function updateMessages () {
 
 // TODO: implement these methods
 desktop.renderDockIcon = function (app) {
+  // Remark: temp conditional, remove later
+  if (desktop.isMobile) {
+    return false;
+  }
   console.log('rendering dock', app)
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
-        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${app}_64.png" />
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
         <span class="dock_title">
           ${desktop[app].label || app }
         </span>

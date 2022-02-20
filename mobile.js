@@ -2,11 +2,9 @@ let desktop = {};
 desktop.log = console.log;
 
 desktop.load = function () {
-  
-  
+
   $('.icon').on('click', function(){
     let appName = $(this).attr('href').replace('#app_', '');
-    console.log(appName)
     desktop.interdimensionalcable.closeWindow();
     desktop.mtv.closeWindow();
     $('.window').hide();
@@ -21,4 +19,8 @@ desktop.load = function () {
   $('.window').hide();
   $('#window_login').show()
 
+}
+
+desktop.remoteLoadAppHTML = function noop (params, cb) {
+  cb(null);
 }

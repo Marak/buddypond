@@ -17,7 +17,7 @@
         <ul>
           <li>
             <a class="abs icon" href="#app_login">
-              <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddypond_64.png" />
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
               Pond
             </a>
             <br/>
@@ -26,13 +26,12 @@
           </li>
           <li>
             <a class="abs icon" href="#app_interdimensionalcable">
-              <img class="emojiIcon" src="desktop/assets/images/icons/icon_cable_64.png" /><br/>
+              <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" /><br/>
               Cable
             </a>
             <br/>
             <br/>
             <br/>
-            
           </li>
           <li>
             <a class="abs icon" href="#app_mtv">
@@ -42,7 +41,6 @@
             <br/>
             <br/>
             <br/>
-            
           </li>
         </ul>
       </div>
@@ -264,24 +262,27 @@
   <script src="mobile/assets/js/bootstrap.bundle.min.js"></script>
   <script src="sdk/buddypond.js"></script>
   <script src="mobile.js"></script>
-  <script src="desktop/apps/desktop.wallpaper.js"></script>
-  <script src="desktop/apps/desktop.mirror.js"></script>
-  <script src="desktop/apps/desktop.interdimensionalcable.js"></script>
-  <script src="desktop/apps/desktop.mtv.js"></script>
+  <script src="desktop/apps/desktop.wallpaper/desktop.wallpaper.js"></script>
+  <script src="desktop/apps/desktop.mirror/desktop.mirror.js"></script>
+  <script src="desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.js"></script>
+  <script src="desktop/apps/desktop.mtv/desktop.mtv.js"></script>
   <script src="data/mtv.js"></script>
   <script src="data/interdimensionalcable.js"></script>
 
   <script>
     $(document).ready(function(){
-      desktop.log('jQuery Desktop initialized');
+      desktop.log('Buddy Pond Mobile Cloud Desktop Initialized');
       desktop.log('Now loading apps');
       desktop.load();
-      desktop.wallpaper.load();
+      desktop.wallpaper.load()
       desktop.wallpaper.start();
-      desktop.mirror.load();
-      desktop.interdimensionalcable.load();
-      desktop.mtv.load();
-      desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+      desktop.mirror.load({}, function(){
+        desktop.interdimensionalcable.load({}, function(){
+          desktop.mtv.load({}, function(){
+            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+          });
+        });
+      });
     });
   </script>
 </body>

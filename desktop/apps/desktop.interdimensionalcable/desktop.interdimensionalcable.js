@@ -50,7 +50,9 @@ desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
 };
 
 desktop.interdimensionalcable.closeWindow = function () {
-  desktop.interdimensionalcable.player.pauseVideo();
+  if (desktop.interdimensionalcable.player && desktop.interdimensionalcable.player.pauseVideo) {
+    desktop.interdimensionalcable.player.pauseVideo();
+  }
 }
 
 // Remark: youtube embed client REQUIRES the following methods be public

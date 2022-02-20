@@ -34,5 +34,7 @@ desktop.mtv.load = function (params, next) {
 };
 
 desktop.mtv.closeWindow = function () {
-  desktop.mtv.player.pauseVideo();
+  if (desktop.mtv.player && desktop.mtv.player.pauseVideo) {
+    desktop.mtv.player.pauseVideo();
+  }
 }
