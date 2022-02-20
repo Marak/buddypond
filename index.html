@@ -227,8 +227,8 @@ window.top.location = 'ie.html';
           Games
         </a>
       </li>
-      <li id="icon_dock_games_solitaire">
-        <a href="#window_games_solitaire">
+      <li id="icon_dock_solitaire">
+        <a href="#window_solitaire">
           <img class="emojiIcon" src="desktop/assets/images/icons/icon_games_solitaire.png" />
           Solitaire
         </a>
@@ -300,7 +300,6 @@ window.top.location = 'ie.html';
     desktop.log('Now loading apps');
     desktop
       .use('console')
-      /*
       .use('buddylist')
       .use('pond')
       .use('login')
@@ -311,7 +310,6 @@ window.top.location = 'ie.html';
       .use('mtv')
       .use('soundcloud')
       .use('videochat')
-    */
       .use('games')
       .use('solitaire')
       .ready(function(err, apps){

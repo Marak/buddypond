@@ -136,12 +136,11 @@ desktop.ready = function ready (finish) {
     desktop.log("Loaded", desktop.apps.loaded);
     finish(null, desktop.loaded);
   }
-  // console.log('what is loading status', desktop.apps.loading);
   return this;
 }
 
 /*
-  desktop.remoteLoadAppHTML() takes in a appName and contructs a uri from appName
+  desktop.remoteLoadAppHTML() takes in an appName and constructs a uri from appName
   the uri is then loaded with jQuery.load()
   the results of this jQuery.load() are injected into a hidden shadow DOM and then appended into #desktop
   this is very useful for lazy loading App assets so that the main application load size
@@ -302,8 +301,8 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 // desktop.closeWindow() function is used to close instanced windows
 // in most cases you can just use $(window_id).hide()
 // The current logic here is for ensuring subscribed buddies and pond lists
-// are updated with the user closes the window in the UI
-// This is to ensure UI is only polling for messages for windows that are actually open
+// are updated when the user closes the window in the UI
+// This is to ensure UI is only polling for messages on windows that are actually open
 //
 desktop.closeWindow = function openWindow (windowType, context) {
   desktop.openWindows = desktop.openWindows || {};

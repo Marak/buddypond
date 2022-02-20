@@ -1,12 +1,11 @@
-desktop.solitaire = { };
+desktop.solitaire = {};
 desktop.solitaire.load = function loadSolitaireGames (params, next) {
   desktop.remoteLoadAppHTML('solitaire', function (responseText, textStatus, jqXHR) {
+    $('#window_solitaire').css('width', 662);
+    $('#window_solitaire').css('height', 495);
+    $('#window_solitaire').css('left', 50);
+    $('#window_solitaire').css('top', 50);
     window.jsSolitaire.load();
-    
-    $('#window_games_solitaire').css('width', 662);
-    $('#window_games_solitaire').css('height', 495);
-    $('#window_games_solitaire').css('left', 50);
-    $('#window_games_solitaire').css('top', 50);
     next();
   });
 };
@@ -20,4 +19,3 @@ desktop.solitaire.closeWindow = function closeWindow () {
   window.jsSolitaire.closeSolitaire();
   return true;
 };
-
