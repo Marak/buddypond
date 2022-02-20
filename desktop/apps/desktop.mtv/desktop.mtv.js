@@ -1,4 +1,5 @@
 desktop.mtv = {};
+desktop.mtv.label = "Music Television";
 
 desktop.mtv.player = null;
 desktop.mtv.load = function (params, next) {

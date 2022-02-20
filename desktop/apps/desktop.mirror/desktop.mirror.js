@@ -1,4 +1,5 @@
 desktop.mirror = {};
+desktop.mirror.label = "Mirror";
 
 desktop.mirror.devices = {
   videoinput: {},

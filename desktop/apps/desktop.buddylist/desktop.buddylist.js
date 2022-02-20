@@ -1,5 +1,5 @@
 desktop.buddylist = {};
-
+desktop.buddylist.label = "Buddy List";
 
 desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 

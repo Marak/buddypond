@@ -1,4 +1,5 @@
 desktop.login = {};
+desktop.login.label = "Login";
 
 desktop.login.load = function loadDesktopLogin (params, next) {
 

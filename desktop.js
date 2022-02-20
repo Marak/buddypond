@@ -97,6 +97,7 @@ desktop.use = function use(app, params) {
 
   // Remark: sync App.load *must* return a value or Desktop.ready will never fire
   let result = desktop[app].load(params, function(err, re){
+    desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
     desktop.apps.loading = desktop.apps.loading.filter(function(a){
@@ -109,6 +110,7 @@ desktop.use = function use(app, params) {
 
   // if the result is not undefined, we can assume no callback was used in App.load
   if (typeof result !== 'undefined') {
+    desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
     desktop.apps.loading = desktop.apps.loading.filter(function(a){
@@ -448,7 +450,21 @@ desktop.updateMessages = function updateMessages () {
 }
 
 // TODO: implement these methods
-desktop.renderDockIcon = function () {}; // creates icon for dock bar ( min / max )
+desktop.renderDockIcon = function (app) {
+  console.log('rendering dock', app)
+  let html = `
+    <li id="icon_dock_${app}">
+      <a href="#window_${app}">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${app}_64.png" />
+        <span class="dock_title">
+          ${desktop[app].label || app }
+        </span>
+      </a>
+    </li>
+  `;
+  $('#dock').append(html);
+  
+}; // creates icon for dock bar ( min / max )
 desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
 desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 

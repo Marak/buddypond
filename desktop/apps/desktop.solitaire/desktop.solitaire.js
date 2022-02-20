@@ -1,4 +1,6 @@
 desktop.solitaire = {};
+desktop.solitaire.label = "Solitaire";
+
 desktop.solitaire.load = function loadSolitaireGames (params, next) {
   desktop.remoteLoadAppHTML('solitaire', function (responseText, textStatus, jqXHR) {
     $('#window_solitaire').css('width', 662);

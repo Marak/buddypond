@@ -1,4 +1,5 @@
 desktop.profile = {};
+desktop.profile.label = "Profile";
 
 desktop.profile.load = function loadDesktop (params, next) {
   desktop.remoteLoadAppHTML('profile', function (responseText, textStatus, jqXHR) {

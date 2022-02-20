@@ -1,4 +1,5 @@
 desktop.soundcloud = {};
+desktop.soundcloud.label = "SoundCloud";
 
 desktop.soundcloud.load = function loadSoundcloud (params, next) {
   desktop.remoteLoadAppHTML('soundcloud', function (responseText, textStatus, jqXHR) {

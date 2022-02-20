@@ -1,4 +1,5 @@
 desktop.pond = {};
+desktop.pond.label = "Pond";
 
 desktop.pond.load = function loadPond (params, next) {
 

@@ -1,4 +1,5 @@
 desktop.interdimensionalcable = {};
+desktop.interdimensionalcable.label = "IDC Cable";
 
 desktop.interdimensionalcable.load = function (params, next) {
 
