@@ -368,7 +368,7 @@ JDQX.openWindow = function openWindow (context) {
   var appName = appWindow.replace('#window_', '');
   //var x = $(context).attr('href');
   //var y = $(x).find('a').attr('href');
-  console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
+  // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
   // Show the taskbar button.
   if ($(iconDock).is(':hidden')) {
     $(iconDock).remove().appendTo('#dock');

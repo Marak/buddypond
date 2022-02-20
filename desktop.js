@@ -553,7 +553,6 @@ desktop.renderDockIcon = function (app) {
   if (desktop.isMobile) {
     return false;
   }
-  console.log('rendering dock', app)
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
