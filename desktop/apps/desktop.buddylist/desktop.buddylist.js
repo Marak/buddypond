@@ -154,11 +154,6 @@ desktop.updateBuddyList = function updateBuddyList () {
     }, 10);
     return;
   } else {
-    $('.buddy_list_not_connected').hide();
-    // TODO: move this to buddy pond scope
-    $('.buddy_pond_not_connected').hide();
-    $('.buddyListHolder').show();
-    $('.me').html(buddypond.me);
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
     buddypond.getBuddyProfile(desktop.buddylistProfileState, function(err, data){
       if (err || typeof data !== 'object') {
@@ -371,16 +366,18 @@ desktop.updateBuddyList = function updateBuddyList () {
           return false;
         });
       }
-      
-      $('#window_buddylist').fadeIn({
-        easing: 'linear',
-        duration: 144,
-        complete: function() {
-          setTimeout(function(){
-            desktop.updateBuddyList();
-          }, desktop.DEFAULT_AJAX_TIMER);
-        }
-      });
+
+      $('.loggedIn').show();
+      $('.buddy_list_not_connected').hide();
+      // TODO: move this to buddy pond scope
+      $('.buddy_pond_not_connected').hide();
+      $('.buddyListHolder').show();
+      $('.me').html(buddypond.me);
+      $('#window_buddylist').show();
+
+      setTimeout(function(){
+        desktop.updateBuddyList();
+      }, desktop.DEFAULT_AJAX_TIMER);
     });
   }
 
