@@ -42,6 +42,10 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
       return false;
     })
 
+    $('.addBuddyForm').on('submit', function () {
+      return false;
+    });
+
     $('.sendBuddyMessage').on('click', function(){
       desktop.buddylist.sendMessage(this);
       return false;
