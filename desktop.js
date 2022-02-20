@@ -146,6 +146,7 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
   let assets = {
     script: [],
     css: [],
+    appHTML :[]
   };
 
   assetArr.forEach(function(asset){
@@ -157,13 +158,18 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
       assets.css.push(asset);
       return;
     }
-    console.log('Warning: Invalid assett extention, will not load: ', script);
+    if (asset.split('.').length === 1) {
+      assets.appHTML.push(asset);
+      return;
+    }
+    console.log('Warning: Invalid asset extention, will not load: ', asset);
   });
 
-  console.log(assets)
   desktop.loadRemoteJS(assets.script, function(err) {
     desktop.loadRemoteCSS(assets.css, function(err) {
-      final();
+      desktop.loadRemoteAppHtml(assets.appHTML[0], function(responseText, textStatus, jqXHR) {
+        final(responseText, textStatus, jqXHR);
+      });
     });
   });
 
@@ -177,7 +183,10 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
   this is very useful for lazy loading App assets so that the main application load size
   does not grow as you install more Apps into the desktop
 */
-desktop.loadRemoteAppHtml = function asyncLoadAppHTMLFragment (appName, cb) {
+desktop.loadRemoteAppHtml = function loadRemoteAppHtml (appName, cb) {
+  if (!appName) {
+    return cb(null);
+  }
   $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
   $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
     $('#desktop').append($(`.${appName}WindowHolder`).html())
