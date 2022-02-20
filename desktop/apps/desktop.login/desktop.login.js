@@ -112,7 +112,6 @@ desktop.login.success = function desktopLoginSuccess () {
   $('#login_desktop_icon').hide();
   $('#profile_desktop_icon').show();
   $('.totalConnected').show();
-  $('#window_buddylist').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
   desktop.renderDockElement('buddylist');

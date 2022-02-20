@@ -371,13 +371,17 @@ desktop.updateBuddyList = function updateBuddyList () {
           return false;
         });
       }
-
-      setTimeout(function(){
-        desktop.updateBuddyList();
-      }, desktop.DEFAULT_AJAX_TIMER);
-
+      
+      $('#window_buddylist').fadeIn({
+        easing: 'linear',
+        duration: 144,
+        complete: function() {
+          setTimeout(function(){
+            desktop.updateBuddyList();
+          }, desktop.DEFAULT_AJAX_TIMER);
+        }
+      });
     });
-
   }
 
 }
