@@ -12,45 +12,45 @@ desktop.videochat.devices = {
 };
 
 desktop.videochat.load = function loadVideochat () {
-  desktop.videochat.loaded = true;
 
-  // TODO: migrate to new loadRemoteAssets API
-  var tag = document.createElement('script');
-  tag.src = "desktop/assets/js/simplepeer.min.js";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  desktop.loadRemoteAssets([
+    'desktop/assets/js/simplepeer.min.js',
+    'videochat' // this loads the sibling desktop.videochat.html file into <div id="window_videochat"></div>
+  ], function (err) {
 
-  $('.startVideoCall').on('click', function(){
-    let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    // TODO: do not attempt to call buddies who are currently offline
-    if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
-      desktop.videochat.startCall(true, buddyName);
-    } else {
-      alert('Cant call offline buddy. Try again later.');
-    }
+    desktop.videochat.loaded = true;
+
+    $('.startVideoCall').on('click', function(){
+      let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
+      // TODO: do not attempt to call buddies who are currently offline
+      if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
+        desktop.videochat.startCall(true, buddyName);
+      } else {
+        alert('Cant call offline buddy. Try again later.');
+      }
+    });
+
+    $('.endVideoCall').on('click', function(){
+      let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
+      desktop.videochat.endCall(buddyName);
+    });
+
+    $('#window_videochat').css('width', 777);
+    $('#window_videochat').css('height', 666);
+
+    $('.selectCamera').on('change', function(){
+      let newDeviceLabel = $(this).val();
+      // TODO: use localstorage to set device preference
+      desktop.videochat.replaceStream(newDeviceLabel);
+    });
+
+    $('.selectAudio').on('change', function(){
+      let newDeviceLabel = $(this).val();
+      console.log('Changing audio is not available yet');
+      // desktop.videochat.replaceStream(newDeviceLabel);
+    });
+
   });
-
-  $('.endVideoCall').on('click', function(){
-    let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
-    desktop.videochat.endCall(buddyName);
-  });
-
-  $('#window_videochat').css('width', 777);
-  $('#window_videochat').css('height', 666);
-
-  $('.selectCamera').on('change', function(){
-    let newDeviceLabel = $(this).val();
-    // TODO: use localstorage to set device preference
-    desktop.videochat.replaceStream(newDeviceLabel);
-  });
-
-  $('.selectAudio').on('change', function(){
-    let newDeviceLabel = $(this).val();
-    console.log('Changing audio is not available yet');
-    // desktop.videochat.replaceStream(newDeviceLabel);
-  });
-  return true;
-
 }
 
 // get all camera and audio devices on local system
