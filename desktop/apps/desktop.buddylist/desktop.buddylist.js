@@ -239,17 +239,39 @@ desktop.updateBuddyList = function updateBuddyList () {
         } else {
           desktop.buddyListDataCache = {};
           desktop.buddyListDataCache[str] = true;
+
+          //
+          // SORT BUDDY LIST
+          // we have buddies to render, let's sort them!
+          //
           buddies = buddies.sort(function(a, b){
             let profileA = data.buddylist[a];
             let profileB = data.buddylist[b];
-            if (!profileB.isConnected) {
+            if (profileA.isConnected) {
               return -1;
             }
-
-            if (!profileA.isConnected) {
+            if (profileB.isConnected) {
               return 1;
             }
+            if (!profileA.ctime && !profileA.dtime) {
+              return 1;
+            }
+            if (profileA.dtime && profileB.dtime) {
+              if (new Date(profileA.dtime).getTime() > new Date(profileB.dtime).getTime()) {
+                return -1;
+              }
+            }
+            if (profileA.ctime && profileB.ctime) {
+              if (new Date(profileA.ctime).getTime() < new Date(profileB.ctime).getTime()) {
+                return -1;
+              }
+            }
+            return 0;
           });
+          //
+          // END SORT BUDDY LIST
+          //
+
           buddies.forEach(function(buddyKey){
             let buddy = buddyKey.replace('buddies/', '');
             let profile = data.buddylist[buddyKey];
