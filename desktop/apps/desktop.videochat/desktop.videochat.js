@@ -14,6 +14,7 @@ desktop.videochat.devices = {
 desktop.videochat.load = function loadVideochat () {
   desktop.videochat.loaded = true;
 
+  // TODO: migrate to new loadRemoteAssets API
   var tag = document.createElement('script');
   tag.src = "desktop/assets/js/simplepeer.min.js";
   var firstScriptTag = document.getElementsByTagName('script')[0];

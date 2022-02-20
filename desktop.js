@@ -100,9 +100,6 @@ desktop.use = function use(app, params) {
     // TODO: Implement lazy loading in addition to defered loading ( calling App.load() in response to click )
     desktop[app].lazyLoad = true;
     desktop[app].deferredLoad = true;
-  }
-
-  if (desktop[app].lazyLoad) {
     desktop.apps.deferred.push(app);
     return this;
   }
@@ -146,34 +143,34 @@ desktop.ready = function ready (finish) {
         throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
       }
       desktop.ready(finish);
-      // now that all Apps and their assets have loaded, lets load any deferred Apps
-      desktop.apps.deferred.forEach(function(app){
-        // fire and forget them all
-        // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-        desktop[app].load({}, function lazyNoop(){
-          desktop[app].deferredLoad = false;
-          if (desktop[app].openWhenLoaded) {
-            if (desktop[app].openWindow) {
-              desktop[app].openWindow(app);
-              let key = '#window_' + app;
-              $(key).show();
-              JQD.util.window_flat();
-              $(key).show().addClass('window_stack');
-              // TODO: loading status cursor indicator should be per App, not global
-              document.querySelectorAll('*').forEach(function(node) {
-                node.style.cursor = 'pointer';
-              });
-            } else {
-              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
-            }
-          }
-        })
-      });
-      desktop.apps.deferred = [];
     }, 10)
   } else {
     desktop.apps.loadingEndedAt = new Date();
     desktop.log("Loaded", desktop.apps.loaded);
+    // now that all Apps and their assets have loaded, lets load any deferred Apps
+    desktop.apps.deferred.forEach(function(app){
+      // fire and forget them all
+      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
+      desktop[app].load({}, function lazyNoop(){
+        desktop[app].deferredLoad = false;
+        if (desktop[app].openWhenLoaded) {
+          if (desktop[app].openWindow) {
+            desktop[app].openWindow(app);
+            let key = '#window_' + app;
+            $(key).show();
+            JQD.util.window_flat();
+            $(key).show().addClass('window_stack');
+            // TODO: loading status cursor indicator should be per App, not global
+            document.querySelectorAll('*').forEach(function(node) {
+              node.style.cursor = 'pointer';
+            });
+          } else {
+            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
+          }
+        }
+      })
+    });
+    desktop.apps.deferred = [];
     finish(null, desktop.loaded);
   }
   return this;
@@ -189,19 +186,27 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
   };
 
   assetArr.forEach(function(asset){
+
     if (asset.split('.').pop() === 'js') {
       assets.script.push(asset);
       return;
     }
+
     if (asset.split('.').pop() === 'css') {
       assets.css.push(asset);
       return;
     }
+
+    // single word, for example: 'console' or 'profile'
     if (asset.split('.').length === 1) {
       assets.appHTML.push(asset);
       return;
     }
-    console.log('Warning: Invalid asset extention, will not load: ', asset);
+
+    // could not detect asset type by file extension, assume its a JS script tag
+    // this style is used by youtube for iframe embeds
+    assets.script.push(asset);
+
   });
 
   desktop.loadRemoteJS(assets.script, function(err) {
@@ -213,7 +218,6 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
   });
 
 }
-
 
 /*
   desktop.loadRemoteAppHtml() takes in an appName and constructs a uri from appName

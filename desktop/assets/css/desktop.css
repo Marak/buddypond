@@ -1114,3 +1114,7 @@ video {
 #shadowRender {
   display: none;
 }
+
+.spinningCursor  {
+  cursor: pointer !important; /* progress, grabbing, context-menu */
+}

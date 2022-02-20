@@ -220,21 +220,21 @@ window.top.location = 'ie.html';
     desktop.log('Now loading apps');
     desktop
       .use('console')
-      .use('buddylist')
-      .use('pond')
-      .use('login')
-      .use('profile')
       .use('wallpaper')
-      .use('mirror')
-      .use('interdimensionalcable')
-      .use('mtv')
-      .use('soundcloud')
-      .use('videochat')
-      .use('games')
+      .use('login')
+      .use('buddylist')
+      .use('pond', { lazy: true })
+      .use('profile', { lazy: true })
+      .use('mirror', { lazy: true })
+      .use('interdimensionalcable', { lazy: true })
+      .use('mtv', { lazy: true })
+      // .use('soundcloud')
+      .use('videochat', { lazy: true })
+      .use('games', { lazy: true })
       //
       // Remark: Using the `lazy` flag here will defer Solitaire.load() until Desktop is ready
       //         Double clicking Solitaire Icon will result in loading spinner until Solitaire.load() is complete
-      //         This is useful for not blocking Desktop Ready on Apps which require loading large assets files
+      //         Using `lazy` will not block Desktop Ready on Apps which require loading large asset files
       //
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
