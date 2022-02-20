@@ -3,7 +3,7 @@ desktop.buddylist.label = "Buddy List";
 
 desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
-  desktop.remoteLoadAppHTML('buddylist', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('buddylist', function (responseText, textStatus, jqXHR) {
     // clone window_buddy_message_0 ten times
     // clone icon_dock_buddy_message_0 ten times
     // this creates 10 windows available for chatting with buddies

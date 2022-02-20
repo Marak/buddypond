@@ -2,7 +2,7 @@ desktop.soundcloud = {};
 desktop.soundcloud.label = "SoundCloud";
 
 desktop.soundcloud.load = function loadSoundcloud (params, next) {
-  desktop.remoteLoadAppHTML('soundcloud', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('soundcloud', function (responseText, textStatus, jqXHR) {
     $('.ponderSoundcloud').on('click', function(){
       desktop.soundcloud.widget.play();
       desktop.soundcloud.widget.next();

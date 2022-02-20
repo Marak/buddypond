@@ -4,7 +4,7 @@ desktop.console.label = "Console";
 desktop.console.MAX_CONSOLE_OUTPUT = 40;
 
 desktop.console.load = function loadDesktop (params, next) {
-  desktop.remoteLoadAppHTML('console', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('console', function (responseText, textStatus, jqXHR) {
     // Remark: map shortcut method for easily calling `desktop.log()` from apps
     desktop.log = desktop.console.log;
     next();

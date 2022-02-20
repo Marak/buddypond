@@ -3,7 +3,7 @@ desktop.mtv.label = "Music Television";
 
 desktop.mtv.player = null;
 desktop.mtv.load = function (params, next) {
-  desktop.remoteLoadAppHTML('mtv', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('mtv', function (responseText, textStatus, jqXHR) {
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";

@@ -141,18 +141,59 @@ desktop.ready = function ready (finish) {
 }
 
 /*
-  desktop.remoteLoadAppHTML() takes in an appName and constructs a uri from appName
+  desktop.loadRemoteAppHtml() takes in an appName and constructs a uri from appName
   the uri is then loaded with jQuery.load()
   the results of this jQuery.load() are injected into a hidden shadow DOM and then appended into #desktop
   this is very useful for lazy loading App assets so that the main application load size
   does not grow as you install more Apps into the desktop
 */
-desktop.remoteLoadAppHTML = function asyncLoadAppHTMLFragment (appName, cb) {
+desktop.loadRemoteAppHtml = function asyncLoadAppHTMLFragment (appName, cb) {
   $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
   $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
     $('#desktop').append($(`.${appName}WindowHolder`).html())
     cb(responseText, textStatus, jqXHR);
   });
+}
+
+desktop.loadRemoteJS = function asyncLoadAppHTMLFragment (scriptsArr, final) {
+
+  // filter out already injected scripts
+  let existingScripts =  $('script');
+
+  scriptsArr = scriptsArr.filter(function(script){
+    let scriptNeedsInjection = true;
+    existingScripts.each(function(i, existingScript){
+      if (existingScript.src.search(script) !== -1) {
+        scriptNeedsInjection = false;
+        console.log('Notice: Ignoring duplicate script injection for ' + script);
+      }
+    });
+    return scriptNeedsInjection;
+  });
+
+  let total = scriptsArr.length;
+  let completed = 0;
+
+  // if total is zero here, it means that all requested scripts have already been loaded and cached
+  if (total === 0) {
+    return final();
+  }
+
+  scriptsArr.forEach(function (scriptPath) {
+    // before injecting this script into the document, lets check if its already injected
+    // by doing this, we allow Apps to reinject the same deps multiple times without reloads
+    var tag = document.createElement('script');
+    tag.src = scriptPath;
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    tag.onload = function () {
+      completed++;
+      if (completed === total) {
+        final();
+      }
+    }
+  });
+
 }
 
 desktop.refresh = function refreshDesktop () {
@@ -448,7 +489,7 @@ desktop.updateMessages = function updateMessages () {
   }
 }
 
-// TODO: implement these methods
+// creates icon for dock bar ( min / max )
 desktop.renderDockIcon = function (app) {
   // Remark: temp conditional, remove later
   if (desktop.isMobile) {
@@ -466,8 +507,8 @@ desktop.renderDockIcon = function (app) {
     </li>
   `;
   $('#dock').append(html);
-  
-}; // creates icon for dock bar ( min / max )
+};
+
 desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
 desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 

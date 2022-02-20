@@ -2,7 +2,7 @@ desktop.profile = {};
 desktop.profile.label = "Profile";
 
 desktop.profile.load = function loadDesktop (params, next) {
-  desktop.remoteLoadAppHTML('profile', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('profile', function (responseText, textStatus, jqXHR) {
     $('.lastSeen').html(new Date().toString());
 
     $('.updateProfileForm').on('submit', function () {

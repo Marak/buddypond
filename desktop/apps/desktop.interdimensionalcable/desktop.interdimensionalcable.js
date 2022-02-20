@@ -3,7 +3,7 @@ desktop.interdimensionalcable.label = "IDC Cable";
 
 desktop.interdimensionalcable.load = function (params, next) {
 
-  desktop.remoteLoadAppHTML('interdimensionalcable', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('interdimensionalcable', function (responseText, textStatus, jqXHR) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 

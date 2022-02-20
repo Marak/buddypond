@@ -3,7 +3,7 @@ desktop.pond.label = "Pond";
 
 desktop.pond.load = function loadPond (params, next) {
 
-  desktop.remoteLoadAppHTML('pond', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('pond', function (responseText, textStatus, jqXHR) {
 
     let clone = $('#window_pond_message_0').html();
     let dockItemClone = $('#icon_dock_pond_message_0').html();

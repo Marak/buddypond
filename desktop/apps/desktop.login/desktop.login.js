@@ -3,7 +3,7 @@ desktop.login.label = "Login";
 
 desktop.login.load = function loadDesktopLogin (params, next) {
 
-  desktop.remoteLoadAppHTML('login', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAppHtml('login', function (responseText, textStatus, jqXHR) {
 
     $('.loginForm').on('submit', function () {
       return false;
