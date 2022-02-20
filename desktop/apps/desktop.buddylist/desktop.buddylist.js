@@ -3,7 +3,10 @@ desktop.buddylist.label = "Buddy List";
 
 desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
-  desktop.loadRemoteAppHtml('buddylist', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAssets([
+    'desktop/assets/js/emojipicker.js',
+    'buddylist' // this loads the sibling desktop.buddylist.html file into <div id="window_buddylist"></div>
+  ], function (err) {
     // clone window_buddy_message_0 ten times
     // clone icon_dock_buddy_message_0 ten times
     // this creates 10 windows available for chatting with buddies

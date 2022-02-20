@@ -4,7 +4,10 @@ desktop.console.label = "Console";
 desktop.console.MAX_CONSOLE_OUTPUT = 40;
 
 desktop.console.load = function loadDesktop (params, next) {
-  desktop.loadRemoteAppHtml('console', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAssets([
+    'desktop/assets/js/jquery.dateformat.js',
+    'console' // this loads the sibling desktop.console.html file into <div id="window_console"></div>
+  ], function (err) {
     // Remark: map shortcut method for easily calling `desktop.log()` from apps
     desktop.log = desktop.console.log;
     next();

@@ -24,3 +24,7 @@ desktop.load = function () {
 desktop.loadRemoteAppHtml = function noop (params, cb) {
   cb(null);
 }
+
+desktop.loadRemoteAssets = function noop (params, cb) {
+  cb(null);
+}

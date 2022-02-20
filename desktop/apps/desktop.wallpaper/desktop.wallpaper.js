@@ -19,6 +19,12 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
     }
   });
 
+
+  /*
+
+  This works great, just needs a place in the UI for managing wallpaper settings
+
+  <script src="desktop/assets/js/jquery.simple-color.js"></script>
   $('.wallpaperColor').simpleColor({
     boxHeight: 20,
     cellWidth: 16,
@@ -42,6 +48,7 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
       // alert("color chooser closed for input #" + element.attr('class'));
     }
   });
+  */
   return true;
 };
 

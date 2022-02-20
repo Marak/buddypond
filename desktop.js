@@ -146,7 +146,7 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
   let assets = {
     script: [],
     css: [],
-    appHTML :[]
+    appHTML: []
   };
 
   assetArr.forEach(function(asset){

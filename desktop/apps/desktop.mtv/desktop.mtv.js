@@ -3,7 +3,11 @@ desktop.mtv.label = "Music Television";
 
 desktop.mtv.player = null;
 desktop.mtv.load = function (params, next) {
-  desktop.loadRemoteAppHtml('mtv', function (responseText, textStatus, jqXHR) {
+
+  desktop.loadRemoteAssets([
+    'data/mtv.js',
+    'mtv' // this loads the sibling desktop.mtv.html file into <div id="window_mtv"></div>
+  ], function (err) {
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";

@@ -1,9 +1,15 @@
 let buddypond = {}
 
+buddypond.mode = 'dev';
+
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://buddypond.com/api/v3';
 } else {
   buddypond.endpoint = 'https://buddypond.com/api/v3';
+}
+
+if (buddypond.mode === 'dev') {
+  buddypond.endpoint = 'http://dev.buddypond.com/api/v3';
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {

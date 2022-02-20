@@ -3,7 +3,11 @@ desktop.login.label = "Login";
 
 desktop.login.load = function loadDesktopLogin (params, next) {
 
-  desktop.loadRemoteAppHtml('login', function (responseText, textStatus, jqXHR) {
+  desktop.loadRemoteAssets([
+    'desktop/assets/css/clippy.css',
+    'desktop/assets/js/clippy.min.js',
+    'login' // this loads the sibling desktop.login.html file into <div id="window_login"></div>
+  ], function (err) {
 
     $('.loginForm').on('submit', function () {
       return false;
