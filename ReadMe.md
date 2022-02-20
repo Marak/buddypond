@@ -36,20 +36,20 @@ git clone  --depth 1 git@github.com:Marak/buddypond.git
 
 Once you have downloaded a local Buddy Pond you can start it!
 
-### Starting Buddy Pond from file system
+### Starting Buddy Pond Locally
 
 ```
 cd buddypond
-open index.html
+python -m SimpleHTTPServer
 ```
 
-This will start the Buddy Pond application. Open the web interface in your local browser and you can immediately start adding and messaging buddies!
+This will start the Buddy Pond application on port 8000. Open http://localhost:8000 in your local browser and you can immediately start adding and messaging buddies!
 
 ### Starting Buddy Pond with HTTPS / SSL
 
-The `file://` protocol should support all core features like: Buddy List, Buddy Messaging, and Ponds
+The `http://` protocol should support all core features like: Buddy List, Buddy Messaging, and Ponds
 
-The `https://` protocol is required for more advanced features. Video Calls and third-party APIs ( like Youtube ) will not work correctly when loading Buddy Pond directly from `file://`.
+The `https://` protocol is required for more advanced features like Video Calls.
 
 To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML directory and Buddy Pond will be accessible.
 
