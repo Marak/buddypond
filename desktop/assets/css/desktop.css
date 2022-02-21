@@ -1133,3 +1133,11 @@ iframe {
   margin: 0 0 0 0px;
   width: 100%;
 }
+
+.pond_main {
+  padding: 16px;
+}
+
+.pond_message_main {
+  padding: 16px;
+}
