@@ -92,6 +92,12 @@ window.top.location = 'ie.html';
       Games
     </a>
     <!--
+      <a class="abs icon" style="right:40px;top:160px;" href="#icon_download_buddypond">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_32_drive.png" />
+        Download Buddy Pond
+      </a>
+    -->
+    <!--
     <a class="abs icon" style="right:20px;top:160px;width:120px;" href="#icon_dock_notifications">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
       <span class="label">Enable Notifications</span>
@@ -254,14 +260,9 @@ window.top.location = 'ie.html';
 
     desktop.use() will load Buddy Pond Apps which have an App.load method
 
-    App.load() can be either sync OR async
+    App.load(params, callback) is an async function
 
     For Example:
-
-        desktop.foo.load = function (params) {
-          // sync App.load functions *must* return a value
-          return true;
-        }
 
         desktop.boo.load = function (params, cb) {
           setTimeout(function(){
@@ -270,10 +271,18 @@ window.top.location = 'ie.html';
           }, 3000)
         }
 
-    The best practice here is to first use sync App.load function signature ( desktop.foo.load )
+    You can also write `App.load()` as a sync style function
 
-    If your App.load requires any async calls like $.load() or a third party API request,
-    you must use the async App.load function signature ( desktop.boo.load )
+        desktop.foo.load = function (params) {
+          // sync App.load functions *must* return a value
+          return true;
+        }
+
+    The best practice here is to use async App.load(params, callback) function signature ( such as: desktop.foo.boo )
+
+    See `desktop.solitaire` as an example
+
+    sync still is only for Apps which have no associated HTML fragments or external JS and CSS resources that need to be loaded
 
   */
 
