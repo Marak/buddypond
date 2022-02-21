@@ -10,16 +10,8 @@ desktop.interdimensionalcable.load = function (params, next) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 
-      we could do this, but currently it will block entire page on youtube embed load
-      this can be fixed in the future by having a pending / appLoading state on Apps
-      so that next() can be fired even if the app isnt fully ready
-      this will result in cases where user double clicks desktop icon and sees hourglass cursor spin...
-      ... until app is ready and then window opens and hourglass cursor goes away
-    
-      tag.onload = function () {
-        next();
-      }
-
+      we could add this script to the above desktop.loadRemoteAssets() call,
+      but that will result in the IDC App having to wait for youtube to respond for App to complete load
     */
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
