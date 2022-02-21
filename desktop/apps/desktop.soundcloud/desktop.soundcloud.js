@@ -12,6 +12,7 @@ desktop.soundcloud.load = function loadSoundcloud (params, next) {
       $('#soundcloudplayer').html('');
       desktop.soundcloud.embeded = false;
       $('#window_soundcloud').show();
+      desktop.renderDockElement('soundcloud');
       desktop.soundcloud.openWindow($(this).val());
     });
     next();
