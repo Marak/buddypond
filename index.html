@@ -91,6 +91,12 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
       Games
     </a>
+    <!--
+    <a class="abs icon" style="right:20px;top:160px;width:120px;" href="#icon_dock_notifications">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
+      <span class="label">Enable Notifications</span>
+    </a>
+    -->
     <a class="abs icon pauseWallpaper" style="right:20px;top:40px;width:120px;" href="#icon_pause_wallpaper">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
       <span class="label">Pause Wallpaper</span>
@@ -210,9 +216,10 @@ window.top.location = 'ie.html';
       .use('wallpaper')
       .use('buddylist')
       .use('login')
-      .use('spellbook')
+      .use('spellbook', { lazy: true })
       .use('pond', { lazy: true })
       .use('profile', { lazy: true })
+      // .use('notifications')
       .use('mirror', { lazy: true })
       .use('interdimensionalcable', { lazy: true })
       .use('mtv', { lazy: true })

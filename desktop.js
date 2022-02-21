@@ -175,10 +175,12 @@ desktop._ready = function _ready (finish) {
     desktop.apps.loadingEndedAt = new Date();
     desktop.log("Loaded", desktop.apps.loaded);
     // now that all Apps and their assets have loaded, lets load any deferred Apps
+    desktop.log("Loading Deferred Apps", desktop.apps.deferred);
     desktop.apps.deferred.forEach(function(app){
       // fire and forget them all
       // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
       desktop[app].load({}, function lazyNoop(){
+        desktop.renderDockIcon(app);
         desktop[app].deferredLoad = false;
         if (desktop[app].openWhenLoaded) {
           if (desktop[app].openWindow) {
