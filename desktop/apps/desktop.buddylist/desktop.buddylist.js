@@ -7,21 +7,22 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     'desktop/assets/js/emojipicker.js',
     'buddylist' // this loads the sibling desktop.buddylist.html file into <div id="window_buddylist"></div>
   ], function (err) {
+    const emojiTriggers = [
+      {
+        selector: '.emojiPicker',
+        insertInto: '.activeTextArea'
+      }
+    ]
     // clone window_buddy_message_0 ten times
     // clone icon_dock_buddy_message_0 ten times
     // this creates 10 windows available for chatting with buddies
     let clone = $('#window_buddy_message_0').html();
     let dockItemClone = $('#icon_dock_buddy_message_0').html();
-    let emojiTriggers = [];
-    emojiTriggers.push({
-      selector: '.emojiPicker',
-      insertInto: '.active_buddy_text_area'
-    });
     for (let i = 1; i<11; i++) {
       let window_id = 'window_buddy_message_' + i;
       let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
       _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
-      _clone = _clone.replace('emoji_picker_0', 'emoji_picker_' + i);
+      _clone = _clone.replace('emoji_picker_0', 'buddy_emoji_picker');
       let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + _clone + '</div>'
       // console.log('appending', buddyChatStr)
       $('#desktop').append(buddyChatStr);
@@ -93,20 +94,19 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
         }
     });
 
-    $('.emojiPicker').on('click', function (e) {
+    $('.buddy_emoji_picker').on('click', function (e) {
       e.target.parentNode?.querySelector('.buddy_message_text').focus();
     });
 
     $('.buddy_message_text').on('focus', function (e) {
-      // remove active buddy text area from all other windows
-      $('.buddy_message_text').removeClass('active_buddy_text_area');
-      e.target.classList.add('active_buddy_text_area')
+      $('.activeTextArea').removeClass('activeTextArea');
+      e.target.classList.add('activeTextArea');
     });
 
     new EmojiPicker({
-        trigger: emojiTriggers,
-        closeButton: true,
-        //specialButtons: green
+      trigger: emojiTriggers,
+      closeButton: true,
+      //specialButtons: green
     });
     next();
   });
