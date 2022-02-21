@@ -71,7 +71,12 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     $('.inviteBuddy').on('click', function(){
-      alert('TODO: Add Import Buddies from Twitter feature');
+      let randomInviteMessages = [
+        `Miss AOL Instant Messenger? I'm "${buddypond.me}" on https://buddypond.com`,
+        `I have officially migrated to the cloud. You can message me at "${buddypond.me}" on https://buddypond.com`
+      ];
+      let inviteMessage = randomInviteMessages[Math.floor(Math.random() * randomInviteMessages.length)];
+      window.open(`https://twitter.com/intent/tweet?url=${inviteMessage}`);
       return false;
     });
 
