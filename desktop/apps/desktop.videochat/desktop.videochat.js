@@ -46,7 +46,7 @@ desktop.videochat.load = function loadVideochat () {
 
     $('.selectAudio').on('change', function(){
       let newDeviceLabel = $(this).val();
-      console.log('Changing audio is not available yet');
+      alert('Changing audio is not available yet');
       // desktop.videochat.replaceStream(newDeviceLabel);
     });
 
