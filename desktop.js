@@ -303,6 +303,7 @@ desktop.loadRemoteAppHtml = function loadRemoteAppHtml (appName, cb) {
     let html = $(`.${appName}WindowHolder`).html();
     desktop.loaded.appsHTML[appName] = html;
     $('#desktop').append(html);
+    $(`.${appName}WindowHolder`, '#shadowRender').remove();
     cb(responseText, textStatus, jqXHR);
   });
 }
