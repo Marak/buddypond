@@ -235,20 +235,34 @@ window.top.location = 'ie.html';
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
+
         desktop.wallpaper.start();
+        desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+
+        // Desktop is ready, start refreshing it's state immediately
+        desktop.refresh();
+        let now = new Date();
+
+        // For Buddy Experience we'll add some fades and delays
+        let fadeInDelay = 555;
+
+        // If the page has taken over 3.333 seconds to load...
+        // ...reduce the fade in delay ( since the Buddy has waited long enough )
+        if (now.getTime() - documentReadyTime.getTime() > 3333) {
+          fadeInDelay = 111;
+        }
+
         $('#loaderHolder').fadeOut({
           easing: 'linear',
-          duration: 666,
+          duration: fadeInDelay,
           complete: function(){
-            // all .use(app) have completed sync / async loads
             $('#mainOverlay').fadeIn({
               easing: 'linear',
-              duration: 777
+              duration: 333
             });
-            desktop.refresh();
-            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
           }
         });
+
       });
   });
 
