@@ -221,7 +221,7 @@ So you've made it to the end of the `ReadMe.md`? Neat.
 
 Buddy Pond consists of a backend server and front-end client.
 
-In order to start your own private Buddy Pond ( not federated ) you can dowload the Buddy Pond Server at [https://github.com/marak/buddypond-server](https://github.com/marak/buddypond-server)
+In order to start your own private Buddy Pond ( not federated ) you can download the Buddy Pond Server at [https://github.com/marak/buddypond-server](https://github.com/marak/buddypond-server)
 
 Once you have your own Buddy Server running you can modify `./sdk/buddypond.js` to point to your server endpoint over HTTP.
 
