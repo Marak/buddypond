@@ -16,7 +16,8 @@ desktop.mirror.load = function loadDesktopMirror (params, next) {
     $('#window_mirror').css('left', 200);
     $('#window_mirror').css('top', 44);
 
-    desktop.mirror.canvasVideo = new window.CanvasVideo();
+    desktop.mirror.canvasVideo = new window.CanvasVideo(
+      '#mirrorVideoMe', '#mirrorCanvasMe');
 
     $('.selectMirrorCamera').on('change', function(){
       let newDeviceLabel = $(this).val();

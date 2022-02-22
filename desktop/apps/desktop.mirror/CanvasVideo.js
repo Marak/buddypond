@@ -1,12 +1,9 @@
 (function initCanvasVideo() {
   class CanvasVideo {
-    constructor() {
-      this.video = document.querySelector('#mirrorVideoMe');
-      this.canvas = document.querySelector('#mirrorCanvasMe');
+    constructor(videoSelector, canvasSelector) {
+      this.video = document.querySelector(videoSelector);
+      this.canvas = document.querySelector(canvasSelector);
       this.canvasContext = this.canvas.getContext('2d');
-
-      this.videoWidth = 640;
-      this.videoHeight = 480;
 
       this.filter = null;
       this.timerCallback = this.timerCallback.bind(this);
@@ -53,6 +50,12 @@
 
     timerCallback() {
       if (this.video.paused || this.video.ended) { return; }
+
+      this.videoWidth = this.video.videoWidth;
+      this.videoHeight = this.video.videoHeight;
+
+      this.canvas.width = this.videoWidth;
+      this.canvas.height = this.videoHeight;
 
       this.computeFrame();
       setTimeout(() => { this.timerCallback(); }, 16);
