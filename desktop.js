@@ -479,7 +479,12 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     position.at = position.at || 'right top',
     position.of = position.of || openNextTo
 
-    $(windowId).position(position);
+    // TODO: this shouldn't happen. refactor chat window positioning to not depend on buddylist being visible
+    try {
+      $(windowId).position(position);
+    } catch (err) {
+      console.log('Warning: Error in showing ' + windowId, err);
+    }
     
     if (windowType === 'buddy_message') {
 
