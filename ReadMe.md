@@ -118,7 +118,7 @@ curl -X POST "https://buddypond.com/api/v3/buddies/Marak/deny"  -H 'Content-Type
 curl -X POST "https://buddypond.com/api/v3/buddies/Marak/remove"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
 ```
 
-## Building custom Buddy Pond `App`
+## Building custom Buddy Pond `Desktop`
 
 ### Example Usage
 
@@ -150,7 +150,7 @@ $(document).ready(function(){
 
 ```
 
-### Apps
+### Building custom Buddy Pond `App`
 
 `desktop.use(appName, params)` will load Buddy Pond Apps which have an `App.load` method.
 
