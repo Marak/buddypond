@@ -152,6 +152,12 @@ desktop.login.success = function desktopLoginSuccess () {
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
   desktop.pond.openWindow('Lily');
+
+  // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
+  setTimeout(function(){
+    let el = $('.chat_messages', '.pond_message_main')
+    $(el).scrollTop(9999);
+  }, 1200)
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){
     $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');

@@ -195,8 +195,10 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
   }
 
   try {
-    let el = $('.chat_messages', '.pond_message_main')
-    $(el).scrollTop(9999);
+    if (data.messages.length > 0) {
+      let el = $('.chat_messages', '.pond_message_main')
+      $(el).scrollTop(9999);
+    }
   } catch (err) {
     console.log('Waring: Was unable to scrollTop on pond messages', err);
   }
