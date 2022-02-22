@@ -8,23 +8,33 @@ desktop.mirror.devices = {
 };
 
 desktop.mirror.load = function loadDesktopMirror (params, next) {
-  desktop.loadRemoteAppHtml('mirror', function (responseText, textStatus, jqXHR) {
+  const assets = [ 'desktop/apps/desktop.mirror/CanvasVideo.js', 'mirror' ];
+
+  desktop.loadRemoteAssets(assets, function (err) {
     $('#window_mirror').css('width', 686);
     $('#window_mirror').css('height', 622);
     $('#window_mirror').css('left', 200);
     $('#window_mirror').css('top', 44);
+
+    desktop.mirror.canvasVideo = new window.CanvasVideo();
+
     $('.selectMirrorCamera').on('change', function(){
       let newDeviceLabel = $(this).val();
       // TODO: use localstorage to set device preference
       desktop.mirror.startCamera(newDeviceLabel)
     });
+
+    $('.selectMirrorFilter').on('change', function(ev){
+      desktop.mirror.canvasVideo.filter = ev.currentTarget.value.toLowerCase();
+    });
+
     next();
   });
 }
 
 desktop.mirror.openWindow = function openWindow () {
+  this.canvasVideo.bindPlayEvent();
 
-  //
   // The mirror will not work if navigator.mediaDevices is not available.
   // Usually, this will only occur if there is SSL / HTTPS certificate issue
   //
@@ -45,7 +55,6 @@ desktop.mirror.openWindow = function openWindow () {
   }).catch((err) => {
     console.log('error in navigator.mediaDevices.getUserMedia', err)
   });
-
 }
 
 // get all camera and audio devices on local system
@@ -93,6 +102,7 @@ desktop.mirror.startCamera = function startCamera (deviceLabel) {
         $('.selectMirrorCamera').val(track.label)
       });
       var video = document.querySelector("#mirrorVideoMe");
+
       video.srcObject = stream;
       desktop.mirror.localStream = stream;
     }).catch((err) => {
@@ -102,6 +112,8 @@ desktop.mirror.startCamera = function startCamera (deviceLabel) {
 }
 
 desktop.mirror.closeWindow = function closeMirrorWindow () {
+  this.canvasVideo.unbindPlayEvent();
+
   // when closing the window for the Mirror App
   // stop all tracks associated with open stream
   if (desktop.mirror.localStream && desktop.mirror.localStream.getTracks) {

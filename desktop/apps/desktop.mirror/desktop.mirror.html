@@ -13,10 +13,22 @@
     </div>
     <div class="abs window_content">
       <div class="window_main mirrorVideoHolder">
-        <video autoplay="true" id="mirrorVideoMe"> </video><br/>
+        <canvas width='640' height='480' id='mirrorCanvasMe'></canvas>
+
+        <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
+        <br/>
         Camera Source
         <select name="selectMirrorCamera" class="selectMirrorCamera">
         </select>
+
+        &nbsp;
+
+        Filter
+        <select name="selectMirrorFilter" class="selectMirrorFilter">
+            <option>None</option>
+            <option value='greyscale'>Greyscale</option>
+        </select>
+
         <!--
           Audio Source
           <select name="selectAudio" class="selectAudio">
