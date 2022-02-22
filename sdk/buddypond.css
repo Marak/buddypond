@@ -12,11 +12,6 @@ table tr {
   height: 40px;
 }
 
-
-
-table tr:nth-child(even) {
-}
-
 table tr:nth-child(odd) {
   background-color: #eee;
 }
