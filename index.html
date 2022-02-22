@@ -212,7 +212,7 @@ window.top.location = 'ie.html';
 <script src="desktop.js"></script>
 
 <script>
-
+  // see: ReadMe.md for documentation on `desktop.use`
   $(document).ready(function(){
     let documentReadyTime = new Date();
     desktop.log('Buddy Pond Cloud Desktop Initialized');
@@ -222,21 +222,16 @@ window.top.location = 'ie.html';
       .use('wallpaper')
       .use('buddylist')
       .use('login')
-      .use('spellbook', { lazy: true })
-      .use('pond', { lazy: true })
-      .use('profile', { lazy: true })
+      .use('spellbook', { defer: true })
+      .use('pond', { defer: true })
+      .use('profile', { defer: true })
       // .use('notifications')
-      .use('mirror', { lazy: true })
-      .use('interdimensionalcable', { lazy: true })
-      .use('mtv', { lazy: true })
-      .use('soundcloud', { lazy: true })
-      .use('videochat', { lazy: true })
-      .use('games', { lazy: true })
-      //
-      // Remark: Using the `lazy` flag here will defer Solitaire.load() until Desktop is ready
-      //         Double clicking Solitaire icon will result in loading spinner until Solitaire.load() is complete
-      //         Using `lazy` will not block Desktop Ready on Apps which require loading large asset files
-      //
+      .use('mirror', { defer: true })
+      .use('interdimensionalcable', { defer: true })
+      .use('mtv', { defer: true })
+      .use('soundcloud', { defer: true })
+      .use('videochat', { defer: true })
+      .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
@@ -256,36 +251,6 @@ window.top.location = 'ie.html';
         });
       });
   });
-
-  /*
-
-    desktop.use() will load Buddy Pond Apps which have an App.load method
-
-    App.load(params, callback) is an async function
-
-    For Example:
-
-        desktop.boo.load = function (params, cb) {
-          setTimeout(function(){
-            // async App.load functions *must* continue with their callback
-            cb(null, true);
-          }, 3000)
-        }
-
-    You can also write `App.load()` as a sync style function
-
-        desktop.foo.load = function (params) {
-          // sync App.load functions *must* return a value
-          return true;
-        }
-
-    The best practice here is to use async App.load(params, callback) function signature ( such as: desktop.foo.boo )
-
-    See `desktop.solitaire` as an example
-
-    sync still is only for Apps which have no associated HTML fragments or external JS and CSS resources that need to be loaded
-
-  */
 
 </script>
   <div id="shadowRender">

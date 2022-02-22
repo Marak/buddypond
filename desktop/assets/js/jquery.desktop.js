@@ -364,24 +364,47 @@ JDQX.openWindow = function openWindow (context) {
   var iconDock = $(context).attr('href');
   var appName = iconDock.replace('#icon_dock_', '');
   let appWindow = '#window_' + appName;
+  // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
 
+  // check to see if the `App` is trying to load, but is currently deffered
+  // if so, put a spinning icon on the mouse cursor
+  // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
   if (desktop[appName] && desktop[appName].deferredLoad) {
-    // TODO: in the future we could check if its App.isLoadingDefered...etc
-    //       if not, we could start an App.load event in response to click
-
     // set global cursor to spinning progress icon
+    // TODO: spinning progress notifications should be per `App` and not a global state
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
     });
-
     // set a flag to indicate this App should open when defered loading completes
     desktop[appName].openWhenLoaded = true;
     return;
   }
 
-  //var x = $(context).attr('href');
-  //var y = $(x).find('a').attr('href');
-  // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
+  // if the `App` has `lazy` set, we need to put a spinning icon on the mouse cursor...
+  // ...and then call this app's `App.load()` function and wait until it's ready...
+  // once the `App` is ready, we open it's window
+  if (desktop[appName] && desktop[appName].lazyLoad && desktop.apps.lazy.indexOf(appName) !== -1) {
+    // remove this `App` from the array of registered lazy apps
+    desktop.apps.lazy = desktop.apps.lazy.filter(function(app){
+      if (app === appName) {
+        return false;
+      }
+      return true;
+    });
+    // set global cursor to spinning progress icon
+    // TODO: spinning progress notifications should be per `App` and not a global state
+    document.querySelectorAll('*').forEach(function(node) {
+      node.style.cursor = 'progress';
+    });
+    desktop[appName].load({}, function ready (){
+      JDQX.openWindow(context)
+      document.querySelectorAll('*').forEach(function(node) {
+        node.style.cursor = 'pointer';
+      });
+    })
+    return;
+  }
+
   // Show the taskbar button.
   if ($(iconDock).is(':hidden')) {
     $(iconDock).remove().appendTo('#dock');

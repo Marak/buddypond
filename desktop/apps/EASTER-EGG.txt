@@ -24,7 +24,13 @@ Ideas for community apps:
   - custom canvas animations
   - set picture as wallpaper
   - Nyan cat wallpaper
+  - http://sirxemic.github.io/jquery.ripples/
 
 - Sound FX Board
   - Use midi fighter button pad with sound fx
   - add goose sound effect
+
+- Mini 3d earth globe with random geoIP pings of user sessions
+  http://planetaryjs.com/examples/rotating.html
+  https://miniature.earth/demo/space-view.htm
+  or another

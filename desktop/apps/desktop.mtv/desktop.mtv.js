@@ -12,8 +12,9 @@ desktop.mtv.load = function (params, next) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 
-      we could add this script to the above desktop.loadRemoteAssets() call,
-      but that will result in the mtv App having to wait for youtube to respond for App to complete load
+      it would be better if we can add this script to the above desktop.loadRemoteAssets() call,
+      right now youtube is being injected on Desktop Ready instead of lazy load
+      see: https://github.com/Marak/buddypond/issues/13
     */
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);

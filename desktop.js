@@ -13,6 +13,7 @@ desktop.apps = {};
 desktop.apps.loading = [];
 desktop.apps.loaded = [];
 desktop.apps.deferred = [];
+desktop.apps.lazy = [];
 desktop.apps.mostRecentlyLoaded = [];
 desktop.apps.loadingStartedAt = 0;
 desktop.apps.loadingEndedAt = 0;
@@ -117,13 +118,42 @@ desktop._use = function _use (app, params) {
   if (!desktop[app].load || typeof desktop[app].load !== 'function') {
     throw new Error(app + '.load is not a valid function');
   }
+
+  /*
+     Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`
+
+     Apps load in this order:
+
+     1.  desktop.use(appName)
+
+         Sync style blocking loads ( Desktop will not be Ready until all are completed )
+         Calling desktop.use(appName) with no params should be used only for mission-critical Apps
+
+     2. desktop.use(appName, { defer: true })
+
+        Async style non-blocking loads ( Desktop will be Ready before all these load )
+        `defer` indicates the `App` should load *immediately* after the Desktop is ready
+        `defer` param should be used for Apps that are non-critical, but frequently used
+
+     2. desktop.use(appName, { lazy: true })
+
+        Async style non-blocking loads ( Desktop will be Ready before all these load )
+        `lazy` indicates the `App` should load only when the Buddy tries to open it
+        `lazy` param should be used for Apps that are non-critical or large ( such as Games )
+
+    Note: If you choose both `lazy` and `defer` options, only `lazy` will be applied.
+
+  */
+
   if (params.lazy) {
-    // Remark: Right now we are actually only doing *deferred loading* and not true *lazy loading*
-    //         A deferred load is a load automatically executed after Desktop Ready
-    //         A true lazy load would be in response to a User Interaction ( like Desktop Icon double click )
-    //
-    // TODO: Implement lazy loading in addition to defered loading ( calling App.load() in response to click )
+    // The Desktop will call `App.load()` after the Buddy tries to open the `App`
     desktop[app].lazyLoad = true;
+    desktop.apps.lazy.push(app);
+    return this;
+  }
+
+  if (params.defer) {
+    // The Desktop will call `App.load()` *immediately* after the Desktop is ready
     desktop[app].deferredLoad = true;
     desktop.apps.deferred.push(app);
     return this;

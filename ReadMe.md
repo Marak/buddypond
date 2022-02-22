@@ -118,6 +118,100 @@ curl -X POST "https://buddypond.com/api/v3/buddies/Marak/deny"  -H 'Content-Type
 curl -X POST "https://buddypond.com/api/v3/buddies/Marak/remove"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
 ```
 
+## Building custom Buddy Pond `App`
+
+### Example Usage
+
+```js
+$(document).ready(function(){
+  desktop.log('Buddy Pond Cloud Desktop Initialized');
+  desktop.log('Now loading apps');
+  desktop
+    .use('console')
+    .use('wallpaper')
+    .use('buddylist')
+    .use('login')
+    .use('pond', { defer: true })
+    .use('profile', { defer: true })
+    .use('mirror', { defer: true })
+    .use('interdimensionalcable', { defer: true })
+    .use('mtv', { defer: true })
+    .use('soundcloud', { defer: true })
+    .use('videochat', { defer: true })
+    .use('games', { defer: true })
+    .use('minesweeper', { lazy: true })
+    .use('solitaire', { lazy: true })
+    .ready(function(err, apps){
+      desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+      // start loop for updating desktop state
+      desktop.refresh();
+    });
+});
+
+```
+
+### Apps
+
+`desktop.use(appName, params)` will load Buddy Pond Apps which have an `App.load` method.
+
+`App.load` can be an async or sync function.
+
+**For Example:**
+
+```js
+desktop.boo.load = function (params, next) {
+  setTimeout(function(){
+    // async `App.load` functions *must* continue with their callback
+    next(null, true);
+  }, 3000)
+}
+```
+
+You can also write `App.load` as a sync style function
+
+```js
+desktop.foo.load = function (params) {
+  // sync `App.load` functions *must* return a value
+  return true;
+}
+```
+The best practice here is to use async `App.load(params, bext)` function signature  such as: `desktop.boo`
+
+sync style `App.load(params)` is used for Apps which have no associated external resources, HTML fragments, JS files, HTTP requests, etc. Again, you should probably use `App.load(params, next)` async style.
+
+### `defer` or `lazy` load of `App`
+
+Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`. 
+
+`defer` means load after Deskop is ready.
+`lazy` means load after user clicks on `App` icon.
+
+### **Apps load in this order:**
+
+### 1. desktop.use(appName)
+*Sync style blocking loads*
+Calling `desktop.use(appName)` with no params should be used only for mission-critical Apps. 
+
+The Desktop will **not** be ready until these Apps finish loading.
+
+### 2. desktop.use(appName, { defer: true })
+
+*Async style non-blocking loads*
+`defer` indicates the `App` wil load immediately after the Desktop is ready.
+`defer` param should be used for Apps that are non-critical, but frequently used.
+
+The Desktop will load these Apps **immediately after** it's ready.
+
+
+### 3. desktop.use(appName, { lazy: true })
+*Async style non-blocking loads*
+`lazy` indicates the `App` will only load when the Buddy clicks on `App` icon.
+`lazy` param should be used for Apps that are non-critical or large ( such as Games )
+
+The Desktop will only load this `App` **when buddy double clicks App icon**.
+
+**Note: If you choose both `lazy` and `defer` options, only `lazy` will be applied.**
+
 ## Buddy Pond Mobile Client
 
 The mobile friendly client is in progress. We have stubs placed in `./mobile` and will have a version of Buddy Pond working for iOS a and Andriod soon. Please [reach out](https://github.com/Marak/buddypond/issues) if you can help!
