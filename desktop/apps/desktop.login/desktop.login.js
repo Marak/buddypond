@@ -109,6 +109,7 @@ desktop.login.success = function desktopLoginSuccess () {
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
   $('#window_login').hide();
+  $('.buddy_pond_not_connected').hide();
   $('#login_desktop_icon').hide();
   $('#profile_desktop_icon').show();
   $('.totalConnected').show();

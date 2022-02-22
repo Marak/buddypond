@@ -146,9 +146,6 @@ let defaultPondOpened = false;
 
 desktop.pond.updateMessages = function updatePondMessages (data, cb) {
 
-  // console.log('desktop.pond.updateMessages', data)
-  $('.buddy_pond_not_connected').hide();
-
   $('.pondNameList').show();
   $('.pondMessagesHolder').show();
 
@@ -201,12 +198,15 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
   });
 
   for (let key in html) {
-    //$('.chat_messages', key).html('');
-    // $('.chat_messages', key).append(html[key]);
     $('.no_chat_messages', key).hide();
-    // scrolls to bottom of messages on new messages
-    let el = $('.chat_messages', key)
-    $(el).scrollTop($(el)[0].scrollHeight);
   }
+
+  try {
+    let el = $('.chat_messages', '.pond_message_main')
+    $(el).scrollTop(9999);
+  } catch (err) {
+    console.log('Waring: Was unable to scrollTop on pond messages', err);
+  }
+
   cb(null, true);
 }
