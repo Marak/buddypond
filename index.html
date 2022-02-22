@@ -235,16 +235,16 @@ window.top.location = 'ie.html';
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
+        desktop.wallpaper.start();
         $('#loaderHolder').fadeOut({
           easing: 'linear',
-          duration: 388
-        });
-        $('#mainOverlay').fadeIn({
-          easing: 'linear',
-          duration: 777,
+          duration: 666,
           complete: function(){
             // all .use(app) have completed sync / async loads
-            desktop.wallpaper.start();
+            $('#mainOverlay').fadeIn({
+              easing: 'linear',
+              duration: 777
+            });
             desktop.refresh();
             desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
           }

@@ -206,6 +206,9 @@ desktop._ready = function _ready (finish) {
     desktop.log("Loaded", desktop.apps.loaded);
     // now that all Apps and their assets have loaded, lets load any deferred Apps
     desktop.log("Loading Deferred Apps", desktop.apps.deferred);
+    // Remark: we might have to put a concurrency limit here
+    // TODO: Investigate what will happen if there are 1,000 deferred scripts
+    //       Will the browser complain or be able to queue them up?
     desktop.apps.deferred.forEach(function(app){
       // fire and forget them all
       // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
