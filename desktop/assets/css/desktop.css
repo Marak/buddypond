@@ -1148,3 +1148,15 @@ iframe {
 .pond_message_main {
   padding: 16px;
 }
+
+.customise {
+  padding-top: 16px;
+  padding-left: 33px;
+  padding-right: 33px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#wp_opt_matrix_settings {
+  display: none;
+}

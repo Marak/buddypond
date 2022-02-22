@@ -18,37 +18,6 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
       desktop.wallpaper.pause();
     }
   });
-
-
-  /*
-
-  This works great, just needs a place in the UI for managing wallpaper settings
-
-  <script src="desktop/assets/js/jquery.simple-color.js"></script>
-  $('.wallpaperColor').simpleColor({
-    boxHeight: 20,
-    cellWidth: 16,
-    cellHeight: 16,
-    defaultColor: "#008F11",
-    inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
-    chooserCSS: { 'border': '1px solid #660033', 'left': '-315px', 'top': '-225px' },
-    displayCSS: {  },
-    displayColorCode: true,
-    livePreview: true,
-    insert: 'before',
-    onSelect: function(hex, element) {
-      // alert("You selected #" + hex + " for input #" + element.attr('class'));
-      desktop.wallpaper.matrixTextColor = '#' + hex;
-    },
-    onCellEnter: function(hex, element) {
-      desktop.wallpaper.matrixTextColor = '#' + hex;
-      console.log("You just entered #" + hex + " for input #" + element.attr('class'));
-    },
-    onClose: function(element) {
-      // alert("color chooser closed for input #" + element.attr('class'));
-    }
-  });
-  */
   return true;
 };
 
