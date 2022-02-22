@@ -35,7 +35,7 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
     $('#window_buddylist').css('width', 220);
     $('#window_buddylist').css('height', 440);
-    $('#window_buddylist').css('left', 666);
+    $('#window_buddylist').css('left', 777);
     $('#window_buddylist').css('top', 66);
 
     $('.sendMessageForm').on('submit', function(){

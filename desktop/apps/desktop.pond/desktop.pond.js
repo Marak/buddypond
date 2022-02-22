@@ -102,10 +102,12 @@ desktop.pond.openWindow = function (context) {
   if (!buddypond.qtokenid) {
     // return;
   }
-  let windowKey = desktop.openWindow('pond_message', context, {
-    of: "#window_pond"
-  });
+
+  let windowKey = desktop.openWindow('pond_message', context);
   let windowId = '#' + windowKey;
+  $(windowId).css('left', 166);
+  $(windowId).css('top', 66);
+
   $('.window-context-title', windowId).html(context + ' Pond');
   $('.pond_message_text', windowId).focus();
   $('.pond_message_to', windowId).val(context)

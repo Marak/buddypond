@@ -150,7 +150,7 @@ desktop.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-
+  desktop.pond.openWindow('Lily');
 }
 
 desktop.login.openWindow = function desktopLoginOpenWindow () {

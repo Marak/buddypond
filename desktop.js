@@ -433,7 +433,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     // TODO: max windows message
     windowKey = desktop.windowPool[windowType].pop();
     if (!windowKey) {
-      alert('Too many chat windows. Please close some windows.');
+      alert(`No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`);
       return;
     }
 
