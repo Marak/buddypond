@@ -92,13 +92,13 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   })
 }
 
-buddypond.castSpell = function castSpell (buddyName, text, cb) {
+buddypond.castSpell = function castSpell (buddyName, spellName, cb) {
   cb = cb || function noop (err, re) {
     console.log('buddyPond.castSpell completed noop', err, re);
   };
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
-    text: text,
+    text: spellName,
     type: 'agent'
   }, function(err, data){
     cb(err, data);
@@ -238,8 +238,8 @@ function apiRequest (uri, method, data, cb) {
     contentType: "application/json; charset=utf-8",
     dataType: 'json',
     timeout: 7,
-    error: function (data, res){
-      cb(new Error('ajax connection error. retrying request shortly.'), data);
+    error: function (err, data, res){
+      cb(new Error('ajax connection error. retrying request shortly.'), data, res);
     },
     timeout: function(err, res){
       cb(new Error('AJAX timeout'), res);
