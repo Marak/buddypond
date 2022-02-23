@@ -33,7 +33,6 @@ desktop.profile.load = function loadDesktop (params, next) {
       let notificationsEnabled = $(this).prop("checked");
       if (notificationsEnabled) {
         Notification.requestPermission().then(function(permission) {
-          desktop.notifications.browserHasPermission = true;
           desktop.localstorage.set('notifications_web_enabled', true);
           let notification = new Notification("Buddy Pond Notifications Enabled!");
           desktop.log('Browser has granted Notification permissions');
