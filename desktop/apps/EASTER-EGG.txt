@@ -18,6 +18,8 @@ Ideas for community apps:
 - Games
   - small games to pack in main distribution
   - pick js1k winners / entries?
+  - https://github.com/k4zmu2a/SpaceCadetPinball
+  - https://github.com/mtevans/SkiFree
   
 - Wallpaper Manager
   - user contributed wallpapers

@@ -442,6 +442,9 @@ desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
         str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
       } else {
         str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+        if (document.visibilityState === 'hidden' && desktop.settings.notifications_web_enabled) {
+          let notification = new Notification(`🐸 ${message.from}: ${message.text}`);
+        }
       }
       $('.chat_messages', windowId).append(str);
       $('.message', windowId).last().text(message.text)

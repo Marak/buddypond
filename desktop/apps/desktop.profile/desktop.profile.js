@@ -27,7 +27,28 @@ desktop.profile.load = function loadDesktop (params, next) {
       buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
         $('.updateProfileResponse').html('Updated!');
       })
-    })
+    });
+
+    $('.enableWebNotifications').on('change', function(){
+      let notificationsEnabled = $(this).prop("checked");
+      if (notificationsEnabled) {
+        Notification.requestPermission().then(function(permission) {
+          desktop.notifications.browserHasPermission = true;
+          desktop.localstorage.set('notifications_web_enabled', true);
+          let notification = new Notification("Buddy Pond Notifications Enabled!");
+          desktop.log('Browser has granted Notification permissions');
+          console.log(permission)
+        });
+      } else {
+        // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
+        desktop.localstorage.set('notifications_web_enabled', false);
+      }
+    });
+    
+    if (desktop.settings.notifications_web_enabled) {
+      $('.enableWebNotifications').prop('checked', true);
+    }
+
     $("#profileTabs" ).tabs();
     next();
   });

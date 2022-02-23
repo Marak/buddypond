@@ -24,6 +24,9 @@ desktop.localstorage = {};
 desktop.localstorage.prefix = '_buddypond_desktop_'
 desktop.localstorage.set = function setLocalStorage (key, val) {
   localStorage.setItem(desktop.localstorage.prefix + key, val);
+  // in addition to updating the localstorage, update desktop.settings
+  // Remark: desktop.settings is booted from localstorage on load
+  desktop.settings[key] = val;
 }
 desktop.localstorage.get = function getLocalStorage (key) {
   localStorage.getItem(desktop.localstorage.prefix + key);
