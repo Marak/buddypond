@@ -7,6 +7,8 @@ desktop.wallpaper.canvasTimer = null;
 desktop.wallpaper.label = "Wallpaper"
 desktop.wallpaper.settings = null
 desktop.wallpaper.init = false
+desktop.wallpaper.width = 0
+desktop.wallpaper.height = 0
 
 desktop.wallpaper.paused = false;
 desktop.wallpaper.load = function desktopLoadBuddyList (params, next) {
@@ -41,6 +43,22 @@ desktop.wallpaper.load = function desktopLoadBuddyList (params, next) {
     desktop.wallpaper.handleWallpaperOption()
 
     $('input[name=wallpaper_opt]').on('input', desktop.wallpaper.handleWallpaperOption)
+
+    $( window ).resize(function() {
+      desktop.wallpaper.wallpaperCanvasSize()
+      if (desktop.wallpaper.settings.active === "solid") {
+        desktop.wallpaper.drawSolid(desktop.wallpaper.settings.solid.color)
+      } else if (desktop.wallpaper.settings.active === "matrix") {
+        // recalc matrix columns and drops
+        var font_size = 10;
+        var columns = c.width / font_size;
+        drops = []
+        if (drops.length === 0) {
+          for (var x = 0; x < columns; x++)
+            drops[x] = parseInt(Math.random() * c.height);
+        }
+      }
+    })
 
     $('.wp_opt_matrix_color').simpleColor({
         boxHeight: 20,
@@ -142,6 +160,8 @@ desktop.wallpaper.wallpaperCanvasSize = function() {
   var c = document.getElementById("c");
   c.height = window.innerHeight;
   c.width = window.innerWidth;
+  desktop.wallpaper.height = window.innerHeight;
+  desktop.wallpaper.width = window.innerWidth;
 }
 
 desktop.wallpaper.matrixTextColor = "#008F11"; //green text
@@ -176,7 +196,7 @@ desktop.wallpaper.start = function startWallpaper () {
     //Black BG for the canvas
     //translucent BG to show trail
     ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
-    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillRect(0, 0,  desktop.wallpaper.width,  desktop.wallpaper.height);
 
     ctx.fillStyle = desktop.wallpaper.matrixTextColor;
     ctx.font = font_size + "px arial";
