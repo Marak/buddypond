@@ -127,7 +127,18 @@ window.top.location = 'ie.html';
         </ul>
       </li>
     </ul>
-    <span class="float_right" id="clock"></span>
+    <ul class="float_right">
+      <li>
+        <a class="menu_trigger" href="#">
+          <span class="float_right" id="clock"></span>
+        </a>
+        <ul class="menu">
+          <li>
+            <a class="alarmLink" href="#">Buddy Alarm</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
     <ul class="float_right">
       <li>
         <a class="menu_trigger" href="#">Buddy Pond</a>
@@ -228,6 +239,7 @@ window.top.location = 'ie.html';
       .use('login')
       .use('buddylist')
       .use('pond')
+      .use('alarm', { defer: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
       // .use('notifications')
