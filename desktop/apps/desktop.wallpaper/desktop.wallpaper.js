@@ -4,9 +4,12 @@
 desktop.wallpaper = {};
 desktop.wallpaper.canvas = null;
 desktop.wallpaper.canvasTimer = null;
+desktop.wallpaper.label = "Wallpaper"
+desktop.wallpaper.settings = null
+desktop.wallpaper.init = false
 
 desktop.wallpaper.paused = false;
-desktop.wallpaper.load = function desktopLoadBuddyList () {
+desktop.wallpaper.load = function desktopLoadBuddyList (params, next) {
   $('.pauseWallpaper').on('click', function(){
     if (desktop.wallpaper.paused) {
       desktop.wallpaper.paused = false;
@@ -18,12 +21,127 @@ desktop.wallpaper.load = function desktopLoadBuddyList () {
       desktop.wallpaper.pause();
     }
   });
+  desktop.loadRemoteAssets([
+    'desktop/assets/js/jquery.simple-color.js',
+    'wallpaper'
+  ], function (err) {
+    desktop.wallpaper.wallpaperCanvasSize()
+    settingsString = window.localStorage.getItem('wallpaper_opts')
+    if (settingsString == null) {
+      desktop.wallpaper.settings = { active: "matrix", matrix: { color: desktop.wallpaper.matrixTextColor }, solid: { color: "#0000FF" } }
+    } else {
+      desktop.wallpaper.settings = JSON.parse(settingsString)
+    }
+    window.localStorage.setItem('wallpaper_opts', JSON.stringify(desktop.wallpaper.settings))
+
+    $("#wp_save_opts").on('click', function() {
+      window.localStorage.setItem('wallpaper_opts', JSON.stringify(desktop.wallpaper.settings))
+    })
+    $('#wp_opt_'+desktop.wallpaper.settings.active).prop("checked", true)
+    desktop.wallpaper.handleWallpaperOption()
+
+    $('input[name=wallpaper_opt]').on('input', desktop.wallpaper.handleWallpaperOption)
+
+    $('.wp_opt_matrix_color').simpleColor({
+        boxHeight: 20,
+        cellWidth: 16,
+        cellHeight: 16,
+        defaultColor: desktop.wallpaper.settings.matrix.color,
+        inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
+        chooserCSS: { 'border': '1px solid #660033', 'left': '-315px', 'top': '-50px' },
+        displayCSS: {  },
+        displayColorCode: true,
+        livePreview: true,
+        insert: 'before',
+        onSelect: function(hex, element) {
+          desktop.wallpaper.matrixTextColor = '#' + hex;
+          desktop.wallpaper.settings.matrix.color = '#' + hex;
+        },
+        onCellEnter: function(hex, element) {
+          desktop.wallpaper.matrixTextColor = '#' + hex;
+          desktop.wallpaper.settings.matrix.color = '#' + hex;
+        },
+        onClose: function(element) {
+        }
+      })
+    $('.wp_opt_solid_color').simpleColor({
+        boxHeight: 20,
+        cellWidth: 16,
+        cellHeight: 16,
+        defaultColor: desktop.wallpaper.settings.solid.color,
+        inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
+        chooserCSS: { 'border': '1px solid #660033', 'left': '-315px', 'top': '-50px' },
+        displayCSS: {  },
+        displayColorCode: true,
+        livePreview: true,
+        insert: 'before',
+        onSelect: function(hex, element) {
+          desktop.wallpaper.settings.solid.color = '#' + hex;
+          desktop.wallpaper.drawSolid(desktop.wallpaper.settings.solid.color)
+        },
+        onCellEnter: function(hex, element) {
+          desktop.wallpaper.settings.solid.color = '#' + hex;
+          desktop.wallpaper.drawSolid(desktop.wallpaper.settings.solid.color)
+        },
+        onClose: function(element) {
+        }
+      })
+    next();
+  })
   return true;
 };
+
+desktop.wallpaper.handleWallpaperOption = function () {
+  var radioValue = $('input[name=wallpaper_opt]:checked').val()
+  switch (radioValue) {
+    case "matrix":
+      $('#wp_opt_matrix_settings').show()
+      $('#wp_opt_color_settings').hide()
+      break;
+    case "solid":
+      $('#wp_opt_color_settings').show()
+      $('#wp_opt_matrix_settings').hide()
+      break;
+    default:
+      break;
+  }
+  desktop.wallpaper.settings.active = radioValue
+  desktop.wallpaper.applyOptions()
+}
+
+desktop.wallpaper.applyOptions = function () {
+  var opts = desktop.wallpaper.settings
+  switch (opts.active) {
+    case "matrix":
+      desktop.wallpaper.matrixTextColor = opts.matrix.color
+      if (!desktop.wallpaper.init) {
+        desktop.wallpaper.start()
+        desktop.wallpaper.init = true
+      } else {
+        if (desktop.wallpaper.paused) {
+          desktop.wallpaper.clear()
+          desktop.wallpaper.start()
+        }
+      }
+      break;
+    case "solid":
+      desktop.wallpaper.kill()
+      desktop.wallpaper.drawSolid(opts.solid.color)
+      break;
+    default:
+      break;
+  }
+}
 
 desktop.wallpaper.pause = function pauseWallpaper () {
   desktop.wallpaper.paused = true;
   clearInterval(desktop.wallpaper.canvasTimer);
+}
+
+desktop.wallpaper.wallpaperCanvasSize = function() {
+  var c = document.getElementById("c");
+  c.height = window.innerHeight;
+  c.width = window.innerWidth;
 }
 
 desktop.wallpaper.matrixTextColor = "#008F11"; //green text
@@ -31,13 +149,11 @@ desktop.wallpaper.matrixTextColor = "#008F11"; //green text
 var drops = []; // matrix specific, can move, scoped outside function to perserve position
 desktop.wallpaper.start = function startWallpaper () {
 
+  desktop.wallpaper.wallpaperCanvasSize()
+
   var c, ctx;
   c = document.getElementById("c");
   ctx = c.getContext("2d");
-
-  //making the canvas full screen
-  c.height = window.innerHeight;
-  c.width = window.innerWidth;
 
   var matrix = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345666777788889@#$%^&*()*&^%+-/~{[|`]}";
 
@@ -84,4 +200,22 @@ desktop.wallpaper.start = function startWallpaper () {
   desktop.wallpaper.canvasTimer = setInterval(function(){
     draw();
   }, 66);
+}
+
+desktop.wallpaper.drawSolid = function (color) {
+  var c = document.getElementById("c")
+  var ctx = c.getContext("2d")
+  ctx.fillStyle = color
+  ctx.fillRect(0, 0, c.width, c.height)
+}
+
+desktop.wallpaper.clear = function () {
+  var c = document.getElementById("c")
+  var ctx = c.getContext("2d")
+  ctx.clearRect(0, 0, c.width, c.height)
+}
+
+desktop.wallpaper.kill = function () {
+  desktop.wallpaper.pause()
+  desktop.wallpaper.clear()
 }

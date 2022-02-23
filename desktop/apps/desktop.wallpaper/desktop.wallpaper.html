@@ -1,9 +1,9 @@
-<div id="window_customise" class="abs window">
+<div id="window_wallpaper" class="abs window">
     <div class="abs window_inner">
       <div class="window_top">
         <span class="float_left">
           <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
-          Customise
+          Wallpaper
         </span>
         <span class="float_right">
           <a href="#" class="window_min"></a>
@@ -16,8 +16,11 @@
             <div>
                 <h2>Wallpaper Type</h2>
                 <!-- Wake up neo -->
-                <input checked type="radio" id="wp_opt_matrix" name="wallpaper_opt" value="matrix">
+                <input type="radio" id="wp_opt_matrix" name="wallpaper_opt" value="matrix">
                 <label for="wp_opt_matrix">Matrix</label>
+                <br>
+                <input type="radio" id="wp_opt_solid" name="wallpaper_opt" value="solid">
+                <label for="wp_opt_solid">Solid</label>
                 <br>
                 <input disabled type="radio" id="wp_opt_custom" name="wallpaper_opt" value="custom">
                 <label for="wp_opt_custom">Custom</label>
@@ -29,6 +32,14 @@
                     <label>Matrix Color</label>
                     <div class="wp_opt_matrix_color"></div>
                 </div>
+                <div id="wp_opt_color_settings">
+                    <label>Solid Color</label>
+                    <div class="wp_opt_solid_color"></div>
+                </div>
+            </div>
+            <div class="customise_break"></div>
+            <div class="button_bar">
+                <button id="wp_save_opts">Save</button>
             </div>
         </div>
       </div>
