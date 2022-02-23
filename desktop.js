@@ -20,29 +20,6 @@ desktop.apps.loadingEndedAt = 0;
 
 desktop.settings = {};
 
-desktop.localstorage = {};
-desktop.localstorage.prefix = '_buddypond_desktop_'
-desktop.localstorage.set = function setLocalStorage (key, val) {
-  localStorage.setItem(desktop.localstorage.prefix + key, val);
-  // in addition to updating the localstorage, update desktop.settings
-  // Remark: desktop.settings is booted from localstorage on load
-  desktop.settings[key] = val;
-}
-desktop.localstorage.get = function getLocalStorage (key) {
-  localStorage.getItem(desktop.localstorage.prefix + key);
-}
-desktop.localstorage.removeItem = function removeLocalStorage (key) {
-  localStorage.removeItem(desktop.localstorage.prefix + key);
-}
-
-// boot all localstorage data into local settings
-for (var key in localStorage){
-  if (key.search(desktop.localstorage.prefix) !== -1) {
-    let param = key.replace(desktop.localstorage.prefix, '');
-    desktop.settings[param] = localStorage[key];
-  }
-}
-
 // default timeout when calling desktop.use()
 // Remark: Counts for all apps being chained by .use() at once, not the individual app loading times
 //         Currently set to Infinity since we expect everything to always load ( for now )
@@ -202,7 +179,7 @@ desktop._use = function _use (app, params) {
 
   // if the result is not undefined, we can assume no callback was used in App.load
   if (typeof result !== 'undefined') {
-    desktop.renderDockIcon(app);
+    // Remark: dock icon is *not* rendered for sync `App.load` at the moment ( no HTML window has been created )
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
     desktop.apps.loading = desktop.apps.loading.filter(function(a){
@@ -235,9 +212,9 @@ desktop._ready = function _ready (finish) {
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
     desktop.apps.deferred.forEach(function(app){
-      // fire and forget them all
-      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      desktop[app].load({}, function lazyNoop(){
+      
+      
+      function _open () {
         desktop.renderDockIcon(app);
         desktop[app].deferredLoad = false;
         if (desktop[app].openWhenLoaded) {
@@ -255,7 +232,20 @@ desktop._ready = function _ready (finish) {
             desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
           }
         }
-      })
+      }
+
+      // fire and forget them all. provide a noop function for next
+      // Remark: the lazyNoop will NOT be executed for *sync* style `App.load` ( see below )
+      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
+      let result = desktop[app].load({}, function lazyNoop(){
+        _open();
+      });
+
+      // this indicates App.load was a *sync* style function and the callback was never fired
+      if (typeof result !== 'undefined') {
+        _open();
+      }
+
     });
     desktop.apps.deferred = [];
     finish(null, desktop.loaded);

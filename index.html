@@ -67,6 +67,12 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
       Music Television
     </a>
+    <!--
+    <a class="abs icon" style="left:110px;top:500px;" href="#icon_dock_automaton">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_automaton_64.png" />
+      Automaton
+    </a>
+    -->
     <a class="abs icon" style="left:20px;top:300px;" href="#icon_dock_soundcloud">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
       SoundCloud
@@ -224,6 +230,7 @@ window.top.location = 'ie.html';
     desktop.log('Now loading apps');
     desktop
       .use('console')
+      .use('localstorage')
       .use('wallpaper')
       .use('login')
       .use('buddylist')
@@ -236,11 +243,13 @@ window.top.location = 'ie.html';
       .use('mtv', { defer: true })
       .use('soundcloud', { defer: true })
       .use('videochat', { defer: true })
+      //.use('automaton', { defer: true })
       .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+
 
         // Desktop is ready, start refreshing it's state immediately
         desktop.refresh();
