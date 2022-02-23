@@ -21,21 +21,21 @@ desktop.apps.loadingEndedAt = 0;
 desktop.settings = {};
 
 desktop.localstorage = {};
-desktop.localstorage.prefix = '_buddypond_desktop_'
-desktop.localstorage.set = function setLocalStorage (key, val) {
+desktop.localstorage.prefix = "_buddypond_desktop_";
+desktop.localstorage.set = function setLocalStorage(key, val) {
   localStorage.setItem(desktop.localstorage.prefix + key, val);
-}
-desktop.localstorage.get = function getLocalStorage (key) {
+};
+desktop.localstorage.get = function getLocalStorage(key) {
   localStorage.getItem(desktop.localstorage.prefix + key);
-}
-desktop.localstorage.removeItem = function removeLocalStorage (key) {
+};
+desktop.localstorage.removeItem = function removeLocalStorage(key) {
   localStorage.removeItem(desktop.localstorage.prefix + key);
-}
+};
 
 // boot all localstorage data into local settings
-for (var key in localStorage){
+for (var key in localStorage) {
   if (key.search(desktop.localstorage.prefix) !== -1) {
-    let param = key.replace(desktop.localstorage.prefix, '');
+    let param = key.replace(desktop.localstorage.prefix, "");
     desktop.settings[param] = localStorage[key];
   }
 }
@@ -65,13 +65,13 @@ desktop.windowIndex = {};
 // openWindows is used to keep track of currently open windows
 desktop.openWindows = {
   buddy_message: {},
-  pond_message: {}
+  pond_message: {},
 };
 
 // windowPool is used to keep track of pre-created windows
-desktop.windowPool = {}
-desktop.windowPool['buddy_message'] = [];
-desktop.windowPool['pond_message'] = [];
+desktop.windowPool = {};
+desktop.windowPool["buddy_message"] = [];
+desktop.windowPool["pond_message"] = [];
 
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
@@ -85,14 +85,14 @@ desktop.images.preloaded = false;
 // TODO: We could add this same code inside desktop.loadRemoteAssets()
 //       to ensure images in injected HTML fragments block App injection until loaded
 var imgs = document.images,
-    totalNewImages = imgs.length,
-    totalNewLoadedImages = 0;
+  totalNewImages = imgs.length,
+  totalNewLoadedImages = 0;
 
-[].forEach.call(imgs, function(img) {
+[].forEach.call(imgs, function (img) {
   if (img.complete) {
     imageLoaded();
   } else {
-    img.addEventListener( 'load', imageLoaded, false );
+    img.addEventListener("load", imageLoaded, false);
   }
 });
 
@@ -109,25 +109,26 @@ desktop.use = function use(app, params) {
   // queue arguments for preloader
   desktop.preloader.push({ appName: app, params: params });
   return this;
-}
+};
 
-desktop.ready = function ready (finish) {
+desktop.ready = function ready(finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
-  desktop.preloader.forEach(function(app){
-    scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+  desktop.preloader.forEach(function (app) {
+    scriptArr.push(
+      `desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`
+    );
   });
-  desktop.loadRemoteAssets(scriptArr, function(){
-    desktop.preloader.forEach(function(app){
+  desktop.loadRemoteAssets(scriptArr, function () {
+    desktop.preloader.forEach(function (app) {
       desktop._use(app.appName, app.params);
-    })
-    desktop._ready(finish)
-  })
+    });
+    desktop._ready(finish);
+  });
   return this;
-}
+};
 
-desktop._use = function _use (app, params) {
-
+desktop._use = function _use(app, params) {
   params = params || {};
   if (desktop.apps.loading.length === 0) {
     desktop.apps.mostRecentlyLoaded = [];
@@ -137,8 +138,8 @@ desktop._use = function _use (app, params) {
   if (!desktop[app]) {
     throw new Error('Invalid App Name: "' + app + '"');
   }
-  if (!desktop[app].load || typeof desktop[app].load !== 'function') {
-    throw new Error(app + '.load is not a valid function');
+  if (!desktop[app].load || typeof desktop[app].load !== "function") {
+    throw new Error(app + ".load is not a valid function");
   }
 
   /*
@@ -182,14 +183,14 @@ desktop._use = function _use (app, params) {
   }
 
   desktop.apps.loading.push({ name: app, params: params });
-  desktop.log("Loading", 'App.' + app);
+  desktop.log("Loading", "App." + app);
 
   // Remark: sync App.load *must* return a value or Desktop.ready will never fire
-  let result = desktop[app].load(params, function(err, re){
+  let result = desktop[app].load(params, function (err, re) {
     desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
-    desktop.apps.loading = desktop.apps.loading.filter(function(a){
+    desktop.apps.loading = desktop.apps.loading.filter(function (a) {
       if (a.name === app) {
         return false;
       }
@@ -198,11 +199,11 @@ desktop._use = function _use (app, params) {
   });
 
   // if the result is not undefined, we can assume no callback was used in App.load
-  if (typeof result !== 'undefined') {
+  if (typeof result !== "undefined") {
     desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
-    desktop.apps.loading = desktop.apps.loading.filter(function(a){
+    desktop.apps.loading = desktop.apps.loading.filter(function (a) {
       if (a.name === app) {
         return false;
       }
@@ -211,18 +212,23 @@ desktop._use = function _use (app, params) {
   }
 
   return this;
+};
 
-}
-
-desktop._ready = function _ready (finish) {
-
+desktop._ready = function _ready(finish) {
   if (!desktop.images.preloaded || desktop.apps.loading.length > 0) {
-    setTimeout(function(){
-      if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
-        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
+    setTimeout(function () {
+      if (
+        new Date().getTime() - desktop.apps.loadingStartedAt.getTime() >
+        desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME
+      ) {
+        throw new Error(
+          "desktop.use() took over " +
+            desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 +
+            " seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning."
+        );
       }
       desktop._ready(finish);
-    }, 10)
+    }, 10);
   } else {
     desktop.apps.loadingEndedAt = new Date();
     desktop.log("Loaded", desktop.apps.loaded);
@@ -231,58 +237,60 @@ desktop._ready = function _ready (finish) {
     // Remark: we might have to put a concurrency limit here
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
-    desktop.apps.deferred.forEach(function(app){
+    desktop.apps.deferred.forEach(function (app) {
       // fire and forget them all
       // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      desktop[app].load({}, function lazyNoop(){
+      desktop[app].load({}, function lazyNoop() {
         desktop.renderDockIcon(app);
         desktop[app].deferredLoad = false;
         if (desktop[app].openWhenLoaded) {
           if (desktop[app].openWindow) {
             desktop[app].openWindow(app);
-            let key = '#window_' + app;
+            let key = "#window_" + app;
             $(key).show();
             JQD.util.window_flat();
-            $(key).show().addClass('window_stack');
+            $(key).show().addClass("window_stack");
             // TODO: loading status cursor indicator should be per App, not global
-            document.querySelectorAll('*').forEach(function(node) {
-              node.style.cursor = 'pointer';
+            document.querySelectorAll("*").forEach(function (node) {
+              node.style.cursor = "pointer";
             });
           } else {
-            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
+            desktop.log(
+              "Error:",
+              "attempted to open a deffered window ( openWhenLoaded ) but could not find " +
+                app +
+                ".openWindow"
+            );
           }
         }
-      })
+      });
     });
     desktop.apps.deferred = [];
     finish(null, desktop.loaded);
   }
   return this;
+};
 
-}
-
-desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
-
+desktop.loadRemoteAssets = function loadRemoteAssets(assetArr, final) {
   let assets = {
     script: [],
     css: [],
-    appHTML: []
+    appHTML: [],
   };
 
-  assetArr.forEach(function(asset){
-
-    if (asset.split('.').pop() === 'js') {
+  assetArr.forEach(function (asset) {
+    if (asset.split(".").pop() === "js") {
       assets.script.push(asset);
       return;
     }
 
-    if (asset.split('.').pop() === 'css') {
+    if (asset.split(".").pop() === "css") {
       assets.css.push(asset);
       return;
     }
 
     // single word, for example: 'console' or 'profile'
-    if (asset.split('.').length === 1) {
+    if (asset.split(".").length === 1) {
       assets.appHTML.push(asset);
       return;
     }
@@ -290,18 +298,19 @@ desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
     // could not detect asset type by file extension, assume its a JS script tag
     // this style is used by youtube for iframe embeds
     assets.script.push(asset);
-
   });
 
-  desktop.loadRemoteJS(assets.script, function(err) {
-    desktop.loadRemoteCSS(assets.css, function(err) {
-      desktop.loadRemoteAppHtml(assets.appHTML[0], function(responseText, textStatus, jqXHR) {
-        final(responseText, textStatus, jqXHR);
-      });
+  desktop.loadRemoteJS(assets.script, function (err) {
+    desktop.loadRemoteCSS(assets.css, function (err) {
+      desktop.loadRemoteAppHtml(
+        assets.appHTML[0],
+        function (responseText, textStatus, jqXHR) {
+          final(responseText, textStatus, jqXHR);
+        }
+      );
     });
   });
-
-}
+};
 
 // keep track of all external JS, CSS, and HTML files that have been pulled in
 desktop.loaded = {};
@@ -316,31 +325,35 @@ desktop.loaded.appsHTML = {};
   this is very useful for lazy loading App assets so that the main application load size
   does not grow as you install more Apps into the desktop
 */
-desktop.loadRemoteAppHtml = function loadRemoteAppHtml (appName, cb) {
+desktop.loadRemoteAppHtml = function loadRemoteAppHtml(appName, cb) {
   if (!appName) {
     return cb(null);
   }
-  $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
-  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
-    let html = $(`.${appName}WindowHolder`).html();
-    desktop.loaded.appsHTML[appName] = html;
-    $('#desktop').append(html);
-    $(`.${appName}WindowHolder`, '#shadowRender').remove();
-    cb(responseText, textStatus, jqXHR);
-  });
-}
+  $("#shadowRender").append(`<div class="${appName}WindowHolder"></div>`);
+  $(`.${appName}WindowHolder`).load(
+    `desktop/apps/desktop.${appName}/desktop.${appName}.html`,
+    function (responseText, textStatus, jqXHR) {
+      let html = $(`.${appName}WindowHolder`).html();
+      desktop.loaded.appsHTML[appName] = html;
+      $("#desktop").append(html);
+      $(`.${appName}WindowHolder`, "#shadowRender").remove();
+      cb(responseText, textStatus, jqXHR);
+    }
+  );
+};
 
-desktop.loadRemoteJS = function loadRemoteJS (scriptsArr, final) {
-
+desktop.loadRemoteJS = function loadRemoteJS(scriptsArr, final) {
   // filter out already injected scripts
-  let existingScripts =  $('script');
+  let existingScripts = $("script");
 
-  scriptsArr = scriptsArr.filter(function(script){
+  scriptsArr = scriptsArr.filter(function (script) {
     let scriptNeedsInjection = true;
-    existingScripts.each(function(i, existingScript){
+    existingScripts.each(function (i, existingScript) {
       if (existingScript.src.search(script) !== -1) {
         scriptNeedsInjection = false;
-        console.log('Notice: Ignoring duplicate script injection for ' + script);
+        console.log(
+          "Notice: Ignoring duplicate script injection for " + script
+        );
       }
     });
     return scriptNeedsInjection;
@@ -357,23 +370,21 @@ desktop.loadRemoteJS = function loadRemoteJS (scriptsArr, final) {
   scriptsArr.forEach(function (scriptPath) {
     // before injecting this script into the document, lets check if its already injected
     // by doing this, we allow Apps to reinject the same deps multiple times without reloads
-    var tag = document.createElement('script');
+    var tag = document.createElement("script");
     tag.src = scriptPath;
     desktop.loaded.scripts.push(scriptPath);
-    var firstScriptTag = document.getElementsByTagName('script')[0];
+    var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     tag.onload = function () {
       completed++;
       if (completed === total) {
         final();
       }
-    }
+    };
   });
+};
 
-}
-
-desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
-
+desktop.loadRemoteCSS = function loadRemoteCSS(cssArr, final) {
   let total = cssArr.length;
   let completed = 0;
 
@@ -384,25 +395,25 @@ desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
   cssArr.forEach(function (cssPath) {
     // before injecting this script into the document, lets check if its already injected
     // by doing this, we allow Apps to reinject the same deps multiple times without reloads
-    var tag = document.createElement('link');
+    var tag = document.createElement("link");
     tag.href = cssPath;
     tag.rel = "stylesheet";
     desktop.loaded.css.push(cssPath);
-    var firstLinkTag = document.getElementsByTagName('link')[0];
+    var firstLinkTag = document.getElementsByTagName("link")[0];
     firstLinkTag.parentNode.insertBefore(tag, firstLinkTag);
     tag.onload = function () {
       completed++;
       if (completed === total) {
         final();
       }
-    }
+    };
   });
-}
+};
 
-desktop.refresh = function refreshDesktop () {
+desktop.refresh = function refreshDesktop() {
   desktop.updateBuddyList();
   desktop.updateMessages();
-}
+};
 
 //
 //
@@ -412,15 +423,12 @@ desktop.refresh = function refreshDesktop () {
 // this implies there are already HTML elements named window_buddy_message_0 and window_pond_message_0
 // these will be incremented by 1 for each window , etc window_buddy_message_1, window_buddy_message_2
 // in the future we can have other windowTypes
-// for most applications you won't need this method and you can just 
+// for most applications you won't need this method and you can just
 // use $(window_id).hide() or $(window_id).show() instead
 //
 //
 
-desktop.openWindow = function openWindow (windowType, context, position) {
-
-  let windowTypes = ['buddy_message', 'pond_message']
-
+desktop.openWindow = function openWindow(windowType, context, position) {
   desktop.openWindows = desktop.openWindows || {};
   desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
 
@@ -432,12 +440,15 @@ desktop.openWindow = function openWindow (windowType, context, position) {
   if (desktop.openWindows[windowType][context]) {
     // console.log('window already open, doing nothing', desktop.openWindows[windowType][context])
     // if the window is open and not visible, it means it is minimized
-    let el = ('#' + desktop.openWindows[windowType][context]);
-    let dockEl = ('#' + desktop.openWindows[windowType][context]).replace('window_', 'icon_dock_');
-    if (!$(el).is(':visible')) {
-      $('.dock_title', dockEl).addClass('rainbow');
+    let el = "#" + desktop.openWindows[windowType][context];
+    let dockEl = ("#" + desktop.openWindows[windowType][context]).replace(
+      "window_",
+      "icon_dock_"
+    );
+    if (!$(el).is(":visible")) {
+      $(".dock_title", dockEl).addClass("rainbow");
     } else {
-      $('.dock_title', dockEl).removeClass('rainbow');
+      $(".dock_title", dockEl).removeClass("rainbow");
     }
     return desktop.openWindows[windowType][context];
   }
@@ -446,33 +457,35 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 
   if (desktop.windowIndex[windowType][context]) {
     let windowId = desktop.windowIndex[windowType][context];
-    windowKey = '#' + windowId;
+    windowKey = "#" + windowId;
     // console.log('reopening window id', windowId)
     // TODO: check to see if window is min, if so, open it from dock
     // desktop.renderDockElement(windowType + '_' + window_id, context);
     JQD.util.window_flat();
-    $(windowKey).show().addClass('window_stack');
+    $(windowKey).show().addClass("window_stack");
   } else {
     // TODO: max windows message
     windowKey = desktop.windowPool[windowType].pop();
     if (!windowKey) {
-      alert(`No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`);
+      alert(
+        `No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`
+      );
       return;
     }
 
-    let windowId = '#' + windowKey;
+    let windowId = "#" + windowKey;
     // console.log('allocating window from pool', windowId)
-    $('.window-context-title', windowId).html(context);
-    $('.window-context-title', windowId).html(context);
-    $(windowId).attr('data-window-context', context);
+    $(".window-context-title", windowId).html(context);
+    $(".window-context-title", windowId).html(context);
+    $(windowId).attr("data-window-context", context);
 
     $(windowId).show();
-    $(windowId).css('width', 600)
-    $(windowId).css('height', 440)
+    $(windowId).css("width", 600);
+    $(windowId).css("height", 440);
 
     // bring newly opened window to front
     JQD.util.window_flat();
-    $(windowId).addClass('window_stack').show();
+    $(windowId).addClass("window_stack").show();
 
     // assign window id from pool into windowIndex
     //
@@ -481,7 +494,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
     desktop.windowIndex[windowType][context] = windowId;
 
     // render the bottom bar dock element
-    desktop.renderDockElement(windowKey.replace('window_', ''), context);
+    desktop.renderDockElement(windowKey.replace("window_", ""), context);
 
     // a new window is being opened, figure out where it should be positioned next to
     // default position is next to the buddylist
@@ -489,56 +502,66 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 
     // gather all open buddy_messsage windows and find the first one
     // if the first one exists, assign that to open next to
-    
+
     let first = Object.keys(desktop.openWindows.buddy_message)[0];
     if (desktop.openWindows.buddy_message[first]) {
-      openNextTo = '#' + desktop.openWindows.buddy_message[first];
+      openNextTo = "#" + desktop.openWindows.buddy_message[first];
     } else {
       // do nothing
     }
 
-    position = position || {}
-    position.my = position.my || "left top",
-    position.at = position.at || 'right top',
-    position.of = position.of || openNextTo
+    position = position || {};
+    (position.my = position.my || "left top"),
+      (position.at = position.at || "right top"),
+      (position.of = position.of || openNextTo);
 
     // TODO: this shouldn't happen. refactor chat window positioning to not depend on buddylist being visible
     try {
       $(windowId).position(position);
     } catch (err) {
-      console.log('Warning: Error in showing ' + windowId, err);
+      console.log("Warning: Error in showing " + windowId, err);
     }
-    
-    if (windowType === 'buddy_message') {
 
+    if (windowType === "buddy_message") {
       // invalidate previous processed messages for this buddy
-      desktop.processedMessages = desktop.processedMessages.filter(function(uuid){
-        if (desktop.buddyMessageCache[buddypond.me + '/' + context]) {
-          if (desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
-            return false
+      desktop.processedMessages = desktop.processedMessages.filter(function (
+        uuid
+      ) {
+        if (desktop.buddyMessageCache[buddypond.me + "/" + context]) {
+          if (
+            desktop.buddyMessageCache[buddypond.me + "/" + context].indexOf(
+              uuid
+            ) !== -1
+          ) {
+            return false;
           }
         }
         return true;
       });
       desktop.buddylist.onWindowOpen(windowId, context);
     }
-
   }
 
   // the window is now open ( either its new or it's been re-opened )
   // assign this window key into desktop.openWindows
   desktop.openWindows[windowType][context] = windowKey;
 
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
+  if (windowType === "buddy_message") {
+    desktop.log(
+      "Subscribed Buddies: ",
+      Object.keys(desktop.openWindows[windowType])
+    );
   }
 
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
+  if (windowType === "pond_message") {
+    desktop.log(
+      "Subscribed Ponds: ",
+      Object.keys(desktop.openWindows[windowType])
+    );
   }
 
   return windowKey;
-}
+};
 
 //
 // desktop.closeWindow() function is used to close instanced windows
@@ -547,7 +570,7 @@ desktop.openWindow = function openWindow (windowType, context, position) {
 // are updated when the user closes the window in the UI
 // This is to ensure UI is only polling for messages on windows that are actually open
 //
-desktop.closeWindow = function openWindow (windowType, context) {
+desktop.closeWindow = function openWindow(windowType, context) {
   desktop.openWindows = desktop.openWindows || {};
   desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
 
@@ -556,19 +579,30 @@ desktop.closeWindow = function openWindow (windowType, context) {
   // Since the window is now closed, we can push it back into the windowPool,
   // based on it's windowType and context
   // for example: desktop.windowPool['buddy_message'].push(desktop.openWindows['buddy_message']['Marak'])
-  desktop.windowPool[windowType].push(desktop.openWindows[windowType][context])
+  desktop.windowPool[windowType].push(desktop.openWindows[windowType][context]);
 
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
+  if (windowType === "buddy_message") {
+    desktop.log(
+      "Subscribed Buddies: ",
+      Object.keys(desktop.openWindows[windowType])
+    );
     // remove newMessages notification for this buddy
     // TODO: move this to buddylist.closeWindw()
-    desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
-    desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
-    $('.chat_messages', '#' + desktop.openWindows[windowType][context]).html('');
+    desktop.buddylistProfileState.updates["buddies/" + context] =
+      desktop.buddylistProfileState.updates["buddies/" + context] || {};
+    desktop.buddylistProfileState.updates[
+      "buddies/" + context
+    ].newMessages = false;
+    $(".chat_messages", "#" + desktop.openWindows[windowType][context]).html(
+      ""
+    );
   }
 
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
+  if (windowType === "pond_message") {
+    desktop.log(
+      "Subscribed Ponds: ",
+      Object.keys(desktop.openWindows[windowType])
+    );
   }
 
   // TODO: replace delete statements?
@@ -577,32 +611,29 @@ desktop.closeWindow = function openWindow (windowType, context) {
   //
   delete desktop.openWindows[windowType][context];
   delete desktop.windowIndex[windowType][context];
-
-}
+};
 
 //
 // desktop.updateMessages() queries the server for new messages and then
-// delegates those messages to any applications which expose an App.updateMessaegs() function 
+// delegates those messages to any applications which expose an App.updateMessaegs() function
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
 
-desktop.updateMessages = function updateMessages () {
-
+desktop.updateMessages = function updateMessages() {
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
-    setTimeout(function(){
+    setTimeout(function () {
       desktop.updateMessages();
     }, 10);
   } else {
-
     //
     // first, calculate list of subscribed buddies and subscribed ponds
     //
-    var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
-    var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
+    var subscribedBuddies = Object.keys(desktop.openWindows["buddy_message"]);
+    var subscribedPonds = Object.keys(desktop.openWindows["pond_message"]);
 
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
-      setTimeout(function(){
+      setTimeout(function () {
         desktop.updateMessages();
       }, 10);
       return;
@@ -610,7 +641,7 @@ desktop.updateMessages = function updateMessages () {
 
     let params = {
       buddyname: subscribedBuddies.toString(),
-      pondname: subscribedPonds.toString()
+      pondname: subscribedPonds.toString(),
     };
 
     //
@@ -618,23 +649,23 @@ desktop.updateMessages = function updateMessages () {
     //
     // console.log('sending params', params)
     // console.log('calling, buddylist.getMessages', params);
-    buddypond.getMessages(params, function(err, data){
+    buddypond.getMessages(params, function (err, data) {
       // console.log('calling back, buddylist.getMessages', err, data);
       if (err) {
-        console.log('error in getting messages', err);
+        console.log("error in getting messages", err);
         // TODO: show disconnect error in UX
         // if an error has occured, give up on processing messages
         // and retry again shortly
-        setTimeout(function(){
+        setTimeout(function () {
           desktop.updateMessages();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
       let newMessages = [];
       // console.log('buddypond.getMessages', err, data)
-      data.messages.forEach(function(message){
+      data.messages.forEach(function (message) {
         if (desktop.processedMessages.indexOf(message.uuid) === -1) {
-          newMessages.push(message)
+          newMessages.push(message);
         }
       });
 
@@ -648,47 +679,46 @@ desktop.updateMessages = function updateMessages () {
       data.messages = newMessages;
       // TODO: call all update message functions that are available instead of hard-coded list
 
+      //
+      // once we have the messages data, call desktop.buddylist.updateMessages()
+      // to delegate message data to app's internal updateMessages() function
+      //
+      // console.log('calling, buddylist.updateMessages');
+      desktop.buddylist.updateMessages(data, function (err) {
+        // console.log('calling back, buddylist.updateMessages');
+        if (err) {
+          throw err;
+        }
+
+        //console.log('buddylist.updateMessages finished render', err)
+
         //
-        // once we have the messages data, call desktop.buddylist.updateMessages() 
-        // to delegate message data to app's internal updateMessages() function
+        // now that buddy messages have completed rendering, repeat the process for desktop.pond.updateMessages()
         //
-        // console.log('calling, buddylist.updateMessages');
-        desktop.buddylist.updateMessages(data, function(err){
-          // console.log('calling back, buddylist.updateMessages');
+        // Remark: In the future we could iterate through all Apps .updateMessages() functions
+        //         instead of having two hard-coded loops here
+        // console.log('calling, pond.updateMessages');
+        desktop.pond.updateMessages(data, function (err) {
+          // console.log('calling back, pond.updateMessages');
           if (err) {
             throw err;
           }
 
-          //console.log('buddylist.updateMessages finished render', err)
+          //console.log('pond.updateMessages finished render', err)
 
           //
-          // now that buddy messages have completed rendering, repeat the process for desktop.pond.updateMessages() 
+          // All apps have completed rendering messages, set a timer and try again shortly
           //
-          // Remark: In the future we could iterate through all Apps .updateMessages() functions
-          //         instead of having two hard-coded loops here
-          // console.log('calling, pond.updateMessages');
-          desktop.pond.updateMessages(data, function(err){
-            // console.log('calling back, pond.updateMessages');
-            if (err) {
-              throw err;
-            }
-
-            //console.log('pond.updateMessages finished render', err)
-
-            //
-            // All apps have completed rendering messages, set a timer and try again shortly
-            //
-            setTimeout(function(){
-              desktop.updateMessages();
-            }, desktop.DEFAULT_AJAX_TIMER);
-          });
+          setTimeout(function () {
+            desktop.updateMessages();
+          }, desktop.DEFAULT_AJAX_TIMER);
         });
-
+      });
     });
     return;
     // TODO: check if subscribers is empty for either, if so, don't call
   }
-}
+};
 
 // creates icon for dock bar ( min / max )
 desktop.renderDockIcon = function (app) {
@@ -699,39 +729,41 @@ desktop.renderDockIcon = function (app) {
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
-        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${
+          desktop[app].icon || app
+        }_64.png" />
         <span class="dock_title">
-          ${desktop[app].label || app }
+          ${desktop[app].label || app}
         </span>
       </a>
     </li>
   `;
-  $('#dock').append(html);
+  $("#dock").append(html);
 };
 
 desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
-desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
+desktop.renderWindow = function () {}; // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 
 desktop.removeDockElement = function (windowType, context) {
-  var dockElement = '#icon_dock_' + windowType;
+  var dockElement = "#icon_dock_" + windowType;
   $(dockElement).hide();
   return;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
+  if ($(dockElement).is(":hidden")) {
+    $(dockElement).remove().appendTo("#dock");
+    $(dockElement).show("fast");
   }
   if (context) {
-    $('.dock_title', dockElement).html(context);
+    $(".dock_title", dockElement).html(context);
   }
-}
+};
 
 desktop.renderDockElement = function (key, context) {
-  var dockElement = '#icon_dock_' + key;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
+  var dockElement = "#icon_dock_" + key;
+  if ($(dockElement).is(":hidden")) {
+    $(dockElement).remove().appendTo("#dock");
+    $(dockElement).show("fast");
   }
   if (context) {
-    $('.dock_title', dockElement).html(context);
+    $(".dock_title", dockElement).html(context);
   }
-}
+};
