@@ -77,7 +77,10 @@ desktop.wallpaper.load = function desktopLoadBuddyList (params, next) {
       }
     });
 
-    $( window ).resize(function() {
+    $( window ).resize(function(e) {
+      if (e.target !== window) {
+        return
+      }
       desktop.wallpaper.wallpaperCanvasSize()
       if (desktop.wallpaper.active === "solid") {
         desktop.wallpaper.drawSolid(desktop.wallpaper.activeColor)
