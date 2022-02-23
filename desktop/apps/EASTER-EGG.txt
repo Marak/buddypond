@@ -25,6 +25,7 @@ Ideas for community apps:
   - set picture as wallpaper
   - Nyan cat wallpaper
   - http://sirxemic.github.io/jquery.ripples/
+  - conrads game of life background
 
 - Sound FX Board
   - Use midi fighter button pad with sound fx

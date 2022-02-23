@@ -18,6 +18,28 @@ desktop.apps.mostRecentlyLoaded = [];
 desktop.apps.loadingStartedAt = 0;
 desktop.apps.loadingEndedAt = 0;
 
+desktop.settings = {};
+
+desktop.localstorage = {};
+desktop.localstorage.prefix = '_buddypond_desktop_'
+desktop.localstorage.set = function setLocalStorage (key, val) {
+  localStorage.setItem(desktop.localstorage.prefix + key, val);
+}
+desktop.localstorage.get = function getLocalStorage (key) {
+  localStorage.getItem(desktop.localstorage.prefix + key);
+}
+desktop.localstorage.removeItem = function removeLocalStorage (key) {
+  localStorage.removeItem(desktop.localstorage.prefix + key);
+}
+
+// boot all localstorage data into local settings
+for (var key in localStorage){
+  if (key.search(desktop.localstorage.prefix) !== -1) {
+    let param = key.replace(desktop.localstorage.prefix, '');
+    desktop.settings[param] = localStorage[key];
+  }
+}
+
 // default timeout when calling desktop.use()
 // Remark: Counts for all apps being chained by .use() at once, not the individual app loading times
 //         Currently set to Infinity since we expect everything to always load ( for now )

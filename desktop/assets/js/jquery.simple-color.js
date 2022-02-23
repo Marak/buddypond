@@ -193,7 +193,7 @@
       'width':            options.totalWidth,
       'height':           options.totalHeight,
       'top':              0,
-      'left':             options.boxWidth,
+      'left':             options.left,
       'position':         'absolute',
       'background-color': '#fff'
     }, options.chooserCSS || {});

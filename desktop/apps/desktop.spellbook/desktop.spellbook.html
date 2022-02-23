@@ -1,3 +1,25 @@
+<style>
+  #window_spellbook .window_content {
+    background-image: url("desktop/assets/images/misc/ivy-bg.png");
+    background-color: black;
+  }
+  #window_spellbook .window_main {
+    padding-left: 48px;
+    padding-right: 48px;
+    padding-top: 32px;
+    font-size: 32px;
+  }
+  #window_spellbook input,select {
+    font-size: 24px;
+  }
+  #window_spellbook label {
+    color: white;
+  }
+  .ponderSpellbook {
+    float: right;
+  }
+</style>
+
 <div id="window_spellbook" class="abs window">
   <div class="abs window_inner">
     <div class="window_top">
@@ -7,27 +29,33 @@
       </span>
       <span class="float_right">
         <a href="#" class="window_min"></a>
-        <a href="#" class="window_resize"></a>
         <a href="#icon_dock_spellbook" class="window_close"></a>
       </span>
     </div>
     <div class="abs window_content">
       <div class="window_main">
-        <select class="omegaSpellTome">
-        </select>
-        <br/>
-        <br/>
-        <div align="center">
-          <a class="desktopButton ponderspellbook orb" href="#">
-            <img src="desktop/assets/images/misc/orb.jpeg" width="100" height="100" title="Ponder the orb..."/>
+        <form class="castSpellForm">
+          <a class="desktopButton ponderSpellbook orb" href="#">
+            <img src="desktop/assets/images/misc/orb.jpeg" width="100" height="100" title="Cast spell..."/>
           </a>
-          <button class="ponderspellbook desktopButton"><== Ponder the orb to cast Spell</button>
-        </div>
+          <label for="omegaSpellTome">Spell</label>
+          <br/>
+          <select class="omegaSpellTome">
+            <option>Choose your spell wisely...</option>
+          </select>
+          <br/>
+          <label for="castSpellBuddyName">Buddy Name</label>
+          <br/>
+          <input type="text" id="castSpellBuddyName" placeholder="pick your target..."/>
+          <br/>
+          <br/>
+          <span class="warning"><strong>Warning:</strong> Casting spells is reserved only for Matrix Agents. If you are not a LVL 12 Grammaton Cleric or higher you might invoke the wrath of Merlin.</span>
+        </form>
       </div>
     </div>
     <div class="abs window_bottom">
       Build: v4.20.69
     </div>
   </div>
-  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+  <span class="abs"></span>
 </div>

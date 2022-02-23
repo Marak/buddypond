@@ -1,7 +1,64 @@
 desktop.spellbook = {};
+desktop.spellbook.label = "Spellbook";
+desktop.spellbook.spells = [
+  'ebublio',
+  'rickroll',
+  'alert',
+  'logout',
+  'banhammer'
+];
 
-desktop.spellbook.load = function loadSpellBook () {
-  return true;
+desktop.spellbook.load = function loadSpellBook (params, next) {
+  desktop.loadRemoteAssets([
+    'spellbook' // this loads the sibling desktop.spellbook.html file into <div id="window_spellbook"></div>
+  ], function (err) {
+    $('#window_spellbook').css('width', 662);
+    $('#window_spellbook').css('height', 533);
+    $('#window_spellbook').css('left', 50);
+    $('#window_spellbook').css('top', 50);
+
+    // load omegaSpellTome drop down
+    desktop.spellbook.spells.forEach(function(spell){
+      $('.omegaSpellTome').append(`<option value="${spell}">${spell}</option>`)
+    });
+
+    function castSpell () {
+      let spellName = $('.omegaSpellTome').val();
+      let buddyName = $('#castSpellBuddyName').val();
+      if (spellName.length > 0 && buddyName.length > 0) {
+        // if Buddy fails role check, reflect the spell back onto them
+        $( ".castSpellForm" ).effect("shake", { direction: 'down', distance: 10, times: 33 }, 300, function(){
+          buddypond.castSpell(buddyName, spellName, function(err, data){
+            if (err) {
+              alert(err.message);
+            }
+            if (data.success === false) {
+              if (data.message === 'qtokenid is required') {
+                alert(`You didn't even try to login!\n\n${spellName} has fizzled.`);
+                //desktop.spellbook[spellName]();
+              } else {
+                alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
+                desktop.spellbook[spellName]();
+              }
+            } else {
+              // success
+            }
+          })
+        });
+      }
+    }
+
+    $('.castSpellForm').on('submit', function(){
+      castSpell();
+      return false;
+    })
+
+    $('.ponderSpellbook').on('click', function(){
+      castSpell();
+    });
+
+    next();
+  });
 }
 
 // basic alert window to client

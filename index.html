@@ -59,9 +59,21 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
       Buddy Pond
     </a>
-    <a class="abs icon" style="left:20px;top:280px;" href="#icon_dock_console">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
-      Console
+    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_interdimensionalcable">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
+      Inter Dimensional Cable
+    </a>
+    <a class="abs icon" style="left:110px;top:200px;" href="#icon_dock_mtv">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
+      Music Television
+    </a>
+    <a class="abs icon" style="left:20px;top:300px;" href="#icon_dock_soundcloud">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+      SoundCloud
+    </a>
+    <a class="abs icon" style="left:110px;top:120px;" href="#icon_dock_games">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
+      Games
     </a>
     <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_login_64.png" />
@@ -70,30 +82,6 @@ window.top.location = 'ie.html';
     <a id="profile_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_profile">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_profile_64.png" />
       Profile
-    </a>
-    <a class="abs icon" style="left:110px;top:280px;" href="#icon_dock_mirror">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror_64.png" />
-      Mirror
-    </a>
-    <a class="abs icon" style="left:20px;top:366px;" href="#icon_dock_soundcloud">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
-      SoundCloud
-    </a>
-    <a class="abs icon" style="left:20px;top:440px;" href="#icon_dock_interdimensionalcable">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
-      Inter Dimensional Cable
-    </a>
-    <a class="abs icon" style="left:110px;top:440px;" href="#icon_dock_mtv">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
-      Music Television
-    </a>
-    <a class="abs icon" style="left:110px;top:200px;" href="#icon_dock_games">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
-      Games
-    </a>
-    <a class="abs icon" style="left:20px;top:540px;" href="#icon_dock_wallpaper">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
-      Wallpaper
     </a>
     <!--
       <a class="abs icon" style="right:40px;top:160px;" href="#icon_download_buddypond">
@@ -107,9 +95,22 @@ window.top.location = 'ie.html';
       <span class="label">Enable Notifications</span>
     </a>
     -->
-    <a class="abs icon pauseWallpaper" style="right:20px;top:40px;width:120px;" href="#icon_pause_wallpaper">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
-      <span class="label">Pause Wallpaper</span>
+
+    <a class="abs icon" style="left:20px;bottom:60px;" href="#icon_dock_mirror">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror_64.png" />
+      Mirror
+    </a>
+    <a class="abs icon" style="left:110px;bottom:60px;" href="#icon_dock_spellbook">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
+      Spellbook
+    </a>
+    <a class="abs icon" style="right:20px;top:40px;" href="#icon_dock_wallpaper">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Wallpaper
+    </a>
+    <a class="abs icon" style="right:20px;top:130px;" href="#icon_dock_console">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Console
     </a>
   </div>
   <div class="abs" id="bar_top">
@@ -253,7 +254,6 @@ window.top.location = 'ie.html';
         if (now.getTime() - documentReadyTime.getTime() > 3333) {
           fadeInDelay = 111;
         }
-
         $('#loaderHolder').fadeOut({
           easing: 'linear',
           duration: fadeInDelay,
