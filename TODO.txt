@@ -1,13 +1,3 @@
-- add back button to interdemon cable
-
-- add system notifications using web api
-  - add message sound fx ( mutable )
-- add 10 more music videos to mtv
-- adjust UI of chat messages and windowpopups
-- fix mouse events for mobile ( drag not working , double click vs click)
-- dblclick / singleclick for mobile
-- swap online / offline emoji icons for images
-
 - complete v1 camera app
 Camera
   X - camera switching code
@@ -20,14 +10,16 @@ Camera
   X - dont allow video call to offline buddy
 
 - add UX indactor for ajax disconnect with desktop.log and top right bar
-- fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
+- adjust UI of chat messages and windowpopups
+- fix mouse events for mobile ( drag not working , double click vs click)
+- dblclick / singleclick for mobile
+- swap online / offline emoji icons for images
+- add back button to interdemon cable / mtv / all video players
+
 
 PUSHED to post launch
 
-  - add wallpaper color picker to Preferences
-
   - create icons for data pulse ( drop in and drop out)
-  - warning about no email set, do not lose password
   - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
   - cleanup webrtc connection / signal messages in desktop console log
   - fix scroll top issue with console output ( scroll to bottom like chat )
@@ -36,9 +28,18 @@ PUSHED to post launch
   - cleanup codebase ( documentation and DRY )
   - create icons for connected / disconnected
 
-
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
+
+X - add wallpaper color picker to Preferences
+
+X - warning about no email set, do not lose password
+X - add 10 more music videos to mtv
+
+X - add system notifications using web api
+X  - add message sound fx ( mutable )
 
 X - at least make sure UI doesnt crash on disconnect
     - should retry on getMessages and getBuddyProfile, needs UX indicator
