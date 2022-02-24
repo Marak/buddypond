@@ -1159,3 +1159,11 @@ iframe {
   font-size: 16px;
   font-style: italic;
 }
+
+.positiveAffirmation {
+  font-style: italic;
+  padding-left: 16px;
+  text-align: center;
+  padding-right: 16px;
+  padding-top: 8px;
+}
