@@ -7,6 +7,7 @@ see: https://github.com/nathansmith/jQuery-Desktop
 // Namespace - Module Pattern.
 //
 var JQD = (function($, window, document, undefined) {
+
   // Expose innards of JQD.
   return {
     go: function() {
@@ -469,4 +470,50 @@ JDQX.closeWindow = function closeWindow (el) {
 
   // this calls close events for instaniated window types( which require a context )
 
+}
+
+// creates icon for dock bar ( min / max )
+desktop.renderDockIcon = function (app) {
+  // Remark: temp conditional, remove later
+  if (desktop.isMobile) {
+    return false;
+  }
+  let html = `
+    <li id="icon_dock_${app}">
+      <a href="#window_${app}">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
+        <span class="dock_title">
+          ${desktop[app].label || app }
+        </span>
+      </a>
+    </li>
+  `;
+  $('#dock').append(html);
+};
+
+desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
+desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
+
+desktop.removeDockElement = function (windowType, context) {
+  var dockElement = '#icon_dock_' + windowType;
+  $(dockElement).hide();
+  return;
+  if ($(dockElement).is(':hidden')) {
+    $(dockElement).remove().appendTo('#dock');
+    $(dockElement).show('fast');
+  }
+  if (context) {
+    $('.dock_title', dockElement).html(context);
+  }
+}
+
+desktop.renderDockElement = function (key, context) {
+  var dockElement = '#icon_dock_' + key;
+  if ($(dockElement).is(':hidden')) {
+    $(dockElement).remove().appendTo('#dock');
+    $(dockElement).show('fast');
+  }
+  if (context) {
+    $('.dock_title', dockElement).html(context);
+  }
 }

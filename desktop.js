@@ -213,8 +213,7 @@ desktop._ready = function _ready (finish) {
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
     desktop.apps.deferred.forEach(function(app){
-      
-      
+
       function _open () {
         desktop.apps.loaded.push(app);
         desktop.renderDockIcon(app);
@@ -669,52 +668,6 @@ desktop.processMessages = function processMessages (apps) {
           }, desktop.DEFAULT_AJAX_TIMER);
       });
     });
-  }
-}
-
-// creates icon for dock bar ( min / max )
-desktop.renderDockIcon = function (app) {
-  // Remark: temp conditional, remove later
-  if (desktop.isMobile) {
-    return false;
-  }
-  let html = `
-    <li id="icon_dock_${app}">
-      <a href="#window_${app}">
-        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
-        <span class="dock_title">
-          ${desktop[app].label || app }
-        </span>
-      </a>
-    </li>
-  `;
-  $('#dock').append(html);
-};
-
-desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
-desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
-
-desktop.removeDockElement = function (windowType, context) {
-  var dockElement = '#icon_dock_' + windowType;
-  $(dockElement).hide();
-  return;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
-  }
-  if (context) {
-    $('.dock_title', dockElement).html(context);
-  }
-}
-
-desktop.renderDockElement = function (key, context) {
-  var dockElement = '#icon_dock_' + key;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
-  }
-  if (context) {
-    $('.dock_title', dockElement).html(context);
   }
 }
 
