@@ -106,7 +106,7 @@ desktop.login.auth = function authDesktop (buddyname) {
 desktop.login.success = function desktopLoginSuccess () {
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
-  desktop.audioplayer.play('desktop/assets/audio/WELCOME.wav')
+  desktop.audioplayer.play('desktop/assets/audio/WELCOME.wav', Infinity)
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
@@ -175,8 +175,8 @@ desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('height', 400);
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
-  $('#buddyname').focus();
   $('#login_desktop_icon').show();
+  $('#buddyname').focus();
 }
 
 desktop.login.logoutDesktop = function logoutDesktop () {
