@@ -1,5 +1,5 @@
 desktop.audioplayer = {};
-
+desktop.audioplayer.icon = 'folder';
 desktop.audioplayer.load = function loadAudioPlayer (params, next) {
   return true;
 };

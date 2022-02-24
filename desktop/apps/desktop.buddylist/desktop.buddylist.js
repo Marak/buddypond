@@ -261,12 +261,12 @@ desktop.updateBuddyList = function updateBuddyList () {
       if (Object.keys(data.buddyrequests).length > 0) {
         $('.you_have_no_buddies').hide();
       }
-      $('.buddylist').html('');
       $('.loading').remove();
       if (buddies) {
         if (buddies.length === 0) {
           $('.buddylist').html('No buddies yet.');
         } else {
+          $('.buddylist').html('');
           desktop.buddyListDataCache = {};
           desktop.buddyListDataCache[str] = true;
 
