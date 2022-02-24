@@ -189,7 +189,10 @@ var JQD = (function($, window, document, undefined) {
         d.on('mouseenter', 'a.icon', function() {
           $(this).off('mouseenter').draggable({
             revert: false,
-            containment: 'parent'
+            containment: 'parent',
+            stop: function() {
+              desktop.getDesktopIconPositions();
+             }
           });
         });
 
