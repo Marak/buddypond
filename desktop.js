@@ -581,7 +581,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
 //
 
 desktop.processMessages = function processMessages (apps) {
-
+  apps = apps || desktop.apps.loaded;
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
     setTimeout(function(){
