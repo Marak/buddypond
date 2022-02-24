@@ -14,8 +14,7 @@ desktop.notifications.notifyBuddy = function notifyBuddy (text) {
   text = text || "default message senpai";
 
   if (desktop.settings.notifications_audio_enabled) {
-    var audio = new Audio('desktop/assets/audio/IM.wav');
-    audio.play();
+    desktop.audioplayer.play('desktop/assets/audio/IM.wav')
   }
 
   if (desktop.settings.notifications_web_enabled) {
