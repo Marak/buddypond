@@ -39,8 +39,16 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     $('#window_buddylist').css('left', 777);
     $('#window_buddylist').css('top', 66);
 
-    let key = desktop.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.buddylist.positiveAffirmations.length)];
-    $('.positiveAffirmation').html(key)
+
+    function updatePositiveAffirmation () {
+      let key = desktop.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.buddylist.positiveAffirmations.length)];
+      $('.positiveAffirmation').html(key)
+    }
+    updatePositiveAffirmation();
+
+    $('.positiveAffirmation').on('click', function(){
+      updatePositiveAffirmation();
+    })
 
     $('.sendMessageForm').on('submit', function(){
       return false;

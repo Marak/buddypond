@@ -1166,4 +1166,5 @@ iframe {
   text-align: center;
   padding-right: 16px;
   padding-top: 8px;
+  cursor: pointer;
 }
