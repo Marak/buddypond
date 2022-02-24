@@ -243,12 +243,12 @@ window.top.location = 'ie.html';
       .use('soundcloud', { defer: true })
       .use('videochat', { defer: true })
       // .use('automaton', { defer: true })
+      .use('notifications', { defer: true })
       .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })
       .ready(function(err, apps){
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-
 
         // Desktop is ready, start refreshing it's state immediately
         desktop.refresh();

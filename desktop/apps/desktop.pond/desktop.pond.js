@@ -137,6 +137,8 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 // Remark: Temporary fix for current UX of Lily Pond loading
 let defaultPondOpened = false;
 
+desktop.pond.lastNotified = 0;
+
 desktop.pond.processMessages = function processMessagesPond (data, cb) {
 
   $('.pondNameList').show();
@@ -185,7 +187,11 @@ desktop.pond.processMessages = function processMessagesPond (data, cb) {
     } else {
       str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden' && desktop.settings.notifications_web_enabled) {
-        let notification = new Notification(`${message.to} 🐸 ${message.from}: ${message.text}`);
+        let now = new Date().getTime();
+        if (now - desktop.pond.lastNotified > 30000) {
+          desktop.notifications.notifyBuddy(`${message.to} 🐸 ${message.from}: ${message.text}`);
+          desktop.pond.lastNotified = now;
+        }
       }
     }
     $('.chat_messages', windowId).append(str);

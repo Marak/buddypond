@@ -392,6 +392,8 @@ desktop.updateBuddyList = function updateBuddyList () {
 
 }
 
+desktop.buddylist.lastNotified = 0;
+
 desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
 
     // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
@@ -443,7 +445,11 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
       } else {
         str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
         if (document.visibilityState === 'hidden' && desktop.settings.notifications_web_enabled) {
-          let notification = new Notification(`🐸 ${message.from}: ${message.text}`);
+          let now = new Date().getTime();
+          if (now - desktop.buddylist.lastNotified > 1600) {
+            desktop.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
+            desktop.buddylist.lastNotified = now;
+          }
         }
       }
       $('.chat_messages', windowId).append(str);
