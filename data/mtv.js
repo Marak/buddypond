@@ -60,6 +60,7 @@ desktop.ytPlaylist = [
   'z_75Gjpmi1k',
   'W8XBd3UsOBI',
   'IYN9Ilm-IbM',
+  '1nCqRmx3Dnw',
   'AVbQo3IOC_A',
   'ITR72ft3HJ8',
   'WtMlB-BEMso',

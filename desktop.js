@@ -20,26 +20,6 @@ desktop.apps.loadingEndedAt = 0;
 
 desktop.settings = {};
 
-desktop.localstorage = {};
-desktop.localstorage.prefix = '_buddypond_desktop_'
-desktop.localstorage.set = function setLocalStorage (key, val) {
-  localStorage.setItem(desktop.localstorage.prefix + key, val);
-}
-desktop.localstorage.get = function getLocalStorage (key) {
-  localStorage.getItem(desktop.localstorage.prefix + key);
-}
-desktop.localstorage.removeItem = function removeLocalStorage (key) {
-  localStorage.removeItem(desktop.localstorage.prefix + key);
-}
-
-// boot all localstorage data into local settings
-for (var key in localStorage){
-  if (key.search(desktop.localstorage.prefix) !== -1) {
-    let param = key.replace(desktop.localstorage.prefix, '');
-    desktop.settings[param] = localStorage[key];
-  }
-}
-
 // default timeout when calling desktop.use()
 // Remark: Counts for all apps being chained by .use() at once, not the individual app loading times
 //         Currently set to Infinity since we expect everything to always load ( for now )
@@ -184,7 +164,8 @@ desktop._use = function _use (app, params) {
   desktop.apps.loading.push({ name: app, params: params });
   desktop.log("Loading", 'App.' + app);
 
-  // Remark: sync App.load *must* return a value or Desktop.ready will never fire
+  // Remark: sync `App.load *must* return a value or `Desktop.ready` will never fire
+  //         async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
   let result = desktop[app].load(params, function(err, re){
     desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
@@ -199,7 +180,7 @@ desktop._use = function _use (app, params) {
 
   // if the result is not undefined, we can assume no callback was used in App.load
   if (typeof result !== 'undefined') {
-    desktop.renderDockIcon(app);
+    // Remark: dock icon is *not* rendered for sync `App.load` at the moment ( no HTML window has been created )
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
     desktop.apps.loading = desktop.apps.loading.filter(function(a){
@@ -232,9 +213,9 @@ desktop._ready = function _ready (finish) {
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
     desktop.apps.deferred.forEach(function(app){
-      // fire and forget them all
-      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      desktop[app].load({}, function lazyNoop(){
+
+      function _open () {
+        desktop.apps.loaded.push(app);
         desktop.renderDockIcon(app);
         desktop[app].deferredLoad = false;
         if (desktop[app].openWhenLoaded) {
@@ -252,7 +233,20 @@ desktop._ready = function _ready (finish) {
             desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
           }
         }
-      })
+      }
+
+      // fire and forget them all. provide a noop function for next
+      // Remark: the lazyNoop will NOT be executed for *sync* style `App.load` ( see below )
+      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
+      let result = desktop[app].load({}, function lazyNoop(){
+        _open();
+      });
+
+      // this indicates App.load was a *sync* style function and the callback was never fired
+      if (typeof result !== 'undefined') {
+        _open();
+      }
+
     });
     desktop.apps.deferred = [];
     finish(null, desktop.loaded);
@@ -401,7 +395,7 @@ desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
 
 desktop.refresh = function refreshDesktop () {
   desktop.updateBuddyList();
-  desktop.updateMessages();
+  desktop.processMessages(desktop.apps.loaded);
 }
 
 //
@@ -581,17 +575,17 @@ desktop.closeWindow = function openWindow (windowType, context) {
 }
 
 //
-// desktop.updateMessages() queries the server for new messages and then
+// desktop.processMessages() queries the server for new messages and then
 // delegates those messages to any applications which expose an App.updateMessaegs() function 
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
 
-desktop.updateMessages = function updateMessages () {
-
+desktop.processMessages = function processMessages (apps) {
+  apps = apps || desktop.apps.loaded;
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
     setTimeout(function(){
-      desktop.updateMessages();
+      desktop.processMessages();
     }, 10);
   } else {
 
@@ -603,7 +597,7 @@ desktop.updateMessages = function updateMessages () {
 
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
       setTimeout(function(){
-        desktop.updateMessages();
+        desktop.processMessages();
       }, 10);
       return;
     }
@@ -626,7 +620,7 @@ desktop.updateMessages = function updateMessages () {
         // if an error has occured, give up on processing messages
         // and retry again shortly
         setTimeout(function(){
-          desktop.updateMessages();
+          desktop.processMessages();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
@@ -646,92 +640,65 @@ desktop.updateMessages = function updateMessages () {
       // The deskop UX will only process each message once as to not re-render / flicker elements and message events
 
       data.messages = newMessages;
-      // TODO: call all update message functions that are available instead of hard-coded list
+  
+      let appNameProcessMessagesList = [];
+      apps.forEach(function(app){
+        if (typeof desktop[app].processMessages === 'function') {
+          appNameProcessMessagesList.push(desktop[app].processMessages)
+        }
+      })
 
-        //
-        // once we have the messages data, call desktop.buddylist.updateMessages() 
-        // to delegate message data to app's internal updateMessages() function
-        //
-        // console.log('calling, buddylist.updateMessages');
-        desktop.buddylist.updateMessages(data, function(err){
-          // console.log('calling back, buddylist.updateMessages');
-          if (err) {
-            throw err;
-          }
-
-          //console.log('buddylist.updateMessages finished render', err)
-
+      // desktop.buddylist.processMessages, desktop.pond.processMessages
+      //
+      // once we have the messages data, call desktop.buddylist.processMessages()
+      // to delegate message data to app's internal processMessages() function
+      //
+      desktop.utils.asyncApplyEach(
+        appNameProcessMessagesList,
+        data,
+        function done (err, results) {
+          // `App.processMessages` should return `true`
+          // just ignore all the errors and results for now
+          // console.log(err, results);
           //
-          // now that buddy messages have completed rendering, repeat the process for desktop.pond.updateMessages() 
+          // All apps have completed rendering messages, set a timer and try again shortly
           //
-          // Remark: In the future we could iterate through all Apps .updateMessages() functions
-          //         instead of having two hard-coded loops here
-          // console.log('calling, pond.updateMessages');
-          desktop.pond.updateMessages(data, function(err){
-            // console.log('calling back, pond.updateMessages');
-            if (err) {
-              throw err;
-            }
-
-            //console.log('pond.updateMessages finished render', err)
-
-            //
-            // All apps have completed rendering messages, set a timer and try again shortly
-            //
-            setTimeout(function(){
-              desktop.updateMessages();
-            }, desktop.DEFAULT_AJAX_TIMER);
-          });
-        });
-
+          setTimeout(function(){
+            desktop.processMessages(desktop.apps.loaded);
+          }, desktop.DEFAULT_AJAX_TIMER);
+      });
     });
-    return;
-    // TODO: check if subscribers is empty for either, if so, don't call
   }
 }
 
-// creates icon for dock bar ( min / max )
-desktop.renderDockIcon = function (app) {
-  // Remark: temp conditional, remove later
-  if (desktop.isMobile) {
-    return false;
-  }
-  let html = `
-    <li id="icon_dock_${app}">
-      <a href="#window_${app}">
-        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
-        <span class="dock_title">
-          ${desktop[app].label || app }
-        </span>
-      </a>
-    </li>
-  `;
-  $('#dock').append(html);
-};
+desktop.utils = {};
 
-desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
-desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
-
-desktop.removeDockElement = function (windowType, context) {
-  var dockElement = '#icon_dock_' + windowType;
-  $(dockElement).hide();
-  return;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
-  }
-  if (context) {
-    $('.dock_title', dockElement).html(context);
-  }
+/* untested, made the wrong one oops
+desktop.utils.asyncForEach = function asyncForEach(arr, fn, finish) {
+  let completed = 0;
+  let results = [];
+  arr.forEach(function(data){
+    fn(data, function _asyncForEachContinue(err, result){
+      completed++;
+      results.push(result);
+      if (completed === arr.length) {
+        finish(null, results)
+      }
+    })
+  })
 }
+*/
 
-desktop.renderDockElement = function (key, context) {
-  var dockElement = '#icon_dock_' + key;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
-  }
-  if (context) {
-    $('.dock_title', dockElement).html(context);
-  }
+desktop.utils.asyncApplyEach = function asyncApplyEach (fns, data, finish) {
+  let completed = 0;
+  let results = [];
+  fns.forEach(function(fn){
+    fn(data, function (err, result) {
+      results.push(err, result);
+      completed++;
+      if (completed === fns.length) {
+        finish(null, results)
+      }
+    })
+  })
 }

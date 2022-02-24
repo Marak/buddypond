@@ -151,7 +151,8 @@ desktop.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-  desktop.pond.openWindow('Lily');
+  $('#window_pond').show();
+  desktop.pond.openWindow();
 
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){

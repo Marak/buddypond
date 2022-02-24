@@ -67,6 +67,12 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
       Music Television
     </a>
+    <!--
+    <a class="abs icon" style="left:110px;top:500px;" href="#icon_dock_automaton">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_automaton_64.png" />
+      Automaton
+    </a>
+    -->
     <a class="abs icon" style="left:20px;top:300px;" href="#icon_dock_soundcloud">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
       SoundCloud
@@ -96,11 +102,11 @@ window.top.location = 'ie.html';
     </a>
     -->
 
-    <a class="abs icon" style="left:20px;bottom:60px;" href="#icon_dock_mirror">
+    <a class="abs icon" style="left:20px;top:560px;" href="#icon_dock_mirror">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror_64.png" />
       Mirror
     </a>
-    <a class="abs icon" style="left:110px;bottom:60px;" href="#icon_dock_spellbook">
+    <a class="abs icon" style="left:110px;top:560px;" href="#icon_dock_spellbook">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
       Spellbook
     </a>
@@ -221,11 +227,11 @@ window.top.location = 'ie.html';
 
 <script src="desktop/assets/js/jquery.js"></script>
 <script src="desktop/assets/js/jquery.ui.js"></script>
-<script src="desktop/assets/js/jquery.desktop.js"></script>
 <script src="desktop/assets/js/forbidden.notes.js"></script>
 
 <script src="sdk/buddypond.js"></script>
 <script src="desktop.js"></script>
+<script src="desktop/assets/js/jquery.desktop.js"></script>
 
 <script>
   // see: ReadMe.md for documentation on `desktop.use`
@@ -235,19 +241,22 @@ window.top.location = 'ie.html';
     desktop.log('Now loading apps');
     desktop
       .use('console')
+      .use('localstorage')
       .use('wallpaper')
       .use('login')
       .use('buddylist')
       .use('pond')
       .use('alarm', { defer: true })
+      .use('audioplayer', { defer: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
-      // .use('notifications')
       .use('mirror', { defer: true })
       .use('interdimensionalcable', { defer: true })
       .use('mtv', { defer: true })
       .use('soundcloud', { defer: true })
       .use('videochat', { defer: true })
+      // .use('automaton', { defer: true })
+      .use('notifications', { defer: true })
       .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
       .use('solitaire', { lazy: true })

@@ -884,6 +884,11 @@ a:hover {
 		animation-iteration-count: infinite;
 }
 
+.rainbowFast{
+		animation: rainbow 1.444s linear;
+		animation-iteration-count: infinite;
+}
+
 .rainbowLink:hover {
 		animation: rainbow 2.5s linear;
 		animation-iteration-count: infinite;
@@ -1153,4 +1158,13 @@ iframe {
   color: red;
   font-size: 16px;
   font-style: italic;
+}
+
+.positiveAffirmation {
+  font-style: italic;
+  padding-left: 16px;
+  text-align: center;
+  padding-right: 16px;
+  padding-top: 8px;
+  cursor: pointer;
 }

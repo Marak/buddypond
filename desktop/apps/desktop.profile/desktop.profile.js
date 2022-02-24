@@ -27,7 +27,42 @@ desktop.profile.load = function loadDesktop (params, next) {
       buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
         $('.updateProfileResponse').html('Updated!');
       })
-    })
+    });
+
+    $('.enableWebNotifications').on('change', function(){
+      let notificationsEnabled = $(this).prop("checked");
+      if (notificationsEnabled) {
+        Notification.requestPermission().then(function(permission) {
+          desktop.localstorage.set('notifications_web_enabled', true);
+          desktop.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
+          desktop.log('Browser has granted Notification permissions');
+          console.log(permission)
+        });
+      } else {
+        // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
+        desktop.localstorage.set('notifications_web_enabled', false);
+      }
+    });
+
+    if (desktop.settings.notifications_web_enabled) {
+      $('.enableWebNotifications').prop('checked', true);
+    }
+
+    $('.enableAudioNotifications').on('change', function(){
+      let audioNotificationsEnabled = $(this).prop("checked");
+      if (audioNotificationsEnabled) {
+        desktop.localstorage.set('notifications_audio_enabled', true);
+        desktop.log('Audio Notifications have been enabled.');
+      } else {
+        desktop.localstorage.set('notifications_audio_enabled', false);
+        desktop.log('Audio Notifications have been disabled.');
+      }
+    });
+
+    if (desktop.settings.notifications_audio_enabled) {
+      $('.enableAudioNotifications').prop('checked', true);
+    }
+
     $("#profileTabs" ).tabs();
     next();
   });

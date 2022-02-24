@@ -1,6 +1,6 @@
 let desktop = {};
 desktop.log = console.log;
-
+desktop.settings = {};
 desktop.load = function () {
 
   $('.icon').on('click', function(){

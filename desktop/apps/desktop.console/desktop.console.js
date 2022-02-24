@@ -1,7 +1,7 @@
 desktop.console = {};
 desktop.console.label = "Console";
 
-desktop.console.MAX_CONSOLE_OUTPUT = 40;
+desktop.console.MAX_CONSOLE_OUTPUT = Infinity;
 
 desktop.console.load = function loadDesktop (params, next) {
   desktop.loadRemoteAssets([

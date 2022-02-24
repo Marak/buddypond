@@ -137,7 +137,9 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 // Remark: Temporary fix for current UX of Lily Pond loading
 let defaultPondOpened = false;
 
-desktop.pond.updateMessages = function updatePondMessages (data, cb) {
+desktop.pond.lastNotified = 0;
+
+desktop.pond.processMessages = function processMessagesPond (data, cb) {
 
   $('.pondNameList').show();
   $('.pondMessagesHolder').show();
@@ -183,7 +185,14 @@ desktop.pond.updateMessages = function updatePondMessages (data, cb) {
     if (message.from === buddypond.me) {
       str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      if (document.visibilityState === 'hidden') {
+        let now = new Date().getTime();
+        if (now - desktop.pond.lastNotified > 30000) {
+          desktop.notifications.notifyBuddy(`${message.to} 🐸 ${message.from}: ${message.text}`);
+          desktop.pond.lastNotified = now;
+        }
+      }
     }
     $('.chat_messages', windowId).append(str);
     $('.message', windowId).last().text(message.text)
