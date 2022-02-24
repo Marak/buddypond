@@ -131,7 +131,7 @@ desktop.login.success = function desktopLoginSuccess () {
      agent.show();
      setTimeout(function(){
        if (!buddypond.email || buddypond.email.length < 3) {
-         agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the Profile App!');
+         agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
          setTimeout(function(){
            agent.hide();
          }, 12000);
