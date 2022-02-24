@@ -392,11 +392,11 @@ desktop.updateBuddyList = function updateBuddyList () {
 
 }
 
-desktop.buddylist.updateMessages = function updateBuddylistMessages (data, cb) {
+desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
 
     // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
 
-    // console.log('desktop.buddylist.updateMessages', data);
+    // console.log('desktop.buddylist.processMessages', data);
     //desktop.buddyMessageCache[str] = true;
     let html = {};
     // TODO: this should apply per conversation, not global for all users

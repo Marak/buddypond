@@ -137,7 +137,7 @@ desktop.pond.sendMessage = function sendPondMessage (context) {
 // Remark: Temporary fix for current UX of Lily Pond loading
 let defaultPondOpened = false;
 
-desktop.pond.updateMessages = function updatePondMessages (data, cb) {
+desktop.pond.processMessages = function processMessagesPond (data, cb) {
 
   $('.pondNameList').show();
   $('.pondMessagesHolder').show();

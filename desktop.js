@@ -164,7 +164,8 @@ desktop._use = function _use (app, params) {
   desktop.apps.loading.push({ name: app, params: params });
   desktop.log("Loading", 'App.' + app);
 
-  // Remark: sync App.load *must* return a value or Desktop.ready will never fire
+  // Remark: sync `App.load *must* return a value or `Desktop.ready` will never fire
+  //         async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
   let result = desktop[app].load(params, function(err, re){
     desktop.renderDockIcon(app);
     desktop.apps.loaded.push(app);
@@ -394,7 +395,7 @@ desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
 
 desktop.refresh = function refreshDesktop () {
   desktop.updateBuddyList();
-  desktop.updateMessages();
+  desktop.processMessages();
 }
 
 //
@@ -574,112 +575,91 @@ desktop.closeWindow = function openWindow (windowType, context) {
 }
 
 //
-// desktop.updateMessages() queries the server for new messages and then
+// desktop.processMessages() queries the server for new messages and then
 // delegates those messages to any applications which expose an App.updateMessaegs() function 
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
 
-desktop.updateMessages = function updateMessages () {
+desktop.processMessages = function processMessages () {
 
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
     setTimeout(function(){
-      desktop.updateMessages();
+      desktop.processMessages();
     }, 10);
   } else {
 
-    //
-    // first, calculate list of subscribed buddies and subscribed ponds
-    //
-    var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
-    var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
+//
+// first, calculate list of subscribed buddies and subscribed ponds
+//
+var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
+var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
 
-    if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
-      setTimeout(function(){
-        desktop.updateMessages();
-      }, 10);
-      return;
-    }
+if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
+  setTimeout(function(){
+    desktop.processMessages();
+  }, 10);
+  return;
+}
 
-    let params = {
-      buddyname: subscribedBuddies.toString(),
-      pondname: subscribedPonds.toString()
-    };
+let params = {
+  buddyname: subscribedBuddies.toString(),
+  pondname: subscribedPonds.toString()
+};
 
-    //
-    // call buddypond.getMessages() to get buddy messages data
-    //
-    // console.log('sending params', params)
-    // console.log('calling, buddylist.getMessages', params);
-    buddypond.getMessages(params, function(err, data){
-      // console.log('calling back, buddylist.getMessages', err, data);
-      if (err) {
-        console.log('error in getting messages', err);
-        // TODO: show disconnect error in UX
-        // if an error has occured, give up on processing messages
-        // and retry again shortly
-        setTimeout(function(){
-          desktop.updateMessages();
-        }, desktop.DEFAULT_AJAX_TIMER);
-        return;
-      }
-      let newMessages = [];
-      // console.log('buddypond.getMessages', err, data)
-      data.messages.forEach(function(message){
-        if (desktop.processedMessages.indexOf(message.uuid) === -1) {
-          newMessages.push(message)
-        }
-      });
-
-      // console.log(data.messages.length, ' messages came in');
-      // console.log(newMessages.length, ' are being rendered');
-
-      //
-      // Filter out any messaages which have already been processed by uuid
-      // The deskop UX will only process each message once as to not re-render / flicker elements and message events
-
-      data.messages = newMessages;
-      // TODO: call all update message functions that are available instead of hard-coded list
-
-        //
-        // once we have the messages data, call desktop.buddylist.updateMessages() 
-        // to delegate message data to app's internal updateMessages() function
-        //
-        // console.log('calling, buddylist.updateMessages');
-        desktop.buddylist.updateMessages(data, function(err){
-          // console.log('calling back, buddylist.updateMessages');
-          if (err) {
-            throw err;
-          }
-
-          //console.log('buddylist.updateMessages finished render', err)
-
-          //
-          // now that buddy messages have completed rendering, repeat the process for desktop.pond.updateMessages() 
-          //
-          // Remark: In the future we could iterate through all Apps .updateMessages() functions
-          //         instead of having two hard-coded loops here
-          // console.log('calling, pond.updateMessages');
-          desktop.pond.updateMessages(data, function(err){
-            // console.log('calling back, pond.updateMessages');
-            if (err) {
-              throw err;
-            }
-
-            //console.log('pond.updateMessages finished render', err)
-
-            //
-            // All apps have completed rendering messages, set a timer and try again shortly
-            //
-            setTimeout(function(){
-              desktop.updateMessages();
-            }, desktop.DEFAULT_AJAX_TIMER);
-          });
-        });
-
-    });
+//
+// call buddypond.getMessages() to get buddy messages data
+//
+// console.log('sending params', params)
+// console.log('calling, buddylist.getMessages', params);
+buddypond.getMessages(params, function(err, data){
+  // console.log('calling back, buddylist.getMessages', err, data);
+  if (err) {
+    console.log('error in getting messages', err);
+    // TODO: show disconnect error in UX
+    // if an error has occured, give up on processing messages
+    // and retry again shortly
+    setTimeout(function(){
+      desktop.processMessages();
+    }, desktop.DEFAULT_AJAX_TIMER);
     return;
-    // TODO: check if subscribers is empty for either, if so, don't call
+  }
+  let newMessages = [];
+  // console.log('buddypond.getMessages', err, data)
+  data.messages.forEach(function(message){
+    if (desktop.processedMessages.indexOf(message.uuid) === -1) {
+      newMessages.push(message)
+    }
+  });
+
+  // console.log(data.messages.length, ' messages came in');
+  // console.log(newMessages.length, ' are being rendered');
+
+  //
+  // Filter out any messaages which have already been processed by uuid
+  // The deskop UX will only process each message once as to not re-render / flicker elements and message events
+
+  data.messages = newMessages;
+
+  //
+  // once we have the messages data, call desktop.buddylist.processMessages()
+  // to delegate message data to app's internal processMessages() function
+  //
+  desktop.utils.asyncApplyEach(
+    [desktop.buddylist.processMessages, desktop.pond.processMessages],
+    data,
+    function done (err, results) {
+      // `App.processMessages` should return `true`
+      // just ignore all the errors and results for now
+      // console.log(err, results);
+      //
+      // All apps have completed rendering messages, set a timer and try again shortly
+      //
+      setTimeout(function(){
+          desktop.processMessages();
+        }, desktop.DEFAULT_AJAX_TIMER);
+      });
+    });
   }
 }
 
@@ -727,4 +707,36 @@ desktop.renderDockElement = function (key, context) {
   if (context) {
     $('.dock_title', dockElement).html(context);
   }
+}
+
+desktop.utils = {};
+
+/* untested, made the wrong one oops
+desktop.utils.asyncForEach = function asyncForEach(arr, fn, finish) {
+  let completed = 0;
+  let results = [];
+  arr.forEach(function(data){
+    fn(data, function _asyncForEachContinue(err, result){
+      completed++;
+      results.push(result);
+      if (completed === arr.length) {
+        finish(null, results)
+      }
+    })
+  })
+}
+*/
+
+desktop.utils.asyncApplyEach = function asyncApplyEach (fns, data, finish) {
+  let completed = 0;
+  let results = [];
+  fns.forEach(function(fn){
+    fn(data, function (err, result) {
+      results.push(err, result);
+      completed++;
+      if (completed === fns.length) {
+        finish(null, results)
+      }
+    })
+  })
 }
