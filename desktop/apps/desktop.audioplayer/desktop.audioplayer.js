@@ -1,6 +1,6 @@
 desktop.audioplayer = {};
 
-desktop.audioplayer.load = function loadaudioplayerGames (params, next) {
+desktop.audioplayer.load = function loadAudioPlayer (params, next) {
   return true;
 };
 
