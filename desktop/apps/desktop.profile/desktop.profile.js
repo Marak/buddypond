@@ -6,7 +6,19 @@ desktop.profile.load = function loadDesktop (params, next) {
     $('.lastSeen').html(new Date().toString());
 
     $('.updateProfileForm').on('submit', function () {
+      // clear out local profile cache, this will trigger a re-render from next server update
+      desktop.profileCache = {};
       return false;
+    });
+
+    $('.editProfileLink').on('click', function(){
+      $(this).closest('.menu').hide();
+      desktop.profile.openWindow();
+      return false;
+    });
+
+    $('.setStatus').on('click', function(){
+      let replaceThisWithBetterUXThankYou = prompt('( alert lol )\n\nType your custom status:');
     });
 
     // Remark: also being triggered by enter event on form, jquery.desktop.js?
@@ -27,6 +39,10 @@ desktop.profile.load = function loadDesktop (params, next) {
       buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
         $('.updateProfileResponse').html('Updated!');
       })
+    });
+
+    $('.updateProfileMarkdown').on('click', function(){
+      desktop.buddylistProfileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
     $('.enableWebNotifications').on('change', function(){
@@ -53,6 +69,8 @@ desktop.profile.load = function loadDesktop (params, next) {
       if (audioNotificationsEnabled) {
         desktop.localstorage.set('notifications_audio_enabled', true);
         desktop.log('Audio Notifications have been enabled.');
+        $('.audioEnabled').prop('checked', true);
+        $('.audioEnabled').trigger('change');
       } else {
         desktop.localstorage.set('notifications_audio_enabled', false);
         desktop.log('Audio Notifications have been disabled.');
@@ -63,12 +81,28 @@ desktop.profile.load = function loadDesktop (params, next) {
       $('.enableAudioNotifications').prop('checked', true);
     }
 
+    $('.audioEnabled').on('change', function(){
+      let audioMuted = $(this).prop("checked");
+      if (audioMuted) {
+        desktop.localstorage.set('audio_enabled', true);
+        desktop.log('Desktop Audio has been muted.');
+      } else {
+        desktop.localstorage.set('audio_enabled', false);
+        desktop.log('Desktop Audio has is back on.');
+      }
+    });
+
+    if (desktop.settings.audio_enabled) {
+      $('.audioEnabled').prop('checked', true);
+    }
+
     $("#profileTabs" ).tabs();
     next();
   });
 };
 
 desktop.profile.openWindow = function openWindow () {
-  $('#window_profile').css('height', 510);
+  $('#window_profile').addClass('window_stack').show();
+  $('#window_profile').css('height', 540);
   $('#window_profile').css('width', 460);
 }

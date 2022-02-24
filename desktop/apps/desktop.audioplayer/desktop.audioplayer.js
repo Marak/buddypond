@@ -8,8 +8,8 @@ desktop.audioplayer.load = function loadAudioPlayer (params, next) {
 desktop.audioplayer.playing = {};
 
 desktop.audioplayer.play = function playAudio (soundPath) {
-  if (desktop.settings.audio_muted) {
-    // do not play any audio if desktop is muted
+  if (!desktop.settings.audio_enabled) {
+    // do not play any audio if desktop is not enabled
   } else {
     // play the audio
     if (desktop.audioplayer.playing[soundPath]) {
@@ -22,9 +22,9 @@ desktop.audioplayer.play = function playAudio (soundPath) {
       audio.addEventListener('ended', function() {
         desktop.audioplayer.playing[soundPath] = false;
       },false);
+      audio.play();
     } catch (err) {
       desktop.audioplayer.playing[soundPath] = false;
     }
-    audio.play();
   }
 }

@@ -20,6 +20,7 @@ Ideas for community apps:
   - pick js1k winners / entries?
   - https://github.com/k4zmu2a/SpaceCadetPinball
   - https://github.com/mtevans/SkiFree
+  - https://github.com/nmrugg/stockfish.js/
   
 - Wallpaper Manager
   - user contributed wallpapers

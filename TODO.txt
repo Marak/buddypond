@@ -1,4 +1,15 @@
+- add sound fx when you get buddy request
+- add friend requests to automatons that autoaccept
+- add mute / desktop volume control to top nav
+  - have youtube and soundcloud players respect mute / volume levels
+    - not hard...i think...
 - complete v1 camera app
+
+YOUTUBE LIVE EMBED
+
+  - blocked on `App.VideoPlayer` since we can't inject anymore youtube API embeds
+  - need instaniatable youtube window with custom playlist / source
+
 Camera
   X - camera switching code
   ! - audio switching code
@@ -16,6 +27,9 @@ Camera
 - swap online / offline emoji icons for images
 - add back button to interdemon cable / mtv / all video players
 
+- add sigils and signets
+  - sigils are for system powers like matrix agent spell casting
+  - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
 
 PUSHED to post launch
 

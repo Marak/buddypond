@@ -105,6 +105,8 @@ desktop.login.auth = function authDesktop (buddyname) {
 
 desktop.login.success = function desktopLoginSuccess () {
   $('#me_title').html('Welcome - ' + buddypond.me);
+  $('.me').html(buddypond.me);
+  desktop.audioplayer.play('desktop/assets/audio/WELCOME.wav')
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);

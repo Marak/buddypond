@@ -470,6 +470,11 @@ th.shrink {
   text-shadow: none;
 }
 
+#bar_top li.emptyMenuCell {
+  background-color: white;
+}
+
+
 #bar_bottom li {
   display: none;
   margin: 0 0 10px 5px;
@@ -648,6 +653,33 @@ a:hover {
 }
 
 
+.desktopPanel {
+  /*
+  background-color: black;
+  color: #00FF41;
+  */
+  cursor: pointer;
+  border: solid;
+  border-width: 1px;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 4px;
+}
+
+.desktopPanel:hover {
+  color: #008F11;
+  background-color: #FFF;
+  filter: drop-shadow(5px 5px 2px #4444dd);
+  animation-name: rainbow;
+  animation-duration: 2.1111s;
+  opacity: 0.7;
+  animation-iteration-count: infinite;
+}
+
 .desktopSelect {
   /*
   background-color: black;
@@ -790,6 +822,7 @@ a:hover {
 .me_title {
   float: left;
   text-align: center;
+  cursor: pointer;
 }
 
 .emojiPicker {
@@ -1167,4 +1200,15 @@ iframe {
   padding-right: 16px;
   padding-top: 8px;
   cursor: pointer;
+}
+
+.tiny {
+  font-size: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.float-left {
+  position: relative;
+  float: left;
 }

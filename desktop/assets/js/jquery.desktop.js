@@ -3,6 +3,20 @@ jQuery Desktop is licensed as GPL v3, and is a Copyright of Nathan Smith
 see: https://github.com/nathansmith/jQuery-Desktop
 */
 
+
+/*
+
+  TODO: add these methods to jQuery prototype:
+
+   $.openWindow()
+   $.closeWindow()
+   $.cloneWindow()
+   $.minimizeWindow();
+   $.maximizeWindow();
+   $.positionWindow();
+
+*/
+
 //
 // Namespace - Module Pattern.
 //
@@ -364,6 +378,7 @@ jQuery(document).ready(function() {
 
 // extended JDQ functions added by Marak
 var JDQX = {};
+// TODO: this should be renamed to loadWindow() ?
 JDQX.openWindow = function openWindow (context) {
   var iconDock = $(context).attr('href');
   var appName = iconDock.replace('#icon_dock_', '');

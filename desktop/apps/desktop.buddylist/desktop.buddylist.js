@@ -192,6 +192,18 @@ desktop.updateBuddyList = function updateBuddyList () {
         $('.buddy_email').val(desktop.buddyListData.email);
       }
 
+      if (data.myProfile) {
+        // Remark: this cache is cleared each time the user clicks "Update Profile"
+        desktop.profileCache = desktop.profileCache || {};
+        if (!desktop.profileCache[data.myProfile]) {
+          $('.publicProfilePreview').text(data.myProfile);
+          $('.profileMarkdown').val(data.myProfile);
+          desktop.profileCache[data.myProfile] = true
+        } else {
+          // do nothing, do not re-render the same text twice
+        }
+      }
+
       desktop.buddylistProfileState = { updates: {}};
 
       //
@@ -355,7 +367,21 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         $('.apiResult').val(JSON.stringify(data, true, 2))
 
-        if ($('.pendingIncomingBuddyRequests li').length == 0) {
+        desktop.buddylist.pendingIncomingBuddyRequests = desktop.buddylist.pendingIncomingBuddyRequests || 0;
+
+        let totalIncomingBuddyRequests = $('.pendingIncomingBuddyRequests li').length;
+
+        if (totalIncomingBuddyRequests > desktop.buddylist.pendingIncomingBuddyRequests) {
+          desktop.buddylist.pendingIncomingBuddyRequests = totalIncomingBuddyRequests;
+          // Remark: short delay is used here to provide nice login experience if Buddy has requests
+          //         allows WELCOME sound to play
+          //         A better solution here is to here priority option for playing sound with queue
+          setTimeout(function(){
+            desktop.audioplayer.play('desktop/assets/audio/YOUVEGOTMAIL.wav');
+          }, 2222);
+        }
+
+        if (totalIncomingBuddyRequests === 0) {
           $('.pendingIncomingBuddyRequestsHolder').hide();
         } else {
           $('.pendingIncomingBuddyRequestsHolder').show();
