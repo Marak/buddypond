@@ -49,6 +49,8 @@ desktop.openWindows = {
 };
 
 // windowPool is used to keep track of pre-created windows
+// windowPool is only used for App's which require multiple window instances ( like chats )
+// most Apps will not require the window pool as they load with a static window HTML fragment
 desktop.windowPool = {}
 desktop.windowPool['buddy_message'] = [];
 desktop.windowPool['pond_message'] = [];
@@ -576,25 +578,26 @@ desktop.closeWindow = function openWindow (windowType, context) {
 
 //
 // desktop.processMessages() queries the server for new messages and then
-// delegates those messages to any applications which expose an App.updateMessaegs() function 
+// delegates those messages to any applications which expose an App.processMessages() function
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
-
 desktop.processMessages = function processMessages (apps) {
   apps = apps || desktop.apps.loaded;
   if (!buddypond.qtokenid) {
-    // no session, wait five seconds and try again
+    // no session, wait a short tick and try again
+    // this most likely indicates login is in progress
     setTimeout(function(){
       desktop.processMessages();
     }, 10);
   } else {
 
     //
-    // first, calculate list of subscribed buddies and subscribed ponds
+    // calculate list of subscribed buddies and subscribed ponds
     //
     var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
     var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
 
+    // TODO: Configure desktop.processMessages() to still check for agent and systems messages here
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
       setTimeout(function(){
         desktop.processMessages();
@@ -624,23 +627,23 @@ desktop.processMessages = function processMessages (apps) {
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
+
+
+      //
+      // filter out any messaages which have already been processed by uuid
+      // the deskop UX will only process each message once as to not re-render / flicker elements and message events
       let newMessages = [];
-      // console.log('buddypond.getMessages', err, data)
       data.messages.forEach(function(message){
         if (desktop.processedMessages.indexOf(message.uuid) === -1) {
           newMessages.push(message)
         }
       });
-
       // console.log(data.messages.length, ' messages came in');
       // console.log(newMessages.length, ' are being rendered');
-
-      //
-      // Filter out any messaages which have already been processed by uuid
-      // The deskop UX will only process each message once as to not re-render / flicker elements and message events
-
       data.messages = newMessages;
-  
+
+      // iterate through every app that is loaded and see if it exports `App.processMessages` function
+      // currently we processMessages for: `App.buddylist`, `App.pond`, and `App.automaton`
       let appNameProcessMessagesList = [];
       apps.forEach(function(app){
         if (typeof desktop[app].processMessages === 'function') {
@@ -648,10 +651,9 @@ desktop.processMessages = function processMessages (apps) {
         }
       })
 
-      // desktop.buddylist.processMessages, desktop.pond.processMessages
       //
-      // once we have the messages data, call desktop.buddylist.processMessages()
-      // to delegate message data to app's internal processMessages() function
+      // once we have the message data and know which Apps have `App.processMessages` available...
+      // delegate tge message data to each App's internal processMessages() function
       //
       desktop.utils.asyncApplyEach(
         appNameProcessMessagesList,
