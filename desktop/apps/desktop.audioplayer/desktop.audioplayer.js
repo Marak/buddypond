@@ -17,10 +17,14 @@ desktop.audioplayer.play = function playAudio (soundPath) {
       return;
     }
     desktop.audioplayer.playing[soundPath] = true;
-    var audio = new Audio(soundPath);
-    audio.addEventListener('ended', function() {
+    try {
+      var audio = new Audio(soundPath);
+      audio.addEventListener('ended', function() {
+        desktop.audioplayer.playing[soundPath] = false;
+      },false);
+    } catch (err) {
       desktop.audioplayer.playing[soundPath] = false;
-    },false);
+    }
     audio.play();
   }
 }
