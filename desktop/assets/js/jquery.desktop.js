@@ -210,6 +210,27 @@ var JQD = (function($, window, document, undefined) {
           });
         });
 
+        // Mouse over buddy name to see profile preview
+        d.on('mouseenter', 'a.messageBuddy', function() {
+          // TODO: move this out of this file?
+          let buddyName = $(this).html();
+          let buddyProfileText = desktop.buddyListData.buddylist['buddies/' + buddyName].myProfile || '';
+          // console.log('buddyName', buddyName, 'buddyProfileText', buddyProfileText);
+          if (buddyProfileText) {
+            // show buddy profile panel
+            $('#panel_buddy_profile').html(buddyProfileText);
+            $('#panel_buddy_profile').show();
+            $('.window').removeClass('window_stack');
+            $('#panel_buddy_profile').addClass('window_stack');
+          }
+        });
+
+        // mouse out of buddy name to hide profile preview
+        d.on('mouseleave', 'a.messageBuddy', function() {
+          // TODO: move this out of this file?
+          $('#panel_buddy_profile').hide();
+        });
+
         // Taskbar buttons.
         // TODO: JDQX.maxWindow
         d.on('click', '#dock a', function() {
