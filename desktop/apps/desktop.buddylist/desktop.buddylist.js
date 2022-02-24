@@ -39,6 +39,9 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     $('#window_buddylist').css('left', 777);
     $('#window_buddylist').css('top', 66);
 
+    let key = desktop.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.buddylist.positiveAffirmations.length)];
+    $('.positiveAffirmation').html(key)
+
     $('.sendMessageForm').on('submit', function(){
       return false;
     })
@@ -490,3 +493,42 @@ desktop.buddylist.onWindowOpen = function (windowId, context) {
   desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
   desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
 }
+
+desktop.buddylist.positiveAffirmations = [
+  "Hello. You like nice today.",
+  "You are the most amazing person I know.",
+  "Your presence just lights up the room.",
+  "You are perfect as you are.",
+  "I am blessed to have you in my life.",
+  "You know, you are my 3 a.m. friend.",
+  "You look stunning today.",
+  "You have a smile that could melt an iceberg.",
+  "Your strength of mind and character amazes me.",
+  "Your fun and cheerful outlook on life are infectious.",
+  "You have the biggest heart of anyone I know.",
+  "Your smile melts my heart, and your laughter is irresistible.",
+  "You bring out the best in me.",
+  "I am eternally grateful for your friendship.",
+  "You are unstoppable.",
+  "I am a better person because of our friendship.",
+  "I have learned so much from you.",
+  "The world is a better place because of people like you.",
+  "I wish I could be half as good as you.",
+  "I am blown away by your awesome sense of style.",
+  "I am proud of you.",
+  "You have a solution to every problem.",
+  "I wish I could be as tolerant, forgiving, and compassionate as you.",
+  "I admire the way you carry yourself.",
+  "You are the reason I am happy and doing well today.",
+  "You have this great gift to put others at ease and make them feel comfortable.",
+  "I cherish our time together.",
+  "You are a great role model for others.",
+  "You are a true friend and I am grateful for your friendship.",
+  "You have been there for me always. Now, I am right here to help you get through this.",
+  "You are the kind of friend everyone should have.",
+  "You have a heart of gold.",
+  "You are a fighter. I admire how you never give up.",
+  "Thank you for being my best friend.",
+  "I sleep easy knowing that you are in my corner.",
+  "I believe in you."
+];
