@@ -397,6 +397,7 @@ JDQX.openWindow = function openWindow (context) {
       node.style.cursor = 'progress';
     });
     desktop[appName].load({}, function ready (){
+      desktop.apps.loaded.push(appName);
       desktop.renderDockIcon(appName);
       JDQX.openWindow(context)
       document.querySelectorAll('*').forEach(function(node) {

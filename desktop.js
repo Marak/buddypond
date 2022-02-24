@@ -216,6 +216,7 @@ desktop._ready = function _ready (finish) {
       
       
       function _open () {
+        desktop.apps.loaded.push(app);
         desktop.renderDockIcon(app);
         desktop[app].deferredLoad = false;
         if (desktop[app].openWhenLoaded) {
@@ -395,7 +396,7 @@ desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
 
 desktop.refresh = function refreshDesktop () {
   desktop.updateBuddyList();
-  desktop.processMessages();
+  desktop.processMessages(desktop.apps.loaded);
 }
 
 //
@@ -580,7 +581,7 @@ desktop.closeWindow = function openWindow (windowType, context) {
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
 
-desktop.processMessages = function processMessages () {
+desktop.processMessages = function processMessages (apps) {
 
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
@@ -589,75 +590,83 @@ desktop.processMessages = function processMessages () {
     }, 10);
   } else {
 
-//
-// first, calculate list of subscribed buddies and subscribed ponds
-//
-var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
-var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
+    //
+    // first, calculate list of subscribed buddies and subscribed ponds
+    //
+    var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
+    var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
 
-if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
-  setTimeout(function(){
-    desktop.processMessages();
-  }, 10);
-  return;
-}
-
-let params = {
-  buddyname: subscribedBuddies.toString(),
-  pondname: subscribedPonds.toString()
-};
-
-//
-// call buddypond.getMessages() to get buddy messages data
-//
-// console.log('sending params', params)
-// console.log('calling, buddylist.getMessages', params);
-buddypond.getMessages(params, function(err, data){
-  // console.log('calling back, buddylist.getMessages', err, data);
-  if (err) {
-    console.log('error in getting messages', err);
-    // TODO: show disconnect error in UX
-    // if an error has occured, give up on processing messages
-    // and retry again shortly
-    setTimeout(function(){
-      desktop.processMessages();
-    }, desktop.DEFAULT_AJAX_TIMER);
-    return;
-  }
-  let newMessages = [];
-  // console.log('buddypond.getMessages', err, data)
-  data.messages.forEach(function(message){
-    if (desktop.processedMessages.indexOf(message.uuid) === -1) {
-      newMessages.push(message)
-    }
-  });
-
-  // console.log(data.messages.length, ' messages came in');
-  // console.log(newMessages.length, ' are being rendered');
-
-  //
-  // Filter out any messaages which have already been processed by uuid
-  // The deskop UX will only process each message once as to not re-render / flicker elements and message events
-
-  data.messages = newMessages;
-
-  //
-  // once we have the messages data, call desktop.buddylist.processMessages()
-  // to delegate message data to app's internal processMessages() function
-  //
-  desktop.utils.asyncApplyEach(
-    [desktop.buddylist.processMessages, desktop.pond.processMessages],
-    data,
-    function done (err, results) {
-      // `App.processMessages` should return `true`
-      // just ignore all the errors and results for now
-      // console.log(err, results);
-      //
-      // All apps have completed rendering messages, set a timer and try again shortly
-      //
+    if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
       setTimeout(function(){
+        desktop.processMessages();
+      }, 10);
+      return;
+    }
+
+    let params = {
+      buddyname: subscribedBuddies.toString(),
+      pondname: subscribedPonds.toString()
+    };
+
+    //
+    // call buddypond.getMessages() to get buddy messages data
+    //
+    // console.log('sending params', params)
+    // console.log('calling, buddylist.getMessages', params);
+    buddypond.getMessages(params, function(err, data){
+      // console.log('calling back, buddylist.getMessages', err, data);
+      if (err) {
+        console.log('error in getting messages', err);
+        // TODO: show disconnect error in UX
+        // if an error has occured, give up on processing messages
+        // and retry again shortly
+        setTimeout(function(){
           desktop.processMessages();
         }, desktop.DEFAULT_AJAX_TIMER);
+        return;
+      }
+      let newMessages = [];
+      // console.log('buddypond.getMessages', err, data)
+      data.messages.forEach(function(message){
+        if (desktop.processedMessages.indexOf(message.uuid) === -1) {
+          newMessages.push(message)
+        }
+      });
+
+      // console.log(data.messages.length, ' messages came in');
+      // console.log(newMessages.length, ' are being rendered');
+
+      //
+      // Filter out any messaages which have already been processed by uuid
+      // The deskop UX will only process each message once as to not re-render / flicker elements and message events
+
+      data.messages = newMessages;
+  
+      let appNameProcessMessagesList = [];
+      apps.forEach(function(app){
+        if (typeof desktop[app].processMessages === 'function') {
+          appNameProcessMessagesList.push(desktop[app].processMessages)
+        }
+      })
+
+      // desktop.buddylist.processMessages, desktop.pond.processMessages
+      //
+      // once we have the messages data, call desktop.buddylist.processMessages()
+      // to delegate message data to app's internal processMessages() function
+      //
+      desktop.utils.asyncApplyEach(
+        appNameProcessMessagesList,
+        data,
+        function done (err, results) {
+          // `App.processMessages` should return `true`
+          // just ignore all the errors and results for now
+          // console.log(err, results);
+          //
+          // All apps have completed rendering messages, set a timer and try again shortly
+          //
+          setTimeout(function(){
+            desktop.processMessages(desktop.apps.loaded);
+          }, desktop.DEFAULT_AJAX_TIMER);
       });
     });
   }
