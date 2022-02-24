@@ -444,7 +444,7 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
         str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
       } else {
         str += '<span class="datetime message">' + message.ctime + ' </span><spacn class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
-        if (document.visibilityState === 'hidden' && desktop.settings.notifications_web_enabled) {
+        if (document.visibilityState === 'hidden') {
           let now = new Date().getTime();
           if (now - desktop.buddylist.lastNotified > 1600) {
             desktop.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);

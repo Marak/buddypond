@@ -12,9 +12,16 @@ desktop.notifications.load = function loadnotificationsGames () {
 
 desktop.notifications.notifyBuddy = function notifyBuddy (text) {
   text = text || "default message senpai";
-  let notification = new Notification(text);
-  var audio = new Audio('desktop/assets/audio/IM.wav');
-  audio.play();
+
+  if (desktop.settings.notifications_audio_enabled) {
+    var audio = new Audio('desktop/assets/audio/IM.wav');
+    audio.play();
+  }
+
+  if (desktop.settings.notifications_web_enabled) {
+    let notification = new Notification(text);
+  }
+
 }
 
 desktop.notifications.openWindow = function openWindow () {

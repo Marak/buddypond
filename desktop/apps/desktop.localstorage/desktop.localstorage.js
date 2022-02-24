@@ -11,7 +11,7 @@ desktop.localstorage.set = function setLocalStorage (key, val) {
 }
 
 desktop.localstorage.get = function getLocalStorage (key) {
-  localStorage.getItem(desktop.localstorage.prefix + key);
+  return localStorage.getItem(desktop.localstorage.prefix + key);
 }
 
 desktop.localstorage.removeItem = function removeLocalStorage (key) {
@@ -32,6 +32,12 @@ desktop.localstorage.load = function loadlocalstorageGames () {
       }
     }
   }
+
+  // Remark: Here we can add defaults for required local storage desktop.settings
+  if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
+    desktop.settings.notifications_audio_enabled = true;
+  }
+
   return true;
 };
 

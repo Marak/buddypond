@@ -43,9 +43,24 @@ desktop.profile.load = function loadDesktop (params, next) {
         desktop.localstorage.set('notifications_web_enabled', false);
       }
     });
-    
+
     if (desktop.settings.notifications_web_enabled) {
       $('.enableWebNotifications').prop('checked', true);
+    }
+
+    $('.enableAudioNotifications').on('change', function(){
+      let audioNotificationsEnabled = $(this).prop("checked");
+      if (audioNotificationsEnabled) {
+        desktop.localstorage.set('notifications_audio_enabled', true);
+        desktop.log('Audio Notifications have been enabled.');
+      } else {
+        desktop.localstorage.set('notifications_audio_enabled', false);
+        desktop.log('Audio Notifications have been disabled.');
+      }
+    });
+
+    if (desktop.settings.notifications_audio_enabled) {
+      $('.enableAudioNotifications').prop('checked', true);
     }
 
     $("#profileTabs" ).tabs();
