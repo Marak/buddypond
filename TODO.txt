@@ -1,4 +1,3 @@
-- add sound fx when you get buddy request
 - add friend requests to automatons that autoaccept
 - add mute / desktop volume control to top nav
   - have youtube and soundcloud players respect mute / volume levels
@@ -44,6 +43,8 @@ PUSHED to post launch
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - add sound fx when you get buddy request
 
 X - fix UX issue where closed windows lose message history ( cache invalidation required ??? uuid )
 
