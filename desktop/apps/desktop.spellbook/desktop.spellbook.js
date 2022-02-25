@@ -38,7 +38,11 @@ desktop.spellbook.load = function loadSpellBook (params, next) {
                 alert(`You didn't even try to login!\n\n${spellName} has fizzled.`);
                 //desktop.spellbook[spellName]();
               } else {
-                alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
+                if (buddyName === buddypond.me) {
+                  alert(`You targeted yourself? Well played.`);
+                } else {
+                  alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
+                }
                 desktop.spellbook[spellName]();
               }
             } else {
