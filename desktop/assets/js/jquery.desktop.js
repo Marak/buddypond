@@ -229,6 +229,7 @@ var JQD = (function($, window, document, undefined) {
         d.on('mouseleave', 'a.messageBuddy', function() {
           // TODO: move this out of this file?
           $('#panel_buddy_profile').hide();
+          $('#panel_buddy_profile').removeClass('window_stack');
         });
 
         // Taskbar buttons.
