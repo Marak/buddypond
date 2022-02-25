@@ -164,7 +164,6 @@ desktop.buddylistProfileState = {
   }
 };
 
-
 desktop.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
@@ -185,6 +184,23 @@ desktop.updateBuddyList = function updateBuddyList () {
         return;
       }
       desktop.buddyListData = data;
+
+      // process buddyrequests here so that automatons can perform actions on incoming buddyrequests ( auto-accept buddies )
+      for (let buddy in data.buddyrequests) {
+        let buddyrequest = data.buddyrequests[buddy];
+        buddyrequest = JSON.parse(buddyrequest);
+        if (buddyrequest.to === buddypond.me) {
+          // incoming request to me
+          if (buddypond.me === 'Dicey') {
+            // will spam a little bit, we can fix this later when moving to automaton handler code
+            buddypond.approveBuddy(buddyrequest.from, function(err, res){
+              console.log('buddypond.approveBuddy back', err, res)
+            });
+          }
+        } else {
+          // outgoing request to buddy
+        }
+      }
 
       if (data.email && !buddypond.email) {
         buddypond.email = data.email;
@@ -373,6 +389,7 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         if (totalIncomingBuddyRequests > desktop.buddylist.pendingIncomingBuddyRequests) {
           desktop.buddylist.pendingIncomingBuddyRequests = totalIncomingBuddyRequests;
+
           // Remark: short delay is used here to provide nice login experience if Buddy has requests
           //         allows WELCOME sound to play
           //         A better solution here is to here priority option for playing sound with queue

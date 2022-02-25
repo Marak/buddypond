@@ -20,6 +20,11 @@ desktop.automaton.load = function loadautomatonGames (params, next) {
 
 desktop.automaton.processMessages = function (data, callback) {
 
+  // TODO: Temporary, needs to implement  desktop.automaton.html form and desktop.localstorage.set()
+  if (buddypond.me === 'Dicey') {
+    desktop.settings.automaton_enabled = true;
+  }
+
   // console.log('desktop.automaton.processMessages', data);
   if (!desktop.settings.automaton_enabled) {
     // disabled by default for now
@@ -30,20 +35,27 @@ desktop.automaton.processMessages = function (data, callback) {
     let auto = desktop.automaton.automatons[automatonName];
     // console.log('auto', auto)
     data.messages.forEach(function(message){
+      // perform exported action
+      let numbery = 20;
+      let arg = message.text.split(' ')[1] || numbery;
+      try {
+        numbery = new Number(arg);
+      } catch (err) {
+      }
+      let result = auto.roll(numbery);
       if (message.text.substr(0, 5) === '/roll') {
-        // perform exported action
-        let numbery = 20;
-        let arg = message.text.split(' ')[1] || numbery;
-        try {
-          numbery = new Number(arg);
-        } catch (err) {
-        }
-        let result = auto.roll(numbery);
         if (message.type === 'pond') {
           buddypond.pondSendMessage(message.to, result.toString(), function(err, data){
             console.log('auto roll result', err, data);
           });
         }
+        if (message.type === 'buddy') {
+          buddypond.sendMessage(message.from, result.toString(), function(err, data){
+            console.log('auto roll result', err, data);
+          });
+        }
+      } else {
+        // TODO: give numbers in response to PMs
         if (message.type === 'buddy') {
           buddypond.sendMessage(message.from, result.toString(), function(err, data){
             console.log('auto roll result', err, data);
