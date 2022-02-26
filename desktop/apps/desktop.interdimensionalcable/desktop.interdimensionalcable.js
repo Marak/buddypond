@@ -1,21 +1,35 @@
 desktop.app.interdimensionalcable = {};
 desktop.app.interdimensionalcable.label = "IDC Cable";
-
+desktop.app.interdimensionalcable.depends_on = ['videoplayer'];
 desktop.app.interdimensionalcable.load = function (params, next) {
 
   desktop.load.remoteAssets([
     'data/interdimensionalcable.js',
     'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
   ], function (err) {
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    /* 
-      it would be better if we can add this script to the above desktop.app.loadRemoteAssets() call,
-      right now youtube is being injected on Desktop Ready instead of lazy load
-      see: https://github.com/Marak/buddypond/issues/13
-    */
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function interDemonPlayerReady(event) {
+      // event.target.playVideo();
+    }
+
+    function interDemonPlayerStateChange(event) {
+      if (event.data == 0) {
+        desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+      }
+    }
+
+    desktop.app.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
+      height: '390',
+      width: '640',
+      videoId: 'rZhbnty03U4',
+      playerVars: { 'autoplay': 0, 'controls': 1 },
+      host: 'http://www.youtube.com',
+      events: {
+        'onReady': interDemonPlayerReady,
+        'onStateChange': interDemonPlayerStateChange
+      },
+      origin: window.document.location.origin
+    });
 
     $('.ponderinterdimensionalcable').on('click', function(){
       desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
@@ -51,55 +65,6 @@ desktop.app.interdimensionalcable.closeWindow = function () {
   }
 }
 
-// Remark: youtube embed client REQUIRES the following methods be public
-function mtvPlayerReady(event) {
-  // event.target.playVideo();
-}
-
-function mtvPlayerStateChange(event) {
-  if (event.data == 0) {
-    desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist)
-  }
-}
-
-function interDemonPlayerReady(event) {
-  // event.target.playVideo();
-}
-
-function interDemonPlayerStateChange(event) {
-  if (event.data == 0) {
-    desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
-  }
-}
-
-function onYouTubeIframeAPIReady() {
-  desktop.app.mtv = desktop.app.mtv || {};
-  desktop.app.mtv.player = new YT.Player('mtvPlayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': mtvPlayerReady,
-      'onStateChange': mtvPlayerStateChange
-    },
-    origin: window.document.location.origin
-  });
-
-  desktop.app.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': interDemonPlayerReady,
-      'onStateChange': interDemonPlayerStateChange
-    },
-    origin: window.document.location.origin
-  });
-}
 
 // way easier to type
 desktop.app.IDC = desktop.app.interdimensionalcable;

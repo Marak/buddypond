@@ -460,12 +460,45 @@ JDQX.openWindow = function openWindow (appName) {
     // if not, assume user is trying to load an app which is not loaded yet
     let windowExists = $(appWindow).length;
     if (windowExists === 0) {
-      desktop
-        .use(appName)
-        .ready(function(err, apps){
-          desktop.log('Ready:', appName)
-          _showWindow();
+
+      // TODO: spinning progress notifications should be per `App` and not a global state
+      document.querySelectorAll('*').forEach(function(node) {
+        node.style.cursor = 'progress';
+      });
+
+      desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
+        /* TODO: support N app dep, currently hard-coded to 1
+        desktop.app[appName].depends_on.forEach(function(appDep){
+          desktop.preloader.push(appDep);
         });
+        */
+        if (desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
+          desktop.load.remoteJS([`desktop/apps/desktop.${desktop.app[appName].depends_on[0]}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+            let depApp = desktop.app[appName].depends_on[0];
+            desktop.app[depApp].load({}, function(){
+              desktop
+                .use(appName)
+                .ready(function(err, apps){
+                  desktop.log('Ready:', appName);
+                  document.querySelectorAll('*').forEach(function(node) {
+                    node.style.cursor = 'pointer';
+                  });
+                  _showWindow();
+                });
+            })
+          });
+        } else {
+          desktop
+            .use(appName)
+            .ready(function(err, apps){
+              desktop.log('Ready:', appName);
+              document.querySelectorAll('*').forEach(function(node) {
+                node.style.cursor = 'pointer';
+              });
+              _showWindow();
+            });
+        }
+      })
     } else {
       _showWindow();
     }

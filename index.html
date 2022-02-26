@@ -191,7 +191,7 @@ window.top.location = 'ie.html';
         </a>
         <ul class="menu connectionDetails">
           <li>
-            Conection Started: <span class="connection_ctime"></span> <br/>
+            Connection Started: <span class="connection_ctime"></span> <br/>
             Packets Sent <span class="connection_packets_sent"></span> <br/>
             Packets Recieved <span class="connection_packets_recieved"></span> <br/>
           </li>
@@ -245,7 +245,7 @@ window.top.location = 'ie.html';
 <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
 
 <script src="desktop/assets/js/jquery.js"></script>
-<script src="desktop/assets/js/jquery.ui.js"></script>
+<script src="desktop/assets/js/jquery.ui.min.js"></script>
 <script src="desktop/assets/js/forbidden.notes.js"></script>
 
 <script src="sdk/buddypond.js"></script>
@@ -267,15 +267,11 @@ window.top.location = 'ie.html';
       .use('login')
       .use('buddylist')
       .use('pond')
-      // .use('videoplayer', { lazy: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
       .use('mirror', { defer: true })
       .use('videochat', { defer: true })
       .use('automaton', { defer: true })
-      .use('notifications', { defer: true })
-      .use('interdimensionalcable', { defer: true })
-      .use('mtv', { defer: true })
       .use('notifications', { defer: true })
 
       .ready(function(err, apps){
@@ -304,6 +300,8 @@ window.top.location = 'ie.html';
           }
         });
 
+        // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
+        // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)
         $('.selectPlaylist').on('change', function(){
           $('#soundcloudiframe').remove();
           $('#soundcloudplayer').html('');
