@@ -1,3 +1,9 @@
+- add babel.js spell for replacing all words with filtered words
+- add openinoious appicus spell for helping open app remotely
+  - required to open hidden apps / non-installed apps
+- spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
+- add away / watching status based on client is visible API
+- play sound alert if buddypond.me is mentioned in chat
 - add friend requests to automatons that autoaccept
 - add mute / desktop volume control to top nav
   - have youtube and soundcloud players respect mute / volume levels
@@ -43,6 +49,12 @@ PUSHED to post launch
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - apps need to be defined / scoped on desktop.app.*, not desktop.*
+  X - problem arises today with confliting name on desktop.settings scope
+  X - also no easy way to iterate apps as whole instances
+  X - no easy way to see what is app and what is on desktop.*
+  X- desktop.* should be cleaned up a bit
 
 X - add sound fx when you get buddy request
 

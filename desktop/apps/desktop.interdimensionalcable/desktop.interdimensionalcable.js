@@ -1,16 +1,16 @@
-desktop.interdimensionalcable = {};
-desktop.interdimensionalcable.label = "IDC Cable";
+desktop.app.interdimensionalcable = {};
+desktop.app.interdimensionalcable.label = "IDC Cable";
 
-desktop.interdimensionalcable.load = function (params, next) {
+desktop.app.interdimensionalcable.load = function (params, next) {
 
-  desktop.loadRemoteAssets([
+  desktop.load.remoteAssets([
     'data/interdimensionalcable.js',
-    'interdimensionalcable' // this loads the sibling desktop.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
+    'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
   ], function (err) {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     /* 
-      it would be better if we can add this script to the above desktop.loadRemoteAssets() call,
+      it would be better if we can add this script to the above desktop.app.loadRemoteAssets() call,
       right now youtube is being injected on Desktop Ready instead of lazy load
       see: https://github.com/Marak/buddypond/issues/13
     */
@@ -18,7 +18,7 @@ desktop.interdimensionalcable.load = function (params, next) {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     $('.ponderinterdimensionalcable').on('click', function(){
-      desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist);
+      desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
     });
 
     $('#window_interdimensionalcable').css('width', 644);
@@ -30,7 +30,7 @@ desktop.interdimensionalcable.load = function (params, next) {
   });
 };
 
-desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
+desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo(_player, playlist) {
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
   if (_player) {
@@ -45,9 +45,9 @@ desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
   }
 };
 
-desktop.interdimensionalcable.closeWindow = function () {
-  if (desktop.interdimensionalcable.player && desktop.interdimensionalcable.player.pauseVideo) {
-    desktop.interdimensionalcable.player.pauseVideo();
+desktop.app.interdimensionalcable.closeWindow = function () {
+  if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.pauseVideo) {
+    desktop.app.interdimensionalcable.player.pauseVideo();
   }
 }
 
@@ -58,7 +58,7 @@ function mtvPlayerReady(event) {
 
 function mtvPlayerStateChange(event) {
   if (event.data == 0) {
-    desktop.playRandomVideo(desktop.mtv.player, desktop.ytPlaylist)
+    desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist)
   }
 }
 
@@ -68,13 +68,13 @@ function interDemonPlayerReady(event) {
 
 function interDemonPlayerStateChange(event) {
   if (event.data == 0) {
-    desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist)
+    desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
   }
 }
 
 function onYouTubeIframeAPIReady() {
 
-  desktop.mtv.player = new YT.Player('mtvPlayer', {
+  desktop.app.mtv.player = new YT.Player('mtvPlayer', {
     height: '390',
     width: '640',
     videoId: 'rZhbnty03U4',
@@ -87,7 +87,7 @@ function onYouTubeIframeAPIReady() {
     origin: window.document.location.origin
   });
 
-  desktop.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
+  desktop.app.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
     height: '390',
     width: '640',
     videoId: 'rZhbnty03U4',
@@ -102,4 +102,4 @@ function onYouTubeIframeAPIReady() {
 }
 
 // way easier to type
-desktop.IDC = desktop.interdimensionalcable;
+desktop.app.IDC = desktop.app.interdimensionalcable;

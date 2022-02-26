@@ -1,12 +1,12 @@
-desktop.mtv = {};
-desktop.mtv.label = "Music Television";
+desktop.app.mtv = {};
+desktop.app.mtv.label = "Music Television";
 
-desktop.mtv.player = null;
-desktop.mtv.load = function (params, next) {
+desktop.app.mtv.player = null;
+desktop.app.mtv.load = function (params, next) {
 
-  desktop.loadRemoteAssets([
+  desktop.load.remoteAssets([
     'data/mtv.js',
-    'mtv' // this loads the sibling desktop.mtv.html file into <div id="window_mtv"></div>
+    'mtv' // this loads the sibling desktop.app.mtv.html file into <div id="window_mtv"></div>
   ], function (err) {
 
     var tag = document.createElement('script');
@@ -20,7 +20,7 @@ desktop.mtv.load = function (params, next) {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     $('.ponderMTV').on('click', function(){
-      desktop.playRandomVideo(desktop.mtv.player, desktop.ytPlaylist);
+      desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist);
     });
 
     $('#window_mtv').css('width', 644);
@@ -29,8 +29,23 @@ desktop.mtv.load = function (params, next) {
   });
 };
 
-desktop.mtv.closeWindow = function () {
-  if (desktop.mtv.player && desktop.mtv.player.pauseVideo) {
-    desktop.mtv.player.pauseVideo();
+desktop.app.mtv.playRandomVideo = function playRandomVideo(_player, playlist) {
+  let keys = playlist;
+  let key =   keys[Math.floor(Math.random() * keys.length)];
+  if (_player) {
+    let yt_id = key;
+    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
+    _player.loadVideoById(yt_id);
+    setTimeout(function(){
+      if (_player.play) {
+        _player.play();
+      }
+    }, 5000)
+  }
+};
+
+desktop.app.mtv.closeWindow = function () {
+  if (desktop.app.mtv.player && desktop.app.mtv.player.pauseVideo) {
+    desktop.app.mtv.player.pauseVideo();
   }
 }

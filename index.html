@@ -118,6 +118,10 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
       Console
     </a>
+    <a class="abs icon" style="right:20px;top:200px;" href="#icon_dock_settings">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Desktop Settings
+    </a>
   </div>
   <div class="abs" id="bar_top">
     <ul>
@@ -255,11 +259,13 @@ window.top.location = 'ie.html';
     desktop
       .use('console')
       .use('localstorage')
+      .use('settings')
       .use('wallpaper')
+      .use('audioplayer')
       .use('login')
       .use('buddylist')
       .use('pond')
-      .use('audioplayer', { defer: true })
+      // .use('videoplayer', { lazy: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
       .use('mirror', { defer: true })
@@ -271,7 +277,8 @@ window.top.location = 'ie.html';
       .use('notifications', { defer: true })
       .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
-      .use('solitaire', { lazy: true })
+      .use('solitaire')
+
       .ready(function(err, apps){
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
 

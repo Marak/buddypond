@@ -1,4 +1,4 @@
-desktop.ytPlaylist = [
+desktop.app.ytPlaylist = [
   'Cv6tuzHUuuk',
   '6jJkdRaa04g',
   'v1K4EAXe2oo',

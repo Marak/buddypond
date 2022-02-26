@@ -1,12 +1,12 @@
-desktop.login = {};
-desktop.login.label = "Login";
+desktop.app.login = {};
+desktop.app.login.label = "Login";
 
-desktop.login.load = function loadDesktopLogin (params, next) {
+desktop.app.login.load = function loadDesktopLogin (params, next) {
 
-  desktop.loadRemoteAssets([
+  desktop.load.remoteAssets([
     'desktop/assets/css/clippy.css',
     'desktop/assets/js/clippy.min.js',
-    'login' // this loads the sibling desktop.login.html file into <div id="window_login"></div>
+    'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
     $('.loginForm').on('submit', function () {
@@ -15,7 +15,7 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks login button, attempt to auth with server
     $('.loginButton').on('click', function(){
-      desktop.login.auth($('#buddyname').val());
+      desktop.app.login.auth($('#buddyname').val());
     });
 
     // if user clicks on top left menu, focus on login form
@@ -26,10 +26,10 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks logout link on top left menu, logout the user
     $('.logoutLink').on('click', function(){
-      desktop.login.logoutDesktop()
+      desktop.app.login.logoutDesktop()
     });
 
-    desktop.renderDockElement('login');
+    desktop.ui.renderDockElement('login');
 
     let localToken = localStorage.getItem("qtokenid");
     let me = localStorage.getItem("me");
@@ -47,19 +47,19 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
         // token has not validated, log out the client
         if (data.success === false) {
-          desktop.login.logoutDesktop();
-          desktop.login.openWindow();
+          desktop.app.login.logoutDesktop();
+          desktop.app.login.openWindow();
         } else {
         // token is valid, show client login success
           buddypond.qtokenid = localToken;
           buddypond.me = me;
-          desktop.login.success();
+          desktop.app.login.success();
         }
         return next(null);
       });
     } else {
       $('.totalConnected').hide();
-      desktop.login.openWindow();
+      desktop.app.login.openWindow();
       return next(null);
     }
 
@@ -67,7 +67,7 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
 }
 
-desktop.login.auth = function authDesktop (buddyname) {
+desktop.app.login.auth = function authDesktop (buddyname) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
   buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
@@ -91,7 +91,7 @@ desktop.login.auth = function authDesktop (buddyname) {
       localStorage.setItem("qtokenid", data.qtokenid);
       localStorage.setItem("me", buddypond.me);
       buddypond.qtokenid = data.qtokenid;
-      desktop.login.success();
+      desktop.app.login.success();
     } else {
       if (data.banned) {
         alert(data.message);
@@ -103,10 +103,10 @@ desktop.login.auth = function authDesktop (buddyname) {
   });
 }
 
-desktop.login.success = function desktopLoginSuccess () {
+desktop.app.login.success = function desktopLoginSuccess () {
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
-  desktop.audioplayer.play('desktop/assets/audio/WELCOME.wav', Infinity)
+  desktop.app.audioplayer.play('desktop/assets/audio/WELCOME.wav', Infinity)
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
@@ -117,8 +117,8 @@ desktop.login.success = function desktopLoginSuccess () {
   $('.totalConnected').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
-  desktop.renderDockElement('buddylist');
-  desktop.removeDockElement('login');
+  desktop.ui.renderDockElement('buddylist');
+  desktop.ui.removeDockElement('login');
   let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
   $('.connection_ctime').html(dateString)
   $('.connection_packets_sent').html("1");
@@ -127,7 +127,7 @@ desktop.login.success = function desktopLoginSuccess () {
   $('.loggedIn').show();
 
   clippy.load('Merlin', function(agent) {
-     desktop.Merlin = agent;
+     desktop.app.Merlin = agent;
      agent.show();
      setTimeout(function(){
        if (!buddypond.email || buddypond.email.length < 3) {
@@ -154,7 +154,7 @@ desktop.login.success = function desktopLoginSuccess () {
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
   $('#window_pond').show();
-  desktop.pond.openWindow();
+  desktop.app.pond.openWindow();
 
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){
@@ -167,7 +167,7 @@ desktop.login.success = function desktopLoginSuccess () {
   }, 3000);
 }
 
-desktop.login.openWindow = function desktopLoginOpenWindow () {
+desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').show();
@@ -179,7 +179,7 @@ desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('#buddyname').focus();
 }
 
-desktop.login.logoutDesktop = function logoutDesktop () {
+desktop.app.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid')
   localStorage.removeItem('me')
   // TODO: . root?

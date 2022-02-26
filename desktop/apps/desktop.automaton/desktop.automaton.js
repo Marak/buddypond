@@ -1,12 +1,12 @@
-desktop.automaton = {};
-desktop.automaton.automatons = {};
+desktop.app.automaton = {};
+desktop.app.automaton.automatons = {};
 
-desktop.automaton.label = "Automaton";
+desktop.app.automaton.label = "Automaton";
 
-desktop.automaton.load = function loadautomatonGames (params, next) {
-  desktop.loadRemoteAssets([
+desktop.app.automaton.load = function loadautomatonGames (params, next) {
+  desktop.load.remoteAssets([
     'desktop/apps/desktop.automaton/automatons/dicey.js',
-    // 'automaton' // this loads the sibling desktop.automaton.html file into <div id="window_automaton"></div>
+    // 'automaton' // this loads the sibling desktop.app.automaton.html file into <div id="window_automaton"></div>
   ], function (err) {
     /*
     $('#window_automaton').css('width', 662);
@@ -18,21 +18,21 @@ desktop.automaton.load = function loadautomatonGames (params, next) {
   });
 };
 
-desktop.automaton.processMessages = function (data, callback) {
+desktop.app.automaton.processMessages = function (data, callback) {
 
-  // TODO: Temporary, needs to implement  desktop.automaton.html form and desktop.localstorage.set()
+  // TODO: Temporary, needs to implement  desktop.app.automaton.html form and desktop.app.localstorage.set()
   if (buddypond.me === 'Dicey') {
     desktop.settings.automaton_enabled = true;
   }
 
-  // console.log('desktop.automaton.processMessages', data);
+  // console.log('desktop.app.automaton.processMessages', data);
   if (!desktop.settings.automaton_enabled) {
     // disabled by default for now
     return callback(null, 'skipped');
   }
 
-  Object.keys(desktop.automaton.automatons).forEach(function(automatonName){
-    let auto = desktop.automaton.automatons[automatonName];
+  Object.keys(desktop.app.automaton.automatons).forEach(function(automatonName){
+    let auto = desktop.app.automaton.automatons[automatonName];
     // console.log('auto', auto)
     data.messages.forEach(function(message){
       // perform exported action
@@ -52,6 +52,7 @@ desktop.automaton.processMessages = function (data, callback) {
         if (message.type === 'buddy') {
           buddypond.sendMessage(message.from, result.toString(), function(err, data){
             console.log('auto roll result', err, data);
+            desktop.app.closeWindow('buddy_message', message.from);
           });
         }
       } else {
@@ -59,6 +60,7 @@ desktop.automaton.processMessages = function (data, callback) {
         if (message.type === 'buddy') {
           buddypond.sendMessage(message.from, result.toString(), function(err, data){
             console.log('auto roll result', err, data);
+            desktop.app.closeWindow('buddy_message', message.from);
           });
         }
       }
@@ -67,10 +69,10 @@ desktop.automaton.processMessages = function (data, callback) {
   callback(null, data);
 }
 
-desktop.automaton.openWindow = function openWindow () {
+desktop.app.automaton.openWindow = function openWindow () {
   return true;
 };
 
-desktop.automaton.closeWindow = function closeWindow () {
+desktop.app.automaton.closeWindow = function closeWindow () {
   return true;
 };

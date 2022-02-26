@@ -205,7 +205,7 @@ var JQD = (function($, window, document, undefined) {
             revert: false,
             containment: 'parent',
             stop: function() {
-              desktop.getDesktopIconPositions();
+              desktop.ui.getDesktopIconPositions();
              }
           });
         });
@@ -424,7 +424,7 @@ JDQX.openWindow = function openWindow (context) {
   // if the `App` has `lazy` set, we need to put a spinning icon on the mouse cursor...
   // ...and then call this app's `App.load()` function and wait until it's ready...
   // once the `App` is ready, we open it's window
-  if (desktop[appName] && desktop[appName].lazyLoad && desktop.apps.lazy.indexOf(appName) !== -1) {
+  if (desktop.app[appName] && desktop.app[appName].lazyLoad && desktop.apps.lazy.indexOf(appName) !== -1) {
     // remove this `App` from the array of registered lazy apps
     desktop.apps.lazy = desktop.apps.lazy.filter(function(app){
       if (app === appName) {
@@ -437,32 +437,44 @@ JDQX.openWindow = function openWindow (context) {
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
     });
-    desktop[appName].load({}, function ready (){
+
+    // TODO: check if `App.depends_on` has required Apps that *must* be loaded first
+    desktop.app[appName].load({}, function ready (){
+      _windowLoaded();
+    })
+
+    function _windowLoaded () {
       desktop.apps.loaded.push(appName);
-      desktop.renderDockIcon(appName);
+      desktop.ui.renderDockIcon(appName);
       JDQX.openWindow(context)
       document.querySelectorAll('*').forEach(function(node) {
         node.style.cursor = 'pointer';
       });
-    })
-    return;
+      _showWindow();
+    }
+    
+  } else {
+    _showWindow();
   }
 
-  // Show the taskbar button.
-  if ($(iconDock).is(':hidden')) {
-    $(iconDock).remove().appendTo('#dock');
-    $(iconDock).show('fast');
-  }
+  function _showWindow() {
+    // Show the taskbar button.
+    if ($(iconDock).is(':hidden')) {
+      $(iconDock).remove().appendTo('#dock');
+      $(iconDock).show('fast');
+    }
 
-  // Bring window to front.
-  JQD.util.window_flat();
-  $(appWindow).addClass('window_stack').show();
+    // Bring window to front.
+    JQD.util.window_flat();
+    $(appWindow).addClass('window_stack').show();
 
-  // check to see if desktop[appName].openWindow method is available,
-  // if so, call this method
-  // this is used to allow apps to have custom openWindow events 
-  if (desktop[appName] && desktop[appName].openWindow) {
-    desktop[appName].openWindow();
+    // check to see if desktop[appName].openWindow method is available,
+    // if so, call this method
+    // this is used to allow apps to have custom openWindow events 
+    if (desktop.app[appName] && desktop.app[appName].openWindow) {
+      desktop.app[appName].openWindow();
+    }
+    
   }
 };
 
@@ -495,7 +507,7 @@ JDQX.closeWindow = function closeWindow (el) {
   let windowId = $(closestWindow).attr('id').replace('window_', '');
 
   if (windowType && windowContext) {
-    desktop.closeWindow(windowType, windowContext);
+    desktop.ui.closeWindow(windowType, windowContext);
   }
 
   // check to see if the App which made this window supports a .closeWindow() method
@@ -513,7 +525,7 @@ JDQX.closeWindow = function closeWindow (el) {
 }
 
 // creates icon for dock bar ( min / max )
-desktop.renderDockIcon = function (app) {
+desktop.ui.renderDockIcon = function (app) {
   // Remark: temp conditional, remove later
   if (desktop.isMobile) {
     return false;
@@ -521,9 +533,9 @@ desktop.renderDockIcon = function (app) {
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
-        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop[app].icon || app}_64.png" />
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop.app[app].icon || app}_64.png" />
         <span class="dock_title">
-          ${desktop[app].label || app }
+          ${desktop.app[app].label || app }
         </span>
       </a>
     </li>
@@ -531,10 +543,11 @@ desktop.renderDockIcon = function (app) {
   $('#dock').append(html);
 };
 
-desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
-desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
+// TODO: these functions
+// desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
+// desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 
-desktop.removeDockElement = function (windowType, context) {
+desktop.ui.removeDockElement = function (windowType, context) {
   var dockElement = '#icon_dock_' + windowType;
   $(dockElement).hide();
   return;
@@ -547,7 +560,7 @@ desktop.removeDockElement = function (windowType, context) {
   }
 }
 
-desktop.renderDockElement = function (key, context) {
+desktop.ui.renderDockElement = function (key, context) {
   var dockElement = '#icon_dock_' + key;
   if ($(dockElement).is(':hidden')) {
     $(dockElement).remove().appendTo('#dock');

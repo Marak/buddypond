@@ -1,4 +1,4 @@
-desktop.interdimensionalcable.playlist = [
+desktop.app.interdimensionalcable.playlist = [
   "hSQLhNYltBM",
   "AKMzMZWRKVc",
   "cBqrfITE9RA",
@@ -1075,7 +1075,6 @@ desktop.interdimensionalcable.playlist = [
   "r-vQ2KRkscw",
   "Vg1mpD1BICI",
   "zdjY_UnNtQ4",
-  "6WpMlwVwydo",
   "EbXSbP-wEFU",
   "Nvxwf1jxdaM",
   "92QfdG2HEUU",

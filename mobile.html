@@ -259,6 +259,7 @@
   <script src="mobile/assets/js/bootstrap.bundle.min.js"></script>
   <script src="sdk/buddypond.js"></script>
   <script src="mobile.js"></script>
+  <script src="desktop/assets/js/jquery.simple-color.js"></script>
   <script src="desktop/apps/desktop.wallpaper/desktop.wallpaper.js"></script>
   <script src="desktop/apps/desktop.mirror/desktop.mirror.js"></script>
   <script src="desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.js"></script>
@@ -271,15 +272,16 @@
       desktop.log('Buddy Pond Mobile Cloud Desktop Initialized');
       desktop.log('Now loading apps');
       desktop.load();
-      desktop.wallpaper.load()
-      desktop.wallpaper.start();
-      desktop.mirror.load({}, function(){
-        desktop.interdimensionalcable.load({}, function(){
-          desktop.mtv.load({}, function(){
-            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+      desktop.app.wallpaper.load({}, function(){
+        desktop.app.wallpaper.start();
+//        desktop.app.mirror.load({}, function(){
+          desktop.app.interdimensionalcable.load({}, function(){
+            desktop.app.mtv.load({}, function(){
+              desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+            });
           });
-        });
-      });
+//        });
+      })
     });
   </script>
 </body>

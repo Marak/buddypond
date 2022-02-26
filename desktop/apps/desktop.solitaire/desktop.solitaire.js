@@ -1,11 +1,11 @@
-desktop.solitaire = {};
-desktop.solitaire.label = "Solitaire";
+desktop.app.solitaire = {};
+desktop.app.solitaire.label = "Solitaire";
 
-desktop.solitaire.load = function loadSolitaireGames (params, next) {
-  desktop.loadRemoteAssets([
+desktop.app.solitaire.load = function loadSolitaireGames (params, next) {
+  desktop.load.remoteAssets([
     'desktop/apps/desktop.solitaire/vendor/js-solitaire.css',
     'desktop/apps/desktop.solitaire/vendor/js-solitaire.js',
-    'solitaire' // this loads the sibling desktop.solitaire.html file into <div id="window_solitaire"></div>
+    'solitaire' // this loads the sibling desktop.app.solitaire.html file into <div id="window_solitaire"></div>
   ], function (err) {
     $('#window_solitaire').css('width', 662);
     $('#window_solitaire').css('height', 495);
@@ -16,12 +16,12 @@ desktop.solitaire.load = function loadSolitaireGames (params, next) {
   });
 };
 
-desktop.solitaire.openWindow = function openWindow () {
+desktop.app.solitaire.openWindow = function openWindow () {
   window.jsSolitaire.initSolitaire();
   return true;
 };
 
-desktop.solitaire.closeWindow = function closeWindow () {
+desktop.app.solitaire.closeWindow = function closeWindow () {
   window.jsSolitaire.closeSolitaire();
   return true;
 };

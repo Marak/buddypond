@@ -1,11 +1,11 @@
-desktop.automaton.automatons.dicey = {};
+desktop.app.automaton.automatons.dicey = {};
 
 //
 // each method exported on an `Automaton` is expected to be an `Action`
 //
 
 // simple dice roll math
-desktop.automaton.automatons.dicey.roll = function diceyRoll (max) {
+desktop.app.automaton.automatons.dicey.roll = function diceyRoll (max) {
   if (typeof max === 'undefined') {
     max = 20;
   }

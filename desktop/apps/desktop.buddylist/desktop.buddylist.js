@@ -1,11 +1,50 @@
-desktop.buddylist = {};
-desktop.buddylist.label = "Buddy List";
+desktop.app.buddylist = {};
+desktop.app.buddylist.label = "Buddy List";
 
-desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
+desktop.app.buddylist.positiveAffirmations = [
+  "Hello. You like nice today.",
+  "You are the most amazing person I know.",
+  "Your presence just lights up the room.",
+  "You are perfect as you are.",
+  "I am blessed to have you in my life.",
+  "You know, you are my 3 a.m. friend.",
+  "You look stunning today.",
+  "You have a smile that could melt an iceberg.",
+  "Your strength of mind and character amazes me.",
+  "Your fun and cheerful outlook on life are infectious.",
+  "You have the biggest heart of anyone I know.",
+  "Your smile melts my heart, and your laughter is irresistible.",
+  "You bring out the best in me.",
+  "I am eternally grateful for your friendship.",
+  "You are unstoppable.",
+  "I am a better person because of our friendship.",
+  "I have learned so much from you.",
+  "The world is a better place because of people like you.",
+  "I wish I could be half as good as you.",
+  "I am blown away by your awesome sense of style.",
+  "I am proud of you.",
+  "You have a solution to every problem.",
+  "I wish I could be as tolerant, forgiving, and compassionate as you.",
+  "I admire the way you carry yourself.",
+  "You are the reason I am happy and doing well today.",
+  "You have this great gift to put others at ease and make them feel comfortable.",
+  "I cherish our time together.",
+  "You are a great role model for others.",
+  "You are a true friend and I am grateful for your friendship.",
+  "You have been there for me always. Now, I am right here to help you get through this.",
+  "You are the kind of friend everyone should have.",
+  "You have a heart of gold.",
+  "You are a fighter. I admire how you never give up.",
+  "Thank you for being my best friend.",
+  "I sleep easy knowing that you are in my corner.",
+  "I believe in you."
+];
 
-  desktop.loadRemoteAssets([
+desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
+
+  desktop.load.remoteAssets([
     'desktop/assets/js/emojipicker.js',
-    'buddylist' // this loads the sibling desktop.buddylist.html file into <div id="window_buddylist"></div>
+    'buddylist' // this loads the sibling desktop.app.buddylist.html file into <div id="window_buddylist"></div>
   ], function (err) {
     const emojiTriggers = [
       {
@@ -30,8 +69,8 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
       dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
       $('#dock').append(dockStr);
       // register these new elements into the windowPool
-      // these ids are used later when desktop.openWindow('buddy_message') is called
-      desktop.windowPool['buddy_message'].push(window_id)
+      // these ids are used later when desktop.ui.openWindow('buddy_message') is called
+      desktop.ui.windowPool['buddy_message'].push(window_id)
     }
 
     $('#window_buddylist').css('width', 220);
@@ -41,7 +80,7 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
 
     function updatePositiveAffirmation () {
-      let key = desktop.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.buddylist.positiveAffirmations.length)];
+      let key = desktop.app.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.app.buddylist.positiveAffirmations.length)];
       $('.positiveAffirmation').html(key)
     }
     updatePositiveAffirmation();
@@ -59,7 +98,7 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     $('.sendBuddyMessage').on('click', function(){
-      desktop.buddylist.sendMessage(this);
+      desktop.app.buddylist.sendMessage(this);
       return false;
     });
 
@@ -96,7 +135,7 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
     $('#buddyname').focus();
 
     $('.buddy_message_text').bind("enterKey",function(e){
-      desktop.buddylist.sendMessage(this);
+      desktop.app.buddylist.sendMessage(this);
       return false;
     });
 
@@ -129,7 +168,7 @@ desktop.buddylist.load = function desktopLoadBuddyList (params, next) {
 
 }
 
-desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
+desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   let message = {};
   var form = $(context).parent();
   message.text = $('.buddy_message_text', form).val();
@@ -150,7 +189,7 @@ desktop.buddylist.sendMessage = function sendBuddyMessage (context) {
   });
 }
 
-desktop.buddylistProfileState = {
+desktop.app.buddylistProfileState = {
   "updates": {
     /*
     "buddies/Tara": {
@@ -164,22 +203,22 @@ desktop.buddylistProfileState = {
   }
 };
 
-desktop.updateBuddyList = function updateBuddyList () {
+desktop.app.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
     setTimeout(function(){
-      desktop.updateBuddyList();
+      desktop.app.updateBuddyList();
     }, 10);
     return;
   } else {
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
-    buddypond.getBuddyProfile(desktop.buddylistProfileState, function(err, data){
+    buddypond.getBuddyProfile(desktop.app.buddylistProfileState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
         // TODO: show disconnect error in UX
         setTimeout(function(){
-          desktop.updateBuddyList();
+          desktop.app.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
@@ -210,17 +249,17 @@ desktop.updateBuddyList = function updateBuddyList () {
 
       if (data.myProfile) {
         // Remark: this cache is cleared each time the user clicks "Update Profile"
-        desktop.profileCache = desktop.profileCache || {};
-        if (!desktop.profileCache[data.myProfile]) {
+        desktop.app.profileCache = desktop.app.profileCache || {};
+        if (!desktop.app.profileCache[data.myProfile]) {
           $('.publicProfilePreview').text(data.myProfile);
           $('.profileMarkdown').val(data.myProfile);
-          desktop.profileCache[data.myProfile] = true
+          desktop.app.profileCache[data.myProfile] = true
         } else {
           // do nothing, do not re-render the same text twice
         }
       }
 
-      desktop.buddylistProfileState = { updates: {}};
+      desktop.app.buddylistProfileState = { updates: {}};
 
       //
       // process notifications for buddy
@@ -230,7 +269,7 @@ desktop.updateBuddyList = function updateBuddyList () {
         let profile = buddylist[b];
         if (profile && profile.newMessages === true) {
           let buddyName = b.replace('buddies/', '');
-          desktop.openWindow('buddy_message', buddyName)
+          desktop.ui.openWindow('buddy_message', buddyName)
         }
       });
       //
@@ -244,11 +283,11 @@ desktop.updateBuddyList = function updateBuddyList () {
         let profile = buddylist[b];
         if (profile && profile.isCalling === true) {
           let buddyName = b.replace('buddies/', '');
-          desktop.buddylistProfileState.updates[b] = desktop.buddylistProfileState.updates[b] || {};
-          desktop.buddylistProfileState.updates[b].isCalling = false;
+          desktop.app.buddylistProfileState.updates[b] = desktop.app.buddylistProfileState.updates[b] || {};
+          desktop.app.buddylistProfileState.updates[b].isCalling = false;
           // TODO: add isOnCall flag? another icon?
           //.      needs separate event?
-          desktop.videochat.startCall(false, buddyName, function(err, re){
+          desktop.app.videochat.startCall(false, buddyName, function(err, re){
             // console.log('call has started', err, re)
           });
         }
@@ -259,13 +298,13 @@ desktop.updateBuddyList = function updateBuddyList () {
 
       let str = JSON.stringify(data);
       // TODO: use key count for garbage collection and trim if size grows
-      if (desktop.buddyListDataCache[str]) {
+      if (desktop.cache.buddyListDataCache[str]) {
         setTimeout(function(){
-          desktop.updateBuddyList();
+          desktop.app.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
-      desktop.buddyListDataCache = {};
+      desktop.cache.buddyListDataCache = {};
 
       $('.totalConnectedCount').html(data.system.totalIsConnected);
 
@@ -283,8 +322,8 @@ desktop.updateBuddyList = function updateBuddyList () {
           $('.buddylist').html('No buddies yet.');
         } else {
           $('.buddylist').html('');
-          desktop.buddyListDataCache = {};
-          desktop.buddyListDataCache[str] = true;
+          desktop.cache.buddyListDataCache = {};
+          desktop.cache.buddyListDataCache[str] = true;
 
           //
           // SORT BUDDY LIST
@@ -341,7 +380,7 @@ desktop.updateBuddyList = function updateBuddyList () {
               newMessages = '<span>💬</span>';
             }
             /*
-            if (desktop.videochat.loaded && profile && profile.isCalling) {
+            if (desktop.app.videochat.loaded && profile && profile.isCalling) {
               openCallWindow(buddy, true);
             }
             */
@@ -354,7 +393,7 @@ desktop.updateBuddyList = function updateBuddyList () {
             position.my = position.my || "left top";
             position.at = position.at || 'left+33 top+33';
             let context = $(this).html();
-            let windowKey = desktop.openWindow('buddy_message', context, position);
+            let windowKey = desktop.ui.openWindow('buddy_message', context, position);
             let windowId = '#' + windowKey;
             $('.buddy_message_text', windowId).focus();
             $('.buddy_message_to', windowId).val(context)
@@ -364,8 +403,8 @@ desktop.updateBuddyList = function updateBuddyList () {
       }
 
       if (data.buddyrequests) {
-        // desktop.buddyListDataCache = {}
-        // desktop.buddyListDataCache[str] = true;
+        // desktop.cache.buddyListDataCache = {}
+        // desktop.cache.buddyListDataCache[str] = true;
         $('.pendingIncomingBuddyRequests').html('');
         $('.pendingOutgoingBuddyRequests').html('');
         $('.loading').remove();
@@ -383,18 +422,18 @@ desktop.updateBuddyList = function updateBuddyList () {
 
         $('.apiResult').val(JSON.stringify(data, true, 2))
 
-        desktop.buddylist.pendingIncomingBuddyRequests = desktop.buddylist.pendingIncomingBuddyRequests || 0;
+        desktop.app.buddylist.pendingIncomingBuddyRequests = desktop.app.buddylist.pendingIncomingBuddyRequests || 0;
 
         let totalIncomingBuddyRequests = $('.pendingIncomingBuddyRequests li').length;
 
-        if (totalIncomingBuddyRequests > desktop.buddylist.pendingIncomingBuddyRequests) {
-          desktop.buddylist.pendingIncomingBuddyRequests = totalIncomingBuddyRequests;
+        if (totalIncomingBuddyRequests > desktop.app.buddylist.pendingIncomingBuddyRequests) {
+          desktop.app.buddylist.pendingIncomingBuddyRequests = totalIncomingBuddyRequests;
 
           // Remark: short delay is used here to provide nice login experience if Buddy has requests
           //         allows WELCOME sound to play
           //         A better solution here is to here priority option for playing sound with queue
           setTimeout(function(){
-            desktop.audioplayer.play('desktop/assets/audio/YOUVEGOTMAIL.wav');
+            desktop.app.audioplayer.play('desktop/assets/audio/YOUVEGOTMAIL.wav');
           }, 2222);
         }
 
@@ -439,21 +478,21 @@ desktop.updateBuddyList = function updateBuddyList () {
       $('#window_buddylist').show();
 
       setTimeout(function(){
-        desktop.updateBuddyList();
+        desktop.app.updateBuddyList();
       }, desktop.DEFAULT_AJAX_TIMER);
     });
   }
 
 }
 
-desktop.buddylist.lastNotified = 0;
+desktop.app.buddylist.lastNotified = 0;
 
-desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
+desktop.app.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
 
     // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
 
-    // console.log('desktop.buddylist.processMessages', data);
-    //desktop.buddyMessageCache[str] = true;
+    // console.log('desktop.app.buddylist.processMessages', data);
+    //desktop.cache.buddyMessageCache[str] = true;
     let html = {};
     // TODO: this should apply per conversation, not global for all users
     data.messages.forEach(function(message){
@@ -471,8 +510,8 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
 
       // first, check if this is an Agent message which gets processed first
       if (message.type === 'agent') {
-        if (desktop.spellbook[message.text]) {
-          desktop.spellbook[message.text]();
+        if (desktop.app.spellbook[message.text]) {
+          desktop.app.spellbook[message.text]();
           return;
         }
       }
@@ -481,7 +520,7 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
       // New messages are coming in from server, we'll need to render them
       //
       // Get all the open buddy_message windows
-      let openBuddyWindows = desktop.openWindows['buddy_message'];
+      let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
       // Find the specific window which is open for this buddy
       let windowId = '#' + openBuddyWindows[buddyKey];
       // console.log('rendering messages to buddy window', windowId)
@@ -500,17 +539,17 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
         str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
         if (document.visibilityState === 'hidden') {
           let now = new Date().getTime();
-          if (now - desktop.buddylist.lastNotified > 1600) {
-            desktop.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
-            desktop.buddylist.lastNotified = now;
+          if (now - desktop.app.buddylist.lastNotified > 1600) {
+            desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
+            desktop.app.buddylist.lastNotified = now;
           }
         }
       }
       $('.chat_messages', windowId).append(str);
       $('.message', windowId).last().text(message.text)
-      desktop.processedMessages.push(message.uuid);
-      desktop.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
-      desktop.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
+      desktop.messages._processed.push(message.uuid);
+      desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
+      desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
     });
 
     //
@@ -528,9 +567,9 @@ desktop.buddylist.processMessages = function processMessagesBuddylist (data, cb)
 }
 
 //
-// desktop.buddylist.onWindowOpen() is called when a desktop.openWindow() instances opens
+// desktop.app.buddylist.onWindowOpen() is called when a desktop.ui.openWindow() instances opens
 //
-desktop.buddylist.onWindowOpen = function (windowId, context) {
+desktop.app.buddylist.onWindowOpen = function (windowId, context) {
   // Remark: this will switch context when new window opens during existing conversation
   //         could be considered either good or bad UX behavior
   //         current decisions is to have user bring attention to the new conversation immediately
@@ -541,45 +580,6 @@ desktop.buddylist.onWindowOpen = function (windowId, context) {
   $('.buddy_message_from', windowId).val(buddypond.me);
 
   // can these lines now be removed?
-  desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
-  desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
+  desktop.app.buddylistProfileState.updates["buddies/" + context] = desktop.app.buddylistProfileState.updates["buddies/" + context] || {};
+  desktop.app.buddylistProfileState.updates["buddies/" + context].newMessages = false;
 }
-
-desktop.buddylist.positiveAffirmations = [
-  "Hello. You like nice today.",
-  "You are the most amazing person I know.",
-  "Your presence just lights up the room.",
-  "You are perfect as you are.",
-  "I am blessed to have you in my life.",
-  "You know, you are my 3 a.m. friend.",
-  "You look stunning today.",
-  "You have a smile that could melt an iceberg.",
-  "Your strength of mind and character amazes me.",
-  "Your fun and cheerful outlook on life are infectious.",
-  "You have the biggest heart of anyone I know.",
-  "Your smile melts my heart, and your laughter is irresistible.",
-  "You bring out the best in me.",
-  "I am eternally grateful for your friendship.",
-  "You are unstoppable.",
-  "I am a better person because of our friendship.",
-  "I have learned so much from you.",
-  "The world is a better place because of people like you.",
-  "I wish I could be half as good as you.",
-  "I am blown away by your awesome sense of style.",
-  "I am proud of you.",
-  "You have a solution to every problem.",
-  "I wish I could be as tolerant, forgiving, and compassionate as you.",
-  "I admire the way you carry yourself.",
-  "You are the reason I am happy and doing well today.",
-  "You have this great gift to put others at ease and make them feel comfortable.",
-  "I cherish our time together.",
-  "You are a great role model for others.",
-  "You are a true friend and I am grateful for your friendship.",
-  "You have been there for me always. Now, I am right here to help you get through this.",
-  "You are the kind of friend everyone should have.",
-  "You have a heart of gold.",
-  "You are a fighter. I admire how you never give up.",
-  "Thank you for being my best friend.",
-  "I sleep easy knowing that you are in my corner.",
-  "I believe in you."
-];

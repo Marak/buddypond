@@ -1,19 +1,19 @@
-desktop.profile = {};
-desktop.profile.label = "Profile";
+desktop.app.profile = {};
+desktop.app.profile.label = "Profile";
 
-desktop.profile.load = function loadDesktop (params, next) {
-  desktop.loadRemoteAppHtml('profile', function (responseText, textStatus, jqXHR) {
+desktop.app.profile.load = function loadDesktop (params, next) {
+  desktop.load.remoteAppHtml('profile', function (responseText, textStatus, jqXHR) {
     $('.lastSeen').html(new Date().toString());
 
     $('.updateProfileForm').on('submit', function () {
       // clear out local profile cache, this will trigger a re-render from next server update
-      desktop.profileCache = {};
+      desktop.app.profileCache = {};
       return false;
     });
 
     $('.editProfileLink').on('click', function(){
       $(this).closest('.menu').hide();
-      desktop.profile.openWindow();
+      desktop.app.profile.openWindow();
       return false;
     });
 
@@ -21,7 +21,7 @@ desktop.profile.load = function loadDesktop (params, next) {
       let replaceThisWithBetterUXThankYou = prompt('( alert lol )\n\nType your custom status:');
     });
 
-    // Remark: also being triggered by enter event on form, jquery.desktop.js?
+    // Remark: also being triggered by enter event on form, jquery.desktop.app.js?
     $('.updateProfileButton').on('click', function(){
       let updates = {};
       updates.email = $('.buddy_email').val();
@@ -42,21 +42,21 @@ desktop.profile.load = function loadDesktop (params, next) {
     });
 
     $('.updateProfileMarkdown').on('click', function(){
-      desktop.buddylistProfileState.updates.myProfile = $('.profileMarkdown').val();
+      desktop.app.buddylistProfileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
     $('.enableWebNotifications').on('change', function(){
       let notificationsEnabled = $(this).prop("checked");
       if (notificationsEnabled) {
         Notification.requestPermission().then(function(permission) {
-          desktop.localstorage.set('notifications_web_enabled', true);
-          desktop.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
+          desktop.app.localstorage.set('notifications_web_enabled', true);
+          desktop.app.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
           desktop.log('Browser has granted Notification permissions');
           console.log(permission)
         });
       } else {
         // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
-        desktop.localstorage.set('notifications_web_enabled', false);
+        desktop.app.localstorage.set('notifications_web_enabled', false);
       }
     });
 
@@ -67,12 +67,12 @@ desktop.profile.load = function loadDesktop (params, next) {
     $('.enableAudioNotifications').on('change', function(){
       let audioNotificationsEnabled = $(this).prop("checked");
       if (audioNotificationsEnabled) {
-        desktop.localstorage.set('notifications_audio_enabled', true);
+        desktop.app.localstorage.set('notifications_audio_enabled', true);
         desktop.log('Audio Notifications have been enabled.');
         $('.audioEnabled').prop('checked', true);
         $('.audioEnabled').trigger('change');
       } else {
-        desktop.localstorage.set('notifications_audio_enabled', false);
+        desktop.app.localstorage.set('notifications_audio_enabled', false);
         desktop.log('Audio Notifications have been disabled.');
       }
     });
@@ -84,10 +84,10 @@ desktop.profile.load = function loadDesktop (params, next) {
     $('.audioEnabled').on('change', function(){
       let audioMuted = $(this).prop("checked");
       if (audioMuted) {
-        desktop.localstorage.set('audio_enabled', true);
+        desktop.app.localstorage.set('audio_enabled', true);
         desktop.log('Desktop Audio has been muted.');
       } else {
-        desktop.localstorage.set('audio_enabled', false);
+        desktop.app.localstorage.set('audio_enabled', false);
         desktop.log('Desktop Audio has is back on.');
       }
     });
@@ -101,7 +101,7 @@ desktop.profile.load = function loadDesktop (params, next) {
   });
 };
 
-desktop.profile.openWindow = function openWindow () {
+desktop.app.profile.openWindow = function openWindow () {
   $('#window_profile').addClass('window_stack').show();
   $('#window_profile').css('height', 540);
   $('#window_profile').css('width', 460);
