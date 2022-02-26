@@ -10,7 +10,7 @@ desktop.app.videoplayer.load = function (params, next) {
         next();
       } else {
         setTimeout(function(){
-          console.log('did not found embed, try again')
+          desktop.log('Youtube iframe has been embeded, but did not report ready yet. trying again.');
           waitForAsyncEmbedAction();
         }, 3000)
       }

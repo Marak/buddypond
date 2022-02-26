@@ -41,6 +41,8 @@ desktop.cache = {};
 desktop.cache.buddyListDataCache = {};
 desktop.cache.buddyMessageCache = {};
 
+// `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
+// this scope if populated by the `jquery.desktop.x.js` file
 desktop.ui = {};
 
 desktop.messages = {};
@@ -49,21 +51,6 @@ desktop.messages = {};
 // TODO: Have the desktop trim desktop.messages._processed if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
 desktop.messages._processed = [];
 
-// windowIndex is used to keep track of all created windows
-desktop.ui.windowIndex = {};
-
-// openWindows is used to keep track of currently open windows
-desktop.ui.openWindows = {
-  buddy_message: {},
-  pond_message: {}
-};
-
-// windowPool is used to keep track of pre-created windows
-// windowPool is only used for App's which require multiple window instances ( like chats )
-// most Apps will not require the window pool as they load with a static window HTML fragment
-desktop.ui.windowPool = {}
-desktop.ui.windowPool['buddy_message'] = [];
-desktop.ui.windowPool['pond_message'] = [];
 
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
@@ -437,191 +424,6 @@ desktop.refresh = function refreshDesktop () {
     desktop.app.updateBuddyList();
     desktop.messages.process(desktop.apps.loaded);
   }
-}
-
-//
-//
-// desktop.ui.openWindow() function is used to create instances of a window class
-// this allows for multiple window instances to share the same logic
-// as of today, windowType can be "buddy_message" or "pond_message"
-// this implies there are already HTML elements named window_buddy_message_0 and window_pond_message_0
-// these will be incremented by 1 for each window , etc window_buddy_message_1, window_buddy_message_2
-// in the future we can have other windowTypes
-// for most applications you won't need this method and you can just 
-// use $(window_id).hide() or $(window_id).show() instead
-//
-//
-
-desktop.ui.openWindow = function openWindow (windowType, context, position) {
-
-  let windowTypes = ['buddy_message', 'pond_message']
-
-  // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
-  // these are used for almost all applications, since most applications require N windows ( like chat )
-  if (windowTypes.indexOf(windowType) === -1) {
-    JDQX.openWindow(windowType);
-    return;
-  }
-
-  desktop.ui.openWindows = desktop.ui.openWindows || {};
-  desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};
-
-  desktop.ui.windowIndex = desktop.ui.windowIndex || {};
-  desktop.ui.windowIndex[windowType] = desktop.ui.windowIndex[windowType] || {};
-
-  let windowKey;
-
-  if (desktop.ui.openWindows[windowType][context]) {
-    // console.log('window already open, doing nothing', desktop.ui.openWindows[windowType][context])
-    // if the window is open and not visible, it means it is minimized
-    let el = ('#' + desktop.ui.openWindows[windowType][context]);
-    let dockEl = ('#' + desktop.ui.openWindows[windowType][context]).replace('window_', 'icon_dock_');
-    if (!$(el).is(':visible')) {
-      $('.dock_title', dockEl).addClass('rainbow');
-    } else {
-      $('.dock_title', dockEl).removeClass('rainbow');
-    }
-    return desktop.ui.openWindows[windowType][context];
-  }
-
-  desktop.log(`desktop.ui.openWindow("${windowType}", "${context}")`);
-
-  if (desktop.ui.windowIndex[windowType][context]) {
-    let windowId = desktop.ui.windowIndex[windowType][context];
-    windowKey = '#' + windowId;
-    // console.log('reopening window id', windowId)
-    // TODO: check to see if window is min, if so, open it from dock
-    // desktop.ui.renderDockElement(windowType + '_' + window_id, context);
-    JQD.util.window_flat();
-    $(windowKey).show().addClass('window_stack');
-  } else {
-    // TODO: max windows message
-    windowKey = desktop.ui.windowPool[windowType].pop();
-    if (!windowKey) {
-      alert(`No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`);
-      return;
-    }
-
-    let windowId = '#' + windowKey;
-    // console.log('allocating window from pool', windowId)
-    $('.window-context-title', windowId).html(context);
-    $('.window-context-title', windowId).html(context);
-    $(windowId).attr('data-window-context', context);
-
-    $(windowId).show();
-    $(windowId).css('width', 600)
-    $(windowId).css('height', 440)
-
-    // bring newly opened window to front
-    JQD.util.window_flat();
-    $(windowId).addClass('window_stack').show();
-
-    // assign window id from pool into windowIndex
-    //
-    // for example: desktop.ui.windowIndex['buddy_message']['Marak] = '#window_buddy_message_0';
-    //
-    desktop.ui.windowIndex[windowType][context] = windowId;
-
-    // render the bottom bar dock element
-    desktop.ui.renderDockElement(windowKey.replace('window_', ''), context);
-
-    // a new window is being opened, figure out where it should be positioned next to
-    // default position is next to the buddylist
-    let openNextTo = "#window_buddylist";
-
-    // gather all open buddy_messsage windows and find the first one
-    // if the first one exists, assign that to open next to
-    
-    let first = Object.keys(desktop.ui.openWindows.buddy_message)[0];
-    if (desktop.ui.openWindows.buddy_message[first]) {
-      openNextTo = '#' + desktop.ui.openWindows.buddy_message[first];
-    } else {
-      // do nothing
-    }
-
-    position = position || {}
-    position.my = position.my || "left top",
-    position.at = position.at || 'right top',
-    position.of = position.of || openNextTo
-
-    // TODO: this shouldn't happen. refactor chat window positioning to not depend on buddylist being visible
-    try {
-      $(windowId).position(position);
-    } catch (err) {
-      console.log('Warning: Error in showing ' + windowId, err);
-    }
-    
-    if (windowType === 'buddy_message') {
-
-      // invalidate previous processed messages for this buddy
-      desktop.messages._processed = desktop.messages._processed.filter(function(uuid){
-        if (desktop.cache.buddyMessageCache[buddypond.me + '/' + context]) {
-          if (desktop.cache.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
-            return false
-          }
-        }
-        return true;
-      });
-      desktop.app.buddylist.onWindowOpen(windowId, context);
-    }
-
-  }
-
-  // the window is now open ( either its new or it's been re-opened )
-  // assign this window key into desktop.ui.openWindows
-  desktop.ui.openWindows[windowType][context] = windowKey;
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  return windowKey;
-}
-
-//
-// desktop.ui.closeWindow() function is used to close instanced windows
-// in most cases you can just use $(window_id).hide()
-// The current logic here is for ensuring subscribed buddies and pond lists
-// are updated when the user closes the window in the UI
-// This is to ensure UI is only polling for messages on windows that are actually open
-//
-desktop.ui.closeWindow = function openWindow (windowType, context) {
-  desktop.ui.openWindows = desktop.ui.openWindows || {};
-  desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};
-
-  // console.log('pushing window back into pool', desktop.ui.openWindows[windowType][context])
-
-  // Since the window is now closed, we can push it back into the windowPool,
-  // based on it's windowType and context
-  // for example: desktop.ui.windowPool['buddy_message'].push(desktop.ui.openWindows['buddy_message']['Marak'])
-
-  // TODO: check to see if window is actually open before attempting to close
-  desktop.ui.windowPool[windowType].push(desktop.ui.openWindows[windowType][context])
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.ui.openWindows[windowType]))
-    // remove newMessages notification for this buddy
-    // TODO: move this to buddylist.closeWindw()
-    desktop.app.buddylist.profileState.updates["buddies/" + context] = desktop.app.buddylist.profileState.updates["buddies/" + context] || {};
-    desktop.app.buddylist.profileState.updates["buddies/" + context].newMessages = false;
-    $('.chat_messages', '#' + desktop.ui.openWindows[windowType][context]).html('');
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  // TODO: replace delete statements?
-  //
-  // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
-  //
-  delete desktop.ui.openWindows[windowType][context];
-  delete desktop.ui.windowIndex[windowType][context];
-
 }
 
 //
