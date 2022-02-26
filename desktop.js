@@ -99,7 +99,11 @@ function imageLoaded() {
 desktop.preloader = [];
 desktop.use = function use(app, params) {
   // queue arguments for preloader
-  desktop.preloader.push({ appName: app, params: params });
+  if (typeof app === 'function') {
+    desktop.preloader.push(app);
+  } else {
+    desktop.preloader.push({ appName: app, params: params });
+  }
   return this;
 }
 
@@ -107,11 +111,17 @@ desktop.ready = function ready (finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
   desktop.preloader.forEach(function(app){
-    scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+    if (typeof app === 'object') {
+      scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+    }
   });
   desktop.load.remoteAssets(scriptArr, function(){
     desktop.preloader.forEach(function(app){
-      desktop._use(app.appName, app.params);
+      if (typeof app === 'function') {
+        app();
+      } else {
+        desktop._use(app.appName, app.params);
+      }
     })
     desktop._ready(finish)
   })
