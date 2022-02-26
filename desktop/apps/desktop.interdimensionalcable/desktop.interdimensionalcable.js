@@ -32,7 +32,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     });
 
     $('.ponderinterdimensionalcable').on('click', function(){
-      desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
+      desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
     });
 
     $('#window_interdimensionalcable').css('width', 644);
