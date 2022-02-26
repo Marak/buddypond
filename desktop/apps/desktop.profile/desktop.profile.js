@@ -42,7 +42,7 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     });
 
     $('.updateProfileMarkdown').on('click', function(){
-      desktop.app.buddylistProfileState.updates.myProfile = $('.profileMarkdown').val();
+      desktop.app.buddylist.profileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
     $('.enableWebNotifications').on('change', function(){

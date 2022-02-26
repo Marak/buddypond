@@ -574,8 +574,8 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
     desktop.log('Subscribed Buddies: ', Object.keys(desktop.ui.openWindows[windowType]))
     // remove newMessages notification for this buddy
     // TODO: move this to buddylist.closeWindw()
-    desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
-    desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
+    desktop.app.buddylist.profileState.updates["buddies/" + context] = desktop.app.buddylist.profileState.updates["buddies/" + context] || {};
+    desktop.app.buddylist.profileState.updates["buddies/" + context].newMessages = false;
     $('.chat_messages', '#' + desktop.ui.openWindows[windowType][context]).html('');
   }
 

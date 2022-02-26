@@ -165,7 +165,7 @@ desktop.app.videochat.peer = function peerVideoChat (isHost, buddyName) {
 
   if (isHost) {
     // can this be removed now?
-    // desktop.app.buddylistProfileState.updates['buddies/' + buddyName] = null;
+    // desktop.app.buddylist.profileState.updates['buddies/' + buddyName] = null;
   }
 
   const p = desktop.app.videochat.webrtc = new SimplePeer({
@@ -236,8 +236,8 @@ desktop.app.videochat.endCall = function videoChatEndCall (buddyName, cb) {
     return false;
   }
   desktop.app.videochat.CALL_IN_PROGRESS = false;
-  desktop.app.buddylistProfileState.updates["buddies/" + buddyName] = desktop.app.buddylistProfileState.updates["buddies/" + buddyName] || {};
-  desktop.app.buddylistProfileState.updates["buddies/" + buddyName].isCalling = false;
+  desktop.app.buddylist.profileState.updates["buddies/" + buddyName] = desktop.app.buddylist.profileState.updates["buddies/" + buddyName] || {};
+  desktop.app.buddylist.profileState.updates["buddies/" + buddyName].isCalling = false;
   if (desktop.app.videochat.webrtc && desktop.app.videochat.webrtc.destroy) {
     desktop.app.videochat.webrtc.destroy();
   }

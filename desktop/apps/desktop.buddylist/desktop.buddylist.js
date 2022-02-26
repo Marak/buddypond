@@ -189,7 +189,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   });
 }
 
-desktop.app.buddylistProfileState = {
+desktop.app.buddylist.profileState = {
   "updates": {
     /*
     "buddies/Tara": {
@@ -213,7 +213,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
     return;
   } else {
     //ex: let buddyProfile = { "Dave": { "newMessages": true } };
-    buddypond.getBuddyProfile(desktop.app.buddylistProfileState, function(err, data){
+    buddypond.getBuddyProfile(desktop.app.buddylist.profileState, function(err, data){
       if (err || typeof data !== 'object') {
         desktop.log(err);
         // TODO: show disconnect error in UX
@@ -259,7 +259,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
         }
       }
 
-      desktop.app.buddylistProfileState = { updates: {}};
+      desktop.app.buddylist.profileState = { updates: {}};
 
       //
       // process notifications for buddy
@@ -283,8 +283,8 @@ desktop.app.updateBuddyList = function updateBuddyList () {
         let profile = buddylist[b];
         if (profile && profile.isCalling === true) {
           let buddyName = b.replace('buddies/', '');
-          desktop.app.buddylistProfileState.updates[b] = desktop.app.buddylistProfileState.updates[b] || {};
-          desktop.app.buddylistProfileState.updates[b].isCalling = false;
+          desktop.app.buddylist.profileState.updates[b] = desktop.app.buddylist.profileState.updates[b] || {};
+          desktop.app.buddylist.profileState.updates[b].isCalling = false;
           // TODO: add isOnCall flag? another icon?
           //.      needs separate event?
           desktop.app.videochat.startCall(false, buddyName, function(err, re){
@@ -580,6 +580,6 @@ desktop.app.buddylist.onWindowOpen = function (windowId, context) {
   $('.buddy_message_from', windowId).val(buddypond.me);
 
   // can these lines now be removed?
-  desktop.app.buddylistProfileState.updates["buddies/" + context] = desktop.app.buddylistProfileState.updates["buddies/" + context] || {};
-  desktop.app.buddylistProfileState.updates["buddies/" + context].newMessages = false;
+  desktop.app.buddylist.profileState.updates["buddies/" + context] = desktop.app.buddylist.profileState.updates["buddies/" + context] || {};
+  desktop.app.buddylist.profileState.updates["buddies/" + context].newMessages = false;
 }
