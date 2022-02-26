@@ -4,6 +4,7 @@ desktop.app.spellbook.spells = [
   'ebublio',
   'zalgo',
   'babel.js',
+  'riddikulus',
   'episkey',
   'rickroll',
   'alert',
