@@ -45,7 +45,12 @@ desktop.app.spellbook.load = function loadSpellBook (params, next) {
                 } else {
                   alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
                 }
-                desktop.app.spellbook[spellName]();
+                if (desktop.app.spellbook && desktop.app.spellbook[spellName]) {
+                  desktop.app.spellbook[spellName]();
+                } else {
+                  alert(spellName + ' is forbidden knowledge');
+                  $('#window_spellbook').hide();
+                }
               }
             } else {
               // success
