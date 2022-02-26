@@ -1,7 +1,7 @@
 desktop.app.spellbook = {};
 desktop.app.spellbook.label = "Spellbook";
 desktop.app.spellbook.spells = [
-  'ebublio',
+  // 'ebublio',
   'zalgo',
   'babel.js',
   'riddikulus',

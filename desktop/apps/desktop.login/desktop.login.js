@@ -4,8 +4,6 @@ desktop.app.login.label = "Login";
 desktop.app.login.load = function loadDesktopLogin (params, next) {
 
   desktop.load.remoteAssets([
-    'desktop/assets/css/clippy.css',
-    'desktop/assets/js/clippy.min.js',
     'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
@@ -127,6 +125,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.loggedIn').show();
 
   // TODO: move this is a separate function
+  /*
   if (desktop.settings.agent_merlin_active) {
     clippy.load('Merlin', function(agent) {
        desktop.app.Merlin = agent;
@@ -148,6 +147,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
        }, 3333);
      });
   }
+  */
 
 
   // start packets update interval timer

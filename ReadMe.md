@@ -9,6 +9,7 @@
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API
+ - Desktop download size is < 1MB ( Uncompressed )
 
 ## Quick Start
 
@@ -134,13 +135,7 @@ $(document).ready(function(){
     .use('pond', { defer: true })
     .use('profile', { defer: true })
     .use('mirror', { defer: true })
-    .use('interdimensionalcable', { defer: true })
-    .use('mtv', { defer: true })
-    .use('soundcloud', { defer: true })
     .use('videochat', { defer: true })
-    .use('games', { defer: true })
-    .use('minesweeper', { lazy: true })
-    .use('solitaire', { lazy: true })
     .ready(function(err, apps){
       desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
       // start loop for updating desktop state
@@ -154,7 +149,7 @@ $(document).ready(function(){
 
 `desktop.use(appName, params)` will load Buddy Pond Apps which have an `App.load` method.
 
-`App.load` can be an async or sync function.
+`App.load` is an async function
 
 **For Example:**
 
@@ -167,18 +162,6 @@ desktop.boo.load = function (params, next) {
 }
 ```
 
-You can also write `App.load` as a sync style function
-
-```js
-desktop.foo.load = function (params) {
-  // sync `App.load` functions *must* return a value
-  return true;
-}
-```
-The best practice here is to use async `App.load(params, bext)` function signature  such as: `desktop.boo`
-
-sync style `App.load(params)` is used for Apps which have no associated external resources, HTML fragments, JS files, HTTP requests, etc. Again, you should probably use `App.load(params, next)` async style.
-
 ### `defer` or `lazy` load of `App`
 
 Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`. 
@@ -188,29 +171,25 @@ Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`.
 
 ### **Apps load in this order:**
 
-### 1. desktop.use(appName)
+### desktop.use(appName)
 *Sync style blocking loads*
-Calling `desktop.use(appName)` with no params should be used only for mission-critical Apps. 
+Calling `desktop.use(appName)` sync style should be used only for mission-critical Apps. 
 
 The Desktop will **not** be ready until these Apps finish loading.
 
-### 2. desktop.use(appName, { defer: true })
+### desktop.use(appName, { defer: true })
 
 *Async style non-blocking loads*
 `defer` indicates the `App` wil load immediately after the Desktop is ready.
 `defer` param should be used for Apps that are non-critical, but frequently used.
 
-The Desktop will load these Apps **immediately after** it's ready.
+The Desktop will load these Apps **immediately after** it's ready. If the Buddy tries to open a deferred App while it is still loading, the UI will respond with a spinning cursor and hold the `openWindow` event until the App has completely loaded.
 
+### After Desktop Ready Completes ( `lazy` loading )
 
-### 3. desktop.use(appName, { lazy: true })
-*Async style non-blocking loads*
-`lazy` indicates the `App` will only load when the Buddy clicks on `App` icon.
-`lazy` param should be used for Apps that are non-critical or large ( such as Games )
+After the Desktop is ready, additional Apps can be `lazy` loaded by calling: `desktop.use(appName).ready(function(){})` again.
 
-The Desktop will only load this `App` **when buddy double clicks App icon**.
-
-**Note: If you choose both `lazy` and `defer` options, only `lazy` will be applied.**
+The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `desktop.ui.openWindow(appName)`. The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` event until the App has completely loaded.
 
 ## Buddy Pond Mobile Client
 
