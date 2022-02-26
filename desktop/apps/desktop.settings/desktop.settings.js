@@ -14,7 +14,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
 
     // Remark: Here we can add defaults for required local storage desktop.settings
     if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
-      desktop.localstorage.set('notifications_audio_enabled', true);
+      desktop.set('notifications_audio_enabled', true);
       // will also update -> desktop.settings.notifications_audio_enabled = true
     }
 
