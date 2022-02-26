@@ -122,7 +122,9 @@ desktop.ready = function ready (finish) {
       } else {
         desktop._use(app.appName, app.params);
       }
-    })
+    });
+    // desktop is ready, clear out preloader ( it could be used again )
+    desktop.preloader = [];
     desktop._ready(finish)
   })
   return this;
@@ -278,6 +280,19 @@ desktop._ready = function _ready (finish) {
 }
 
 desktop.load = {};
+
+// desktop.load.app(appName, callback) is used to load apps *after* the desktop is up and running
+desktop.load.app = function loadDesktopApp (appName, ready) {
+  ready = ready || function readyNOOP () {
+    // do nothing
+  }
+  desktop
+    .use(appName)
+    .ready(function(err, apps){
+      ready(err, apps);
+      desktop.log('Ready:', 'LYTE Buddy Pond', 'v4.20.69');
+    });
+}
 
 desktop.load.remoteAssets = function loadRemoteAssets (assetArr, final) {
 
@@ -440,6 +455,13 @@ desktop.refresh = function refreshDesktop () {
 desktop.ui.openWindow = function openWindow (windowType, context, position) {
 
   let windowTypes = ['buddy_message', 'pond_message']
+
+  // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
+  // these are used for almost all applications, since most applications require N windows ( like chat )
+  if (windowTypes.indexOf(windowType) === -1) {
+    JDQX.openWindow(windowType);
+    return;
+  }
 
   desktop.ui.openWindows = desktop.ui.openWindows || {};
   desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};

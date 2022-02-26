@@ -196,7 +196,9 @@ var JQD = (function($, window, document, undefined) {
 
         // Respond to double-click.
         d.on('dblclick', 'a.icon', function() {
-          JDQX.openWindow(this)
+          var iconDock = $(this).attr('href');
+          var appName = iconDock.replace('#icon_dock_', '');
+          JDQX.openWindow(appName)
         });
 
         // Make icons draggable.
@@ -401,10 +403,9 @@ jQuery(document).ready(function() {
 // extended JDQ functions added by Marak
 var JDQX = {};
 // TODO: this should be renamed to loadWindow() ?
-JDQX.openWindow = function openWindow (context) {
-  var iconDock = $(context).attr('href');
-  var appName = iconDock.replace('#icon_dock_', '');
+JDQX.openWindow = function openWindow (appName) {
   let appWindow = '#window_' + appName;
+  let iconDock = '#icon_dock_' + appName
   // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
 
   // check to see if the `App` is trying to load, but is currently deffered
@@ -446,7 +447,7 @@ JDQX.openWindow = function openWindow (context) {
     function _windowLoaded () {
       desktop.apps.loaded.push(appName);
       desktop.ui.renderDockIcon(appName);
-      JDQX.openWindow(context)
+      JDQX.openWindow(appName)
       document.querySelectorAll('*').forEach(function(node) {
         node.style.cursor = 'pointer';
       });
@@ -454,7 +455,20 @@ JDQX.openWindow = function openWindow (context) {
     }
     
   } else {
-    _showWindow();
+    // this window appName has no associated apps waiting to be loaded,
+    // check to see if there is an associated window_* id to show,
+    // if not, assume user is trying to load an app which is not loaded yet
+    let windowExists = $(appWindow).length;
+    if (windowExists === 0) {
+      desktop
+        .use(appName)
+        .ready(function(err, apps){
+          desktop.log('Ready:', appName)
+          _showWindow();
+        });
+    } else {
+      _showWindow();
+    }
   }
 
   function _showWindow() {

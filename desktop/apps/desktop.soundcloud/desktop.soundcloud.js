@@ -7,14 +7,6 @@ desktop.app.soundcloud.load = function loadSoundcloud (params, next) {
       desktop.app.soundcloud.widget.play();
       desktop.app.soundcloud.widget.next();
     });
-    $('.selectPlaylist').on('change', function(){
-      $('#soundcloudiframe').remove();
-      $('#soundcloudplayer').html('');
-      desktop.app.soundcloud.embeded = false;
-      $('#window_soundcloud').show();
-      desktop.app.renderDockElement('soundcloud');
-      desktop.app.soundcloud.openWindow($(this).val());
-    });
     next();
   });
 }

@@ -73,7 +73,7 @@ function interDemonPlayerStateChange(event) {
 }
 
 function onYouTubeIframeAPIReady() {
-
+  desktop.app.mtv = desktop.app.mtv || {};
   desktop.app.mtv.player = new YT.Player('mtvPlayer', {
     height: '390',
     width: '640',
