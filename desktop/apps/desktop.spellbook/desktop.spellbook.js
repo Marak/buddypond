@@ -3,6 +3,8 @@ desktop.app.spellbook.label = "Spellbook";
 desktop.app.spellbook.spells = [
   'ebublio',
   'zalgo',
+  'babel.js',
+  'episkey',
   'rickroll',
   'alert',
   'logout',
