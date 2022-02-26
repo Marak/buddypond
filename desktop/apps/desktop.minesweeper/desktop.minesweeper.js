@@ -15,6 +15,7 @@ desktop.app.minesweeper.load = function loadminesweeperGames (params, next) {
 };
 
 desktop.app.minesweeper.openWindow = function openWindow () {
+  $('#minesweeperIframe').attr('src', 'desktop/apps/desktop.minesweeper/vendor/minesweeper.html');
   return true;
 };
 

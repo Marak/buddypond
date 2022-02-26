@@ -512,8 +512,8 @@ JDQX.closeWindow = function closeWindow (el) {
 
   // check to see if the App which made this window supports a .closeWindow() method
   // this covers Apps which are not instanced
-  if (desktop[windowId] && desktop[windowId].closeWindow) {
-    desktop[windowId].closeWindow();
+  if (desktop.app[windowId] && desktop.app[windowId].closeWindow) {
+    desktop.app[windowId].closeWindow();
   }
 
   $('#icon_dock_' + windowId).hide('fast');

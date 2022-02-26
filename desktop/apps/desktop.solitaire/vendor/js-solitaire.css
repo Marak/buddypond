@@ -1,4 +1,9 @@
 /* https://github.com/rjanjic/js-solitaire/blob/6badc1bf/src/index.scss */
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
 .game-solitaire {
   width: 660px;
   background-color: green;
