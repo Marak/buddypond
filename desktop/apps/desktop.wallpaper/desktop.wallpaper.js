@@ -51,8 +51,8 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     });
 
     $(".saveWallpaperSettings").on('click', function() {
-      desktop.app.localstorage.set('wallpaper_name', desktop.app.wallpaper.active);
-      desktop.app.localstorage.set('wallpaper_color', desktop.app.wallpaper.activeColor);
+      desktop.set('wallpaper_name', desktop.app.wallpaper.active);
+      desktop.set('wallpaper_color', desktop.app.wallpaper.activeColor);
     })
 
     $('input[name=wallpaper_opt]').on('input', function () {

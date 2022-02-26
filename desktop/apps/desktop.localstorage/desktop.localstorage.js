@@ -41,3 +41,8 @@ desktop.app.localstorage.load = function loadLocalStorage () {
 
   return true;
 };
+
+// map and export helper methods to to level desktop object
+desktop.set = desktop.app.localstorage.set;
+desktop.get = desktop.app.localstorage.get;
+desktop.removeItem = desktop.app.localstorage.removeItem;

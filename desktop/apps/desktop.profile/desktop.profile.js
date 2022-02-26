@@ -49,14 +49,14 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       let notificationsEnabled = $(this).prop("checked");
       if (notificationsEnabled) {
         Notification.requestPermission().then(function(permission) {
-          desktop.app.localstorage.set('notifications_web_enabled', true);
+          desktop.set('notifications_web_enabled', true);
           desktop.app.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
           desktop.log('Browser has granted Notification permissions');
           console.log(permission)
         });
       } else {
         // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
-        desktop.app.localstorage.set('notifications_web_enabled', false);
+        desktop.set('notifications_web_enabled', false);
       }
     });
 
@@ -67,12 +67,12 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     $('.enableAudioNotifications').on('change', function(){
       let audioNotificationsEnabled = $(this).prop("checked");
       if (audioNotificationsEnabled) {
-        desktop.app.localstorage.set('notifications_audio_enabled', true);
+        desktop.set('notifications_audio_enabled', true);
         desktop.log('Audio Notifications have been enabled.');
         $('.audioEnabled').prop('checked', true);
         $('.audioEnabled').trigger('change');
       } else {
-        desktop.app.localstorage.set('notifications_audio_enabled', false);
+        desktop.set('notifications_audio_enabled', false);
         desktop.log('Audio Notifications have been disabled.');
       }
     });
@@ -84,10 +84,10 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     $('.audioEnabled').on('change', function(){
       let audioMuted = $(this).prop("checked");
       if (audioMuted) {
-        desktop.app.localstorage.set('audio_enabled', true);
+        desktop.set('audio_enabled', true);
         desktop.log('Desktop Audio has been muted.');
       } else {
-        desktop.app.localstorage.set('audio_enabled', false);
+        desktop.set('audio_enabled', false);
         desktop.log('Desktop Audio has is back on.');
       }
     });

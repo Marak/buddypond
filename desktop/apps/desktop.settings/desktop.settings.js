@@ -14,7 +14,14 @@ desktop.app.settings.load = function loadsettings (params, next) {
 
     // Remark: Here we can add defaults for required local storage desktop.settings
     if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
-      desktop.settings.notifications_audio_enabled = true;
+      desktop.localstorage.set('notifications_audio_enabled', true);
+      // will also update -> desktop.settings.notifications_audio_enabled = true
+    }
+
+    if (typeof desktop.settings.agent_merlin_active === 'undefined') {
+      desktop.settings.agent_merlin_active = true;
+      desktop.set('agent_merlin_active', true);
+      // will also update -> desktop.settings.agent_merlin_active = true
     }
 
     desktop.app.settings.renderForm($('.desktopSettingsTable'));
@@ -61,7 +68,7 @@ desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
     el.top = $(item).css('top');
     elements.push(el);
   });
-  desktop.app.localstorage.set('desktop_icon_positions', elements);
+  desktop.set('desktop_icon_positions', elements);
 };
 
 desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
@@ -87,7 +94,7 @@ desktop.app.settings.openWindow = function openWindow () {
         console.log('setting', key, val)
         let formVal = $('#' + desktop.app.localstorage.prefix + key).val();
         console.log('formVal', '#' + desktop.app.localstorage.prefix + key, formVal)
-        desktop.app.localstorage.set(key, formVal);
+        desktop.set(key, formVal);
       }
     }
   });
