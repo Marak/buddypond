@@ -277,7 +277,7 @@ window.top.location = 'ie.html';
       .use('notifications', { defer: true })
       .use('games', { defer: true })
       .use('minesweeper', { lazy: true })
-      .use('solitaire')
+      .use('solitaire', { defer: true }) // TODO: make lazy again
 
       .ready(function(err, apps){
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')

@@ -410,14 +410,14 @@ JDQX.openWindow = function openWindow (context) {
   // check to see if the `App` is trying to load, but is currently deffered
   // if so, put a spinning icon on the mouse cursor
   // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
-  if (desktop[appName] && desktop[appName].deferredLoad) {
+  if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
     // set global cursor to spinning progress icon
     // TODO: spinning progress notifications should be per `App` and not a global state
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
     });
     // set a flag to indicate this App should open when defered loading completes
-    desktop[appName].openWhenLoaded = true;
+    desktop.app[appName].openWhenLoaded = true;
     return;
   }
 
