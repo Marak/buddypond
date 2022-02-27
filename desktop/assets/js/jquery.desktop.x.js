@@ -154,6 +154,14 @@ var JQD = (function($, window, document, undefined) {
           //return false;
         });
 
+        /*
+        d.on('click', 'a.openIDC', function(ev) {
+          var id = $(this).html()
+          desktop.ui.openWindow('interdimensionalcable', { videoId: id }, function(){
+          });
+        });
+        */
+
         // Relative or remote links?
         d.on('click', 'a', function(ev) {
           var url = $(this).attr('href');
@@ -162,6 +170,7 @@ var JQD = (function($, window, document, undefined) {
           if (url.match(/^#/)) {
             ev.preventDefault();
             ev.stopPropagation();
+            // TODO: perform routing on certain tags
           }
           else {
             $(this).attr('target', '_blank');
@@ -402,12 +411,19 @@ jQuery(document).ready(function() {
 
 // extended JDQ functions added by Marak
 var JDQX = {};
+JDQX.loading = {};
 // TODO: this should be renamed to loadWindow() ?
-JDQX.openWindow = function openWindow (appName) {
+JDQX.openWindow = function openWindow (appName, params, cb) {
   let appWindow = '#window_' + appName;
   let iconDock = '#icon_dock_' + appName
   // console.log('JDQX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
-
+  
+  if (!JDQX.loading[appName]) {
+    JDQX.loading[appName] = true;
+  } else {
+    console.log('Warning: Will not open window which is already loading.')
+    return;
+  }
   // check to see if the `App` is trying to load, but is currently deffered
   // if so, put a spinning icon on the mouse cursor
   // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
@@ -439,12 +455,12 @@ JDQX.openWindow = function openWindow (appName) {
         desktop.preloader.push(appDep);
       });
       */
-      if (desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
+      if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
         desktop.load.remoteJS([`desktop/apps/desktop.${desktop.app[appName].depends_on[0]}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
           let depApp = desktop.app[appName].depends_on[0];
-          desktop.app[depApp].load({}, function(){
+          desktop.app[depApp].load(params, function(){
             desktop
-              .use(appName)
+              .use(appName, params)
               .ready(function(err, apps){
                 desktop.log('Ready:', appName);
                 document.querySelectorAll('*').forEach(function(node) {
@@ -485,7 +501,11 @@ JDQX.openWindow = function openWindow (appName) {
     // if so, call this method
     // this is used to allow apps to have custom openWindow events 
     if (desktop.app[appName] && desktop.app[appName].openWindow) {
-      desktop.app[appName].openWindow();
+      desktop.app[appName].openWindow(params);
+    }
+    JDQX.loading[appName] = false;
+    if (typeof cb === 'function') {
+      cb(null);
     }
     
   }
@@ -620,7 +640,8 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
   // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
   // these are used for almost all applications, since most applications require N windows ( like chat )
   if (windowTypes.indexOf(windowType) === -1) {
-    JDQX.openWindow(windowType);
+    // TODO: needs to keep track of static windows as well?
+    JDQX.openWindow(windowType, context, position);
     return;
   }
 

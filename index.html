@@ -308,7 +308,7 @@ window.top.location = 'ie.html';
           if (desktop.app.soundcloud) {
             desktop.app.soundcloud.embeded = false;
           }
-          desktop.ui.openWindow('soundcloud');
+          desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
         });
 
       });

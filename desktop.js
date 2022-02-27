@@ -125,10 +125,13 @@ desktop._use = function _use (app, params) {
   }
 
   if (!desktop.app[app]) {
-    throw new Error('Invalid App Name: "' + app + '"');
+    console.log('Invalid App Name: "' + app + '"');
+    return;
   }
+
   if (!desktop.app[app].load || typeof desktop.app[app].load !== 'function') {
-    throw new Error(app + '.load is not a valid function');
+    console.log(app + '.load is not a valid function');
+    return;
   }
 
   /*
@@ -153,7 +156,7 @@ desktop._use = function _use (app, params) {
   if (params.defer) {
     // The Desktop will call `App.load()` *immediately* after the Desktop is ready
     desktop.app[app].deferredLoad = true;
-    desktop.apps.deferred.push(app);
+    desktop.apps.deferred.push({ name: app, params: params });
     return this;
   }
 
@@ -212,13 +215,13 @@ desktop._ready = function _ready (finish) {
     desktop.apps.deferred.forEach(function(app){
 
       function _open () {
-        desktop.apps.loaded.push(app);
-        desktop.ui.renderDockIcon(app);
-        desktop.app[app].deferredLoad = false;
-        if (desktop.app[app].openWhenLoaded) {
-          if (desktop.app[app].openWindow) {
-            desktop.app[app].openWindow(app);
-            let key = '#window_' + app;
+        desktop.apps.loaded.push(app.name);
+        desktop.ui.renderDockIcon(app.name);
+        desktop.app[app.name].deferredLoad = false;
+        if (desktop.app[app.name].openWhenLoaded) {
+          if (desktop.app[app.name].openWindow) {
+            desktop.app[app].openWindow(app.name);
+            let key = '#window_' + app.name;
             $(key).show();
             JQD.util.window_flat();
             $(key).show().addClass('window_stack');
@@ -227,7 +230,7 @@ desktop._ready = function _ready (finish) {
               node.style.cursor = 'pointer';
             });
           } else {
-            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
+            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow')
           }
         }
       }
@@ -235,7 +238,7 @@ desktop._ready = function _ready (finish) {
       // fire and forget them all. provide a noop function for next
       // Remark: the lazyNoop will NOT be executed for *sync* style `App.load` ( see below )
       // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      let result = desktop.app[app].load({}, function lazyNoop(){
+      let result = desktop.app[app.name].load(app.params, function lazyNoop(){
         _open();
       });
 
