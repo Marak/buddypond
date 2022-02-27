@@ -1212,3 +1212,13 @@ iframe {
   position: relative;
   float: left;
 }
+
+.navbarControl {
+  font-size: 16px;
+  cursor: pointer;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.volumeMuted {
+  display: none;
+}

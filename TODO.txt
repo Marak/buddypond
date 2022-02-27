@@ -1,3 +1,7 @@
+- refactor desktop.ui.openWindow to work with lazy loads and reopens
+- make youtube links in chat clickable to open videoplayer
+- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+- complete settings app and allow to access from UI ( no icon perhaps top left option?)
 - add babel.js spell for replacing all words with filtered words
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps

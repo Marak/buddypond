@@ -152,6 +152,11 @@ window.top.location = 'ie.html';
           <li>
             <a class="editProfileLink"  href="#">Edit Profile</a>
           </li>
+          <!--
+          <li>
+            <a class="editDesktopSettingsLink"  href="#">Edit Desktop Settings</a>
+          </li>
+          -->
           <li class="emptyMenuCell">&nbsp;</li>
           <li class="emptyMenuCell">&nbsp;</li>
           <li>
@@ -164,6 +169,10 @@ window.top.location = 'ie.html';
       </li>
     </ul>
     <span class="float_right" id="clock"></span>
+    <span class="float_right" id="volume">
+      <span class="navbarControl volumeToggle volumeFull">🔉</span>
+      <span class="navbarControl volumeToggle volumeMuted">🔇</span>
+    </span>
     <ul class="float_right">
       <li>
         <a class="menu_trigger" href="#">Buddy Pond</a>
@@ -311,6 +320,24 @@ window.top.location = 'ie.html';
           desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
         });
 
+        if (!desktop.settings.audio_enabled) {
+          $('.volumeFull').hide();
+          $('.volumeMuted').show();
+        }
+
+        $('.volumeToggle').on('click', function(){
+          if (desktop.settings.audio_enabled) {
+            desktop.set('audio_enabled', false);
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
+          } else {
+            desktop.set('audio_enabled', true);
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
+            desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
+          }
+        });
+
       });
   });
 
@@ -319,5 +346,3 @@ window.top.location = 'ie.html';
   </div>
 </body>
 </html>
-
-
