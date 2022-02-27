@@ -14,7 +14,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
 
     function interDemonPlayerStateChange(event) {
       if (event.data == 0) {
-        desktop.app.mtv.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+        desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
       }
     }
 
