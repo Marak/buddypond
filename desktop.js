@@ -17,7 +17,6 @@ desktop.apps = {};
 desktop.apps.loading = [];
 desktop.apps.loaded = [];
 desktop.apps.deferred = [];
-desktop.apps.lazy = [];
 desktop.apps.mostRecentlyLoaded = [];
 desktop.apps.loadingStartedAt = 0;
 desktop.apps.loadingEndedAt = 0;
@@ -133,7 +132,7 @@ desktop._use = function _use (app, params) {
   }
 
   /*
-     Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`
+     Buddy Pond Desktop supports both `sync` and `defer` loading loading of `App`
 
      Apps load in this order:
 
@@ -148,22 +147,8 @@ desktop._use = function _use (app, params) {
         `defer` indicates the `App` should load *immediately* after the Desktop is ready
         `defer` param should be used for Apps that are non-critical, but frequently used
 
-     2. desktop.use(appName, { lazy: true })
-
-        Async style non-blocking loads ( Desktop will be Ready before all these load )
-        `lazy` indicates the `App` should load only when the Buddy tries to open it
-        `lazy` param should be used for Apps that are non-critical or large ( such as Games )
-
-    Note: If you choose both `lazy` and `defer` options, only `lazy` will be applied.
 
   */
-
-  if (params.lazy) {
-    // The Desktop will call `App.load()` after the Buddy tries to open the `App`
-    desktop.app[app].lazyLoad = true;
-    desktop.apps.lazy.push(app);
-    return this;
-  }
 
   if (params.defer) {
     // The Desktop will call `App.load()` *immediately* after the Desktop is ready
@@ -189,6 +174,7 @@ desktop._use = function _use (app, params) {
     });
   });
 
+  // TODO: we can remove support for this style and only use *async*
   // if the result is not undefined, we can assume no callback was used in App.load
   if (typeof result !== 'undefined') {
     // Remark: dock icon is *not* rendered for sync `App.load` at the moment ( no HTML window has been created )

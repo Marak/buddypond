@@ -422,86 +422,52 @@ JDQX.openWindow = function openWindow (appName) {
     return;
   }
 
-  // if the `App` has `lazy` set, we need to put a spinning icon on the mouse cursor...
-  // ...and then call this app's `App.load()` function and wait until it's ready...
-  // once the `App` is ready, we open it's window
-  if (desktop.app[appName] && desktop.app[appName].lazyLoad && desktop.apps.lazy.indexOf(appName) !== -1) {
-    // remove this `App` from the array of registered lazy apps
-    desktop.apps.lazy = desktop.apps.lazy.filter(function(app){
-      if (app === appName) {
-        return false;
-      }
-      return true;
-    });
-    // set global cursor to spinning progress icon
+  // this window appName has no associated apps waiting to be loaded,
+  // check to see if there is an associated window_* id to show,
+  // if not, assume user is trying to load an app which is not loaded yet
+  let windowExists = $(appWindow).length;
+  if (windowExists === 0) {
+
     // TODO: spinning progress notifications should be per `App` and not a global state
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
     });
 
-    // TODO: check if `App.depends_on` has required Apps that *must* be loaded first
-    desktop.app[appName].load({}, function ready (){
-      _windowLoaded();
-    })
-
-    function _windowLoaded () {
-      desktop.apps.loaded.push(appName);
-      desktop.ui.renderDockIcon(appName);
-      JDQX.openWindow(appName)
-      document.querySelectorAll('*').forEach(function(node) {
-        node.style.cursor = 'pointer';
+    desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
+      /* TODO: support N app dep, currently hard-coded to 1
+      desktop.app[appName].depends_on.forEach(function(appDep){
+        desktop.preloader.push(appDep);
       });
-      _showWindow();
-    }
-    
-  } else {
-    // this window appName has no associated apps waiting to be loaded,
-    // check to see if there is an associated window_* id to show,
-    // if not, assume user is trying to load an app which is not loaded yet
-    let windowExists = $(appWindow).length;
-    if (windowExists === 0) {
-
-      // TODO: spinning progress notifications should be per `App` and not a global state
-      document.querySelectorAll('*').forEach(function(node) {
-        node.style.cursor = 'progress';
-      });
-
-      desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
-        /* TODO: support N app dep, currently hard-coded to 1
-        desktop.app[appName].depends_on.forEach(function(appDep){
-          desktop.preloader.push(appDep);
-        });
-        */
-        if (desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
-          desktop.load.remoteJS([`desktop/apps/desktop.${desktop.app[appName].depends_on[0]}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
-            let depApp = desktop.app[appName].depends_on[0];
-            desktop.app[depApp].load({}, function(){
-              desktop
-                .use(appName)
-                .ready(function(err, apps){
-                  desktop.log('Ready:', appName);
-                  document.querySelectorAll('*').forEach(function(node) {
-                    node.style.cursor = 'pointer';
-                  });
-                  _showWindow();
+      */
+      if (desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
+        desktop.load.remoteJS([`desktop/apps/desktop.${desktop.app[appName].depends_on[0]}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+          let depApp = desktop.app[appName].depends_on[0];
+          desktop.app[depApp].load({}, function(){
+            desktop
+              .use(appName)
+              .ready(function(err, apps){
+                desktop.log('Ready:', appName);
+                document.querySelectorAll('*').forEach(function(node) {
+                  node.style.cursor = 'pointer';
                 });
-            })
-          });
-        } else {
-          desktop
-            .use(appName)
-            .ready(function(err, apps){
-              desktop.log('Ready:', appName);
-              document.querySelectorAll('*').forEach(function(node) {
-                node.style.cursor = 'pointer';
+                _showWindow();
               });
-              _showWindow();
+          })
+        });
+      } else {
+        desktop
+          .use(appName)
+          .ready(function(err, apps){
+            desktop.log('Ready:', appName);
+            document.querySelectorAll('*').forEach(function(node) {
+              node.style.cursor = 'pointer';
             });
-        }
-      })
-    } else {
-      _showWindow();
-    }
+            _showWindow();
+          });
+      }
+    })
+  } else {
+    _showWindow();
   }
 
   function _showWindow() {
