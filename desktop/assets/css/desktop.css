@@ -1222,3 +1222,8 @@ iframe {
 .volumeMuted {
   display: none;
 }
+
+.editProfileLinkDisabled {
+  color: #CCC;
+  opacity: 0.44;
+}

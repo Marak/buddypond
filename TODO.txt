@@ -1,5 +1,9 @@
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
+- fix joining ponds, figure out openWindow problem???
+  - race condition with login success?
+  
+
 - mirror should close camera on window close 
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps

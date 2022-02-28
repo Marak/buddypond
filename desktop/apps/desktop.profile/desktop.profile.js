@@ -11,9 +11,17 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       return false;
     });
 
+    if (!buddypond.qtokenid) {
+      $('.editProfileLink').addClass('editProfileLinkDisabled')
+    }
+
     $('.editProfileLink').on('click', function(){
-      $(this).closest('.menu').hide();
-      desktop.app.profile.openWindow();
+      if (buddypond.qtokenid) {
+        $(this).closest('.menu').hide();
+        desktop.app.profile.openWindow();
+      } else {
+        
+      }
       return false;
     });
 

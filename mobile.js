@@ -2,6 +2,8 @@ let desktop = {};
 desktop.log = console.log;
 desktop.app = { mtv: {}};
 desktop.settings = {};
+desktop.settings.wallpaper_color = 'green';
+desktop.settings.wallpaper_name = 'matrix';
 desktop.load = function () {
 
   $('.icon').on('click', function(){
@@ -29,3 +31,5 @@ desktop.load.remoteAppHtml = function noop (params, cb) {
 desktop.load.remoteAssets = function noop (params, cb) {
   cb(null);
 }
+
+desktop.on = function noop () {}

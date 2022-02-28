@@ -127,7 +127,10 @@ desktop.app.login.success = function desktopLoginSuccess () {
   }
   $('.connection_packets_sent').html("1");
   $('.connection_packets_recieved').html("1");
-
+  $('.editProfileLink').show();
+  
+  $('.editProfileLink').html('Edit Profile');
+  $('.editProfileLink').removeClass('editProfileLinkDisabled');
   $('.loggedIn').show();
 
   // TODO: move this is a separate function
