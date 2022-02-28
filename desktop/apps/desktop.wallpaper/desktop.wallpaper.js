@@ -68,12 +68,8 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
 
     $('input[name=wallpaper_opt]').on('input', function () {
       var radioValue = $('input[name=wallpaper_opt]:checked').val();
-
-      $('.simpleColorDisplay').trigger('click');
-
       // update desktop.settings.wallpaper_name
       desktop.set('wallpaper_name', radioValue);
-
     });
 
     $( window ).resize(function(e) {
