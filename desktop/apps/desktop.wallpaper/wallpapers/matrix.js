@@ -5,7 +5,6 @@ var drops = []; // matrix specific, can move, scoped outside function to perserv
 
 desktop.app.wallpaper.wallpapers.matrix.start = function () {
 
-
   var c, ctx;
   c = document.getElementById("c");
   ctx = c.getContext("2d");
@@ -71,7 +70,7 @@ desktop.app.wallpaper.wallpapers.matrix.resize = function () {
 }
 
 desktop.app.wallpaper.wallpapers.matrix.stop = function () {
-  
+  clearInterval(desktop.app.wallpaper.wallpapers.matrix.canvasTimer);
 }
 
 desktop.app.wallpaper.wallpapers.matrix.changeColor = function (color) {

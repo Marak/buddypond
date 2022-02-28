@@ -15,6 +15,11 @@ desktop.app.settings.load = function loadsettings (params, next) {
     //
     // BEGIN SET DEFAULTS FOR ALL DESKTOP SETTINGS
     //
+    if (typeof desktop.settings.audio_enabled === 'undefined') {
+      desktop.set('audio_enabled', true);
+      // will also update -> desktop.settings.audio_enabled = true
+    }
+
     if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
       desktop.set('notifications_audio_enabled', true);
       // will also update -> desktop.settings.notifications_audio_enabled = true
@@ -77,6 +82,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
       if (!yes) {
         return;
       }
+      desktop.settings = {};
       localStorage.clear();
       document.location = 'index.html';
     });

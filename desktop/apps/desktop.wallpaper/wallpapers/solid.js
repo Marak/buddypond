@@ -20,5 +20,5 @@ desktop.app.wallpaper.wallpapers.solid.start = function () {
   desktop.app.wallpaper.wallpapers.solid.draw(desktop.settings.wallpaper_color);
 }
 
-desktop.app.wallpaper.wallpapers.solid.pause = function () {
-}
+desktop.app.wallpaper.wallpapers.solid.stop = function () {}
+desktop.app.wallpaper.wallpapers.solid.pause = function () {}

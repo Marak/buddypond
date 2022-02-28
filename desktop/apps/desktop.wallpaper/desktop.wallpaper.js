@@ -25,7 +25,23 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
 
     desktop.app.wallpaper.start();
 
-    desktop.on('desktop.settings.wallpaper_color', 'update-solid-wallpaper-bg-color', function(color){
+    desktop.on('desktop.settings.wallpaper_name', 'update-wallpaper-active', function(wallpaperName){
+      // stop the current wallpaper
+      desktop.app.wallpaper.stop();
+      // swap the active wallpaper
+      desktop.app.wallpaper.active = wallpaperName;
+      // start the new one
+      desktop.app.wallpaper.start();
+      
+      // TODO: support N wallpapers ( use select drop down? )
+      if (desktop.app.wallpaper.active === 'matrix') {
+        $('#wallPaperRadioMatrix').prop('checked', true);
+      } else {
+        $('#wallPaperRadioSolid').prop('checked', true);
+      }
+    });
+
+    desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function(color){
       desktop.app.wallpaper.wallpapers[ desktop.app.wallpaper.active].changeColor(color);
     });
 
@@ -55,17 +71,8 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
 
       $('.simpleColorDisplay').trigger('click');
 
-      // stop the current wallpaper
-      desktop.app.wallpaper.stop();
-
-      // swap the active wallpaper
-      desktop.app.wallpaper.active = radioValue;
-
       // update desktop.settings.wallpaper_name
       desktop.set('wallpaper_name', radioValue);
-
-      // start the new one
-      desktop.app.wallpaper.start();
 
     });
 
@@ -136,6 +143,7 @@ desktop.app.wallpaper.pause = function pauseWallpaper () {
 }
 
 desktop.app.wallpaper.stop = function () {
-  desktop.app.wallpaper.pause()
+  desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].stop();
+  //desktop.app.wallpaper.pause()
   desktop.app.wallpaper.clear()
 }
