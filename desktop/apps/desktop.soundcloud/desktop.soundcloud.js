@@ -14,6 +14,7 @@ desktop.app.soundcloud.load = function loadSoundcloud (params, next) {
 desktop.app.soundcloud.embeded = false;
 
 desktop.app.soundcloud.openWindow = function openWindow (params) {
+  params = params || {};
   params.playlistID = params.playlistID || "1397493787"
   if (!desktop.app.soundcloud.embeded) {
     desktop.app.soundcloud.embeded = true;
