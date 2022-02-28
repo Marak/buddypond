@@ -166,8 +166,9 @@ desktop.app.login.success = function desktopLoginSuccess () {
   // TODO: switch to openWindow API, was causing race condition with loader
   //desktop.ui.openWindow('buddylist');
   //desktop.ui.openWindow('pond');
-  $('#window_buddylist').show();
   $('#window_pond').show();
+  $('#window_buddylist').show();
+  desktop.app.pond.openWindow('Lily');
 
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){

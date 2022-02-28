@@ -275,6 +275,7 @@ function checkForIncomingVoiceCall (data) {
 
 function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
 
+  $('#window_buddylist').show();
   desktop.cache.buddyListDataCache = {};
 
   let buddies = Object.keys(data.buddylist);

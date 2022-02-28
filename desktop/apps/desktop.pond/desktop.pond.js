@@ -76,7 +76,6 @@ desktop.app.pond.load = function loadPond (params, next) {
       $('.activeTextArea').removeClass('activeTextArea');
       e.target.classList.add('activeTextArea')
     });
-
     next();
   });
 

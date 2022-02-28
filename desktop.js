@@ -227,7 +227,7 @@ desktop._ready = function _ready (finish) {
 
       if (desktop.apps.loaded.indexOf(app) !== -1) {
         desktop.log("Cached", 'App.' + app);
-        desktop.ui.openWindow(app);
+        // desktop.ui.openWindow(app);
         finish(null, desktop.loaded);
         return this;
       }
