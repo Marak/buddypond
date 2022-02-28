@@ -12,8 +12,12 @@ desktop.app.interdimensionalcable.load = function (params, next) {
 
     function interDemonPlayerReady(event) {
       if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
+        $('.orbHolder').hide();
+        $('#window_interdimensionalcable').css('height', 440);
         desktop.app.interdimensionalcable.player.playVideo(desktop.app.interdimensionalcable.activeVideo);
       } else {
+        $('.orbHolder').show();
+        $('#window_interdimensionalcable').css('height', 590);
         desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
       }
       next();
@@ -33,6 +37,9 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     if (params.videoId) {
       desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
       desktop.app.interdimensionalcable.activeVideo = params.videoId;
+      $('#window_interdimensionalcable').css('height', 440);
+    } else {
+      $('#window_interdimensionalcable').css('height', 590);
     }
 
     // if a playlist is provided, loop the playlist forever
@@ -54,8 +61,6 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     });
 
     $('#window_interdimensionalcable').css('width', 644);
-    $('#window_interdimensionalcable').css('height', 590);
-
     $('#window_interdimensionalcable').css('left', 377);
     $('#window_interdimensionalcable').css('top', 40);
   });
@@ -82,11 +87,15 @@ desktop.app.interdimensionalcable.openWindow = function (params) {
   if (params.videoId) {
     desktop.app.interdimensionalcable.activeVideo = params.videoId;
     desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
+    $('#window_interdimensionalcable').css('height', 440);
+    $('.orbHolder').hide();
     if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.loadVideoById) {
       desktop.app.interdimensionalcable.player.loadVideoById(desktop.app.interdimensionalcable.activeVideo);
     }
   } else {
     desktop.app.interdimensionalcable.mode = 'playlist';
+    $('#window_interdimensionalcable').css('height', 590);
+    $('.orbHolder').show();
     desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
   }
 }
