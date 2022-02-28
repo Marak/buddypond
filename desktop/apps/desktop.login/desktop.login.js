@@ -19,7 +19,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks on top left menu, focus on login form
     $('.loginLink').on('click', function(){
-      $('#window_login').show();
+      desktop.ui.openWindow('login');
       $('#buddyname').focus();
     });
 
@@ -87,6 +87,7 @@ desktop.app.login.auth = function authDesktop (buddyname) {
 
     if (data.success) {
       desktop.log('Authentication successful');
+      // TODO: desktop.set()
       localStorage.setItem("qtokenid", data.qtokenid);
       localStorage.setItem("me", buddypond.me);
       buddypond.qtokenid = data.qtokenid;
@@ -118,8 +119,12 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.desktopDisconnected').hide();
   desktop.ui.renderDockElement('buddylist');
   desktop.ui.removeDockElement('login');
-  let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
-  $('.connection_ctime').html(dateString)
+  try {
+    let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
+    $('.connection_ctime').html(dateString)
+  } catch (err) {
+    console.log('Warning: DateFormat was not defined, this should not happend', err);
+  }
   $('.connection_packets_sent').html("1");
   $('.connection_packets_recieved').html("1");
 
@@ -158,8 +163,8 @@ desktop.app.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-  $('#window_pond').show();
-  desktop.app.pond.openWindow();
+  desktop.ui.openWindow('buddylist');
+  desktop.ui.openWindow('pond');
 
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){

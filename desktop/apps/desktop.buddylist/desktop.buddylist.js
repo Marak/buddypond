@@ -492,7 +492,6 @@ desktop.app.updateBuddyList = function updateBuddyList () {
       // TODO: move this to buddy pond scope
       $('.buddy_pond_not_connected').hide();
       $('.buddyListHolder').show();
-      $('#window_buddylist').show();
 
       setTimeout(function(){
         desktop.app.updateBuddyList();
