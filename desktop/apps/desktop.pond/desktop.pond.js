@@ -196,6 +196,21 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     }
     $('.chat_messages', windowId).append(str);
     $('.message', windowId).last().text(message.text)
+
+    // take the clean text that was just rendered for the last message and check for special embed links
+    let cleanText = $('.message', windowId).last().html();
+    let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
+    if (searchYouTube !== -1) {
+      // if a youtube link was found, replace it with a link to open IDC with the video id
+      let id = cleanText.substr(searchYouTube + 32, 11);
+      let isValid = desktop.utils.isValidYoutubeID(id);
+      if (isValid) {
+        let str = 'https://www.youtube.com/watch?v=' + id;
+        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+        $('.message', windowId).last().html(cleanText);
+      }
+    }
+
     desktop.messages._processed.push(message.uuid);
   });
 

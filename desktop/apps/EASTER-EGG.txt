@@ -29,6 +29,10 @@ Ideas for community apps:
   - Nyan cat wallpaper
   - http://sirxemic.github.io/jquery.ripples/
   - conrads game of life background
+  - CSS animation - swimming  ocotocat -> https://codepen.io/codypearce/pen/VwYOGzq
+  - CSS animation - pond drip drops    -> https://codepen.io/Coderesting/pen/RwwLPZM
+  - CSS animation - simple waves.      -> https://codepen.io/goodkatz/pen/LYPGxQz?editors=1100
+  - CSS animation - raindrops          -> https://codepen.io/jh3y/pen/WyNdMG
 
 - Sound FX Board
   - Use midi fighter button pad with sound fx

@@ -158,11 +158,15 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       e.target.classList.add('activeTextArea');
     });
 
-    new EmojiPicker({
-      trigger: emojiTriggers,
-      closeButton: true,
-      //specialButtons: green
-    });
+    try {
+      new EmojiPicker({
+        trigger: emojiTriggers,
+        closeButton: true,
+        //specialButtons: green
+      });
+    } catch (err) {
+      console.log('Warning: EmojiPicker was not ready. This should not happen', err);
+    }
     next();
   });
 

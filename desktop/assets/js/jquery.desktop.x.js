@@ -154,13 +154,11 @@ var JQD = (function($, window, document, undefined) {
           //return false;
         });
 
-        /*
         d.on('click', 'a.openIDC', function(ev) {
-          var id = $(this).html()
-          desktop.ui.openWindow('interdimensionalcable', { videoId: id }, function(){
-          });
+          let id = $(this).html()
+          let videoId = $(this).data('videoid')
+          desktop.ui.openWindow('interdimensionalcable', { videoId: videoId });
         });
-        */
 
         // Relative or remote links?
         d.on('click', 'a', function(ev) {
@@ -317,6 +315,7 @@ var JQD = (function($, window, document, undefined) {
           }
         });
 
+        // this needs to re-trigger on re-renders
         $('table.data').each(function() {
           // Add zebra striping, ala Mac OS X.
           $(this).find('tbody tr:odd').addClass('zebra');
@@ -486,7 +485,7 @@ JDQX.openWindow = function openWindow (appName, params, cb) {
     _showWindow();
   }
 
-  function _showWindow() {
+  function _showWindow () {
     // Show the taskbar button.
     if ($(iconDock).is(':hidden')) {
       $(iconDock).remove().appendTo('#dock');
@@ -507,7 +506,6 @@ JDQX.openWindow = function openWindow (appName, params, cb) {
     if (typeof cb === 'function') {
       cb(null);
     }
-    
   }
 };
 
@@ -619,6 +617,7 @@ desktop.ui.openWindows = {
 desktop.ui.windowPool = {}
 desktop.ui.windowPool['buddy_message'] = [];
 desktop.ui.windowPool['pond_message'] = [];
+desktop.ui.windowTypes = ['buddy_message', 'pond_message'];
 
 //
 //
@@ -632,14 +631,12 @@ desktop.ui.windowPool['pond_message'] = [];
 // use $(window_id).hide() or $(window_id).show() instead
 //
 //
-
 desktop.ui.openWindow = function openWindow (windowType, context, position) {
 
-  let windowTypes = ['buddy_message', 'pond_message']
 
   // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
   // these are used for almost all applications, since most applications require N windows ( like chat )
-  if (windowTypes.indexOf(windowType) === -1) {
+  if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
     // TODO: needs to keep track of static windows as well?
     JDQX.openWindow(windowType, context, position);
     return;
@@ -772,6 +769,15 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
 // This is to ensure UI is only polling for messages on windows that are actually open
 //
 desktop.ui.closeWindow = function openWindow (windowType, context) {
+
+  // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
+  // these are used for almost all applications, since most applications require N windows ( like chat )
+  if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
+    // TODO: needs to keep track of static windows as well?
+    JDQX.closeWindow($('#window_' + windowType));
+    return;
+  }
+
   desktop.ui.openWindows = desktop.ui.openWindows || {};
   desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};
 

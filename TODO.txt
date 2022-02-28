@@ -1,14 +1,6 @@
-- complete settings app and allow to access from UI ( no icon perhaps top left option?)
-
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
-
-
-- refactor buddylist-updateBuddyList into multiple functions
-- refactor desktop.ui.openWindow to work with lazy loads and reopens
-
 - mirror should close camera on window close 
-- make youtube links in chat clickable to open videoplayer
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
@@ -61,6 +53,11 @@ PUSHED to post launch
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - refactor desktop.ui.openWindow to work with lazy loads and reopens
+X - refactor buddylist-updateBuddyList into multiple functions
+X - make youtube links in chat clickable to open videoplayer
+X - complete settings app and allow to access from UI ( no icon perhaps top left option?)
 
 X - add babel.js spell for replacing all words with filtered words
 X - refactor wallpaper app so that wallpapers are separate logic that just export canvas handlers

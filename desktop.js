@@ -526,7 +526,7 @@ desktop._events = {};
     desktop.on(eventName, label, fn)
 
     `eventName` is the name of the event which will be emitted
-    `label` is arbtitrary unique string that describes
+    `label` is arbtitrary unique string that describes the action which will happen when the event emits
 
     desktop.on('alarm', 'play-nyan-cat', function doStuff (data){
       // your custom code here
@@ -552,16 +552,6 @@ desktop._events = {};
     **Unbind single handler from event**
 
     desktop.unbind(eventName, label)
-
-    // when registering an event emitter, you *must* specify a `eventLabel` label
-    // this can be used later to remove the custom eventHandler by name
-    desktop.on('desktop.settings', 'update-settings-table', function eventHandler (){
-      // re-render HTML
-    });
-
-    desktop.on('desktop.settings', 'update-nav-bar-volume', function eventHandler (){
-      // re-render HTML volume tab
-    });
 
 */
 
@@ -632,4 +622,18 @@ desktop.utils.asyncApplyEach = function asyncApplyEach (fns, data, finish) {
       }
     })
   })
+}
+
+desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
+  /* 
+    youtube id can only have: 
+    - Lowercase Letters (a-z) 
+    - Uppercase Letters (a-z) 
+    - Numbers (0-9)
+    - Underscores (_)
+    - Dashes (-)
+  */
+  const res = /^[a-zA-Z0-9_\-]+$/.exec(str);
+  const valid = !!res;
+  return valid;
 }
