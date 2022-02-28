@@ -3,7 +3,7 @@
     <div class="window_top">
       <span class="float_left">
         <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
-        Local Storage Settings
+        Desktop Settings
       </span>
       <span class="float_right">
         <a href="#" class="window_min"></a>
@@ -13,18 +13,43 @@
     </div>
     <div class="abs window_content">
       <div class="window_main">
-        <table class="desktopSettingsTable table data">
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </table>
-        <br/>
-        <button name="saveDesktopSettings" class="saveDesktopSettings desktopButton">Save Desktop Settings</button>
-        <button name="restoreDesktopSettings" class="restoreDesktopSettings desktopButton">Restore Original Desktop Settings</button>
-        <h2>Remark: Reloading the browser window is required for most of these settings to take affect</h2>
-        <p>This is a representation of all Desktop Settings that are stored in Localstorage</p>
-        <h3>Most of these settings can be adjust elsewhere in the User Interface.</h3>
+        
+        <div id="settingsTabs">
+          <ul>
+            <li><a href="#tabs-1">All Settings</a></li>
+            <!--
+            <li><a href="#tabs-2">Audio Settings</a></li>
+            <li><a href="#tabs-3">Notification Settings</a></li>
+            -->
+          </ul>
+          <div id="tabs-1">
+        
+            <p>These are the *all* the settings your Desktop is currently using.</p>
+            <p>You shouldn't have to use this form. All of these settings can be updated somewhere else in the Desktop. For example, you can control your Audio settings in the upper right nav bar. </p>
+            <form class="updateDesktopSettingsForm">
+              <table class="desktopSettingsTable table data">
+                <tbody>
+                  <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                  </tr>
+                </tbody>
+              </table>
+              <br/>
+              <button name="saveDesktopSettings" class="saveDesktopSettings desktopButton">Save Desktop Settings</button>
+              <button name="restoreDesktopSettings" class="restoreDesktopSettings desktopButton">Restore Original Desktop Settings</button>
+            </form>
+
+            <h2>Remark: Reloading the browser window is required for most of these settings to take affect</h2>
+            <h3>Most of these settings can be adjust elsewhere in the User Interface.</h3>
+            
+          </div>
+          <div id="tabs-2">
+          </div>
+          <div id="tabs-3">
+          </div>
+        </div>
+          
       </div>
     </div>
     <div class="abs window_bottom">

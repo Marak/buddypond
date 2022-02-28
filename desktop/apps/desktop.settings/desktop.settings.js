@@ -24,9 +24,52 @@ desktop.app.settings.load = function loadsettings (params, next) {
       // will also update -> desktop.settings.agent_merlin_active = true
     }
 
-    desktop.app.settings.renderForm($('.desktopSettingsTable'));
+    desktop.on('desktop.settings', 'update-settings-form', function(){
+      desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
+    });
+
     desktop.ui.setDesktopIconPositions();
-    
+
+
+    desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
+
+    function saveSettings () {
+      // serialize form and apply each setting to localstorage
+      // this will also set the desktop.settings scope
+      let updated = {};
+      for (let key in desktop.settings) {
+        let val = desktop.settings[key];
+        let formVal = $('#' + desktop.app.localstorage.prefix + key).val();
+        try {
+          updated[key] = JSON.parse(formVal);
+        } catch (err) {
+          updated[key] = formVal;
+        }
+      }
+      desktop.set(updated);
+    }
+
+    // cancel the form submit
+    $('.updateDesktopSettingsForm').on('submit', function(){
+      saveSettings();
+      return false;
+    })
+
+    $('.editDesktopSettingsLink').on('click', function(){
+      $(this).closest('.menu').hide();
+      desktop.ui.openWindow('settings');
+      return false;
+    });
+
+    $('.restoreDesktopSettings').on('click', function(){
+      let yes = confirm('Are you certain?\n\nThis will restore all Desktop Settings to their original values and log you out.');
+      if (!yes) {
+        return;
+      }
+      localStorage.clear();
+      document.location = 'index.html';
+    });
+
     next();
   });
 
@@ -35,8 +78,9 @@ desktop.app.settings.load = function loadsettings (params, next) {
 // Remark: _ scope is used here since we assume all settings.* properties are actual settings 
 //.          ( except settings.load, settings.openWindow, etc)
 desktop.app.settings.renderForm = function renderDesktopSettingsForm (el) {
-
-  for (let key in desktop.settings) {
+  $('.desktopSettingsTable tbody').html('');
+  let keys = Object.keys(desktop.settings).sort();
+  keys.forEach(function(key){
     let val = desktop.settings[key];
     let actualKey = desktop.app.localstorage.prefix + key;
     
@@ -44,16 +88,19 @@ desktop.app.settings.renderForm = function renderDesktopSettingsForm (el) {
       //val = JSON.stringify(val, true, 2);
     } else {
       el.append(`
-              <tr>
-                <th>${key}:</th>
-                <th><input name="${actualKey}" id="${actualKey}" type="text" value="${val}"/></th>
-              </tr>
-        `);
+          <tr>
+            <td>${key}:</td>
+            <td><input name="${actualKey}" id="${actualKey}" type="text" value="${val}"/></td>
+          </tr>
+      `);
     }
-    
-    
-  }
-  
+  })
+
+  $('.desktopSettingsTable').each(function() {
+    // Add zebra striping, ala Mac OS X.
+    $(this).find('tbody tr:odd').addClass('zebra');
+  });
+
 }
 
 desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
@@ -82,32 +129,6 @@ desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
 };
 
 desktop.app.settings.openWindow = function openWindow () {
-  $('.desktopSettingsTable').html('');
-  desktop.app.settings.renderForm($('.desktopSettingsTable'));
-
-  $('.saveDesktopSettings').on('click', function(){
-    // serialize form and apply each setting to localstorage
-    // this will also set the desktop.settings scope
-    for (let key in desktop.settings) {
-      let val = desktop.settings[key];
-      if (typeof val === 'string') {
-        console.log('setting', key, val)
-        let formVal = $('#' + desktop.app.localstorage.prefix + key).val();
-        console.log('formVal', '#' + desktop.app.localstorage.prefix + key, formVal)
-        desktop.set(key, formVal);
-      }
-    }
-  });
-
-  $('.restoreDesktopSettings').on('click', function(){
-    let yes = confirm('Are you certain?\n\nThis will restore all Desktop Settings to their original values and log you out.');
-    if (!yes) {
-      return;
-    }
-    localStorage.clear();
-    document.location = 'index.html';
-  });
-  
 
   return true;
 };

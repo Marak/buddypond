@@ -152,12 +152,9 @@ window.top.location = 'ie.html';
           <li>
             <a class="editProfileLink"  href="#">Edit Profile</a>
           </li>
-          <!--
           <li>
             <a class="editDesktopSettingsLink"  href="#">Edit Desktop Settings</a>
           </li>
-          -->
-          <li class="emptyMenuCell">&nbsp;</li>
           <li class="emptyMenuCell">&nbsp;</li>
           <li>
             <a class="loginLink" href="#">Login</a>
@@ -328,10 +325,16 @@ window.top.location = 'ie.html';
         $('.volumeToggle').on('click', function(){
           if (desktop.settings.audio_enabled) {
             desktop.set('audio_enabled', false);
+          } else {
+            desktop.set('audio_enabled', true);
+          }
+        });
+
+        desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function(){
+          if (!desktop.settings.audio_enabled) {
             $('.volumeFull').hide();
             $('.volumeMuted').show();
           } else {
-            desktop.set('audio_enabled', true);
             $('.volumeFull').show();
             $('.volumeMuted').hide();
             desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');

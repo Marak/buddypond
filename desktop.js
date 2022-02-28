@@ -512,6 +512,96 @@ desktop.messages.process = function processMessages (apps) {
   }
 }
 
+desktop._events = {};
+
+
+/*
+
+    ## Event Emitters
+
+    The Desktop support event emitters with the following methods:
+
+    **Register a new event**
+
+    desktop.on(eventName, label, fn)
+
+    `eventName` is the name of the event which will be emitted
+    `label` is arbtitrary unique string that describes
+
+    desktop.on('alarm', 'play-nyan-cat', function doStuff (data){
+      // your custom code here
+      console.log(data);
+    });
+
+    **Emitting data to that event**
+    desktop.emit(eventName, data)
+
+    `eventName` is the name of the event to emit to
+    `data` is any JSON data
+
+    // will trigger:
+    desktop.emit('alarm', {
+      videoId: 123,
+      autoplay: true
+    });
+
+    **Unbind all handlers from event**
+
+    desktop.unbind(eventName)
+
+    **Unbind single handler from event**
+
+    desktop.unbind(eventName, label)
+
+    // when registering an event emitter, you *must* specify a `eventLabel` label
+    // this can be used later to remove the custom eventHandler by name
+    desktop.on('desktop.settings', 'update-settings-table', function eventHandler (){
+      // re-render HTML
+    });
+
+    desktop.on('desktop.settings', 'update-nav-bar-volume', function eventHandler (){
+      // re-render HTML volume tab
+    });
+
+*/
+
+// when registering an event emitter, you *must* specify a `eventLabel` label
+// this can be used later to remove the custom eventHandler by name
+desktop.on = function desktopEventEmitterOn (eventName, eventLabel, fn) {
+  desktop._events[eventName] = desktop._events[eventName] || [];
+  // console.log('adding event', eventName, eventLabel, fn)
+  desktop._events[eventName].push({
+    eventLabel: eventLabel,
+    fn: fn
+  });
+};
+
+desktop.emit = function desktopEventEmitterEmit (eventName, data) {
+  // find all listening events
+  if (desktop._events[eventName] && desktop._events[eventName].length) {
+    desktop._events[eventName].forEach(function(_event){
+      // console.log('calling event', eventName, _event.eventLabel, data)
+      _event.fn(data);
+    })
+  }
+};
+
+desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
+  if (typeof eventLabel === 'undefined') {
+    desktop._events[eventName] = [];
+    // remove all events for eventName
+    return;
+  }
+  if (desktop._events[eventName] &&  desktop._events[eventName].length) {
+     desktop._events[eventName] = desktop._events[eventName].filter(function(_event){
+       if (_event.eventLabel === eventLabel) {
+         return false;
+       }
+       return true;
+     })
+  }
+};
+
 desktop.utils = {};
 
 /* untested, made the wrong one oops

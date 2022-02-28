@@ -1,7 +1,16 @@
-- refactor desktop.ui.openWindow to work with lazy loads and reopens
-- make youtube links in chat clickable to open videoplayer
-- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 - complete settings app and allow to access from UI ( no icon perhaps top left option?)
+
+- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+
+
+- refactor wallpaper app so that wallpapers are separate logic that just export canvas handlers
+- move wallpaper setting into desktop.settings app tab
+
+- refactor buddylist-updateBuddyList into multiple functions
+- refactor desktop.ui.openWindow to work with lazy loads and reopens
+
+
+- make youtube links in chat clickable to open videoplayer
 - add babel.js spell for replacing all words with filtered words
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps
@@ -9,9 +18,11 @@
 - add away / watching status based on client is visible API
 - play sound alert if buddypond.me is mentioned in chat
 - add friend requests to automatons that autoaccept
-- add mute / desktop volume control to top nav
-  - have youtube and soundcloud players respect mute / volume levels
+
+1/2 - add mute / desktop volume control to top nav
+    - have youtube and soundcloud players respect mute / volume levels
     - not hard...i think...
+
 - complete v1 camera app
 
 YOUTUBE LIVE EMBED

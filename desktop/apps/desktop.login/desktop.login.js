@@ -4,6 +4,7 @@ desktop.app.login.label = "Login";
 desktop.app.login.load = function loadDesktopLogin (params, next) {
 
   desktop.load.remoteAssets([
+    'desktop/assets/js/jquery.dateformat.js',
     'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
