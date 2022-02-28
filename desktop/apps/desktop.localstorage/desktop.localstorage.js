@@ -44,7 +44,7 @@ desktop.app.localstorage.removeItem = function removeLocalStorage (key) {
   localStorage.removeItem(desktop.app.localstorage.prefix + key);
 }
 
-desktop.app.localstorage.load = function loadLocalStorage () {
+desktop.app.localstorage.load = function loadLocalStorage (param, next) {
   // boot all localstorage data into local settings
   for (var key in localStorage){
     if (key.search(desktop.app.localstorage.prefix) !== -1) {
@@ -56,8 +56,7 @@ desktop.app.localstorage.load = function loadLocalStorage () {
       }
     }
   }
-
-  return true;
+  next();
 };
 
 // map and export helper methods to to level desktop object

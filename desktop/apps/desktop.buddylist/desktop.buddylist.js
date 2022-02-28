@@ -509,81 +509,83 @@ desktop.app.buddylist.lastNotified = 0;
 
 desktop.app.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
 
-    // buddypond.pondGetMessages(subscribedBuddies.toString(), function(err, data){
+  // console.log('desktop.app.buddylist.processMessages', data);
+  //desktop.cache.buddyMessageCache[str] = true;
+  let html = {};
+  // TODO: this should apply per conversation, not global for all users
+  data.messages.forEach(function(message){
+    // route message based on incoming type / format
+    // default message.type is undefined and defaults to "text" type
 
-    // console.log('desktop.app.buddylist.processMessages', data);
-    //desktop.cache.buddyMessageCache[str] = true;
-    let html = {};
-    // TODO: this should apply per conversation, not global for all users
-    data.messages.forEach(function(message){
-      // route message based on incoming type / format
-      // default message.type is undefined and defaults to "text" type
+    if (message.type === 'pond') {
+      return;
+    }
 
-      if (message.type === 'pond') {
+    let buddyKey = message.from;
+    if (buddyKey === buddypond.me) {
+      buddyKey = message.to;
+    }
+
+    // first, check if this is an Agent message which gets processed first
+    if (message.type === 'agent') {
+      if (desktop.app.spellbook[message.text]) {
+        desktop.app.spellbook[message.text]();
         return;
       }
-
-      let buddyKey = message.from;
-      if (buddyKey === buddypond.me) {
-        buddyKey = message.to;
-      }
-
-      // first, check if this is an Agent message which gets processed first
-      if (message.type === 'agent') {
-        if (desktop.app.spellbook[message.text]) {
-          desktop.app.spellbook[message.text]();
-          return;
-        }
-      }
-
-      //
-      // New messages are coming in from server, we'll need to render them
-      //
-      // Get all the open buddy_message windows
-      let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
-      // Find the specific window which is open for this buddy
-      let windowId = '#' + openBuddyWindows[buddyKey];
-      // console.log('rendering messages to buddy window', windowId)
-      // console.log('writing new message to ', windowId, message.from, message.to)
-
-      // accumulate all the message html so we can perform a single document write,
-      // instead of a document write per message
-      html[windowId] = html[windowId] || '';
-
-      message.text = forbiddenNotes.filter(message.text);
-
-      let str = '';
-      if (message.from === buddypond.me) {
-        str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
-      } else {
-        str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
-        if (document.visibilityState === 'hidden') {
-          let now = new Date().getTime();
-          if (now - desktop.app.buddylist.lastNotified > 1600) {
-            desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
-            desktop.app.buddylist.lastNotified = now;
-          }
-        }
-      }
-      $('.chat_messages', windowId).append(str);
-      $('.message', windowId).last().text(message.text)
-      desktop.messages._processed.push(message.uuid);
-      desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
-      desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
-    });
-
-    //
-    // All messages have been processed and HTML has been accumulated
-    // Iterate through the generated HTML and write to the correct windows
-    //
-    for (let key in html) {
-      // $('.chat_messages', key).html('');
-      $('.no_chat_messages', key).hide();
-      // scrolls to bottom of messages on new messages
-      let el = $('.chat_messages', key)
-      $(el).scrollTop($(el)[0].scrollHeight);
     }
-    cb(null, true);
+
+    //
+    // New messages are coming in from server, we'll need to render them
+    //
+    // Get all the open buddy_message windows
+    let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
+    // Find the specific window which is open for this buddy
+    let windowId = '#' + openBuddyWindows[buddyKey];
+    // console.log('rendering messages to buddy window', windowId)
+    // console.log('writing new message to ', windowId, message.from, message.to)
+
+    // accumulate all the message html so we can perform a single document write,
+    // instead of a document write per message
+    html[windowId] = html[windowId] || '';
+
+    message.text = forbiddenNotes.filter(message.text);
+
+    let str = '';
+    if (message.from === buddypond.me) {
+      str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
+    } else {
+      str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      if (document.visibilityState === 'hidden') {
+        let now = new Date().getTime();
+        if (now - desktop.app.buddylist.lastNotified > 1600) {
+          desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
+          desktop.app.buddylist.lastNotified = now;
+        }
+      }
+    }
+    $('.chat_messages', windowId).append(str);
+    $('.message', windowId).last().text(message.text);
+
+    // take the clean text that was just rendered for the last message and check for special embed links
+    desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
+
+    desktop.messages._processed.push(message.uuid);
+    desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
+    desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
+  });
+
+  //
+  // All messages have been processed and HTML has been accumulated
+  // Iterate through the generated HTML and write to the correct windows
+  //
+  for (let key in html) {
+    // $('.chat_messages', key).html('');
+    $('.no_chat_messages', key).hide();
+    // scrolls to bottom of messages on new messages
+    let el = $('.chat_messages', key)
+    $(el).scrollTop($(el)[0].scrollHeight);
+  }
+  cb(null, true);
 }
 
 //

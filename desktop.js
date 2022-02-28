@@ -163,9 +163,13 @@ desktop._use = function _use (app, params) {
   desktop.apps.loading.push({ name: app, params: params });
   desktop.log("Loading", 'App.' + app);
 
-  // Remark: sync `App.load *must* return a value or `Desktop.ready` will never fire
-  //         async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
-  let result = desktop.app[app].load(params, function(err, re){
+  if (desktop.apps.loaded.indexOf(app) !== -1) {
+    desktop.log("Cached", 'App.' + app);
+    return this;
+  }
+
+  // Remark: async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
+  desktop.app[app].load(params, function(err, re){
     desktop.ui.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
@@ -176,20 +180,6 @@ desktop._use = function _use (app, params) {
       return true;
     });
   });
-
-  // TODO: we can remove support for this style and only use *async*
-  // if the result is not undefined, we can assume no callback was used in App.load
-  if (typeof result !== 'undefined') {
-    // Remark: dock icon is *not* rendered for sync `App.load` at the moment ( no HTML window has been created )
-    desktop.apps.loaded.push(app);
-    desktop.apps.mostRecentlyLoaded.push(app);
-    desktop.apps.loading = desktop.apps.loading.filter(function(a){
-      if (a.name === app) {
-        return false;
-      }
-      return true;
-    });
-  }
 
   return this;
 
@@ -235,17 +225,16 @@ desktop._ready = function _ready (finish) {
         }
       }
 
-      // fire and forget them all. provide a noop function for next
-      // Remark: the lazyNoop will NOT be executed for *sync* style `App.load` ( see below )
-      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      let result = desktop.app[app.name].load(app.params, function lazyNoop(){
+      if (desktop.apps.loaded.indexOf(app) !== -1) {
+        desktop.log("Cached", 'App.' + app);
+        desktop.ui.openWindow(app);
+        finish(null, desktop.loaded);
+        return this;
+      }
+      
+      desktop.app[app.name].load(app.params, function lazyNoop(){
         _open();
       });
-
-      // this indicates App.load was a *sync* style function and the callback was never fired
-      if (typeof result !== 'undefined') {
-        _open();
-      }
 
     });
     desktop.apps.deferred = [];
@@ -637,3 +626,19 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
   const valid = !!res;
   return valid;
 }
+
+desktop.smartlinks = {};
+desktop.smartlinks.replaceYoutubeLinks = function (el) {
+  let cleanText = el.html();
+  let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
+  if (searchYouTube !== -1) {
+    // if a youtube link was found, replace it with a link to open IDC with the video id
+    let id = cleanText.substr(searchYouTube + 32, 11);
+    let isValid = desktop.utils.isValidYoutubeID(id);
+    if (isValid) {
+      let str = 'https://www.youtube.com/watch?v=' + id;
+      cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+      el.last().html(cleanText);
+    }
+  }
+};

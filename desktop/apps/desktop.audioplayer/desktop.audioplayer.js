@@ -1,7 +1,7 @@
 desktop.app.audioplayer = {};
 desktop.app.audioplayer.icon = 'folder';
 desktop.app.audioplayer.load = function loadAudioPlayer (params, next) {
-  return true;
+  next();
 };
 
 // keeps track of playing sounds so that Apps don't accidentally spam audio

@@ -163,8 +163,11 @@ desktop.app.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-  desktop.ui.openWindow('buddylist');
-  desktop.ui.openWindow('pond');
+  // TODO: switch to openWindow API, was causing race condition with loader
+  //desktop.ui.openWindow('buddylist');
+  //desktop.ui.openWindow('pond');
+  $('#window_buddylist').show();
+  $('#window_pond').show();
 
   // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
   setTimeout(function(){
