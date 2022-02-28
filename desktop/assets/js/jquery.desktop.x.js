@@ -1,19 +1,10 @@
 /*
+jQuery Desktop X is licensed as AGPL and is a Copyright of Marak Squires
+see: https://github.com/marak/buddypond
+
+jQuery Desktop X is originally based on jQuery Desktop
 jQuery Desktop is licensed as GPL v3, and is a Copyright of Nathan Smith
 see: https://github.com/nathansmith/jQuery-Desktop
-*/
-
-
-/*
-
-  TODO: add these methods to jQuery prototype:
-
-   $.openWindow()
-   $.closeWindow()
-   $.cloneWindow()
-   $.minimizeWindow();
-   $.maximizeWindow();
-   $.positionWindow();
 
 */
 
@@ -811,3 +802,16 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
   delete desktop.ui.windowIndex[windowType][context];
 
 }
+
+/*
+
+  TODO: add these methods to jQuery prototype:
+
+   $.openWindow()
+   $.closeWindow()
+   $.cloneWindow()
+   $.minimizeWindow();
+   $.maximizeWindow();
+   $.positionWindow();
+
+*/
