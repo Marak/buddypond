@@ -12,24 +12,35 @@ desktop.app.settings.load = function loadsettings (params, next) {
     $('#window_settings').css('left', 80);
     $('#window_settings').css('top', 80);
 
-    // Remark: Here we can add defaults for required local storage desktop.settings
+    //
+    // BEGIN SET DEFAULTS FOR ALL DESKTOP SETTINGS
+    //
     if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
       desktop.set('notifications_audio_enabled', true);
       // will also update -> desktop.settings.notifications_audio_enabled = true
     }
 
     if (typeof desktop.settings.agent_merlin_active === 'undefined') {
-      desktop.settings.agent_merlin_active = true;
       desktop.set('agent_merlin_active', true);
       // will also update -> desktop.settings.agent_merlin_active = true
     }
+
+    if (typeof desktop.settings.wallpaper_name === 'undefined') {
+      desktop.set('wallpaper_name', 'matrix');
+    }
+
+    if (typeof desktop.settings.wallpaper_color === 'undefined') {
+      desktop.set('wallpaper_color', '#008F11');
+    }
+    //
+    // END SET DEFAULTS FOR ALL DESKTOP SETTINGS
+    //
 
     desktop.on('desktop.settings', 'update-settings-form', function(){
       desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
     });
 
     desktop.ui.setDesktopIconPositions();
-
 
     desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
 

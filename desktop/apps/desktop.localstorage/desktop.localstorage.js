@@ -15,14 +15,14 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
       desktop.settings[k] = obj[k];
       let val = JSON.stringify(obj[k]);
       localStorage.setItem(desktop.app.localstorage.prefix + k, val);
-      desktop.emit('desktop.settings.' + k, desktop.settings);
+      desktop.emit('desktop.settings.' + k, desktop.settings[k]);
     }
   } else {
     // single key / value update
     desktop.settings[key] = val;
     val = JSON.stringify(val);
     localStorage.setItem(desktop.app.localstorage.prefix + key, val);
-    desktop.emit('desktop.settings.' + key, desktop.settings);
+    desktop.emit('desktop.settings.' + key, desktop.settings[key]);
   }
 
   desktop.emit('desktop.settings', desktop.settings);
