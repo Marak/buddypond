@@ -229,13 +229,9 @@ desktop.app.updateBuddyList = function updateBuddyList () {
         let buddyrequest = data.buddyrequests[buddy];
         buddyrequest = JSON.parse(buddyrequest);
         if (buddyrequest.to === buddypond.me) {
+          // TODO: move this to automaton EE
           // incoming request to me
-          if (buddypond.me === 'Dicey') {
-            // will spam a little bit, we can fix this later when moving to automaton handler code
-            buddypond.approveBuddy(buddyrequest.from, function(err, res){
-              console.log('buddypond.approveBuddy back', err, res)
-            });
-          }
+          desktop.emit('Buddy::IncomingBuddyRequest', buddyrequest);
         } else {
           // outgoing request to buddy
         }
