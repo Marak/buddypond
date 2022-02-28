@@ -1,9 +1,10 @@
 desktop.app.wallpaper.wallpapers.matrix = {};
 desktop.app.wallpaper.wallpapers.matrix.canvasTimer = null;
 
+var drops = []; // matrix specific, can move, scoped outside function to perserve position
+
 desktop.app.wallpaper.wallpapers.matrix.start = function () {
 
-  var drops = []; // matrix specific, can move, scoped outside function to perserve position
 
   var c, ctx;
   c = document.getElementById("c");

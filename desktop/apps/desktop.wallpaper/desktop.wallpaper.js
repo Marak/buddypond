@@ -53,6 +53,8 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     $('input[name=wallpaper_opt]').on('input', function () {
       var radioValue = $('input[name=wallpaper_opt]:checked').val();
 
+      $('.simpleColorDisplay').trigger('click');
+
       // stop the current wallpaper
       desktop.app.wallpaper.stop();
 
@@ -89,7 +91,7 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
         cellHeight: 16,
         defaultColor: desktop.settings.wallpaper_color || '#008F11',
         inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
-        chooserCSS: { 'border': '1px solid #660033', 'right': '25px', 'top': '-50px' },
+        chooserCSS: { 'border': '1px solid #660033', 'right': '0px', 'top': '-150px' },
         displayCSS: {  },
         displayColorCode: true,
         livePreview: true,
@@ -105,7 +107,6 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       })
     next();
   })
-  return true;
 };
 
 desktop.app.wallpaper.resizeCanvasToWindow = function() {

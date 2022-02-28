@@ -3,15 +3,12 @@
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
 
-- refactor wallpaper app so that wallpapers are separate logic that just export canvas handlers
-- move wallpaper setting into desktop.settings app tab
 
 - refactor buddylist-updateBuddyList into multiple functions
 - refactor desktop.ui.openWindow to work with lazy loads and reopens
 
-
+- mirror should close camera on window close 
 - make youtube links in chat clickable to open videoplayer
-- add babel.js spell for replacing all words with filtered words
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
@@ -64,6 +61,10 @@ PUSHED to post launch
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - add babel.js spell for replacing all words with filtered words
+X - refactor wallpaper app so that wallpapers are separate logic that just export canvas handlers
+X - move wallpaper setting into desktop.settings app tab
 
 X - apps need to be defined / scoped on desktop.app.*, not desktop.*
   X - problem arises today with confliting name on desktop.settings scope

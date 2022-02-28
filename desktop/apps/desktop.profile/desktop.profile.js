@@ -45,57 +45,6 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       desktop.app.buddylist.profileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
-    $('.enableWebNotifications').on('change', function(){
-      let notificationsEnabled = $(this).prop("checked");
-      if (notificationsEnabled) {
-        Notification.requestPermission().then(function(permission) {
-          desktop.set('notifications_web_enabled', true);
-          desktop.app.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
-          desktop.log('Browser has granted Notification permissions');
-          console.log(permission)
-        });
-      } else {
-        // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
-        desktop.set('notifications_web_enabled', false);
-      }
-    });
-
-    if (desktop.settings.notifications_web_enabled) {
-      $('.enableWebNotifications').prop('checked', true);
-    }
-
-    $('.enableAudioNotifications').on('change', function(){
-      let audioNotificationsEnabled = $(this).prop("checked");
-      if (audioNotificationsEnabled) {
-        desktop.set('notifications_audio_enabled', true);
-        desktop.log('Audio Notifications have been enabled.');
-        $('.audioEnabled').prop('checked', true);
-        $('.audioEnabled').trigger('change');
-      } else {
-        desktop.set('notifications_audio_enabled', false);
-        desktop.log('Audio Notifications have been disabled.');
-      }
-    });
-
-    if (desktop.settings.notifications_audio_enabled) {
-      $('.enableAudioNotifications').prop('checked', true);
-    }
-
-    $('.audioEnabled').on('change', function(){
-      let audioMuted = $(this).prop("checked");
-      if (audioMuted) {
-        desktop.set('audio_enabled', true);
-        desktop.log('Desktop Audio has been muted.');
-      } else {
-        desktop.set('audio_enabled', false);
-        desktop.log('Desktop Audio has is back on.');
-      }
-    });
-
-    if (desktop.settings.audio_enabled) {
-      $('.audioEnabled').prop('checked', true);
-    }
-
     $("#profileTabs" ).tabs();
     next();
   });

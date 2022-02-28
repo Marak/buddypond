@@ -7,7 +7,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
   desktop.load.remoteAssets([
     'settings' // this loads the sibling desktop.settings.html file into <div id="window_settings"></div>
   ], function (err) {
-    $('#window_settings').css('width', 662);
+    $('#window_settings').css('width', 520);
     $('#window_settings').css('height', 495);
     $('#window_settings').css('left', 80);
     $('#window_settings').css('top', 80);
@@ -81,6 +81,70 @@ desktop.app.settings.load = function loadsettings (params, next) {
       document.location = 'index.html';
     });
 
+    $('.enableWebNotifications').on('change', function(){
+      let notificationsEnabled = $(this).prop("checked");
+      if (notificationsEnabled) {
+        Notification.requestPermission().then(function(permission) {
+          desktop.set('notifications_web_enabled', true);
+          desktop.app.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
+          desktop.log('Browser has granted Notification permissions');
+          console.log(permission)
+        });
+      } else {
+        // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
+        desktop.set('notifications_web_enabled', false);
+      }
+    });
+
+    if (desktop.settings.notifications_web_enabled) {
+      $('.enableWebNotifications').prop('checked', true);
+    }
+
+    $('.enableAudioNotifications').on('change', function(){
+      let audioNotificationsEnabled = $(this).prop("checked");
+      if (audioNotificationsEnabled) {
+        desktop.set('notifications_audio_enabled', true);
+        desktop.log('Audio Notifications have been enabled.');
+        $('.audioEnabled').prop('checked', true);
+        $('.audioEnabled').trigger('change');
+      } else {
+        desktop.set('notifications_audio_enabled', false);
+        desktop.log('Audio Notifications have been disabled.');
+      }
+    });
+
+    if (desktop.settings.notifications_audio_enabled) {
+      $('.enableAudioNotifications').prop('checked', true);
+    }
+
+    $('.audioEnabled').on('change', function(){
+      let audioMuted = $(this).prop("checked");
+      if (audioMuted) {
+        desktop.set('audio_enabled', true);
+        desktop.log('Desktop Audio has been muted.');
+      } else {
+        desktop.set('audio_enabled', false);
+        desktop.log('Desktop Audio has is back on.');
+      }
+    });
+
+    if (desktop.settings.audio_enabled) {
+      $('.audioEnabled').prop('checked', true);
+    }
+
+    $('#settingsTabs').tabs({
+      activate: function(event ,ui){
+        console.log(ui.newTab.index());
+          if (ui.newTab.index() === 0) {
+            /*
+            setTimeout(function(){
+              $('.simpleColorDisplay').trigger('click');
+            }, 1); // move to next tick, could also be zero ( unsure if browsers complain )
+            */
+          }
+      }
+    });
+
     next();
   });
 
@@ -140,7 +204,7 @@ desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
 };
 
 desktop.app.settings.openWindow = function openWindow () {
-
+  // $('.simpleColorDisplay').trigger('click');
   return true;
 };
 
