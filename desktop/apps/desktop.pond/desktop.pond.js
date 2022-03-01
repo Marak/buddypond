@@ -43,6 +43,12 @@ desktop.app.pond.load = function loadPond (params, next) {
       return false;
     });
 
+    // cancel form submit for joining a pond by name
+    $('.joinPondForm').on('submit', function(){
+      $('.joinPond').trigger('click');
+      return false;
+    });
+
     $('.pond_message_text').bind("enterKey",function(e){
       desktop.app.pond.sendMessage(this);
       return false;

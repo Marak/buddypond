@@ -1,5 +1,5 @@
 <style>
-  .pond_main {
+  div.pond_main {
     padding: 16px;
   }
 
@@ -16,7 +16,7 @@
   .pond_message_text {
     height: 20px;
     width: 93%;
-    left: 25px;
+    left: 30px;
     position: absolute;
   }
 
@@ -59,18 +59,18 @@
         <div class="loggedIn">
           <h2>Join Pond</h2>
           <br/>
-          <label for="customPondName">
-            <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"  placeholder="enter pond name..."type="text" size="16"/>
-          </label>
-          <br/>
-          <button type="submit" class="joinPond desktopButton">Join Pond</button>
+          <form class="joinPondForm">
+            <label for="customPondName">
+              <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"  placeholder="enter pond name..."type="text" size="16"/>
+            </label>
+            <br/>
+            <button type="submit" class="joinPond desktopButton">Join Pond</button>
+          </form>
           <br/>
           <br/>
           <p>
-          A pond is a room where many buddies can chat with each other.
+            A pond is a room where many buddies can chat with each other.
           </p> 
-          <br/>
-          <p>Your Buddy Name won't be revealed to the pond unless you send it message.</p>
         </div>
       </div>
     </div>

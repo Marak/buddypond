@@ -823,6 +823,7 @@ a:hover {
 
 .emojiTitleBar {
   font-size: 16px;
+  padding-right: 5px;
 }
 
 .emojiDockBar {
@@ -1201,5 +1202,5 @@ iframe {
 
 
 .card-meme {
-  width: 500px;
+ max-width: 98%;
 }
