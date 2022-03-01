@@ -188,6 +188,20 @@ div.ui-resizable-handle {
   margin: 6px 5px 0 0;
 }
 
+.window_bottom_chat {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  /*overflow: hidden;*/
+  text-align: center;
+  text-shadow: #fff 0 1px 1px;
+  height: 33px;
+  width: 100%;
+  left: 1px;
+  right: 1px;
+  bottom: 21px;
+}
+
 .window_bottom {
   background: #fff url(../images/gui/bar_top.png) repeat-x left bottom;
   border-top: 1px solid #bbb;
@@ -759,50 +773,15 @@ a:hover {
   */
 }
 
-.buddy_message_text {
-  width: 100%;
-  height: 50px;
-  resize: none;
-}
-
-.pond_message_text {
-  width: 100%;
-  height: 50px;
-  resize: none;
-}
-
 
 
 .emoji-menu { bottom: 111px!important; }
 
 .chat_messages {
-  height: 240px;
+  height: 100%;
+  width: 100%;
   overflow: auto;
   resize: none;
-}
-
-.chat_send_message_form {
-  position: absolute;
-  float: bottom;
-  bottom: 0px;
-  width: 92%;
-}
-
-.pond_send_message_form {
-  position: absolute;
-  float: bottom;
-  bottom: 0px;
-  width: 92%;
-}
-
-.chatMessagesHolder {
-  padding-top: 16px;
-  padding-left: 16px;
-}
-
-.buddyListHolder {
-  text-align: left;
-  width: 75%;
 }
 
 .splash {
@@ -827,7 +806,7 @@ a:hover {
 
 .emojiPicker {
   position: absolute;
-  right: 5px;
+  left: 5px;
   top: 5px;
 }
 
@@ -835,6 +814,25 @@ a:hover {
   cursor: pointer;
   opacity: 0.44;
 }
+
+.emojiIcon {
+  font-size: 28px;
+  height: 16px;
+  width: 16px;
+}
+
+.emojiTitleBar {
+  font-size: 16px;
+}
+
+.emojiDockBar {
+  font-size: 22px;
+}
+
+.emojiIcon:hover {
+  cursor: pointer;
+}
+
 
 .startVideoCall {
   position: absolute;
@@ -1045,10 +1043,6 @@ a:hover {
 		}
 }
 
-.pondNameList {
-  padding: 16px;
-}
-
 .loading {
   width: 111px;
   height: 111px;
@@ -1085,19 +1079,7 @@ video {
   display: none;
 }
 
-.emojiIcon {
-  font-size: 28px;
-  height: 16px;
-  width: 16px;
-}
 
-.emojiTitleBar {
-  font-size: 16px;
-}
-
-.emojiDockBar {
-  font-size: 22px;
-}
 
 
 #login_desktop_icon {
@@ -1108,9 +1090,6 @@ video {
   display: none;
 }
 
-.emojiIcon:hover {
-  cursor: pointer;
-}
 
 .connectionDetails li {
   padding: 11px;
@@ -1177,14 +1156,6 @@ iframe {
   padding: 0 0 0 0px;
   margin: 0 0 0 0px;
   width: 100%;
-}
-
-.pond_main {
-  padding: 16px;
-}
-
-.pond_message_main {
-  padding: 16px;
 }
 
 .warning {

@@ -1,3 +1,43 @@
+<style>
+  .pond_main {
+    padding: 16px;
+  }
+
+  div.pond_message_main {
+    padding-left: 16px;
+    padding-top: 16px;
+  }
+
+  .pond_send_message_form {
+    float: bottom;
+    width: 92%;
+  }
+
+  .pond_message_text {
+    height: 20px;
+    width: 93%;
+    left: 25px;
+    position: absolute;
+  }
+
+  .pond_message .window_content {
+    bottom: 75px;
+    /* overflow-y: hidden; */
+  }
+
+  .sendPondMessage {
+    float: right;
+    padding: 0px;
+    margin: 0px;
+    height: 25px;
+    width: 80px;
+  }
+
+  .pondNameList {
+    padding: 16px;
+  }
+
+</style>
 <div id="window_pond" class="abs window pond_message" data-window-index="0">
   <div class="abs window_inner">
     <div class="window_top">
@@ -65,16 +105,17 @@
           <div class="chat_messages">
           </div>
           <hr/>
-          <div class="pond_send_message_form">
-            <form method="POST" action="">
-              <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="4" cols="44"></textarea>
-              <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
-              <input name="pond_message_from"  class="pond_message_from" type="hidden"/>
-              <input name="pond_message_to"  class="pond_message_to" type="hidden"/><br/>
-              <button class="sendPondMessage desktopButton" type="submit">Send Message</button>
-            </form>
-          </div>
         </div>
+      </div>
+    </div>
+    <div class="abs window_bottom_chat">
+      <div class="pond_send_message_form">
+        <form method="POST" action="" align="right">
+          <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+          <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1" cols="44"></textarea>
+          <input name="pond_message_from"  class="pond_message_from" type="hidden"/>
+          <input name="pond_message_to"  class="pond_message_to" type="hidden"/>
+        </form>
       </div>
     </div>
     <div class="abs window_bottom">

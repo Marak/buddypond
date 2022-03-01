@@ -590,12 +590,20 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
   // Iterate through the generated HTML and write to the correct windows
   //
   for (let key in html) {
-    // $('.chat_messages', key).html('');
     $('.no_chat_messages', key).hide();
-    // scrolls to bottom of messages on new messages
-    let el = $('.chat_messages', key)
-    $(el).scrollTop($(el)[0].scrollHeight);
+    try {
+      if (data.messages.length > 0) {
+        //      let el = $('.chat_messages', '.pond_message_main')
+        setTimeout(function(){
+          let el = $('.window_content', key);
+          $(el).scrollTop(9999);
+        }, 1111)
+      }
+    } catch (err) {
+      console.log('Waring: Was unable to scrollTop on pond messages', err);
+    }
   }
+
   cb(null, true);
 }
 

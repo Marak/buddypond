@@ -10,6 +10,34 @@
     background-color: white;
     display: none;
   }
+
+  .buddy_message_text {
+    height: 20px;
+    width: 93%;
+    left: 25px;
+    position: absolute;
+  }
+
+  .buddy_message .window_content {
+    bottom: 75px;
+    /* overflow-y: hidden; */
+  }
+
+  .chat_send_message_form {
+    float: bottom;
+    width: 92%;
+  }
+
+  .chatMessagesHolder {
+    padding-top: 16px;
+    padding-left: 16px;
+  }
+
+  .buddyListHolder {
+    text-align: left;
+    width: 75%;
+  }
+
 </style>
 
 <div id="window_buddylist" class="abs window">
@@ -111,16 +139,20 @@
           <div class="chat_messages">
           </div>
           <hr/>
-          <div class="chat_send_message_form">
-            <form class="sendMessageForm" method="POST" action="#">
-              <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
-              <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
-              <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
-              <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/><br/>
-              <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
-            </form>
-          </div>
         </div>
+      </div>
+    </div>
+    <div class="abs window_bottom_chat">
+      <div class="chat_send_message_form">
+        <form class="sendMessageForm" method="POST" action="#">
+          <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
+          <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+          <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
+          <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
+          <!--
+          <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
+            -->
+        </form>
       </div>
     </div>
     <div class="abs window_bottom">

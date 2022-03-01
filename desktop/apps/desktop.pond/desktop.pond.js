@@ -50,10 +50,11 @@ desktop.app.pond.load = function loadPond (params, next) {
 
     $('.pond_message_text').keyup(function(e){
         if (e.shiftKey==1) {
+          // TODO: multi-line chat box
           return false;
         }
         if (e.keyCode == 13) {
-          $(this).trigger("enterKey");
+          desktop.app.pond.sendMessage(this)
           return false;
         }
     });
@@ -107,6 +108,7 @@ desktop.app.pond.openWindow = function (context) {
   $('.pond_message_to', windowId).val(context)
   $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;
+
   // TODO: doc element title
   // $('.dock_title', dockElement).html(context);
   // $('.pondNameList').show();
@@ -119,6 +121,7 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
   message.from = $('.pond_message_from', form).val();
+
   if (message.text.trim() === "") {
     return;
   }
@@ -184,8 +187,9 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     // replace cards
     if (message.card) {
+      // ${message.card.author} 
       $('.chat_messages', windowId).append(`
-       <span class="message"> <img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+       <span class="message"><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
       `);
       desktop.messages._processed.push(message.uuid);
       return;
@@ -216,15 +220,17 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
   for (let key in html) {
     $('.no_chat_messages', key).hide();
-  }
-
-  try {
-    if (data.messages.length > 0) {
-      let el = $('.chat_messages', '.pond_message_main')
-      $(el).scrollTop(9999);
+    try {
+      if (data.messages.length > 0) {
+        //      let el = $('.chat_messages', '.pond_message_main')
+        setTimeout(function(){
+          let el = $('.window_content', key);
+          $(el).scrollTop(9999);
+        }, 1111)
+      }
+    } catch (err) {
+      console.log('Waring: Was unable to scrollTop on pond messages', err);
     }
-  } catch (err) {
-    console.log('Waring: Was unable to scrollTop on pond messages', err);
   }
 
   cb(null, true);
