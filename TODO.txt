@@ -1,3 +1,4 @@
+- add 1000 memes to memepool
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
 - fix joining ponds, figure out openWindow problem???
