@@ -182,6 +182,15 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     html[windowId] = html[windowId] || '';
 
+    // replace cards
+    if (message.card) {
+      $('.chat_messages', windowId).append(`
+       <span class="message"> <img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+      `);
+      desktop.messages._processed.push(message.uuid);
+      return;
+    }
+
     let str = '';
     if (message.from === buddypond.me) {
       str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
@@ -195,6 +204,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         }
       }
     }
+
     $('.chat_messages', windowId).append(str);
     $('.message', windowId).last().text(message.text)
 

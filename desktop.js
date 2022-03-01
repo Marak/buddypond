@@ -428,6 +428,10 @@ desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
   }
 };
 
+
+// desktop can play multimedia files with simple desktop.play(pathToFile) commands
+// desktop.play()
+
 desktop.utils = {};
 
 /* untested, made the wrong one oops
@@ -477,15 +481,17 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
 desktop.smartlinks = {};
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
-  let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
-  if (searchYouTube !== -1) {
-    // if a youtube link was found, replace it with a link to open IDC with the video id
-    let id = cleanText.substr(searchYouTube + 32, 11);
-    let isValid = desktop.utils.isValidYoutubeID(id);
-    if (isValid) {
-      let str = 'https://www.youtube.com/watch?v=' + id;
-      cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
-      el.last().html(cleanText);
+  if (cleanText) {
+    let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
+    if (searchYouTube !== -1) {
+      // if a youtube link was found, replace it with a link to open IDC with the video id
+      let id = cleanText.substr(searchYouTube + 32, 11);
+      let isValid = desktop.utils.isValidYoutubeID(id);
+      if (isValid) {
+        let str = 'https://www.youtube.com/watch?v=' + id;
+        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+        el.last().html(cleanText);
+      }
     }
   }
 };

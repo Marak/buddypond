@@ -1227,3 +1227,8 @@ iframe {
   color: #CCC;
   opacity: 0.44;
 }
+
+
+.card-meme {
+  width: 500px;
+}
