@@ -59,6 +59,10 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
       Buddy Pond
     </a>
+    <a class="abs icon" style="left:110px;top:300px;" href="#icon_dock_memepool">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_memepool_64.png" />
+      Meme Pool
+    </a>
     <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_interdimensionalcable">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
       Inter Dimensional Cable
@@ -284,6 +288,8 @@ window.top.location = 'ie.html';
       .use('notifications', { defer: true })
 
       .ready(function(err, apps){
+        // desktop.log("Loaded", desktop.apps.loaded);
+
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
 
         // Desktop is ready, start refreshing it's state immediately
