@@ -155,7 +155,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
   // $('#window_pond').show();
   $('#window_buddylist').show();
   let windowId = desktop.app.pond.openWindow('Lily');
-  alert(windowId)
 
   $(windowId).css('top', 60);
   $(windowId).css('left', 250);
