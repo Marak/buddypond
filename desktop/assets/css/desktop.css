@@ -609,18 +609,6 @@ a:hover {
   /*margin: 16px;*/
 }
 
-.loginForm {
-  padding: 16px;
-}
-
-.loginForm table td {
-  padding: 6px;
-}
-
-.loginButton {
-  width: 300px;
-}
-
 .desktopInput {
   width: 140px;
   padding: 8px;
@@ -716,21 +704,6 @@ a:hover {
   opacity: 0.7;
 }
 
-.loginButton:hover {
-  color: #008F11;
-  background-color: #FFF;
-  animation-name: rainbow;
-  animation-duration: 1.1111s;
-  opacity: 0.7;
-  animation-iteration-count: infinite;
-}
-
-@keyframes loginButton {
-  from {background-color: #000000;}
-  to {background-color: #00FF41;}
-}
-
-
 @keyframes desktopButton {
   from {background-color: blue;}
   to {background-color: yellow;}
@@ -765,15 +738,6 @@ a:hover {
   from {background-color: blue;}
   to {background-color: yellow;}
 }
-
-.addBuddyForm {
-  /*
-  position: absolute;
-  bottom: 10px;
-  */
-}
-
-
 
 .emoji-menu { bottom: 111px!important; }
 
@@ -834,47 +798,6 @@ a:hover {
   cursor: pointer;
 }
 
-
-.startVideoCall {
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 16px;
-  top: 16px;
-}
-
-.endVideoCall {
-  opacity: 0.4;
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 64px;
-  top: 16px;
-}
-
-.endVideoCall:hover {
-  opacity: 0.4;
-  cursor: pointer;
-}
-
-.startVideoCall:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.acceptVideoCall {
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 48px;
-  top: 16px;
-}
-
-.acceptVideoCall:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
-
 .webCamWindow {
   border: solid;
   /*
@@ -883,14 +806,117 @@ a:hover {
   */
 }
 
-
-
 .demo{
   width:400px;
   height:400px;
   font-size:5em;
   float:left;
   text-align:center;
+}
+
+.loading {
+  width: 111px;
+  height: 111px;
+  opacity: 0.5555;
+}
+
+video {
+  padding: 16px;
+}
+
+.totalConnected {
+  display: none;
+}
+
+#login_desktop_icon {
+  display: none;
+}
+
+#profile_desktop_icon {
+  display: none;
+}
+
+.connectionDetails li {
+  padding: 11px;
+}
+
+#clock {
+  color: black;
+}
+
+.loggedIn {
+  display: none;
+}
+
+video {
+  margin: 0px;
+  padding: 0px;
+}
+
+.wallpaperColor {
+  display:none;
+}
+
+#window_games .icon {
+  color: white;
+}
+
+#shadowRender {
+  display: none;
+}
+
+.spinningCursor  {
+  cursor: pointer !important; /* progress, grabbing, context-menu */
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
+iframe {
+  padding: 0 0 0 0px;
+  margin: 0 0 0 0px;
+  width: 100%;
+}
+
+.warning {
+  color: red;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.tiny {
+  font-size: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.float-left {
+  position: relative;
+  float: left;
+}
+
+.navbarControl {
+  font-size: 16px;
+  cursor: pointer;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.volumeMuted {
+  display: none;
+}
+
+.editProfileLinkDisabled {
+  color: #CCC;
+  opacity: 0.44;
+}
+
+.card-meme {
+ max-width: 98%;
 }
 
 .rainbow-bg{
@@ -1042,165 +1068,4 @@ a:hover {
 		91%{
 			border-color: rgb(255,0,127);
 		}
-}
-
-.loading {
-  width: 111px;
-  height: 111px;
-  opacity: 0.5555;
-}
-
-#mirrorVideoMe {
-  /*
-  width: 444px;
-  height: 444px;
-  */
-  /*
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  */
-}
-
-#mirrorVideoBuddy {
-  width: 444px;
-  height: 444px;
-  /*
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  */
-}
-
-video {
-  padding: 16px;
-}
-
-.totalConnected {
-  display: none;
-}
-
-
-
-
-#login_desktop_icon {
-  display: none;
-}
-
-#profile_desktop_icon {
-  display: none;
-}
-
-
-.connectionDetails li {
-  padding: 11px;
-}
-
-#clock {
-  color: black;
-}
-
-.loggedIn {
-  display: none;
-}
-
-.updateProfileResponse {
-  font-size: 18px;
-}
-
-#chatVideoBuddy {
-  width: 300px; 
-  height: 300px;
-}
-
-#chatVideoMe {
-  width: 300px; 
-  height: 300px;
-  float: left;
-}
-
-video {
-  margin: 0px;
-  padding: 0px;
-}
-
-.wallpaperColor {
-  display:none;
-}
-
-#window_soundcloud {
-  height: 560px;
-  width: 400px;
-}
-
-#window_games .icon {
-  color: white;
-}
-
-#shadowRender {
-  display: none;
-}
-
-.spinningCursor  {
-  cursor: pointer !important; /* progress, grabbing, context-menu */
-}
-
-label {
-  cursor: pointer;
-}
-
-input[type='checkbox'] {
-  cursor: pointer;
-}
-
-iframe {
-  padding: 0 0 0 0px;
-  margin: 0 0 0 0px;
-  width: 100%;
-}
-
-.warning {
-  color: red;
-  font-size: 16px;
-  font-style: italic;
-}
-
-.positiveAffirmation {
-  font-style: italic;
-  padding-left: 16px;
-  text-align: center;
-  padding-right: 16px;
-  padding-top: 8px;
-  cursor: pointer;
-}
-
-.tiny {
-  font-size: 12px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.float-left {
-  position: relative;
-  float: left;
-}
-
-.navbarControl {
-  font-size: 16px;
-  cursor: pointer;
-  padding-left: 6px;
-  padding-right: 6px;
-}
-.volumeMuted {
-  display: none;
-}
-
-.editProfileLinkDisabled {
-  color: #CCC;
-  opacity: 0.44;
-}
-
-
-.card-meme {
- max-width: 98%;
 }
