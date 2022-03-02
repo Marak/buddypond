@@ -15,7 +15,7 @@ desktop.load.app = function loadDesktopApp (appName, ready) {
 
 desktop.load.remoteAssets = function loadRemoteAssets (assetArr, final) {
 
-  console.log('desktop.load.remoteAssets', assetArr)
+  // console.log('desktop.load.remoteAssets', assetArr)
   let assets = {
     script: [],
     css: [],

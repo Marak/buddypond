@@ -85,6 +85,7 @@ function imageLoaded() {
 desktop.preloader = [];
 desktop.use = function use(app, params) {
   // queue arguments for preloader
+  params = params || {};
   if (typeof app === 'function') {
     desktop.preloader.push(app);
   } else {
@@ -97,7 +98,7 @@ desktop.ready = function ready (finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
   desktop.preloader.forEach(function(app){
-    if (typeof app === 'object') {
+    if (typeof app === 'object' && !app.params.defer) {
       scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
     }
   });
@@ -124,15 +125,6 @@ desktop._use = function _use (app, params) {
     desktop.apps.loadingStartedAt = new Date();
   }
 
-  if (!desktop.app[app]) {
-    console.log('Invalid App Name: "' + app + '"');
-    return;
-  }
-
-  if (!desktop.app[app].load || typeof desktop.app[app].load !== 'function') {
-    console.log(app + '.load is not a valid function');
-    return;
-  }
 
   /*
      Buddy Pond Desktop supports both `sync` and `defer` loading loading of `App`
@@ -155,7 +147,6 @@ desktop._use = function _use (app, params) {
 
   if (params.defer) {
     // The Desktop will call `App.load()` *immediately* after the Desktop is ready
-    desktop.app[app].deferredLoad = true;
     desktop.apps.deferred.push({ name: app, params: params });
     return this;
   }
@@ -196,49 +187,59 @@ desktop._ready = function _ready (finish) {
     }, 10)
   } else {
     desktop.apps.loadingEndedAt = new Date();
-    desktop.log("Loaded", desktop.apps.loaded);
+    // all Desktop.use() that are *not* deferred have been loaded
+    // call finish for Desktop.ready(), then continue to proess the deffered Apps
+    finish(null, desktop.loaded);
     // now that all Apps and their assets have loaded, lets load any deferred Apps
-    desktop.log("Loading Deferred Apps", desktop.apps.deferred);
+    desktop.log("Now loading deferred apps");
     // Remark: we might have to put a concurrency limit here
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
+    let scriptArr = [];
     desktop.apps.deferred.forEach(function(app){
+      if (typeof app === 'object') {
+        scriptArr.push(`desktop/apps/desktop.${app.name}/desktop.${app.name}.js`)
+      }
+    });
 
-      function _open () {
-        desktop.apps.loaded.push(app.name);
-        desktop.ui.renderDockIcon(app.name);
-        desktop.app[app.name].deferredLoad = false;
-        if (desktop.app[app.name].openWhenLoaded) {
-          if (desktop.app[app.name].openWindow) {
-            desktop.app[app].openWindow(app.name);
-            let key = '#window_' + app.name;
-            $(key).show();
-            JQD.util.window_flat();
-            $(key).show().addClass('window_stack');
-            // TODO: loading status cursor indicator should be per App, not global
-            document.querySelectorAll('*').forEach(function(node) {
-              node.style.cursor = 'pointer';
-            });
-          } else {
-            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow')
+    desktop.load.remoteAssets(scriptArr, function(){
+      desktop.apps.deferred.forEach(function(app){
+        desktop.app[app.name].deferredLoad = true;
+        function _open () {
+          desktop.apps.loaded.push(app.name);
+          desktop.ui.renderDockIcon(app.name);
+          desktop.app[app.name].deferredLoad = false;
+          if (desktop.app[app.name].openWhenLoaded) {
+            if (desktop.app[app.name].openWindow) {
+              desktop.app[app].openWindow(app.name);
+              let key = '#window_' + app.name;
+              $(key).show();
+              JQD.util.window_flat();
+              $(key).show().addClass('window_stack');
+              // TODO: loading status cursor indicator should be per App, not global
+              document.querySelectorAll('*').forEach(function(node) {
+                node.style.cursor = 'pointer';
+              });
+            } else {
+              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow')
+            }
           }
         }
-      }
 
-      if (desktop.apps.loaded.indexOf(app) !== -1) {
-        desktop.log("Cached", 'App.' + app);
-        // desktop.ui.openWindow(app);
-        finish(null, desktop.loaded);
-        return this;
-      }
-      
-      desktop.app[app.name].load(app.params, function lazyNoop(){
-        _open();
+        if (desktop.apps.loaded.indexOf(app) !== -1) {
+          desktop.log("Cached", 'App.' + app);
+          // desktop.ui.openWindow(app);
+          finish(null, desktop.loaded);
+          return this;
+        }
+        desktop.log("Loading App." + app.name);
+        desktop.app[app.name].load(app.params, function lazyNoop(){
+          _open();
+        });
+
       });
-
+      desktop.apps.deferred = [];
     });
-    desktop.apps.deferred = [];
-    finish(null, desktop.loaded);
   }
   return this;
 

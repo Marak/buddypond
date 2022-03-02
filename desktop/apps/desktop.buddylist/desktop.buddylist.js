@@ -224,12 +224,14 @@ function processIncomingBuddyRequests (data) {
 function updateLocalDesktopProfile (data) {
 
   $('.me').html(buddypond.me);
-  $('.totalConnectedCount').html(data.system.totalIsConnected);
-  if (data.email && !buddypond.email) {
+
+  // initial profile set
+  if (!buddypond.email && data.email && $('.buddy_email').val() === '') {
     buddypond.email = data.email;
-    // updates Profile settings form
-    $('.buddy_email').val(desktop.buddyListData.email);
+    $('.buddy_email').val(data.email);
   }
+
+  $('.totalConnectedCount').html(data.system.totalIsConnected);
   if (data.myProfile) {
     // Remark: this cache is cleared each time the user clicks "Update Profile"
     desktop.app.profileCache = desktop.app.profileCache || {};

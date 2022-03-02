@@ -1,4 +1,5 @@
 desktop.app.localstorage = {};
+desktop.app.localstorage.icon = "folder";
 desktop.app.localstorage.label = "localstorage";
 
 desktop.app.localstorage.prefix = '_buddypond_desktop_';

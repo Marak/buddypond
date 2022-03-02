@@ -4,7 +4,6 @@ desktop.app.login.label = "Login";
 desktop.app.login.load = function loadDesktopLogin (params, next) {
 
   desktop.load.remoteAssets([
-    'desktop/assets/js/jquery.dateformat.js',
     'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
@@ -134,29 +133,13 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.loggedIn').show();
 
   // TODO: move this is a separate function
-  /*
-  if (desktop.settings.agent_merlin_active) {
-    clippy.load('Merlin', function(agent) {
-       desktop.app.Merlin = agent;
-       agent.show();
-       setTimeout(function(){
-         if (!buddypond.email || buddypond.email.length < 3) {
-           agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
-           setTimeout(function(){
-             agent.hide();
-           }, 12000);
-         } else {
-           agent.speak(`Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
-           agent.animate();
-           setTimeout(function(){
-             agent.hide();
-           }, 19000);
-         }
-         agent.gestureAt(200,200);
-       }, 3333);
-     });
-  }
-  */
+  setTimeout(function(){
+    if (!buddypond.email || buddypond.email.length < 3) {
+      desktop.emit('merlin-speaks', 'Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
+    } else {
+       desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
+    }
+  }, 2000)
 
 
   // start packets update interval timer

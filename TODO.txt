@@ -1,6 +1,7 @@
 - add 1000 memes to memepool
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
+- dont allow icons to be hidden on smaller windows?
 - fix joining ponds, figure out openWindow problem???
   - race condition with login success?
   

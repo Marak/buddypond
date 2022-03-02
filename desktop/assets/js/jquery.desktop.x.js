@@ -1,8 +1,12 @@
 /*
+
+Buddy Pond
+desktop.ui.js
+
 jQuery Desktop X is licensed as AGPL and is a Copyright of Marak Squires
 see: https://github.com/marak/buddypond
 
-jQuery Desktop X is originally based on jQuery Desktop
+jQuery Desktop X and desktop.ui.js is originally based on jQuery Desktop
 jQuery Desktop is licensed as GPL v3, and is a Copyright of Nathan Smith
 see: https://github.com/nathansmith/jQuery-Desktop
 
@@ -438,7 +442,7 @@ JDQX.openWindow = function openWindow (appName, params, cb) {
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
     });
-
+    desktop.log('Loading: App.' + appName);
     desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
       /* TODO: support N app dep, currently hard-coded to 1
       desktop.app[appName].depends_on.forEach(function(appDep){
@@ -446,30 +450,29 @@ JDQX.openWindow = function openWindow (appName, params, cb) {
       });
       */
       if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
-        desktop.load.remoteJS([`desktop/apps/desktop.${desktop.app[appName].depends_on[0]}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+        let depName = desktop.app[appName].depends_on[0];
+        desktop.log('Loading: App.' + depName);
+        desktop.load.remoteJS([`desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+          desktop.log('Ready: App.' + depName);
           let depApp = desktop.app[appName].depends_on[0];
           desktop.app[depApp].load(params, function(){
-            desktop
-              .use(appName, params)
-              .ready(function(err, apps){
-                desktop.log('Ready:', appName);
-                document.querySelectorAll('*').forEach(function(node) {
-                  node.style.cursor = 'pointer';
-                });
-                _showWindow();
+            desktop.app[appName].load(params, function(){
+              desktop.log('Ready: App.' + appName);
+              document.querySelectorAll('*').forEach(function(node) {
+                node.style.cursor = 'pointer';
               });
+              _showWindow();
+            });
           })
         });
       } else {
-        desktop
-          .use(appName)
-          .ready(function(err, apps){
-            desktop.log('Ready:', appName);
-            document.querySelectorAll('*').forEach(function(node) {
-              node.style.cursor = 'pointer';
-            });
-            _showWindow();
+        desktop.app[appName].load(params, function(){
+          desktop.log('Ready: App.' + appName);
+          document.querySelectorAll('*').forEach(function(node) {
+            node.style.cursor = 'pointer';
           });
+          _showWindow();
+        });
       }
     })
   } else {
@@ -718,7 +721,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     try {
       $(windowId).position(position);
     } catch (err) {
-      console.log('Warning: Error in showing ' + windowId, err);
+      // console.log('Warning: Error in showing ' + windowId, err);
     }
     
     if (windowType === 'buddy_message') {
@@ -802,16 +805,3 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
   delete desktop.ui.windowIndex[windowType][context];
 
 }
-
-/*
-
-  TODO: add these methods to jQuery prototype:
-
-   $.openWindow()
-   $.closeWindow()
-   $.cloneWindow()
-   $.minimizeWindow();
-   $.maximizeWindow();
-   $.positionWindow();
-
-*/
