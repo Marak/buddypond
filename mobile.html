@@ -14,35 +14,10 @@
   <div class="mainContainer">
     <div class="row">
       <div class="col-sm-2">
-        <ul>
-          <li>
-            <a class="abs icon" href="#app_login">
-              <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
-              Pond
-            </a>
-            <br/>
-            <br/>
-            <br/>
-          </li>
-          <li>
-            <a class="abs icon" href="#app_interdimensionalcable">
-              <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" /><br/>
-              Cable
-            </a>
-            <br/>
-            <br/>
-            <br/>
-          </li>
-          <li>
-            <a class="abs icon" href="#app_mtv">
-              <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" /><br/>
-              Music
-            </a>
-            <br/>
-            <br/>
-            <br/>
-          </li>
-        </ul>
+        <div class="splashImage" align="center">
+          <img src="desktop/assets/images/misc/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
+        </div>
+        
       </div>
       <div class="col-sm-10 mainWindows">
 
@@ -62,19 +37,16 @@
                   <em>No followers or following<br/> Just Buddies!</em>
                   <br/>
                   <br/>
-                  <div class="splashImage" align="center">
-                    <img src="desktop/assets/images/misc/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
-                    <br/>
-                    <em class="smaller">This is a Buddy at the pond.</em>
-                  </div>
                   <br/>
                    We don't have a mobile App yet.<br/> 
-                   It's on the way! 🤓<br/><br/>
+                   It's on the way! Two more weeks! 🤓<br/><br/>
                    Check out our <a href="https://github.com/marak/buddypond">git repo</a> to track development.
                   <br/>
                   <br/>
+                  <!--
                   Until then, why not enjoy some Interdimensional cable? <br/>
                   Links are on the left.
+                    -->
                   <br/>
                   <br/>
                   <br/>
@@ -190,36 +162,6 @@
           <span class="abs ui-resizable-handle ui-resizable-se"></span>
         </div>
 
-        <div id="window_mtv" class="abs window">
-          <div class="abs window_inner">
-            <div class="window_top">
-              <span class="float_left">
-                Music Television
-              </span>
-              <span class="float_right">
-                <a href="#" class="window_min"></a>
-                <a href="#" class="window_resize"></a>
-                <a href="#icon_dock_mtv" class="window_close"></a>
-              </span>
-            </div>
-            <div class="abs window_content">
-              <div class="window_main">
-                <div id="mtvPlayer"></div>
-                <br/>
-                <br/>
-                <div align="center">
-                  <a class="desktopButton ponderMTV" href="#">
-                    <img class="orb" src="desktop/assets/images/misc/orb.jpeg" width="255" height="255" title="Ponder the orb..."/>
-                  </a>
-                  <br/>
-                  <br/>
-                  <button class="ponderMTV desktopButton">Ponder the orb for next video</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div id="window_interdimensionalcable" class="abs window">
           <div class="abs window_inner">
             <div class="window_top">
@@ -236,14 +178,11 @@
               <div class="window_main">
                 <div id="interdimensionalcableplayer"></div>
                 <br/>
-                <br/>
                 <div align="center">
                   <a class="desktopButton ponderinterdimensionalcable orb" href="#">
                     <img class="orb" src="desktop/assets/images/misc/orb.jpeg" width="255" height="255" title="Ponder the orb..."/>
                   </a>
                   <br/>
-                  <br/>
-                  <button class="ponderinterdimensionalcable desktopButton">Ponder the orb for next video</button>
                 </div>
               </div>
             </div>
@@ -259,27 +198,19 @@
   <script src="mobile/assets/js/bootstrap.bundle.min.js"></script>
   <script src="sdk/buddypond.js"></script>
   <script src="mobile.js"></script>
+  <script src="desktop/assets/js/jquery.simple-color.js"></script>
   <script src="desktop/apps/desktop.wallpaper/desktop.wallpaper.js"></script>
-  <script src="desktop/apps/desktop.mirror/desktop.mirror.js"></script>
-  <script src="desktop/apps/desktop.interdimensionalcable/desktop.interdimensionalcable.js"></script>
-  <script src="desktop/apps/desktop.mtv/desktop.mtv.js"></script>
-  <script src="data/mtv.js"></script>
-  <script src="data/interdimensionalcable.js"></script>
+  <script src="desktop/apps/desktop.wallpaper/wallpapers/matrix.js"></script>
 
   <script>
     $(document).ready(function(){
       desktop.log('Buddy Pond Mobile Cloud Desktop Initialized');
       desktop.log('Now loading apps');
-      desktop.load();
-      desktop.wallpaper.load()
-      desktop.wallpaper.start();
-      desktop.mirror.load({}, function(){
-        desktop.interdimensionalcable.load({}, function(){
-          desktop.mtv.load({}, function(){
-            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-          });
-        });
-      });
+//      desktop.load();
+      desktop.app.wallpaper.load({}, function(){
+              desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+//        });
+      })
     });
   </script>
 </body>

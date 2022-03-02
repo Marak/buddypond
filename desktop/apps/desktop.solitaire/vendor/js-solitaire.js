@@ -708,7 +708,6 @@
         el: el,
         cards: []
       });
-      console.log('finishContainerEl', finishContainerEl)
       finishContainerEl.appendChild(el);
     }
 

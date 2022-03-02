@@ -110,20 +110,53 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
       Spellbook
     </a>
-    <a class="abs icon" style="right:20px;top:40px;" href="#icon_dock_wallpaper">
+    <a class="abs icon" style="right:20px;top:40px;" href="#icon_dock_settings">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
-      Wallpaper
+      Desktop Settings
     </a>
     <a class="abs icon" style="right:20px;top:130px;" href="#icon_dock_console">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
       Console
     </a>
+    <!--
+    <a class="abs icon" style="right:20px;top:200px;" href="#icon_dock_settings">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Desktop Settings
+    </a>
+      -->
   </div>
   <div class="abs" id="bar_top">
     <ul>
       <li>
         <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
         <ul class="menu">
+          <!--
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Online</a>
+          </li>
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Away</a>
+          </li>
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Predisposed</a>
+          </li>
+          <li>
+            <a class="setStatus"  href="#">Set Status - Custom</a>
+          </li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          -->
+          <li>
+            <span class="tiny"><em>We are stoked to be your buddy</em></span>
+          </li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          <li>
+            <a class="editProfileLink" title="Login to Edit Profile"href="#">Login To Edit Profile</a>
+          </li>
+          <li>
+            <a class="editDesktopSettingsLink"  href="#">Edit Desktop Settings</a>
+          </li>
+          <li class="emptyMenuCell">&nbsp;</li>
           <li>
             <a class="loginLink" href="#">Login</a>
           </li>
@@ -145,6 +178,10 @@ window.top.location = 'ie.html';
         </ul>
       </li>
     </ul>
+    <span class="float_right" id="volume">
+      <span class="navbarControl volumeToggle volumeFull">🔉</span>
+      <span class="navbarControl volumeToggle volumeMuted">🔇</span>
+    </span>
     <ul class="float_right">
       <li>
         <a class="menu_trigger" href="#">Buddy Pond</a>
@@ -172,7 +209,7 @@ window.top.location = 'ie.html';
         </a>
         <ul class="menu connectionDetails">
           <li>
-            Conection Started: <span class="connection_ctime"></span> <br/>
+            Connection Started: <span class="connection_ctime"></span> <br/>
             Packets Sent <span class="connection_packets_sent"></span> <br/>
             Packets Recieved <span class="connection_packets_recieved"></span> <br/>
           </li>
@@ -226,12 +263,13 @@ window.top.location = 'ie.html';
 <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
 
 <script src="desktop/assets/js/jquery.js"></script>
-<script src="desktop/assets/js/jquery.ui.js"></script>
+<script src="desktop/assets/js/jquery.ui.min.js"></script>
 <script src="desktop/assets/js/forbidden.notes.js"></script>
 
 <script src="sdk/buddypond.js"></script>
 <script src="desktop.js"></script>
-<script src="desktop/assets/js/jquery.desktop.js"></script>
+<script src="desktop.load.js"></script>
+<script src="desktop/assets/js/jquery.desktop.x.js"></script>
 
 <script>
   // see: ReadMe.md for documentation on `desktop.use`
@@ -242,24 +280,22 @@ window.top.location = 'ie.html';
     desktop
       .use('console')
       .use('localstorage')
+      .use('settings')
       .use('wallpaper')
+      .use('audioplayer')
       .use('login')
       .use('buddylist')
       .use('pond')
       .use('alarm', { defer: true })
       .use('audioplayer', { defer: true })
+      .use('merlin', { defer: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
       .use('mirror', { defer: true })
-      .use('interdimensionalcable', { defer: true })
-      .use('mtv', { defer: true })
-      .use('soundcloud', { defer: true })
       .use('videochat', { defer: true })
-      // .use('automaton', { defer: true })
+      .use('automaton', { defer: true })
       .use('notifications', { defer: true })
-      .use('games', { defer: true })
-      .use('minesweeper', { lazy: true })
-      .use('solitaire', { lazy: true })
+
       .ready(function(err, apps){
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
 
@@ -286,6 +322,41 @@ window.top.location = 'ie.html';
           }
         });
 
+        // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
+        // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)
+        $('.selectPlaylist').on('change', function(){
+          $('#soundcloudiframe').remove();
+          $('#soundcloudplayer').html('');
+          if (desktop.app.soundcloud) {
+            desktop.app.soundcloud.embeded = false;
+          }
+          desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+        });
+
+        if (!desktop.settings.audio_enabled) {
+          $('.volumeFull').hide();
+          $('.volumeMuted').show();
+        }
+
+        $('.volumeToggle').on('click', function(){
+          if (desktop.settings.audio_enabled) {
+            desktop.set('audio_enabled', false);
+          } else {
+            desktop.set('audio_enabled', true);
+          }
+        });
+
+        desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function(){
+          if (!desktop.settings.audio_enabled) {
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
+          } else {
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
+            desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
+          }
+        });
+
       });
   });
 
@@ -294,5 +365,3 @@ window.top.location = 'ie.html';
   </div>
 </body>
 </html>
-
-

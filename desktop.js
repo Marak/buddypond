@@ -9,15 +9,20 @@ const desktop = {};
 // time the desktop object was created in browser
 desktop.ctime = new Date();
 
+// `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
+desktop.app = {};
+
+// `desktop.apps` scope is loaded to store metadata about apps which the desktop is aware of
 desktop.apps = {};
 desktop.apps.loading = [];
 desktop.apps.loaded = [];
 desktop.apps.deferred = [];
-desktop.apps.lazy = [];
 desktop.apps.mostRecentlyLoaded = [];
 desktop.apps.loadingStartedAt = 0;
 desktop.apps.loadingEndedAt = 0;
 
+// `desktop.settings` scope is used for configurable settings in the desktop
+// `desktop.settings` scope will populate it values from what is stored in localstorage
 desktop.settings = {};
 
 // default timeout when calling desktop.use()
@@ -31,27 +36,20 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 // keep a cache object for buddylist data and messages to prevent re-renders
 // this is garbage collected on every updated run, so it should never grow
 // TODO: can we now remove this due to processedMessages?
-desktop.buddyListDataCache = {};
-desktop.buddyMessageCache = {};
+desktop.cache = {};
+desktop.cache.buddyListDataCache = {};
+desktop.cache.buddyMessageCache = {};
 
+// `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
+// this scope if populated by the `jquery.desktop.x.js` file
+desktop.ui = {};
+
+desktop.messages = {};
 // messages are processed locally by unique uuid
 // processedMessage[] is used to stored message ids which have already been processed by Desktop Client
-// TODO: Have the desktop trim desktop.processedMessages if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
-desktop.processedMessages = [];
+// TODO: Have the desktop trim desktop.messages._processed if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
+desktop.messages._processed = [];
 
-// windowIndex is used to keep track of all created windows
-desktop.windowIndex = {};
-
-// openWindows is used to keep track of currently open windows
-desktop.openWindows = {
-  buddy_message: {},
-  pond_message: {}
-};
-
-// windowPool is used to keep track of pre-created windows
-desktop.windowPool = {}
-desktop.windowPool['buddy_message'] = [];
-desktop.windowPool['pond_message'] = [];
 
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
@@ -62,7 +60,7 @@ desktop.images.preloaded = false;
 // add an event handler to each image's load event in the current document and wait until all images are loaded
 // this will prevent Desktop.ready from firing before all required images are ready ( no image flicking on load )
 // this also means that the entire Desktop is blocked from being ready until all current document images are loaded
-// TODO: We could add this same code inside desktop.loadRemoteAssets()
+// TODO: We could add this same code inside desktop.load.remoteAssets()
 //       to ensure images in injected HTML fragments block App injection until loaded
 var imgs = document.images,
     totalNewImages = imgs.length,
@@ -87,7 +85,12 @@ function imageLoaded() {
 desktop.preloader = [];
 desktop.use = function use(app, params) {
   // queue arguments for preloader
-  desktop.preloader.push({ appName: app, params: params });
+  params = params || {};
+  if (typeof app === 'function') {
+    desktop.preloader.push(app);
+  } else {
+    desktop.preloader.push({ appName: app, params: params });
+  }
   return this;
 }
 
@@ -95,12 +98,20 @@ desktop.ready = function ready (finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
   desktop.preloader.forEach(function(app){
-    scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+    if (typeof app === 'object' && !app.params.defer) {
+      scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+    }
   });
-  desktop.loadRemoteAssets(scriptArr, function(){
+  desktop.load.remoteAssets(scriptArr, function(){
     desktop.preloader.forEach(function(app){
-      desktop._use(app.appName, app.params);
-    })
+      if (typeof app === 'function') {
+        app();
+      } else {
+        desktop._use(app.appName, app.params);
+      }
+    });
+    // desktop is ready, clear out preloader ( it could be used again )
+    desktop.preloader = [];
     desktop._ready(finish)
   })
   return this;
@@ -114,15 +125,9 @@ desktop._use = function _use (app, params) {
     desktop.apps.loadingStartedAt = new Date();
   }
 
-  if (!desktop[app]) {
-    throw new Error('Invalid App Name: "' + app + '"');
-  }
-  if (!desktop[app].load || typeof desktop[app].load !== 'function') {
-    throw new Error(app + '.load is not a valid function');
-  }
 
   /*
-     Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`
+     Buddy Pond Desktop supports both `sync` and `defer` loading loading of `App`
 
      Apps load in this order:
 
@@ -137,37 +142,26 @@ desktop._use = function _use (app, params) {
         `defer` indicates the `App` should load *immediately* after the Desktop is ready
         `defer` param should be used for Apps that are non-critical, but frequently used
 
-     2. desktop.use(appName, { lazy: true })
-
-        Async style non-blocking loads ( Desktop will be Ready before all these load )
-        `lazy` indicates the `App` should load only when the Buddy tries to open it
-        `lazy` param should be used for Apps that are non-critical or large ( such as Games )
-
-    Note: If you choose both `lazy` and `defer` options, only `lazy` will be applied.
 
   */
 
-  if (params.lazy) {
-    // The Desktop will call `App.load()` after the Buddy tries to open the `App`
-    desktop[app].lazyLoad = true;
-    desktop.apps.lazy.push(app);
-    return this;
-  }
-
   if (params.defer) {
     // The Desktop will call `App.load()` *immediately* after the Desktop is ready
-    desktop[app].deferredLoad = true;
-    desktop.apps.deferred.push(app);
+    desktop.apps.deferred.push({ name: app, params: params });
     return this;
   }
 
   desktop.apps.loading.push({ name: app, params: params });
   desktop.log("Loading", 'App.' + app);
 
-  // Remark: sync `App.load *must* return a value or `Desktop.ready` will never fire
-  //         async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
-  let result = desktop[app].load(params, function(err, re){
-    desktop.renderDockIcon(app);
+  if (desktop.apps.loaded.indexOf(app) !== -1) {
+    desktop.log("Cached", 'App.' + app);
+    return this;
+  }
+
+  // Remark: async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
+  desktop.app[app].load(params, function(err, re){
+    desktop.ui.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
     desktop.apps.loading = desktop.apps.loading.filter(function(a){
@@ -177,19 +171,6 @@ desktop._use = function _use (app, params) {
       return true;
     });
   });
-
-  // if the result is not undefined, we can assume no callback was used in App.load
-  if (typeof result !== 'undefined') {
-    // Remark: dock icon is *not* rendered for sync `App.load` at the moment ( no HTML window has been created )
-    desktop.apps.loaded.push(app);
-    desktop.apps.mostRecentlyLoaded.push(app);
-    desktop.apps.loading = desktop.apps.loading.filter(function(a){
-      if (a.name === app) {
-        return false;
-      }
-      return true;
-    });
-  }
 
   return this;
 
@@ -206,398 +187,96 @@ desktop._ready = function _ready (finish) {
     }, 10)
   } else {
     desktop.apps.loadingEndedAt = new Date();
-    desktop.log("Loaded", desktop.apps.loaded);
+    // all Desktop.use() that are *not* deferred have been loaded
+    // call finish for Desktop.ready(), then continue to proess the deffered Apps
+    finish(null, desktop.loaded);
     // now that all Apps and their assets have loaded, lets load any deferred Apps
-    desktop.log("Loading Deferred Apps", desktop.apps.deferred);
+    desktop.log("Now loading deferred apps");
     // Remark: we might have to put a concurrency limit here
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
+    let scriptArr = [];
     desktop.apps.deferred.forEach(function(app){
+      if (typeof app === 'object') {
+        scriptArr.push(`desktop/apps/desktop.${app.name}/desktop.${app.name}.js`)
+      }
+    });
 
-      function _open () {
-        desktop.apps.loaded.push(app);
-        desktop.renderDockIcon(app);
-        desktop[app].deferredLoad = false;
-        if (desktop[app].openWhenLoaded) {
-          if (desktop[app].openWindow) {
-            desktop[app].openWindow(app);
-            let key = '#window_' + app;
-            $(key).show();
-            JQD.util.window_flat();
-            $(key).show().addClass('window_stack');
-            // TODO: loading status cursor indicator should be per App, not global
-            document.querySelectorAll('*').forEach(function(node) {
-              node.style.cursor = 'pointer';
-            });
-          } else {
-            desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app +'.openWindow')
+    desktop.load.remoteAssets(scriptArr, function(){
+      desktop.apps.deferred.forEach(function(app){
+        desktop.app[app.name].deferredLoad = true;
+        function _open () {
+          desktop.apps.loaded.push(app.name);
+          desktop.ui.renderDockIcon(app.name);
+          desktop.app[app.name].deferredLoad = false;
+          if (desktop.app[app.name].openWhenLoaded) {
+            if (desktop.app[app.name].openWindow) {
+              desktop.app[app].openWindow(app.name);
+              let key = '#window_' + app.name;
+              $(key).show();
+              JQD.util.window_flat();
+              $(key).show().addClass('window_stack');
+              // TODO: loading status cursor indicator should be per App, not global
+              document.querySelectorAll('*').forEach(function(node) {
+                node.style.cursor = 'pointer';
+              });
+            } else {
+              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow')
+            }
           }
         }
-      }
 
-      // fire and forget them all. provide a noop function for next
-      // Remark: the lazyNoop will NOT be executed for *sync* style `App.load` ( see below )
-      // check is made in JQDX.openWindow to see if `App.deferredLoad` is true
-      let result = desktop[app].load({}, function lazyNoop(){
-        _open();
+        if (desktop.apps.loaded.indexOf(app) !== -1) {
+          desktop.log("Cached", 'App.' + app);
+          // desktop.ui.openWindow(app);
+          finish(null, desktop.loaded);
+          return this;
+        }
+        desktop.log("Loading App." + app.name);
+        desktop.app[app.name].load(app.params, function lazyNoop(){
+          _open();
+        });
+
       });
-
-      // this indicates App.load was a *sync* style function and the callback was never fired
-      if (typeof result !== 'undefined') {
-        _open();
-      }
-
+      desktop.apps.deferred = [];
     });
-    desktop.apps.deferred = [];
-    finish(null, desktop.loaded);
   }
   return this;
 
 }
 
-desktop.loadRemoteAssets = function loadRemoteAssets (assetArr, final) {
-
-  let assets = {
-    script: [],
-    css: [],
-    appHTML: []
-  };
-
-  assetArr.forEach(function(asset){
-
-    if (asset.split('.').pop() === 'js') {
-      assets.script.push(asset);
-      return;
-    }
-
-    if (asset.split('.').pop() === 'css') {
-      assets.css.push(asset);
-      return;
-    }
-
-    // single word, for example: 'console' or 'profile'
-    if (asset.split('.').length === 1) {
-      assets.appHTML.push(asset);
-      return;
-    }
-
-    // could not detect asset type by file extension, assume its a JS script tag
-    // this style is used by youtube for iframe embeds
-    assets.script.push(asset);
-
-  });
-
-  desktop.loadRemoteJS(assets.script, function(err) {
-    desktop.loadRemoteCSS(assets.css, function(err) {
-      desktop.loadRemoteAppHtml(assets.appHTML[0], function(responseText, textStatus, jqXHR) {
-        final(responseText, textStatus, jqXHR);
-      });
-    });
-  });
-
-}
-
-// keep track of all external JS, CSS, and HTML files that have been pulled in
-desktop.loaded = {};
-desktop.loaded.scripts = [];
-desktop.loaded.css = [];
-desktop.loaded.appsHTML = {};
-
-/*
-  desktop.loadRemoteAppHtml() takes in an appName and constructs a uri from appName
-  the uri is then loaded with jQuery.load()
-  the results of this jQuery.load() are injected into a hidden shadow DOM and then appended into #desktop
-  this is very useful for lazy loading App assets so that the main application load size
-  does not grow as you install more Apps into the desktop
-*/
-desktop.loadRemoteAppHtml = function loadRemoteAppHtml (appName, cb) {
-  if (!appName) {
-    return cb(null);
-  }
-  $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
-  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
-    let html = $(`.${appName}WindowHolder`).html();
-    desktop.loaded.appsHTML[appName] = html;
-    $('#desktop').append(html);
-    $(`.${appName}WindowHolder`, '#shadowRender').remove();
-    cb(responseText, textStatus, jqXHR);
-  });
-}
-
-desktop.loadRemoteJS = function loadRemoteJS (scriptsArr, final) {
-
-  // filter out already injected scripts
-  let existingScripts =  $('script');
-
-  scriptsArr = scriptsArr.filter(function(script){
-    let scriptNeedsInjection = true;
-    existingScripts.each(function(i, existingScript){
-      if (existingScript.src.search(script) !== -1) {
-        scriptNeedsInjection = false;
-        console.log('Notice: Ignoring duplicate script injection for ' + script);
-      }
-    });
-    return scriptNeedsInjection;
-  });
-
-  let total = scriptsArr.length;
-  let completed = 0;
-
-  // if total is zero here, it means that all requested scripts have already been loaded and cached
-  if (total === 0) {
-    return final();
-  }
-
-  scriptsArr.forEach(function (scriptPath) {
-    // before injecting this script into the document, lets check if its already injected
-    // by doing this, we allow Apps to reinject the same deps multiple times without reloads
-    var tag = document.createElement('script');
-    tag.src = scriptPath;
-    desktop.loaded.scripts.push(scriptPath);
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    tag.onload = function () {
-      completed++;
-      if (completed === total) {
-        final();
-      }
-    }
-  });
-
-}
-
-desktop.loadRemoteCSS = function loadRemoteCSS (cssArr, final) {
-
-  let total = cssArr.length;
-  let completed = 0;
-
-  // if total is zero here, it means that all requested scripts have already been loaded and cached
-  if (total === 0) {
-    return final();
-  }
-  cssArr.forEach(function (cssPath) {
-    // before injecting this script into the document, lets check if its already injected
-    // by doing this, we allow Apps to reinject the same deps multiple times without reloads
-    var tag = document.createElement('link');
-    tag.href = cssPath;
-    tag.rel = "stylesheet";
-    desktop.loaded.css.push(cssPath);
-    var firstLinkTag = document.getElementsByTagName('link')[0];
-    firstLinkTag.parentNode.insertBefore(tag, firstLinkTag);
-    tag.onload = function () {
-      completed++;
-      if (completed === total) {
-        final();
-      }
-    }
-  });
-}
-
 desktop.refresh = function refreshDesktop () {
-  desktop.updateBuddyList();
-  desktop.processMessages(desktop.apps.loaded);
+  if (desktop.app.buddylist) {
+    desktop.app.updateBuddyList();
+    desktop.messages.process(desktop.apps.loaded);
+  }
 }
 
 //
-//
-// desktop.openWindow() function is used to create instances of a window class
-// this allows for multiple window instances to share the same logic
-// as of today, windowType can be "buddy_message" or "pond_message"
-// this implies there are already HTML elements named window_buddy_message_0 and window_pond_message_0
-// these will be incremented by 1 for each window , etc window_buddy_message_1, window_buddy_message_2
-// in the future we can have other windowTypes
-// for most applications you won't need this method and you can just 
-// use $(window_id).hide() or $(window_id).show() instead
-//
-//
-
-desktop.openWindow = function openWindow (windowType, context, position) {
-
-  let windowTypes = ['buddy_message', 'pond_message']
-
-  desktop.openWindows = desktop.openWindows || {};
-  desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
-
-  desktop.windowIndex = desktop.windowIndex || {};
-  desktop.windowIndex[windowType] = desktop.windowIndex[windowType] || {};
-
-  let windowKey;
-
-  if (desktop.openWindows[windowType][context]) {
-    // console.log('window already open, doing nothing', desktop.openWindows[windowType][context])
-    // if the window is open and not visible, it means it is minimized
-    let el = ('#' + desktop.openWindows[windowType][context]);
-    let dockEl = ('#' + desktop.openWindows[windowType][context]).replace('window_', 'icon_dock_');
-    if (!$(el).is(':visible')) {
-      $('.dock_title', dockEl).addClass('rainbow');
-    } else {
-      $('.dock_title', dockEl).removeClass('rainbow');
-    }
-    return desktop.openWindows[windowType][context];
-  }
-
-  desktop.log(`desktop.openWindow("${windowType}", "${context}")`);
-
-  if (desktop.windowIndex[windowType][context]) {
-    let windowId = desktop.windowIndex[windowType][context];
-    windowKey = '#' + windowId;
-    // console.log('reopening window id', windowId)
-    // TODO: check to see if window is min, if so, open it from dock
-    // desktop.renderDockElement(windowType + '_' + window_id, context);
-    JQD.util.window_flat();
-    $(windowKey).show().addClass('window_stack');
-  } else {
-    // TODO: max windows message
-    windowKey = desktop.windowPool[windowType].pop();
-    if (!windowKey) {
-      alert(`No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`);
-      return;
-    }
-
-    let windowId = '#' + windowKey;
-    // console.log('allocating window from pool', windowId)
-    $('.window-context-title', windowId).html(context);
-    $('.window-context-title', windowId).html(context);
-    $(windowId).attr('data-window-context', context);
-
-    $(windowId).show();
-    $(windowId).css('width', 600)
-    $(windowId).css('height', 440)
-
-    // bring newly opened window to front
-    JQD.util.window_flat();
-    $(windowId).addClass('window_stack').show();
-
-    // assign window id from pool into windowIndex
-    //
-    // for example: desktop.windowIndex['buddy_message']['Marak] = '#window_buddy_message_0';
-    //
-    desktop.windowIndex[windowType][context] = windowId;
-
-    // render the bottom bar dock element
-    desktop.renderDockElement(windowKey.replace('window_', ''), context);
-
-    // a new window is being opened, figure out where it should be positioned next to
-    // default position is next to the buddylist
-    let openNextTo = "#window_buddylist";
-
-    // gather all open buddy_messsage windows and find the first one
-    // if the first one exists, assign that to open next to
-    
-    let first = Object.keys(desktop.openWindows.buddy_message)[0];
-    if (desktop.openWindows.buddy_message[first]) {
-      openNextTo = '#' + desktop.openWindows.buddy_message[first];
-    } else {
-      // do nothing
-    }
-
-    position = position || {}
-    position.my = position.my || "left top",
-    position.at = position.at || 'right top',
-    position.of = position.of || openNextTo
-
-    // TODO: this shouldn't happen. refactor chat window positioning to not depend on buddylist being visible
-    try {
-      $(windowId).position(position);
-    } catch (err) {
-      console.log('Warning: Error in showing ' + windowId, err);
-    }
-    
-    if (windowType === 'buddy_message') {
-
-      // invalidate previous processed messages for this buddy
-      desktop.processedMessages = desktop.processedMessages.filter(function(uuid){
-        if (desktop.buddyMessageCache[buddypond.me + '/' + context]) {
-          if (desktop.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
-            return false
-          }
-        }
-        return true;
-      });
-      desktop.buddylist.onWindowOpen(windowId, context);
-    }
-
-  }
-
-  // the window is now open ( either its new or it's been re-opened )
-  // assign this window key into desktop.openWindows
-  desktop.openWindows[windowType][context] = windowKey;
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
-  }
-
-  return windowKey;
-}
-
-//
-// desktop.closeWindow() function is used to close instanced windows
-// in most cases you can just use $(window_id).hide()
-// The current logic here is for ensuring subscribed buddies and pond lists
-// are updated when the user closes the window in the UI
-// This is to ensure UI is only polling for messages on windows that are actually open
-//
-desktop.closeWindow = function openWindow (windowType, context) {
-  desktop.openWindows = desktop.openWindows || {};
-  desktop.openWindows[windowType] = desktop.openWindows[windowType] || {};
-
-  // console.log('pushing window back into pool', desktop.openWindows[windowType][context])
-
-  // Since the window is now closed, we can push it back into the windowPool,
-  // based on it's windowType and context
-  // for example: desktop.windowPool['buddy_message'].push(desktop.openWindows['buddy_message']['Marak'])
-  desktop.windowPool[windowType].push(desktop.openWindows[windowType][context])
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.openWindows[windowType]))
-    // remove newMessages notification for this buddy
-    // TODO: move this to buddylist.closeWindw()
-    desktop.buddylistProfileState.updates["buddies/" + context] = desktop.buddylistProfileState.updates["buddies/" + context] || {};
-    desktop.buddylistProfileState.updates["buddies/" + context].newMessages = false;
-    $('.chat_messages', '#' + desktop.openWindows[windowType][context]).html('');
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.openWindows[windowType]))
-  }
-
-  // TODO: replace delete statements?
-  //
-  // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
-  //
-  delete desktop.openWindows[windowType][context];
-  delete desktop.windowIndex[windowType][context];
-
-}
-
-//
-// desktop.processMessages() queries the server for new messages and then
-// delegates those messages to any applications which expose an App.updateMessaegs() function 
+// desktop.messages.process() queries the server for new messages and then
+// delegates those messages to any applications which expose an App.processMessages() function
 // currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
-
-desktop.processMessages = function processMessages (apps) {
+desktop.messages.process = function processMessages (apps) {
   apps = apps || desktop.apps.loaded;
   if (!buddypond.qtokenid) {
-    // no session, wait five seconds and try again
+    // no session, wait a short tick and try again
+    // this most likely indicates login is in progress
     setTimeout(function(){
-      desktop.processMessages();
+      desktop.messages.process();
     }, 10);
   } else {
 
     //
-    // first, calculate list of subscribed buddies and subscribed ponds
+    // calculate list of subscribed buddies and subscribed ponds
     //
-    var subscribedBuddies = Object.keys(desktop.openWindows['buddy_message'])
-    var subscribedPonds = Object.keys(desktop.openWindows['pond_message'])
+    var subscribedBuddies = Object.keys(desktop.ui.openWindows['buddy_message'])
+    var subscribedPonds = Object.keys(desktop.ui.openWindows['pond_message'])
 
+    // TODO: Configure desktop.messages.process() to still check for agent and systems messages here
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
       setTimeout(function(){
-        desktop.processMessages();
+        desktop.messages.process();
       }, 10);
       return;
     }
@@ -620,38 +299,37 @@ desktop.processMessages = function processMessages (apps) {
         // if an error has occured, give up on processing messages
         // and retry again shortly
         setTimeout(function(){
-          desktop.processMessages();
+          desktop.messages.process();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
+
+
+      //
+      // filter out any messaages which have already been processed by uuid
+      // the deskop UX will only process each message once as to not re-render / flicker elements and message events
       let newMessages = [];
-      // console.log('buddypond.getMessages', err, data)
       data.messages.forEach(function(message){
-        if (desktop.processedMessages.indexOf(message.uuid) === -1) {
+        if (desktop.messages._processed.indexOf(message.uuid) === -1) {
           newMessages.push(message)
         }
       });
-
       // console.log(data.messages.length, ' messages came in');
       // console.log(newMessages.length, ' are being rendered');
-
-      //
-      // Filter out any messaages which have already been processed by uuid
-      // The deskop UX will only process each message once as to not re-render / flicker elements and message events
-
       data.messages = newMessages;
-  
+
+      // iterate through every app that is loaded and see if it exports `App.processMessages` function
+      // currently we processMessages for: `App.buddylist`, `App.pond`, and `App.automaton`
       let appNameProcessMessagesList = [];
       apps.forEach(function(app){
-        if (typeof desktop[app].processMessages === 'function') {
-          appNameProcessMessagesList.push(desktop[app].processMessages)
+        if (typeof desktop.app[app].processMessages === 'function') {
+          appNameProcessMessagesList.push(desktop.app[app].processMessages)
         }
       })
 
-      // desktop.buddylist.processMessages, desktop.pond.processMessages
       //
-      // once we have the messages data, call desktop.buddylist.processMessages()
-      // to delegate message data to app's internal processMessages() function
+      // once we have the message data and know which Apps have `App.processMessages` available...
+      // delegate tge message data to each App's internal processMessages() function
       //
       desktop.utils.asyncApplyEach(
         appNameProcessMessagesList,
@@ -664,10 +342,101 @@ desktop.processMessages = function processMessages (apps) {
           // All apps have completed rendering messages, set a timer and try again shortly
           //
           setTimeout(function(){
-            desktop.processMessages(desktop.apps.loaded);
+            desktop.messages.process(desktop.apps.loaded);
           }, desktop.DEFAULT_AJAX_TIMER);
       });
     });
+  }
+}
+
+desktop._events = {};
+
+
+/*
+
+    ## Event Emitters
+
+    The Desktop support event emitters with the following methods:
+
+    **Register a new event**
+
+    desktop.on(eventName, label, fn)
+
+    `eventName` is the name of the event which will be emitted
+    `label` is arbtitrary unique string that describes the action which will happen when the event emits
+
+    desktop.on('alarm', 'play-nyan-cat', function doStuff (data){
+      // your custom code here
+      console.log(data);
+    });
+
+    **Emitting data to that event**
+    desktop.emit(eventName, data)
+
+    `eventName` is the name of the event to emit to
+    `data` is any JSON data
+
+    // will trigger:
+    desktop.emit('alarm', {
+      videoId: 123,
+      autoplay: true
+    });
+
+    **Unbind all handlers from event**
+
+    desktop.unbind(eventName)
+
+    **Unbind single handler from event**
+
+    desktop.unbind(eventName, label)
+
+*/
+
+// when registering an event emitter, you *must* specify a `eventLabel` label
+// this can be used later to remove the custom eventHandler by name
+desktop.on = function desktopEventEmitterOn (eventName, eventLabel, fn) {
+  desktop._events[eventName] = desktop._events[eventName] || [];
+  // console.log('adding event', eventName, eventLabel, fn)
+  desktop._events[eventName].push({
+    eventLabel: eventLabel,
+    fn: fn
+  });
+};
+
+desktop.emit = function desktopEventEmitterEmit (eventName, data) {
+  // find all listening events
+  if (desktop._events[eventName] && desktop._events[eventName].length) {
+    desktop._events[eventName].forEach(function(_event){
+      // console.log('calling event', eventName, _event.eventLabel, data)
+      _event.fn(data);
+    })
+  }
+};
+
+desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
+  if (typeof eventLabel === 'undefined') {
+    desktop._events[eventName] = [];
+    // remove all events for eventName
+    return;
+  }
+  if (desktop._events[eventName] &&  desktop._events[eventName].length) {
+     desktop._events[eventName] = desktop._events[eventName].filter(function(_event){
+       if (_event.eventLabel === eventLabel) {
+         return false;
+       }
+       return true;
+     })
+  }
+};
+
+
+// desktop can play multimedia files with simple desktop.play(fileName) commands
+desktop.play = function desktopPlay (soundFx, callback) {
+  if (desktop.app.audioplayer && desktop.app.audioplayer.play) {
+    desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, false, callback);
+  } else {
+    console.log('App.AudioPlayer was not detected. Is it ready? Was it loaded?');
+    callback(null, false);
   }
 }
 
@@ -702,3 +471,35 @@ desktop.utils.asyncApplyEach = function asyncApplyEach (fns, data, finish) {
     })
   })
 }
+
+desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
+  /* 
+    youtube id can only have: 
+    - Lowercase Letters (a-z) 
+    - Uppercase Letters (a-z) 
+    - Numbers (0-9)
+    - Underscores (_)
+    - Dashes (-)
+  */
+  const res = /^[a-zA-Z0-9_\-]+$/.exec(str);
+  const valid = !!res;
+  return valid;
+}
+
+desktop.smartlinks = {};
+desktop.smartlinks.replaceYoutubeLinks = function (el) {
+  let cleanText = el.html();
+  if (cleanText) {
+    let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
+    if (searchYouTube !== -1) {
+      // if a youtube link was found, replace it with a link to open IDC with the video id
+      let id = cleanText.substr(searchYouTube + 32, 11);
+      let isValid = desktop.utils.isValidYoutubeID(id);
+      if (isValid) {
+        let str = 'https://www.youtube.com/watch?v=' + id;
+        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+        el.last().html(cleanText);
+      }
+    }
+  }
+};

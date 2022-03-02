@@ -1,30 +1,60 @@
-desktop.audioplayer = {};
-
-desktop.audioplayer.load = function loadAudioPlayer (params, next) {
-  return true;
+desktop.app.audioplayer = {};
+desktop.app.audioplayer.icon = 'folder';
+desktop.app.audioplayer.load = function loadAudioPlayer (params, next) {
+  next();
 };
 
 // keeps track of playing sounds so that Apps don't accidentally spam audio
-desktop.audioplayer.playing = {};
+desktop.app.audioplayer.playing = {};
 
-desktop.audioplayer.play = function playAudio (soundPath) {
-  if (desktop.settings.audio_muted) {
-    // do not play any audio if desktop is muted
+desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback) {
+  callback = callback || function noop () {}
+  if (!desktop.settings.audio_enabled) {
+    // do not play any audio if desktop is not enabled
+    return callback(null, false);
   } else {
     // play the audio
-    if (desktop.audioplayer.playing[soundPath]) {
+    if (desktop.app.audioplayer.playing[soundPath]) {
       console.log(`Warning: Already playing ${soundPath}, will not play same audio file concurrently.`);
-      return;
+      return callback(null, false);
     }
-    desktop.audioplayer.playing[soundPath] = true;
+    // set a flag for this audio file path to ensure we don't attempt to play it concurrently with itself
+    desktop.app.audioplayer.playing[soundPath] = true;
     try {
       var audio = new Audio(soundPath);
       audio.addEventListener('ended', function() {
-        desktop.audioplayer.playing[soundPath] = false;
-      },false);
+        // the audio file has completed, reset the flag to indicate the audio file path can be played again
+        desktop.app.audioplayer.playing[soundPath] = false;
+        if (callback) {
+          callback(null, true);
+        }
+      }, false);
+
+      // Remark: Wrap audio.play() promise in _play function to allow `tryHard` retries
+      //         This allows the Desktop to optionaly retry audio if the the first attempt fails
+      //.        This is currently being used to ensure WELCOME sound plays on first document interaction
+      function _play () {
+        audio.play()
+          .then(() => {
+            // success
+          })
+          .catch(error => {
+            // console.log('Unable to play the audio, User has not interacted yet.');
+            if (tryHard) {
+              tryHard--;
+              setTimeout(function(){
+                _play();
+              }, 333)
+            }
+        });
+      }
+      _play();
+
+
     } catch (err) {
-      desktop.audioplayer.playing[soundPath] = false;
+      console.log('Warning Audio Error:', err.message)
+      desktop.app.audioplayer.playing[soundPath] = false;
+      return callback(err, false);
     }
-    audio.play();
   }
 }

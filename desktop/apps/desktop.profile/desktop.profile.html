@@ -1,3 +1,21 @@
+<style>
+  #window_profile .publicProfilePreviewHolder {
+    border: solid;
+    background-color: #CCC;
+    text-align: left;
+    width: 280px;
+  }
+
+  #window_profile .publicProfilePreviewHolder:hover * {
+    cursor: pointer;
+  }
+
+  .updateProfileResponse {
+    font-size: 18px;
+  }
+
+</style>
+
 <div id="window_profile" class="abs window">
   <div class="abs window_inner">
     <div class="window_top">
@@ -16,8 +34,8 @@
         <div id="profileTabs">
           <ul>
             <li><a href="#tabs-1">User Profile Settings</a></li>
-            <li><a href="#tabs-2">Buddy Apps</a></li>
-            <li><a href="#tabs-3">Public Profile</a></li>
+            <li><a href="#tabs-2">Public Profile</a></li>
+            <li><a href="#tabs-3">Buddy Apps</a></li>
           </ul>
           <div id="tabs-1">
             <span class="updateProfileResponse"></span>
@@ -54,24 +72,31 @@
                     <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
                   </td>
                 </tr>
-                <tr>
-                  <td>Enable Web Notifications</td>
-                  <td>
-                    <input type="checkbox" size="32" name="notifications_audio_enabled" class="enableWebNotifications" title="This will enable your browser's Notification settings allow Buddy Pond to notify you have new buddy messages while the website tab is not visible."/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Enable Audio Notifications</td>
-                  <td>
-                    <input type="checkbox" size="32" name="notifications_web_enabled" class="enableAudioNotifications" title="This will enable audio notifications in the browser window while the website tab is not visible."/>
-                  </td>
-                </tr>
+
               </table>
               <br/>
-              <button type="submit" class="desktopButton updateProfileButton">Update Profile</button>
+              <button type="submit" class="desktopPanel updateProfileButton">Update Profile</button>
             </form>
           </div>
-          <div id="tabs-2" align="center">
+          <div id="tabs-2">
+            <h2>Your current Buddy Profile:</h2>
+            <br/>
+            <div class="publicProfilePreviewHolder desktopButton">
+              <div class="border">
+                <p class="me">Marak</p>
+                <p><em>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></em></p>
+              </div>
+              <br/>
+              <div class="publicProfilePreview"></div>
+            </div>
+            <br/>
+            <br/>
+            <div class="profileEditor">
+              <textarea name="profileMarkdown" class="profileMarkdown" cols="60" rows="15"></textarea>
+              <button class="desktopButton updateProfileMarkdown">Update Profile</button>
+            </div>
+          </div>
+          <div id="tabs-3" align="center">
             <p align="left">
               <img title="Custom Desktop App Configurations coming soon!" height="32" width="32" src="desktop/assets/images/icons/icon_locked.png" />
               Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
@@ -89,30 +114,7 @@
               </tr>
               <tr>
                 <td>
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Profile
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Buddy List
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Buddy Pond
-                </td>
-              </tr>
-              <tr>
-                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_console_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
@@ -121,14 +123,34 @@
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_profile_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
-                  Background
+                  Profile
                 </td>
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Buddy List
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_pond_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Buddy Pond
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mirror_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
@@ -137,6 +159,7 @@
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_videochat_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
@@ -145,14 +168,16 @@
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mtv_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
-                  Music TeleVision
+                  Music Television
                 </td>
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
@@ -161,10 +186,20 @@
               </tr>
               <tr>
                 <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_folder_64.png" />
                   <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
                 </td>
                 <td>
                   Games
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Wallpaper
                 </td>
               </tr>
             </table>
@@ -174,14 +209,6 @@
                 Refresh entire page to for Buddy Apps to reload.
               </p>
             -->
-          </div>
-          <div id="tabs-3">
-            <p>Simple preview of what your Buddy Profile will look like</p>
-            <br/>
-            <div class="border">
-              <p class="me">Marak</p>
-              <p>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></p>
-            </div>
           </div>
         </div>
       </div>

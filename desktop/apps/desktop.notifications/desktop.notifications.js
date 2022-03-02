@@ -1,20 +1,20 @@
-desktop.notifications = {};
-desktop.notifications.label = "Notifications";
-desktop.notifications.browserHasPermission = false;
-desktop.notifications.emitToDesktop = false;
+desktop.app.notifications = {};
+desktop.app.notifications.label = "Notifications";
+desktop.app.notifications.browserHasPermission = false;
+desktop.app.notifications.emitToDesktop = false;
 
-desktop.notifications.load = function loadnotificationsGames () {
+desktop.app.notifications.load = function loadnotificationsGames () {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notifications");
   }
   return true;
 };
 
-desktop.notifications.notifyBuddy = function notifyBuddy (text) {
+desktop.app.notifications.notifyBuddy = function notifyBuddy (text) {
   text = text || "default message senpai";
 
   if (desktop.settings.notifications_audio_enabled) {
-    desktop.audioplayer.play('desktop/assets/audio/IM.wav')
+    desktop.app.audioplayer.play('desktop/assets/audio/IM.wav')
   }
 
   if (desktop.settings.notifications_web_enabled) {
@@ -23,10 +23,10 @@ desktop.notifications.notifyBuddy = function notifyBuddy (text) {
 
 }
 
-desktop.notifications.openWindow = function openWindow () {
+desktop.app.notifications.openWindow = function openWindow () {
 };
 
-desktop.notifications.closeWindow = function closeWindow () {
+desktop.app.notifications.closeWindow = function closeWindow () {
 };
 
 /*

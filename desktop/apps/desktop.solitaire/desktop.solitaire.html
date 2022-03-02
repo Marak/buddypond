@@ -1,3 +1,14 @@
+<style>
+  #solitaireIframe {
+    height: 100%;
+    width: 100%;
+  }
+  .solitaireGameHolder {
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
 <div id="window_solitaire" class="abs window" align="center">
   <div class="abs window_inner">
     <div class="window_top">
@@ -13,16 +24,7 @@
     </div>
     <div class="abs window_content">
       <div class="solitaireGameHolder">
-        <div class="game-solitaire">
-        <div class="solitaire" id="js-solitaire">
-            <div id="js-finish" class="finish-deck"></div>
-            <div id="js-board" class="board-deck"></div>
-            <div class="deck">
-              <div id="js-deck-pile" class="deck__pile"></div>
-              <div id="js-deck-deal" class="deck__deal"></div>
-            </div>
-          </div>
-        </div>
+        <iframe id="solitaireIframe" class="solitaireIframe" src="desktop/apps/desktop.solitaire/vendor/solitaire.html"/>
       </div>
     </div>
     <div class="abs window_bottom">

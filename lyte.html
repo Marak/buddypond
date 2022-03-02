@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="description" content="Buddy Pond - A place for buddies to chat." />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>LYTE Buddy Pond</title>
+<!--[if lt IE 7]>
+<script>
+window.top.location = 'ie.html';
+</script>
+<![endif]-->
+
+<link rel="stylesheet" href="desktop/assets/css/reset.css">
+<link rel="stylesheet" href="desktop/assets/css/loader.css">
+
+<!--[if lt IE 9]>
+<link rel="stylesheet" href="desktop/assets/css/ie.css" />
+<![endif]-->
+
+</head>
+<body>
+<img id="wallpaper" class="abs" src="desktop/assets/images/misc/wallpaper.jpg" />
+<div id="loaderHolder">
+  <div id="loader"></div>
+</div>
+
+<div id="mainOverlay">
+  <div class="abs" id="wrapper">
+  <div class="abs" id="desktop">
+    <a class="abs icon" style="left:20px;top:40px;" href="#icon_dock_buddylist">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+      Buddy List
+    </a>
+    <a class="abs icon" style="left:20px;top:120px;" href="#icon_dock_pond">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
+      Buddy Pond
+    </a>
+    <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_login_64.png" />
+      Login
+    </a>
+    <a id="profile_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_profile">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_profile_64.png" />
+      Profile
+    </a>
+    <!--
+      <a class="abs icon" style="right:40px;top:160px;" href="#icon_download_buddypond">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_32_drive.png" />
+        Download Buddy Pond
+      </a>
+    -->
+    <!--
+    <a class="abs icon" style="right:20px;top:160px;width:120px;" href="#icon_dock_notifications">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_playpause.png" />
+      <span class="label">Enable Notifications</span>
+    </a>
+    -->
+
+    <a class="abs icon" style="left:20px;top:560px;" href="#icon_dock_mirror">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror_64.png" />
+      Mirror
+    </a>
+    <a class="abs icon" style="left:110px;top:560px;" href="#icon_dock_spellbook">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
+      Spellbook
+    </a>
+
+    <a class="abs icon" style="right:20px;top:130px;" href="#icon_dock_console">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Console
+    </a>
+    <!--
+    <a class="abs icon" style="right:20px;top:200px;" href="#icon_dock_settings">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+      Desktop Settings
+    </a>
+      -->
+  </div>
+  <div class="abs" id="bar_top">
+    <ul>
+      <li>
+        <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
+        <ul class="menu">
+          <!--
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Online</a>
+          </li>
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Away</a>
+          </li>
+          <li>
+            <a class="editProfileLink"  href="#">Set Status - Predisposed</a>
+          </li>
+          <li>
+            <a class="setStatus"  href="#">Set Status - Custom</a>
+          </li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          -->
+          <li>
+            <span class="tiny"><em>We are stoked to be your buddy</em></span>
+          </li>
+          <li>
+            <a class="editProfileLink"  href="#">Edit Profile</a>
+          </li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          <li class="emptyMenuCell">&nbsp;</li>
+          <li>
+            <a class="loginLink" href="#">Login</a>
+          </li>
+          <li>
+            <a class="logoutLink"  href="#">Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <span class="float_right" id="clock"></span>
+    <ul class="float_right">
+      <li>
+        <a class="menu_trigger" href="#">Buddy Pond</a>
+        <ul class="menu">
+          <li>
+            <a href="https://github.com/marak/buddypond">Source Code</a>
+          </li>
+          <li>
+            <a href="https://buddypond.com/sdk/client">Client SDK</a>
+          </li>
+          <li>
+            <a href="https://github.com/marak/buddypond">Home Page</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="float_right">
+      <li>
+        <a class="menu_trigger" href="#">
+          <!--
+          <span class="desktopConnected float_right">Connection Established</span>
+            -->
+          <span class="totalConnected float_right"><span class="totalConnectedCount">0</span> Users Connected</span>
+          <span class="desktopDisconnected float_right">Disconnected</span>
+        </a>
+        <ul class="menu connectionDetails">
+          <li>
+            Conection Started: <span class="connection_ctime"></span> <br/>
+            Packets Sent <span class="connection_packets_sent"></span> <br/>
+            Packets Recieved <span class="connection_packets_recieved"></span> <br/>
+          </li>
+          <li>
+            Last Response Time: <span class="connection_last_response_time">33ms</span> <br/>
+            Average Response Time: <span class="connection_average_response_time">33ms</span> <br/>
+            <!-- Server Load <span class="">Low</span> <br/> -->
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="abs" id="bar_bottom">
+    <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
+      <img src="desktop/assets/images/icons/icon_22_desktop.png" />
+    </a>
+    <ul id="dock">
+      <li id="icon_dock_buddy_message_0">
+        <a href="#window_buddy_message_0">
+          <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+          <span class="dock_title">
+            Chat with X
+          </span>
+        </a>
+      </li>
+      <li id="icon_dock_pond_message_0">
+        <a href="#window_pond_message_0">
+          <img width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
+          <span class="dock_title">
+            Chat with X
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<link rel="stylesheet" href="desktop/assets/css/desktop.css" />
+<link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
+
+<script src="desktop/assets/js/jquery.js"></script>
+<script src="desktop/assets/js/jquery.ui.min.js"></script>
+<script src="desktop/assets/js/forbidden.notes.js"></script>
+
+<script src="sdk/buddypond.js"></script>
+<script src="desktop.js"></script>
+<script src="desktop.load.js"></script>
+<script src="desktop/assets/js/jquery.desktop.x.js"></script>
+
+<script>
+  // see: ReadMe.md for documentation on `desktop.use`
+  $(document).ready(function(){
+    let documentReadyTime = new Date();
+    desktop.log('Buddy Pond Cloud Desktop Initialized');
+    desktop.log('Now loading apps');
+    desktop
+      .use('console')
+      .use('localstorage')
+      .use('settings')
+      .use(function(args){
+        // override default merlin setting
+        desktop.settings.agent_merlin_active = false;
+        return true;
+      })
+      .use('audioplayer')
+      .use('login')
+      .use('buddylist')
+      .use('pond')
+      .use('spellbook', { defer: true })
+      .use('profile', { defer: true })
+      .use('mirror', { defer: true })
+      .ready(function(err, apps){
+        desktop.log('Ready:', 'LYTE Buddy Pond', 'v4.20.69')
+        // Desktop is ready, start refreshing it's state immediately
+        desktop.refresh();
+        let now = new Date();
+        $('#loaderHolder').hide();
+        $('#mainOverlay').show();
+      });
+  });
+
+</script>
+  <div id="shadowRender">
+  </div>
+</body>
+</html>

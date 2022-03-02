@@ -1,15 +1,18 @@
 let desktop = {};
 desktop.log = console.log;
+desktop.app = { mtv: {}};
 desktop.settings = {};
+desktop.settings.wallpaper_color = 'green';
+desktop.settings.wallpaper_name = 'matrix';
 desktop.load = function () {
 
   $('.icon').on('click', function(){
     let appName = $(this).attr('href').replace('#app_', '');
-    desktop.interdimensionalcable.closeWindow();
-    desktop.mtv.closeWindow();
+    desktop.app.interdimensionalcable.closeWindow();
+    desktop.app.mtv.closeWindow();
     $('.window').hide();
-    if (desktop[appName] && desktop[appName].openWindow) {
-      desktop[appName].openWindow();
+    if (desktop.app[appName] && desktop.app[appName].openWindow) {
+      desktop.app[appName].openWindow();
     } else {
       $('#window_' + appName).show();
       $('.window', '#window_' + appName).show();
@@ -21,10 +24,12 @@ desktop.load = function () {
 
 }
 
-desktop.loadRemoteAppHtml = function noop (params, cb) {
+desktop.load.remoteAppHtml = function noop (params, cb) {
   cb(null);
 }
 
-desktop.loadRemoteAssets = function noop (params, cb) {
+desktop.load.remoteAssets = function noop (params, cb) {
   cb(null);
 }
+
+desktop.on = function noop () {}

@@ -1,10 +1,10 @@
-desktop.minesweeper = {};
-desktop.minesweeper.label = "Minesweeper";
+desktop.app.minesweeper = {};
+desktop.app.minesweeper.label = "Minesweeper";
 
-desktop.minesweeper.load = function loadminesweeperGames (params, next) {
-  desktop.loadRemoteAssets([
+desktop.app.minesweeper.load = function loadminesweeperGames (params, next) {
+  desktop.load.remoteAssets([
     'desktop/apps/desktop.minesweeper/desktop.minesweeper.css',
-    'minesweeper' // this loads the sibling desktop.minesweeper.html file into <div id="window_minesweeper"></div>
+    'minesweeper' // this loads the sibling desktop.app.minesweeper.html file into <div id="window_minesweeper"></div>
   ], function (err) {
     $('#window_minesweeper').css('width', 630);
     $('#window_minesweeper').css('height', 470);
@@ -14,10 +14,11 @@ desktop.minesweeper.load = function loadminesweeperGames (params, next) {
   });
 };
 
-desktop.minesweeper.openWindow = function openWindow () {
+desktop.app.minesweeper.openWindow = function openWindow () {
+  $('#minesweeperIframe').attr('src', 'desktop/apps/desktop.minesweeper/vendor/minesweeper.html');
   return true;
 };
 
-desktop.minesweeper.closeWindow = function closeWindow () {
+desktop.app.minesweeper.closeWindow = function closeWindow () {
   return true;
 };

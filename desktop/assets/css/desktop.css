@@ -188,6 +188,20 @@ div.ui-resizable-handle {
   margin: 6px 5px 0 0;
 }
 
+.window_bottom_chat {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  /*overflow: hidden;*/
+  text-align: center;
+  text-shadow: #fff 0 1px 1px;
+  height: 33px;
+  width: 100%;
+  left: 1px;
+  right: 1px;
+  bottom: 21px;
+}
+
 .window_bottom {
   background: #fff url(../images/gui/bar_top.png) repeat-x left bottom;
   border-top: 1px solid #bbb;
@@ -470,6 +484,11 @@ th.shrink {
   text-shadow: none;
 }
 
+#bar_top li.emptyMenuCell {
+  background-color: white;
+}
+
+
 #bar_bottom li {
   display: none;
   margin: 0 0 10px 5px;
@@ -590,18 +609,6 @@ a:hover {
   /*margin: 16px;*/
 }
 
-.loginForm {
-  padding: 16px;
-}
-
-.loginForm table td {
-  padding: 6px;
-}
-
-.loginButton {
-  width: 300px;
-}
-
 .desktopInput {
   width: 140px;
   padding: 8px;
@@ -648,6 +655,33 @@ a:hover {
 }
 
 
+.desktopPanel {
+  /*
+  background-color: black;
+  color: #00FF41;
+  */
+  cursor: pointer;
+  border: solid;
+  border-width: 1px;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 4px;
+}
+
+.desktopPanel:hover {
+  color: #008F11;
+  background-color: #FFF;
+  filter: drop-shadow(5px 5px 2px #4444dd);
+  animation-name: rainbow;
+  animation-duration: 2.1111s;
+  opacity: 0.7;
+  animation-iteration-count: infinite;
+}
+
 .desktopSelect {
   /*
   background-color: black;
@@ -669,21 +703,6 @@ a:hover {
   filter: drop-shadow(5px 5px 2px #4444dd);
   opacity: 0.7;
 }
-
-.loginButton:hover {
-  color: #008F11;
-  background-color: #FFF;
-  animation-name: rainbow;
-  animation-duration: 1.1111s;
-  opacity: 0.7;
-  animation-iteration-count: infinite;
-}
-
-@keyframes loginButton {
-  from {background-color: #000000;}
-  to {background-color: #00FF41;}
-}
-
 
 @keyframes desktopButton {
   from {background-color: blue;}
@@ -720,57 +739,13 @@ a:hover {
   to {background-color: yellow;}
 }
 
-.addBuddyForm {
-  /*
-  position: absolute;
-  bottom: 10px;
-  */
-}
-
-.buddy_message_text {
-  width: 100%;
-  height: 50px;
-  resize: none;
-}
-
-.pond_message_text {
-  width: 100%;
-  height: 50px;
-  resize: none;
-}
-
-
-
 .emoji-menu { bottom: 111px!important; }
 
 .chat_messages {
-  height: 240px;
+  height: 100%;
+  width: 100%;
   overflow: auto;
   resize: none;
-}
-
-.chat_send_message_form {
-  position: absolute;
-  float: bottom;
-  bottom: 0px;
-  width: 92%;
-}
-
-.pond_send_message_form {
-  position: absolute;
-  float: bottom;
-  bottom: 0px;
-  width: 92%;
-}
-
-.chatMessagesHolder {
-  padding-top: 16px;
-  padding-left: 16px;
-}
-
-.buddyListHolder {
-  text-align: left;
-  width: 75%;
 }
 
 .splash {
@@ -790,11 +765,12 @@ a:hover {
 .me_title {
   float: left;
   text-align: center;
+  cursor: pointer;
 }
 
 .emojiPicker {
   position: absolute;
-  right: 5px;
+  left: 5px;
   top: 5px;
 }
 
@@ -803,43 +779,22 @@ a:hover {
   opacity: 0.44;
 }
 
-.startVideoCall {
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 16px;
-  top: 16px;
+.emojiIcon {
+  font-size: 28px;
+  height: 16px;
+  width: 16px;
 }
 
-.endVideoCall {
-  opacity: 0.4;
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 64px;
-  top: 16px;
+.emojiTitleBar {
+  font-size: 16px;
+  padding-right: 5px;
 }
 
-.endVideoCall:hover {
-  opacity: 0.4;
-  cursor: pointer;
+.emojiDockBar {
+  font-size: 22px;
 }
 
-.startVideoCall:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.acceptVideoCall {
-  position: absolute;
-  height: 32px;
-  width: 32px;
-  right: 48px;
-  top: 16px;
-}
-
-.acceptVideoCall:hover {
-  opacity: 0.6;
+.emojiIcon:hover {
   cursor: pointer;
 }
 
@@ -851,14 +806,117 @@ a:hover {
   */
 }
 
-
-
 .demo{
   width:400px;
   height:400px;
   font-size:5em;
   float:left;
   text-align:center;
+}
+
+.loading {
+  width: 111px;
+  height: 111px;
+  opacity: 0.5555;
+}
+
+video {
+  padding: 16px;
+}
+
+.totalConnected {
+  display: none;
+}
+
+#login_desktop_icon {
+  display: none;
+}
+
+#profile_desktop_icon {
+  display: none;
+}
+
+.connectionDetails li {
+  padding: 11px;
+}
+
+#clock {
+  color: black;
+}
+
+.loggedIn {
+  display: none;
+}
+
+video {
+  margin: 0px;
+  padding: 0px;
+}
+
+.wallpaperColor {
+  display:none;
+}
+
+#window_games .icon {
+  color: white;
+}
+
+#shadowRender {
+  display: none;
+}
+
+.spinningCursor  {
+  cursor: pointer !important; /* progress, grabbing, context-menu */
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
+iframe {
+  padding: 0 0 0 0px;
+  margin: 0 0 0 0px;
+  width: 100%;
+}
+
+.warning {
+  color: red;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.tiny {
+  font-size: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.float-left {
+  position: relative;
+  float: left;
+}
+
+.navbarControl {
+  font-size: 16px;
+  cursor: pointer;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.volumeMuted {
+  display: none;
+}
+
+.editProfileLinkDisabled {
+  color: #CCC;
+  opacity: 0.44;
+}
+
+.card-meme {
+ max-width: 98%;
 }
 
 .rainbow-bg{
@@ -1010,161 +1068,4 @@ a:hover {
 		91%{
 			border-color: rgb(255,0,127);
 		}
-}
-
-.pondNameList {
-  padding: 16px;
-}
-
-.loading {
-  width: 111px;
-  height: 111px;
-  opacity: 0.5555;
-}
-
-#mirrorVideoMe {
-  /*
-  width: 444px;
-  height: 444px;
-  */
-  /*
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  */
-}
-
-#mirrorVideoBuddy {
-  width: 444px;
-  height: 444px;
-  /*
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  */
-}
-
-video {
-  padding: 16px;
-}
-
-.totalConnected {
-  display: none;
-}
-
-.emojiIcon {
-  font-size: 28px;
-  height: 16px;
-  width: 16px;
-}
-
-.emojiTitleBar {
-  font-size: 16px;
-}
-
-.emojiDockBar {
-  font-size: 22px;
-}
-
-
-#login_desktop_icon {
-  display: none;
-}
-
-#profile_desktop_icon {
-  display: none;
-}
-
-.emojiIcon:hover {
-  cursor: pointer;
-}
-
-.connectionDetails li {
-  padding: 11px;
-}
-
-#clock {
-  color: black;
-}
-
-.loggedIn {
-  display: none;
-}
-
-.updateProfileResponse {
-  font-size: 18px;
-}
-
-#chatVideoBuddy {
-  width: 300px; 
-  height: 300px;
-}
-
-#chatVideoMe {
-  width: 300px; 
-  height: 300px;
-  float: left;
-}
-
-video {
-  margin: 0px;
-  padding: 0px;
-}
-
-.wallpaperColor {
-  display:none;
-}
-
-#window_soundcloud {
-  height: 560px;
-  width: 400px;
-}
-
-#window_games .icon {
-  color: white;
-}
-
-#shadowRender {
-  display: none;
-}
-
-.spinningCursor  {
-  cursor: pointer !important; /* progress, grabbing, context-menu */
-}
-
-label {
-  cursor: pointer;
-}
-
-input[type='checkbox'] {
-  cursor: pointer;
-}
-
-iframe {
-  padding: 0 0 0 0px;
-  margin: 0 0 0 0px;
-  width: 100%;
-}
-
-.pond_main {
-  padding: 16px;
-}
-
-.pond_message_main {
-  padding: 16px;
-}
-
-.warning {
-  color: red;
-  font-size: 16px;
-  font-style: italic;
-}
-
-.positiveAffirmation {
-  font-style: italic;
-  padding-left: 16px;
-  text-align: center;
-  padding-right: 16px;
-  padding-top: 8px;
-  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 // contains list of bad words we dont't want the Desktop to render
-// those are stored as Base64 so we don't have to see them introduced into the codebase
+// these are stored as Base64 so we don't have to see them introduced into the codebase
 // if you wish to view the list simply run: "atob(forbiddenNotes.base64)" in console
 
 let forbiddenNotes = {

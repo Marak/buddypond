@@ -1,0 +1,114 @@
+<style>
+  #settingsTabs {
+    height: 430px; /* TODO: remove borders around jquery tabs ui CSS */
+  }
+</style>
+
+<div id="window_settings" class="abs window">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
+        Desktop Settings
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_settings" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main">
+        <div id="settingsTabs">
+          <ul>
+            <li><a href="#tabs-1">Wallpaper</a></li>
+            <li><a href="#tabs-2">Audio</a></li>
+            <li><a href="#tabs-3">Notifications</a></li>
+            <li><a href="#tabs-4">All Settings</a></li>
+          </ul>
+          <div id="tabs-1">
+            <div class="wallpaperSettings">
+              <div>
+                  <h2>Wallpaper Type</h2>
+                  <!-- Wake up neo -->
+                  <input type="radio" id="wallPaperRadioMatrix" name="wallpaper_opt" value="matrix">
+                  <label for="wallPaperRadioMatrix">Matrix</label>
+                  <br>
+                  <input type="radio" id="wallPaperRadioSolid" name="wallpaper_opt" value="solid">
+                  <label for="wallPaperRadioSolid">Solid</label>
+                  <br>
+              </div>
+              <br>
+              <br>
+              <div>
+                <h2>Wallpaper Options</h2>
+                <div>
+                    <label>Color</label>
+                    <div class="wallpaperOptionColor"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="tabs-2">
+            <div class="wallpaperSettings">
+              <table class="data table">
+                <tr>
+                  <td>Enable Desktop Audio</td>
+                  <td>
+                    <input type="checkbox" size="32" name="audio_enabled" class="audioEnabled" title="his will enable or mute all Audio for your Desktop."/>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div id="tabs-3">
+            <div class="wallpaperSettings">
+              <table class="data table">
+                <tr>
+                  <td>Enable Web Notifications</td>
+                  <td>
+                    <input type="checkbox" size="32" name="notifications_web_enabled" class="enableWebNotifications" title="This will enable your browser's Notification settings allow Buddy Pond to notify you have new buddy messages while the website tab is not visible."/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Enable Audio Notifications</td>
+                  <td>
+                    <input type="checkbox" size="32" name="notifications_audio_enabled" class="enableAudioNotifications" title="This will enable audio notifications in the browser window while the website tab is not visible."/>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div id="tabs-4">
+            <div class="wallpaperSettings">
+              <p>All current settings your Desktop is using.</p>
+              <p>This form is for Level 3 Computer Science Users or higher* </p>
+              <br/>
+              <br/>
+              <form class="updateDesktopSettingsForm">
+                <table class="desktopSettingsTable table data">
+                  <tbody>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                  </tbody>
+                </table>
+                <br/>
+                <button name="saveDesktopSettings" class="saveDesktopSettings desktopButton">Save Desktop Settings</button>
+                <button name="restoreDesktopSettings" class="restoreDesktopSettings desktopButton">Restore Original Desktop Settings</button>
+              </form>
+              <br/>
+              <h3><em>Most of these settings can be adjusted elsewhere in the User Interface</em></h3>
+            </div>
+          </div>
+        </div>
+          
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

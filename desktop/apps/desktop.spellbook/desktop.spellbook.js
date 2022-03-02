@@ -1,17 +1,20 @@
-desktop.spellbook = {};
-desktop.spellbook.label = "Spellbook";
-desktop.spellbook.spells = [
-  'ebublio',
+desktop.app.spellbook = {};
+desktop.app.spellbook.label = "Spellbook";
+desktop.app.spellbook.spells = [
+  // 'ebublio',
   'zalgo',
+  'babel.js',
+  'riddikulus',
+  'episkey',
   'rickroll',
   'alert',
   'logout',
   'banhammer'
 ];
 
-desktop.spellbook.load = function loadSpellBook (params, next) {
-  desktop.loadRemoteAssets([
-    'spellbook' // this loads the sibling desktop.spellbook.html file into <div id="window_spellbook"></div>
+desktop.app.spellbook.load = function loadSpellBook (params, next) {
+  desktop.load.remoteAssets([
+    'spellbook' // this loads the sibling desktop.app.spellbook.html file into <div id="window_spellbook"></div>
   ], function (err) {
     $('#window_spellbook').css('width', 662);
     $('#window_spellbook').css('height', 533);
@@ -19,7 +22,7 @@ desktop.spellbook.load = function loadSpellBook (params, next) {
     $('#window_spellbook').css('top', 50);
 
     // load omegaSpellTome drop down
-    desktop.spellbook.spells.forEach(function(spell){
+    desktop.app.spellbook.spells.forEach(function(spell){
       $('.omegaSpellTome').append(`<option value="${spell}">${spell}</option>`)
     });
 
@@ -36,10 +39,19 @@ desktop.spellbook.load = function loadSpellBook (params, next) {
             if (data.success === false) {
               if (data.message === 'qtokenid is required') {
                 alert(`You didn't even try to login!\n\n${spellName} has fizzled.`);
-                //desktop.spellbook[spellName]();
+                //desktop.app.spellbook[spellName]();
               } else {
-                alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
-                desktop.spellbook[spellName]();
+                if (buddyName === buddypond.me) {
+                  alert(`You targeted yourself? Well played.`);
+                } else {
+                  alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
+                }
+                if (desktop.app.spellbook && desktop.app.spellbook[spellName]) {
+                  desktop.app.spellbook[spellName]();
+                } else {
+                  alert(spellName + ' is forbidden knowledge');
+                  $('#window_spellbook').hide();
+                }
               }
             } else {
               // success
@@ -63,38 +75,38 @@ desktop.spellbook.load = function loadSpellBook (params, next) {
 }
 
 // basic alert window to client
-desktop.spellbook.alert = function spellbookAlert () {
+desktop.app.spellbook.alert = function spellbookAlert () {
   alert('Hello Buddy. Hope you are having a wonderful day.');
 } 
 
 // instructs desktop client to log buddy out of the system locally
 // this is useful if you need to sign out your account on a remote device
-desktop.spellbook.logout = function logoutBuddy () {
+desktop.app.spellbook.logout = function logoutBuddy () {
   desktop.login.logoutDesktop();
 } 
 
-desktop.spellbook.banhammer = function banBuddy () {
+desktop.app.spellbook.banhammer = function banBuddy () {
   alert('You have been banned from the Mickey Mouse Club for inappropiate behavior.');
   desktop.login.logoutDesktop();
 } 
 
 // sends Desktop client to a new url
-desktop.spellbook.rickroll = function rickroll () {
+desktop.app.spellbook.rickroll = function rickroll () {
   document.location = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 } 
 
-desktop.spellbook.ebublio = function lightingBolt () {
+desktop.app.spellbook.ebublio = function lightingBolt () {
   // summon Merlin
   $("#loaderHolder").show()
   $('#mainOverlay').hide();
   
-  desktop.Merlin.show();
-  desktop.Merlin.speak("Ebublio!");
-  desktop.Merlin.play("DoMagic1", 4444, function(){
-    desktop.Merlin.speak("Be cool my dude.");
+  desktop.app.Merlin.show();
+  desktop.app.Merlin.speak("Ebublio!");
+  desktop.app.Merlin.play("DoMagic1", 4444, function(){
+    desktop.app.Merlin.speak("Be cool my dude.");
     $( "#wallpaper" ).effect("shake", { direction: 'left', distance: 112, times: 111 }, function(){
       $( "#wallpaper" ).effect("shake", { direction: 'down', distance: 112, times: 111 }, function(){
-        desktop.Merlin.speak("Would you like to learn Magic with Merlin?");
+        desktop.app.Merlin.speak("Would you like to learn Magic with Merlin?");
         $( "#wallpaper" ).effect("shake", { direction: 'right', distance: 112, times: 111 }, function(){
           $( "#wallpaper" ).effect("shake", { direction: 'up', distance: 112, times: 111 }, function(){
           $('#loaderHolder').fadeOut({
@@ -117,11 +129,11 @@ desktop.spellbook.ebublio = function lightingBolt () {
 
 
 // please no
-desktop.spellbook.zalgo = function castZalgoSpell (params, next) {
+desktop.app.spellbook.zalgo = function castZalgoSpell (params, next) {
   $('span, label, a').each(function(i, item){
     if($(this).css('display') === 'block') {
         $(this).attr('data-og-zalgo', $(this).html());
-        $(this).html(desktop.spellbook._zalgo($(this).html()))
+        $(this).html(desktop.app.spellbook._zalgo($(this).html()))
         $(this).addClass('rainbowFast');
       }
   });
@@ -129,7 +141,7 @@ desktop.spellbook.zalgo = function castZalgoSpell (params, next) {
   let zalgoInt = setInterval(function(){
     $('span, label, a').each(function(i, item){
       if($(this).css('display') === 'block') {
-        $(this).html(desktop.spellbook._zalgo($(this).attr('data-og-zalgo')))
+        $(this).html(desktop.app.spellbook._zalgo($(this).attr('data-og-zalgo')))
       }
     });
     count++;
@@ -146,7 +158,7 @@ desktop.spellbook.zalgo = function castZalgoSpell (params, next) {
 } 
 
 // he comes
-let _zalgo = desktop.spellbook._zalgo = function zalgo(text, options) {
+let _zalgo = desktop.app.spellbook._zalgo = function zalgo(text, options) {
   text = text || '   he is here   ';
   var soul = {
     'up': [

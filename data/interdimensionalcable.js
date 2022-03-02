@@ -1,4 +1,4 @@
-desktop.interdimensionalcable.playlist = [
+desktop.app.interdimensionalcable.playlist = [
   "hSQLhNYltBM",
   "AKMzMZWRKVc",
   "cBqrfITE9RA",
@@ -874,7 +874,6 @@ desktop.interdimensionalcable.playlist = [
   "srTqxL_6Ysg",
   "qM9VrVjadxY",
   "09GKDKGc9hA",
-  "B5kDt-zEMi8",
   "SzgG94Tz2Ak",
   "mINZS8h6914",
   "ksKhszIVVgI",
@@ -1075,7 +1074,6 @@ desktop.interdimensionalcable.playlist = [
   "r-vQ2KRkscw",
   "Vg1mpD1BICI",
   "zdjY_UnNtQ4",
-  "6WpMlwVwydo",
   "EbXSbP-wEFU",
   "Nvxwf1jxdaM",
   "92QfdG2HEUU",
@@ -1902,5 +1900,15 @@ desktop.interdimensionalcable.playlist = [
   'M2zUrnmEokc',
   'lOfZLb33uCg',
   'kthKhSIItRE',
-  'Q9XTqQbuavI'
+  'Q9XTqQbuavI',
+  'UuYV81r5SO0',
+  'MALyCfMP0a0',
+  '8QxIIz1yEsA',
+  'tyWwEm-rKUY',
+  'cZUfpcTrZcU',
+  '1aoWVRhgEqI',
+  'tOvlKgoeP4s',
+  'GitK6i3HQdU',
+  'WL1foQKD3OI',
+  'aVr5Bhqt7bU'
 ];

@@ -1,36 +1,73 @@
-desktop.interdimensionalcable = {};
-desktop.interdimensionalcable.label = "IDC Cable";
+desktop.app.interdimensionalcable = {};
+desktop.app.interdimensionalcable.label = "IDC Cable";
+desktop.app.interdimensionalcable.depends_on = ['videoplayer'];
+desktop.app.interdimensionalcable.activeVideo = 'rZhbnty03U4'; // default tv static
+desktop.app.interdimensionalcable.mode = 'playlist';
+desktop.app.interdimensionalcable.load = function (params, next) {
 
-desktop.interdimensionalcable.load = function (params, next) {
-
-  desktop.loadRemoteAssets([
+  desktop.load.remoteAssets([
     'data/interdimensionalcable.js',
-    'interdimensionalcable' // this loads the sibling desktop.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
+    'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
   ], function (err) {
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    /* 
-      it would be better if we can add this script to the above desktop.loadRemoteAssets() call,
-      right now youtube is being injected on Desktop Ready instead of lazy load
-      see: https://github.com/Marak/buddypond/issues/13
-    */
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function interDemonPlayerReady(event) {
+      if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
+        $('.orbHolder').hide();
+        $('#window_interdimensionalcable').css('height', 440);
+        desktop.app.interdimensionalcable.player.playVideo(desktop.app.interdimensionalcable.activeVideo);
+      } else {
+        $('.orbHolder').show();
+        $('#window_interdimensionalcable').css('height', 590);
+        desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+      }
+      next();
+    }
+
+    function interDemonPlayerStateChange(event) {
+      if (event.data == 0) {
+        if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
+          desktop.ui.closeWindow('interdimensionalcable');
+        } else {
+          desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+        }
+      }
+    }
+
+    // if a single videoId is provided, close the window after the video is complete
+    if (params.videoId) {
+      desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
+      desktop.app.interdimensionalcable.activeVideo = params.videoId;
+      $('#window_interdimensionalcable').css('height', 440);
+    } else {
+      $('#window_interdimensionalcable').css('height', 590);
+    }
+
+    // if a playlist is provided, loop the playlist forever
+    desktop.app.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
+      height: '390',
+      width: '640',
+      videoId: desktop.app.interdimensionalcable.activeVideo,
+      playerVars: { 'autoplay': 0, 'controls': 1 },
+      host: 'http://www.youtube.com',
+      events: {
+        'onReady': interDemonPlayerReady,
+        'onStateChange': interDemonPlayerStateChange
+      },
+      origin: window.document.location.origin
+    });
 
     $('.ponderinterdimensionalcable').on('click', function(){
-      desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist);
+      desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
     });
 
     $('#window_interdimensionalcable').css('width', 644);
-    $('#window_interdimensionalcable').css('height', 590);
-
     $('#window_interdimensionalcable').css('left', 377);
     $('#window_interdimensionalcable').css('top', 40);
-    next();
   });
+
 };
 
-desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
+desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo(_player, playlist) {
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
   if (_player) {
@@ -45,61 +82,31 @@ desktop.playRandomVideo = function playRandomVideo(_player, playlist) {
   }
 };
 
-desktop.interdimensionalcable.closeWindow = function () {
-  if (desktop.interdimensionalcable.player && desktop.interdimensionalcable.player.pauseVideo) {
-    desktop.interdimensionalcable.player.pauseVideo();
+desktop.app.interdimensionalcable.openWindow = function (params) {
+  params = params || {};
+  if (params.videoId) {
+    desktop.app.interdimensionalcable.activeVideo = params.videoId;
+    desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
+    $('#window_interdimensionalcable').css('height', 440);
+    $('.orbHolder').hide();
+    if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.loadVideoById) {
+      desktop.app.interdimensionalcable.player.loadVideoById(desktop.app.interdimensionalcable.activeVideo);
+    }
+  } else {
+    desktop.app.interdimensionalcable.mode = 'playlist';
+    $('#window_interdimensionalcable').css('height', 590);
+    $('.orbHolder').show();
+    desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
   }
 }
 
-// Remark: youtube embed client REQUIRES the following methods be public
-function mtvPlayerReady(event) {
-  // event.target.playVideo();
-}
-
-function mtvPlayerStateChange(event) {
-  if (event.data == 0) {
-    desktop.playRandomVideo(desktop.mtv.player, desktop.ytPlaylist)
+desktop.app.interdimensionalcable.closeWindow = function () {
+  // TODO: remove embeds? unload entire App?
+  // TODO: same for mtv, we should remove FAANG coms if IDC / MTV is inactive
+  if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.pauseVideo) {
+    desktop.app.interdimensionalcable.player.pauseVideo();
   }
-}
-
-function interDemonPlayerReady(event) {
-  // event.target.playVideo();
-}
-
-function interDemonPlayerStateChange(event) {
-  if (event.data == 0) {
-    desktop.playRandomVideo(desktop.interdimensionalcable.player, desktop.interdimensionalcable.playlist)
-  }
-}
-
-function onYouTubeIframeAPIReady() {
-
-  desktop.mtv.player = new YT.Player('mtvPlayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': mtvPlayerReady,
-      'onStateChange': mtvPlayerStateChange
-    },
-    origin: window.document.location.origin
-  });
-
-  desktop.interdimensionalcable.player = new YT.Player('interdimensionalcableplayer', {
-    height: '390',
-    width: '640',
-    videoId: 'rZhbnty03U4',
-    playerVars: { 'autoplay': 0, 'controls': 1 },
-    host: 'http://www.youtube.com',
-    events: {
-      'onReady': interDemonPlayerReady,
-      'onStateChange': interDemonPlayerStateChange
-    },
-    origin: window.document.location.origin
-  });
 }
 
 // way easier to type
-desktop.IDC = desktop.interdimensionalcable;
+desktop.app.IDC = desktop.app.interdimensionalcable;

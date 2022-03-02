@@ -1,12 +1,10 @@
-desktop.login = {};
-desktop.login.label = "Login";
+desktop.app.login = {};
+desktop.app.login.label = "Login";
 
-desktop.login.load = function loadDesktopLogin (params, next) {
+desktop.app.login.load = function loadDesktopLogin (params, next) {
 
-  desktop.loadRemoteAssets([
-    'desktop/assets/css/clippy.css',
-    'desktop/assets/js/clippy.min.js',
-    'login' // this loads the sibling desktop.login.html file into <div id="window_login"></div>
+  desktop.load.remoteAssets([
+    'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
     $('.loginForm').on('submit', function () {
@@ -15,21 +13,21 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks login button, attempt to auth with server
     $('.loginButton').on('click', function(){
-      desktop.login.auth($('#buddyname').val());
+      desktop.app.login.auth($('#buddyname').val());
     });
 
     // if user clicks on top left menu, focus on login form
     $('.loginLink').on('click', function(){
-      $('#window_login').show();
+      desktop.ui.openWindow('login');
       $('#buddyname').focus();
     });
 
     // if user clicks logout link on top left menu, logout the user
     $('.logoutLink').on('click', function(){
-      desktop.login.logoutDesktop()
+      desktop.app.login.logoutDesktop()
     });
 
-    desktop.renderDockElement('login');
+    desktop.ui.renderDockElement('login');
 
     let localToken = localStorage.getItem("qtokenid");
     let me = localStorage.getItem("me");
@@ -47,19 +45,19 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
         // token has not validated, log out the client
         if (data.success === false) {
-          desktop.login.logoutDesktop();
-          desktop.login.openWindow();
+          desktop.app.login.logoutDesktop();
+          desktop.app.login.openWindow();
         } else {
         // token is valid, show client login success
           buddypond.qtokenid = localToken;
           buddypond.me = me;
-          desktop.login.success();
+          desktop.app.login.success();
         }
         return next(null);
       });
     } else {
       $('.totalConnected').hide();
-      desktop.login.openWindow();
+      desktop.app.login.openWindow();
       return next(null);
     }
 
@@ -67,7 +65,7 @@ desktop.login.load = function loadDesktopLogin (params, next) {
 
 }
 
-desktop.login.auth = function authDesktop (buddyname) {
+desktop.app.login.auth = function authDesktop (buddyname) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
   buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
@@ -88,10 +86,11 @@ desktop.login.auth = function authDesktop (buddyname) {
 
     if (data.success) {
       desktop.log('Authentication successful');
+      // TODO: desktop.set()
       localStorage.setItem("qtokenid", data.qtokenid);
       localStorage.setItem("me", buddypond.me);
       buddypond.qtokenid = data.qtokenid;
-      desktop.login.success();
+      desktop.app.login.success();
     } else {
       if (data.banned) {
         alert(data.message);
@@ -103,8 +102,10 @@ desktop.login.auth = function authDesktop (buddyname) {
   });
 }
 
-desktop.login.success = function desktopLoginSuccess () {
+desktop.app.login.success = function desktopLoginSuccess () {
   $('#me_title').html('Welcome - ' + buddypond.me);
+  $('.me').html(buddypond.me);
+  desktop.app.audioplayer.play('desktop/assets/audio/WELCOME.wav', Infinity)
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
@@ -115,34 +116,30 @@ desktop.login.success = function desktopLoginSuccess () {
   $('.totalConnected').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
-  desktop.renderDockElement('buddylist');
-  desktop.removeDockElement('login');
-  let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
-  $('.connection_ctime').html(dateString)
+  desktop.ui.renderDockElement('buddylist');
+  desktop.ui.removeDockElement('login');
+  try {
+    let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
+    $('.connection_ctime').html(dateString)
+  } catch (err) {
+    console.log('Warning: DateFormat was not defined, this should not happend', err);
+  }
   $('.connection_packets_sent').html("1");
   $('.connection_packets_recieved').html("1");
-
+  $('.editProfileLink').show();
+  
+  $('.editProfileLink').html('Edit Profile');
+  $('.editProfileLink').removeClass('editProfileLinkDisabled');
   $('.loggedIn').show();
 
-  clippy.load('Merlin', function(agent) {
-     desktop.Merlin = agent;
-     agent.show();
-     setTimeout(function(){
-       if (!buddypond.email || buddypond.email.length < 3) {
-         agent.speak('Welcome to Buddy Pond! Please be sure to set your email address in the Profile App!');
-         setTimeout(function(){
-           agent.hide();
-         }, 12000);
-       } else {
-         agent.speak(`Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
-         agent.animate();
-         setTimeout(function(){
-           agent.hide();
-         }, 19000);
-       }
-       agent.gestureAt(200,200);
-     }, 3333);
-   });
+  // TODO: move this is a separate function
+  setTimeout(function(){
+    if (!buddypond.email || buddypond.email.length < 3) {
+      desktop.emit('merlin-speaks', 'Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
+    } else {
+       desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
+    }
+  }, 2000)
 
   // start packets update interval timer
   setInterval(function(){
@@ -151,21 +148,27 @@ desktop.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-  $('#window_pond').show();
-  desktop.pond.openWindow();
 
-  // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
-  setTimeout(function(){
-    let el = $('.chat_messages', '.pond_message_main')
-    $(el).scrollTop(9999);
-  }, 1200)
-  // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
+  // TODO: switch to openWindow API
+  //desktop.ui.openWindow('buddylist');
+  //desktop.ui.openWindow('pond');
+  // $('#window_pond').show();
+  $('#window_buddylist').show();
+  let windowId = desktop.app.pond.openWindow('Lily');
+
+  $(windowId).css('top', 60);
+  $(windowId).css('left', 250);
+  //desktop.ui.positionWindow('#' + windowKey, 'left')
+  // TODO: remove this line. required due to initial blink on lily pond
   setTimeout(function(){
     $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
   }, 3000);
+  $('#window_pond').hide();
+  //desktop.app.pond.openWindow('Lily');
+
 }
 
-desktop.login.openWindow = function desktopLoginOpenWindow () {
+desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').show();
@@ -173,13 +176,14 @@ desktop.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('height', 400);
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
-  $('#buddyname').focus();
   $('#login_desktop_icon').show();
+  $('#buddyname').focus();
 }
 
-desktop.login.logoutDesktop = function logoutDesktop () {
+desktop.app.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid')
   localStorage.removeItem('me')
-  // TODO: . root?
-  document.location = "index.html";
+  desktop.play('GOODBYE.wav', function(){
+    document.location = "index.html";
+  });
 }
