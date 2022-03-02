@@ -75,9 +75,8 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
 
     $('#window_buddylist').css('width', 220);
     $('#window_buddylist').css('height', 440);
-    $('#window_buddylist').css('left', 777);
-    $('#window_buddylist').css('top', 66);
 
+    desktop.ui.positionWindow('#window_buddylist', 'right');
 
     function updatePositiveAffirmation () {
       let key = desktop.app.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.app.buddylist.positiveAffirmations.length)];

@@ -8,13 +8,15 @@ desktop.app.audioplayer.load = function loadAudioPlayer (params, next) {
 desktop.app.audioplayer.playing = {};
 
 desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback) {
+  callback = callback || function noop () {}
   if (!desktop.settings.audio_enabled) {
     // do not play any audio if desktop is not enabled
+    return callback(null, false);
   } else {
     // play the audio
     if (desktop.app.audioplayer.playing[soundPath]) {
       console.log(`Warning: Already playing ${soundPath}, will not play same audio file concurrently.`);
-      return;
+      return callback(null, false);
     }
     // set a flag for this audio file path to ensure we don't attempt to play it concurrently with itself
     desktop.app.audioplayer.playing[soundPath] = true;
@@ -52,6 +54,7 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
     } catch (err) {
       console.log('Warning Audio Error:', err.message)
       desktop.app.audioplayer.playing[soundPath] = false;
+      return callback(err, false);
     }
   }
 }

@@ -141,7 +141,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
     }
   }, 2000)
 
-
   // start packets update interval timer
   setInterval(function(){
     $('.connection_packets_sent').html(buddypond.packetsSent);
@@ -149,22 +148,22 @@ desktop.app.login.success = function desktopLoginSuccess () {
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
-  // TODO: switch to openWindow API, was causing race condition with loader
+
+  // TODO: switch to openWindow API
   //desktop.ui.openWindow('buddylist');
   //desktop.ui.openWindow('pond');
-  $('#window_pond').show();
+  // $('#window_pond').show();
   $('#window_buddylist').show();
-  desktop.app.pond.openWindow('Lily');
+  let windowId = desktop.app.pond.openWindow('Lily');
+  alert(windowId)
 
-  // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
-  setTimeout(function(){
-    let el = $('.chat_messages', '.pond_message_main')
-    $(el).scrollTop(9999);
-  }, 1200)
-  // TODO: Remove this line, seems to be bug with loading the default Lily pond immediately
-  setTimeout(function(){
-    $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
-  }, 3000);
+  $(windowId).css('top', 60);
+  $(windowId).css('left', 250);
+  //desktop.ui.positionWindow('#' + windowKey, 'left')
+
+  $('#window_pond').hide();
+  //desktop.app.pond.openWindow('Lily');
+
 }
 
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {

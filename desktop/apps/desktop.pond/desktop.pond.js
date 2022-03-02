@@ -91,7 +91,7 @@ desktop.app.pond.load = function loadPond (params, next) {
 let pondOpened = false;
 
 desktop.app.pond.openWindow = function (context) {
-  
+
   if(!context) {
     context = "Lily";
   } 
@@ -106,14 +106,16 @@ desktop.app.pond.openWindow = function (context) {
 
   let windowKey = desktop.ui.openWindow('pond_message', context);
   let windowId = '#' + windowKey;
-  $(windowId).css('left', 166);
-  $(windowId).css('top', 66);
 
   $('.window-context-title', windowId).html(context + ' Pond');
   $('.pond_message_text', windowId).focus();
   $('.pond_message_to', windowId).val(context)
   $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;
+
+  desktop.ui.positionWindow(windowId, 'left')
+  $(windowId).css('height', 440);
+  return windowId;
 
   // TODO: doc element title
   // $('.dock_title', dockElement).html(context);

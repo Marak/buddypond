@@ -633,7 +633,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
   if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
     // TODO: needs to keep track of static windows as well?
     JDQX.openWindow(windowType, context, position);
-    return;
+    return true;
   }
 
   desktop.ui.openWindows = desktop.ui.openWindows || {};
@@ -667,6 +667,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     // desktop.ui.renderDockElement(windowType + '_' + window_id, context);
     JQD.util.window_flat();
     $(windowKey).show().addClass('window_stack');
+    return windowKey;
   } else {
     // TODO: max windows message
     windowKey = desktop.ui.windowPool[windowType].pop();
@@ -804,4 +805,24 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
   delete desktop.ui.openWindows[windowType][context];
   delete desktop.ui.windowIndex[windowType][context];
 
+}
+
+desktop.ui.positionWindow = function positionWindow (windowId, position) {
+  position = position || 'right';
+  let windowWidth =  $(windowId).width() / 2;
+  let windowPadding = 32;
+  if (position === 'left') {
+    $(windowId).position({
+      my: "left top",
+      at: "left"  + ' top+' + windowPadding,
+      of: 'body'
+    });
+  }
+  if (position === 'right') {
+    $(windowId).position({
+      my: "right top",
+      at: "right-" + (windowWidth + windowPadding) + ' top+' + windowPadding,
+      of: 'body'
+    });
+  }
 }
