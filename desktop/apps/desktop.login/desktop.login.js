@@ -159,7 +159,10 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $(windowId).css('top', 60);
   $(windowId).css('left', 250);
   //desktop.ui.positionWindow('#' + windowKey, 'left')
-
+  // TODO: remove this line. required due to initial blink on lily pond
+  setTimeout(function(){
+    $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
+  }, 3000);
   $('#window_pond').hide();
   //desktop.app.pond.openWindow('Lily');
 
