@@ -7,7 +7,7 @@ desktop.app.audioplayer.load = function loadAudioPlayer (params, next) {
 // keeps track of playing sounds so that Apps don't accidentally spam audio
 desktop.app.audioplayer.playing = {};
 
-desktop.app.audioplayer.play = function playAudio (soundPath, tryHard) {
+desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback) {
   if (!desktop.settings.audio_enabled) {
     // do not play any audio if desktop is not enabled
   } else {
@@ -23,6 +23,9 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard) {
       audio.addEventListener('ended', function() {
         // the audio file has completed, reset the flag to indicate the audio file path can be played again
         desktop.app.audioplayer.playing[soundPath] = false;
+        if (callback) {
+          callback(null, true);
+        }
       }, false);
 
       // Remark: Wrap audio.play() promise in _play function to allow `tryHard` retries

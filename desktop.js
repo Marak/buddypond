@@ -430,8 +430,15 @@ desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
 };
 
 
-// desktop can play multimedia files with simple desktop.play(pathToFile) commands
-// desktop.play()
+// desktop can play multimedia files with simple desktop.play(fileName) commands
+desktop.play = function desktopPlay (soundFx, callback) {
+  if (desktop.app.audioplayer && desktop.app.audioplayer.play) {
+    desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, false, callback);
+  } else {
+    console.log('App.AudioPlayer was not detected. Is it ready? Was it loaded?');
+    callback(null, false);
+  }
+}
 
 desktop.utils = {};
 

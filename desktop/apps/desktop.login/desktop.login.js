@@ -182,6 +182,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
 desktop.app.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid')
   localStorage.removeItem('me')
-  // TODO: . root?
-  document.location = "index.html";
+  desktop.play('GOODBYE.wav', function(){
+    document.location = "index.html";
+  });
 }
