@@ -407,7 +407,7 @@ function renderBuddyRequests (data) {
       //         allows WELCOME sound to play
       //         A better solution here is to here priority option for playing sound with queue
       setTimeout(function(){
-        desktop.app.audioplayer.play('desktop/assets/audio/YOUVEGOTMAIL.wav');
+        desktop.play('YOUVEGOTMAIL.wav');
       }, 2222);
     }
 
