@@ -627,9 +627,8 @@ desktop.ui.windowTypes = ['buddy_message', 'pond_message'];
 //
 desktop.ui.openWindow = function openWindow (windowType, context, position) {
 
-
   // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
-  // these are used for almost all applications, since most applications require N windows ( like chat )
+  // these are used for almost all applications, since most applications do not require N windows ( like chat )
   if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
     // TODO: needs to keep track of static windows as well?
     JDQX.openWindow(windowType, context, position);
@@ -826,3 +825,10 @@ desktop.ui.positionWindow = function positionWindow (windowId, position) {
     });
   }
 }
+
+/*
+
+  refactor openWindow and openWindowInstance to JDQX
+  have desktop.ui = JDQX;, one-liner in desktop.js
+
+*/
