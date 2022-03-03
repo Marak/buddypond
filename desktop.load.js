@@ -1,18 +1,5 @@
 desktop.load = {};
 
-// desktop.load.app(appName, callback) is used to load apps *after* the desktop is up and running
-desktop.load.app = function loadDesktopApp (appName, ready) {
-  ready = ready || function readyNOOP () {
-    // do nothing
-  }
-  desktop
-    .use(appName)
-    .ready(function(err, apps){
-      ready(err, apps);
-      desktop.log('Ready:', 'LYTE Buddy Pond', 'v4.20.69');
-    });
-}
-
 desktop.load.remoteAssets = function loadRemoteAssets (assetArr, final) {
 
   // console.log('desktop.load.remoteAssets', assetArr)
