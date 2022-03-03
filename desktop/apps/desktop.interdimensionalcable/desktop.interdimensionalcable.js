@@ -6,7 +6,7 @@ desktop.app.interdimensionalcable.mode = 'playlist';
 desktop.app.interdimensionalcable.load = function (params, next) {
 
   desktop.load.remoteAssets([
-    'data/interdimensionalcable.js',
+    'desktop/apps/desktop.interdimensionalcable/data/interdimensionalcable.js',
     'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
   ], function (err) {
 

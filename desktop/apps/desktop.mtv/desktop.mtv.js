@@ -5,7 +5,7 @@ desktop.app.mtv.player = null;
 desktop.app.mtv.load = function (params, next) {
 
   desktop.load.remoteAssets([
-    'data/mtv.js',
+    'desktop/apps/desktop.mtv/data/mtv.js',
     'mtv' // this loads the sibling desktop.app.mtv.html file into <div id="window_mtv"></div>
   ], function (err) {
 
