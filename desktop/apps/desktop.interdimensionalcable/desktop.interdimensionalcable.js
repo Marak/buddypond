@@ -4,7 +4,7 @@ desktop.app.interdimensionalcable.depends_on = ['videoplayer'];
 desktop.app.interdimensionalcable.activeVideo = 'rZhbnty03U4'; // default tv static
 desktop.app.interdimensionalcable.mode = 'playlist';
 desktop.app.interdimensionalcable.load = function (params, next) {
-
+  params = params || {};
   desktop.load.remoteAssets([
     'desktop/apps/desktop.interdimensionalcable/data/interdimensionalcable.js',
     'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
@@ -33,6 +33,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       }
     }
 
+    
     // if a single videoId is provided, close the window after the video is complete
     if (params.videoId) {
       desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
