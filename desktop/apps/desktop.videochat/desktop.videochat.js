@@ -106,7 +106,7 @@ desktop.app.videochat.startCall = function videoChatStartCall (isHost, buddyName
   $('.startVideoCall').css('opacity', '0.4');
 
   $('#window_videochat').show();
-  JQD.util.window_flat();
+  JQDX.window_flat();
   $('#window_videochat').addClass('window_stack').show();
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {

@@ -214,7 +214,7 @@ desktop._ready = function _ready (finish) {
               desktop.app[app].openWindow(app.name);
               let key = '#window_' + app.name;
               $(key).show();
-              JQD.util.window_flat();
+              JQDX.window_flat();
               $(key).show().addClass('window_stack');
               // TODO: loading status cursor indicator should be per App, not global
               document.querySelectorAll('*').forEach(function(node) {

@@ -536,7 +536,6 @@ desktop.app.interdimensionalcable.playlist = [
   "gadvVvIEEkc",
   "G6p947E5_XI",
   "q5Phiax_Zyw",
-  "ZthNMefmOV4",
   "8UVNT4wvIGY",
   "WHdrMXOtSGA",
   "Nt82QhdYZ18",
