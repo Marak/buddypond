@@ -445,6 +445,19 @@ function renderBuddyRequests (data) {
 
 }
 
+function checkForNewStreamers (data) {
+  // check MOTM to see if a new streamer has come online
+  if (data.system && data.system.motm && data.system.motm.streaming) {
+    // get the first streamer out of the array ( for now )
+    let streamer = data.system.motm.streaming;
+    if (Object.keys(streamer).length > 1) {
+      desktop.emit('streamer-is-online', streamer);
+    } else {
+      desktop.emit('streamer-is-offline');
+    }
+  }
+}
+
 desktop.app.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
@@ -467,6 +480,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
       desktop.buddyListData = data;
 
       // process incoming buddy list data for local profile and incoming notifications
+      checkForNewStreamers(data);
       processIncomingBuddyRequests(data);
       updateLocalDesktopProfile(data)
       openNewBuddyMessagesNow(data)

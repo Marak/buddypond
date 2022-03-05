@@ -14,7 +14,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
         $('.orbHolder').hide();
         $('#window_interdimensionalcable').css('height', 440);
-        desktop.app.interdimensionalcable.player.playVideo(desktop.app.interdimensionalcable.activeVideo);
+        desktop.app.interdimensionalcable.player.playVideo();
       } else {
         $('.orbHolder').show();
         $('#window_interdimensionalcable').css('height', 590);
@@ -24,6 +24,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     }
 
     function interDemonPlayerStateChange(event) {
+
       if (event.data == 0) {
         if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
           desktop.ui.closeWindow('interdimensionalcable');
@@ -33,7 +34,6 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       }
     }
 
-    
     // if a single videoId is provided, close the window after the video is complete
     if (params.videoId) {
       desktop.app.interdimensionalcable.mode = 'closeAfterPlayed';
@@ -48,7 +48,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       height: '390',
       width: '640',
       videoId: desktop.app.interdimensionalcable.activeVideo,
-      playerVars: { 'autoplay': 0, 'controls': 1 },
+      playerVars: { 'autoplay': 1, 'controls': 1 },
       host: 'http://www.youtube.com',
       events: {
         'onReady': interDemonPlayerReady,
@@ -75,6 +75,7 @@ desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo(_pl
     let yt_id = key;
     desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
     _player.loadVideoById(yt_id);
+    // TODO: timer to repeat until its actually ready?
     setTimeout(function(){
       if (_player.play) {
         _player.play();
@@ -98,6 +99,11 @@ desktop.app.interdimensionalcable.openWindow = function (params) {
     $('#window_interdimensionalcable').css('height', 590);
     $('.orbHolder').show();
     desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+  }
+  if (params.title) {
+    $('.windowTitle', '#window_interdimensionalcable').html(params.title)
+  } else {
+    $('.windowTitle', '#window_interdimensionalcable').html('Interdimensional Cable')
   }
 }
 

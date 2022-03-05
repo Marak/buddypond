@@ -23,7 +23,7 @@ desktop.app.mtv.load = function (params, next) {
       height: '390',
       width: '640',
       videoId: 'rZhbnty03U4',
-      playerVars: { 'autoplay': 0, 'controls': 1 },
+      playerVars: { 'autoplay': 1, 'controls': 1 },
       host: 'http://www.youtube.com',
       events: {
         'onReady': mtvPlayerReady,
