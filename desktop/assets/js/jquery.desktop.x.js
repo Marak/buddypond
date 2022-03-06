@@ -342,7 +342,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
-JQDX.showWindow = function showWindow(appName) {
+JQDX.showWindow = function showWindow(appName, params) {
 
   let appWindow = '#window_' + appName;
   let iconDock = '#icon_dock_' + appName
@@ -409,10 +409,10 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     });
     desktop.log('Loading: App.' + appName);
     JQDX.loadWindow(appName, params, function(){
-      JQDX.showWindow(appName);
+      JQDX.showWindow(appName, params);
     })
   } else {
-    JQDX.showWindow(appName);
+    JQDX.showWindow(appName, params);
   }
 };
 
