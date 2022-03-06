@@ -305,12 +305,78 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
 }
 
-// TODO: this should be renamed to loadWindow() ?
-JQDX.openWindow = function openWindow (appName, params, cb) {
+JQDX.loadWindow = function loadWindow (appName, params, callback) {
+  desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
+    /* TODO: support N app dep, currently hard-coded to 1
+    desktop.app[appName].depends_on.forEach(function(appDep){
+      desktop.preloader.push(appDep);
+    });
+    */
+    if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
+      let depName = desktop.app[appName].depends_on[0];
+      desktop.log('Loading: App.' + depName);
+      desktop.load.remoteJS([`desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+        desktop.log('Ready: App.' + depName);
+        let depApp = desktop.app[appName].depends_on[0];
+        desktop.app[depApp].load(params, function(){
+          desktop.app[appName].load(params, function(){
+            desktop.log('Ready: App.' + appName);
+            document.querySelectorAll('*').forEach(function(node) {
+              node.style.cursor = 'pointer';
+            });
+            callback();
+          });
+        })
+      });
+    } else {
+      desktop.app[appName].load(params, function(){
+        desktop.log('Ready: App.' + appName);
+        document.querySelectorAll('*').forEach(function(node) {
+          node.style.cursor = 'pointer';
+        });
+        callback();
+      });
+    }
+  })
+}
+
+// will show an existing window that is already in the DOM
+// the window might be hidden or minimized
+JQDX.showWindow = function showWindow(appName) {
+
   let appWindow = '#window_' + appName;
   let iconDock = '#icon_dock_' + appName
-  // console.log('JQDX appName', appName, 'iconDock', iconDock, 'appWindow', appWindow);
-  
+
+  // Show the taskbar button.
+  if ($(iconDock).is(':hidden')) {
+    $(iconDock).remove().appendTo('#dock');
+    $(iconDock).show('fast');
+  }
+
+  // Bring window to front.
+  JQDX.window_flat();
+  $(appWindow).addClass('window_stack').show();
+
+  // check to see if desktop[appName].openWindow method is available,
+  // if so, call this method
+  // this is used to allow apps to have custom openWindow events 
+  if (desktop.app[appName] && desktop.app[appName].openWindow) {
+    desktop.app[appName].openWindow(params);
+  }
+  JQDX.loading[appName] = false;
+  /* Remark: Does this function need a callback? Does App.openWindow() require callback?
+  if (typeof cb === 'function') {
+    cb(null);
+  }
+  */
+}
+
+// attempts to open a window based on name and parameters
+// will attempt to JQDX.loadWindow() if no window is found
+JQDX.openWindow = function openWindow (appName, params, cb) {
+
+  let appWindow = '#window_' + appName;
+
   if (!JQDX.loading[appName]) {
     JQDX.loading[appName] = true;
   } else {
@@ -342,63 +408,11 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
       node.style.cursor = 'progress';
     });
     desktop.log('Loading: App.' + appName);
-    desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
-      /* TODO: support N app dep, currently hard-coded to 1
-      desktop.app[appName].depends_on.forEach(function(appDep){
-        desktop.preloader.push(appDep);
-      });
-      */
-      if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
-        let depName = desktop.app[appName].depends_on[0];
-        desktop.log('Loading: App.' + depName);
-        desktop.load.remoteJS([`desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
-          desktop.log('Ready: App.' + depName);
-          let depApp = desktop.app[appName].depends_on[0];
-          desktop.app[depApp].load(params, function(){
-            desktop.app[appName].load(params, function(){
-              desktop.log('Ready: App.' + appName);
-              document.querySelectorAll('*').forEach(function(node) {
-                node.style.cursor = 'pointer';
-              });
-              _showWindow();
-            });
-          })
-        });
-      } else {
-        desktop.app[appName].load(params, function(){
-          desktop.log('Ready: App.' + appName);
-          document.querySelectorAll('*').forEach(function(node) {
-            node.style.cursor = 'pointer';
-          });
-          _showWindow();
-        });
-      }
+    JQDX.loadWindow(appName, params, function(){
+      JQDX.showWindow(appName);
     })
   } else {
-    _showWindow();
-  }
-
-  function _showWindow () {
-    // Show the taskbar button.
-    if ($(iconDock).is(':hidden')) {
-      $(iconDock).remove().appendTo('#dock');
-      $(iconDock).show('fast');
-    }
-
-    // Bring window to front.
-    JQDX.window_flat();
-    $(appWindow).addClass('window_stack').show();
-
-    // check to see if desktop[appName].openWindow method is available,
-    // if so, call this method
-    // this is used to allow apps to have custom openWindow events 
-    if (desktop.app[appName] && desktop.app[appName].openWindow) {
-      desktop.app[appName].openWindow(params);
-    }
-    JQDX.loading[appName] = false;
-    if (typeof cb === 'function') {
-      cb(null);
-    }
+    JQDX.showWindow(appName);
   }
 };
 
@@ -441,10 +455,6 @@ JQDX.closeWindow = function closeWindow (el) {
   }
 
   $('#icon_dock_' + windowId).hide('fast');
-
-  // console.log('JQDX.closeWindow', windowId, windowType, windowContext);
-
-  // this calls close events for instaniated window types( which require a context )
 
 }
 
