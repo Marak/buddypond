@@ -201,7 +201,7 @@ desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
 
 desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
   let elements = desktop.settings.desktop_icon_positions || [];
-  if (elements && elements.length) {
+  if (elements && elements.forEach) {
     elements.forEach(function(el){
       let _el = $(`a.icon[href=${el.href}]`)
       _el.css('left', el.left);
