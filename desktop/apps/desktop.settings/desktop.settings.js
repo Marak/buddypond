@@ -201,12 +201,14 @@ desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
 
 desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
   let elements = desktop.settings.desktop_icon_positions || [];
-  elements.forEach(function(el){
-    let _el = $(`a.icon[href=${el.href}]`)
-    _el.css('left', el.left);
-    _el.css('right', el.right);
-    _el.css('top', el.top);
-  });
+  if (elements && elements.length) {
+    elements.forEach(function(el){
+      let _el = $(`a.icon[href=${el.href}]`)
+      _el.css('left', el.left);
+      _el.css('right', el.right);
+      _el.css('top', el.top);
+    });
+  }
 };
 
 desktop.app.settings.openWindow = function openWindow () {
