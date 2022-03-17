@@ -1,10 +1,10 @@
-desktop.alarm = {};
-desktop.alarm.label = "Alarm";
+desktop.app.alarm = {};
+desktop.app.alarm.label = "Alarm";
 
-desktop.alarm.load = function loadDesktopLogin(params, next) {
-  desktop.loadRemoteAssets(
+desktop.app.alarm.load = function loadDesktopLogin() {
+  desktop.load.remoteAssets(
     [
-      "alarm", // this loads the sibling desktop.alarm.html file into <div id="window_alarm"></div>
+      "alarm", // this loads the sibling desktop.app.alarm.html file into <div id="window_alarm"></div>
     ],
     function (err) {
       // if user clicks on top right menu, focus on alarm form
@@ -21,10 +21,9 @@ desktop.alarm.load = function loadDesktopLogin(params, next) {
         sound = new Audio(
           "https://freesound.org/data/previews/316/316847_4939433-lq.mp3"
         );
-
       /*
-  audio sound source: https://freesound.org/people/SieuAmThanh/sounds/397787/
-*/
+        audio sound source: https://freesound.org/people/SieuAmThanh/sounds/397787/
+      */
 
       // loop alarm
       sound.loop = true;
