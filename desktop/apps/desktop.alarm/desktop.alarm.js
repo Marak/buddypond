@@ -6,7 +6,7 @@ desktop.app.alarm.load = function loadDesktopLogin() {
     [
       "alarm", // this loads the sibling desktop.app.alarm.html file into <div id="window_alarm"></div>
     ],
-    function (err) {
+    function () {
       // if user clicks on top right menu, focus on alarm form
       $(".alarmLink").on("click", function () {
         $("#window_alarm").show();
@@ -15,18 +15,17 @@ desktop.app.alarm.load = function loadDesktopLogin() {
       // set our variables
       var time,
         alarm,
-        currentH,
-        currentM,
         activeAlarm = false,
-        sound = new Audio(
-          "https://freesound.org/data/previews/316/316847_4939433-lq.mp3"
-        );
+        buddyStop = false;
       /*
         audio sound source: https://freesound.org/people/SieuAmThanh/sounds/397787/
       */
 
-      // loop alarm
-      sound.loop = true;
+      function loopAlarm () {
+        if(buddyStop === false) {
+          return desktop.play("alarm.mp3", false, loopAlarm);
+        }
+      }
 
       // define a function to display the current time
       function displayTime() {
@@ -36,10 +35,9 @@ desktop.app.alarm.load = function loadDesktopLogin() {
         // time = "1:00:00 AM";
         // watch for alarm
         if (time === alarm) {
-          sound.play();
-
-          // show snooze button
-          snooze.className = "";
+          desktop.play(
+            "alarm.mp3"
+          , false, loopAlarm);
         }
         setTimeout(displayTime, 1000);
       }
@@ -93,6 +91,7 @@ desktop.app.alarm.load = function loadDesktopLogin() {
             ampm.value;
           this.textContent = "Clear Alarm";
           activeAlarm = true;
+          buddyStop = false;
         } else {
           // clear the alarm
           hours.disabled = false;
@@ -101,41 +100,10 @@ desktop.app.alarm.load = function loadDesktopLogin() {
           ampm.disabled = false;
 
           sound.pause();
-          alarm = "00:00:00 AM";
+          alarm = "01:00:00 AM";
           this.textContent = "Set Alarm";
-
-          // hide snooze button
-          snooze.className = "hide";
           activeAlarm = false;
-        }
-      };
-
-      // snooze for 5 minutes
-      snooze.onclick = function () {
-        if (activeAlarm === true) {
-          // grab the current hour and minute
-          currentH = time.substr(0, time.length - 9);
-          currentM = time.substr(currentH.length + 1, time.length - 8);
-
-          if (currentM >= "55") {
-            minutes.value = "00";
-            hours.value = parseInt(currentH) + 1;
-          } else {
-            if (parseInt(currentM) + 5 <= 9) {
-              minutes.value = "0" + parseInt(currentM + 5);
-            } else {
-              minutes.value = parseInt(currentM) + 5;
-            }
-          }
-
-          // hide snooze button
-          snooze.className = "hide";
-
-          // now reset alarm
-          startstop.click();
-          startstop.click();
-        } else {
-          return false;
+          buddyStop = true;
         }
       };
     }
