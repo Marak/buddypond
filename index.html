@@ -59,9 +59,17 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
       Buddy Pond
     </a>
+    <a class="abs icon" style="left:110px;top:300px;" href="#icon_dock_memepool">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_memepool_64.png" />
+      Meme Pool
+    </a>
     <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_interdimensionalcable">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
       Inter Dimensional Cable
+    </a>
+    <a class="abs icon loggedIn" style="left:20px;top:380px;" href="#icon_dock_streamsquad">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_streamsquad_64.png" />
+      Stream Squad
     </a>
     <a class="abs icon" style="left:110px;top:200px;" href="#icon_dock_mtv">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
@@ -223,13 +231,10 @@ window.top.location = 'ie.html';
     </ul>
     <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
       <option>Select music playlist...</option>
+      <option value="942151069">Andrew Potthast: Bangas</option>
+      <option value="938848927">Andrew Potthast: Burning Man Set</option>
       <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
-      <!--
-      <option>Chill Vibes</option>
-      <option>Robot Dubstep</option>
-      -->
       <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
-      <option value="1305647137">Andrew Potthast: Morning Set</option>
       <option value="839091662">Featured Indie Producer: Andrew Potthast</option>
     </select>
   </div>
@@ -282,12 +287,12 @@ window.top.location = 'ie.html';
       .use('localstorage')
       .use('settings')
       .use('wallpaper')
-      .use('audioplayer')
       .use('login')
       .use('buddylist')
       .use('pond')
       .use('alarm', { defer: true })
       .use('audioplayer', { defer: true })
+      .use('streamsquad')
       .use('merlin', { defer: true })
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
@@ -297,6 +302,8 @@ window.top.location = 'ie.html';
       .use('notifications', { defer: true })
 
       .ready(function(err, apps){
+        // desktop.log("Loaded", desktop.apps.loaded);
+
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
 
         // Desktop is ready, start refreshing it's state immediately

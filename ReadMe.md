@@ -11,6 +11,10 @@
  - Developer-friendly REST API
  - Desktop download size is < 1MB ( Uncompressed )
 
+## Adding Memes
+
+If you are just looking to add Memes to the Memepool please visit [The Buddy Pond Memepool at Gitlab](https://gitlab.com/Marak1/buddypond-memepool). You can create a quick PR to add memes to the Buddy Pond.
+
 ## Quick Start
 
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)

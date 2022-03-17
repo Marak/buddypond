@@ -214,7 +214,7 @@ desktop._ready = function _ready (finish) {
               desktop.app[app].openWindow(app.name);
               let key = '#window_' + app.name;
               $(key).show();
-              JQD.util.window_flat();
+              JQDX.window_flat();
               $(key).show().addClass('window_stack');
               // TODO: loading status cursor indicator should be per App, not global
               document.querySelectorAll('*').forEach(function(node) {
@@ -255,7 +255,6 @@ desktop.refresh = function refreshDesktop () {
 //
 // desktop.messages.process() queries the server for new messages and then
 // delegates those messages to any applications which expose an App.processMessages() function
-// currently hard-coded to pond, and buddylist apps. Can easily be refactored and un-nested.
 //
 desktop.messages.process = function processMessages (apps) {
   apps = apps || desktop.apps.loaded;
@@ -329,14 +328,14 @@ desktop.messages.process = function processMessages (apps) {
 
       //
       // once we have the message data and know which Apps have `App.processMessages` available...
-      // delegate tge message data to each App's internal processMessages() function
+      // delegate the message data to each App's internal processMessages() function
       //
       desktop.utils.asyncApplyEach(
         appNameProcessMessagesList,
         data,
         function done (err, results) {
           // `App.processMessages` should return `true`
-          // just ignore all the errors and results for now
+          // ignore all the errors and results for now
           // console.log(err, results);
           //
           // All apps have completed rendering messages, set a timer and try again shortly
@@ -431,7 +430,10 @@ desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
 
 
 // desktop can play multimedia files with simple desktop.play(fileName) commands
-desktop.play = function desktopPlay (soundFx, callback) {
+desktop.play = function desktopPlay (soundFx, tryHard, callback) {
+  callback = callback || function noop () {
+
+  }
   if (desktop.app.audioplayer && desktop.app.audioplayer.play) {
     desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, false, callback);
   } else {
@@ -491,6 +493,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
   if (cleanText) {
     let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
+    // TODO: https://youtu.be/ style links
     if (searchYouTube !== -1) {
       // if a youtube link was found, replace it with a link to open IDC with the video id
       let id = cleanText.substr(searchYouTube + 32, 11);

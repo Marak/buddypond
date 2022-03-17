@@ -37,6 +37,32 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
       Buddy Pond
     </a>
+    <a class="abs icon" style="left:110px;top:300px;" href="#icon_dock_memepool">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_memepool_64.png" />
+      Meme Pool
+    </a>
+    <a class="abs icon" style="left:20px;top:200px;" href="#icon_dock_interdimensionalcable">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
+      Inter Dimensional Cable
+    </a>
+    <a class="abs icon" style="left:110px;top:200px;" href="#icon_dock_mtv">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
+      Music Television
+    </a>
+    <!--
+    <a class="abs icon" style="left:110px;top:500px;" href="#icon_dock_automaton">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_automaton_64.png" />
+      Automaton
+    </a>
+    -->
+    <a class="abs icon" style="left:20px;top:300px;" href="#icon_dock_soundcloud">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+      SoundCloud
+    </a>
+    <a class="abs icon" style="left:110px;top:120px;" href="#icon_dock_games">
+      <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
+      Games
+    </a>
     <a id="login_desktop_icon" class="abs icon" style="left:110px;top:40px;" href="#icon_dock_login">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_login_64.png" />
       Login
@@ -66,7 +92,6 @@ window.top.location = 'ie.html';
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
       Spellbook
     </a>
-
     <a class="abs icon" style="right:20px;top:130px;" href="#icon_dock_console">
       <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
       Console
@@ -210,13 +235,11 @@ window.top.location = 'ie.html';
         desktop.settings.agent_merlin_active = false;
         return true;
       })
-      .use('audioplayer')
       .use('login')
       .use('buddylist')
       .use('pond')
       .use('spellbook', { defer: true })
       .use('profile', { defer: true })
-      .use('mirror', { defer: true })
       .ready(function(err, apps){
         desktop.log('Ready:', 'LYTE Buddy Pond', 'v4.20.69')
         // Desktop is ready, start refreshing it's state immediately
