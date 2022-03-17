@@ -38,6 +38,8 @@ desktop.app.alarm.load = function loadDesktopLogin() {
         if (time === alarm) {
           sound.play();
 
+          desktop.app.wallpaper.drawSolid("red");
+
           // show snooze button
           snooze.className = "";
         }
