@@ -796,7 +796,6 @@ desktop.app.memepool.memes = [
   "tree-brain-wisdom-infinite-infinity-knowledge.jpeg",
   "tree-of-life-essence-knowledge.jpeg",
   "tripping-dancing-glitch-walking.gif",
-  "trippy-angel-rainbow-cat-gir.textClipping",
   "trippy-angel-rainbow-cat-girlfriend-queen-penis.png",
   "trippy-ascend-face-mirror.jpeg",
   "trippy-ascended-head.jpeg",
