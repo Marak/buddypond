@@ -40,6 +40,7 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
           })
           .catch(error => {
             // console.log('Unable to play the audio, User has not interacted yet.');
+            desktop.app.audioplayer.playing[soundPath] = false;
             if (tryHard) {
               tryHard--;
               setTimeout(function(){

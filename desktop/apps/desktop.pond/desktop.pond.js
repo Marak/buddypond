@@ -217,7 +217,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     if (message.card) {
       // ${message.card.author}
       $('.chat_messages', windowId).append(`
-       <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler:</em> ${message.card.winkler}<br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+       <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
       `);
       //desktop.messages._processed.push(message.uuid);
       //return;
