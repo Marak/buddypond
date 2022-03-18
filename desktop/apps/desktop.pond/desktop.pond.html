@@ -32,8 +32,6 @@
     display: flex;
   }
 
-  /* TODO: Move garbage for this from desktop.css */
-
   .pond_message_form>form {
     display: flex;
     flex-direction: row;
@@ -56,8 +54,7 @@
     /* overflow-y: hidden; */
   }
 
-  .send_pond_message {
-    /* This is presumably for a "send" button someone can add at some point */
+  .sendPondMessage {
     float: right;
     padding: 0px;
     margin: 0 1em 0 0;
@@ -147,7 +144,7 @@
             <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
             <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
               cols="44"></textarea>
-            <button name="pond_message_submit" class="send_pond_message">Send</button>
+            <button name="pond_message_submit" class="sendPondMessage">Send</button>
             <input name="pond_message_from" class="pond_message_from" type="hidden" />
             <input name="pond_message_to" class="pond_message_to" type="hidden" />
           </form>

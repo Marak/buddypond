@@ -38,7 +38,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     $('.pondNameList').hide();
     $('.pondMessagesHolder').hide();
 
-    $('.send_pond_message').on('click', function(){
+    $('.sendPondMessage').on('click', function(){
       desktop.app.pond.sendMessage(this);
       return false;
     });
