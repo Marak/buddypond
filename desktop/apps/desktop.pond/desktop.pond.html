@@ -8,16 +8,45 @@
     padding-top: 16px;
   }
 
-  .pond_send_message_form {
-    float: bottom;
-    width: 92%;
+  .window_bottom_chat {
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 20px;
+    /*overflow: hidden;*/
+    text-align: center;
+    text-shadow: #fff 0 1px 1px;
+    height: 33px;
+    width: 100%;
+    left: 1px;
+    right: 1px;
+    bottom: 23px !important;
   }
 
-  .pond_message_text {
-    height: 20px;
-    width: 93%;
-    left: 30px;
-    position: absolute;
+  .chat_area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pond_send_message_form {
+    width: 100%;
+    display: flex;
+  }
+
+  .pond_message_form>form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .pond_emoji_picker {
+    position: static !important;
+    margin: auto auto auto 0.5em;
+  }
+
+  .pond_send_message_form>form .pond_message_text {
+    height: 2em;
+    width: 100%;
+    margin-right: 0.2em;
+    resize: none;
   }
 
   .pond_message .window_content {
@@ -28,15 +57,14 @@
   .sendPondMessage {
     float: right;
     padding: 0px;
-    margin: 0px;
-    height: 25px;
+    margin: 0 1em 0 0;
+    height: 100%;
     width: 80px;
   }
 
   .pondNameList {
     padding: 16px;
   }
-
 </style>
 <div id="window_pond" class="abs window pond_message" data-window-index="0">
   <div class="abs window_inner">
@@ -58,19 +86,20 @@
         </div>
         <div class="loggedIn">
           <h2>Join Pond</h2>
-          <br/>
+          <br />
           <form class="joinPondForm">
             <label for="customPondName">
-              <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"  placeholder="enter pond name..."type="text" size="16"/>
+              <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"
+                placeholder="enter pond name..." type="text" size="16" />
             </label>
-            <br/>
+            <br />
             <button type="submit" class="joinPond desktopButton">Join Pond</button>
           </form>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <p>
             A pond is a room where many buddies can chat with each other.
-          </p> 
+          </p>
         </div>
       </div>
     </div>
@@ -93,31 +122,36 @@
         <a href="#icon_dock_pond_message_0" class="window_close"></a>
       </span>
     </div>
-    <div class="abs window_content">
-      <div class="window_main pond_message_main">
-        <div class="buddy_pond_not_connected">
-          You'll need to login in order to access the Buddy Pond.
+    <div class="chat_area">
+      <div class="abs window_content">
+        <div class="window_main pond_message_main">
+          <div class="buddy_pond_not_connected">
+            You'll need to login in order to access the Buddy Pond.
+          </div>
+          <div class="pondMessagesHolder">
+            <div class="no_chat_messages">
+              The pond is fresh. There are no messages yet. You can send a message to this pond below.
+            </div>
+            <div class="chat_messages">
+            </div>
+            <hr />
+          </div>
         </div>
-        <div class="pondMessagesHolder">
-          <div class="no_chat_messages">
-            The pond is fresh. There are no messages yet. You can send a message to this pond below.
-          </div>
-          <div class="chat_messages">
-          </div>
-          <hr/>
+      </div>
+      <div class="abs window_bottom_chat">
+        <div class="pond_send_message_form">
+          <form method="POST" action="" align="right" class="pond_send_message_form">
+            <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+            <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
+              cols="44"></textarea>
+            <button name="pond_message_submit" class="sendPondMessage">Send</button>
+            <input name="pond_message_from" class="pond_message_from" type="hidden" />
+            <input name="pond_message_to" class="pond_message_to" type="hidden" />
+          </form>
         </div>
       </div>
     </div>
-    <div class="abs window_bottom_chat">
-      <div class="pond_send_message_form">
-        <form method="POST" action="" align="right">
-          <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
-          <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1" cols="44"></textarea>
-          <input name="pond_message_from"  class="pond_message_from" type="hidden"/>
-          <input name="pond_message_to"  class="pond_message_to" type="hidden"/>
-        </form>
-      </div>
-    </div>
+
     <div class="abs window_bottom">
       Build: v4.20.69
     </div>

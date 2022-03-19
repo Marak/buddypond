@@ -1,2 +1,3 @@
 .DS_Store
 /.vscode
+sdk/nodejs-sdk/node_modules
