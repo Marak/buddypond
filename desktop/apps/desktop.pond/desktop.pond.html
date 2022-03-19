@@ -65,6 +65,13 @@
   .pondNameList {
     padding: 16px;
   }
+
+  .insertSnap {
+    font-size: 24px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
 </style>
 <div id="window_pond" class="abs window pond_message" data-window-index="0">
   <div class="abs window_inner">
@@ -141,7 +148,8 @@
       <div class="abs window_bottom_chat">
         <div class="pond_send_message_form">
           <form method="POST" action="" align="right" class="pond_send_message_form">
-            <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+            <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span><br/><br/>
+            <span class="insertSnap" title="Insert Snap">📷</span>
             <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
               cols="44"></textarea>
             <button name="pond_message_submit" class="sendPondMessage">Send</button>

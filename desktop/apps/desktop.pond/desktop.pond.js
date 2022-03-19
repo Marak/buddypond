@@ -76,12 +76,18 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     $('.pond_emoji_picker').on('click', function (e) {
+      //??? who wrote this selector, rewrite to make more readable please!
       e.target.parentNode?.querySelector('.pond_message_text').focus();
     });
 
     $('.pond_message_text').on('focus', function (e) {
       $('.activeTextArea').removeClass('activeTextArea');
       e.target.classList.add('activeTextArea')
+    });
+    $('.insertSnap').on('click', function (e) {
+      var form = $(this).parent();
+      let context = $('.pond_message_to', form).val();
+      JQDX.showWindow('mirror', { type:'pond', context: context});
     });
     next();
   });
@@ -215,14 +221,20 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     // replace cards
     if (message.card) {
-      // ${message.card.author}
-      $('.chat_messages', windowId).append(`
-       <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
-      `);
-      //desktop.messages._processed.push(message.uuid);
-      //return;
+      if (message.card.type === 'snaps') {
+        $('.chat_messages', windowId).append(`
+         <span class="message"><img id="${message.uuid}" class="snapsImage"/></span><br/>
+        `);
+        desktop.playSnaps('#' + message.uuid, JSON.parse(message.card.snaps));
+        // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
+        desktop.messages._processedCards.push(message.uuid);
+      } else {
+        // TODO: meme type
+        $('.chat_messages', windowId).append(`
+         <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+        `);
+      }
     }
-
     desktop.messages._processed.push(message.uuid);
   });
 
@@ -233,7 +245,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         //      let el = $('.chat_messages', '.pond_message_main')
         setTimeout(function(){
           let el = $('.window_content', key);
-          $(el).scrollTop(9999);
+          $(el).scrollTop(999999);
         }, 1111)
       }
     } catch (err) {

@@ -1,3 +1,76 @@
+<style>
+  .takeSingleSnap {
+    font-size: 128px;
+    position: absolute;
+    top: 255px;
+    left: 66px;
+    cursor: pointer;
+  }
+  .takeSnap {
+    font-size: 128px;
+    position: absolute;
+    top: 255px;
+    right: 66px;
+    cursor: pointer;
+  }
+  .snapCountDown {
+    font-size: 128px;
+    position: absolute;
+    top: 55px;
+    left: 233px;
+    cursor: pointer;
+    display: none;
+    color: #00FF41;
+  }
+  .approveSnap {
+    font-size: 128px;
+    position: absolute;
+    top: 255px;
+    right: 66px;
+    cursor: pointer;
+  }
+
+  .cancelSnap {
+    font-size: 128px;
+    position: absolute;
+    top: 255px;
+    left: 66px;
+    cursor: pointer;
+  }
+
+  .continueSnap {
+    font-size: 128px;
+    position: absolute;
+    top: 255px;
+    right: 333px;
+    cursor: pointer;
+  }
+
+  .confirmSnap:hover {
+    font-decoration: bold;
+    opacity: 0.8;
+  }
+
+  .recordSnap:hover {
+    opacity: 0.8;
+  }
+  #snapsPreview {
+    width: 640px;
+    height: 480px;
+  }
+  #snaps {
+    display: none;
+  }
+  #mirrorCanvasMe {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+  }
+</style>
+
 <div id="window_mirror" class="abs window" align="center">
   <div class="abs window_inner">
     <div class="window_top">
@@ -12,28 +85,37 @@
       </span>
     </div>
     <div class="abs window_content">
-      <div class="window_main mirrorVideoHolder">
-        <canvas id='mirrorCanvasMe'></canvas>
-
-        <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
-        <br/>
-        Camera Source
-        <select name="selectMirrorCamera" class="selectMirrorCamera">
-        </select>
-
-        &nbsp;
-
-        Filter
-        <select name="selectMirrorFilter" class="selectMirrorFilter">
-            <option>None</option>
-            <option value='greyscale'>Greyscale</option>
-        </select>
-
-        <!--
-          Audio Source
-          <select name="selectAudio" class="selectAudio">
+      <div class="window_main">
+        <canvas id='snaps'></canvas>
+        
+        <div class="mirrorVideoHolder">
+          <canvas id='mirrorCanvasMe'></canvas>
+          <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
+          <br/>
+          Camera Source
+          <select name="selectMirrorCamera" class="selectMirrorCamera">
           </select>
-        -->
+          &nbsp;
+          Filter
+          <select name="selectMirrorFilter" class="selectMirrorFilter">
+              <option>None</option>
+              <option value='greyscale'>Greyscale</option>
+          </select>
+          <!--
+            Audio Source
+            <select name="selectAudio" class="selectAudio">
+            </select>
+          -->
+        </div>
+        <span class="takeSingleSnap recordSnap" title="Take Single Photo">📷</span>
+        <span class="takeSnap recordSnap" title="Make Silent Movie">📹</span>
+
+        <span class="snapCountDown">3...</span>
+
+        <img id='snapsPreview'/>
+        <span class="approveSnap confirmSnap" title="Approve And Send">✅</span>
+        <span class="continueSnap confirmSnap" title="Add Another Photo">➕</span>
+        <span class="cancelSnap confirmSnap" title="Cancel Snap">❌</span>
       </div>
     </div>
     <div class="abs window_bottom">

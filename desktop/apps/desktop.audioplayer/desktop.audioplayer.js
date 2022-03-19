@@ -14,7 +14,7 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
     return callback(null, false);
   } else {
     // play the audio
-    if (desktop.app.audioplayer.playing[soundPath]) {
+    if (desktop.app.audioplayer.playing[soundPath] && !tryHard) {
       console.log(`Warning: Already playing ${soundPath}, will not play same audio file concurrently.`);
       return callback(null, false);
     }

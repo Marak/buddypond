@@ -24,7 +24,7 @@
   .buddy_message_text {
     height: 20px;
     width: 93%;
-    left: 25px;
+    left: 55px;
     position: absolute;
   }
 
@@ -85,6 +85,14 @@
 
   .acceptVideoCall:hover {
     opacity: 0.6;
+    cursor: pointer;
+  }
+
+  .insertBuddySnap {
+    position: absolute;
+    left: 20px;
+    font-size: 24px;
+    padding: 5px;
     cursor: pointer;
   }
 
@@ -195,8 +203,10 @@
     <div class="abs window_bottom_chat">
       <div class="chat_send_message_form">
         <form class="sendMessageForm" method="POST" action="#">
+          <span class="insertBuddySnap" title="Insert Snap">📷</span>
           <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
           <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
+          <span class="insertBuddySnap" title="Insert Snap">📷</span>
           <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
           <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
           <!--

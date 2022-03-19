@@ -29,12 +29,157 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       desktop.app.mirror.canvasVideo.filter = ev.currentTarget.value.toLowerCase();
     });
 
+    // starts snaps photo record
+    let MAX_FRAMES_PER_SNAP = 6;
+    let DEFAULT_SNAP_TIMER = 1000;
+    let currentFrame = 0;
+    desktop.app.mirror.snaps = [];
+
+    function recordSnaps (maxFrames, delay) {
+      delay = delay || DEFAULT_SNAP_TIMER;
+      $('.recordSnap').hide();
+      $('.mirrorVideoHolder').css('opacity', '1');
+      // runs until max frames or hits stop
+      var destinationCanvas = document.getElementById('snaps');
+      var destCtx = destinationCanvas.getContext('2d');
+
+      if (maxFrames > 1) {
+        desktop.play('CAMERA_SHUTTER.wav', true);
+      }
+
+      destinationCanvas.width = 640;
+      destinationCanvas.height = 480;
+
+      destCtx.translate(640, 0);
+      destCtx.scale(-1, 1);
+      destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
+
+      // Get base64 data to send to server for upload
+      var imagebase64data = destinationCanvas.toDataURL("image/png");
+      imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
+      desktop.app.mirror.snaps.push(imagebase64data);
+
+      currentFrame++;
+      $('.mirrorVideoHolder').css('opacity', '0.88');
+      $('#snapsPreview').data('stopped', false);
+      $('.mirrorVideoHolder').css('opacity', '1');
+      if (currentFrame >= maxFrames) {
+        currentFrame = 0;
+        setTimeout(function(){
+          $('.mirrorVideoHolder').hide();
+          $('#snapsPreview').show();
+          desktop.playSnaps('#snapsPreview', desktop.app.mirror.snaps, 0, delay);
+          $('.confirmSnap').show();
+        }, 55)
+        return;
+      }
+      setTimeout(function(){
+        recordSnaps(maxFrames, delay);
+      }, delay)
+    }
+
+    // TODO: combine this countdown and next one into helper function
+    $('.takeSingleSnap').on('click', function(){
+      $('.recordSnap').hide();
+      desktop.play('CAMERA_COUNTDOWN.wav');
+      $('.snapCountDown').show();
+      setTimeout(function(){
+        $('.snapCountDown').html('2...');
+        setTimeout(function(){
+          $('.snapCountDown').html('1...');
+          setTimeout(function(){
+            $('.snapCountDown').hide();
+            $('.snapCountDown').html('3...');
+             setTimeout(function(){
+              if (currentFrame === 0) {
+                desktop.play('CAMERA_SNAP.wav');
+                setTimeout(function(){
+                  recordSnaps(1);
+                }, 44)
+              }
+            }, 333)
+          }, 1000)
+        }, 1000)
+      }, 1000)
+    });
+
+    $('.takeSnap').on('click', function(){
+      $('.recordSnap').hide();
+      desktop.play('CAMERA_COUNTDOWN.wav');
+      $('.snapCountDown').show();
+      setTimeout(function(){
+        $('.snapCountDown').html('2...');
+        setTimeout(function(){
+          $('.snapCountDown').html('1...');
+          setTimeout(function(){
+            $('.snapCountDown').hide();
+            $('.snapCountDown').html('3...');
+            setTimeout(function(){
+              if (currentFrame === 0) {
+                setTimeout(function(){
+                  recordSnaps(10, 100);
+                }, 44)
+              }
+            }, 333)
+          }, 1000)
+        }, 1000)
+      }, 1000)
+    });
+
+    $('.approveSnap').on('click', function(){
+      let msg = 'I sent a Snap!';
+      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), function(err, data){
+        console.log('sent snaps as message', err, data);
+        $('.mirrorVideoHolder').show();
+        $('#snapsPreview').hide();
+        $('.recordSnap').show();
+        $('.confirmSnap').hide();
+        desktop.app.mirror.snaps = [];
+        currentFrame = 0;
+        $('#snapsPreview').data('stopped', true);
+        // close mirror ( fow now )
+        JQDX.closeWindow('#window_mirror');
+      });
+    });
+
+    $('.cancelSnap').on('click', function(){
+      // TODO: show frame limit / timer
+      desktop.app.mirror.snaps = [];
+      currentFrame = 0;
+      $('#snapsPreview').data('stopped', true);
+      $('.mirrorVideoHolder').show();
+      $('#snapsPreview').hide();
+      $('.recordSnap').show();
+      $('.confirmSnap').hide();
+    });
+
+    $('.continueSnap').on('click', function(){
+      // TODO: clear recorded snaps
+      // TODO: add button for adding frame
+      // TODO: show frame limit / timer
+      $('.mirrorVideoHolder').show();
+      $('#snapsPreview').hide();
+      $('.recordSnap').show();
+      $('.confirmSnap').hide();
+    });
+
     next();
   });
 }
 
-desktop.app.mirror.openWindow = function openWindow () {
+desktop.app.mirror.openWindow = function openWindow (params) {
   this.canvasVideo.bindPlayEvent();
+  params = params || {};
+  desktop.app.mirror.snapContext = params.context;
+  desktop.app.mirror.snapType = params.type;
+
+  if (params.context) {
+    $('#window_mirror').css('width', 640);
+    $('#window_mirror').css('height', 580);
+  }
+
+  $('.confirmSnap').hide();
+  $('.recordSnap').hide();
 
   // The mirror will not work if navigator.mediaDevices is not available.
   // Usually, this will only occur if there is SSL / HTTPS certificate issue
@@ -104,8 +249,15 @@ desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
       });
       var video = document.querySelector("#mirrorVideoMe");
 
+      video.onplay = function() {
+        if (desktop.app.mirror.snapContext) {
+          $('.recordSnap').show();
+        }
+      }
+
       video.srcObject = stream;
       desktop.app.mirror.localStream = stream;
+
     }).catch((err) => {
       console.log('error in calling navigator.mediaDevices.getUserMedia', err)
     });

@@ -157,6 +157,12 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       e.target.classList.add('activeTextArea');
     });
 
+    $('.insertBuddySnap').on('click', function (e) {
+      var form = $(this).parent();
+      let context = $('.buddy_message_to', form).val();
+      JQDX.showWindow('mirror', { type:'buddy', context: context});
+    });
+
     try {
       new EmojiPicker({
         trigger: emojiTriggers,
@@ -569,9 +575,19 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     // replace cards
     if (message.card) {
-      $('.chat_messages', windowId).append(`
-       <span class="message"><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
-      `);
+      
+      if (message.card.type === 'snaps') {
+        $('.chat_messages', windowId).append(`
+         <span class="message"><img id="${message.uuid}" class="snapsImage"/></span><br/>
+        `);
+        desktop.playSnaps('#' + message.uuid, JSON.parse(message.card.snaps));
+        // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
+        desktop.messages._processedCards.push(message.uuid);
+      } else {
+        $('.chat_messages', windowId).append(`
+         <span class="message"><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+        `);
+      }
       desktop.messages._processed.push(message.uuid);
       return;
     }

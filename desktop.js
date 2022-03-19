@@ -50,6 +50,8 @@ desktop.messages = {};
 // TODO: Have the desktop trim desktop.messages._processed if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
 desktop.messages._processed = [];
 
+desktop.messages._processedCards = [];
+
 
 // set the default desktop.log() method to use console.log
 desktop.log = console.log;
@@ -282,7 +284,8 @@ desktop.messages.process = function processMessages (apps) {
 
     let params = {
       buddyname: subscribedBuddies.toString(),
-      pondname: subscribedPonds.toString()
+      pondname: subscribedPonds.toString(),
+      ignoreMessages: desktop.messages._processedCards
     };
 
     //
@@ -435,7 +438,7 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
 
   }
   if (desktop.app.audioplayer && desktop.app.audioplayer.play) {
-    desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, false, callback);
+    desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, tryHard, callback);
   } else {
     console.log('App.AudioPlayer was not detected. Is it ready? Was it loaded?');
     callback(null, false);
@@ -486,6 +489,31 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
   const res = /^[a-zA-Z0-9_\-]+$/.exec(str);
   const valid = !!res;
   return valid;
+}
+
+// starts photo record
+let MAX_FRAMES_PER_SNAP = 10;
+let DEFAULT_SNAP_TIMER = 777;
+let currentFrame = 0;
+
+desktop.playSnaps = function playSnaps (el, snaps, index, delay) {
+  delay = delay || DEFAULT_SNAP_TIMER;
+  if (typeof index === 'undefined') {
+    index = 0;
+  }
+  if ($(el).data('stopped')) {
+    // do not repeat
+    return;
+  }
+  $(el).attr('src', 'data:image/png;base64,' + snaps[index]);
+  setTimeout(function(){
+    if (index === snaps.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+    playSnaps(el, snaps, index, delay);
+  }, delay)
 }
 
 desktop.smartlinks = {};
