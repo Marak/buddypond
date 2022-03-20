@@ -167,6 +167,38 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
   })
 }
 
+buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
+  let x = (new TextEncoder().encode(snapsJSON)).length;
+  console.log('about to send somethign this big', x, type, name);
+  if (type === 'pond') {
+    apiRequest('/messages/pond/' + name, 'POST', {
+      pondname: name,
+      pondtext: text,
+      type: 'pond',
+      card: {
+        type: 'snaps',
+        snaps: snapsJSON,
+        delay: delay
+      }
+    }, function(err, data){
+      cb(err, data);
+    });
+  }
+  if (type === 'buddy') {
+    apiRequest('/messages/buddy/' + name, 'POST', {
+      buddyname: name,
+      text: text,
+      type: 'buddy',
+      card: {
+        type: 'snaps',
+        snaps: snapsJSON
+      }
+    }, function(err, data){
+      cb(err, data);
+    });
+  }
+}
+
 //
 // "Packet" tracking here is just used for aestic purposes and not for any real calculations
 //              ( they just for decoration )

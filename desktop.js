@@ -496,8 +496,11 @@ let MAX_FRAMES_PER_SNAP = 10;
 let DEFAULT_SNAP_TIMER = 777;
 let currentFrame = 0;
 
-desktop.playSnaps = function playSnaps (el, snaps, index, delay) {
-  delay = delay || DEFAULT_SNAP_TIMER;
+desktop.playSnaps = function playSnaps (opts) {
+  let el = opts.el;
+  let snaps = opts.snaps;
+  let index = opts.index;
+  let delay = $(el).data('delay') || opts.delay || DEFAULT_SNAP_TIMER;
   if (typeof index === 'undefined') {
     index = 0;
   }
@@ -512,7 +515,12 @@ desktop.playSnaps = function playSnaps (el, snaps, index, delay) {
     } else {
       index++;
     }
-    playSnaps(el, snaps, index, delay);
+    playSnaps({
+      el: el,
+      snaps: snaps,
+      index: index,
+      delay: delay
+    });
   }, delay)
 }
 

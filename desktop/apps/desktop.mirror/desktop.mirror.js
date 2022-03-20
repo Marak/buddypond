@@ -15,7 +15,15 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     $('#window_mirror').css('height', 622);
     $('#window_mirror').css('left', 200);
     $('#window_mirror').css('top', 44);
-
+    $( "#snapDelaySlider" ).slider({
+      value: 777,
+      min: 1,
+      max: 2222,
+      change: function(event, ui){
+        desktop.app.mirror.snapDelay = ui.value
+        $('#snapsPreview').data('delay', ui.value);
+      }
+    });
     desktop.app.mirror.canvasVideo = new window.CanvasVideo(
       '#mirrorVideoMe', '#mirrorCanvasMe');
 
@@ -37,6 +45,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 
     function recordSnaps (maxFrames, delay, mode) {
       delay = delay || DEFAULT_SNAP_TIMER;
+      $('#snapsPreview').data('delay', delay);
+      desktop.app.mirror.snapDelay = delay;
       mode = mode || 'photo';
       $('.recordSnap').hide();
       $('.mirrorVideoHolder').css('opacity', '1');
@@ -69,11 +79,19 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         setTimeout(function(){
           $('.mirrorVideoHolder').hide();
           $('#snapsPreview').show();
-          desktop.playSnaps('#snapsPreview', desktop.app.mirror.snaps, 0, delay);
+          desktop.playSnaps({
+            el: '#snapsPreview',
+            snaps: desktop.app.mirror.snaps,
+            index: 0,
+            delay: delay
+          });
           $('.confirmSnap').show();
           if (mode === 'photo') {
             $('.retrySnap').hide();
             $('.retrySingleSnap').show();
+            if (Object.keys(desktop.app.mirror.snaps).length > 1) {
+              $('#snapDelaySlider').show();
+            }
           } else {
             $('.continueSnap').hide();
             $('.retrySingleSnap').hide();
@@ -157,6 +175,9 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('.confirmSnap').hide();
       $('#snapsPreview').hide();
       $('#snapsPreview').data('stopped', true);
+      $('#snapDelaySlider').hide();
+      $('#snapDelaySlider').slider('value', 777);
+      $('#snapDelaySlider').data('delay', 777);
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       takeSingleSnap();
@@ -168,7 +189,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 
     $('.approveSnap').on('click', function(){
       let msg = 'I sent a Snap!';
-      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), function(err, data){
+      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), desktop.app.mirror.snapDelay, function(err, data){
         console.log('sent snaps as message', err, data);
         $('.mirrorVideoHolder').show();
         $('#snapsPreview').hide();
@@ -177,6 +198,9 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('#snapsPreview').data('stopped', true);
+        $('#snapDelaySlider').slider('value', 777);
+        $('#snapDelaySlider').data('delay', 777);
+        $('#snapDelaySlider').hide();
         // close mirror ( fow now )
         JQDX.closeWindow('#window_mirror');
       });
@@ -191,6 +215,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
+      $('#snapDelaySlider').slider('value', 777);
+      $('#snapDelaySlider').data('delay', 777);
     });
 
     $('.continueSnap').on('click', function(){
@@ -220,6 +246,9 @@ desktop.app.mirror.openWindow = function openWindow (params) {
 
   $('.confirmSnap').hide();
   $('.recordSnap').hide();
+  $('#snapDelaySlider').hide();
+  $('#snapDelaySlider').slider('value', 777);
+  $('#snapDelaySlider').data('delay', 777);
 
   // The mirror will not work if navigator.mediaDevices is not available.
   // Usually, this will only occur if there is SSL / HTTPS certificate issue

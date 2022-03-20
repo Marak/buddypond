@@ -572,15 +572,20 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     message.text = forbiddenNotes.filter(message.text);
 
-
     // replace cards
     if (message.card) {
-      
+
       if (message.card.type === 'snaps') {
         $('.chat_messages', windowId).append(`
          <span class="message"><img id="${message.uuid}" class="snapsImage"/></span><br/>
         `);
-        desktop.playSnaps('#' + message.uuid, JSON.parse(message.card.snaps));
+        desktop.playSnaps({
+          el: '#' + message.uuid, 
+          snaps: JSON.parse(message.card.snaps),
+          index: 0,
+          delay: message.card.delay
+        });
+
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
       } else {

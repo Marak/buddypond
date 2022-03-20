@@ -77,6 +77,13 @@
   #snaps {
     display: none;
   }
+  #snapDelaySlider {
+    position: absolute;
+    bottom: 6px;
+    left: 166px;
+    height: 10px;
+    width: 333px;
+  }
   #mirrorCanvasMe {
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -103,7 +110,7 @@
     <div class="abs window_content">
       <div class="window_main">
         <canvas id='snaps'></canvas>
-        
+        <div id="snapDelaySlider"></div>
         <div class="mirrorVideoHolder">
           <canvas id='mirrorCanvasMe'></canvas>
           <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>

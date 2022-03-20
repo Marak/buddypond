@@ -1,3 +1,4 @@
+
 - add 1000 memes to memepool
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
@@ -59,6 +60,19 @@ PUSHED to post launch
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+X - Snaps v1 launch
+X adjust speed before send
+X scope the photo to a chat window ( pond or buddy)
+X add button to buddy chat context, use that context for send
+X approve / cancel snap button before send
+X resize mirror to snap mode
+X include add new frame button?
+X do not show snaps option in mirror ( for now )
+X move preview ontop of camera with approve / cancel
+X add record sound
+X add 3-2-1 countdown with sound
+? put mutex on snap taking
 
 X - refactor desktop.ui.openWindow to work with lazy loads and reopens
 X - refactor buddylist-updateBuddyList into multiple functions
