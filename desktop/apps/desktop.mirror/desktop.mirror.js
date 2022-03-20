@@ -188,19 +188,19 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 
     $('.approveSnap').on('click', function(){
       let msg = 'I sent a Snap!';
+      $('.mirrorVideoHolder').show();
+      $('#snapsPreview').hide();
+      $('.recordSnap').show();
+      $('.confirmSnap').hide();
+      $('#snapDelaySlider').hide();
+      // close mirror ( fow now )
+      JQDX.closeWindow('#window_mirror');
       buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), desktop.app.mirror.snapDelay, function(err, data){
-        $('.mirrorVideoHolder').show();
-        $('#snapsPreview').hide();
-        $('.recordSnap').show();
-        $('.confirmSnap').hide();
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
-        $('#snapDelaySlider').hide();
-        // close mirror ( fow now )
-        JQDX.closeWindow('#window_mirror');
       });
     });
 
