@@ -1,13 +1,17 @@
 <style>
-  .takeSingleSnap {
+  .recordSnap {
     font-size: 128px;
+  }
+  .confirmSnap {
+    font-size: 96px;
+  }
+  .takeSingleSnap {
     position: absolute;
     top: 255px;
     left: 66px;
     cursor: pointer;
   }
   .takeSnap {
-    font-size: 128px;
     position: absolute;
     top: 255px;
     right: 66px;
@@ -16,14 +20,13 @@
   .snapCountDown {
     font-size: 128px;
     position: absolute;
-    top: 55px;
+    top: 144px;
     left: 233px;
     cursor: pointer;
     display: none;
     color: #00FF41;
   }
   .approveSnap {
-    font-size: 128px;
     position: absolute;
     top: 255px;
     right: 66px;
@@ -31,18 +34,31 @@
   }
 
   .cancelSnap {
-    font-size: 128px;
     position: absolute;
     top: 255px;
     left: 66px;
     cursor: pointer;
   }
 
+
+  .retrySnap {
+    position: absolute;
+    right: 333px;
+    top: 255px;
+    cursor: pointer;
+  }
+
+  .retrySingleSnap {
+    position: absolute;
+    right: 344px;
+    top: 255px;
+    cursor: pointer;
+  }
+
   .continueSnap {
-    font-size: 128px;
     position: absolute;
     top: 255px;
-    right: 333px;
+    right: 233px;
     cursor: pointer;
   }
 
@@ -93,13 +109,13 @@
           <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
           <br/>
           Camera Source
-          <select name="selectMirrorCamera" class="selectMirrorCamera">
+          <select name="selectMirrorCamera" class="selectMirrorCamera desktopSelect">
           </select>
           &nbsp;
           Filter
-          <select name="selectMirrorFilter" class="selectMirrorFilter">
-              <option>None</option>
-              <option value='greyscale'>Greyscale</option>
+          <select name="selectMirrorFilter" class="selectMirrorFilter desktopSelect">
+            <option>None</option>
+            <option value='greyscale'>Greyscale</option>
           </select>
           <!--
             Audio Source
@@ -108,13 +124,15 @@
           -->
         </div>
         <span class="takeSingleSnap recordSnap" title="Take Single Photo">📷</span>
-        <span class="takeSnap recordSnap" title="Make Silent Movie">📹</span>
+        <span class="takeSnap recordSnap" title="Take Silent Movie">📹</span>
 
         <span class="snapCountDown">3...</span>
 
         <img id='snapsPreview'/>
         <span class="approveSnap confirmSnap" title="Approve And Send">✅</span>
-        <span class="continueSnap confirmSnap" title="Add Another Photo">➕</span>
+        <span class="continueSnap confirmSnap" title="Add Another Photo">➕ </span>
+        <span class="retrySingleSnap confirmSnap" title="Try Again">📷</span>
+        <span class="retrySnap confirmSnap" title="Try Again">📹</span>
         <span class="cancelSnap confirmSnap" title="Cancel Snap">❌</span>
       </div>
     </div>

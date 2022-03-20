@@ -35,8 +35,9 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     let currentFrame = 0;
     desktop.app.mirror.snaps = [];
 
-    function recordSnaps (maxFrames, delay) {
+    function recordSnaps (maxFrames, delay, mode) {
       delay = delay || DEFAULT_SNAP_TIMER;
+      mode = mode || 'photo';
       $('.recordSnap').hide();
       $('.mirrorVideoHolder').css('opacity', '1');
       // runs until max frames or hits stop
@@ -70,16 +71,27 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
           $('#snapsPreview').show();
           desktop.playSnaps('#snapsPreview', desktop.app.mirror.snaps, 0, delay);
           $('.confirmSnap').show();
+          if (mode === 'photo') {
+            $('.retrySnap').hide();
+            $('.retrySingleSnap').show();
+          } else {
+            $('.continueSnap').hide();
+            $('.retrySingleSnap').hide();
+            $('.retrySnap').show();
+          }
         }, 55)
         return;
       }
       setTimeout(function(){
-        recordSnaps(maxFrames, delay);
+        recordSnaps(maxFrames, delay, mode);
       }, delay)
     }
 
-    // TODO: combine this countdown and next one into helper function
     $('.takeSingleSnap').on('click', function(){
+      takeSingleSnap();
+    });
+
+    function takeSingleSnap () {
       $('.recordSnap').hide();
       desktop.play('CAMERA_COUNTDOWN.wav');
       $('.snapCountDown').show();
@@ -101,9 +113,9 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
           }, 1000)
         }, 1000)
       }, 1000)
-    });
+    }
 
-    $('.takeSnap').on('click', function(){
+    function takeSnap () {
       $('.recordSnap').hide();
       desktop.play('CAMERA_COUNTDOWN.wav');
       $('.snapCountDown').show();
@@ -117,13 +129,41 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
             setTimeout(function(){
               if (currentFrame === 0) {
                 setTimeout(function(){
-                  recordSnaps(10, 100);
+                  recordSnaps(10, 100, 'film');
                 }, 44)
               }
             }, 333)
           }, 1000)
         }, 1000)
       }, 1000)
+    }
+
+    $('.retrySnap').on('click', function(){
+      $('.mirrorVideoHolder').show();
+      $('#snapsPreview').hide();
+      $('.recordSnap').show();
+      $('.confirmSnap').hide();
+      $('#snapsPreview').hide();
+      $('#snapsPreview').data('stopped', true);
+      desktop.app.mirror.snaps = [];
+      currentFrame = 0;
+      takeSnap();
+    })
+
+    $('.retrySingleSnap').on('click', function(){
+      $('.mirrorVideoHolder').show();
+      $('#snapsPreview').hide();
+      $('.recordSnap').show();
+      $('.confirmSnap').hide();
+      $('#snapsPreview').hide();
+      $('#snapsPreview').data('stopped', true);
+      desktop.app.mirror.snaps = [];
+      currentFrame = 0;
+      takeSingleSnap();
+    })
+
+    $('.takeSnap').on('click', function(){
+      takeSnap();
     });
 
     $('.approveSnap').on('click', function(){
@@ -154,13 +194,13 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     });
 
     $('.continueSnap').on('click', function(){
-      // TODO: clear recorded snaps
-      // TODO: add button for adding frame
-      // TODO: show frame limit / timer
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
+      $('#snapsPreview').hide();
+      $('#snapsPreview').data('stopped', true);
+      takeSingleSnap();
     });
 
     next();
