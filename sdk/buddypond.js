@@ -191,7 +191,8 @@ buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, del
       type: 'buddy',
       card: {
         type: 'snaps',
-        snaps: snapsJSON
+        snaps: snapsJSON,
+        delay: delay
       }
     }, function(err, data){
       cb(err, data);
