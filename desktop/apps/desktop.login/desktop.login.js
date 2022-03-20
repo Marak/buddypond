@@ -139,6 +139,9 @@ desktop.app.login.success = function desktopLoginSuccess () {
     } else {
        desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
     }
+    setTimeout(function(){
+      desktop.emit('merlin-hides');
+    }, 14444)
   }, 2000)
 
   // start packets update interval timer

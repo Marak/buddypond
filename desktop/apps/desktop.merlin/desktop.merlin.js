@@ -18,6 +18,10 @@ desktop.app.merlin.load = function loadmerlinGames (params, next) {
          agent.speak(text);
        })
 
+       desktop.on('merlin-hides', 'merlin-app-clippy-hide', function(text){
+         agent.hide();
+       })
+
        if (!buddypond.qtokenid) {
          agent.speak('Welcome to Buddy Pond! I am Merlin. Please click around and enjoy. Try the Interdimensional Cable!');
        }

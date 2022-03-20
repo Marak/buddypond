@@ -1,6 +1,6 @@
 let buddypond = {}
 
-buddypond.mode = 'prod';
+buddypond.mode = 'dev';
 
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://buddypond.com/api/v3';
