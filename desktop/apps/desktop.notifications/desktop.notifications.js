@@ -3,11 +3,11 @@ desktop.app.notifications.label = "Notifications";
 desktop.app.notifications.browserHasPermission = false;
 desktop.app.notifications.emitToDesktop = false;
 
-desktop.app.notifications.load = function loadnotificationsGames () {
+desktop.app.notifications.load = function loadnotificationsGames (params, cb) {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notifications");
   }
-  return true;
+  cb(null, true);
 };
 
 desktop.app.notifications.notifyBuddy = function notifyBuddy (text) {
