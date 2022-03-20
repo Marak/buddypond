@@ -169,7 +169,7 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
 
 buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
-  console.log('about to send somethign this big', x, type, name);
+  console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);
   if (type === 'pond') {
     apiRequest('/messages/pond/' + name, 'POST', {
       pondname: name,

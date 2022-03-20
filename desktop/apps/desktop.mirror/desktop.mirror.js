@@ -58,11 +58,10 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.play('CAMERA_SHUTTER.wav', true);
       }
 
-      destinationCanvas.width = 640;
-      destinationCanvas.height = 480;
+      destinationCanvas.width = 320;
+      destinationCanvas.height = 240;
 
-      destCtx.translate(640, 0);
-      destCtx.scale(-1, 1);
+      destCtx.scale(0.5, 0.5);
       destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
 
       // Get base64 data to send to server for upload
@@ -190,7 +189,6 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     $('.approveSnap').on('click', function(){
       let msg = 'I sent a Snap!';
       buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), desktop.app.mirror.snapDelay, function(err, data){
-        console.log('sent snaps as message', err, data);
         $('.mirrorVideoHolder').show();
         $('#snapsPreview').hide();
         $('.recordSnap').show();

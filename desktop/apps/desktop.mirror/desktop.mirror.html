@@ -34,16 +34,16 @@
   }
 
   .cancelSnap {
+    font-size: 72px;
     position: absolute;
-    top: 255px;
-    left: 66px;
+    top: 277px;
+    left: 77px;
     cursor: pointer;
   }
 
-
   .retrySnap {
     position: absolute;
-    right: 333px;
+    right: 366px;
     top: 255px;
     cursor: pointer;
   }
@@ -51,14 +51,14 @@
   .retrySingleSnap {
     position: absolute;
     right: 344px;
-    top: 255px;
+    top: 252px;
     cursor: pointer;
   }
 
   .continueSnap {
     position: absolute;
     top: 255px;
-    right: 233px;
+    right: 211px;
     cursor: pointer;
   }
 
@@ -71,15 +71,23 @@
     opacity: 0.8;
   }
   #snapsPreview {
-    width: 640px;
-    height: 480px;
+    width: 320px;
+    height: 240px;
+    padding-top: 23px;
+    padding-bottom: 64px;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
   }
   #snaps {
     display: none;
   }
   #snapDelaySlider {
     position: absolute;
-    bottom: 6px;
+    bottom: 66px;
     left: 166px;
     height: 10px;
     width: 333px;
