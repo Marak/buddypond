@@ -8,7 +8,7 @@ desktop.app.mirror.devices = {
 };
 
 desktop.app.mirror.load = function loadDesktopMirror (params, next) {
-  const assets = [ 'desktop/apps/desktop.mirror/CanvasVideo.js', 'mirror' ];
+  const assets = [ 'desktop/apps/desktop.mirror/CanvasVideo.js', 'desktop/assets/js/gif.js', 'mirror' ];
 
   desktop.load.remoteAssets(assets, function (err) {
     $('#window_mirror').css('width', 686);
@@ -22,6 +22,30 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       change: function(event, ui){
         desktop.app.mirror.snapDelay = ui.value
         $('#snapsPreview').data('delay', ui.value);
+        let delay = ui.value;
+
+        var gif = new GIF({
+          workers: 2,
+          quality: 3,
+          width: 320,
+          height: 240
+        });
+
+        gif.on('finished', function(blob) {
+          var reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = function() {
+            var base64data = reader.result;
+            $('#snapsPreview').attr('src', base64data);
+          }
+        });
+
+        $('.gifFrames img').each(function(i, e){
+          gif.addFrame(e, { delay: delay });
+        })
+
+        gif.render();
+
       }
     });
     desktop.app.mirror.canvasVideo = new window.CanvasVideo(
@@ -42,8 +66,10 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     let DEFAULT_SNAP_TIMER = 1000;
     let currentFrame = 0;
     desktop.app.mirror.snaps = [];
+    desktop.app.mirror.snapsGIF = [];
 
     function recordSnaps (maxFrames, delay, mode) {
+
       delay = delay || DEFAULT_SNAP_TIMER;
       $('#snapsPreview').data('delay', delay);
       desktop.app.mirror.snapDelay = delay;
@@ -64,8 +90,10 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       destCtx.scale(0.5, 0.5);
       destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
 
-      // Get base64 data to send to server for upload
       var imagebase64data = destinationCanvas.toDataURL("image/png");
+      var gifbase64data = destinationCanvas.toDataURL("image/gif");
+
+      $('.gifFrames').append(`<img src="${gifbase64data}"/>`)
       imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
       desktop.app.mirror.snaps.push(imagebase64data);
 
@@ -76,14 +104,31 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       if (currentFrame >= maxFrames) {
         currentFrame = 0;
         setTimeout(function(){
+
+          var gif = new GIF({
+            workers: 2,
+            quality: 3,
+            width: 320,
+            height: 240
+          });
+
+          gif.on('finished', function(blob) {
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function() {
+              var base64data = reader.result;
+              $('#snapsPreview').attr('src', base64data);
+            }
+          });
+
+          $('.gifFrames img').each(function(i, e){
+            gif.addFrame(e, { delay: delay });
+          })
+
+          gif.render();
           $('.mirrorVideoHolder').hide();
           $('#snapsPreview').show();
-          desktop.playSnaps({
-            el: '#snapsPreview',
-            snaps: desktop.app.mirror.snaps,
-            index: 0,
-            delay: delay
-          });
+
           $('.confirmSnap').show();
           if (mode === 'photo') {
             $('.retrySnap').hide();
@@ -105,6 +150,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     }
 
     $('.takeSingleSnap').on('click', function(){
+      $('.gifFrames').html('');
+      $('.snapsPreview').attr('src', '');
       takeSingleSnap();
     });
 
@@ -162,6 +209,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('.confirmSnap').hide();
       $('#snapsPreview').hide();
       $('#snapsPreview').data('stopped', true);
+      $('.gifFrames').html('');
+      $('.snapsPreview').attr('src', '');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       takeSnap();
@@ -177,6 +226,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapDelaySlider').hide();
       $('#snapDelaySlider').slider('value', 777);
       $('#snapDelaySlider').data('delay', 777);
+      $('.gifFrames').html('');
+      $('.snapsPreview').attr('src', '');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       takeSingleSnap();
@@ -195,9 +246,12 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapDelaySlider').hide();
       // close mirror ( fow now )
       JQDX.closeWindow('#window_mirror');
-      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, JSON.stringify(desktop.app.mirror.snaps), desktop.app.mirror.snapDelay, function(err, data){
+      let snapsGIF = $('#snapsPreview').attr('src');
+      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, function(err, data){
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
+        $('.gifFrames').html('');
+        $('.snapsPreview').attr('src', '');
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
@@ -208,6 +262,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       // TODO: show frame limit / timer
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
+      $('.gifFrames').html('');
+      $('.snapsPreview').attr('src', '');
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();

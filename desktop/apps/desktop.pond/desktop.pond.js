@@ -228,13 +228,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     if (message.card) {
       if (message.card.type === 'snaps') {
         $('.chat_messages', windowId).append(`
-         <span class="message"><img id="${message.uuid}" class="snapsImage"/></span><br/>
+         <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
         `);
-        desktop.playSnaps({
-          el: '#' + message.uuid, 
-          snaps: JSON.parse(message.card.snaps),
-          delay: message.card.delay
-        });
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
       } else {
