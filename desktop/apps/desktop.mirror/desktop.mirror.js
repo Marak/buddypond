@@ -151,7 +151,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 
     $('.takeSingleSnap').on('click', function(){
       $('.gifFrames').html('');
-      $('.snapsPreview').attr('src', '');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
       takeSingleSnap();
     });
 
@@ -210,7 +210,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').hide();
       $('#snapsPreview').data('stopped', true);
       $('.gifFrames').html('');
-      $('.snapsPreview').attr('src', '');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       takeSnap();
@@ -227,7 +227,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapDelaySlider').slider('value', 777);
       $('#snapDelaySlider').data('delay', 777);
       $('.gifFrames').html('');
-      $('.snapsPreview').attr('src', '');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       takeSingleSnap();
@@ -251,7 +251,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('.gifFrames').html('');
-        $('.snapsPreview').attr('src', '');
+        $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
@@ -263,7 +263,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       $('.gifFrames').html('');
-      $('.snapsPreview').attr('src', '');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
@@ -276,6 +276,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     $('.continueSnap').on('click', function(){
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
+      $('#snapDelaySlider').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
       $('#snapsPreview').hide();
