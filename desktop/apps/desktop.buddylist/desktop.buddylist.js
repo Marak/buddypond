@@ -610,8 +610,15 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
         }
       }
     }
-    $('.chat_messages', windowId).append(str);
-    $('.message', windowId).last().text(message.text);
+
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
+    $('.message', windowId).last().text(message.text)
+
+    let currentlyDisplayedMessages = $('.chatMessage', windowId);
+    console.log('currentlyDisplayedMessages', windowId, currentlyDisplayedMessages.length)
+    if (currentlyDisplayedMessages.length > 33) {
+      currentlyDisplayedMessages.first().remove();
+    }
 
     // take the clean text that was just rendered for the last message and check for special embed links
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
@@ -632,7 +639,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
         //      let el = $('.chat_messages', '.pond_message_main')
         setTimeout(function(){
           let el = $('.window_content', key);
-          $(el).scrollTop(9999);
+          $(el).scrollTop(999999);
         }, 1111)
       }
     } catch (err) {

@@ -201,9 +201,9 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     let str = '';
     if (message.from === buddypond.me) {
-      str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.pond.lastNotified > 30000) {
@@ -213,8 +213,13 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       }
     }
 
-    $('.chat_messages', windowId).append(str);
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
     $('.message', windowId).last().text(message.text)
+
+    let currentlyDisplayedMessages = $('.chatMessage', windowId);
+    if (currentlyDisplayedMessages.length > 33) {
+      currentlyDisplayedMessages.first().remove();
+    }
 
     // take the clean text that was just rendered for the last message and check for special embed links
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
