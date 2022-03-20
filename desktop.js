@@ -501,6 +501,7 @@ desktop.playSnaps = function playSnaps (opts) {
   let snaps = opts.snaps;
   let index = opts.index;
   let delay = $(el).data('delay') || opts.delay || DEFAULT_SNAP_TIMER;
+  $(el).data('delay', delay);
   if (typeof index === 'undefined') {
     index = 0;
   }
