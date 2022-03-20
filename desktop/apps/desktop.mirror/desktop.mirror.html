@@ -71,6 +71,8 @@
     opacity: 0.8;
   }
   #snapsPreview {
+    display: none;
+    border: none;
     width: 320px;
     height: 240px;
     padding-top: 23px;
@@ -100,6 +102,14 @@
     filter: FlipH;
     -ms-filter: "FlipH";
   }
+  #mirrorPlaceHolder {
+    width: 640px;
+    height: 480px;
+    background-color: #000011;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
 </style>
 
 <div id="window_mirror" class="abs window" align="center">
@@ -119,6 +129,7 @@
       <div class="window_main">
         <canvas id='snaps'></canvas>
         <div id="snapDelaySlider"></div>
+        <div id="mirrorPlaceHolder"></div>
         <div class="mirrorVideoHolder">
           <canvas id='mirrorCanvasMe'></canvas>
           <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
@@ -140,9 +151,7 @@
         </div>
         <span class="takeSingleSnap recordSnap" title="Take Single Photo">📷</span>
         <span class="takeSnap recordSnap" title="Take Silent Movie">📹</span>
-
         <span class="snapCountDown">3...</span>
-
         <img id='snapsPreview'/>
         <span class="approveSnap confirmSnap" title="Approve And Send">✅</span>
         <span class="continueSnap confirmSnap" title="Add Another Photo">➕ </span>

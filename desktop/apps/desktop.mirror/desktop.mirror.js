@@ -324,7 +324,7 @@ desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
 
       video.srcObject = stream;
       desktop.app.mirror.localStream = stream;
-
+      $('#mirrorPlaceHolder').fadeOut();
     }).catch((err) => {
       console.log('error in calling navigator.mediaDevices.getUserMedia', err)
     });
