@@ -39,8 +39,11 @@
     custom (filterName) {
       const frame = this.canvasContext
         .getImageData(0, 0, this.videoWidth, this.videoHeight);
+
       let Filter = JSManipulate[filterName]
-      Filter.filter(frame, Filter.defaultValues);
+      if (Filter) {
+        Filter.filter(frame, Filter.defaultValues);
+      }
 
       this.canvasContext.putImageData(frame, 0, 0);
     }
