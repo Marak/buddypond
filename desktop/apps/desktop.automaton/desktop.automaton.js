@@ -18,7 +18,7 @@ desktop.app.automaton.load = function loadautomatonGames (params, next) {
   });
 };
 
-desktop.app.automaton.processMessages = function (data, callback) {
+desktop.app.automaton.processMessages = function processAutomatonMessages (data, callback) {
 
   // TODO: Temporary, needs to implement  desktop.app.automaton.html form and desktop.set()
   if (buddypond.me === 'Dicey') {
