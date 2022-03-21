@@ -35,6 +35,10 @@ desktop.app.settings.load = function loadsettings (params, next) {
       // will also update -> desktop.settings.agent_merlin_active = true
     }
 
+    if (typeof desktop.settings.tts_voice_index === 'undefined') {
+      desktop.set('tts_voice_index', 0);
+    }
+
     if (typeof desktop.settings.wallpaper_name === 'undefined') {
       desktop.set('wallpaper_name', 'matrix');
     }

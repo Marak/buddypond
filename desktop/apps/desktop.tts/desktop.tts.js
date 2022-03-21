@@ -43,9 +43,6 @@ desktop.app.tts.speak = function speakText (text) {
     // TODO: configure voice and language to locality
     // TODO: localStorage desktop.settings for tts settings
     // speech.lang = desktop.app.tts.lang || 'en-US';
-    if (typeof desktop.settings.tts_voice_index === 'undefined') {
-      desktop.set('tts_voice_index', 0);
-    }
     speech.voice = desktop.app.tts.voices[desktop.settings.tts_voice_index];
     window.speechSynthesis.speak(speech);
   }
