@@ -21,6 +21,7 @@ Ideas for community apps:
   - https://github.com/k4zmu2a/SpaceCadetPinball
   - https://github.com/mtevans/SkiFree
   - https://github.com/nmrugg/stockfish.js/
+  - https://github.com/conorbailey90/JS-Connect-Four
   
 - Wallpaper Manager
   - user contributed wallpapers

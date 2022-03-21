@@ -4,6 +4,7 @@ desktop.app.tts.icon = 'folder';
 desktop.app.tts.label = 'Text To Speech';
 desktop.app.tts.voices = [];
 desktop.app.tts.load = function loadtts (params, next) {
+
   if ('speechSynthesis' in window){
     desktop.app.tts.available = true;
   }
@@ -49,25 +50,22 @@ desktop.app.tts.say = function speakText (text) {
   }
 }
 
-desktop.app.tts.processMessages = function processTTSMessages (data, callback) {
-  data.messages.forEach(function(message){
-    // TODO: only play /say messages if recent ( within 30 seconds)
-    //       This is so buddies aren't spammed with speak messages after joining chat late
-    // perform exported action
-    let text = '';
-    text = message.text.split(' ');
-    if (text[0] === '/say') {
-      text.shift();
-      let msg = text.join(' ');
-      if (message.card && message.card.voiceIndex) {
-        let og = desktop.settings.tts_voice_index;
-        desktop.set('tts_voice_index', message.card.voiceIndex);
-        desktop.app.tts.say(msg || 'nope');
-        desktop.set('tts_voice_index', og);
-      } else {
-        desktop.app.tts.say(msg || 'nope');
-      }
+desktop.app.tts.processMessage = function processTTSMessage (message) {
+  // TODO: only play /say messages if recent ( within 30 seconds)
+  //       This is so buddies aren't spammed with speak messages after joining chat late
+  // perform exported action
+  let text = '';
+  text = message.text.split(' ');
+  if (text[0] === '/say') {
+    text.shift();
+    let msg = text.join(' ');
+    if (message.card && message.card.voiceIndex) {
+      let og = desktop.settings.tts_voice_index;
+      desktop.set('tts_voice_index', message.card.voiceIndex);
+      desktop.app.tts.say(msg || 'nope');
+      desktop.set('tts_voice_index', og);
+    } else {
+      desktop.app.tts.say(msg || 'nope');
     }
-  });
-  callback(null, data);
+  }
 }

@@ -197,6 +197,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     message.text = forbiddenNotes.filter(message.text);
 
+    desktop.app.tts.processMessage(message);
+
     html[windowId] = html[windowId] || '';
 
     let str = '';

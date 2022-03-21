@@ -572,28 +572,29 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     message.text = forbiddenNotes.filter(message.text);
 
+    desktop.app.tts.processMessage(message);
+
     // replace cards
-    if (message.card) {
+    if (message.card && message.card.type === 'snaps') {
+      $('.chat_messages', windowId).append(`
+       <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
+      `);
+      // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
+      desktop.messages._processedCards.push(message.uuid);
+      desktop.messages._processed.push(message.uuid);
+      return;
+    }
 
-      if (message.card.type === 'snaps') {
-        $('.chat_messages', windowId).append(`
-         <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
-        `);
-        // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
-        desktop.messages._processedCards.push(message.uuid);
-      }
-
-      if (message.card.type === 'meme'){
-        $('.chat_messages', windowId).append(`
-         <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
-        `);
-      }
-
+    if (message.card && message.card.type === 'meme') {
+      $('.chat_messages', windowId).append(`
+       <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+      `);
       desktop.messages._processed.push(message.uuid);
       return;
     }
 
     let str = '';
+
     if (message.from === buddypond.me) {
       str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
     } else {
