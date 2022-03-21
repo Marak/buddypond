@@ -18,14 +18,17 @@ desktop.app.tts.load = function loadtts (params, next) {
 desktop.app.tts.speak = function speakText (text) {
   // TODO: only speak text onces per client session, regardless of window re-opening
   // TODO: look at card cache, might be good solution, cannot use message cache ( need to replay text of message )
-  if (desktop.app.tts.available) {
+
+  if (!desktop.app.tts.available) {
+    console.log('Warning: TTS Engine not available, cannot speak text.');
+  }
+
+  if (desktop.app.tts.available && desktop.settings.audio_enabled && desktop.settings.audio_tts_enabled) {
     var speech = new SpeechSynthesisUtterance(text);
     // TODO: configure voice and language to locality
     // TODO: localStorage desktop.settings for tts settings
     speech.lang = 'en-US';
     window.speechSynthesis.speak(speech);
-  } else {
-    console.log('Warning: TTS Engine not available, cannot speak text.');
   }
 }
 

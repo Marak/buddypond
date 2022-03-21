@@ -20,6 +20,11 @@ desktop.app.settings.load = function loadsettings (params, next) {
       // will also update -> desktop.settings.audio_enabled = true
     }
 
+    if (typeof desktop.settings.audio_tts_enabled === 'undefined') {
+      desktop.set('audio_tts_enabled', true);
+      // will also update -> desktop.settings.audio_tts_enabled = true
+    }
+
     if (typeof desktop.settings.notifications_audio_enabled === 'undefined') {
       desktop.set('notifications_audio_enabled', true);
       // will also update -> desktop.settings.notifications_audio_enabled = true
@@ -123,6 +128,15 @@ desktop.app.settings.load = function loadsettings (params, next) {
       $('.enableAudioNotifications').prop('checked', true);
     }
 
+
+    if (desktop.settings.audio_enabled) {
+      $('.audioEnabled').prop('checked', true);
+    }
+
+    if (desktop.settings.audio_tts_enabled) {
+      $('.audioTTSEnabled').prop('checked', true);
+    }
+
     $('.audioEnabled').on('change', function(){
       let audioMuted = $(this).prop("checked");
       if (audioMuted) {
@@ -134,9 +148,15 @@ desktop.app.settings.load = function loadsettings (params, next) {
       }
     });
 
-    if (desktop.settings.audio_enabled) {
-      $('.audioEnabled').prop('checked', true);
-    }
+    $('.audioTTSEnabled').on('change', function(){
+      let audioMuted = $(this).prop("checked");
+      if (audioMuted) {
+        desktop.set('audio_tts_enabled', true);
+        desktop.speak('Text to speech enabled');
+      } else {
+        desktop.set('audio_tts_enabled', false);
+      }
+    });
 
     $('#settingsTabs').tabs({
       activate: function(event ,ui){
