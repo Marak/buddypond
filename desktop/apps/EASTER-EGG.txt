@@ -7,14 +7,6 @@ Ideas for community apps:
   - Does https://geekprank.com/hacker/ like functionality ( pretend hacking screens )
   - Auto-coder with typing input
 
-- MS Paint Clone
-  - simple canvas paint program
-    - colors
-    - shapes
-    - text
-    - export to bmp
-    ?? could iframe and load vendor lib?
-    
 - Games
   - small games to pack in main distribution
   - pick js1k winners / entries?
