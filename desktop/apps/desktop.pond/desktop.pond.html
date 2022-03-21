@@ -76,6 +76,20 @@
     opacity: 0.44;
   }
 
+  .insertPaint {
+    padding-right: 5px;
+    padding-top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .insertPaint:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
+  }
+
 </style>
 <div id="window_pond" class="abs window pond_message" data-window-index="0">
   <div class="abs window_inner">
@@ -154,6 +168,7 @@
           <form method="POST" action="" align="right" class="pond_send_message_form">
             <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span><br/><br/>
             <span class="insertSnap" title="Insert Snap">📷</span>
+            <img title="Insert Paint" class="insertPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
             <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
               cols="44"></textarea>
             <button name="pond_message_submit" class="sendPondMessage">Send</button>

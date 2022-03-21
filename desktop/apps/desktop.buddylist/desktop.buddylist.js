@@ -163,6 +163,14 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       JQDX.showWindow('mirror', { type:'buddy', context: context});
     });
 
+    $('.insertBuddyPaint').on('click', function(){
+      let form = $(this).parent();
+      let to = $('.buddy_message_to', form).val();
+      desktop.set('paint_active_type', 'buddy');
+      desktop.set('paint_active_context', to);
+      JQDX.openWindow('paint');
+    });
+
     try {
       new EmojiPicker({
         trigger: emojiTriggers,

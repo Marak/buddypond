@@ -23,8 +23,8 @@
 
   .buddy_message_text {
     height: 20px;
-    width: 88%;
-    left: 55px;
+    width: 85%;
+    left: 72px;
     position: absolute;
   }
 
@@ -98,6 +98,22 @@
 
   .insertBuddySnap:hover {
     opacity: 0.44;
+  }
+
+  .insertBuddyPaint {
+    position: absolute;
+    left: 52px;
+    padding-right: 5px;
+    padding-top: 8px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .insertBuddyPaint:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
   }
 
 </style>
@@ -211,6 +227,7 @@
           <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
           <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
           <span class="insertBuddySnap" title="Insert Snap">📷</span>
+          <img title="Insert Paint" class="insertBuddyPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
           <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
           <!--

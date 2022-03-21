@@ -89,6 +89,15 @@ desktop.app.pond.load = function loadPond (params, next) {
       let context = $('.pond_message_to', form).val();
       JQDX.showWindow('mirror', { type:'pond', context: context});
     });
+
+    $('.insertPaint').on('click', function(){
+      let form = $(this).parent();
+      let to = $('.pond_message_to', form).val();
+      desktop.set('paint_active_type', 'pond');
+      desktop.set('paint_active_context', to);
+      JQDX.openWindow('paint');
+    });
+
     next();
   });
 

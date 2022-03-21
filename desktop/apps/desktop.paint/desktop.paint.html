@@ -7,6 +7,37 @@
     height: 100%;
     width: 100%;
   }
+  .sendPaintHolder {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    position: absolute;
+    bottom: 19px;
+    left: 266px;
+  }
+
+  #window_paint .sendPaint {
+    cursor: pointer;
+    border: solid;
+    border-width: 1px;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    border-radius: 4px;
+    width: 266px;
+  }
+
+  #window_paint .sendPaint:hover {
+    color: #008F11;
+    background-color: #FFF;
+    animation-name: rainbow;
+    animation-duration: 2.1111s;
+    opacity: 0.7;
+    animation-iteration-count: infinite;
+  }
+  /* todo: background rainbow gradient */
 </style>
 
 <div id="window_paint" class="abs window" align="center">
@@ -23,6 +54,16 @@
       </span>
     </div>
     <div class="abs window_content">
+      <div class="sendPaintHolder">
+        <button class="sendPaint">SEND PAINT</button>
+        <!--
+        <br/>
+        Type:
+        <input name="sendPaintContextType" type="text" value="pond"/>
+        Name:
+        <input name="sendPaintContextName" type="text" value="Lily"/>
+        -->
+      </div>
       <div class="paintGameHolder">
         <iframe id="paintIframe" class="paintIframe" src="desktop/apps/desktop.paint/vendor/index.html"/>
       </div>
