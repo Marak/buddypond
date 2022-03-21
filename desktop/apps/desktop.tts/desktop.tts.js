@@ -31,11 +31,15 @@ desktop.app.tts.speak = function speakText (text) {
 
 desktop.app.tts.processMessages = function processTTSMessages (data, callback) {
   data.messages.forEach(function(message){
+    // TODO: only play /speak messages if recent ( within 30 seconds)
+    //       This is so buddies aren't spammed with speak messages after joining chat late
     // perform exported action
     let text = '';
     text = message.text.split(' ');
     if (text[0] === '/speak') {
-      desktop.app.tts.speak(text[1] || 'nope');
+      text.shift();
+      let msg = text.join(' ');
+      desktop.app.tts.speak(msg || 'nope');
     }
   });
   callback(null, data);
