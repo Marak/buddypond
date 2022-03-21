@@ -36,9 +36,22 @@
       this.canvasContext.putImageData(frame, 0, 0);
     }
 
+    custom (filterName) {
+      const frame = this.canvasContext
+        .getImageData(0, 0, this.videoWidth, this.videoHeight);
+      let Filter = JSManipulate[filterName]
+      Filter.filter(frame, Filter.defaultValues);
+
+      this.canvasContext.putImageData(frame, 0, 0);
+    }
+
     applyFilter() {
-      if (!this.filter || !this[this.filter]) { return; }
-      this[this.filter]();
+      if (!this.filter) { return; }
+      if (this.filter === 'greyscale') {
+        this[this.filter]();
+      } else {
+        this.custom(this.filter);
+      }
     }
 
     computeFrame() {

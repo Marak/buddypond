@@ -11,6 +11,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
   const assets = [ 
     'desktop/apps/desktop.mirror/CanvasVideo.js',
     'desktop/apps/desktop.mirror/snaps.js',
+    'desktop/apps/desktop.mirror/jsman.js',
     'desktop/assets/js/gif.js',
     'mirror' ];
 
@@ -38,6 +39,11 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       // TODO: use localstorage to set device preference
       desktop.app.mirror.startCamera(newDeviceLabel)
     });
+
+    // adds all JSManipulate effects as keys to the drop down
+    Object.keys(JSManipulate).forEach(function(filter){
+      $('.selectMirrorFilter').append(`<option value="${filter}">${filter}</option>`);
+    })
 
     $('.selectMirrorFilter').on('change', function(ev){
       desktop.app.mirror.canvasVideo.filter = ev.currentTarget.value.toLowerCase();
