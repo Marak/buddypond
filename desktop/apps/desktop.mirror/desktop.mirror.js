@@ -8,7 +8,11 @@ desktop.app.mirror.devices = {
 };
 
 desktop.app.mirror.load = function loadDesktopMirror (params, next) {
-  const assets = [ 'desktop/apps/desktop.mirror/CanvasVideo.js', 'desktop/assets/js/gif.js', 'mirror' ];
+  const assets = [ 
+    'desktop/apps/desktop.mirror/CanvasVideo.js',
+    'desktop/apps/desktop.mirror/snaps.js',
+    'desktop/assets/js/gif.js',
+    'mirror' ];
 
   desktop.load.remoteAssets(assets, function (err) {
     $('#window_mirror').css('width', 686);
@@ -23,29 +27,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snapDelay = ui.value
         $('#snapsPreview').data('delay', ui.value);
         let delay = ui.value;
-
-        var gif = new GIF({
-          workers: 2,
-          quality: 3,
-          width: 320,
-          height: 240
-        });
-
-        gif.on('finished', function(blob) {
-          var reader = new FileReader();
-          reader.readAsDataURL(blob);
-          reader.onloadend = function() {
-            var base64data = reader.result;
-            $('#snapsPreview').attr('src', base64data);
-          }
-        });
-
-        $('.gifFrames img').each(function(i, e){
-          gif.addFrame(e, { delay: delay });
-        })
-
-        gif.render();
-
+        desktop.app.mirror.createGIF(delay);
       }
     });
     desktop.app.mirror.canvasVideo = new window.CanvasVideo(
@@ -68,139 +50,11 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     desktop.app.mirror.snaps = [];
     desktop.app.mirror.snapsGIF = [];
 
-    function recordSnaps (maxFrames, delay, mode) {
-
-      delay = delay || DEFAULT_SNAP_TIMER;
-      $('#snapsPreview').data('delay', delay);
-      desktop.app.mirror.snapDelay = delay;
-      mode = mode || 'photo';
-      $('.recordSnap').hide();
-      $('.mirrorVideoHolder').css('opacity', '1');
-      // runs until max frames or hits stop
-      var destinationCanvas = document.getElementById('snaps');
-      var destCtx = destinationCanvas.getContext('2d');
-
-      if (maxFrames > 1) {
-        desktop.play('CAMERA_SHUTTER.wav', true);
-      }
-
-      destinationCanvas.width = 320;
-      destinationCanvas.height = 240;
-
-      destCtx.scale(0.5, 0.5);
-      destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
-
-      var imagebase64data = destinationCanvas.toDataURL("image/png");
-      var gifbase64data = destinationCanvas.toDataURL("image/gif");
-
-      $('.gifFrames').append(`<img src="${gifbase64data}"/>`)
-      imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
-      desktop.app.mirror.snaps.push(imagebase64data);
-
-      currentFrame++;
-      $('.mirrorVideoHolder').css('opacity', '0.88');
-      $('#snapsPreview').data('stopped', false);
-      $('.mirrorVideoHolder').css('opacity', '1');
-      if (currentFrame >= maxFrames) {
-        currentFrame = 0;
-        setTimeout(function(){
-
-          var gif = new GIF({
-            workers: 2,
-            quality: 3,
-            width: 320,
-            height: 240
-          });
-
-          gif.on('finished', function(blob) {
-            var reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function() {
-              var base64data = reader.result;
-              $('#snapsPreview').attr('src', base64data);
-            }
-          });
-
-          $('.gifFrames img').each(function(i, e){
-            gif.addFrame(e, { delay: delay });
-          })
-
-          gif.render();
-          $('.mirrorVideoHolder').hide();
-          $('#snapsPreview').show();
-
-          $('.confirmSnap').show();
-          if (mode === 'photo') {
-            $('.retrySnap').hide();
-            $('.retrySingleSnap').show();
-            if (Object.keys(desktop.app.mirror.snaps).length > 1) {
-              $('#snapDelaySlider').show();
-            }
-          } else {
-            $('.continueSnap').hide();
-            $('.retrySingleSnap').hide();
-            $('.retrySnap').show();
-          }
-        }, 55)
-        return;
-      }
-      setTimeout(function(){
-        recordSnaps(maxFrames, delay, mode);
-      }, delay)
-    }
-
     $('.takeSingleSnap').on('click', function(){
       $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
-      takeSingleSnap();
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
+      desktop.app.mirror.takeSingleSnap();
     });
-
-    function takeSingleSnap () {
-      $('.recordSnap').hide();
-      desktop.play('CAMERA_COUNTDOWN.wav');
-      $('.snapCountDown').show();
-      setTimeout(function(){
-        $('.snapCountDown').html('2...');
-        setTimeout(function(){
-          $('.snapCountDown').html('1...');
-          setTimeout(function(){
-            $('.snapCountDown').hide();
-            $('.snapCountDown').html('3...');
-             setTimeout(function(){
-              if (currentFrame === 0) {
-                desktop.play('CAMERA_SNAP.wav');
-                setTimeout(function(){
-                  recordSnaps(1);
-                }, 44)
-              }
-            }, 333)
-          }, 1000)
-        }, 1000)
-      }, 1000)
-    }
-
-    function takeSnap () {
-      $('.recordSnap').hide();
-      desktop.play('CAMERA_COUNTDOWN.wav');
-      $('.snapCountDown').show();
-      setTimeout(function(){
-        $('.snapCountDown').html('2...');
-        setTimeout(function(){
-          $('.snapCountDown').html('1...');
-          setTimeout(function(){
-            $('.snapCountDown').hide();
-            $('.snapCountDown').html('3...');
-            setTimeout(function(){
-              if (currentFrame === 0) {
-                setTimeout(function(){
-                  recordSnaps(10, 100, 'film');
-                }, 44)
-              }
-            }, 333)
-          }, 1000)
-        }, 1000)
-      }, 1000)
-    }
 
     $('.retrySnap').on('click', function(){
       $('.mirrorVideoHolder').show();
@@ -210,10 +64,10 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').hide();
       $('#snapsPreview').data('stopped', true);
       $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
-      takeSnap();
+      desktop.app.mirror.takeSnap();
     })
 
     $('.retrySingleSnap').on('click', function(){
@@ -227,14 +81,14 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapDelaySlider').slider('value', 777);
       $('#snapDelaySlider').data('delay', 777);
       $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
-      takeSingleSnap();
+      desktop.app.mirror.takeSingleSnap();
     })
 
     $('.takeSnap').on('click', function(){
-      takeSnap();
+      desktop.app.mirror.takeSnap();
     });
 
     $('.approveSnap').on('click', function(){
@@ -251,7 +105,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('.gifFrames').html('');
-        $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
+        $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
@@ -263,7 +117,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/loading.gif');
+      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
@@ -281,7 +135,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('.confirmSnap').hide();
       $('#snapsPreview').hide();
       $('#snapsPreview').data('stopped', true);
-      takeSingleSnap();
+      desktop.app.mirror.takeSingleSnap();
     });
 
     next();
