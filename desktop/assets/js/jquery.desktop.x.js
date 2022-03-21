@@ -175,6 +175,21 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $(this).addClass('active');
   });
 
+
+  // Click remix icon to remix images in Paint App
+  d.on('mousedown', 'img.remixPaint', function() {
+    let form = $(this).parent();
+    let url = $('.paintsImage', form).attr('src');
+    let type = $(this).data('type');
+    let context = $(this).data('context');
+    desktop.set('paint_active_type', type);
+    desktop.set('paint_active_context', context);
+    desktop.set('paint_active_url', url);
+    // TODO: use params here to openWindow instead of localstorage?
+    JQDX.openWindow('paint');
+  });
+
+
   // Respond to double-click.
   d.on('dblclick', 'a.icon', function() {
     var iconDock = $(this).attr('href');

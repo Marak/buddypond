@@ -583,10 +583,25 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     desktop.app.tts.processMessage(message);
 
     // replace cards
-    if (message.card && message.card.type === 'snaps') {
-      $('.chat_messages', windowId).append(`
-       <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
-      `);
+    
+    
+    if (message.card.type === 'snaps') {
+      message.card.snapURL = window.origin + '/' + message.card.snapURL;
+      let arr = message.card.snapURL.split('.');
+      let ext = arr[arr.length -1];
+      if (ext === 'gif') {
+        $('.chat_messages', windowId).append(`
+         <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
+        `);
+      } else {
+        $('.chat_messages', windowId).append(`
+         <span class="message">
+          <img class="remixPaint" title="Remix this Paint" data-type="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <img id="${message.uuid}" class="paintsImage" src="${message.card.snapURL}"/>
+         </span>
+         <br/>
+        `);
+      }
       // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
       desktop.messages._processedCards.push(message.uuid);
       desktop.messages._processed.push(message.uuid);

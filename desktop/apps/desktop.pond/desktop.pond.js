@@ -93,8 +93,15 @@ desktop.app.pond.load = function loadPond (params, next) {
     $('.insertPaint').on('click', function(){
       let form = $(this).parent();
       let to = $('.pond_message_to', form).val();
-      desktop.set('paint_active_type', 'pond');
-      desktop.set('paint_active_context', to);
+      if (form.hasClass('pond_send_message_form')) {
+        let to = $('.pond_message_to', form).val();
+        desktop.set('paint_active_type', 'pond');
+        desktop.set('paint_active_context', to);
+      } else {
+        let to = $('.buddy_message_to', form).val();
+        desktop.set('paint_active_type', 'buddy');
+        desktop.set('paint_active_context', to);
+      }
       JQDX.openWindow('paint');
     });
 
@@ -238,9 +245,21 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     // replace cards
     if (message.card) {
       if (message.card.type === 'snaps') {
-        $('.chat_messages', windowId).append(`
-         <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
-        `);
+        message.card.snapURL = window.origin + '/' + message.card.snapURL;
+        let ext = message.card.snapURL.split('.')[2];
+        if (ext === 'gif') {
+          $('.chat_messages', windowId).append(`
+           <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
+          `);
+        } else {
+          $('.chat_messages', windowId).append(`
+           <span class="message">
+            <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+            <img id="${message.uuid}" class="paintsImage" src="${message.card.snapURL}"/>
+           </span>
+           <br/>
+          `);
+        }
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
       }

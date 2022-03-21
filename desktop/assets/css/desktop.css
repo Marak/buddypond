@@ -1061,4 +1061,31 @@ iframe {
 .snapsImage {
   width: 320px;
   height: 240px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+.paintsImage {
+  width: 320px;
+  height: 240px;
+}
+
+.remixPaint {
+  position: absolute;
+  top: 101px;
+  right: 5px;
+  height: 22px;
+  width: 22px;
+}
+
+.remixPaint:hover {
+  cursor: pointer;
+  opacity: 0.44;
+}
+
+.message {
+  position: relative;
 }

@@ -40,8 +40,8 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
 
   destinationCanvas.width = 320;
   destinationCanvas.height = 240;
-
   destCtx.scale(0.5, 0.5);
+
   destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
 
   var imagebase64data = destinationCanvas.toDataURL("image/png");
@@ -76,7 +76,7 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
         $('.retrySingleSnap').hide();
         $('.retrySnap').show();
       }
-    }, 55)
+    }, 55) // TODO: make configurable
     return;
   }
   setTimeout(function(){

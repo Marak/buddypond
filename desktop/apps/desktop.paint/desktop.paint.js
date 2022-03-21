@@ -66,11 +66,18 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
 };
 
 desktop.app.paint.openWindow = function openWindow () {
+  if (desktop.settings.paint_active_url) {
+    // desktop.set('paint_send_active', false);
+    $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html#load:' + encodeURI(desktop.settings.paint_active_url));
+  } else {
+    $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
+  }
   return true;
 };
 
 desktop.app.paint.closeWindow = function closeWindow () {
   desktop.set('paint_send_active', false);
-  $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
+  desktop.set('paint_active_url', false);
+  // $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   return true;
 };
