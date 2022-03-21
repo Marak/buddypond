@@ -18,11 +18,9 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
     });
 
     if (!desktop.settings.paint_active_context) {
-      $('.sendPaintHolder').hide();
-    } else{
-      $('.sendPaintHolder').show();
+      desktop.set('paint_active_type', 'pond');
+      desktop.set('paint_active_context', 'Lily');
     }
-
     // clear out localstorage images on each load ( for now )
     // this will clear out all images on browser refresh
     // Remark: It's best to do this for now since we dont want to cache to grow
@@ -34,7 +32,7 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
       }
     });
 
-    desktop.on('desktop.settings.paint_send_active', 'close-paint-window', function () {
+    desktop.on('desktop.settings.paint_send_active', 'send-paint-close-window', function () {
 
       if (desktop.settings.paint_send_active) {
 
@@ -47,9 +45,10 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
             firstKey = k;
           }
         });
-
+        let type = desktop.settings.paint_active_type;
+        let context = desktop.settings.paint_active_context;
         setTimeout(function(){
-          buddypond.sendSnaps(desktop.settings.paint_active_type, desktop.settings.paint_active_context, 'I sent a Paint', firstImg, 100, function(err, data){
+          buddypond.sendSnaps(type, context, 'I sent a Paint', firstImg, 100, function(err, data){
             keys.forEach(function(k){
               if (k.search('image#') !== -1) {
                 localStorage.removeItem(k);
@@ -71,6 +70,7 @@ desktop.app.paint.openWindow = function openWindow () {
 };
 
 desktop.app.paint.closeWindow = function closeWindow () {
+  desktop.set('paint_send_active', false);
   $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   return true;
 };
