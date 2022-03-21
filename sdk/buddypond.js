@@ -83,10 +83,27 @@ buddypond.updateBuddyProfile = function updateBuddyProfile (profileUpdates, cb) 
   })
 }
 
+// TODO: pass card values to sendMessage fn scope
 buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
-    text: text
+    text: text,
+    card: {
+      voiceIndex: desktop.settings.tts_voice_index
+    }
+  }, function(err, data){
+    cb(err, data);
+  })
+}
+
+// TODO: pass card values to pondSendMessage fn scope
+buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
+  apiRequest('/messages/pond/' + pondname, 'POST', {
+    pondname: pondname,
+    pondtext: pondtext,
+    card: {
+      voiceIndex: desktop.settings.tts_voice_index
+    }
   }, function(err, data){
     cb(err, data);
   })
@@ -154,15 +171,6 @@ buddypond.declineCall = function declineCall (buddyname, cb) {
 
 buddypond.getMessages = function getMessages (params, cb) {
   apiRequest('/messages/getMessages', 'POST', params, function(err, data){
-    cb(err, data);
-  })
-}
-
-buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
-  apiRequest('/messages/pond/' + pondname, 'POST', {
-    pondname: pondname,
-    pondtext: pondtext
-  }, function(err, data){
     cb(err, data);
   })
 }

@@ -43,7 +43,8 @@ desktop.app.tts.say = function speakText (text) {
     // TODO: configure voice and language to locality
     // TODO: localStorage desktop.settings for tts settings
     // speech.lang = desktop.app.tts.lang || 'en-US';
-    speech.voice = desktop.app.tts.voices[desktop.settings.tts_voice_index];
+    // default to first choice if mapping doesn't work
+    speech.voice = desktop.app.tts.voices[desktop.settings.tts_voice_index] || desktop.app.tts.voices[0];
     window.speechSynthesis.speak(speech);
   }
 }
@@ -58,7 +59,14 @@ desktop.app.tts.processMessages = function processTTSMessages (data, callback) {
     if (text[0] === '/say') {
       text.shift();
       let msg = text.join(' ');
-      desktop.app.tts.say(msg || 'nope');
+      if (message.card && message.card.voiceIndex) {
+        let og = desktop.settings.tts_voice_index;
+        desktop.set('tts_voice_index', message.card.voiceIndex);
+        desktop.app.tts.say(msg || 'nope');
+        desktop.set('tts_voice_index', og);
+      } else {
+        desktop.app.tts.say(msg || 'nope');
+      }
     }
   });
   callback(null, data);

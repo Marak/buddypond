@@ -581,11 +581,14 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
         `);
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
-      } else {
+      }
+
+      if (message.card.type === 'meme'){
         $('.chat_messages', windowId).append(`
-         <span class="message"><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+         <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
         `);
       }
+
       desktop.messages._processed.push(message.uuid);
       return;
     }

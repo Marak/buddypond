@@ -232,8 +232,9 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         `);
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
-      } else {
-        // TODO: meme type
+      }
+
+      if (message.card.type === 'meme'){
         $('.chat_messages', windowId).append(`
          <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
         `);
