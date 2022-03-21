@@ -17,8 +17,27 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
       desktop.set('paint_send_active', true);
     });
 
+    if (!desktop.settings.paint_active_context) {
+      $('.sendPaintHolder').hide();
+    } else{
+      $('.sendPaintHolder').show();
+    }
+
+    // clear out localstorage images on each load ( for now )
+    // this will clear out all images on browser refresh
+    // Remark: It's best to do this for now since we dont want to cache to grow
+    //         We can later add photo manager for localstorage images
+    let keys = Object.keys(localStorage);
+    keys.forEach(function(k){
+      if (k.search('image#') !== -1) {
+        localStorage.removeItem(k);
+      }
+    });
+
     desktop.on('desktop.settings.paint_send_active', 'close-paint-window', function () {
+
       if (desktop.settings.paint_send_active) {
+
         let keys = Object.keys(localStorage);
         let firstImg = null;
         let firstKey = null;
@@ -29,13 +48,16 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
           }
         });
 
-        // TODO: use context from local settings
         setTimeout(function(){
           buddypond.sendSnaps(desktop.settings.paint_active_type, desktop.settings.paint_active_context, 'I sent a Paint', firstImg, 100, function(err, data){
-            localStorage.removeItem(firstKey);
+            keys.forEach(function(k){
+              if (k.search('image#') !== -1) {
+                localStorage.removeItem(k);
+              }
+            });
             desktop.set('paint_send_active', false);
           });
-        }, 1200)
+        }, 333)
 
         JQDX.closeWindow('#window_paint');
       }
