@@ -37,7 +37,7 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       desktop.app.tts.voice = desktop.app.tts.voices[$(this).prop('selectedIndex')];
       desktop.set('tts_voice', desktop.app.tts.voice);
       desktop.set('tts_voice_index', $(this).prop('selectedIndex'));
-      desktop.speak('Hello Beautiful');
+      desktop.say('Hello Beautiful');
     });
 
     $('.setStatus').on('click', function(){

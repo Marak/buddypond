@@ -156,7 +156,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
       let audioMuted = $(this).prop("checked");
       if (audioMuted) {
         desktop.set('audio_tts_enabled', true);
-        desktop.speak('Text to speech enabled');
+        desktop.say('Text to speech enabled');
       } else {
         desktop.set('audio_tts_enabled', false);
       }
