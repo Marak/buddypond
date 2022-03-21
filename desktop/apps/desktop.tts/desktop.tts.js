@@ -2,17 +2,32 @@ desktop.app.tts = {};
 desktop.app.tts.available = false;
 desktop.app.tts.icon = 'folder';
 desktop.app.tts.label = 'Text To Speech';
+desktop.app.tts.voices = [];
 desktop.app.tts.load = function loadtts (params, next) {
-
   if ('speechSynthesis' in window){
     desktop.app.tts.available = true;
+  }
+
+  function populateVoices () {
+    var voices = speechSynthesis.getVoices();
+    desktop.app.tts.voices = [];
+    for(var i = 0; i < voices.length; i++) {
+      desktop.app.tts.voices.push(voices[i]);
+    }
+  }
+
+  if (desktop.app.tts.available) {
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoices;
+    }
+    populateVoices();
   }
 
   // desktop can speak text via client-side TTS engine
   // creates easy reference on desktop object
   desktop.speak = desktop.app.tts.speak;
-
   next();
+
 };
 
 desktop.app.tts.speak = function speakText (text) {
@@ -27,7 +42,11 @@ desktop.app.tts.speak = function speakText (text) {
     var speech = new SpeechSynthesisUtterance(text);
     // TODO: configure voice and language to locality
     // TODO: localStorage desktop.settings for tts settings
-    speech.lang = 'en-US';
+    // speech.lang = desktop.app.tts.lang || 'en-US';
+    if (typeof desktop.settings.tts_voice_index === 'undefined') {
+      desktop.set('tts_voice_index', 0);
+    }
+    speech.voice = desktop.app.tts.voices[desktop.settings.tts_voice_index];
     window.speechSynthesis.speak(speech);
   }
 }

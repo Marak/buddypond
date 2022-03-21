@@ -25,6 +25,21 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       return false;
     });
 
+    desktop.app.tts.voices.forEach(function(v){
+      $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`)
+    });
+
+    if (desktop.settings.tts_voice_index) {
+      $('.ttsVoice').prop('selectedIndex', desktop.settings.tts_voice_index);
+    }
+
+    $('.ttsVoice').on('change', function(){
+      desktop.app.tts.voice = desktop.app.tts.voices[$(this).prop('selectedIndex')];
+      desktop.set('tts_voice', desktop.app.tts.voice);
+      desktop.set('tts_voice_index', $(this).prop('selectedIndex'));
+      desktop.speak('Hello Beautiful');
+    });
+
     $('.setStatus').on('click', function(){
       let replaceThisWithBetterUXThankYou = prompt('( alert lol )\n\nType your custom status:');
     });
