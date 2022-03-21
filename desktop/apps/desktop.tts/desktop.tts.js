@@ -51,14 +51,25 @@ desktop.app.tts.say = function speakText (text) {
 }
 
 desktop.app.tts.processMessage = function processTTSMessage (message) {
-  // TODO: only play /say messages if recent ( within 30 seconds)
-  //       This is so buddies aren't spammed with speak messages after joining chat late
-  // perform exported action
+
+  // localize message date time to check how old /say messages are
+  let localDate = new Date();
+  let remoteMessageDate = new Date(message.ctime);
+  let localizedRemoteMessageDateString = DateFormat.format.toBrowserTimeZone(remoteMessageDate);
+  let localizedRemoteMessageDate = new Date(localizedRemoteMessageDateString);
+  let diff = (localDate.getTime() - localizedRemoteMessageDate.getTime()) / 1000;
+
+  // do not /say messages older than 10 seconds  ( prevents message replay spam on join )
+  if (diff > 10) {
+    return;
+  } 
+
   let text = '';
   text = message.text.split(' ');
   if (text[0] === '/say') {
     text.shift();
     let msg = text.join(' ');
+    // TODO: send entire message obj to .say()? set locale inside say method?
     if (message.card && message.card.voiceIndex) {
       let og = desktop.settings.tts_voice_index;
       desktop.set('tts_voice_index', message.card.voiceIndex);
