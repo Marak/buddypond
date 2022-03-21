@@ -1065,4 +1065,6 @@ iframe {
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: "FlipH";
+  width: 320px;
+  height: 240px;
 }
