@@ -4,9 +4,6 @@ desktop.app.mirror.mode = 'mirror';
 desktop.app.mirror.fullMirror = false;
 desktop.app.mirror.showingControls = true;
 
-// add 3 view modes with toggle
-// save localstorage setting cam def
-// 'Full', 'Half', 'Normal'
 desktop.app.mirror.viewMode = 'Normal'
 desktop.app.mirror.devices = {
   videoinput: {},
@@ -232,19 +229,39 @@ desktop.app.mirror.openWindow = function openWindow (params) {
     }
   }
 
-  function showFullMirror () {
-    if (desktop.app.mirror.fullMirror) {
-      desktop.app.mirror.fullMirror = false
+  function toggleMirrorSize () {
+    // 3 view modes we can toggle, Normal, Half, Full
+    if (desktop.app.mirror.viewMode === 'Normal') {
+      $('#mirrorCanvasMe').css('width', 320);
+      $('#mirrorCanvasMe').css('height', 240);
+      $('#snapsPreview').css('width', 320);
+      $('#snapsPreview').css('height', 240);
+      $('#mirrorCanvasMe').css('padding-top', 32);
+      $('#snapsPreview').css('padding-top', 32);
+      $('#mirrorCanvasMe').css('position', 'relative');
+      desktop.app.mirror.viewMode = 'Half';
+      $('.showFullMirror').html(desktop.app.mirror.viewMode + ' View');
+      return;
+    }
+    if (desktop.app.mirror.viewMode === 'Half') {
+      $('#mirrorCanvasMe').css('padding-top', 0);
+      $('#snapsPreview').css('padding-top', 0);
+      desktop.app.mirror.resizeFullVideo();
+      desktop.app.mirror.viewMode = 'Full';
+      $('.showFullMirror').html(desktop.app.mirror.viewMode + ' View');
+      return;
+    }
+    if (desktop.app.mirror.viewMode === 'Full') {
       $('#mirrorCanvasMe').css('width', 640);
       $('#mirrorCanvasMe').css('height', 480);
-
       $('#snapsPreview').css('width', 640);
       $('#snapsPreview').css('height', 480);
-
+      $('#mirrorCanvasMe').css('padding-top', 0);
+      $('#snapsPreview').css('padding-top', 0);
       $('#mirrorCanvasMe').css('position', 'relative');
-    } else {
-      desktop.app.mirror.fullMirror = true;
-      desktop.app.mirror.resizeFullVideo();
+      desktop.app.mirror.viewMode = 'Normal';
+      $('.showFullMirror').html(desktop.app.mirror.viewMode + ' View');
+      return;
     }
   }
 
@@ -253,7 +270,7 @@ desktop.app.mirror.openWindow = function openWindow (params) {
   });
 
   $('.showFullMirror').on('click', function(){
-    showFullMirror();
+    toggleMirrorSize();
   });
 
   // The mirror will not work if navigator.mediaDevices is not available.
