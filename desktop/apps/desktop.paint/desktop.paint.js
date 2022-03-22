@@ -21,16 +21,6 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
       desktop.set('paint_active_type', 'pond');
       desktop.set('paint_active_context', 'Lily');
     }
-    // clear out localstorage images on each load ( for now )
-    // this will clear out all images on browser refresh
-    // Remark: It's best to do this for now since we dont want to cache to grow
-    //         We can later add photo manager for localstorage images
-    let keys = Object.keys(localStorage);
-    keys.forEach(function(k){
-      if (k.search('image#') !== -1) {
-        localStorage.removeItem(k);
-      }
-    });
 
     desktop.on('desktop.settings.paint_send_active', 'send-paint-close-window', function () {
 
@@ -45,13 +35,22 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
             firstKey = k;
           }
         });
+        if (!firstKey) {
+          console.log("FAILED TO FIND IMAGE IN LOCALSTORAGE. SOMEONE PLEASE FIX JSPAINT INTEGRATION")
+          $('.touchPaint').show();
+          return;
+        } else {
+          $('.touchPaint').hide();
+        }
         let type = desktop.settings.paint_active_type;
         let context = desktop.settings.paint_active_context;
+        // TODO: why is it sending wrong data / no data at all?
         setTimeout(function(){
           buddypond.sendSnaps(type, context, 'I sent a Paint', firstImg, 100, function(err, data){
             keys.forEach(function(k){
               if (k.search('image#') !== -1) {
                 localStorage.removeItem(k);
+                console.log('clearing key', firstKey)
               }
             });
             desktop.set('paint_send_active', false);
@@ -66,6 +65,17 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
 };
 
 desktop.app.paint.openWindow = function openWindow () {
+  // clear out localstorage images on window open
+  // this will clear out all images on browser refresh
+  // Remark: It's best to do this for now since we dont want to cache to grow
+  //         We can later add photo manager for localstorage images
+  let keys = Object.keys(localStorage);
+  keys.forEach(function(k){
+    if (k.search('image#') !== -1) {
+      localStorage.removeItem(k);
+    }
+  });
+
   if (desktop.settings.paint_active_url) {
     // desktop.set('paint_send_active', false);
     $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html#load:' + encodeURI(desktop.settings.paint_active_url));

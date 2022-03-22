@@ -37,6 +37,23 @@
     opacity: 0.7;
     animation-iteration-count: infinite;
   }
+
+  #window_paint .touchPaint {
+    position: absolute;
+    left: 200px;
+    bottom: 200px;
+    display: none;
+    cursor: pointer;
+    border: solid;
+    border-width: 1px;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    border-radius: 4px;
+    width: 200px;
+  }
   /* todo: background rainbow gradient */
 </style>
 
@@ -56,6 +73,7 @@
     <div class="abs window_content">
       <div class="sendPaintHolder">
         <button class="sendPaint">SEND PAINT</button>
+        <button class="touchPaint">JSPAINT DID NOT UPDATED CLICK AROUND CANVAS MORE AND TRY AGAIN CLICKING SEND PAINT AGAIN</button>
         <!--
         <br/>
         Type:
