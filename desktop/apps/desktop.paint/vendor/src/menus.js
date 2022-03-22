@@ -239,22 +239,6 @@ var menus = {
 		},
 		$MenuBar.DIVIDER,
 		{
-			item: "E&xtras Menu",
-			checkbox: {
-				toggle: function(){
-					$extras_menu_button.toggle();
-					try{
-						localStorage["jspaint extras menu visible"] = this.check();
-					}catch(e){}
-				},
-				check: function(){
-					return $extras_menu_button.is(":visible");
-				}
-			},
-			description: "Shows or hides the Extras menu.",
-		},
-		$MenuBar.DIVIDER,
-		{
 			item: "&Zoom",
 			submenu: [
 				{
