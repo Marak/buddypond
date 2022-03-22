@@ -177,9 +177,9 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
 
   // Click remix icon to remix images in Paint App
-  d.on('mousedown', 'img.remixPaint', function() {
+  d.on('mousedown', 'img.remixPaint, img.remixMeme', function() {
     let form = $(this).parent();
-    let url = $('.paintsImage', form).attr('src');
+    let url = $('.image', form).attr('src');
     let type = $(this).data('type');
     let context = $(this).data('context');
     desktop.set('paint_active_type', type);

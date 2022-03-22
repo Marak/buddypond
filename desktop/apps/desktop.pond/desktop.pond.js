@@ -246,16 +246,20 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     if (message.card) {
       if (message.card.type === 'snaps') {
         message.card.snapURL = window.origin + '/' + message.card.snapURL;
-        let ext = message.card.snapURL.split('.')[2];
+        let arr = message.card.snapURL.split('.');
+        let ext = arr[arr.length -1];
         if (ext === 'gif') {
           $('.chat_messages', windowId).append(`
-           <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
+           <span class="message">
+            <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+            <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
+           </span><br/>
           `);
         } else {
           $('.chat_messages', windowId).append(`
            <span class="message">
             <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
-            <img id="${message.uuid}" class="paintsImage" src="${message.card.snapURL}"/>
+            <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
            </span>
            <br/>
           `);
@@ -264,11 +268,18 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         desktop.messages._processedCards.push(message.uuid);
       }
 
-      if (message.card.type === 'meme'){
+      if (message.card && message.card.type === 'meme') {
+        message.card.filename = window.origin + '/memes/' + message.card.filename;
         $('.chat_messages', windowId).append(`
-         <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+         <span class="message">
+          <img class="remixMeme" title="Remix this Meme" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/></span>
+         <br/>
         `);
+        desktop.messages._processed.push(message.uuid);
+        return;
       }
+
     }
     desktop.messages._processed.push(message.uuid);
   });

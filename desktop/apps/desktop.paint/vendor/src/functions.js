@@ -67,6 +67,8 @@ function get_FileList_from_file_select_dialog(callback){
 	});
 }
 
+let onlyOnce = 0;
+
 function open_from_Image(img, callback, canceled){
 	// TODO: shouldn't open_from_* start a new session?
 
@@ -80,6 +82,12 @@ function open_from_Image(img, callback, canceled){
 	ctx.copy(img);
 	detect_transparency();
 	$canvas_area.trigger("resize");
+  setTimeout(function(){
+    if (onlyOnce < 3) {
+      onlyOnce++;
+    	update_session_from_location_hash();
+    }
+  }, 33)
 
 	callback && callback();
 }
