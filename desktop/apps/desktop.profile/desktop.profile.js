@@ -60,6 +60,10 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       }
       $('.updateProfileResponse').removeClass('error');
       buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
+        if (res.error) {
+          alert(res.message);
+          return;
+        }
         $('.updateProfileResponse').html('Updated!');
       })
     });
