@@ -337,6 +337,8 @@ desktop.app.mirror.openWindow = function openWindow (params) {
     $('#mirrorCanvasMe').css('width', 640);
     $('#mirrorCanvasMe').css('height', 480);
     $('#snapDelaySlider').show();
+  } else {
+    desktop.app.mirror.mode = 'mirror';
   }
 
   if (desktop.app.mirror.mode === 'mirror') {
