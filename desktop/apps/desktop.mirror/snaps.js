@@ -62,20 +62,8 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
       desktop.app.mirror.createGIF(delay);
 
       $('.mirrorVideoHolder').hide();
-      //$('#mirrorCanvasMe').css('width', 640);
-      //$('#mirrorCanvasMe').css('height', 480);
-
       $('#snapsPreview').show();
       $('.confirmSnap').show();
-
-      if (desktop.app.mirror.fullMirror) {
-        //desktop.app.mirror.resizeFullVideo();
-      } else {
-
-      }
-
-      //$('#mirrorCanvasMe').css('width', 320);
-      //$('#mirrorCanvasMe').css('height', 240);
 
       if (mode === 'photo') {
         $('.retrySnap').hide();
@@ -90,14 +78,13 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
         $('.snapDelaySliderControl').show();
       }
       $('.cameraControls').show();
-    }, 55) // TODO: make configurable
+    }, 55) // TODO: make configurable with existing delay slider
     return;
   }
   setTimeout(function(){
     desktop.app.mirror.recordSnaps(maxFrames, delay, mode);
   }, delay)
 }
-
 
 desktop.app.mirror.takeSingleSnap = function takeSingleSnap () {
   //$('#mirrorCanvasMe').css('width', 640);

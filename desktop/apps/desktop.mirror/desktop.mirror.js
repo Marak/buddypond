@@ -1,10 +1,14 @@
 desktop.app.mirror = {};
 desktop.app.mirror.label = "Mirror";
+
+// "mirror" mode indicates that Snaps should be saved locally to file system
+// This could also be "Snap" which indicates Snaps will be sent to the server or a buddy
 desktop.app.mirror.mode = 'mirror';
 desktop.app.mirror.fullMirror = false;
 desktop.app.mirror.showingControls = true;
 
-desktop.app.mirror.viewMode = 'Normal'
+// Three view modes available for Mirror: Normal, Half, Full
+desktop.app.mirror.viewMode = 'Normal';
 desktop.app.mirror.devices = {
   videoinput: {},
   audioinput: {},
@@ -69,12 +73,6 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     desktop.app.mirror.snapsGIF = [];
 
     $('.takeSingleSnap').on('click', function(){
-      if (desktop.app.mirror.makingSnap) {
-        
-      } else {
-        //$('.gifFrames').html('');
-        //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
-      }
       desktop.app.mirror.makingSnap = true;
       desktop.app.mirror.takeSingleSnap();
     });
@@ -117,8 +115,6 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       // TODO: show frame limit / timer
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
-      //$('#mirrorCanvasMe').css('width', 320);
-      //$('#mirrorCanvasMe').css('height', 240);
       $('.cameraControls').show();
       $('.gifFrames').html('');
       //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
@@ -165,6 +161,87 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
   });
 }
 
+// get all camera and audio devices on local system
+desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
+  navigator.mediaDevices.enumerateDevices({
+    video: true
+  }).then(function(devices){
+    $('.selectMirrorCamera').html('');
+    let cameraCount = 0;
+    devices.forEach(function(device, i){
+      device.index = i;
+      desktop.app.mirror.alldevices = desktop.app.mirror.alldevices || {};
+      desktop.app.mirror.alldevices[device.label] = device;
+      desktop.app.mirror.devices[device.kind] = desktop.app.mirror.devices[device.kind] || {};
+      desktop.app.mirror.devices[device.kind][device.label] = device;
+      if (device.kind === 'videoinput') {
+        cameraCount++;
+        let selected = '';
+        if (desktop.settings.mirror_selected_camera_index === cameraCount) {
+          selected = 'selected="selected"';
+          device.label = 'ACTIVE';
+        }
+        //console.log('device', device.label);
+        $('.selectMirrorCamera').append(`<option ${selected}>${device.label}</option>`);
+      }
+      if (device.kind === 'audioinput') {
+        //console.log('device', device.label);
+        // $('.selectAudio').append(`<option>${device.label}</option>`);
+      }
+    });
+    cb(null, devices)
+  }).catch((err) => {
+    console.log('errr', err)
+  });
+}
+
+// opens local camera device and streams it to <video> tag
+// takes in optional device label
+// if no label is provided, will default to first camera found in array
+desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
+  // console.log('starting with device label: ', deviceLabel)
+  desktop.app.mirror.enumerateDevices(function(err, devices){
+    let deviceId = desktop.app.mirror.devices.videoinput[deviceLabel].deviceId;
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        'deviceId': deviceId
+      },
+      audio: false
+    }).then(function(stream){
+      stream.getTracks().forEach(function(track) {
+        $('.selectMirrorCamera').val(track.label)
+      });
+      var video = document.querySelector("#mirrorVideoMe");
+
+      video.onplay = function() {
+        if (desktop.app.mirror.snapContext) {
+          $('.recordSnap').show();
+        } else {
+          // desktop.app.mirror.showFullMirror();
+        }
+      }
+
+      video.srcObject = stream;
+      desktop.app.mirror.localStream = stream;
+      $('#mirrorPlaceHolder').fadeOut();
+    }).catch((err) => {
+      console.log('error in calling navigator.mediaDevices.getUserMedia', err)
+    });
+  });
+}
+
+desktop.app.mirror.resizeFullVideo = function resizeFullVideo () {
+  $('#snapsPreview').css('width', $('#window_mirror').css('width'));
+  $('#snapsPreview').css('height', $('#window_mirror').css('height'));
+
+  $('#mirrorCanvasMe').css('width', $('#window_mirror').css('width'));
+  $('#mirrorCanvasMe').css('height', $('#window_mirror').css('height'));
+
+  $('#mirrorCanvasMe').css('position', 'absolute');
+  $('#mirrorCanvasMe').css('top', 0);
+  $('#mirrorCanvasMe').css('left', 0);
+}
+
 desktop.app.mirror.openWindow = function openWindow (params) {
   this.canvasVideo.bindPlayEvent();
   params = params || {};
@@ -196,7 +273,6 @@ desktop.app.mirror.openWindow = function openWindow (params) {
   $('#snapDelaySlider').data('delay', 777);
 
   function toggleMirrorControls () {
-    // TODO: add third state / view? half-size preview and camera?
     if (desktop.app.mirror.showingControls) {
       desktop.app.mirror.showingControls = false;
       hideMirrorControls();
@@ -299,88 +375,6 @@ desktop.app.mirror.openWindow = function openWindow (params) {
   }).catch((err) => {
     console.log('error in navigator.mediaDevices.getUserMedia', err)
   });
-}
-
-// get all camera and audio devices on local system
-desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
-  navigator.mediaDevices.enumerateDevices({
-    video: true
-  }).then(function(devices){
-    // console.log(devices)
-    $('.selectMirrorCamera').html('');
-    let cameraCount = 0;
-    devices.forEach(function(device, i){
-      device.index = i;
-      desktop.app.mirror.alldevices = desktop.app.mirror.alldevices || {};
-      desktop.app.mirror.alldevices[device.label] = device;
-      desktop.app.mirror.devices[device.kind] = desktop.app.mirror.devices[device.kind] || {};
-      desktop.app.mirror.devices[device.kind][device.label] = device;
-      if (device.kind === 'videoinput') {
-        cameraCount++;
-        let selected = '';
-        if (desktop.settings.mirror_selected_camera_index === cameraCount) {
-          selected = 'selected="selected"';
-          device.label = 'ACTIVE';
-        }
-        //console.log('device', device.label);
-        $('.selectMirrorCamera').append(`<option ${selected}>${device.label}</option>`);
-      }
-      if (device.kind === 'audioinput') {
-        //console.log('device', device.label);
-        // $('.selectAudio').append(`<option>${device.label}</option>`);
-      }
-    });
-    cb(null, devices)
-  }).catch((err) => {
-    console.log('errr', err)
-  });
-}
-
-// opens local camera device and streams it to <video> tag
-// takes in optional device label
-// if no label is provided, will default to first camera found in array
-desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
-  // console.log('starting with device label: ', deviceLabel)
-  desktop.app.mirror.enumerateDevices(function(err, devices){
-    let deviceId = desktop.app.mirror.devices.videoinput[deviceLabel].deviceId;
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        'deviceId': deviceId
-      },
-      audio: false
-    }).then(function(stream){
-      stream.getTracks().forEach(function(track) {
-        $('.selectMirrorCamera').val(track.label)
-      });
-      var video = document.querySelector("#mirrorVideoMe");
-
-      video.onplay = function() {
-        if (desktop.app.mirror.snapContext) {
-          $('.recordSnap').show();
-        } else {
-          // desktop.app.mirror.showFullMirror();
-        }
-      }
-
-      video.srcObject = stream;
-      desktop.app.mirror.localStream = stream;
-      $('#mirrorPlaceHolder').fadeOut();
-    }).catch((err) => {
-      console.log('error in calling navigator.mediaDevices.getUserMedia', err)
-    });
-  });
-}
-
-desktop.app.mirror.resizeFullVideo = function resizeFullVideo () {
-  $('#snapsPreview').css('width', $('#window_mirror').css('width'));
-  $('#snapsPreview').css('height', $('#window_mirror').css('height'));
-
-  $('#mirrorCanvasMe').css('width', $('#window_mirror').css('width'));
-  $('#mirrorCanvasMe').css('height', $('#window_mirror').css('height'));
-
-  $('#mirrorCanvasMe').css('position', 'absolute');
-  $('#mirrorCanvasMe').css('top', 0);
-  $('#mirrorCanvasMe').css('left', 0);
 }
 
 desktop.app.mirror.closeWindow = function closeMirrorWindow () {
