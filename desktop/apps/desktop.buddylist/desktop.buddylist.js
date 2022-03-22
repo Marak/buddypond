@@ -585,7 +585,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     // replace cards
     
     
-    if (message.card.type === 'snaps') {
+    if (message.card && message.card.type === 'snaps') {
       message.card.snapURL = window.origin + '/' + message.card.snapURL;
       let arr = message.card.snapURL.split('.');
       let ext = arr[arr.length -1];
