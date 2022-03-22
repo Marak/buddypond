@@ -1093,3 +1093,9 @@ iframe {
 .message {
   position: relative;
 }
+
+.geoFlag {
+  width: 16px;
+  height: 12px;
+  padding: 3px;
+}

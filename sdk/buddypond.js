@@ -88,6 +88,7 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
     text: text,
+    geoflag: desktop.settings.geo_flag_hidden,
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
@@ -101,6 +102,7 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
   apiRequest('/messages/pond/' + pondname, 'POST', {
     pondname: pondname,
     pondtext: pondtext,
+    geoflag: desktop.settings.geo_flag_hidden,
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }

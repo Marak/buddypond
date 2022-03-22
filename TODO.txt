@@ -1,4 +1,5 @@
 - add loading gif for snaps ( preloaded )
+- show alert if try to send paint when not logged in
 - ensure desktop settings form wont crash app
 - move call button to side of text area?
 - add 1000 memes to memepool
@@ -8,12 +9,39 @@
 - detect slow connection speeds and adjust merlin?
 - add speed test? is that even possible?
 - add ability to drag photo
+- paint exit button should actually close window
+- add spell for making user unable to say, cause echo back
+- increase chat history length for ponds and buddies ( check if images count twice? )
+- ensure rainbow tv is preloaded for mirror
+- dont show camera select source when previewing snap ( filters / switch wont work )
+- when setting camera, use localStorage to set default
+  - ensure that rainbow loading plays for at least 2-3 seconds
+- add mode confirmingApproving snap ( for hiding controls toggle )
+  - add button on that toggles between preview and live camera ( single button snap control )
+- ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
 Add replies / comments to messages ( discord style? )
 
-Image Remixer
+
+- add geoip flags and memeflags
+  - message object needs to save ip address
+  - override geoip with memeflag if user send message with flag ( no server saves on profile? ), local settings only 
+  - start thinking about multiple logins from multiple locations same account
+
+- consider replacing emoji area with https://github.com/mervick/emojionearea
+
+v2 Snaps
+  - resize live camera preview to same size as preview
+  - add slider bar for changing delay / capture speed between frames ( same same )
+  - add checkbox for Play Countdown Timer
+  - issue with flipped image and paints shared css class...
+
+v1 Image Remixer
+  - canvas should be able to load image from localstorage into canvas
   X - jspaint app
+  - add 
   - add ability to send jspaint localstorage as snap
   - add remix button to open image in jspaint
+v2 
   - png out from jspaint
   - convert single frame gif to jspaint
   - if already png no convert?

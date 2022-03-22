@@ -27,6 +27,13 @@ Ideas for community apps:
   - CSS animation - simple waves.      -> https://codepen.io/goodkatz/pen/LYPGxQz?editors=1100
   - CSS animation - raindrops          -> https://codepen.io/jh3y/pen/WyNdMG
 
+- AI Art Generator?
+  - client-side
+  - canvas based or other
+  - can accept images as input
+  - can accept text as input
+    - can accept both text and image as input
+  - ai art bot that generates images / art based on chat stream
 - Sound FX Board
   - Use midi fighter button pad with sound fx
   - add goose sound effect

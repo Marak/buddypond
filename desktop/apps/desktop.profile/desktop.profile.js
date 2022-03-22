@@ -73,6 +73,14 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     });
 
     $("#profileTabs" ).tabs();
+    $('.hideFlag').on('click', function(){
+      if ($(this).prop('checked')) {
+        desktop.set('geo_flag_hidden', true);
+      } else {
+        desktop.set('geo_flag_hidden', false);
+      }
+    })
+
     next();
   });
 };

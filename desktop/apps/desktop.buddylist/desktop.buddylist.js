@@ -624,11 +624,17 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     }
 
     let str = '';
+    let geoFlag = '';
+    if (message.location) {
+      if (message.location !== 'outer space') {
+        geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
+      }
+    }
 
     if (message.from === buddypond.me) {
-      str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ':</span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.buddylist.lastNotified > 1600) {
