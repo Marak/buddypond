@@ -24,7 +24,7 @@ desktop.app.mirror.createGIF = function createGIF (delay) {
 
 desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
 
-  delay = delay || DEFAULT_SNAP_TIMER;
+  delay = delay || $('#snapsPreview').data('delay') || DEFAULT_SNAP_TIMER;
   $('#snapsPreview').data('delay', delay);
   desktop.app.mirror.snapDelay = delay;
   mode = mode || 'photo';
@@ -62,20 +62,34 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
       desktop.app.mirror.createGIF(delay);
 
       $('.mirrorVideoHolder').hide();
-      $('#snapsPreview').show();
+      //$('#mirrorCanvasMe').css('width', 640);
+      //$('#mirrorCanvasMe').css('height', 480);
 
+      $('#snapsPreview').show();
       $('.confirmSnap').show();
+
+      if (desktop.app.mirror.fullMirror) {
+        //desktop.app.mirror.resizeFullVideo();
+      } else {
+
+      }
+
+      //$('#mirrorCanvasMe').css('width', 320);
+      //$('#mirrorCanvasMe').css('height', 240);
+
       if (mode === 'photo') {
         $('.retrySnap').hide();
         $('.retrySingleSnap').show();
         if (Object.keys(desktop.app.mirror.snaps).length > 1) {
-          $('#snapDelaySlider').show();
+          $('.snapDelaySliderControl').show();
         }
       } else {
         $('.continueSnap').hide();
         $('.retrySingleSnap').hide();
         $('.retrySnap').show();
+        $('.snapDelaySliderControl').show();
       }
+      $('.cameraControls').show();
     }, 55) // TODO: make configurable
     return;
   }
@@ -86,7 +100,20 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
 
 
 desktop.app.mirror.takeSingleSnap = function takeSingleSnap () {
+  //$('#mirrorCanvasMe').css('width', 640);
+  //$('#mirrorCanvasMe').css('height', 480);
   $('.recordSnap').hide();
+
+  if (!desktop.settings.mirror_snaps_camera_countdown_enabled) {
+    if (currentFrame === 0) {
+      desktop.play('CAMERA_SNAP.wav');
+      setTimeout(function(){
+        desktop.app.mirror.recordSnaps(1);
+      }, 44)
+      return;
+    }
+  }
+
   desktop.play('CAMERA_COUNTDOWN.wav');
   $('.snapCountDown').show();
   setTimeout(function(){
@@ -96,21 +123,33 @@ desktop.app.mirror.takeSingleSnap = function takeSingleSnap () {
       setTimeout(function(){
         $('.snapCountDown').hide();
         $('.snapCountDown').html('3...');
-         setTimeout(function(){
-          if (currentFrame === 0) {
-            desktop.play('CAMERA_SNAP.wav');
-            setTimeout(function(){
-              desktop.app.mirror.recordSnaps(1);
-            }, 44)
-          }
-        }, 333)
+          setTimeout(function(){
+            if (currentFrame === 0) {
+              desktop.play('CAMERA_SNAP.wav');
+              setTimeout(function(){
+                desktop.app.mirror.recordSnaps(1);
+              }, 44)
+            }
+          }, 333)
+        }, 1000)
       }, 1000)
     }, 1000)
-  }, 1000)
 }
 
 desktop.app.mirror.takeSnap = function takeSnap () {
+  //$('#mirrorCanvasMe').css('width', 640);
+  //$('#mirrorCanvasMe').css('height', 480);
   $('.recordSnap').hide();
+
+  if (!desktop.settings.mirror_snaps_camera_countdown_enabled) {
+    if (currentFrame === 0) {
+      setTimeout(function(){
+        desktop.app.mirror.recordSnaps(10, 100, 'film');
+      }, 44)
+      return;
+    }
+  }
+
   desktop.play('CAMERA_COUNTDOWN.wav');
   $('.snapCountDown').show();
   setTimeout(function(){

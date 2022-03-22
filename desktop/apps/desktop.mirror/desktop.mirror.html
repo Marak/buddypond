@@ -8,13 +8,13 @@
   .takeSingleSnap {
     position: absolute;
     top: 255px;
-    left: 66px;
+    left: 122px;
     cursor: pointer;
   }
   .takeSnap {
     position: absolute;
     top: 255px;
-    right: 66px;
+    right: 122px;
     cursor: pointer;
   }
   .snapCountDown {
@@ -41,20 +41,6 @@
     cursor: pointer;
   }
 
-  .retrySnap {
-    position: absolute;
-    right: 333px;
-    top: 255px;
-    cursor: pointer;
-  }
-
-  .retrySingleSnap {
-    position: absolute;
-    right: 344px;
-    top: 252px;
-    cursor: pointer;
-  }
-
   .continueSnap {
     position: absolute;
     top: 255px;
@@ -73,9 +59,8 @@
   #snapsPreview {
     display: none;
     border: none;
-    width: 320px;
-    height: 240px;
-    padding-top: 23px;
+    width: 640px;
+    height: 480px;
     padding-bottom: 64px;
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -90,13 +75,21 @@
   #snaps {
     display: none;
   }
-  #snapDelaySlider {
+  
+  .snapDelaySliderControl {
+    background-color: white;
     position: absolute;
-    bottom: 88px;
+    bottom: 80px;
     left: 166px;
     height: 10px;
     width: 333px;
+    display: none;
   }
+  #snapDelaySliderLabel {
+    height: 10px;
+    width: 333px;
+  }
+  
   #mirrorCanvasMe {
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -110,8 +103,41 @@
     height: 480px;
     background-color: #000011;
     position: absolute;
-    top: 0px;
-    left: 0px;
+  }
+  .snapControls {
+    display: none;
+    position: absolute;
+    bottom: 32px;
+    left: 132px;
+  }
+  .cameraControls {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    margin: 0px;
+    padding-top: 8px;
+    padding-bottom: 16px;
+    margin-top: 8px;
+    height: 20px;
+    z-index: 99;
+    background-color: white;
+    width: 100%;
+  }
+  .mirrorControls {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 99;
+  }
+
+  .mirrorControl {
+    z-index: 99;
+  }
+  .mirrorInput {
+    z-index: 99;
+    background-color: white;
+  }
+  .mirrorVideoHolder {
   }
 </style>
 
@@ -130,39 +156,59 @@
     </div>
     <div class="abs window_content">
       <div class="window_main">
+        <div class="mirrorControls">
+          <button class="showFullMirror">Change View</button>
+          <button class="showMirrorControls">Controls</button>
+        </div>
         <canvas id='snaps'></canvas>
-        <div id="snapDelaySlider"></div>
         <div id="mirrorPlaceHolder"></div>
         <div class="mirrorVideoHolder">
           <canvas id='mirrorCanvasMe'></canvas>
           <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
           <br/>
-          Camera Source
-          <select name="selectMirrorCamera" class="selectMirrorCamera desktopSelect">
-          </select>
-          &nbsp;
-          Filter
-          <select name="selectMirrorFilter" class="selectMirrorFilter desktopSelect">
-            <option>None</option>
-            <!--
-            <option value='greyscale'>Greyscale</option>
-            -->
-          </select>
-          <!--
-            Audio Source
-            <select name="selectAudio" class="selectAudio">
-            </select>
-          -->
         </div>
-        <span class="takeSingleSnap recordSnap" title="Take Single Photo">📷</span>
-        <span class="takeSnap recordSnap" title="Take Silent Movie">📹</span>
+        <span class="takeSingleSnap recordSnap mirrorControl" title="Take Single Photo">📷</span>
+        <span class="takeSnap recordSnap mirrorControl" title="Take Silent Movie">📹</span>
         <span class="snapCountDown">3...</span>
         <img id='snapsPreview'/>
-        <span class="approveSnap confirmSnap" title="Approve And Send">✅</span>
-        <span class="continueSnap confirmSnap" title="Add Another Photo">➕ </span>
-        <span class="retrySingleSnap confirmSnap" title="Try Again">📷</span>
-        <span class="retrySnap confirmSnap" title="Try Again">📹</span>
-        <span class="cancelSnap confirmSnap" title="Cancel Snap">❌</span>
+        <span class="approveSnap confirmSnap snapControl" title="Approve And Send">✅</span>
+        <span class="continueSnap confirmSnap snapControl" title="Add Another Photo to Animate">➕ </span>
+        <span class="cancelSnap confirmSnap snapControl" title="Try Again">❌</span>
+        <div class="snapDelaySliderControl snapControl" title="Delay Speed">
+          <div id="snapDelaySlider" title="Delay Speed"></div>
+        </div>
+        <div class="cameraControls">
+          <form class="">
+            <!--
+              Audio Source
+              <select name="selectAudio" class="selectAudio">
+              </select>
+            -->
+            <span class="cameraCountDownControl mirrorInput">
+              <label for="cameraCountdownEnabled">
+                Countdown Timer: 
+                <input type="checkbox" class="cameraCountdownEnabled" name="cameraCountdownEnabled" id="cameraCountdownEnabled"/>
+              </label>
+            </span>
+            &nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;
+            Filter
+            <select name="selectMirrorFilter" class="selectMirrorFilter desktopSelect">
+              <option>None</option>
+              <!--
+              <option value='greyscale'>Greyscale</option>
+              -->
+            </select>
+            &nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;
+            Camera
+            <select name="selectMirrorCamera" class="selectMirrorCamera desktopSelect">
+            </select>
+            &nbsp;
+          </form>
+        </div>
       </div>
       <div class="gifFrames"></div>
     </div>

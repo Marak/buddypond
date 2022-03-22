@@ -1,6 +1,13 @@
 desktop.app.mirror = {};
 desktop.app.mirror.label = "Mirror";
+desktop.app.mirror.mode = 'mirror';
+desktop.app.mirror.fullMirror = false;
+desktop.app.mirror.showingControls = true;
 
+// add 3 view modes with toggle
+// save localstorage setting cam def
+// 'Full', 'Half', 'Normal'
+desktop.app.mirror.viewMode = 'Normal'
 desktop.app.mirror.devices = {
   videoinput: {},
   audioinput: {},
@@ -16,10 +23,17 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     'mirror' ];
 
   desktop.load.remoteAssets(assets, function (err) {
-    $('#window_mirror').css('width', 686);
-    $('#window_mirror').css('height', 622);
+    $('#window_mirror').css('width', 640);
+    $('#window_mirror').css('height', 580);
     $('#window_mirror').css('left', 200);
     $('#window_mirror').css('top', 44);
+
+    $('#window_mirror').resize(function(){
+      if (desktop.app.mirror.fullMirror) {
+        desktop.app.mirror.resizeFullVideo();
+      }
+    });
+
     $( "#snapDelaySlider" ).slider({
       value: 777,
       min: 1,
@@ -36,6 +50,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 
     $('.selectMirrorCamera').on('change', function(){
       let newDeviceLabel = $(this).val();
+      desktop.set('mirror_selected_camera_device_label', newDeviceLabel);
       // TODO: use localstorage to set device preference
       desktop.app.mirror.startCamera(newDeviceLabel)
     });
@@ -57,43 +72,18 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     desktop.app.mirror.snapsGIF = [];
 
     $('.takeSingleSnap').on('click', function(){
-      $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
+      if (desktop.app.mirror.makingSnap) {
+        
+      } else {
+        //$('.gifFrames').html('');
+        //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
+      }
+      desktop.app.mirror.makingSnap = true;
       desktop.app.mirror.takeSingleSnap();
     });
 
-    $('.retrySnap').on('click', function(){
-      $('.mirrorVideoHolder').show();
-      $('#snapsPreview').hide();
-      $('.recordSnap').show();
-      $('.confirmSnap').hide();
-      $('#snapsPreview').hide();
-      $('#snapsPreview').data('stopped', true);
-      $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
-      desktop.app.mirror.snaps = [];
-      currentFrame = 0;
-      desktop.app.mirror.takeSnap();
-    })
-
-    $('.retrySingleSnap').on('click', function(){
-      $('.mirrorVideoHolder').show();
-      $('#snapsPreview').hide();
-      $('.recordSnap').show();
-      $('.confirmSnap').hide();
-      $('#snapsPreview').hide();
-      $('#snapsPreview').data('stopped', true);
-      $('#snapDelaySlider').hide();
-      $('#snapDelaySlider').slider('value', 777);
-      $('#snapDelaySlider').data('delay', 777);
-      $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
-      desktop.app.mirror.snaps = [];
-      currentFrame = 0;
-      desktop.app.mirror.takeSingleSnap();
-    })
-
     $('.takeSnap').on('click', function(){
+      desktop.app.mirror.makingSnap = true;
       desktop.app.mirror.takeSnap();
     });
 
@@ -103,7 +93,14 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
-      $('#snapDelaySlider').hide();
+
+      if (desktop.app.mirror.mode === 'mirror') {
+        let src = $('#snapsPreview').attr('src');
+        var url = src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
+        window.open(url);
+        return;
+      }
+
       // close mirror ( fow now )
       JQDX.closeWindow('#window_mirror');
       let snapsGIF = $('#snapsPreview').attr('src');
@@ -111,37 +108,60 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('.gifFrames').html('');
-        $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
+        //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
+        desktop.app.mirror.makingSnap = false;
       });
     });
 
-    $('.cancelSnap').on('click', function(){
+    desktop.app.mirror.cancelSnap = function cancelSnap () {
       // TODO: show frame limit / timer
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
+      //$('#mirrorCanvasMe').css('width', 320);
+      //$('#mirrorCanvasMe').css('height', 240);
+      $('.cameraControls').show();
       $('.gifFrames').html('');
-      $('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
+      //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
+      $('.snapDelaySliderControl').hide();
       $('#snapDelaySlider').slider('value', 777);
       $('#snapDelaySlider').data('delay', 777);
+      desktop.app.mirror.makingSnap = false;
+    }
+
+    $('.cancelSnap').on('click', function(){
+      desktop.app.mirror.cancelSnap();
     });
 
     $('.continueSnap').on('click', function(){
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
-      $('#snapDelaySlider').hide();
+      $('.snapDelaySliderControl').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
-      $('#snapsPreview').hide();
-      $('#snapsPreview').data('stopped', true);
-      desktop.app.mirror.takeSingleSnap();
+      $('.takeSnap').hide();
+      $('.takeSingleSnap').show();
+      //$('#snapsPreview').data('stopped', true);
+      //desktop.app.mirror.takeSingleSnap();
+    });
+
+    if (desktop.settings.mirror_snaps_camera_countdown_enabled) {
+      $('.cameraCountdownEnabled').prop('checked', 'checked');
+    }
+
+    $('.cameraCountdownEnabled').on('change', function(){
+      if ($(this).prop('checked')) {
+        desktop.set('mirror_snaps_camera_countdown_enabled', true);
+      } else {
+        desktop.set('mirror_snaps_camera_countdown_enabled', false);
+      }
     });
 
     next();
@@ -155,15 +175,86 @@ desktop.app.mirror.openWindow = function openWindow (params) {
   desktop.app.mirror.snapType = params.type;
 
   if (params.context) {
+    desktop.app.mirror.mode = 'snap';
     $('#window_mirror').css('width', 640);
     $('#window_mirror').css('height', 580);
+    $('#mirrorCanvasMe').css('width', 640);
+    $('#mirrorCanvasMe').css('height', 480);
+    $('#snapDelaySlider').show();
   }
 
+  if (desktop.app.mirror.mode === 'mirror') {
+    $('.approveSnap').attr('title', 'Save to Local');
+  } else {
+    $('.approveSnap').attr('title', 'Approve and Send');
+  }
+
+  if (desktop.app.mirror.showingControls) {
+    showMirrorControls();
+  }
+
+  $('.snapControl').hide();
   $('.confirmSnap').hide();
-  $('.recordSnap').hide();
-  $('#snapDelaySlider').hide();
   $('#snapDelaySlider').slider('value', 777);
   $('#snapDelaySlider').data('delay', 777);
+
+  function toggleMirrorControls () {
+    // TODO: add third state / view? half-size preview and camera?
+    if (desktop.app.mirror.showingControls) {
+      desktop.app.mirror.showingControls = false;
+      hideMirrorControls();
+    } else {
+      desktop.app.mirror.showingControls = true;
+      showMirrorControls();
+    }
+  }
+
+  function hideMirrorControls () {
+    $('.mirrorControl').hide();
+    $('.cameraControls').hide();
+    $('.snapControl').hide();
+    $('.snapControls').hide();
+  }
+
+  function showMirrorControls () {
+    if (desktop.app.mirror.makingSnap) {
+      $('.cameraControls').show();
+      $('.snapControl').show();
+      $('.snapControls').show();
+      if (Object.keys(desktop.app.mirror.snaps).length > 1) {
+        $('.snapDelaySliderControl').show();
+      }
+    } else {
+      $('.mirrorControl').show();
+      $('.cameraControls').show();
+      $('.snapControl').hide();
+      $('.snapControls').hide();
+    }
+  }
+
+  function showFullMirror () {
+    if (desktop.app.mirror.fullMirror) {
+      desktop.app.mirror.fullMirror = false
+      $('#mirrorCanvasMe').css('width', 640);
+      $('#mirrorCanvasMe').css('height', 480);
+
+      $('#snapsPreview').css('width', 640);
+      $('#snapsPreview').css('height', 480);
+
+      $('#mirrorCanvasMe').css('position', 'relative');
+    } else {
+      desktop.app.mirror.fullMirror = true;
+      desktop.app.mirror.resizeFullVideo();
+    }
+  }
+
+  $('.showMirrorControls').on('click', function(){
+    toggleMirrorControls();
+  });
+
+  $('.showFullMirror').on('click', function(){
+    showFullMirror();
+  });
 
   // The mirror will not work if navigator.mediaDevices is not available.
   // Usually, this will only occur if there is SSL / HTTPS certificate issue
@@ -180,7 +271,13 @@ desktop.app.mirror.openWindow = function openWindow (params) {
     //desktop.app.mirror.enumerateDevices();
     desktop.app.mirror.enumerateDevices(function(err, devices){
       // console.log('starting camera with devices', devices)
-      desktop.app.mirror.startCamera(desktop.app.mirror.devices.videoinput[Object.keys(desktop.app.mirror.devices.videoinput)[0]].label);
+      let firstCamera = desktop.app.mirror.devices.videoinput[Object.keys(desktop.app.mirror.devices.videoinput)[0]].label;
+      let defaultCamera = desktop.settings.mirror_selected_camera_device_label;
+      if (defaultCamera) {
+        desktop.app.mirror.startCamera(defaultCamera);
+      } else {
+        desktop.app.mirror.startCamera(firstCamera);
+      }
     })
   }).catch((err) => {
     console.log('error in navigator.mediaDevices.getUserMedia', err)
@@ -194,6 +291,7 @@ desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
   }).then(function(devices){
     // console.log(devices)
     $('.selectMirrorCamera').html('');
+    let cameraCount = 0;
     devices.forEach(function(device, i){
       device.index = i;
       desktop.app.mirror.alldevices = desktop.app.mirror.alldevices || {};
@@ -201,8 +299,14 @@ desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
       desktop.app.mirror.devices[device.kind] = desktop.app.mirror.devices[device.kind] || {};
       desktop.app.mirror.devices[device.kind][device.label] = device;
       if (device.kind === 'videoinput') {
+        cameraCount++;
+        let selected = '';
+        if (desktop.settings.mirror_selected_camera_index === cameraCount) {
+          selected = 'selected="selected"';
+          device.label = 'ACTIVE';
+        }
         //console.log('device', device.label);
-        $('.selectMirrorCamera').append(`<option>${device.label}</option>`);
+        $('.selectMirrorCamera').append(`<option ${selected}>${device.label}</option>`);
       }
       if (device.kind === 'audioinput') {
         //console.log('device', device.label);
@@ -219,7 +323,7 @@ desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
 // takes in optional device label
 // if no label is provided, will default to first camera found in array
 desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
-  //console.log('starting with device label: ', deviceLabel)
+  // console.log('starting with device label: ', deviceLabel)
   desktop.app.mirror.enumerateDevices(function(err, devices){
     let deviceId = desktop.app.mirror.devices.videoinput[deviceLabel].deviceId;
     navigator.mediaDevices.getUserMedia({
@@ -236,6 +340,8 @@ desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
       video.onplay = function() {
         if (desktop.app.mirror.snapContext) {
           $('.recordSnap').show();
+        } else {
+          // desktop.app.mirror.showFullMirror();
         }
       }
 
@@ -248,8 +354,24 @@ desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
   });
 }
 
+desktop.app.mirror.resizeFullVideo = function resizeFullVideo () {
+  $('#snapsPreview').css('width', $('#window_mirror').css('width'));
+  $('#snapsPreview').css('height', $('#window_mirror').css('height'));
+
+  $('#mirrorCanvasMe').css('width', $('#window_mirror').css('width'));
+  $('#mirrorCanvasMe').css('height', $('#window_mirror').css('height'));
+
+  $('#mirrorCanvasMe').css('position', 'absolute');
+  $('#mirrorCanvasMe').css('top', 0);
+  $('#mirrorCanvasMe').css('left', 0);
+}
+
 desktop.app.mirror.closeWindow = function closeMirrorWindow () {
   this.canvasVideo.unbindPlayEvent();
+
+  if (desktop.app.mirror.makingSnap) {
+    desktop.app.mirror.cancelSnap();
+  }
 
   // when closing the window for the Mirror App
   // stop all tracks associated with open stream
