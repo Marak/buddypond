@@ -121,7 +121,6 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     });
 
     $('.showFullMirror').on('click', function(){
-      console.log('showFullMirrorshowFullMirror')
       toggleMirrorSize();
     });
 
