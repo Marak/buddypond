@@ -23,7 +23,7 @@ desktop.app.mirror.createGIF = function createGIF (delay) {
 }
 
 desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
-
+  $('.cameraControls').hide();
   delay = delay || $('#snapsPreview').data('delay') || DEFAULT_SNAP_TIMER;
   $('#snapsPreview').data('delay', delay);
   desktop.app.mirror.snapDelay = delay;
@@ -77,7 +77,6 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
         $('.retrySnap').show();
         $('.snapDelaySliderControl').show();
       }
-      $('.cameraControls').show();
     }, 55) // TODO: make configurable with existing delay slider
     return;
   }

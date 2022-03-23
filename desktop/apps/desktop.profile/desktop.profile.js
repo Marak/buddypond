@@ -79,6 +79,7 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       } else {
         desktop.set('geo_flag_hidden', false);
       }
+      return false;
     })
 
     next();

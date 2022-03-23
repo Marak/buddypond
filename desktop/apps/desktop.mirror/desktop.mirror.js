@@ -170,7 +170,8 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
-
+      $('.takeSingleSnap').css('left', '122');
+      $('.cameraControls').show();
       if (desktop.app.mirror.mode === 'mirror') {
         let src = $('#snapsPreview').attr('src');
         var url = src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
@@ -203,6 +204,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
+      $('.takeSingleSnap').css('left', '122');
       $('.recordSnap').show();
       $('.confirmSnap').hide();
       $('.snapDelaySliderControl').hide();
@@ -216,12 +218,14 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     });
 
     $('.continueSnap').on('click', function(){
+      $('.cameraControls').show();
       $('.mirrorVideoHolder').show();
       $('#snapsPreview').hide();
       $('.snapDelaySliderControl').hide();
       $('.recordSnap').show();
       $('.confirmSnap').hide();
       $('.takeSnap').hide();
+      $('.takeSingleSnap').css('left', 244);
       $('.takeSingleSnap').show();
       //$('#snapsPreview').data('stopped', true);
       //desktop.app.mirror.takeSingleSnap();
