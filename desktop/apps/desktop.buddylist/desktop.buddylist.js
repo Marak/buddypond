@@ -664,7 +664,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     let currentlyDisplayedMessages = $('.chatMessage', windowId);
     // console.log('currentlyDisplayedMessages', windowId, currentlyDisplayedMessages.length)
-    if (currentlyDisplayedMessages.length > 33) {
+    if (currentlyDisplayedMessages.length > 99) {
       currentlyDisplayedMessages.first().remove();
     }
 

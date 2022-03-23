@@ -250,7 +250,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     $('.message', windowId).last().text(message.text)
 
     let currentlyDisplayedMessages = $('.chatMessage', windowId);
-    if (currentlyDisplayedMessages.length > 33) {
+    if (currentlyDisplayedMessages.length > 99) {
       currentlyDisplayedMessages.first().remove();
     }
 
