@@ -443,9 +443,12 @@ JQDX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
 }
 
-JQDX.maxWindow = function maxWindow (el) {
+JQDX.maxWindow = function maxWindow (el, $el) {
   // Get the link's target.
   var x = $($(el).attr('href'));
+  if ($el) {
+    x = $el;
+  }
 
   // Hide, if visible.
   if (x.is(':visible')) {
@@ -585,6 +588,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     } else {
       $('.dock_title', dockEl).removeClass('rainbow');
     }
+    JQDX.maxWindow(false, $(el));
     return desktop.ui.openWindows[windowType][context];
   }
 

@@ -3,9 +3,10 @@
 [https://buddypond.com](https://buddypond.com)
 
  - Cloud Desktop
- - Instant Buddy Messaging
- - Video and Audio Calls
+ - Multimedia Instant Messaging
  - Chat rooms ( we call them "Ponds" )
+ - Live Video and Audio 
+ - So many amazing Apps!
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API
@@ -24,10 +25,9 @@ You can sign in immediately with a new unique username and passcode.
 <a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/></a>
 <a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/></a>
 
-
 ## Downloading Buddy Pond
 
-If you want to run your own Buddy Pond it's very simple. Literally just open the `index.html` file in your browser.
+If you want to run your own Buddy Pond it's very simple. Just load the `index.html` file in your browser ( requires a local http server ).
 
 ### Installation
 
@@ -129,24 +129,28 @@ curl -X POST "https://buddypond.com/api/v3/buddies/Marak/remove"  -H 'Content-Ty
 
 ```js
 $(document).ready(function(){
-  desktop.log('Buddy Pond Cloud Desktop Initialized');
-  desktop.log('Now loading apps');
   desktop
     .use('console')
+    .use('localstorage')
+    .use('settings')
     .use('wallpaper')
-    .use('buddylist')
+    .use('audioplayer')
+    .use('tts')
     .use('login')
-    .use('pond', { defer: true })
+    .use('notifications')
+    .use('buddylist')
+    .use('pond')
+    .use('streamsquad')
+    .use('spellbook', { defer: true })
     .use('profile', { defer: true })
     .use('mirror', { defer: true })
     .use('videochat', { defer: true })
+    .use('automaton', { defer: true })
     .ready(function(err, apps){
+      // desktop.log("Loaded", desktop.apps.loaded);
       desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-      // start loop for updating desktop state
-      desktop.refresh();
-    });
-});
-
+      });
+  });
 ```
 
 ### Building custom Buddy Pond `App`
@@ -193,7 +197,11 @@ The Desktop will load these Apps **immediately after** it's ready. If the Buddy 
 
 After the Desktop is ready, additional Apps can be `lazy` loaded by calling: `desktop.use(appName).ready(function(){})` again.
 
-The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `desktop.ui.openWindow(appName)`. The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` event until the App has completely loaded.
+The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `JQDX.openWindow(appName);`. 
+
+The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` event until the App has completely loaded.
+
+Ex: `JQDX.openWindow('paint');`
 
 ## Buddy Pond Mobile Client
 

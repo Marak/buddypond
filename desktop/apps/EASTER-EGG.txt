@@ -11,6 +11,14 @@ Ideas for community apps:
   - Does https://geekprank.com/hacker/ like functionality ( pretend hacking screens )
   - Auto-coder with typing input
 
+- Trippy Visuals Apps
+  - Fractals
+  - Julia Zooms
+  - Mandlebrot Zooms
+  - Various canvas effects too bold for wallpapers
+  - Any visualization that requires manual input ( keystrokes or mouse )
+  - Not Butterchurn or Audio Viz ( see existing open issue: https://github.com/Marak/buddypond/issues/26 )
+
 - Games
   - small games to pack in main distribution
   - pick js1k winners / entries?
@@ -43,6 +51,11 @@ Ideas for community apps:
   - can accept text as input
     - can accept both text and image as input
   - ai art bot that generates images / art based on chat stream
+
+- Camera FX and Shaders
+  - Add many more cool effects to the camera
+  - see: https://github.com/Marak/buddypond/issues/35
+
 - Sound FX Board
   - Use midi fighter button pad with sound fx
   - add goose sound effect
