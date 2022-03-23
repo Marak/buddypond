@@ -313,7 +313,11 @@ function apiRequest (uri, method, data, cb) {
     dataType: 'json',
     timeout: 7,
     error: function (err, data, res){
-      cb(new Error('ajax connection error. retrying request shortly.'), data, res);
+      let msg = 'ajax connection error. retrying request shortly.'
+      if (res === 'Payload Too Large') {
+        msg = 'File upload was too large for server. Try a smaller file.';
+      }
+      cb(new Error(msg), data, res);
     },
     timeout: function(err, res){
       cb(new Error('AJAX timeout'), res);

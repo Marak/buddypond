@@ -100,15 +100,26 @@
         let context = getQueryVariable('context');
         let type = getQueryVariable('type');
 
+        let uploading = false;
         $('.sendSound').on('click', function(){
           buddypond.qtokenid = getQueryVariable('qtokenid')
           let soundJSON = file
+          if (uploading) {
+            alert('File is already uploading. Is it a large audio file?\n\nWait a few more moments for upload or you may need to close Sound Recorder.');
+            return;
+          }
+          uploading = true;
           get_wav_file(file, function(blob){
             var reader = new FileReader();
             reader.readAsDataURL(blob); 
             reader.onloadend = function() {
               var base64data = reader.result;
               buddypond.sendAudio(type, context, 'I sent Audio', base64data, function(err, data) {
+                uploading = false;
+                if (err) {
+                  alert(err.message);
+                  return;
+                }
                 parent.postMessage('app_soundrecorder_needs_close', '*');
                 console.log('audio was sent');
               })
