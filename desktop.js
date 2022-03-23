@@ -491,6 +491,19 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
   return valid;
 }
 
+desktop.utils.isValidYoutubeT  = function isValidYoutubeT (str) {
+  /* 
+    youtube time (T) can only: 
+    - Start by ?t= 
+    - Be followed by Numbers (0-9)
+    - Underscores (_)
+    - Dashes (-)
+  */
+  const res = /\?t=\d+$/.exec(str);
+  const valid = !!res;
+  return valid;
+}
+
 // starts photo record
 let MAX_FRAMES_PER_SNAP = 10;
 let DEFAULT_SNAP_TIMER = 777;
@@ -530,14 +543,53 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
   if (cleanText) {
     let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
-    // TODO: https://youtu.be/ style links
+    let searchYouTu_be = cleanText.search('https://youtu.be/');
+    // if a youtube link was found, replace it with a link to open IDC with the video id
     if (searchYouTube !== -1) {
-      // if a youtube link was found, replace it with a link to open IDC with the video id
+      //If we the youtube link is a normal link
+      //https://www.youtube.com/watch?
       let id = cleanText.substr(searchYouTube + 32, 11);
       let isValid = desktop.utils.isValidYoutubeID(id);
       if (isValid) {
+        /*
+        replace the youtube URL by a hypelink that open IDC.
+        >>> https://www.youtube.com/watch?v1K4EAXe2oo
+        > youtube: v1K4EAXe2oo
+        */
         let str = 'https://www.youtube.com/watch?v=' + id;
         cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+        el.last().html(cleanText);
+      }
+      //Else if a youtu.be link was found,
+    } else if (searchYouTu_be !== -1) {
+      /*
+      check if there is a time (t)
+      and replace it with a link to open IDC with the video id and the start time t
+      https://youtu.be/v1K4EAXe2oo?t=26
+      */
+      let id = cleanText.substr(searchYouTu_be + 17, 11);
+      let t = cleanText.substr(searchYouTu_be + 28, 10).replace(/[\n\r]+/g, '').split(" ")[0];
+      let isValid = desktop.utils.isValidYoutubeID(id);
+      let isValidT = desktop.utils.isValidYoutubeT(t);
+      if (isValidT) {
+        /*
+        if there is a time t. Format it to extract the numbers only
+        >>> ?=t345
+        >  345
+        */
+        id_t = id+t;
+        t = t.substring(3);
+      } else {
+      id_t = id;
+    }
+      if (isValid) {
+        /*
+        Replace the youtube URL by a hypelink that open IDC instead.
+        >>> https://youtu.be/v1K4EAXe2oo?t=26
+        > youtube: v1K4EAXe2oo 26
+        */
+        let str = 'https://youtu.be/' + id_t;//
+        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}" data-videot="${t}">youtube: ${id} ${t}</a>`);
         el.last().html(cleanText);
       }
     }
