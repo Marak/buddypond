@@ -133,7 +133,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.openIDC', function(ev) {
     let id = $(this).html()
     let videoId = $(this).data('videoid')
-    desktop.ui.openWindow('interdimensionalcable', { videoId: videoId });
+    let start = $(this).data('videot')
+    if(start){
+      desktop.ui.openWindow('interdimensionalcable', { videoId: videoId, start: start });
+    } else {
+      desktop.ui.openWindow('interdimensionalcable', { videoId: videoId });
+    }
   });
 
   d.on('click', 'a.openSound', function(ev) {

@@ -24,7 +24,6 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     }
 
     function interDemonPlayerStateChange(event) {
-
       if (event.data == 0) {
         if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
           desktop.ui.closeWindow('interdimensionalcable');
@@ -92,7 +91,11 @@ desktop.app.interdimensionalcable.openWindow = function (params) {
     $('#window_interdimensionalcable').css('height', 440);
     $('.orbHolder').hide();
     if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.loadVideoById) {
-      desktop.app.interdimensionalcable.player.loadVideoById(desktop.app.interdimensionalcable.activeVideo);
+      if (params.start) {
+        desktop.app.interdimensionalcable.player.loadVideoById(desktop.app.interdimensionalcable.activeVideo, params.start);
+      } else {
+        desktop.app.interdimensionalcable.player.loadVideoById(desktop.app.interdimensionalcable.activeVideo);
+      }
     }
   } else {
     desktop.app.interdimensionalcable.mode = 'playlist';
