@@ -13,7 +13,10 @@
   .updateProfileResponse {
     font-size: 18px;
   }
-
+  .buddyGeoFlag {
+    width: 16px;
+    height: 16px;
+  }
 </style>
 
 <div id="window_profile" class="abs window">
@@ -46,13 +49,6 @@
                   <td>Username</td>
                   <td class="me">Marak</td>
                 </tr>
-
-                <tr>
-                  <td>Text To Speech Voice</td>
-                  <td>
-                    <select name="ttsVoice" class="ttsVoice"></select>
-                  </td>
-                </tr>
                 <!--
                 <tr>
                   <td>Avatar</td>
@@ -77,6 +73,30 @@
                   <td>Confirm Password</td>
                   <td>
                     <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Hide Geo Flag</td>
+                  <td>
+                    <input type="checkbox" name="hideFlag" class="hideFlag"/>
+                  </td>
+                </tr>
+                <!--
+                <tr>
+                  <td>Geo Flag Country Code</td>
+                  <td>
+                    <img class="buddyGeoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>
+                    <select name="geoFlags" class="geoFlags">
+                      <option>Select Country Flag...</option>
+                    </select>
+                  </td>
+                </tr>
+                -->
+
+                <tr>
+                  <td>Text To Speech Voice</td>
+                  <td>
+                    <select name="ttsVoice" class="ttsVoice"></select>
                   </td>
                 </tr>
 

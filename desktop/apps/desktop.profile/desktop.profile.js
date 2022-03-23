@@ -60,6 +60,10 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       }
       $('.updateProfileResponse').removeClass('error');
       buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
+        if (res.error) {
+          alert(res.message);
+          return;
+        }
         $('.updateProfileResponse').html('Updated!');
       })
     });
@@ -67,6 +71,14 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     $('.updateProfileMarkdown').on('click', function(){
       desktop.app.buddylist.profileState.updates.myProfile = $('.profileMarkdown').val();
     });
+
+    $('.hideFlag').on('click', function(){
+      if ($(this).prop('checked')) {
+        desktop.set('geo_flag_hidden', true);
+      } else {
+        desktop.set('geo_flag_hidden', false);
+      }
+    })
 
     $("#profileTabs" ).tabs();
     next();

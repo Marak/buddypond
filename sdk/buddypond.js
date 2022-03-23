@@ -88,6 +88,7 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
     text: text,
+    geoflag: desktop.settings.geo_flag_hidden,
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
@@ -101,6 +102,7 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
   apiRequest('/messages/pond/' + pondname, 'POST', {
     pondname: pondname,
     pondtext: pondtext,
+    geoflag: desktop.settings.geo_flag_hidden,
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
@@ -208,6 +210,37 @@ buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, del
   }
 }
 
+buddypond.sendAudio = function pondSendMessage (type, name, text, audioJSON, cb) {
+  let x = (new TextEncoder().encode(audioJSON)).length;
+  console.log('Sounds', `About to send a Audio: ${x} bytes -> ${type}/${name}`);
+  if (type === 'pond') {
+    apiRequest('/messages/pond/' + name, 'POST', {
+      pondname: name,
+      pondtext: text,
+      type: 'pond',
+      card: {
+        type: 'audio',
+        audio: audioJSON
+      }
+    }, function(err, data){
+      cb(err, data);
+    });
+  }
+  if (type === 'buddy') {
+    apiRequest('/messages/buddy/' + name, 'POST', {
+      buddyname: name,
+      text: text,
+      type: 'buddy',
+      card: {
+        type: 'audio',
+        audio: audioJSON
+      }
+    }, function(err, data){
+      cb(err, data);
+    });
+  }
+}
+
 //
 // "Packet" tracking here is just used for aestic purposes and not for any real calculations
 //              ( they just for decoration )
@@ -280,7 +313,11 @@ function apiRequest (uri, method, data, cb) {
     dataType: 'json',
     timeout: 7,
     error: function (err, data, res){
-      cb(new Error('ajax connection error. retrying request shortly.'), data, res);
+      let msg = 'ajax connection error. retrying request shortly.'
+      if (res === 'Payload Too Large') {
+        msg = 'File upload was too large for server. Try a smaller file.';
+      }
+      cb(new Error(msg), data, res);
     },
     timeout: function(err, res){
       cb(new Error('AJAX timeout'), res);

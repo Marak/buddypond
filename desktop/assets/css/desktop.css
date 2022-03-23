@@ -590,13 +590,6 @@ a:hover {
   font-decoration: italic;
 }
 
-.console {
-  width: 100%;
-  height: 240px;
-  overflow: auto;
-  /*margin: 16px;*/
-}
-
 .desktopInput {
   width: 140px;
   padding: 8px;
@@ -757,9 +750,6 @@ a:hover {
 }
 
 .emojiPicker {
-  position: absolute;
-  left: 5px;
-  top: 5px;
 }
 
 .emojiPicker:hover {
@@ -1059,12 +1049,71 @@ iframe {
 }
 
 .snapsImage {
+  width: 320px;
+  height: 240px;
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: "FlipH";
+}
+.paintsImage {
   width: 320px;
   height: 240px;
+}
+
+.remixPaint {
+  position: absolute;
+  top: 101px;
+  right: 5px;
+  height: 22px;
+  width: 22px;
+  z-index: 99;
+}
+
+.remixPaint:hover {
+  cursor: pointer;
+  opacity: 0.44;
+}
+
+.remixMeme {
+  height: 22px;
+  width: 22px;
+}
+
+.remixMeme:hover {
+  cursor: pointer;
+  opacity: 0.44;
+}
+
+.message {
+  position: relative;
+}
+
+.geoFlag {
+  width: 16px;
+  height: 12px;
+  padding: 3px;
+}
+
+.playSoundIcon {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.window_bottom_chat {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  /*overflow: hidden;*/
+  text-align: center;
+  text-shadow: #fff 0 1px 1px;
+  height: 33px;
+  width: 100%;
+  left: 1px;
+  right: 1px;
+  padding-left: 8px;
+  bottom: 23px !important;
 }

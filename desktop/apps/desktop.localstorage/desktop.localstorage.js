@@ -45,8 +45,9 @@ desktop.app.localstorage.removeItem = function removeLocalStorage (key) {
   localStorage.removeItem(desktop.app.localstorage.prefix + key);
 }
 
-desktop.app.localstorage.load = function loadLocalStorage (param, next) {
-  // boot all localstorage data into local settings
+desktop.app.localstorage.sync = function syncSettings () {
+  // syncs all data from localStorage into `desktop.settings`
+  // attempts to JSON.parse() each localStorage value if possible
   for (var key in localStorage){
     if (key.search(desktop.app.localstorage.prefix) !== -1) {
       let param = key.replace(desktop.app.localstorage.prefix, '');
@@ -57,6 +58,10 @@ desktop.app.localstorage.load = function loadLocalStorage (param, next) {
       }
     }
   }
+}
+
+desktop.app.localstorage.load = function loadLocalStorage (param, next) {
+  desktop.app.localstorage.sync();
   next();
 };
 

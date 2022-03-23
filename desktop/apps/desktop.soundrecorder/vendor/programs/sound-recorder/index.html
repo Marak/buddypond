@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Sound Recorder</title>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				border: 0;
+				overflow: hidden;
+				background: var(--ButtonFace);
+			}
+		</style>
+		<link href="../../lib/os-gui/layout.css" rel="stylesheet" type="text/css">
+		<link href="../../lib/os-gui/windows-98.css" rel="stylesheet" type="text/css">
+		<link href="src/sound-recorder.css" rel="stylesheet" type="text/css">
+    <script src="/desktop/assets/js/jquery.js"></script>
+    <script src="/sdk/buddypond.js"></script>
+		<link rel="icon" href="../../images/icons/speaker-16x16.png" sizes="16x16" type="image/png">
+		<link rel="icon" href="../../images/icons/speaker-32x32.png" sizes="32x32" type="image/png">
+		<link rel="icon" href="../../images/icons/speaker-48x48.png" sizes="48x48" type="image/png">
+    <style>
+      
+      .sendSoundHolder {
+        width: 100%;
+        text-align: center;
+      }
+      .sendSound {
+        cursor: pointer;
+        border: solid;
+        border-width: 1px;
+        padding: 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        border-radius: 4px;
+        width: 266px;
+      }
+
+      .sendSound:hover {
+        color: #008F11;
+        background-color: #FFF;
+        animation-name: rainbow;
+        animation-duration: 2.1111s;
+        opacity: 0.7;
+        animation-iteration-count: infinite;
+      }
+  
+      .saveSound {
+        cursor: pointer;
+        border: solid;
+        border-width: 1px;
+        padding: 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        border-radius: 4px;
+        width: 266px;
+      }
+
+      .saveSound:hover {
+        color: #008F11;
+        background-color: #FFF;
+        animation-name: rainbow;
+        animation-duration: 2.1111s;
+        opacity: 0.7;
+        animation-iteration-count: infinite;
+      }
+    </style>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+	</head>
+	<body>
+		<script>
+      
+      function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split('&');
+          for (var i = 0; i < vars.length; i++) {
+              var pair = vars[i].split('=');
+              if (decodeURIComponent(pair[0]) == variable) {
+                  return decodeURIComponent(pair[1]);
+              }
+          }
+          console.log('Query variable %s not found', variable);
+      }
+      $(document).on('ready', function(){
+
+        let incomingFileAsUrl = getQueryVariable('src');
+        if (incomingFileAsUrl) {
+          file_open(incomingFileAsUrl)
+        }
+
+        let context = getQueryVariable('context');
+        let type = getQueryVariable('type');
+
+        let uploading = false;
+        $('.sendSound').on('click', function(){
+          buddypond.qtokenid = getQueryVariable('qtokenid')
+          let soundJSON = file
+          if (uploading) {
+            alert('File is already uploading. Is it a large audio file?\n\nWait a few more moments for upload or you may need to close Sound Recorder.');
+            return;
+          }
+          uploading = true;
+          get_wav_file(file, function(blob){
+            var reader = new FileReader();
+            reader.readAsDataURL(blob); 
+            reader.onloadend = function() {
+              var base64data = reader.result;
+              buddypond.sendAudio(type, context, 'I sent Audio', base64data, function(err, data) {
+                uploading = false;
+                if (err) {
+                  alert(err.message);
+                  return;
+                }
+                parent.postMessage('app_soundrecorder_needs_close', '*');
+                console.log('audio was sent');
+              })
+            }
+          })
+        });
+
+        $('.saveSound').on('click', function(){
+          file_save();
+        });
+
+        if (!type || !context) {
+          $('.sendSound').hide();
+        } else {
+          $('.saveSound').hide();
+        }
+
+      });
+			window.onerror = function (msg, url, lineNo, columnNo, error) {
+				var string = msg.toLowerCase();
+				var substring = "script error";
+				if (string.indexOf(substring) > -1) {
+					alert('Script Error: See Browser Console for Detail');
+				} else {
+					alert('Internal application error: ' + msg + '\n\n' + 'URL: ' + url + '\n' + 'Line: ' + lineNo + '\n' + 'Column: ' + columnNo);
+				}
+				return false;
+			};
+		</script>
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/jquery-ui.js"></script>
+		<script src="lib/recorder.js"></script>
+		<script src="lib/buffaudio.js"></script>
+		<script src="../../lib/browserfs.js"></script>
+		<script src="../../src/filesystem-setup.js"></script>
+		<script src="../../lib/os-gui/MenuBar.js"></script>
+		<script src="../../lib/os-gui/$Window.js"></script>
+		<script src="../../src/msgbox.js"></script>
+		<script>defaultMessageBoxTitle = "Sound Recorder";</script>
+		<script src="src/AudioFile.js"></script>
+		<script src="src/WaveDisplay.js"></script>
+		<script src="src/app.js"></script>
+		<script src="src/$app.js"></script>
+		<script src="src/effects.js"></script>
+		<script src="src/menus.js"></script>
+
+
+  <div class="sendSoundHolder">
+    <button class="sendSound">SEND SOUND</button>
+    <button class="saveSound">SAVE SOUND</button>
+    <!--
+      <button class="touchSound">JSsound DID NOT UPDATE CLICK AROUND CANVAS MORE AND TRY CLICKING SEND sound AGAIN</button>
+    -->
+    <!--
+    <br/>
+    Type:
+    <input name="sendSoundContextType" type="text" value="pond"/>
+    Name:
+    <input name="sendSoundContextName" type="text" value="Lily"/>
+    -->
+  </div>
+  
+		<!-- TODO: DRY -->
+		<svg style="position: absolute; pointer-events: none; bottom: 100%;">
+			<defs>
+				<filter id="disabled-inset-filter" x="0" y="0" width="1px" height="1px">
+					<feColorMatrix
+						in="SourceGraphic"
+						type="matrix"
+						values="
+							1 0 0 0 0
+							0 1 0 0 0
+							0 0 1 0 0
+							-2 -2 -2 4 0
+						"
+						result="dark-parts-isolated"
+					/>
+					<feFlood result="shadow-color" flood-color="var(--ButtonShadow)"/>
+					<feFlood result="hilight-color" flood-color="var(--ButtonHilight)"/>
+					<feOffset in="dark-parts-isolated" dx="1" dy="1" result="offset"/>
+					<feComposite in="hilight-color" in2="offset" operator="in" result="hilight-colored-offset"/>
+					<feComposite in="shadow-color" in2="dark-parts-isolated" operator="in" result="shadow-colored"/>
+					<feMerge>
+						<feMergeNode in="hilight-colored-offset"/>
+						<feMergeNode in="shadow-colored"/>
+					</feMerge>
+				</filter>
+			</defs>
+		</svg>
+		<script>
+			// This doesn't actually seem to be a problem in Sound Recorder
+			// but better safe than sorry.
+			window.addEventListener("resize", ()=> {
+				// work around a browser bug in Chrome where
+				// the SVG filter behaves differently based on the INITIAL zoom level
+				// (if you zoom in, the icons get cut off, if you zoom out, the effect is too thick)
+				document.getElementById("disabled-inset-filter").setAttribute("x", "0");
+			});
+		</script>
+	</body>
+</html>

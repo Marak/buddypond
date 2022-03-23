@@ -13,7 +13,12 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks login button, attempt to auth with server
     $('.loginButton').on('click', function(){
-      desktop.app.login.auth($('#buddyname').val());
+      desktop.app.login.auth($('#buddyname').val(), $('#buddypassword').val());
+    });
+
+    // everyone shares the anonymous account!
+    $('.loginAnonButton').on('click', function(){
+      desktop.app.login.auth('anonymous', 'password');
     });
 
     // if user clicks on top left menu, focus on login form
@@ -65,10 +70,10 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
 }
 
-desktop.app.login.auth = function authDesktop (buddyname) {
+desktop.app.login.auth = function authDesktop (buddyname, password) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
-  buddypond.authBuddy(buddyname, $('#buddypassword').val(), function(err, data){
+  buddypond.authBuddy(buddyname, password, function(err, data){
 
     if (err) {
       console.log('err', err, data)

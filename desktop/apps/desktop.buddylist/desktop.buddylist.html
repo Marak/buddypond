@@ -21,21 +21,14 @@
     display: none;
   }
 
-  .buddy_message_text {
-    height: 20px;
-    width: 88%;
-    left: 55px;
-    position: absolute;
-  }
-
   .buddy_message .window_content {
     bottom: 75px;
     /* overflow-y: hidden; */
   }
 
   .chat_send_message_form {
-    float: bottom;
-    width: 92%;
+    width: 100%;
+    display: flex;
   }
 
   .chatMessagesHolder {
@@ -88,17 +81,85 @@
     cursor: pointer;
   }
 
-  .insertBuddySnap {
-    position: absolute;
-    left: 26px;
-    font-size: 20px;
-    padding-top: 3px;
-    cursor: pointer;
+  .chat_area {
+    display: flex;
+    flex-direction: column;
   }
 
+  .buddy_send_message_form {
+    width: 100%;
+    display: flex;
+  }
+
+  .buddy_message_form>form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .buddy_emoji_picker {
+    position: static !important;
+    margin: auto auto auto 0.5em;
+  }
+
+  .buddy_send_message_form>form .buddy_message_text {
+    height: 2em;
+    width: 100%;
+    margin-right: 0.2em;
+    resize: none;
+  }
+
+  .buddy_message .window_content {
+    bottom: 75px;
+    /* overflow-y: hidden; */
+  }
+
+  .sendBuddyMessage {
+    float: right;
+    padding: 0px;
+    margin: 0 1em 0 0;
+    height: 81%;
+    width: 80px;
+  }
+
+  .insertBuddySnap {
+    font-size: 20px;
+    padding-right: 5px;
+    padding-top: 9px;
+    cursor: pointer;
+  }
   .insertBuddySnap:hover {
     opacity: 0.44;
   }
+
+  .insertBuddyPaint {
+    padding-right: 5px;
+    padding-top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .insertBuddyPaint:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
+  }
+
+  .insertBuddySound {
+    padding-right: 5px;
+    padding-top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .insertBuddySound:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
+  }
+
+
 
 </style>
 
@@ -205,17 +266,16 @@
       </div>
     </div>
     <div class="abs window_bottom_chat">
-      <div class="chat_send_message_form">
-        <form class="sendMessageForm" method="POST" action="#">
+      <div class="buddy_send_message_form">
+        <form method="POST" action="" align="right" class="buddy_send_message_form">
           <span class="insertBuddySnap" title="Insert Snap">📷</span>
-          <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"></textarea>
-          <span class="emoji_picker_0 emojiPicker emojiTitleBar">😀</span>
-          <span class="insertBuddySnap" title="Insert Snap">📷</span>
-          <input name="buddy_message_from"  class="buddy_message_from" type="hidden"/>
-          <input name="buddy_message_to"  class="buddy_message_to" type="hidden"/>
-          <!--
-          <button class="sendBuddyMessage desktopButton" type="submit">Send Message</button>
-            -->
+          <img title="Insert Audio" class="insertBuddySound" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>                 <img title="Insert Paint" class="insertBuddyPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <span title="Insert Emoji" class="buddy_emoji_picker_0 buddy_emoji_picker emojiPicker emojiTitleBar">😀</span><br/><br/>
+          <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0" rows="1"
+            cols="44"></textarea>
+          <button name="buddy_message_submit" class="sendBuddyMessage">Send</button>
+          <input name="buddy_message_from" class="buddy_message_from" type="hidden" />
+          <input name="buddy_message_to" class="buddy_message_to" type="hidden" />
         </form>
       </div>
     </div>

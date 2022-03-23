@@ -1,3 +1,4 @@
+let update_session_from_location_hash;
 
 (function(){
 
@@ -380,7 +381,7 @@
 	var generate_session_id = function(){
 		return (Math.random()*Math.pow(2, 32)).toString(16).replace(".", "");
 	};
-	var update_session_from_location_hash = function(e){
+	update_session_from_location_hash = function(e){
 		// TODO: should #load: be separate from #session:/#local:,
 		// and be able to load *into* a session, rather than just start one?
 		// well I guess loading into a session wouldn't be that helpful if it makes a new image anyways

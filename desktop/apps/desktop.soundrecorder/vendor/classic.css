@@ -1,0 +1,268 @@
+
+.desktop {
+	background: var(--Background);
+}
+.taskbar {
+	outline: 1px solid var(--ButtonLight);
+	border-top: 1px solid var(--ButtonHilight);
+	background: var(--ButtonFace);
+	color: var(--ButtonText);
+}
+.taskbar-divider {
+	border-left: 1px solid var(--ButtonShadow);
+	border-right: 1px solid var(--ButtonHilight);
+}
+.taskbar-time {
+	font-family: sans-serif;
+	font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+	font-size: 12px;
+}
+.start-menu-titlebar {
+	/* background-image: url("images/start-menu-side.png"); */
+	/* background-image: url("images/start-menu-side-98-js.png"); */
+	background-image: url("images/start-menu-side-98-js-alt.png");
+	background-repeat: no-repeat;
+	background-position: bottom left;
+	background-color: #000080;
+}
+.start-menu li a,
+.start-menu .back-link {
+	display: block;
+	padding: 5px 0;
+	color: blue !important; /* regardless of :visited */
+}
+.start-menu li a:before,
+.start-menu .back-link:before,
+.the-thing-heading:before {
+	content: "»";
+	text-decoration: none;
+	display: inline-block;
+	margin-right: 5px;
+}
+.start-menu .back-link:before {
+	content: "«"
+}
+.the-thing-heading {
+	/* font-size: 1em; */
+}
+.windows-cant-do-it-you-can {
+	margin-top: 2em;
+	/* background: white;
+	padding: 5px;
+	border: inset 1px; */
+}
+.task.selected {
+	font-weight: bold;
+}
+.desktop-icon {
+	position: absolute;
+	outline: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.folder-view:focus {
+	outline: none;
+}
+.folder-view:not([data-view-mode="DESKTOP"]):not([data-view-mode="LARGE_ICONS"]) .desktop-icon {
+	display: flex;
+	flex-direction: row;
+	width: 150px;
+	height: 17px;
+    align-items: center;
+}
+
+.folder-view[data-view-mode="DESKTOP"] .desktop-icon,
+.folder-view[data-view-mode="LARGE_ICONS"] .desktop-icon {
+	width: 75px;
+	height: 75px;
+}
+.desktop-icon .title {
+	font-family: sans-serif;
+	font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+	/*font-size: 10px;*/
+	font-size: 8pt;
+	background: var(--Background);
+	color: white;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+    justify-content: center;
+}
+.folder-view[data-view-mode="DESKTOP"] .desktop-icon .title,
+.folder-view[data-view-mode="LARGE_ICONS"] .desktop-icon .title {
+	margin-top: 5px;
+}
+.folder-view:not([data-view-mode="DESKTOP"]):not([data-view-mode="LARGE_ICONS"]) .desktop-icon .title {
+	text-align: start;
+    justify-content: start;
+	white-space: nowrap;
+	height: 17px;
+	line-height: 17px;
+	padding-right: 2px;
+	padding-left: 3px;
+}
+
+.folder-view:focus-within .desktop-icon.selected:not(.renaming) .title {
+	background: var(--Hilight);
+	color: var(--HilightText);
+}
+.folder-view:focus-within .desktop-icon.focused:not(.renaming) .title::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	border: 1px dotted #ffffff;
+	mix-blend-mode: exclusion;
+}
+.folder-view .desktop-icon.renaming .title {
+	border: 1px solid var(--ButtonText); /* @TODO: is this the right theme color? */
+}
+.desktop-icon .title input {
+	font: inherit;
+	outline: none;
+	border: none; /* using border of the .title */
+	height: 17px; /* @TODO: auto-size */
+	line-height: 13px; /* 17px-4px so the selection highlight doesn't abut the border (height is also important) */
+	box-sizing: border-box;
+	background: var(--Window);
+	color: var(--WindowText);
+	text-align: inherit;
+	padding: 0;
+	align-self: center;
+}
+.desktop-icon .icon-wrapper .selection-effect {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	mask-image: var(--icon-image);
+	-webkit-mask-image: var(--icon-image);
+	background: var(--Hilight);
+	opacity: 0.5;
+}
+.folder-view:focus-within .desktop-icon.selected .icon-wrapper .selection-effect {
+	display: block;
+}
+.desktop-icon .icon-wrapper {
+	position: relative;
+}
+.desktop-icon.shortcut .icon-wrapper:after {
+	content: var(--shortcut-icon, url("images/icons/shortcut-32x32.png"));
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.folder-view .marquee {
+	border: 1px dotted #ffffff;
+	box-sizing: border-box;
+	mix-blend-mode: exclusion;
+	/* TODO: fallback for browsers that don't support mix-blend-mode (something like #FF7F7F)... Edge doesn't support @supports either :/ */
+	z-index: 1;
+}
+
+.help-window .item {
+	font-family: 'Segoe UI', sans-serif;
+	font-size: 12px;
+	padding: 0 2px;
+	position: relative; /* for ::after */
+}
+.help-window .item:hover {
+	text-decoration: underline;
+	color: #0000FF;
+	cursor: pointer;
+}
+.help-window li:before {
+	background-image: url("../../images/help-icons.png");
+}
+.help-window:not(.focused) .item.selected {
+	background-color: var(--ButtonFace);
+	color: var(--ButtonText); /* ?? */
+}
+.help-window.focused .item.selected {
+	background-color: var(--Hilight);
+	color: var(--HilightText);
+	/* @TODO: separate focus state of the item */
+	outline: 1px dotted black;
+	outline-offset: -1px;
+}
+/* @TODO: separate focus state of the item; while mouse down, the main highlight does not move with the arrow keys but this does, among other differences */
+/* .help-window.focused .item.selected::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border: 1px dotted white;
+	mix-blend-mode: difference;
+} */
+
+.window-switcher {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 350px;
+	z-index: 1000;
+	user-select: none;
+}
+.window-switcher * {
+	pointer-events: none;
+}
+.window-switcher-list {
+	display: flex;
+    margin: 0;
+    padding: 0;
+	flex-direction: row;
+	flex-wrap: wrap;
+    justify-content: start;
+	max-width: calc(43px * 7);
+	margin-top: 17px;
+	margin-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.window-switcher-item {
+	display: flex;
+	width: 43px;
+	height: 43px;
+	box-sizing: border-box;
+	border: 2px solid transparent;
+	padding: 0;
+	outline: none;
+}
+.window-switcher-item.active {
+	border: 2px solid var(--Hilight);
+}
+.window-switcher-item img {
+	margin: 3px;
+}
+.window-switcher-window-name {
+    align-self: stretch;
+	font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+	font-size: 10pt; /* not sure about the font-size/line-height */
+	line-height: 16px;
+	font-weight: bold;
+	height: 24px; /* should be 25px, but the border is getting screwed up if this isn't an even number */
+	box-sizing: border-box;
+	padding: 2px;
+	margin: 8px 12px;
+	margin-top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+* {
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+
+.menu-hotkey {
+	/* TODO: remove once this is in os-gui */
+	text-decoration-skip: none;
+    text-decoration-skip-ink: none;
+}

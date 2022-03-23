@@ -53,6 +53,8 @@ JQDX.window_resize = function window_resize (el) {
   // Nearest parent window.
   var win = $(el).closest('div.window');
 
+  // TODO: App.resizeWindow() ??
+
   // Is it maximized already?
   if (win.hasClass('window_full')) {
     // Restore window position.
@@ -139,6 +141,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     }
   });
 
+  d.on('click', 'a.openSound', function(ev) {
+    let id = $(this).html()
+    let soundUrl = $(this).data('soundurl')
+    desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
+  });
+
   // Relative or remote links?
   d.on('click', 'a', function(ev) {
     var url = $(this).attr('href');
@@ -179,6 +187,21 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     JQDX.clear_active();
     $(this).addClass('active');
   });
+
+
+  // Click remix icon to remix images in Paint App
+  d.on('mousedown', 'img.remixPaint, img.remixMeme', function() {
+    let form = $(this).parent();
+    let url = $('.image', form).attr('src');
+    let type = $(this).data('type');
+    let context = $(this).data('context');
+    desktop.set('paint_active_type', type);
+    desktop.set('paint_active_context', context);
+    desktop.set('paint_active_url', url);
+    // TODO: use params here to openWindow instead of localstorage?
+    JQDX.openWindow('paint');
+  });
+
 
   // Respond to double-click.
   d.on('dblclick', 'a.icon', function() {

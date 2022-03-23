@@ -28,8 +28,6 @@ desktop.app.pond.load = function loadPond (params, next) {
       desktop.ui.windowPool['pond_message'].push(window_id)
     }
 
-    // $('.pondMessagesHolder').hide();
-
     $('#window_pond').css('width', 300);
     $('#window_pond').css('height', 340);
     $('#window_pond').css('left', 33);
@@ -89,6 +87,33 @@ desktop.app.pond.load = function loadPond (params, next) {
       let context = $('.pond_message_to', form).val();
       JQDX.showWindow('mirror', { type:'pond', context: context});
     });
+
+    $('.insertPaint').on('click', function(){
+      let form = $(this).parent();
+      let to;
+      if (form.hasClass('pond_send_message_form')) {
+        to = $('.pond_message_to', form).val();
+        desktop.set('paint_active_type', 'pond');
+        desktop.set('paint_active_context', to);
+      } else {
+        to = $('.buddy_message_to', form).val();
+        desktop.set('paint_active_type', 'buddy');
+        desktop.set('paint_active_context', to);
+      }
+      JQDX.openWindow('paint');
+    });
+
+    $('.insertSound').on('click', function(){
+      let form = $(this).parent();
+      let to;
+      if (form.hasClass('pond_send_message_form')) {
+        to = $('.pond_message_to', form).val();
+      } else {
+        to = $('.buddy_message_to', form).val();
+      }
+      JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
+    });
+
     next();
   });
 
@@ -202,10 +227,16 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     html[windowId] = html[windowId] || '';
 
     let str = '';
+    let geoFlag = '';
+    if (message.location) {
+      if (message.location !== 'outer space') {
+        geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
+      }
+    }
     if (message.from === buddypond.me) {
-      str += '<span class="datetime">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.pond.lastNotified > 30000) {
@@ -224,23 +255,60 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     }
 
     // take the clean text that was just rendered for the last message and check for special embed links
+    // TODO: smart links for memes
+    // TODO: smart links for snaps links
+    // TODO: smart links for audio links
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
 
     // replace cards
     if (message.card) {
       if (message.card.type === 'snaps') {
-        $('.chat_messages', windowId).append(`
-         <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
-        `);
+        message.card.snapURL = window.origin + '/' + message.card.snapURL;
+        let arr = message.card.snapURL.split('.');
+        let ext = arr[arr.length -1];
+        if (ext === 'gif') {
+          $('.chat_messages', windowId).append(`
+           <span class="message">
+            <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+            <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
+           </span>
+           <br/>
+          `);
+        } else {
+          $('.chat_messages', windowId).append(`
+           <span class="message">
+            <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+            <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
+           </span>
+           <br/>
+          `);
+        }
         // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
         desktop.messages._processedCards.push(message.uuid);
       }
 
-      if (message.card.type === 'meme'){
+      if (message.card && message.card.type === 'meme') {
+        message.card.filename = window.origin + '/memes/' + message.card.filename;
         $('.chat_messages', windowId).append(`
-         <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+         <span class="message">
+          <img class="remixMeme" title="Remix this Meme" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/>
+         </span>
+         <br/>
         `);
+        desktop.messages._processed.push(message.uuid);
+        return;
       }
+
+      if (message.card && message.card.type === 'audio') {
+        message.card.soundURL = window.origin + '/' + message.card.soundURL;
+        $('.message', windowId).last().append(`
+          <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
+        `);
+        desktop.messages._processed.push(message.uuid);
+        return;
+      }
+
     }
     desktop.messages._processed.push(message.uuid);
   });

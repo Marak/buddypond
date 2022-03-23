@@ -21,6 +21,10 @@ desktop.app.videochat.load = function loadVideochat () {
     desktop.app.videochat.loaded = true;
 
     $('.startVideoCall').on('click', function(){
+      if (buddypond.me === 'anonymous') {
+        alert('You must create an account. anonymous cannot make video calls');
+        return;
+      }
       let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
       // TODO: do not attempt to call buddies who are currently offline
       if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {

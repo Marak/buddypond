@@ -67,23 +67,29 @@ function get_FileList_from_file_select_dialog(callback){
 	});
 }
 
+let onlyOnce = 0;
+
 function open_from_Image(img, callback, canceled){
-	are_you_sure(function(){
-		// TODO: shouldn't open_from_* start a new session?
+	// TODO: shouldn't open_from_* start a new session?
 
-		this_ones_a_frame_changer();
+	this_ones_a_frame_changer();
 
-		reset_file();
-		reset_colors();
-		reset_canvas(); // (with newly reset colors)
-		reset_magnification();
+	reset_file();
+	reset_colors();
+	reset_canvas(); // (with newly reset colors)
+	reset_magnification();
 
-		ctx.copy(img);
-		detect_transparency();
-		$canvas_area.trigger("resize");
+	ctx.copy(img);
+	detect_transparency();
+	$canvas_area.trigger("resize");
+  setTimeout(function(){
+    if (onlyOnce < 3) {
+      onlyOnce++;
+    	update_session_from_location_hash();
+    }
+  }, 33)
 
-		callback && callback();
-	}, canceled);
+	callback && callback();
 }
 function load_image_from_URI(uri, callback){
 	fetch(uri)

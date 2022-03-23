@@ -39,6 +39,14 @@ desktop.app.settings.load = function loadsettings (params, next) {
       desktop.set('tts_voice_index', 0);
     }
 
+    if (typeof desktop.settings.mirror_selected_camera_device_label === 'undefined') {
+      desktop.set('mirror_selected_camera_device_label', false);
+    }
+
+    if (typeof desktop.settings.mirror_snaps_camera_countdown_enabled === 'undefined') {
+      desktop.set('mirror_snaps_camera_countdown_enabled', true);
+    }
+
     if (typeof desktop.settings.wallpaper_name === 'undefined') {
       desktop.set('wallpaper_name', 'matrix');
     }
@@ -46,6 +54,11 @@ desktop.app.settings.load = function loadsettings (params, next) {
     if (typeof desktop.settings.wallpaper_color === 'undefined') {
       desktop.set('wallpaper_color', '#008F11');
     }
+
+    if (typeof desktop.settings.geo_flag_hidden === 'undefined') {
+      desktop.set('geo_flag_hidden', false);
+    }
+
     //
     // END SET DEFAULTS FOR ALL DESKTOP SETTINGS
     //

@@ -1,13 +1,56 @@
-
+- add loading gif for snaps ( preloaded )
+- show alert if try to send paint when not logged in
+- ensure desktop settings form wont crash app
+- move call button to side of text area?
 - add 1000 memes to memepool
 - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+- fix css for chat window text areas ( currently not matching )
+- hide merlin by default, he's too large
+- detect slow connection speeds and adjust merlin?
+- add speed test? is that even possible?
+- add ability to drag photo
+- paint exit button should actually close window
+- add spell for making user unable to say, cause echo back
+- increase chat history length for ponds and buddies ( check if images count twice? )
+- ensure rainbow tv is preloaded for mirror
+- dont show camera select source when previewing snap ( filters / switch wont work )
+- when setting camera, use localStorage to set default
+  - ensure that rainbow loading plays for at least 2-3 seconds
+- add mode confirmingApproving snap ( for hiding controls toggle )
+  - add button on that toggles between preview and live camera ( single button snap control )
+- ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
+Add replies / comments to messages ( discord style? )
+
+
+- add geoip flags and memeflags
+  - message object needs to save ip address
+  - override geoip with memeflag if user send message with flag ( no server saves on profile? ), local settings only 
+  - start thinking about multiple logins from multiple locations same account
+
+- consider replacing emoji area with https://github.com/mervick/emojionearea
+
+v2 Snaps
+  - resize live camera preview to same size as preview
+  - add slider bar for changing delay / capture speed between frames ( same same )
+  - add checkbox for Play Countdown Timer
+  - issue with flipped image and paints shared css class...
+
+v1 Image Remixer
+  - canvas should be able to load image from localstorage into canvas
+  X - jspaint app
+  - add 
+  - add ability to send jspaint localstorage as snap
+  - add remix button to open image in jspaint
+v2 
+  - png out from jspaint
+  - convert single frame gif to jspaint
+  - if already png no convert?
+
+Audio Recorder
+  - audio effects / modulation
+  - save and send audio the same way gifs are saved
 
 - dont allow icons to be hidden on smaller windows?
-- fix joining ponds, figure out openWindow problem???
-  - race condition with login success?
-  
-
-- mirror should close camera on window close 
 - add openinoious appicus spell for helping open app remotely
   - required to open hidden apps / non-installed apps
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
@@ -20,11 +63,6 @@
     - not hard...i think...
 
 - complete v1 camera app
-
-YOUTUBE LIVE EMBED
-
-  - blocked on `App.VideoPlayer` since we can't inject anymore youtube API embeds
-  - need instaniatable youtube window with custom playlist / source
 
 Camera
   X - camera switching code
@@ -49,17 +87,35 @@ Camera
 
 PUSHED to post launch
 
+  - refactor dynamic windowing system ( buddy_chat and pond_pond )
   - create icons for data pulse ( drop in and drop out)
   - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
-  - cleanup webrtc connection / signal messages in desktop console log
   - fix scroll top issue with console output ( scroll to bottom like chat )
 
-  - remember icon position in localstorage, use if available
-  - cleanup codebase ( documentation and DRY )
   - create icons for connected / disconnected
 
 - youtube playrandom video should not play the same video twice ( check N times before quit )
 - youtube player should keep temporary play history for back button ( easy patch )
+
+
+X - add some safety around tts stacks ( have limit so not 10000 etc )
+  X - will not say messages older then 10 seconds
+X - card data missing for memes in buddy chat window ( not pond )
+X - add ability to send tts setting on messages
+X - fix localized time ( possibly needs server update )
+
+X  - remember icon position in localstorage, use if available
+X  - cleanup codebase ( documentation and DRY )
+
+X - fix joining ponds, figure out openWindow problem???
+  X - race condition with login success?
+
+X v1 YOUTUBE LIVE EMBED
+
+X  - blocked on `App.VideoPlayer` since we can't inject anymore youtube API embeds
+X  - need instaniatable youtube window with custom playlist / source
+X  - cleanup webrtc connection / signal messages in desktop console log
+X - mirror should close camera on window close 
 
 X - Snaps v1 launch
 X adjust speed before send

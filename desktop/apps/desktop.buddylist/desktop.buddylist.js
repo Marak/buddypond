@@ -157,10 +157,26 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       e.target.classList.add('activeTextArea');
     });
 
+
+
     $('.insertBuddySnap').on('click', function (e) {
       var form = $(this).parent();
       let context = $('.buddy_message_to', form).val();
       JQDX.showWindow('mirror', { type:'buddy', context: context});
+    });
+
+    $('.insertBuddySound').on('click', function (e) {
+      var form = $(this).parent();
+      let context = $('.buddy_message_to', form).val();
+      JQDX.openWindow('soundrecorder', { type:'buddy', context: context});
+    });
+
+    $('.insertBuddyPaint').on('click', function(){
+      let form = $(this).parent();
+      let to = $('.buddy_message_to', form).val();
+      desktop.set('paint_active_type', 'buddy');
+      desktop.set('paint_active_context', to);
+      JQDX.openWindow('paint');
     });
 
     try {
@@ -575,10 +591,28 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     desktop.app.tts.processMessage(message);
 
     // replace cards
+    
+    
     if (message.card && message.card.type === 'snaps') {
-      $('.chat_messages', windowId).append(`
-       <span class="message"><img id="${message.uuid}" class="snapsImage" src="${message.card.snapURL}"/></span><br/>
-      `);
+      message.card.snapURL = window.origin + '/' + message.card.snapURL;
+      let arr = message.card.snapURL.split('.');
+      let ext = arr[arr.length -1];
+      if (ext === 'gif') {
+        $('.chat_messages', windowId).append(`
+         <span class="message">
+          <img class="remixPaint" title="Remix this Snap" data-type="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
+        </span><br/>
+        `);
+      } else {
+        $('.chat_messages', windowId).append(`
+         <span class="message">
+          <img class="remixPaint" title="Remix this Paint" data-type="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
+         </span>
+         <br/>
+        `);
+      }
       // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
       desktop.messages._processedCards.push(message.uuid);
       desktop.messages._processed.push(message.uuid);
@@ -586,19 +620,29 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     }
 
     if (message.card && message.card.type === 'meme') {
+      message.card.filename = window.origin + '/memes/' + message.card.filename;
       $('.chat_messages', windowId).append(`
-       <span class="message"><strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme" src="memes/${message.card.filename}"/></span><br/>
+       <span class="message">
+        <img class="remixMeme" title="Remix this Meme" data-type="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+        <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/></span>
+       <br/>
       `);
       desktop.messages._processed.push(message.uuid);
       return;
     }
 
     let str = '';
+    let geoFlag = '';
+    if (message.location) {
+      if (message.location !== 'outer space') {
+        geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
+      }
+    }
 
     if (message.from === buddypond.me) {
-      str += '<span class="datetime message">' + message.ctime + ' </span>' + message.from + ': <span class="message"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime message">' + message.ctime + ' </span><span class="purple">' + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.buddylist.lastNotified > 1600) {
@@ -610,6 +654,13 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
     $('.message', windowId).last().text(message.text)
+
+    if (message.card && message.card.type === 'audio') {
+      message.card.soundURL = window.origin + '/' + message.card.soundURL;
+      $('.message', windowId).last().append(`
+        <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
+      `);
+    }
 
     let currentlyDisplayedMessages = $('.chatMessage', windowId);
     // console.log('currentlyDisplayedMessages', windowId, currentlyDisplayedMessages.length)
