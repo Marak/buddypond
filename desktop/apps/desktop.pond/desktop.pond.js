@@ -90,17 +90,28 @@ desktop.app.pond.load = function loadPond (params, next) {
 
     $('.insertPaint').on('click', function(){
       let form = $(this).parent();
-      let to = $('.pond_message_to', form).val();
+      let to;
       if (form.hasClass('pond_send_message_form')) {
-        let to = $('.pond_message_to', form).val();
+        to = $('.pond_message_to', form).val();
         desktop.set('paint_active_type', 'pond');
         desktop.set('paint_active_context', to);
       } else {
-        let to = $('.buddy_message_to', form).val();
+        to = $('.buddy_message_to', form).val();
         desktop.set('paint_active_type', 'buddy');
         desktop.set('paint_active_context', to);
       }
       JQDX.openWindow('paint');
+    });
+
+    $('.insertSound').on('click', function(){
+      let form = $(this).parent();
+      let to;
+      if (form.hasClass('pond_send_message_form')) {
+        to = $('.pond_message_to', form).val();
+      } else {
+        to = $('.buddy_message_to', form).val();
+      }
+      JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
     });
 
     next();
@@ -244,6 +255,9 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     }
 
     // take the clean text that was just rendered for the last message and check for special embed links
+    // TODO: smart links for memes
+    // TODO: smart links for snaps links
+    // TODO: smart links for audio links
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
 
     // replace cards
@@ -257,7 +271,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
            <span class="message">
             <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
             <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
-           </span><br/>
+           </span>
+           <br/>
           `);
         } else {
           $('.chat_messages', windowId).append(`
@@ -277,8 +292,18 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         $('.chat_messages', windowId).append(`
          <span class="message">
           <img class="remixMeme" title="Remix this Meme" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
-          <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/></span>
+          <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/>
+         </span>
          <br/>
+        `);
+        desktop.messages._processed.push(message.uuid);
+        return;
+      }
+
+      if (message.card && message.card.type === 'audio') {
+        message.card.soundURL = window.origin + '/' + message.card.soundURL;
+        $('.message', windowId).last().append(`
+          <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play Recording <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
         `);
         desktop.messages._processed.push(message.uuid);
         return;

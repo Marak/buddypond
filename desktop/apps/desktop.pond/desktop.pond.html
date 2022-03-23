@@ -90,6 +90,21 @@
     cursor: pointer;
   }
 
+  .insertSound {
+    padding-right: 5px;
+    padding-top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .insertSound:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
+  }
+
+
 </style>
 <div id="window_pond" class="abs window pond_message" data-window-index="0">
   <div class="abs window_inner">
@@ -166,9 +181,9 @@
       <div class="abs window_bottom_chat">
         <div class="pond_send_message_form">
           <form method="POST" action="" align="right" class="pond_send_message_form">
-            <span class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span><br/><br/>
             <span class="insertSnap" title="Insert Snap">📷</span>
-            <img title="Insert Paint" class="insertPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+            <img title="Insert Audio" class="insertSound" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>                      <img title="Insert Paint" class="insertPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+            <span title="Insert Emoji" class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span><br/><br/>
             <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
               cols="44"></textarea>
             <button name="pond_message_submit" class="sendPondMessage">Send</button>

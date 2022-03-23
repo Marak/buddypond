@@ -157,10 +157,18 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       e.target.classList.add('activeTextArea');
     });
 
+
+
     $('.insertBuddySnap').on('click', function (e) {
       var form = $(this).parent();
       let context = $('.buddy_message_to', form).val();
       JQDX.showWindow('mirror', { type:'buddy', context: context});
+    });
+
+    $('.insertBuddySound').on('click', function (e) {
+      var form = $(this).parent();
+      let context = $('.buddy_message_to', form).val();
+      JQDX.openWindow('soundrecorder', { type:'buddy', context: context});
     });
 
     $('.insertBuddyPaint').on('click', function(){
@@ -646,6 +654,13 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
     $('.message', windowId).last().text(message.text)
+
+    if (message.card && message.card.type === 'audio') {
+      message.card.soundURL = window.origin + '/' + message.card.soundURL;
+      $('.message', windowId).last().append(`
+        <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play Recording <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
+      `);
+    }
 
     let currentlyDisplayedMessages = $('.chatMessage', windowId);
     // console.log('currentlyDisplayedMessages', windowId, currentlyDisplayedMessages.length)

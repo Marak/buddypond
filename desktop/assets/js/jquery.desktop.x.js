@@ -53,6 +53,8 @@ JQDX.window_resize = function window_resize (el) {
   // Nearest parent window.
   var win = $(el).closest('div.window');
 
+  // TODO: App.resizeWindow() ??
+
   // Is it maximized already?
   if (win.hasClass('window_full')) {
     // Restore window position.
@@ -132,6 +134,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let id = $(this).html()
     let videoId = $(this).data('videoid')
     desktop.ui.openWindow('interdimensionalcable', { videoId: videoId });
+  });
+
+  d.on('click', 'a.openSound', function(ev) {
+    let id = $(this).html()
+    let soundUrl = $(this).data('soundurl')
+    desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
   });
 
   // Relative or remote links?

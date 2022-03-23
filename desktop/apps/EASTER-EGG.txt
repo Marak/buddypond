@@ -1,5 +1,9 @@
 Ideas for community apps:
 
+- Notepad App
+  - https://98.js.org/programs/notepad/
+  - use localstorage to save notes
+
 - Boss Button
   - Goes full screen quickly with some work looking image
 
@@ -14,7 +18,12 @@ Ideas for community apps:
   - https://github.com/mtevans/SkiFree
   - https://github.com/nmrugg/stockfish.js/
   - https://github.com/conorbailey90/JS-Connect-Four
-  
+
+- RSS Reader App
+  - uses localStorage to save preferences and feeds
+  - uses AJAX to request RSS over web
+  - does not need buddypond backend
+
 - Wallpaper Manager
   - user contributed wallpapers
   - custom canvas animations

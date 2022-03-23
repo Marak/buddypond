@@ -1099,3 +1099,9 @@ iframe {
   height: 12px;
   padding: 3px;
 }
+
+.playSoundIcon {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
