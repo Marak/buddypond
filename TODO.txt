@@ -1,21 +1,21 @@
+For contributions, please first see: https://github.com/Marak/buddypond/issues
+
+We have many issues open and welcomed for first time contributors!
+
+
 Fixes
 
   - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
   - fix scroll top issue with console output ( scroll to bottom like chat )
   - Flags need to show for memes and snaps and sounds, etc
-
   - fix documentations for atob(forbiddenNotes.base64)
   - Update README
   - cards aren't replayed on chat close / open / reload
   - increase chat history length for ponds and buddies ( check if images count twice? )
-  - dont allow icons to be hidden on smaller windows?
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
-  - add UX indactor for ajax disconnect with desktop.log and top right bar
-  - adjust UI of chat messages and windowpopups
+  - adjust UI UX positions on open of chat messages and windowpopups
   - fix mouse events for mobile ( drag not working , double click vs click)
   - dblclick / singleclick for mobile
-  - swap online / offline emoji icons for images
-  - add back button to interdemon cable / mtv / all video players
   - ensure desktop settings form wont crash app
   - move call button to side of text area?
   - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
@@ -23,6 +23,8 @@ Fixes
 
 Features
 
+  - add UX indactor for ajax disconnect with desktop.log and top right bar
+  - add back button to interdemon cable / mtv / all video players
   - add openinoious appicus spell for helping open app remotely
     - required to open hidden apps / non-installed apps
   - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
@@ -59,13 +61,13 @@ Features
 Refactors
 
   - refactor dynamic windowing system ( buddy_chat and pond_pond )
+  - swap online / offline emoji icons for images
+  - dont allow icons to be hidden on smaller windows?
 
-! - ensure rainbow tv is preloaded for mirror
-- send paint should be "SAVE PAINT" if not logged in
-
-- Add replies / comments to messages ( discord style? )
-
-? - add min display time to loading gifs ( to avoid flicker )
+  - send paint should be "SAVE PAINT" if not logged in
+  - Add replies / comments to messages ( discord style? )
+  ! - ensure rainbow tv is preloaded for mirror
+  ? - add min display time to loading gifs ( to avoid flicker )
 
 Apps
 
