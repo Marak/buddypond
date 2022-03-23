@@ -303,7 +303,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       if (message.card && message.card.type === 'audio') {
         message.card.soundURL = window.origin + '/' + message.card.soundURL;
         $('.message', windowId).last().append(`
-          <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play Recording <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
+          <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
         `);
         desktop.messages._processed.push(message.uuid);
         return;

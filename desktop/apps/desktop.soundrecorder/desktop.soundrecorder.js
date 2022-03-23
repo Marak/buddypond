@@ -18,7 +18,20 @@ desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) 
       desktop.set('soundrecorder_active_type', 'pond');
       desktop.set('soundrecorder_active_context', 'Lily');
     }
-    
+
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+    // Listen to message from child window
+    eventer(messageEvent,function(e) {
+        var key = e.message ? "message" : "data";
+        var data = e[key];
+        if (data === 'app_soundrecorder_needs_close') {
+          JQDX.closeWindow('#window_soundrecorder');
+        }
+    },false);
+
     next();
   });
 };
@@ -46,7 +59,6 @@ desktop.app.soundrecorder.openWindow = function openWindow (params) {
   }
 
   if (params.soundUrl) {
-    // desktop.set('paint_send_active', false);
     $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?qtokenid=${buddypond.qtokenid}${soundUrlQueryParam}${type}${context}`);
   } else {
     $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?qtokenid=${buddypond.qtokenid}${type}${context}`);
