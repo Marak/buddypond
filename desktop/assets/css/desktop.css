@@ -750,9 +750,6 @@ a:hover {
 }
 
 .emojiPicker {
-  position: absolute;
-  left: 5px;
-  top: 5px;
 }
 
 .emojiPicker:hover {
@@ -1104,4 +1101,19 @@ iframe {
   width: 15px;
   height: 15px;
   cursor: pointer;
+}
+
+.window_bottom_chat {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  /*overflow: hidden;*/
+  text-align: center;
+  text-shadow: #fff 0 1px 1px;
+  height: 33px;
+  width: 100%;
+  left: 1px;
+  right: 1px;
+  padding-left: 8px;
+  bottom: 23px !important;
 }
