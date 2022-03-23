@@ -108,7 +108,7 @@
             reader.readAsDataURL(blob); 
             reader.onloadend = function() {
               var base64data = reader.result;
-              buddypond.sendAudio(type, context, 'I sent a Sound:', base64data, function(err, data) {
+              buddypond.sendAudio(type, context, 'I sent Audio', base64data, function(err, data) {
                 parent.postMessage('app_soundrecorder_needs_close', '*');
                 console.log('audio was sent');
               })

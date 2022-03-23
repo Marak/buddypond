@@ -642,7 +642,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     if (message.from === buddypond.me) {
       str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.buddylist.lastNotified > 1600) {
@@ -658,7 +658,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     if (message.card && message.card.type === 'audio') {
       message.card.soundURL = window.origin + '/' + message.card.soundURL;
       $('.message', windowId).last().append(`
-        <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play  <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
+        <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
       `);
     }
 

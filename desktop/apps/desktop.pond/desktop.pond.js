@@ -236,7 +236,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     if (message.from === buddypond.me) {
       str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
-      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ':</span><span class="message purple"></span><br/>';
+      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.pond.lastNotified > 30000) {
