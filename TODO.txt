@@ -1,122 +1,195 @@
-- add loading gif for snaps ( preloaded )
-- show alert if try to send paint when not logged in
-- ensure desktop settings form wont crash app
-- move call button to side of text area?
-- add 1000 memes to memepool
-- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
-- fix css for chat window text areas ( currently not matching )
-- hide merlin by default, he's too large
-- detect slow connection speeds and adjust merlin?
-- add speed test? is that even possible?
-- add ability to drag photo
-- paint exit button should actually close window
-- add spell for making user unable to say, cause echo back
-- increase chat history length for ponds and buddies ( check if images count twice? )
-- ensure rainbow tv is preloaded for mirror
-- dont show camera select source when previewing snap ( filters / switch wont work )
-- when setting camera, use localStorage to set default
-  - ensure that rainbow loading plays for at least 2-3 seconds
-- add mode confirmingApproving snap ( for hiding controls toggle )
-  - add button on that toggles between preview and live camera ( single button snap control )
-- ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
-Add replies / comments to messages ( discord style? )
+Fixes
 
-
-- add geoip flags and memeflags
-  - message object needs to save ip address
-  - override geoip with memeflag if user send message with flag ( no server saves on profile? ), local settings only 
-  - start thinking about multiple logins from multiple locations same account
-
-- consider replacing emoji area with https://github.com/mervick/emojionearea
-
-v2 Snaps
-  - resize live camera preview to same size as preview
-  - add slider bar for changing delay / capture speed between frames ( same same )
-  - add checkbox for Play Countdown Timer
-  - issue with flipped image and paints shared css class...
-
-v1 Image Remixer
-  - canvas should be able to load image from localstorage into canvas
-  X - jspaint app
-  - add 
-  - add ability to send jspaint localstorage as snap
-  - add remix button to open image in jspaint
-v2 
-  - png out from jspaint
-  - convert single frame gif to jspaint
-  - if already png no convert?
-
-Audio Recorder
-  - audio effects / modulation
-  - save and send audio the same way gifs are saved
-
-- dont allow icons to be hidden on smaller windows?
-- add openinoious appicus spell for helping open app remotely
-  - required to open hidden apps / non-installed apps
-- spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
-- add away / watching status based on client is visible API
-- play sound alert if buddypond.me is mentioned in chat
-- add friend requests to automatons that autoaccept
-
-1/2 - add mute / desktop volume control to top nav
-    - have youtube and soundcloud players respect mute / volume levels
-    - not hard...i think...
-
-- complete v1 camera app
-
-Camera
-  X - camera switching code
-  ! - audio switching code
-  - have ability to add / remove camera share during call, same with screen
-  - add screensharing instead of camera as source
-  - screen share as source code?
-    - await navigator.mediaDevices.getDisplayMedia
-  - add mute buttons
-  X - dont allow video call to offline buddy
-
-- add UX indactor for ajax disconnect with desktop.log and top right bar
-- adjust UI of chat messages and windowpopups
-- fix mouse events for mobile ( drag not working , double click vs click)
-- dblclick / singleclick for mobile
-- swap online / offline emoji icons for images
-- add back button to interdemon cable / mtv / all video players
-
-- add sigils and signets
-  - sigils are for system powers like matrix agent spell casting
-  - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
-
-PUSHED to post launch
-
-  - refactor dynamic windowing system ( buddy_chat and pond_pond )
-  - create icons for data pulse ( drop in and drop out)
   - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
   - fix scroll top issue with console output ( scroll to bottom like chat )
+  - Flags need to show for memes and snaps and sounds, etc
 
+  - fix documentations for atob(forbiddenNotes.base64)
+  - Update README
+  - cards aren't replayed on chat close / open / reload
+  - increase chat history length for ponds and buddies ( check if images count twice? )
+  - dont allow icons to be hidden on smaller windows?
+  - add openinoious appicus spell for helping open app remotely
+    - required to open hidden apps / non-installed apps
+  - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
+  - add away / watching status based on client is visible API
+  - play sound alert if buddypond.me is mentioned in chat
+  - add friend requests to automatons that autoaccept
+      - have youtube and soundcloud players respect mute / volume levels
+      - not hard...i think...
+  - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+  - add UX indactor for ajax disconnect with desktop.log and top right bar
+  - adjust UI of chat messages and windowpopups
+  - fix mouse events for mobile ( drag not working , double click vs click)
+  - dblclick / singleclick for mobile
+  - swap online / offline emoji icons for images
+  - add back button to interdemon cable / mtv / all video players
+  - ensure desktop settings form wont crash app
+  - move call button to side of text area?
+  - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
+  - paint exit button should actually close window
+
+Features
+
+  - clicking on active windows should change context and type
+    - other apps like paint and snaps should use this active context
+    - ensure active context is shown inside paint and recorder app
+  - add YT preview cards to chat for smart links YT
+  - App.SoundRecorder should show context and type when sending
+  - global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
+    - at least mute button should work for YT!
+  - remember seralized desktop state ( windows open / close + x / y positions ... )
+  - switch all file names to fancy btc like hash names
+  - logout should only logout and close chat windows, not close entire app ( better exp )
+  - youtube playrandom video should not play the same video twice ( check N times before quit )
+  - youtube player should keep temporary play history for back button ( easy patch )
+  - add sigils and signets
+    - sigils are for system powers like matrix agent spell casting
+    - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
+  - create icons for data pulse ( drop in and drop out)
   - create icons for connected / disconnected
+  - add spell for making user unable to say, cause echo back
+  - show yt preview images
+    - client side ajax call possible
+    - have remix button on images ( why not )
+  - add bandwidth speed test? is that even possible?
+  - detect slow connection speeds and adjust merlin?
+  - add 1000 memes to memepool
 
-- youtube playrandom video should not play the same video twice ( check N times before quit )
-- youtube player should keep temporary play history for back button ( easy patch )
+Refactors
+
+  - refactor dynamic windowing system ( buddy_chat and pond_pond )
+
+! - ensure rainbow tv is preloaded for mirror
+- send paint should be "SAVE PAINT" if not logged in
+
+- Add replies / comments to messages ( discord style? )
+
+? - add min display time to loading gifs ( to avoid flicker )
+
+Apps
+
+  v1 Video Calls
+    X - camera switching code
+    - ability to use CanvasVideo on video call
+    ! - audio switching code
+    ! - have ability to add / remove camera share during call, same with screen
+    - add screensharing instead of camera as source
+    - screen share as source code?
+      - await navigator.mediaDevices.getDisplayMedia
+    - add mute buttons
+    X - dont allow video call to offline buddy
+
+  - Theme switcher
+    - stores preference in localstorage
+    - has form editor for making themes
+    - can export theme as json ( easy peasy )
+
+  - Add `App.Intercom`
+    - sends TTS to chat window
+    - OR sends audio recording to chat window
+    - add DTMF signal generator ( whot not )
+    - autoplays the audio
+    - deletes file after a few moments ( why not )
+    
+  - does paint app need to close after you send a snap?
+    - how about disable sending button for a moment
+    - then allow re-send?
+    - spam?...dont matter gotta rate limit anyway for all cards
+
+  v2 Snaps
+  
+    - issue with flipped image and paints shared css class...
+  
+    X - resize live camera preview to same size as preview
+    X - add slider bar for changing delay / capture speed between frames ( same same )
+    X - add checkbox for Play Countdown Timer
+    X camera source and filter go bottom
+    X video align top of window
+    X checkbox camera go bottom
+    X only show slider in PREP mode for films or photos > 1
+    X continue to snap button should hide controls and go back to prep mode with single icon ( photo )
+    X if adding another one and cancel, go back to prep
+    X - dont show camera select source when previewing snap ( filters / switch wont work )
+    X - when setting camera, use localStorage to set default
+      X!! - ensure that rainbow loading plays for at least 2-3 seconds
+
+    X - add mode confirmingApproving snap ( for hiding controls toggle )
+    X - add button on that toggles between preview and live camera ( single button snap control )
+
+  v1 Image Remixer
+    X - canvas should be able to load image from localstorage into canvas
+    X - jspaint app
+    X - add ability to send jspaint localstorage as snap
+    X - add remix button to open image in jspaint
+  X v2 
+    X - png out from jspaint
+    X - convert single frame gif to jspaint
+    X- if already png no convert
+
+  X Audio Recorder
+    X - audio effects / modulation
+    X - save and send audio the same way gifs are saved
 
 
+Post Beta
+  - Switch default wallpaper to water ripples with clicks
+  - start thinking about multiple logins from multiple locations same account
+  - consider replacing emoji area with https://github.com/mervick/emojionearea
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+++++++++++++WELL++++++++++
+
+
+
+
+
+
+X - hide merlin by default, he's too large
+X - fix css for chat window text areas ( currently not matching )
+
+!!- INSTEAD NOW SHOWS SAVE TO PAINT show alert if try to send paint when not logged in
+! - add ability to drag photo
+! - not doing it for now add loading gif for snaps ( preloaded )
+X - add geoip flags and memeflags
+  X - message object needs to save ip address
+  X - override geoip with memeflag if user send message with flag ( no server saves on profile? ), local settings only 
+X - add mute / desktop volume control to top nav
 X - add some safety around tts stacks ( have limit so not 10000 etc )
   X - will not say messages older then 10 seconds
 X - card data missing for memes in buddy chat window ( not pond )
 X - add ability to send tts setting on messages
 X - fix localized time ( possibly needs server update )
-
 X  - remember icon position in localstorage, use if available
 X  - cleanup codebase ( documentation and DRY )
-
 X - fix joining ponds, figure out openWindow problem???
   X - race condition with login success?
-
 X v1 YOUTUBE LIVE EMBED
-
 X  - blocked on `App.VideoPlayer` since we can't inject anymore youtube API embeds
 X  - need instaniatable youtube window with custom playlist / source
 X  - cleanup webrtc connection / signal messages in desktop console log
 X - mirror should close camera on window close 
-
 X - Snaps v1 launch
 X adjust speed before send
 X scope the photo to a chat window ( pond or buddy)
@@ -187,13 +260,10 @@ X - fix error when attempting to join pond with no name
 X - add back fresh pond / fresh chat default messages
 X - no_chat_messages being hid globally instead of local per user
 X - ensure youtube players player.stop() on close window event ( not minimize event )
+X - rig up console to show events ( div instead of textarea )
 
-1/2 - rig up console to show events ( div instead of textarea )
-
-? - add min display time to loading gifs ( to avoid flicker )
-
-1/2 - investigate local yt player not working for certain videos?
-  - file:// only 
+X - investigate local yt player not working for certain videos?
+  X - file:// only 
   issue seems related to specific youtube ids not working on file://
   current work-around is to use http server for localhost
   possible work-around for local is to destroy and remove youtube iframe per video load
@@ -228,6 +298,8 @@ X - rendering UX for add buddy form
 X - rendering UX for pending buddy requests
 X - chat window text input should have fixed bottom position
 X - add user name to title after login
+
+¢∞§§§§§§§§§§§§§§§§========>
 
 After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
 
