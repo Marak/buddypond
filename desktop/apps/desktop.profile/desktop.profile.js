@@ -72,16 +72,15 @@ desktop.app.profile.load = function loadDesktop (params, next) {
       desktop.app.buddylist.profileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
-    $("#profileTabs" ).tabs();
     $('.hideFlag').on('click', function(){
       if ($(this).prop('checked')) {
         desktop.set('geo_flag_hidden', true);
       } else {
         desktop.set('geo_flag_hidden', false);
       }
-      return false;
     })
 
+    $("#profileTabs" ).tabs();
     next();
   });
 };
