@@ -9,14 +9,6 @@ Fixes
   - cards aren't replayed on chat close / open / reload
   - increase chat history length for ponds and buddies ( check if images count twice? )
   - dont allow icons to be hidden on smaller windows?
-  - add openinoious appicus spell for helping open app remotely
-    - required to open hidden apps / non-installed apps
-  - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
-  - add away / watching status based on client is visible API
-  - play sound alert if buddypond.me is mentioned in chat
-  - add friend requests to automatons that autoaccept
-      - have youtube and soundcloud players respect mute / volume levels
-      - not hard...i think...
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
   - add UX indactor for ajax disconnect with desktop.log and top right bar
   - adjust UI of chat messages and windowpopups
@@ -31,6 +23,14 @@ Fixes
 
 Features
 
+  - add openinoious appicus spell for helping open app remotely
+    - required to open hidden apps / non-installed apps
+  - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
+  - add away / watching status based on client is visible API
+  - play sound alert if buddypond.me is mentioned in chat
+  - add friend requests to automatons that autoaccept
+      - have youtube and soundcloud players respect mute / volume levels
+      - not hard...i think...
   - clicking on active windows should change context and type
     - other apps like paint and snaps should use this active context
     - ensure active context is shown inside paint and recorder app
