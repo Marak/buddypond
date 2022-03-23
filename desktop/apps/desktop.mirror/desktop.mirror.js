@@ -30,7 +30,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     $('#window_mirror').css('top', 44);
 
     $('#window_mirror').resize(function(){
-      if (desktop.app.mirror.fullMirror) {
+      if (desktop.app.mirror.viewMode === 'Full') {
         desktop.app.mirror.resizeFullVideo();
       }
     });
