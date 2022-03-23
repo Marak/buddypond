@@ -328,12 +328,10 @@ var read_audio_data = function (file, callback) {
 	var fileReader = new FileReader;
 	fileReader.onload = function () {
 		var arrayBuffer = this.result;
-    console.log('rrr', arrayBuffer)
 		audio_context.decodeAudioData(arrayBuffer, callback, function () {
 			alert("Failed to read audio from file");
 		});
 	};
-  console.log('file', file)
 	fileReader.readAsArrayBuffer(file);
 };
 var load_from_blob_warning_if_unsaved = function (blob) {
