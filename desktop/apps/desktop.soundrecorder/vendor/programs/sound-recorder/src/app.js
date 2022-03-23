@@ -131,6 +131,9 @@ var download_wav_file = function (file, callback) {
 					label: "Yes",
 					default: true,
 					action: () => {
+            //            console.log('file.namefile.name', file.name);
+            // TODO: give context and type to sound file name
+            file.name = 'BuddySound.wav';
 						const file_name = file.name.replace(/(?:\.wav)?$/, ".wav");
 						const a = document.createElement("a");
 						a.download = file_name;
