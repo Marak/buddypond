@@ -588,7 +588,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     } else {
       $('.dock_title', dockEl).removeClass('rainbow');
     }
-    JQDX.maxWindow(false, $(el));
+    //JQDX.maxWindow(false, $(el));
     return desktop.ui.openWindows[windowType][context];
   }
 
