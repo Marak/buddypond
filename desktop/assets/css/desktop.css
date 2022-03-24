@@ -1117,3 +1117,8 @@ iframe {
   padding-left: 8px;
   bottom: 23px !important;
 }
+
+.youtubeSmartLink img {
+  width: 16px;
+  height: 16px;
+}

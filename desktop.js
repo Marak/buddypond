@@ -491,7 +491,7 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
   return valid;
 }
 
-desktop.utils.isValidYoutubeT  = function isValidYoutubeT (str) {
+desktop.utils.isValidYoutubeTime  = function isValidYoutubeTime (str) {
   /* 
     youtube time (T) can only: 
     - Start by ?t= 
@@ -541,55 +541,62 @@ desktop.playSnaps = function playSnaps (opts) {
 desktop.smartlinks = {};
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
+
+  // still doesn't support https://www.youtube.com/watch?v=8JgxMVMBESY&t=33s style links ?
   if (cleanText) {
-    let searchYouTube = cleanText.search('https://www.youtube.com/watch?');
-    let searchYouTu_be = cleanText.search('https://youtu.be/');
+    let searchYouTubeLink = cleanText.search('https://www.youtube.com/watch?');
+    let searchYouTubeShortLink = cleanText.search('https://youtu.be/');
+
     // if a youtube link was found, replace it with a link to open IDC with the video id
-    if (searchYouTube !== -1) {
+    if (searchYouTubeLink !== -1) {
       //If we the youtube link is a normal link
       //https://www.youtube.com/watch?
-      let id = cleanText.substr(searchYouTube + 32, 11);
-      let isValid = desktop.utils.isValidYoutubeID(id);
-      if (isValid) {
+      let youtubeId = cleanText.substr(searchYouTubeLink + 32, 11);
+      let isValidYoutubeId = desktop.utils.isValidYoutubeID(youtubeId);
+      if (isValidYoutubeId) {
         /*
         replace the youtube URL by a hypelink that open IDC.
         >>> https://www.youtube.com/watch?v1K4EAXe2oo
         > youtube: v1K4EAXe2oo
         */
-        let str = 'https://www.youtube.com/watch?v=' + id;
-        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}">youtube: ${id}</a>`)
+        let str = 'https://www.youtube.com/watch?v=' + youtubeId;
+        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}</a>`)
         el.last().html(cleanText);
       }
-      //Else if a youtu.be link was found,
-    } else if (searchYouTu_be !== -1) {
+      return;
+    }
+
+    let youtubeLinkWithTime = '';
+    if (searchYouTubeShortLink !== -1) {
       /*
       check if there is a time (t)
       and replace it with a link to open IDC with the video id and the start time t
       https://youtu.be/v1K4EAXe2oo?t=26
       */
-      let id = cleanText.substr(searchYouTu_be + 17, 11);
-      let t = cleanText.substr(searchYouTu_be + 28, 10).replace(/[\n\r]+/g, '').split(" ")[0];
-      let isValid = desktop.utils.isValidYoutubeID(id);
-      let isValidT = desktop.utils.isValidYoutubeT(t);
-      if (isValidT) {
+      let youtubeId = cleanText.substr(searchYouTubeShortLink + 17, 11);
+      let youtubeVideoTime = cleanText.substr(searchYouTubeShortLink + 28, 10).replace(/[\n\r]+/g, '').split(" ")[0];
+      let isValidYoutubeId = desktop.utils.isValidYoutubeID(youtubeId);
+      let isValidYoutubeTime = desktop.utils.isValidYoutubeTime(youtubeVideoTime);
+
+      if (isValidYoutubeTime) {
         /*
         if there is a time t. Format it to extract the numbers only
         >>> ?=t345
         >  345
         */
-        id_t = id+t;
-        t = t.substring(3);
+        youtubeLinkWithTime = youtubeId + youtubeVideoTime;
+        youtubeVideoTime = '@' + youtubeVideoTime.substring(3);
       } else {
-      id_t = id;
-    }
-      if (isValid) {
+        youtubeLinkWithTime = youtubeId;
+      }
+      if (isValidYoutubeId) {
         /*
         Replace the youtube URL by a hypelink that open IDC instead.
         >>> https://youtu.be/v1K4EAXe2oo?t=26
         > youtube: v1K4EAXe2oo 26
         */
-        let str = 'https://youtu.be/' + id_t;//
-        cleanText = cleanText.replace(str, `<a class="openIDC" href="#open_IDC" data-videoid="${id}" data-videot="${t}">youtube: ${id} ${t}</a>`);
+        let str = 'https://youtu.be/' + youtubeLinkWithTime;//
+        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}" data-videot="${youtubeVideoTime}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}${youtubeVideoTime}</a>`);
         el.last().html(cleanText);
       }
     }
