@@ -82,6 +82,11 @@ desktop.app.paint.openWindow = function openWindow () {
   } else {
     $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   }
+  if (buddypond.me) {
+    $('.sendPaintHolder').show();
+  } else {
+    $('.sendPaintHolder').hide();
+  }
   return true;
 };
 

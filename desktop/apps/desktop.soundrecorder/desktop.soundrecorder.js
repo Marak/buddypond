@@ -58,10 +58,14 @@ desktop.app.soundrecorder.openWindow = function openWindow (params) {
     // desktop.app.soundrecorder.mode = 'closeAfterPlayed';
   }
 
+  let qtokenidParam = '';
+  if (buddypond.qtokenid) {
+    qtokenidParam = '&qtokenid=' + buddypond.qtokenid;
+  }
   if (params.soundUrl) {
-    $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?qtokenid=${buddypond.qtokenid}${soundUrlQueryParam}${type}${context}`);
+    $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${soundUrlQueryParam}${type}${context}`);
   } else {
-    $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?qtokenid=${buddypond.qtokenid}${type}${context}`);
+    $('#soundrecorderIframe').attr('src', `desktop/apps/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${type}${context}`);
   }
   return true;
 };
