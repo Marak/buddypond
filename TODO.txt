@@ -6,7 +6,7 @@ Fixes
 
   X - increase chat history length for ponds and buddies ( check if images count twice? )
   - Flags need to show for memes and snaps and sounds, etc
-  
+  - why does extra carriage return happen on enter key in chat, breaks links and text
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
   - adjust UI UX positions on open of chat messages and windowpopups
   - ensure desktop settings form wont crash app
