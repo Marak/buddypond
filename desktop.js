@@ -566,7 +566,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
       return;
     }
 
-    let youtubeLinkWithTime = '';
+    let youtubeLinkWithTime = '0';
     if (searchYouTubeShortLink !== -1) {
       /*
       check if there is a time (t)
@@ -585,7 +585,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
         >  345
         */
         youtubeLinkWithTime = youtubeId + youtubeVideoTime;
-        youtubeVideoTime = '@' + youtubeVideoTime.substring(3);
+        youtubeVideoTime = youtubeVideoTime.substring(3);
       } else {
         youtubeLinkWithTime = youtubeId;
       }
@@ -595,8 +595,8 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
         >>> https://youtu.be/v1K4EAXe2oo?t=26
         > youtube: v1K4EAXe2oo 26
         */
-        let str = 'https://youtu.be/' + youtubeLinkWithTime;//
-        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}" data-videot="${youtubeVideoTime}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}${youtubeVideoTime}</a>`);
+        let str = 'https://youtu.be/' + youtubeLinkWithTime;
+        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}" data-videot="${youtubeVideoTime}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}@${youtubeVideoTime}</a>`);
         el.last().html(cleanText);
       }
     }
