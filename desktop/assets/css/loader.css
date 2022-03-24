@@ -41,6 +41,12 @@
   animation: spin 1.77s linear infinite;
 }
 
+.loading {
+  width: 120px;
+  height: 120px;
+  animation: spin 1.77s linear infinite;
+}
+
 @keyframes spin {
 	100%{
     transform: rotate(360deg);

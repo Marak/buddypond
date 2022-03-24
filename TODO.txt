@@ -2,18 +2,13 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-
-
-
 Fixes
 
-  - increase chat history length for ponds and buddies ( check if images count twice? )
+  X - increase chat history length for ponds and buddies ( check if images count twice? )
   - Flags need to show for memes and snaps and sounds, etc
-  - cards aren't replayed on chat close / open / reload
-
+  
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
   - adjust UI UX positions on open of chat messages and windowpopups
-  - dblclick / singleclick for mobile
   - ensure desktop settings form wont crash app
   - paint exit button should actually close window
   - fix documentations for atob(forbiddenNotes.base64)
@@ -21,8 +16,24 @@ Fixes
   X - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
   X - Update README
 
+Refactors
+
+   - cards aren't replayed on chat close / open / reload
+    - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
+  - refactor dynamic windowing system ( buddy_chat and pond_pond )
+  - swap online / offline emoji icons for images
+  - dont allow icons to be hidden on smaller windows?
+  - fix mouse events for mobile ( drag not working , double click vs click)
+  - move call button to side of text area?
+  - send paint should be "SAVE PAINT" if not logged in
+  - Add replies / comments to messages ( discord style? )
+  
+  ! - ensure rainbow tv is preloaded for mirror
+  ? - add min display time to loading gifs ( to avoid flicker )
+
 Features
 
+  - play buddy sound when buddy logs in ( door open aim )
   - add UX indactor for ajax disconnect with desktop.log and top right bar
   - add back button to interdemon cable / mtv / all video players
   - add openinoious appicus spell for helping open app remotely
@@ -58,18 +69,10 @@ Features
   - add bandwidth speed test? is that even possible?
   - detect slow connection speeds and adjust merlin?
   - add 1000 memes to memepool
-
-Refactors
-
-  - refactor dynamic windowing system ( buddy_chat and pond_pond )
-  - swap online / offline emoji icons for images
-  - dont allow icons to be hidden on smaller windows?
-  - fix mouse events for mobile ( drag not working , double click vs click)
-  - move call button to side of text area?
-  - send paint should be "SAVE PAINT" if not logged in
-  - Add replies / comments to messages ( discord style? )
-  ! - ensure rainbow tv is preloaded for mirror
-  ? - add min display time to loading gifs ( to avoid flicker )
+  - idc custom playlists
+    - user upload playlists
+    - send playlists from localhost storage instead?
+    - share playlists
 
 Apps
 
@@ -142,6 +145,7 @@ Post Beta
   - start thinking about multiple logins from multiple locations same account
   - consider replacing emoji area with https://github.com/mervick/emojionearea
 
+  - dblclick / singleclick for mobile
 
 
 
