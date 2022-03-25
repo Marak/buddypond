@@ -198,8 +198,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.set('paint_active_context', context);
     // TODO: use iframe message instead of desktop.set()
     desktop.set('paint_active_url', url);
+
+    JQDX.openWindow('paint', {
+      src: url,
+      frameIndex: desktop.app.gifstudio.currentFrameIndex || -1
+    });
     // TODO: use params here to openWindow instead of localstorage?
-    JQDX.openWindow('paint');
   });
 
   // Click remix GIF icon to remix gifs in Gif Studio App
@@ -208,12 +212,18 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let url = $('.image', form).attr('src');
     let type = $(this).data('type');
     let context = $(this).data('context');
+
+    // TOOD: get count instead of frame index
+    // let frameIndex = $(this).data('frameindex') || 0;
+    // TODO: use params here to openWindow instead of localstorage?
     desktop.set('paint_active_type', 'gifstudio');
     desktop.set('paint_active_context', 'making-a-gif');
-    // TODO: use params here to openWindow instead of localstorage?
+    
+    desktop.app.gifstudio = desktop.app.gifstudio || {};
+    // -1 or undefined as frame index indicates create new gif
     JQDX.openWindow('gifstudio', {
       src: url,
-      frameIndex: -1 // -1 or undefined as frame index indicates create new gif
+      frameIndex: desktop.app.gifstudio.currentFrameIndex || 0
     });
   });
 

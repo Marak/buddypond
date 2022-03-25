@@ -349,9 +349,9 @@ function show_resource_load_error_message(){
 	var $w = $FormWindow().title("Error").addClass("dialogue-window");
 	$w.$main.html(
 		"<p>Failed to load image.</p>" +
-		"<p>Make sure to use an image host that supports " +
+		"<p>Does this image host that support " +
 		"<a href='https://en.wikipedia.org/wiki/Cross-origin_resource_sharing'>Cross-Origin Resource Sharing</a>" +
-		", such as <a href='https://imgur.com/'>Imgur</a>."
+		""
 	);
 	$w.$main.css({maxWidth: "500px"});
 	$w.$Button("OK", function(){

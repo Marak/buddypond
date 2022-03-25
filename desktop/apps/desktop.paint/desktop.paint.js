@@ -64,7 +64,11 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
 
           // send the paint to `gifstudio` as a frame ( either existing or new )
           if (type === 'gifstudio') {
-            desktop.app.gifstudio.loadGifFrame(firstImg, 2);
+            // TODO: should not be undefined here
+            if (typeof desktop.app.gifstudio.currentFrameIndex === 'undefined') {
+              desktop.app.gifstudio.currentFrameIndex = 0;
+            }
+            desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex);
             desktop.set('paint_send_active', false);
             return;
           }

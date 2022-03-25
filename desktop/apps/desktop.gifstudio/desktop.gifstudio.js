@@ -1,3 +1,70 @@
+function seralizeFileInput (fileInput) {
+
+  // TODO: rainbow tv gif
+  $('.gifstudio_gifPreview').attr('src', '');
+
+  var reader = new FileReader();
+  reader.readAsDataURL(fileInput.files[0]);
+
+  reader.onload = function () {
+  	console.log(reader.result);//base64encoded string
+    let src = reader.result;
+    $('.gifstudio_gifPreview').attr('src', src);
+    desktop.app.gifstudio.drawFrames({ url: src, frames: 'all' })
+  };
+
+  reader.onerror = function (error) {
+  	console.log('Error: ', error);
+  };
+}
+
+function dropHandler(ev) {
+  console.log('File(s) dropped');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+  $('#drop_zone').removeClass('drop_zone_active');
+  $('#drop_zone').addClass('drop_zone_inactive');
+  seralizeFileInput(ev.dataTransfer);
+
+  return;
+  if (ev.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.dataTransfer.items[i].kind === 'file') {
+        var file = ev.dataTransfer.items[i].getAsFile();
+        console.log('... file[' + i + '].name = ' + file.name);
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+    }
+  }
+}
+
+function dragOverHandler(ev) {
+  console.log('File(s) in drop zone');
+  $('#drop_zone').removeClass('drop_zone_inactive');
+  $('#drop_zone').addClass('drop_zone_active');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
+
+function dragLeaveHandler(ev) {
+  console.log('File(s) in drop zone');
+  $('#drop_zone').removeClass('drop_zone_active');
+  $('#drop_zone').addClass('drop_zone_inactive');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
+
+
+
 desktop.app.gifstudio = {};
 desktop.app.gifstudio.label = "Games";
 desktop.app.gifstudio.icon = 'folder';
@@ -13,7 +80,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     'gifstudio' // this loads the sibling desktop.app.gifstudio.html file into <div id="window_gifstudio"></div>
   ], function (err) {
     $('#window_gifstudio').css('width', 640);
-    $('#window_gifstudio').css('height', 480);
+    $('#window_gifstudio').css('height', 520);
     $('#window_gifstudio').css('left', 200);
     $('#window_gifstudio').css('top', 120);
 
@@ -28,11 +95,15 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     d.on('mousedown', '.openPaint', function (ev) {
       let holder = $(ev.target).parent();
       let img = $('.gifstudio_gifFrame', holder);
+      // TOOD: get count instead of frame index
+      // let frameIndex = $(img).data('frameindex') || 0;
+      let frameIndex = $(holder).index();
+      desktop.app.gifstudio.currentFrameIndex = frameIndex;
       JQDX.openWindow('paint', {
         type: 'gifstudio',
         context: 'editing-a-gif-frame',
         src: img.attr('src'),
-        frameIndex: img.data('frameindex')
+        frameIndex: frameIndex
       });
     });
 
@@ -50,13 +121,24 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       });
       */
     });
+    $('.clearGIF').on('click', function(){
+      $('.gifstudio_gifFrame').parent().remove();
+      // TODO: rainbow tv with opacity
+      $('.gifstudio_gifPreview').attr('src', '');
+      $('.gifstudio_gifFrame').parent().remove();
+    });
+
+    $('.uploadGIF').on('change', function(){
+      seralizeFileInput($(this).get(0))
+    })
 
     // Click remix GIF icon to remix gifs in Gif Studio App
     d.on('mousedown', '.gifstudio_addFrame', function(ev) {
+      desktop.app.gifstudio.currentFrameIndex = $(ev.target).data('index') || Infinity;
       JQDX.openWindow('paint', { 
         type: 'gifstudio',
         context: 'adding-a-new-frame',
-        frameIndex: 88 // TODO: get last frame index
+        frameIndex: desktop.app.gifstudio.currentFrameIndex // TODO: get last frame index
       });
     });
 
@@ -65,14 +147,16 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       let src = $('.gifstudio_gifPreview').attr('src')
       console.log('ahhhh', src)
       buddypond.sendSnaps(desktop.app.gifstudio.type, desktop.app.gifstudio.context, 'I sent a GIF!', src, desktop.app.gifstudio.gifDelay, function(err, data){
-        alert('sent gif as snap')
+        console.log('Sent GIF as snap completed')
       });
       JQDX.closeWindow('#window_gifstudio');
     });
 
     d.on('mousedown', '#window_gifstudio .saveGif', function(ev) {
       let form = $(ev.target).parent();
-      let src = $('.gifstudio_gifFrame', form).attr('src');
+      // TODO: move into helper
+      // TODO: should also allow for file name and ext
+      let src = $('.gifstudio_gifPreview', form).attr('src');
       var url = src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
       window.open(url);
       return false;
@@ -96,7 +180,12 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
 
 
 desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
-  console.log(img)
+  // console.log('desktop.app.gifstudio.loadGifFrame', index)
+
+  if (typeof index === 'undefined') {
+    //index = ($('.gifFrameHolder', '#window_gifstudio').length - 2) || 0;
+  }
+
   img = img.substring(1, img.length -1)
   // img = img.substring(img.length -2, 1)
   // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().attr('src', img);
@@ -104,7 +193,11 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().remove();
 
   // $('#window_gifstudio .gifFrames').hide();
-  desktop.app.gifstudio.renderFrame(index, img)
+  let replace = true;
+  if (typeof index === 'undefined' || index === -1) {
+    replace = false;
+  }
+  desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, replace);
   setTimeout(function(){
     desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay || 200, function (err, imgData){
       // desktop.app.gifstudio.drawFrames({ url: imgData, frames: 'all' })
@@ -116,6 +209,7 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
 
 desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
   cb = cb || function noop () {};
+  // TODO: set height and width based on actual GIF size...
   var gif = new GIF({
     workers: 2,
     quality: 3,
@@ -144,19 +238,80 @@ desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
   
 }
 
-desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String) {
-  $('#window_gifstudio .gifFrames').append(`
-    <div class="gifFrameHolder">
-      <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
-      <span class="removeFrame">
-        X
-      </span>
-      <span class="dragFrameIcon">
-        <img src="desktop/assets/images/icons/icon_drag_64.png"/>
-      </span>
-      <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
-    </div>
-  `);
+desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, replace) {
+
+  let index = frame.frameIndex;
+  let currentFrames = $(`#window_gifstudio .gifFrameHolder`).length;
+  // console.log('index', index, 'currentFrames', currentFrames, 'replace', replace)
+
+  if (index === Infinity || index === 'Infinity' || index === -1) {
+    replace = false;
+  }
+  if (currentFrames === 0) {
+    replace = false;
+  }
+  if (replace) {
+    $(`#window_gifstudio .gifFrameHolder:eq(${index})`).html(`
+        <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
+        <span class="removeFrame">
+          X
+        </span>
+        <span class="dragFrameIcon">
+          <img src="desktop/assets/images/icons/icon_drag_64.png"/>
+        </span>
+        <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+    `);
+    return;
+  }
+  // index is higher than set, insert after
+  if (index >= currentFrames) {
+    if (currentFrames === 0) {
+      $(`#window_gifstudio .gifFrames`).append(`
+        <div class="gifFrameHolder">
+          <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
+          <span class="removeFrame">
+            X
+          </span>
+          <span class="dragFrameIcon">
+            <img src="desktop/assets/images/icons/icon_drag_64.png"/>
+          </span>
+          <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+        </div>
+      `);
+    } else {
+      $(`
+        <div class="gifFrameHolder">
+          <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
+          <span class="removeFrame">
+            X
+          </span>
+          <span class="dragFrameIcon">
+            <img src="desktop/assets/images/icons/icon_drag_64.png"/>
+          </span>
+          <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+        </div>
+      `).insertAfter($(`#window_gifstudio .gifFrameHolder:last`));
+    }
+  }
+
+  // index is lower than set, insert before
+  if (index < currentFrames) {
+    $(`
+      <div class="gifFrameHolder">
+        <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
+        <span class="removeFrame">
+          X
+        </span>
+        <span class="dragFrameIcon">
+          <img src="desktop/assets/images/icons/icon_drag_64.png"/>
+        </span>
+        <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+      </div>
+    `).insertBefore($(`#window_gifstudio .gifFrameHolder:first`));
+
+    return;
+  }
+
   /*
       <span class="frameCount">
         ${frame.frameIndex}/${frameData.length}
@@ -165,32 +320,22 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String) {
 }
 
 desktop.app.gifstudio.drawFrames = function drawFrames (options) {
+  $('.gifFrameHolder', '#window_gifstudio').remove();
   gifFrames(options).then(function (frameData) {
     frameData.forEach(function(frame){
       let stream = frame.getImage();
       var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(stream._obj.buffer)));
       base64String = 'data:image/png;base64,' + base64String;
-      desktop.app.gifstudio.renderFrame(frame, base64String);
+      desktop.app.gifstudio.renderFrame(frame, base64String, false);
     });
-    $('.gifFrames', '#window_gifstudio').append(`
-      <span class="gifFrameHolder">
-        <span class="gifstudio_addFrame" title="Add new Frame to GIF">
-          ➕
-        </span>
-      </span>
-    `);
-    // $('.gifstudio_gifPreview').attr('src', '');
-    // desktop.app.gifstudio.createGIF(100);
+
+  }).catch(function(){
+    desktop.app.gifstudio.renderFrame({ frameIndex: 0 }, options.url);
   });
 }
 
 desktop.app.gifstudio.openWindow = function openWindow (params) {
 
-  /*
-  if (params.frameIndex) {
-  }
-  */
-  $('.gifstudio_gifPreview').hide();
   // https://buddypond.com/snaps/Marak/8ed7916c-9cd5-4c23-8c44-46b5c60bb609.gif
   let gifURL = '';
 
@@ -199,23 +344,16 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
     gifURL = params.src;
   }
 
-  // TODO: can load either base64 src or image
-  //$('#window_gifstudio .gifFrames').html('');
-  if (gifURL) {
-    $('.gifstudio_gifPreview').attr('src', gifURL);
-    $('.gifstudio_gifPreview').show();
-    desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
-  } else {
-    $('#window_gifstudio .gifFrames').append(`
-      <span class="gifFrameHolder">
-        <span class="gifstudio_addFrame" title="Add new Frame to GIF">
-          ➕
-        </span>
-      </span>
-    `);
-    
+  if (!gifURL) {
+    // TODO rainbow tv?
+    gifURL = 'desktop/apps/desktop.gifstudio/assets/rainbow.gif';
   }
 
-
+  // TODO: can load either base64 src or image
+  $('.gifFrameHolder', '#window_gifstudio').remove();
+  if (gifURL) {
+    $('.gifstudio_gifPreview').attr('src', gifURL);
+    desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
+  }
   return true;
 };
