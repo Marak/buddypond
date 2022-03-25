@@ -1,0 +1,161 @@
+<style>
+  #window_gifstudio .gifstudioHolder {
+    text-align: center;
+    padding: 32px;
+  }
+  .gifstudio_gifPreview {
+    width: 128px;
+    height: 128px;
+    border: solid;
+    cursor: pointer;
+  }
+  
+  .gifstudio_gifFrame {
+    width: 128px;
+    height: 128px;
+    border: solid;
+    cursor: pointer;
+  }
+  .gifStudioDelaySliderControl {
+    background-color: black;
+    height: 10px;
+    width: 200px;
+  }
+  
+  .gifFrameHolder {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    float: left;
+    padding: 6px;
+  }
+
+  #window_gifstudio .frameCount {
+    display: none;
+    background-color: white;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    color: red;
+    z-index: 99;
+  }
+
+  .dragFrameIcon {
+    display: none;
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+    width: 16px;
+    height: 16px;
+    z-index: 66;
+    cursor: pointer;
+  }
+  
+  .openPaint {
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    height: 22px;
+    width: 22px;
+    z-index: 99;
+    cursor: pointer;
+  }
+
+  .openPaint:hover {
+    opacity: 0.44;
+  }
+
+  #window_gifstudio .removeFrame {
+    background-color: white;
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    color: red;
+    padding-top: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    z-index: 99;
+    cursor: pointer;
+  }
+
+  #window_gifstudio .uploadGifHolder {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+
+  #window_gifstudio .gifstudio_addFrame {
+    font-size: 64px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  #window_gifstudio .sendGif {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  #window_gifstudio .saveGif {
+    position: absolute;
+    top: 8px;
+    right: 88px;
+  }
+
+  #gifStudioDelaySliderLabel {
+    height: 10px;
+    width: 333px;
+  }
+</style>
+
+<div id="window_gifstudio" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder.png" />
+        GIF Studio
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_gifstudio" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="window_main gifstudioHolder">
+        <br/>
+        
+        <img class="gifstudio_gifPreview"/><br/>
+        Drag GIF here to Start or upload file
+        <br/>
+        <br/>
+        <label class="uploadGifHolder" for="uploadGIF">
+          <input type="file" class="uploadGIF" name="uploadGIF" id="uploadGIF"/>
+        </label>
+        <button class="sendGif">SEND GIF</button>
+        <button class="saveGif">SAVE GIF</button>
+        <br/>
+        You can always <a class="openApp" href="#paint">Start a New Paint</a> and send it to the GIF Studio to start a new GIF
+        <span class="gifStudioDelaySliderControl" title="Delay Speed">
+          <div id="gifStudioDelaySlider" title="Delay Speed"></div>
+        </span>
+        <hr/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="gifFrames">
+          <span class="gifFrameHolder">
+            <span class="gifstudio_addFrame" title="Add new Frame to GIF">
+              ➕
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

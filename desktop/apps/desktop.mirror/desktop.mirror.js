@@ -172,8 +172,10 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('.confirmSnap').hide();
       $('.takeSingleSnap').css('left', '122');
       $('.cameraControls').show();
+
       if (desktop.app.mirror.mode === 'mirror') {
         let src = $('#snapsPreview').attr('src');
+        // TODO: create utility function for downloading files
         var url = src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
         window.open(url);
         return;
@@ -185,7 +187,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, function(err, data){
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
-        $('.gifFrames').html('');
+        $('.gifFrames', '#window_mirror').html('');
         //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
         $('#snapsPreview').data('stopped', true);
         $('#snapDelaySlider').slider('value', 777);
@@ -199,7 +201,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
       $('.cameraControls').show();
-      $('.gifFrames').html('');
+      $('.gifFrames', '#window_mirror').html('');
       //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
       $('#snapsPreview').data('stopped', true);
       $('.mirrorVideoHolder').show();

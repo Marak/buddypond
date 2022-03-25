@@ -1,3 +1,5 @@
+desktop.app.mirror.CAMERA_SHUTTER_DELAY = 55;
+
 desktop.app.mirror.createGIF = function createGIF (delay) {
   var gif = new GIF({
     workers: 2,
@@ -15,7 +17,7 @@ desktop.app.mirror.createGIF = function createGIF (delay) {
     }
   });
 
-  $('.gifFrames img').each(function(i, e){
+  $('.gifFrames img', '#window_mirror').each(function(i, e){
     gif.addFrame(e, { delay: delay });
   })
 
@@ -47,7 +49,7 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
   var imagebase64data = destinationCanvas.toDataURL("image/png");
   var gifbase64data = destinationCanvas.toDataURL("image/gif");
 
-  $('.gifFrames').append(`<img src="${gifbase64data}"/>`)
+  $('.gifFrames', '#window_mirror').append(`<img src="${gifbase64data}"/>`)
   imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
   desktop.app.mirror.snaps.push(imagebase64data);
 
@@ -77,7 +79,7 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
         $('.retrySnap').show();
         $('.snapDelaySliderControl').show();
       }
-    }, 55) // TODO: make configurable with existing delay slider
+    }, desktop.app.mirror.CAMERA_SHUTTER_DELAY) // TODO: make configurable with existing delay slider
     return;
   }
   setTimeout(function(){

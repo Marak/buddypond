@@ -110,6 +110,7 @@ desktop.app.ytPlaylist = [
   'DkYPge6ZKSQ',
   'itRWssMSuvw',
   'mV-qGna_4Eo',
-  'RISWXReh-QI'
+  'RISWXReh-QI',
+  'EtC8WxPt7d8'
 ];
 

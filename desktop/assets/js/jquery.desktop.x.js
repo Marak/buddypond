@@ -188,8 +188,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $(this).addClass('active');
   });
 
-
-  // Click remix icon to remix images in Paint App
+  // Click remix paint icon to remix images in Paint App
   d.on('mousedown', 'img.remixPaint, img.remixMeme', function() {
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
@@ -197,11 +196,26 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let context = $(this).data('context');
     desktop.set('paint_active_type', type);
     desktop.set('paint_active_context', context);
+    // TODO: use iframe message instead of desktop.set()
     desktop.set('paint_active_url', url);
     // TODO: use params here to openWindow instead of localstorage?
     JQDX.openWindow('paint');
   });
 
+  // Click remix GIF icon to remix gifs in Gif Studio App
+  d.on('mousedown', 'img.remixGIF', function(ev) {
+    let form = $(this).parent();
+    let url = $('.image', form).attr('src');
+    let type = $(this).data('type');
+    let context = $(this).data('context');
+    desktop.set('paint_active_type', 'gifstudio');
+    desktop.set('paint_active_context', 'making-a-gif');
+    // TODO: use params here to openWindow instead of localstorage?
+    JQDX.openWindow('gifstudio', {
+      src: url,
+      frameIndex: -1 // -1 or undefined as frame index indicates create new gif
+    });
+  });
 
   // Respond to double-click.
   d.on('dblclick', 'a.icon', function() {
@@ -381,7 +395,9 @@ JQDX.showWindow = function showWindow(appName, params) {
     $(iconDock).show('fast');
   }
 
+  // TODO: why this no work on gif studio load
   // Bring window to front.
+  // $('.window_stack').remove('window_stack')
   JQDX.window_flat();
   $(appWindow).addClass('window_stack').show();
 
@@ -404,6 +420,8 @@ JQDX.showWindow = function showWindow(appName, params) {
 JQDX.openWindow = function openWindow (appName, params, cb) {
 
   let appWindow = '#window_' + appName;
+
+  params = params || {};
 
   if (!JQDX.loading[appName]) {
     JQDX.loading[appName] = true;
@@ -430,7 +448,6 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   // if not, assume user is trying to load an app which is not loaded yet
   let windowExists = $(appWindow).length;
   if (windowExists === 0) {
-
     // TODO: spinning progress notifications should be per `App` and not a global state
     document.querySelectorAll('*').forEach(function(node) {
       node.style.cursor = 'progress';
