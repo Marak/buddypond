@@ -494,12 +494,11 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
 desktop.utils.isValidYoutubeTime  = function isValidYoutubeTime (str) {
   /* 
     youtube time (T) can only: 
-    - Start by ?t= 
+    - Start by "?t=" or by "&t="
     - Be followed by Numbers (0-9)
-    - Underscores (_)
-    - Dashes (-)
+    - Finish by "s"
   */
-  const res = /\?t=\d+$/.exec(str);
+  const res = /^&amp;t=\d+s|\?t=\d+$/.exec(str);
   const valid = !!res;
   return valid;
 }
@@ -542,32 +541,48 @@ desktop.smartlinks = {};
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
 
-  // still doesn't support https://www.youtube.com/watch?v=8JgxMVMBESY&t=33s style links ?
+  // TODO: 
   if (cleanText) {
-    let searchYouTubeLink = cleanText.search('https://www.youtube.com/watch?');
+    let searchYouTubeLongLink = cleanText.search('https://www.youtube.com/watch?');
     let searchYouTubeShortLink = cleanText.search('https://youtu.be/');
+    let youtubeLinkWithTime = '0';
 
     // if a youtube link was found, replace it with a link to open IDC with the video id
-    if (searchYouTubeLink !== -1) {
-      //If we the youtube link is a normal link
-      //https://www.youtube.com/watch?
-      let youtubeId = cleanText.substr(searchYouTubeLink + 32, 11);
+    if (searchYouTubeLongLink !== -1) {
+      //If the youtube link is a Long link i.e., https://www.youtube.com/watch?
+      let youtubeId = cleanText.substr(searchYouTubeLongLink + 32, 11);
+      let youtubeVideoTime = cleanText.substr(searchYouTubeLongLink + 43, 13).split(" ")[0];
       let isValidYoutubeId = desktop.utils.isValidYoutubeID(youtubeId);
+      let isValidYoutubeTime = desktop.utils.isValidYoutubeTime(youtubeVideoTime);
+
+      if (isValidYoutubeTime) {
+        /*
+        if there is a time t. Format it to extract the numbers only. And fuse it in youtubeLinkWithTime
+        >>> &amp;t=345s
+        >  345
+        */
+        youtubeLinkWithTime = youtubeId + youtubeVideoTime;
+        youtubeVideoTime = youtubeVideoTime.slice(7,-2);
+      } else {
+        youtubeLinkWithTime = youtubeId;
+      }
+      
       if (isValidYoutubeId) {
         /*
-        replace the youtube URL by a hypelink that open IDC.
-        >>> https://www.youtube.com/watch?v1K4EAXe2oo
-        > youtube: v1K4EAXe2oo
+        replace the youtube URL by a hyperlink that open IDC.
+        >>> https://www.youtube.com/watch?v1K4EAXe2oo&t=345s
+        > youtube: v1K4EAXe2oo@345
         */
-        let str = 'https://www.youtube.com/watch?v=' + youtubeId;
-        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}</a>`)
+        let str = 'https://www.youtube.com/watch?v=' + youtubeLinkWithTime;
+        cleanText = cleanText.replace(str, `<a title="Open Youtube IDC" class="openIDC youtubeSmartLink" href="#open_IDC" data-videoid="${youtubeId}" data-videot="${youtubeVideoTime}"><img alt="Youtube" title="Youtube" src="desktop/assets/images/icons/youtube-logo.png"/>${youtubeId}@${youtubeVideoTime}</a>`);
         el.last().html(cleanText);
       }
       return;
     }
 
-    let youtubeLinkWithTime = '0';
+    
     if (searchYouTubeShortLink !== -1) {
+      //If the youtube link is Short i.e, https://youtu.be
       /*
       check if there is a time (t)
       and replace it with a link to open IDC with the video id and the start time t
@@ -580,7 +595,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
 
       if (isValidYoutubeTime) {
         /*
-        if there is a time t. Format it to extract the numbers only
+        if there is a time t. Format it to extract the numbers only. And fuse it in youtubeLinkWithTime
         >>> ?=t345
         >  345
         */
