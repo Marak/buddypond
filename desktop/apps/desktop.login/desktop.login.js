@@ -162,7 +162,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
   //desktop.ui.openWindow('pond');
   // $('#window_pond').show();
   $('#window_buddylist').show();
-  let windowId = desktop.app.pond.openWindow('Lily');
+  let windowId = desktop.app.pond.openWindow({ context: 'Lily'});
 
   $(windowId).css('top', 60);
   $(windowId).css('left', 250);
@@ -172,8 +172,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
     $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
   }, 3000);
   $('#window_pond').hide();
-  //desktop.app.pond.openWindow('Lily');
-
 }
 
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {

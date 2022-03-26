@@ -30,7 +30,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       desktop.app.gifstudio.currentFrameIndex = frameIndex;
       JQDX.openWindow('paint', {
         type: 'gifstudio',
-        context: 'editing-a-gif-frame',
+        context: 'update-frame-' + desktop.app.gifstudio.currentFrameIndex,
         src: img.attr('src')
       });
     });
@@ -64,8 +64,8 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     d.on('mousedown', '.gifstudio_addFrame', function(ev) {
       desktop.app.gifstudio.currentFrameIndex = $(ev.target).data('index') || Infinity;
       JQDX.openWindow('paint', { 
-        type: 'gifstudio',
-        context: 'adding-a-new-frame'
+        output: 'gifstudio',
+        context: 'frame-' + desktop.app.gifstudio.currentFrameIndex
       });
     });
 

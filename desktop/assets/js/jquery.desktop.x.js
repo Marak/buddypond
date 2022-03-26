@@ -192,12 +192,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('mousedown', 'img.remixPaint, img.remixMeme', function() {
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
-    let type = $(this).data('type');
+    let output = $(this).data('output');
     let context = $(this).data('context');
-    desktop.set('paint_active_type', type);
-    desktop.set('paint_active_context', context);
     JQDX.openWindow('paint', {
-      src: url
+      src: url,
+      output: output,
+      context: context
     });
   });
 
@@ -229,11 +229,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     JQDX.openWindow(appName)
   });
 
-  d.on('mousedown', '.openApp', function(){
+  d.on('mousedown', '.startNewGif', function(){
     let app = $(this).attr('href');
     app = app.replace('#', '');
-    JQDX.openWindow(app, {
-      type: 'gifstudio' // TODO: use data-* attr
+    JQDX.openWindow('paint', {
+      output: 'gifstudio',
+      context: 'new-gif'
     });
     return false;
   })

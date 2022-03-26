@@ -45,27 +45,27 @@ desktop.app.paint.send = function sendPaint () {
   }
   // TODO: why is it sending wrong data / no data at all?
   // TODO: check if context is gifstudio, if so, send the gif there as frameindex ( either existing or new )
-  let type = desktop.app.paint.type || desktop.settings.paint_active_type;
-  let context = desktop.app.paint.context || desktop.settings.paint_active_context;
+  let output = desktop.app.paint.output;
+  let context = desktop.app.paint.context;
 
   setTimeout(function(){
 
     // send the paint to `gifstudio` as a frame ( either existing or new )
-    if (type === 'gifstudio') {
+    if (output === 'gifstudio') {
       // TODO: should not be undefined here
       if (typeof desktop.app.gifstudio.currentFrameIndex === 'undefined') {
         desktop.app.gifstudio.currentFrameIndex = 0;
       }
       desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex);
-      // desktop.app.gifstudio.currentFrameIndex++;
+      desktop.app.gifstudio.currentFrameIndex++;
       return;
     }
 
     // send the paint to pond or buddy chat windows as a Snap
-    if (type === 'pond' || type === 'buddy') {
+    if (output === 'pond' || output === 'buddy') {
     
       // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
-      buddypond.sendSnaps(type, context, 'I sent a Paint', firstImg, 100, function(err, data){
+      buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function(err, data){
         keys.forEach(function(k){
           if (k.search('image#') !== -1) {
             localStorage.removeItem(k);
@@ -92,21 +92,22 @@ desktop.app.paint.openWindow = function openWindow (params) {
     }
   });
 
-  if (params.type) {
-    desktop.app.paint.type = params.type;
+  if (params.output) {
+    desktop.app.paint.output = params.output;
   }
 
   if (params.context) {
     desktop.app.paint.context = params.context;
   }
 
-  if (buddypond.me || desktop.app.paint.type) {
+  if (buddypond.me || desktop.app.paint.output) {
+    $('.sendPaintHolder .sendPaint').html("SEND PAINT TO " + desktop.app.paint.output + '/' + desktop.app.paint.context);
     $('.sendPaintHolder').show();
   } else {
     $('.sendPaintHolder').hide();
   }
 
-  if (desktop.app.paint.type === 'gifstudio') {
+  if (desktop.app.paint.output === 'gifstudio') {
     $('.sendPaint').hide();
     $('.sendGifStudio').show();
   } else {

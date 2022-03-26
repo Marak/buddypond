@@ -69,7 +69,6 @@ desktop.app.pond.load = function loadPond (params, next) {
       } else {
         $('.customPondName').removeClass('error');
         desktop.ui.openWindow('pond_message', $('.customPondName').val())
-        desktop.app.pond.openWindow($('.customPondName').val())
       }
     });
 
@@ -100,7 +99,7 @@ desktop.app.pond.load = function loadPond (params, next) {
         desktop.set('paint_active_type', 'buddy');
         desktop.set('paint_active_context', to);
       }
-      JQDX.openWindow('paint');
+      JQDX.openWindow('paint', { output: to });
     });
 
     $('.insertSound').on('click', function(){
@@ -121,11 +120,12 @@ desktop.app.pond.load = function loadPond (params, next) {
 
 let pondOpened = false;
 
-desktop.app.pond.openWindow = function (context) {
+desktop.app.pond.openWindow = function (params) {
 
-  if(!context) {
-    context = "Lily";
-  } 
+  params = params || {};
+  if(!params.context) {
+    params.context = "Lily";
+  }
 
   // when pond app loads, open default pond for all buddies
   let rightPadding = 10;
@@ -135,12 +135,12 @@ desktop.app.pond.openWindow = function (context) {
     // return;
   }
 
-  let windowKey = desktop.ui.openWindow('pond_message', context);
+  let windowKey = desktop.ui.openWindow('pond_message', params.context);
   let windowId = '#' + windowKey;
 
-  $('.window-context-title', windowId).html(context + ' Pond');
+  $('.window-context-title', windowId).html(params.context + ' Pond');
   $('.pond_message_text', windowId).focus();
-  $('.pond_message_to', windowId).val(context)
+  $('.pond_message_to', windowId).val(params.context)
   $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;
 
@@ -269,8 +269,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         if (ext === 'gif') {
           $('.chat_messages', windowId).append(`
            <span class="message">
-            <img class="remixGIF" title="Remix in GIF Studio" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
-            <img class="remixPaint" title="Remix in Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+            <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
             <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
            </span>
            <br/
@@ -279,8 +279,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
           // TODO: should work as single frame in gif studio, new gif single frame
           $('.chat_messages', windowId).append(`
            <span class="message">
-            <img class="remixGIF" title="Remix in GIF Studio" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
-            <img class="remixPaint" title="Remix this Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+            <img class="remixPaint" title="Remix this Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
             <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
            </span>
            <br/
@@ -297,8 +297,8 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
             <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
             <br/>
             <div class="memeImage">
-              <img class="remixGIF" title="Remix in GIF Studio" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
-              <img class="remixPaint" title="Remix in Paint" data-type="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+              <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+              <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
               <img class="card-meme image" src="${message.card.filename}"/>
             </div>
          </span>
