@@ -117,6 +117,14 @@
     right: 8px;
   }
 
+  #window_gifstudio .outputTarget {
+    position: absolute;
+    top: 32px;
+    right: 8px;
+  }
+
+
+
   #window_gifstudio .saveGif {
     position: absolute;
     top: 8px;
@@ -157,7 +165,11 @@
           <input type="file" class="uploadGIF" name="uploadGIF" id="uploadGIF"/>
         </label>
         <button class="sendGif">SEND GIF</button>
-        <button class="saveGif">DOWNLOAD GIF</button>
+        <div class="outputTarget">Output: </div>
+        
+        <!-- just right click and save as image for now 
+          <button class="saveGif">DOWNLOAD GIF</button>
+        -->
         <br/>
         You can Drag a GIF file here or <a class="startNewGif clearGIF" href="#paint">Start a New GIF</a>
         <br/>
@@ -170,14 +182,14 @@
         </span>
         <br/>
         <span class="gifFrameControl">
-          <span class="gifstudio_addFrame" data-index="-1" title="Add new Frame to GIF">
+          <span class="gifstudio_addFrame" data-index="first" title="Add new Frame to GIF">
             ➕
           </span>
         </span>
         <div class="gifFrames">
         </div>
         <span class="gifFrameControl">
-          <span class="gifstudio_addFrame" title="Add new Frame to GIF">
+          <span class="gifstudio_addFrame" data-index="last" title="Add new Frame to GIF">
             ➕
           </span>
         </span>

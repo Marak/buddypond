@@ -89,17 +89,24 @@ desktop.app.pond.load = function loadPond (params, next) {
 
     $('.insertPaint').on('click', function(){
       let form = $(this).parent();
-      let to;
-      if (form.hasClass('pond_send_message_form')) {
-        to = $('.pond_message_to', form).val();
-        desktop.set('paint_active_type', 'pond');
-        desktop.set('paint_active_context', to);
-      } else {
-        to = $('.buddy_message_to', form).val();
-        desktop.set('paint_active_type', 'buddy');
-        desktop.set('paint_active_context', to);
-      }
-      JQDX.openWindow('paint', { output: to });
+      let context, output;
+      output = 'pond';
+      context = $('.pond_message_to', form).val();
+      JQDX.openWindow('paint', { 
+        output: output,
+        context: context
+      });
+    });
+
+    $('.insertGif').on('click', function(){
+      let form = $(this).parent().parent();
+      let context, output;
+      output = 'pond';
+      context = $('.pond_message_to', form).val();
+      JQDX.openWindow('gifstudio', { 
+        output: output,
+        context: context
+      });
     });
 
     $('.insertSound').on('click', function(){

@@ -12,11 +12,20 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
     $('#window_paint').css('top', 50);
 
     $('.sendPaint').on('click', function(){
-      desktop.app.paint.send();
+      if ($(this).hasClass('updateGif')) {
+        desktop.app.paint.send({
+          action: 'insert'
+        });
+      } else {
+        desktop.app.paint.send({
+          action: 'replace'
+        });
+      }
     });
 
     $('.sendGifStudio').on('click', function(){
-      desktop.app.paint.send();
+      let action = $(this).data('action');
+      desktop.app.paint.send({ action: action });
     });
 
     next();
@@ -24,7 +33,11 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
   });
 };
 
-desktop.app.paint.send = function sendPaint () {
+desktop.app.paint.send = function sendPaint (params) {
+
+  params = params || {
+    action: 'insert'
+  };
 
   let keys = Object.keys(localStorage);
   let firstImg = null;
@@ -56,14 +69,15 @@ desktop.app.paint.send = function sendPaint () {
       if (typeof desktop.app.gifstudio.currentFrameIndex === 'undefined') {
         desktop.app.gifstudio.currentFrameIndex = 0;
       }
-      desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex);
-      desktop.app.gifstudio.currentFrameIndex++;
+      if (params.action === 'insert') {
+        desktop.app.gifstudio.currentFrameIndex++;
+      }
+      desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex, params.action);
       return;
     }
 
     // send the paint to pond or buddy chat windows as a Snap
     if (output === 'pond' || output === 'buddy') {
-    
       // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
       buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function(err, data){
         keys.forEach(function(k){
@@ -94,14 +108,20 @@ desktop.app.paint.openWindow = function openWindow (params) {
 
   if (params.output) {
     desktop.app.paint.output = params.output;
+  } else {
+    desktop.app.paint.output = 'localhost';
   }
 
   if (params.context) {
     desktop.app.paint.context = params.context;
+  } else{
+    desktop.app.paint.context = 'file-system';
   }
 
+  $('.paintOutputTarget').html(desktop.app.paint.output + '/' + desktop.app.paint.context);
+
   if (buddypond.me || desktop.app.paint.output) {
-    $('.sendPaintHolder .sendPaint').html("SEND PAINT TO " + desktop.app.paint.output + '/' + desktop.app.paint.context);
+    $('.sendPaintHolder .sendPaint').html("SEND PAINT");
     $('.sendPaintHolder').show();
   } else {
     $('.sendPaintHolder').hide();
@@ -110,6 +130,25 @@ desktop.app.paint.openWindow = function openWindow (params) {
   if (desktop.app.paint.output === 'gifstudio') {
     $('.sendPaint').hide();
     $('.sendGifStudio').show();
+    //$('.insertGif').html('Insert at frame: ' + desktop.app.gifstudio.currentFrameIndex);
+    //$('.updateGif').html('Update frame: ' + desktop.app.gifstudio.currentFrameIndex)
+    if (desktop.app.gifstudio.currentFrameIndex === Infinity) {
+      //$('.insertGif').html('Add frame');
+      $('.updateGif').hide();
+    } else {
+      //$('.insertGif').html('Insert at frame: ' + desktop.app.gifstudio.currentFrameIndex);
+      //$('.updateGif').html('Update frame: ' + desktop.app.gifstudio.currentFrameIndex)
+      $('.updateGif').show();
+    }
+
+    if (desktop.app.gifstudio.insertMode === 'replace') {
+      $('.insertGif').hide();
+      $('.updateGif').show();
+    } else {
+      $('.insertGif').show();
+      $('.updateGif').hide();
+    }
+
   } else {
     $('.sendPaint').show();
     $('.sendGifStudio').hide();

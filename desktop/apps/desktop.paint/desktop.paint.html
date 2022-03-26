@@ -16,6 +16,10 @@
     left: 266px;
   }
 
+  #window_paint .paintOutput {
+    padding-left: 3px;
+  }
+
   #window_paint .sendPaint {
     cursor: pointer;
     border: solid;
@@ -27,7 +31,7 @@
     font-size: 12px;
     margin: 4px 2px;
     border-radius: 4px;
-    width: 266px;
+    width: 233px;
   }
 
   #window_paint .sendPaint:hover {
@@ -50,7 +54,8 @@
     font-size: 12px;
     margin: 4px 2px;
     border-radius: 4px;
-    width: 266px;
+    width: 133px;
+    height: 33px;
   }
 
   #window_paint .sendGifStudio:hover {
@@ -97,7 +102,9 @@
     <div class="abs window_content">
       <div class="sendPaintHolder">
         <button class="sendPaint">SEND PAINT</button>
-        <button class="sendGifStudio">SEND TO GIF STUDIO</button>
+        <button class="sendGifStudio updateGif" data-action="replace">Update Frame</button>
+        <button class="sendGifStudio insertGif" data-action="insert">Add Frame</button>
+        <span class="paintOutput"><span class="paintOutputTarget">File-System</span></span>
         <button class="touchPaint">JSPAINT DID NOT UPDATE CLICK AROUND CANVAS MORE AND TRY CLICKING SEND PAINT AGAIN</button>
         <!--
         <br/>

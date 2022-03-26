@@ -205,7 +205,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('mousedown', 'img.remixGIF', function(ev) {
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
-    let type = $(this).data('type');
+    let output = $(this).data('output');
     let context = $(this).data('context');
 
     // TOOD: get count instead of frame index
@@ -218,6 +218,8 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     // -1 or undefined as frame index indicates create new gif
     JQDX.openWindow('gifstudio', {
       src: url,
+      output: output,
+      context: context,
       frameIndex: desktop.app.gifstudio.currentFrameIndex || 0
     });
   });
@@ -232,6 +234,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('mousedown', '.startNewGif', function(){
     let app = $(this).attr('href');
     app = app.replace('#', '');
+    desktop.app.gifstudio.insertMode = 'insert';
     JQDX.openWindow('paint', {
       output: 'gifstudio',
       context: 'new-gif'

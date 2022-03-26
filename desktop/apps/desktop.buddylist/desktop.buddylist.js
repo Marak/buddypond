@@ -173,10 +173,13 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
 
     $('.insertBuddyPaint').on('click', function(){
       let form = $(this).parent();
-      let to = $('.buddy_message_to', form).val();
-      desktop.set('paint_active_type', 'buddy');
-      desktop.set('paint_active_context', to);
-      JQDX.openWindow('paint');
+      let context, output;
+      output = 'buddy';
+      context = $('.buddy_message_to', form).val();
+      JQDX.openWindow('paint', { 
+        output: output,
+        context: context
+      });
     });
 
     try {
@@ -600,6 +603,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       if (ext === 'gif') {
         $('.chat_messages', windowId).append(`
          <span class="message">
+          <img class="remixGIF" title="Remix in GIF Studio" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
           <img class="remixPaint" title="Remix this Snap" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
           <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
         </span><br/>
@@ -607,6 +611,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       } else {
         $('.chat_messages', windowId).append(`
          <span class="message">
+          <img class="remixGIF" title="Remix in GIF Studio" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
           <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
           <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
          </span>
@@ -623,6 +628,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       message.card.filename = window.origin + '/memes/' + message.card.filename;
       $('.chat_messages', windowId).append(`
        <span class="message">
+        <img class="remixGIF" title="Remix in GIF Studio" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
         <img class="remixMeme" title="Remix this Meme" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
         <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em><br/><img class="card-meme image" src="${message.card.filename}"/></span>
        <br/>
