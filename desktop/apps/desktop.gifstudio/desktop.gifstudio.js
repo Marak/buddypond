@@ -56,6 +56,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $('.gifstudio_gifFrame').parent().remove();
       // TODO: rainbow tv with opacity
       $('.gifstudio_gifPreview').attr('src', '');
+      $('.gifstudio_gifPreview').hide();
       $('.gifstudio_gifFrame').parent().remove();
     });
 
@@ -88,6 +89,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     d.on('mousedown', '#window_gifstudio .sendGif', function (ev) {
       let form = $(ev.target).parent();
       let src = $('.gifstudio_gifPreview').attr('src');
+      $('.gifstudio_gifPreview').show();
       buddypond.sendSnaps(desktop.app.gifstudio.output, desktop.app.gifstudio.context, 'I sent a GIF!', src, desktop.app.gifstudio.gifDelay, function(err, data){
         console.log('Sent GIF as snap completed')
       });
@@ -285,6 +287,12 @@ const toDataURL = url => fetch(url)
 
 desktop.app.gifstudio.openWindow = function openWindow (params) {
 
+  if (buddypond.me) {
+    $('.sendGif', '#window_gifstudio').show();
+  } else {
+    $('.sendGif', '#window_gifstudio').hide();
+  }
+
   let gifURL = '';
 
   if (params.src) {
@@ -296,8 +304,10 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
     desktop.app.gifstudio.output = params.output;
     desktop.app.gifstudio.context = params.context;
     $('.outputTarget').html(params.output + '/' + params.context);
+    $('.sendGif', '#window_gifstudio').show();
   } else {
     $('.outputTarget').html('');
+    $('.sendGif', '#window_gifstudio').hide();
   }
 
   // TODO: can load either base64 src or image
@@ -310,11 +320,13 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
         console.log('RESULT:', dataUrl)
         gifURL = dataUrl;
         $('.gifstudio_gifPreview').attr('src', gifURL);
+        $('.gifstudio_gifPreview').show();
         desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
         desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
       })
   } else {
     $('.gifstudio_gifPreview').attr('src', gifURL);
+    $('.gifstudio_gifPreview').show();
     desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
   }
 
@@ -324,6 +336,7 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
 function seralizeFileInput (fileInput) {
 
   // TODO: rainbow tv gif
+  $('.gifstudio_gifPreview').hide();
   $('.gifstudio_gifPreview').attr('src', '');
 
   var reader = new FileReader();
@@ -332,6 +345,7 @@ function seralizeFileInput (fileInput) {
   reader.onload = function () {
     let src = reader.result;
     $('.gifstudio_gifPreview').attr('src', src);
+    $('.gifstudio_gifPreview').show();
     desktop.app.gifstudio.drawFrames({ url: src, frames: 'all' })
   };
 

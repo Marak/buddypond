@@ -101,6 +101,17 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       return false;
     });
 
+    $('.insertBuddyGif').on('click', function(){
+      let form = $(this).parent().parent();
+      let context, output;
+      output = 'buddy';
+      context = $('.buddy_message_to', form).val();
+      JQDX.openWindow('gifstudio', { 
+        output: output,
+        context: context
+      });
+    });
+
     $('.sendBuddyRequest').on('click', function(){
       $('.you_have_no_buddies').html('Buddy Request Sent!');
       var buddyName = $('.buddy_request_name').val() || $(this).html();

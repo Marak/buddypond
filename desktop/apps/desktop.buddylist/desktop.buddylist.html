@@ -159,7 +159,19 @@
     cursor: pointer;
   }
 
+  .insertBuddyGif {
+    padding-right: 5px;
+    padding-top: 12px;
+    width: 16px;
+    height: 16px;
+  }
 
+  .insertBuddyGif:hover {
+    width: 16px;
+    height: 16px;
+    opacity: 0.44;
+    cursor: pointer;
+  }
 
 </style>
 
@@ -269,7 +281,9 @@
       <div class="buddy_send_message_form">
         <form method="POST" action="" align="right" class="buddy_send_message_form">
           <span class="insertBuddySnap" title="Insert Snap">📷</span>
-          <img title="Insert Audio" class="insertBuddySound" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>                 <img title="Insert Paint" class="insertBuddyPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img title="Insert Audio" class="insertBuddySound" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>       
+          <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertBuddyGif" src="desktop/assets/images/icons/icon_animation_64.png"/></a>
+          <img title="Insert Paint" class="insertBuddyPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <span title="Insert Emoji" class="buddy_emoji_picker_0 buddy_emoji_picker emojiPicker emojiTitleBar">😀</span><br/><br/>
           <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0" rows="1"
             cols="44"></textarea>
