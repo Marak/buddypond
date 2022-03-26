@@ -114,13 +114,13 @@ desktop.app.paint.openWindow = function openWindow (params) {
 
   if (params.context) {
     desktop.app.paint.context = params.context;
-  } else{
+  } else {
     desktop.app.paint.context = 'file-system';
   }
 
   $('.paintOutputTarget').html(desktop.app.paint.output + '/' + desktop.app.paint.context);
 
-  if (buddypond.me || desktop.app.paint.output) {
+  if (buddypond.me || (desktop.app.paint.output && desktop.app.paint.output !== 'localhost')) {
     $('.sendPaintHolder .sendPaint').html("SEND PAINT");
     $('.sendPaintHolder').show();
   } else {

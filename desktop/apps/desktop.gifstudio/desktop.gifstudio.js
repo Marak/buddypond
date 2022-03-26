@@ -57,7 +57,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       // TODO: rainbow tv with opacity
       $('.gifstudio_gifPreview').attr('src', '');
       $('.gifstudio_gifPreview').hide();
-      $('.gifstudio_gifFrame').parent().remove();
+      $('.gifFrames').html('');
     });
 
     $('.uploadGIF').on('change', function(){

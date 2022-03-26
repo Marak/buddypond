@@ -98,7 +98,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       });
     });
 
-    $('.insertPondGif').on('click', function(){
+    $('.icon_gifstudio_64').on('click', function(){
       let form = $(this).parent().parent();
       let context, output;
       output = 'pond';
@@ -276,7 +276,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         if (ext === 'gif') {
           $('.chat_messages', windowId).append(`
            <span class="message">
-            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
             <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
             <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
            </span>
@@ -286,7 +286,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
           // TODO: should work as single frame in gif studio, new gif single frame
           $('.chat_messages', windowId).append(`
            <span class="message">
-            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+            <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
             <img class="remixPaint" title="Remix this Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
             <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
            </span>
@@ -304,7 +304,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
             <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
             <br/>
             <div class="memeImage">
-              <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_animation_64.png"/>
+              <img class="remixGIF" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
               <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
               <img class="card-meme image" src="${message.card.filename}"/>
             </div>
