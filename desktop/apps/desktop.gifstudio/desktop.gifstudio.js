@@ -85,10 +85,9 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       });
     });
 
-    d.on('mousedown', '#window_gifstudio .sendGif', function(ev) {
+    d.on('mousedown', '#window_gifstudio .sendGif', function (ev) {
       let form = $(ev.target).parent();
       let src = $('.gifstudio_gifPreview').attr('src');
-      // TODO: might be url and not base64 if never render...should always render?
       buddypond.sendSnaps(desktop.app.gifstudio.output, desktop.app.gifstudio.context, 'I sent a GIF!', src, desktop.app.gifstudio.gifDelay, function(err, data){
         console.log('Sent GIF as snap completed')
       });
@@ -200,7 +199,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
         <span class="dragFrameIcon">
           <img src="desktop/assets/images/icons/icon_drag_64.png"/>
         </span>
-        <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+        <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
     `);
     return;
   }
@@ -216,7 +215,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
           <span class="dragFrameIcon">
             <img src="desktop/assets/images/icons/icon_drag_64.png"/>
           </span>
-          <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
         </div>
       `);
     } else {
@@ -229,7 +228,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
           <span class="dragFrameIcon">
             <img src="desktop/assets/images/icons/icon_drag_64.png"/>
           </span>
-          <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
         </div>
       `).insertAfter($(`#window_gifstudio .gifFrameHolder:last`));
     }
@@ -246,7 +245,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
         <span class="dragFrameIcon">
           <img src="desktop/assets/images/icons/icon_drag_64.png"/>
         </span>
-        <img class="openPaint" title="Open in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+        <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
       </div>
     `).insertBefore($(`#window_gifstudio .gifFrameHolder:first`));
 
@@ -274,9 +273,18 @@ desktop.app.gifstudio.drawFrames = function drawFrames (options) {
   });
 }
 
+// TODO: move to helpers / util file
+const toDataURL = url => fetch(url)
+  .then(response => response.blob())
+  .then(blob => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  }))
+
 desktop.app.gifstudio.openWindow = function openWindow (params) {
 
-  // https://buddypond.com/snaps/Marak/8ed7916c-9cd5-4c23-8c44-46b5c60bb609.gif
   let gifURL = '';
 
   if (params.src) {
@@ -297,18 +305,19 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
 
   if (!gifURL) {
     // TODO rainbow tv?
-    gifURL = 'desktop/apps/desktop.gifstudio/assets/rainbow.gif';
-    $('.gifstudio_gifPreview').attr('src', gifURL);
-    desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
-    desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
+    toDataURL('desktop/apps/desktop.gifstudio/assets/rainbow.gif')
+      .then(dataUrl => {
+        console.log('RESULT:', dataUrl)
+        gifURL = dataUrl;
+        $('.gifstudio_gifPreview').attr('src', gifURL);
+        desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+        desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
+      })
   } else {
     $('.gifstudio_gifPreview').attr('src', gifURL);
     desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
   }
 
-  if (gifURL) {
-  }
-  return true;
 };
 
 // TODO: move these functions to helper file

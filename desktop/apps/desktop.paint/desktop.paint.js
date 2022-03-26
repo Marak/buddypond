@@ -134,19 +134,19 @@ desktop.app.paint.openWindow = function openWindow (params) {
     //$('.updateGif').html('Update frame: ' + desktop.app.gifstudio.currentFrameIndex)
     if (desktop.app.gifstudio.currentFrameIndex === Infinity) {
       //$('.insertGif').html('Add frame');
-      $('.updateGif').hide();
+      $('.updateGif', '#window_paint').hide();
     } else {
       //$('.insertGif').html('Insert at frame: ' + desktop.app.gifstudio.currentFrameIndex);
       //$('.updateGif').html('Update frame: ' + desktop.app.gifstudio.currentFrameIndex)
-      $('.updateGif').show();
+      $('.updateGif', '#window_paint').show();
     }
 
     if (desktop.app.gifstudio.insertMode === 'replace') {
-      $('.insertGif').hide();
-      $('.updateGif').show();
+      $('.insertGif', '#window_paint').hide();
+      $('.updateGif', '#window_paint').show();
     } else {
-      $('.insertGif').show();
-      $('.updateGif').hide();
+      $('.insertGif', '#window_paint').show();
+      $('.updateGif', '#window_paint').hide();
     }
 
   } else {

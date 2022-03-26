@@ -98,7 +98,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       });
     });
 
-    $('.insertGif').on('click', function(){
+    $('.insertPondGif').on('click', function(){
       let form = $(this).parent().parent();
       let context, output;
       output = 'pond';
