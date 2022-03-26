@@ -1052,12 +1052,14 @@ iframe {
 .snapsImage {
   width: 320px;
   height: 240px;
+  /*
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: "FlipH";
+  */
 }
 .paintsImage {
   width: 320px;

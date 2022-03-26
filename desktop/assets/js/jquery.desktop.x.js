@@ -196,14 +196,9 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let context = $(this).data('context');
     desktop.set('paint_active_type', type);
     desktop.set('paint_active_context', context);
-    // TODO: use iframe message instead of desktop.set()
-    desktop.set('paint_active_url', url);
-
     JQDX.openWindow('paint', {
-      src: url,
-      frameIndex: desktop.app.gifstudio.currentFrameIndex || -1
+      src: url
     });
-    // TODO: use params here to openWindow instead of localstorage?
   });
 
   // Click remix GIF icon to remix gifs in Gif Studio App
@@ -233,6 +228,15 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     var appName = iconDock.replace('#icon_dock_', '');
     JQDX.openWindow(appName)
   });
+
+  d.on('mousedown', '.openApp', function(){
+    let app = $(this).attr('href');
+    app = app.replace('#', '');
+    JQDX.openWindow(app, {
+      type: 'gifstudio' // TODO: use data-* attr
+    });
+    return false;
+  })
 
   // Make icons draggable.
   d.on('mouseenter', 'a.icon', function() {

@@ -120,7 +120,7 @@
   #window_gifstudio .saveGif {
     position: absolute;
     top: 8px;
-    right: 88px;
+    right: 93px;
   }
 
   #gifStudioDelaySliderLabel {
@@ -149,6 +149,7 @@
           ondrop="dropHandler(event);" 
           ondragover="dragOverHandler(event);"  
           ondragleave="dragLeaveHandler(event);"></div>
+        <br/>
         <img class="gifstudio_gifPreview" ondrop="dropHandler(event);"/><br/>
         <br/>
         <br/>
@@ -156,20 +157,17 @@
           <input type="file" class="uploadGIF" name="uploadGIF" id="uploadGIF"/>
         </label>
         <button class="sendGif">SEND GIF</button>
-        <button class="saveGif">SAVE GIF</button>
+        <button class="saveGif">DOWNLOAD GIF</button>
         <br/>
         You can Drag a GIF file here or <a class="openApp clearGIF" href="#paint">Start a New GIF</a>
         <br/>
         <br/>
-        Editing imported or external GIFs may result in the GIF glitching.
+        Editing imported or external GIFs may result in GIF glitching.
         <br/>
         <br/>
         <span class="gifStudioDelaySliderControl" title="Delay Speed">
           <div id="gifStudioDelaySlider" title="Delay Speed"></div>
         </span>
-        <hr/>
-        <br/>
-        <br/>
         <br/>
         <span class="gifFrameControl">
           <span class="gifstudio_addFrame" data-index="-1" title="Add new Frame to GIF">

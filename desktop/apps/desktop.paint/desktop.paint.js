@@ -10,91 +10,75 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
     $('#window_paint').css('height', 495);
     $('#window_paint').css('left', 50);
     $('#window_paint').css('top', 50);
-    next();
 
     $('.sendPaint').on('click', function(){
-      // close window and set desktop.settings.paint_send_active = true
-      desktop.set('paint_send_active', true);
+      desktop.app.paint.send();
     });
 
-    // Remark: I don't we need to use localstorage settings to pass SEND PAINT state around
-    //         This was previously used to workaround JSPAINT, it might not be needed now due to other refactors
-    //         Investigate and see if we can just call the function directly without localstorage workaround
     $('.sendGifStudio').on('click', function(){
-      // TODO: only show gif studio button if frameIndex and context are gifStudio
-      // TODO: paint_active_context needs to be set before this line?
-      // close window and set desktop.settings.paint_send_active = true
-      //desktop.set('paint_active_type', 'gifstudio');
-      // desktop.set('paint_active_context', 'sending-a-gif');
-      desktop.set('paint_send_active', true);
+      desktop.app.paint.send();
     });
 
-    if (!desktop.settings.paint_active_context) {
-      desktop.set('paint_active_type', 'pond');
-      desktop.set('paint_active_context', 'Lily');
-    }
-
-    // TODO: switch to iframe message instead?
-    // TODO: can this just be local scoped now?, no EE required?
-    desktop.on('desktop.settings.paint_send_active', 'send-paint-close-window', function () {
-
-      if (desktop.settings.paint_send_active) {
-        let keys = Object.keys(localStorage);
-        let firstImg = null;
-        let firstKey = null;
-        keys.forEach(function(k){
-          if (k.search('image#') !== -1) {
-            firstImg = localStorage.getItem(k);
-            firstKey = k;
-          }
-        });
-        if (!firstKey) {
-          console.log("FAILED TO FIND IMAGE IN LOCALSTORAGE. SOMEONE PLEASE FIX JSPAINT INTEGRATION")
-          $('.touchPaint').show();
-          return;
-        } else {
-          $('.touchPaint').hide();
-        }
-        // TODO: why is it sending wrong data / no data at all?
-        // TODO: check if context is gifstudio, if so, send the gif there as frameindex ( either existing or new )
-        let type = desktop.app.paint.type || desktop.settings.paint_active_type;
-        let context = desktop.app.paint.context || desktop.settings.paint_active_context;
-
-        setTimeout(function(){
-
-          // send the paint to `gifstudio` as a frame ( either existing or new )
-          if (type === 'gifstudio') {
-            // TODO: should not be undefined here
-            if (typeof desktop.app.gifstudio.currentFrameIndex === 'undefined') {
-              desktop.app.gifstudio.currentFrameIndex = 0;
-            }
-            desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex);
-            desktop.set('paint_send_active', false);
-            return;
-          }
-
-          // send the paint to pond or buddy chat windows as a Snap
-          if (type === 'pond' || type === 'buddy') {
-            
-            // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
-            buddypond.sendSnaps(type, context, 'I sent a Paint', firstImg, 100, function(err, data){
-              keys.forEach(function(k){
-                if (k.search('image#') !== -1) {
-                  localStorage.removeItem(k);
-                  console.log('clearing key', firstKey)
-                }
-              });
-              desktop.set('paint_send_active', false);
-            });
-          }
-        }, 333)
-
-        JQDX.closeWindow('#window_paint');
-      }
-    });
+    next();
 
   });
 };
+
+desktop.app.paint.send = function sendPaint () {
+
+  let keys = Object.keys(localStorage);
+  let firstImg = null;
+  let firstKey = null;
+  keys.forEach(function(k){
+    if (k.search('image#') !== -1) {
+      firstImg = localStorage.getItem(k);
+      firstKey = k;
+    }
+  });
+
+  if (!firstKey) {
+    console.log("FAILED TO FIND IMAGE IN LOCALSTORAGE. SOMEONE PLEASE FIX JSPAINT INTEGRATION")
+    $('.touchPaint').show();
+    return;
+  } else {
+    $('.touchPaint').hide();
+  }
+  // TODO: why is it sending wrong data / no data at all?
+  // TODO: check if context is gifstudio, if so, send the gif there as frameindex ( either existing or new )
+  let type = desktop.app.paint.type || desktop.settings.paint_active_type;
+  let context = desktop.app.paint.context || desktop.settings.paint_active_context;
+
+  setTimeout(function(){
+
+    // send the paint to `gifstudio` as a frame ( either existing or new )
+    if (type === 'gifstudio') {
+      // TODO: should not be undefined here
+      if (typeof desktop.app.gifstudio.currentFrameIndex === 'undefined') {
+        desktop.app.gifstudio.currentFrameIndex = 0;
+      }
+      desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex);
+      // desktop.app.gifstudio.currentFrameIndex++;
+      return;
+    }
+
+    // send the paint to pond or buddy chat windows as a Snap
+    if (type === 'pond' || type === 'buddy') {
+    
+      // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
+      buddypond.sendSnaps(type, context, 'I sent a Paint', firstImg, 100, function(err, data){
+        keys.forEach(function(k){
+          if (k.search('image#') !== -1) {
+            localStorage.removeItem(k);
+            console.log('clearing key', firstKey)
+          }
+        });
+      });
+    }
+  }, 333)
+  // TODO: only close window on replace updates? or not at all?
+  // JQDX.closeWindow('#window_paint');
+
+}
 
 desktop.app.paint.openWindow = function openWindow (params) {
   // clear out localstorage images on window open
@@ -116,18 +100,11 @@ desktop.app.paint.openWindow = function openWindow (params) {
     desktop.app.paint.context = params.context;
   }
 
-  if (params.frameIndex) {
-    // alert(params.frameIndex)
-  }
-
-  /* TODO: make sure offline works
-  if (buddypond.me) {
+  if (buddypond.me || desktop.app.paint.type) {
     $('.sendPaintHolder').show();
   } else {
     $('.sendPaintHolder').hide();
   }
-  */
-  $('.sendPaintHolder').show();
 
   if (desktop.app.paint.type === 'gifstudio') {
     $('.sendPaint').hide();
@@ -140,12 +117,6 @@ desktop.app.paint.openWindow = function openWindow (params) {
   if (params.src) {
     // send the base64 source as part of the frame
     $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html#load:' + encodeURI(params.src));
-    return;
-  }
-
-  if (desktop.settings.paint_active_url) {
-    // desktop.set('paint_send_active', false);
-    $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html#load:' + encodeURI(desktop.settings.paint_active_url));
   } else {
     $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   }
@@ -154,8 +125,6 @@ desktop.app.paint.openWindow = function openWindow (params) {
 };
 
 desktop.app.paint.closeWindow = function closeWindow () {
-  desktop.set('paint_send_active', false);
-  desktop.set('paint_active_url', false);
   // $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   return true;
 };

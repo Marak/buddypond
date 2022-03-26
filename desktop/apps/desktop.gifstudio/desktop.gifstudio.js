@@ -1,74 +1,10 @@
-function seralizeFileInput (fileInput) {
-
-  // TODO: rainbow tv gif
-  $('.gifstudio_gifPreview').attr('src', '');
-
-  var reader = new FileReader();
-  reader.readAsDataURL(fileInput.files[0]);
-
-  reader.onload = function () {
-  	console.log(reader.result);//base64encoded string
-    let src = reader.result;
-    $('.gifstudio_gifPreview').attr('src', src);
-    desktop.app.gifstudio.drawFrames({ url: src, frames: 'all' })
-  };
-
-  reader.onerror = function (error) {
-  	console.log('Error: ', error);
-  };
-}
-
-function dropHandler(ev) {
-  console.log('File(s) dropped');
-
-  // Prevent default behavior (Prevent file from being opened)
-  ev.preventDefault();
-  $('#drop_zone').removeClass('drop_zone_active');
-  $('#drop_zone').addClass('drop_zone_inactive');
-  seralizeFileInput(ev.dataTransfer);
-
-  return;
-  if (ev.dataTransfer.items) {
-    // Use DataTransferItemList interface to access the file(s)
-    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-      // If dropped items aren't files, reject them
-      if (ev.dataTransfer.items[i].kind === 'file') {
-        var file = ev.dataTransfer.items[i].getAsFile();
-        console.log('... file[' + i + '].name = ' + file.name);
-      }
-    }
-  } else {
-    // Use DataTransfer interface to access the file(s)
-    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-    }
-  }
-}
-
-function dragOverHandler(ev) {
-  console.log('File(s) in drop zone');
-  $('#drop_zone').removeClass('drop_zone_inactive');
-  $('#drop_zone').addClass('drop_zone_active');
-
-  // Prevent default behavior (Prevent file from being opened)
-  ev.preventDefault();
-}
-
-function dragLeaveHandler(ev) {
-  console.log('File(s) in drop zone');
-  $('#drop_zone').removeClass('drop_zone_active');
-  $('#drop_zone').addClass('drop_zone_inactive');
-
-  // Prevent default behavior (Prevent file from being opened)
-  ev.preventDefault();
-}
-
-
-
 desktop.app.gifstudio = {};
-desktop.app.gifstudio.label = "Games";
+desktop.app.gifstudio.label = "Gif Studio";
 desktop.app.gifstudio.icon = 'folder';
+desktop.app.gifstudio.currentFrameIndex = 0;
 
+// set default type and contet
+// TODO: rename type to target or app or targetApp or outApp or link, figure out name
 desktop.app.gifstudio.type = 'pond';
 desktop.app.gifstudio.context = 'Lily';
 
@@ -84,13 +20,6 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     $('#window_gifstudio').css('left', 200);
     $('#window_gifstudio').css('top', 120);
 
-    $('.openApp').on('click', function(){
-      let app = $(this).attr('href');
-      app = app.replace('#', '');
-      JQDX.openWindow(app); 
-      return false;
-    })
-
     let d = $(document);
     d.on('mousedown', '.openPaint', function (ev) {
       let holder = $(ev.target).parent();
@@ -102,8 +31,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       JQDX.openWindow('paint', {
         type: 'gifstudio',
         context: 'editing-a-gif-frame',
-        src: img.attr('src'),
-        frameIndex: frameIndex
+        src: img.attr('src')
       });
     });
 
@@ -137,15 +65,14 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       desktop.app.gifstudio.currentFrameIndex = $(ev.target).data('index') || Infinity;
       JQDX.openWindow('paint', { 
         type: 'gifstudio',
-        context: 'adding-a-new-frame',
-        frameIndex: desktop.app.gifstudio.currentFrameIndex // TODO: get last frame index
+        context: 'adding-a-new-frame'
       });
     });
 
     d.on('mousedown', '#window_gifstudio .sendGif', function(ev) {
       let form = $(ev.target).parent();
-      let src = $('.gifstudio_gifPreview').attr('src')
-      console.log('ahhhh', src)
+      let src = $('.gifstudio_gifPreview').attr('src');
+      // TODO: might be url and not base64 if never render...should always render?
       buddypond.sendSnaps(desktop.app.gifstudio.type, desktop.app.gifstudio.context, 'I sent a GIF!', src, desktop.app.gifstudio.gifDelay, function(err, data){
         console.log('Sent GIF as snap completed')
       });
@@ -173,28 +100,20 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
         desktop.app.gifstudio.createGIF(delay);
       }
     });
-
     next();
   });
 };
 
-
 desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
-  // console.log('desktop.app.gifstudio.loadGifFrame', index)
-
-  if (typeof index === 'undefined') {
-    //index = ($('.gifFrameHolder', '#window_gifstudio').length - 2) || 0;
-  }
-
-  img = img.substring(1, img.length -1)
-  // img = img.substring(img.length -2, 1)
+  // Remark: strange issue with double encoding gif
+  img = img.substring(1, img.length -1);
   // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().attr('src', img);
-
   // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().remove();
-
   // $('#window_gifstudio .gifFrames').hide();
   let replace = true;
-  if (typeof index === 'undefined' || index === -1) {
+  let currentFrames = $(`#window_gifstudio .gifFrameHolder`).length;
+  // console.log('desktop.app.gifstudio.loadGifFrame', index, currentFrames)
+  if (typeof index === 'undefined' || index === -1 || index > currentFrames) {
     replace = false;
   }
   desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, replace);
@@ -230,7 +149,6 @@ desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
   });
 
   $('.gifstudio_gifFrame').each(function(i, e){
-    console.log('feeding frame', i, e)
     gif.addFrame(e, { delay: delay });
   })
 
@@ -311,8 +229,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, r
 
     return;
   }
-
-  /*
+  /*. TODO: add back framecount to frameHolder?
       <span class="frameCount">
         ${frame.frameIndex}/${frameData.length}
       </span>
@@ -357,3 +274,67 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
   }
   return true;
 };
+
+function seralizeFileInput (fileInput) {
+
+  // TODO: rainbow tv gif
+  $('.gifstudio_gifPreview').attr('src', '');
+
+  var reader = new FileReader();
+  reader.readAsDataURL(fileInput.files[0]);
+
+  reader.onload = function () {
+    let src = reader.result;
+    $('.gifstudio_gifPreview').attr('src', src);
+    desktop.app.gifstudio.drawFrames({ url: src, frames: 'all' })
+  };
+
+  reader.onerror = function (error) {
+  	console.log('Error: ', error);
+  };
+}
+
+function dropHandler(ev) {
+  console.log('File(s) dropped');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+  $('#drop_zone').removeClass('drop_zone_active');
+  $('#drop_zone').addClass('drop_zone_inactive');
+  seralizeFileInput(ev.dataTransfer);
+
+  return;
+  if (ev.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.dataTransfer.items[i].kind === 'file') {
+        var file = ev.dataTransfer.items[i].getAsFile();
+        console.log('... file[' + i + '].name = ' + file.name);
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+    }
+  }
+}
+
+function dragOverHandler(ev) {
+  console.log('File(s) in drop zone');
+  $('#drop_zone').removeClass('drop_zone_inactive');
+  $('#drop_zone').addClass('drop_zone_active');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
+
+function dragLeaveHandler(ev) {
+  console.log('File(s) in drop zone');
+  $('#drop_zone').removeClass('drop_zone_active');
+  $('#drop_zone').addClass('drop_zone_inactive');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
