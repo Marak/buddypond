@@ -1,9 +1,10 @@
 desktop.app.mirror = {};
 desktop.app.mirror.label = "Mirror";
 
-// "mirror" mode indicates that Snaps should be saved locally to file system
-// This could also be "Snap" which indicates Snaps will be sent to the server or a buddy
-desktop.app.mirror.mode = 'mirror';
+// "local" mode indicates the mirror will save photos locally to file-system
+// This could also be "snap" which indicates photos will be sent out as Snaps ( multimedia chat messages )
+desktop.app.mirror.mode = 'local';
+
 desktop.app.mirror.fullMirror = false;
 desktop.app.mirror.showingControls = true;
 
@@ -17,9 +18,9 @@ desktop.app.mirror.devices = {
 
 desktop.app.mirror.load = function loadDesktopMirror (params, next) {
   const assets = [ 
-    'desktop/apps/desktop.mirror/CanvasVideo.js',
-    'desktop/apps/desktop.mirror/snaps.js',
-    'desktop/apps/desktop.mirror/jsman.js',
+    'desktop/apps/desktop.mirror/lib/CanvasVideo.js',
+    'desktop/apps/desktop.mirror/lib/snaps.js',
+    'desktop/apps/desktop.mirror/vendor/jsman.js',
     'desktop/assets/js/gif.js',
     'mirror' ];
 
@@ -148,9 +149,6 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
     });
 
     // starts snaps photo record
-    let MAX_FRAMES_PER_SNAP = 6;
-    let DEFAULT_SNAP_TIMER = 1000;
-    let currentFrame = 0;
     desktop.app.mirror.snaps = [];
     desktop.app.mirror.snapsGIF = [];
 
@@ -173,7 +171,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       $('.takeSingleSnap').css('left', '122');
       $('.cameraControls').show();
 
-      if (desktop.app.mirror.mode === 'mirror') {
+      if (desktop.app.mirror.mode === 'local') {
         let src = $('#snapsPreview').attr('src');
         // TODO: create utility function for downloading files
         var url = src.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
@@ -344,10 +342,10 @@ desktop.app.mirror.openWindow = function openWindow (params) {
     $('#mirrorCanvasMe').css('height', 480);
     $('#snapDelaySlider').show();
   } else {
-    desktop.app.mirror.mode = 'mirror';
+    desktop.app.mirror.mode = 'local';
   }
 
-  if (desktop.app.mirror.mode === 'mirror') {
+  if (desktop.app.mirror.mode === 'local') {
     $('.approveSnap').attr('title', 'Save to Local');
   } else {
     $('.approveSnap').attr('title', 'Approve and Send');

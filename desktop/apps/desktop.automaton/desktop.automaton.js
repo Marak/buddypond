@@ -5,7 +5,7 @@ desktop.app.automaton.label = "Automaton";
 
 desktop.app.automaton.load = function loadautomatonGames (params, next) {
   desktop.load.remoteAssets([
-    'desktop/apps/desktop.automaton/automatons/dicey.js',
+    'desktop/apps/desktop.automaton/automatons/automaton.dicey.js',
     // 'automaton' // this loads the sibling desktop.app.automaton.html file into <div id="window_automaton"></div>
   ], function (err) {
     /*

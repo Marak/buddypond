@@ -10,7 +10,7 @@ desktop.app.audioplayer.playing = {};
 desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback) {
   callback = callback || function noop () {}
   if (!desktop.settings.audio_enabled) {
-    // do not play any audio if desktop is not enabled
+    // do not play any audio if desktop audio is not enabled
     return callback(null, false);
   } else {
     // play the audio
@@ -50,7 +50,6 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
         });
       }
       _play();
-
 
     } catch (err) {
       console.log('Warning Audio Error:', err.message)
