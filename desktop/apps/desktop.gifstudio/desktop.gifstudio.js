@@ -38,6 +38,12 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       });
     });
 
+    d.on('mousedown', '.duplicateFrame', function (ev) {
+      let holder = $(ev.target).parent();
+      $(holder.clone()).insertAfter(holder)
+      desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+    });
+
     // Click remix GIF icon to remix gifs in Gif Studio App
     d.on('mousedown', '.removeFrame', function(ev) {
       let frameHolder = $(ev.target).parent();
@@ -202,6 +208,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
           <img src="desktop/assets/images/icons/icon_drag_64.png"/>
         </span>
         <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+        <img class="duplicateFrame" title="Duplicate Animation Frame" src="desktop/assets/images/icons/icon_duplicate_64.png"/>
     `);
     return;
   }
@@ -218,6 +225,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
             <img src="desktop/assets/images/icons/icon_drag_64.png"/>
           </span>
           <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="duplicateFrame" title="Duplicate Animation Frame" src="desktop/assets/images/icons/icon_duplicate_64.png"/>
         </div>
       `);
     } else {
@@ -231,6 +239,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
             <img src="desktop/assets/images/icons/icon_drag_64.png"/>
           </span>
           <img class="openPaint" title="Edit in Paint" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="duplicateFrame" title="Duplicate Animation Frame" src="desktop/assets/images/icons/icon_duplicate_64.png"/>
         </div>
       `).insertAfter($(`#window_gifstudio .gifFrameHolder:last`));
     }
