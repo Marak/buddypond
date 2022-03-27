@@ -541,7 +541,6 @@ desktop.smartlinks = {};
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
 
-  // TODO: 
   if (cleanText) {
     let searchYouTubeLongLink = cleanText.search('https://www.youtube.com/watch?');
     let searchYouTubeShortLink = cleanText.search('https://youtu.be/');

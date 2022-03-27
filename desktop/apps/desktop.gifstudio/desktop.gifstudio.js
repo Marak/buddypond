@@ -4,8 +4,6 @@ desktop.app.gifstudio.icon = 'folder';
 desktop.app.gifstudio.currentFrameIndex = 0;
 desktop.app.mirror.gifDelay = 200;
 
-// set default type and contet
-// TODO: rename type to target or app or targetApp or outApp or link, figure out name
 desktop.app.gifstudio.type = 'pond';
 desktop.app.gifstudio.context = 'Lily';
 
@@ -25,11 +23,8 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     d.on('mousedown', '.openPaint', function (ev) {
       let holder = $(ev.target).parent();
       let img = $('.gifstudio_gifFrame', holder);
-      // TOOD: get count instead of frame index
-      // let frameIndex = $(img).data('frameindex') || 0;
       let frameIndex = $(holder).index();
       desktop.app.gifstudio.currentFrameIndex = frameIndex;
-      // desktop.app.gifstudio.insertMode = 'new';
       desktop.app.gifstudio.insertMode = 'replace';
       JQDX.openWindow('paint', {
         output: 'gifstudio',
@@ -50,14 +45,8 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $(frameHolder).remove();
       // TODO: use correct delay scope
       desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
-      /*
-      , function (){
-        let src = $('.gifstudio_gifPreview').attr('src');
-        $('.gifFrames').html('');
-        desktop.app.gifstudio.drawFrames({ url: src, frames: 'all' })
-      });
-      */
     });
+
     $('.clearGIF').on('click', function(){
       $('.gifstudio_gifFrame').parent().remove();
       // TODO: rainbow tv with opacity
@@ -72,7 +61,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
 
     // Click remix GIF icon to remix gifs in Gif Studio App
     d.on('mousedown', '.gifstudio_addFrame', function(ev) {
-      
+
       let holder = $(ev.target);
       let frameIndex = $(holder).data('index') || 'last';
 
@@ -128,18 +117,14 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
 };
 
 desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
-  // Remark: strange issue with double encoding gif
+  // Remark: strange issue with double encoding gif in JSPAINT adding a '"' symbol?
   img = img.substring(1, img.length -1);
-  // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().attr('src', img);
-  // $('#window_gifstudio .gifFrames .gifstudio_gifFrame').last().remove();
-  // $('#window_gifstudio .gifFrames').hide();
   let action = 'replace';
   let currentFrames = $(`#window_gifstudio .gifFrameHolder`).length;
   // console.log('desktop.app.gifstudio.loadGifFrame', index, currentFrames)
   if (typeof index === 'undefined' || index === -1 || index > currentFrames) {
     action = 'insert';
   }
-  console.log('desktop.app.gifstudio.loadGifFrame->', desktop.app.gifstudio.insertMode, index)
   desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, desktop.app.gifstudio.insertMode);
   setTimeout(function(){
     desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay, function (err, imgData){
@@ -149,7 +134,6 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
 }
 
 // TODO: create perfect loop by duplicating set and reversing it <<<<<<||>>>>>>
-
 desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
   cb = cb || function noop () {};
   // TODO: set height and width based on actual GIF size...
@@ -184,20 +168,11 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
 
   let index = frame.frameIndex;
   let currentFrames = $(`#window_gifstudio .gifFrameHolder`).length;
-  // console.log('index', index, 'currentFrames', currentFrames, 'replace', replace)
 
   if (index === Infinity || index === 'Infinity' || index === -1) {
     action = 'insert';
   }
-  /*
-  if (currentFrames === 0) {
-    replace = false;
-  }
-  */
-  if (desktop.app.gifstudio.insertMode === 'replace') {
-   // replace = true;
-  }
-  
+
   if (action === 'replace') {
     $(`#window_gifstudio .gifFrameHolder:eq(${index})`).html(`
         <img data-frameindex="${frame.frameIndex}" src="${base64String}" class="gifstudio_gifFrame"/>
@@ -212,6 +187,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
     `);
     return;
   }
+
   // index is higher than set, insert after
   if (index >= currentFrames) {
     if (currentFrames === 0) {
@@ -319,14 +295,13 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
     $('.sendGif', '#window_gifstudio').hide();
   }
 
-  // TODO: can load either base64 src or image
   $('.gifFrameHolder', '#window_gifstudio').remove();
 
   if (!gifURL) {
-    // TODO rainbow tv?
+    // if no url has been provided, default to the rainbow gif
+    // Remark: A base 64 value *must* currently be paseed into gifstudio.drawFrames()
     toDataURL('desktop/apps/desktop.gifstudio/assets/rainbow.gif')
       .then(dataUrl => {
-        console.log('RESULT:', dataUrl)
         gifURL = dataUrl;
         $('.gifstudio_gifPreview').attr('src', gifURL);
         $('.gifstudio_gifPreview').show();
