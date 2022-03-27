@@ -270,7 +270,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     // replace cards
     if (message.card) {
       if (message.card.type === 'snaps') {
-        message.card.snapURL = window.origin + '/' + message.card.snapURL;
+        message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
         let arr = message.card.snapURL.split('.');
         let ext = arr[arr.length -1];
         if (ext === 'gif') {
@@ -298,7 +298,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       }
 
       if (message.card && message.card.type === 'meme') {
-        message.card.filename = window.origin + '/memes/' + message.card.filename;
+        message.card.filename = desktop.origin + '/memes/' + message.card.filename;
         $('.chat_messages', windowId).append(`
          <span class="message">
             <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
@@ -315,7 +315,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       }
 
       if (message.card && message.card.type === 'audio') {
-        message.card.soundURL = window.origin + '/' + message.card.soundURL;
+        message.card.soundURL = desktop.origin + '/' + message.card.soundURL;
         $('.message', windowId).last().append(`
           <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
         `);

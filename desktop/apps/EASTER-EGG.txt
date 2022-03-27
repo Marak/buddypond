@@ -33,6 +33,9 @@ Ideas for community apps:
   - uses AJAX to request RSS over web
   - does not need buddypond backend
 
+- Comic Chat Rooms
+  https://github.com/gyng/comicchat
+
 - Wallpaper Manager
   - user contributed wallpapers
   - custom canvas animations

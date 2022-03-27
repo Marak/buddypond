@@ -8,6 +8,15 @@ const desktop = {};
 
 // time the desktop object was created in browser
 desktop.ctime = new Date();
+desktop.mode = 'production';
+
+// desktop.origin is used as the root path for all buddy uploaded multimedia assets ( Snaps, Paints, Sounds )
+desktop.origin = 'https://buddypond.com';
+
+// if the desktop is in dev mode, use the browser's origin for all multimedia assets ( localhost )
+if (desktop.mode === 'dev') {
+  desktop.origin = window.origin;
+}
 
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
 desktop.app = {};
