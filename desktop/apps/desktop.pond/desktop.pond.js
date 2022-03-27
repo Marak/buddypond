@@ -68,7 +68,8 @@ desktop.app.pond.load = function loadPond (params, next) {
         $('.customPondName').addClass('error');
       } else {
         $('.customPondName').removeClass('error');
-        desktop.ui.openWindow('pond_message', $('.customPondName').val())
+        let pondName = $('.customPondName').val();
+        desktop.app.pond.openWindow({ context: pondName});
       }
     });
 
@@ -128,7 +129,6 @@ desktop.app.pond.load = function loadPond (params, next) {
 let pondOpened = false;
 
 desktop.app.pond.openWindow = function (params) {
-
   params = params || {};
   if(!params.context) {
     params.context = "Lily";
