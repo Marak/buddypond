@@ -1,4 +1,4 @@
 .DS_Store
 sdk/nodejs-sdk/node_modules
 snaps/
-audio/
+./audio/

@@ -7,6 +7,7 @@ desktop.app.spellbook.spells = [
   'riddikulus',
   'episkey',
   'rickroll',
+  'forbiddenRickRoll',
   'alert',
   'logout',
   'banhammer'
@@ -94,6 +95,14 @@ desktop.app.spellbook.banhammer = function banBuddy () {
 desktop.app.spellbook.rickroll = function rickroll () {
   document.location = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 } 
+
+// plays the forbidden rick-roll
+desktop.app.spellbook.forbiddenRickRoll = function forbiddenRickRoll () {
+  desktop.set('audio_enabled', true);
+  desktop.play('FORBIDDEN_RICKROLL.mp3', true);
+  $('#wallpaper').attr('src', 'desktop/assets/images/misc/forbidden-rickroll.gif');
+  $('#c').hide();
+}
 
 desktop.app.spellbook.ebublio = function lightingBolt () {
   // summon Merlin
