@@ -1050,6 +1050,7 @@ iframe {
 
 /* TODO: move these CSS to respective App files */
 .snapsImage {
+  width: 96%;
   /*
   width: 320px;
   height: 240px;
@@ -1064,6 +1065,7 @@ iframe {
   */
 }
 .paintsImage {
+  width: 96%;
 }
 
 .remixPaint {
