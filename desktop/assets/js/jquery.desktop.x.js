@@ -488,6 +488,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     });
     desktop.log('Loading: App.' + appName);
     JQDX.loadWindow(appName, params, function(){
+      desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
     })
   } else {
