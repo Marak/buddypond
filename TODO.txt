@@ -6,9 +6,10 @@ We have many issues open and welcomed for first time contributors!
 Fixes
 
   - local storage should remember subscribed chat windows and reopen on reload
-  - remix snap has wrong context in BM?
-  - adjust UI UX positions on open of chat messages and windowpopups
+
   - Flags need to show for memes and snaps and sounds, etc
+  - Flag mouseover should show alt title of locale
+  
   - why does extra carriage return happen on enter key in chat, breaks links and text
 
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
@@ -198,6 +199,11 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+X- font size should be responsive for larger windows
+  X - https://www.w3schools.com/howto/howto_css_responsive_text.asp
+X - adjust UI UX positions on open of chat messages and windowpopups
+
+X - remix snap has wrong context in BM
 X - paint exit drop-down menu should actually close window
 X - gifstudio missing dock icon
 X - nice mesage of the buddylist should change every 3 minutes and 33 seconds ( fade )
