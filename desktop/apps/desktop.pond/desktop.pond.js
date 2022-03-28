@@ -121,6 +121,14 @@ desktop.app.pond.load = function loadPond (params, next) {
       JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
     });
 
+    $(document).on('click', '.purple:not(.message)', function () {
+      const parent = $(this).parents('.window.pond_message');
+      const textBox = parent.find('textarea[name="pond_message_text"]');
+      parent.find('textarea[name="pond_message_text"]').val(
+        `${textBox.val()}@${$(this).text().split(':')[0]}`
+      );
+    });
+
     next();
   });
 
@@ -325,17 +333,6 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     }
     desktop.messages._processed.push(message.uuid);
   });
-
-  // We have to use unbind so that the click event only fires once
-  // not sure why it is firing multiple times
-  $('.purple').not('.message').unbind().click(function () {
-    const parent = $(this).parents('.window.pond_message');
-    const textBox = parent.find('textarea[name="pond_message_text"]');
-    parent.find('textarea[name="pond_message_text"]').val(
-      `${textBox.val()}@${$(this).text().split(':')[0]}`
-    );
-  });
-
 
   for (let key in html) {
     $('.no_chat_messages', key).hide();
