@@ -1,6 +1,5 @@
 desktop.app.memepool = {};
 desktop.app.memepool.label = "Meme Pool";
-desktop.app.memepool.icon = "pond";
 
 desktop.app.memepool.load = function (params, next) {
 
