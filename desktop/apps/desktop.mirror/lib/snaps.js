@@ -1,6 +1,6 @@
 desktop.app.mirror.CAMERA_SHUTTER_DELAY = 55;
 
-desktop.app.mirror.createGIF = function createGIF (delay) {
+desktop.app.mirror.createGif = function createGif (delay) {
   var gif = new GIF({
     workers: 2,
     quality: 3,
@@ -61,7 +61,7 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
     currentFrame = 0;
     setTimeout(function(){
 
-      desktop.app.mirror.createGIF(delay);
+      desktop.app.mirror.createGif(delay);
 
       $('.mirrorVideoHolder').hide();
       $('#snapsPreview').show();

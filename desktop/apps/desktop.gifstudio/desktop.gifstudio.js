@@ -1,6 +1,7 @@
 desktop.app.gifstudio = {};
 desktop.app.gifstudio.label = "Gif Studio";
 desktop.app.gifstudio.currentFrameIndex = 0;
+desktop.app.gifstudio.renderingCount = 0;
 desktop.app.mirror.gifDelay = 200;
 
 // TODO: three view modes ( same as Mirror, Full, Normal, Half )
@@ -35,7 +36,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $(holder.clone()).insertAfter(holder);
       // wait a short moment for dom to insert and render base64 src ( should be less <3ms)
       setTimeout(function(){
-        desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+        desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay)
       }, 33)
     });
 
@@ -44,7 +45,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       let frameHolder = $(ev.target).parent();
       $(frameHolder).remove();
       // TODO: use correct delay scope
-      desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+      desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay)
     });
 
     $('.clearGIF').on('click', function(){
@@ -109,7 +110,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
         desktop.app.gifstudio.gifDelay = ui.value
         //$('#snapsPreview').data('delay', ui.value);
         let delay = ui.value;
-        desktop.app.gifstudio.createGIF(delay);
+        desktop.app.gifstudio.createGif(delay);
       }
     });
     next();
@@ -127,13 +128,13 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   }
   desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, desktop.app.gifstudio.insertMode);
   setTimeout(function(){
-    desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay, function (err, imgData){
+    desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay, function (err, imgData){
       // desktop.app.gifstudio.drawFrames({ url: imgData, frames: 'all' })
     });
   }, 333)
 }
 
-desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
+desktop.app.gifstudio.createGif = function createGif (delay, cb) {
   cb = cb || function noop () {};
 
   let naturalWidth, naturalHeight;
@@ -146,15 +147,23 @@ desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
     naturalHeight = $('.gifstudio_gifPreview').get(0).naturalHeight;
   }
 
-  // TODO: set height and width based on actual GIF size...
+  // do not attempt to render a gif which has no frames added
+  // Remark: This may happen if .createGif() is called before frames have rendered or any frames have been added
+  if ($('.gifstudio_gifFrame').length === 0) {
+    return cb(null, false);
+  }
+
+  desktop.app.gifstudio.renderingCount++;
+
   var gif = new GIF({
     workers: 2,
     quality: 3,
-    width: naturalWidth,
+    width: naturalWidth, // uses original width and height of Image
     height: naturalHeight
   });
 
   gif.on('finished', function(blob) {
+    desktop.app.gifstudio.renderingCount--;
     var reader = new FileReader();
     reader.readAsDataURL(blob);
     reader.onloadend = function() {
@@ -315,7 +324,6 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
         gifURL = dataUrl;
         $('.gifstudio_gifPreview').attr('src', gifURL);
         $('.gifstudio_gifPreview').show();
-        desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
         desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' })
       })
   } else {

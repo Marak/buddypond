@@ -64,6 +64,11 @@ Ideas for community apps:
   - Use midi fighter button pad with sound fx
   - add goose sound effect
 
+- Add Notepad app
+  - https://github.com/1j01/98/tree/master/programs/notepad
+  - Can save simple notes to postgres DB
+  - Can share notes as smartlinks with buddies
+
 - Mini 3d earth globe with random geoIP pings of user sessions
   http://planetaryjs.com/examples/rotating.html
   https://miniature.earth/demo/space-view.htm

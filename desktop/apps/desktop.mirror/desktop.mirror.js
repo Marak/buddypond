@@ -44,7 +44,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         desktop.app.mirror.snapDelay = ui.value
         $('#snapsPreview').data('delay', ui.value);
         let delay = ui.value;
-        desktop.app.mirror.createGIF(delay);
+        desktop.app.mirror.createGif(delay);
       }
     });
 
