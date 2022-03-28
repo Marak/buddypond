@@ -1,13 +1,10 @@
 desktop.app.gifstudio = {};
 desktop.app.gifstudio.label = "Gif Studio";
-desktop.app.gifstudio.icon = 'folder';
 desktop.app.gifstudio.currentFrameIndex = 0;
 desktop.app.mirror.gifDelay = 200;
 
-desktop.app.gifstudio.type = 'pond';
-desktop.app.gifstudio.context = 'Lily';
-
 // TODO: three view modes ( same as Mirror, Full, Normal, Half )
+// TODO: create perfect loop by duplicating set and reversing it <<<<<<||>>>>>>
 desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
   desktop.load.remoteAssets([
     'desktop/assets/js/gif-frames.js',
@@ -35,8 +32,11 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
 
     d.on('mousedown', '.duplicateFrame', function (ev) {
       let holder = $(ev.target).parent();
-      $(holder.clone()).insertAfter(holder)
-      desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+      $(holder.clone()).insertAfter(holder);
+      // wait a short moment for dom to insert and render base64 src ( should be less <3ms)
+      setTimeout(function(){
+        desktop.app.gifstudio.createGIF(desktop.app.mirror.gifDelay)
+      }, 33)
     });
 
     // Click remix GIF icon to remix gifs in Gif Studio App
@@ -133,15 +133,25 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   }, 333)
 }
 
-// TODO: create perfect loop by duplicating set and reversing it <<<<<<||>>>>>>
 desktop.app.gifstudio.createGIF = function createGIF (delay, cb) {
   cb = cb || function noop () {};
+
+  let naturalWidth, naturalHeight;
+  // get naturalWidth and naturalHeight of first frame ( to ensure correct resize )
+  if ($('.gifstudio_gifFrame').length) {
+    naturalWidth = $('.gifstudio_gifFrame').get(0).naturalWidth;
+    naturalHeight = $('.gifstudio_gifFrame').get(0).naturalHeight;
+  } else {
+    naturalWidth = $('.gifstudio_gifPreview').get(0).naturalWidth;
+    naturalHeight = $('.gifstudio_gifPreview').get(0).naturalHeight;
+  }
+
   // TODO: set height and width based on actual GIF size...
   var gif = new GIF({
     workers: 2,
     quality: 3,
-    width: 320,
-    height: 240
+    width: naturalWidth,
+    height: naturalHeight
   });
 
   gif.on('finished', function(blob) {

@@ -202,7 +202,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Click remix GIF icon to remix gifs in Gif Studio App
-  d.on('mousedown', 'img.remixGIF', function(ev) {
+  d.on('mousedown', 'img.remixGif', function(ev) {
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
     let output = $(this).data('output');
@@ -222,6 +222,22 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       context: context,
       frameIndex: desktop.app.gifstudio.currentFrameIndex || 0
     });
+  });
+
+  d.on('mouseover', '.message img', function(){
+    let img = $(this);
+    let holder = img.parent();
+    img.css('opacity', 0.7777);
+    $('.remixGif', holder).show();
+    $('.remixPaint', holder).show();
+  });
+
+  d.on('mouseleave', '.message img', function(){
+    let img = $(this);
+    let holder = img.parent();
+    img.css('opacity', 1.0);
+    $('.remixGif', holder).hide();
+    $('.remixPaint', holder).hide();
   });
 
   // Respond to double-click.

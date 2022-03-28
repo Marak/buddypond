@@ -67,6 +67,7 @@ Ideas for community apps:
 - Mini 3d earth globe with random geoIP pings of user sessions
   http://planetaryjs.com/examples/rotating.html
   https://miniature.earth/demo/space-view.htm
+  https://experiments.withgoogle.com/chrome/globe
   or another
   
 - ?!?!?!?!?!?!?!!?
