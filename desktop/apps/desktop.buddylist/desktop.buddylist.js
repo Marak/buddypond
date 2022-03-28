@@ -640,8 +640,8 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
          <span class="message">
            <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
            <br/>
-           <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.from}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-           <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.from}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+           <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_paint_64.png"/>
            <img class="card-meme image" src="${message.card.filename}"/>
          </span>
          <br/>
