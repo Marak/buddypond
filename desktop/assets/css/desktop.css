@@ -930,6 +930,10 @@ iframe {
 		animation-iteration-count: infinite;
 }
 
+.purple:not(.message):hover {
+  text-decoration: underline;
+}
+
 
 @keyframes rainbow-bg{
 		100%,0%{
