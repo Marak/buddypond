@@ -82,7 +82,20 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       let key = desktop.app.buddylist.positiveAffirmations[Math.floor(Math.random() * desktop.app.buddylist.positiveAffirmations.length)];
       $('.positiveAffirmation').html(key)
     }
-    updatePositiveAffirmation();
+
+    // update the positive affirmation on an interval
+    setInterval(function(){
+      $('.positiveAffirmation').fadeOut({
+        duration: 4444,
+        complete: function(){
+          updatePositiveAffirmation();
+          $('.positiveAffirmation').fadeIn({
+            duration: 4444,
+            complete: function(){}
+          });
+        }
+      });
+    }, 199800); // 3 minutes, 33 seconds
 
     $('.positiveAffirmation').on('click', function(){
       updatePositiveAffirmation();
