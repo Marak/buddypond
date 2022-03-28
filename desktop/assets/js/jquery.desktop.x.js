@@ -227,7 +227,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('mouseover', '.message img', function(){
     let img = $(this);
     let holder = img.parent();
-    img.css('opacity', 0.7777);
+    //img.css('opacity', 0.7777);
     $('.remixGif', holder).show();
     $('.remixPaint', holder).show();
   });
@@ -235,7 +235,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('mouseleave', '.message img', function(){
     let img = $(this);
     let holder = img.parent();
-    img.css('opacity', 1.0);
+    //img.css('opacity', 1.0);
     $('.remixGif', holder).hide();
     $('.remixPaint', holder).hide();
   });

@@ -1070,11 +1070,10 @@ iframe {
 
 .remixPaint {
   position: absolute;
-  left: 66%;
-  transform: translateX(-66%);
-  bottom: 0px;
-  width: 64px;
-  height: 64px;
+  left: 16px;
+  bottom: 33px;
+  width: 32px;
+  height: 32px;
   z-index: 99;
   display: none;
   cursor: pointer;
@@ -1087,9 +1086,10 @@ iframe {
 
 .remixGif {
   position: absolute;
-  left: 33%;
-  transform: translateX(-33%);
-  bottom: 0px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  top: 32px;
   z-index: 99;
   display: none;
 }

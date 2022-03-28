@@ -615,7 +615,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
         $('.chat_messages', windowId).append(`
          <span class="message">
           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix this Snap" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
         </span>
         <br/>
@@ -624,7 +624,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
         $('.chat_messages', windowId).append(`
          <span class="message">
           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_remix_64.png"/>
+          <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
          </span>
          <br/>
@@ -633,7 +633,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
       desktop.messages._processedCards.push(message.uuid);
       desktop.messages._processed.push(message.uuid);
-      return;
+      //return;
     }
 
     if (message.card && message.card.type === 'meme') {
