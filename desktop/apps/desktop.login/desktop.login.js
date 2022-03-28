@@ -121,7 +121,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.totalConnected').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
-  desktop.ui.renderDockElement('buddylist');
   desktop.ui.removeDockElement('login');
   try {
     let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
@@ -162,14 +161,17 @@ desktop.app.login.success = function desktopLoginSuccess () {
   //desktop.ui.openWindow('pond');
   // $('#window_pond').show();
   $('#window_buddylist').show();
-  let windowId = desktop.app.pond.openWindow({ context: 'Lily'});
+  desktop.ui.openWindow('buddylist');
+  
+  desktop.ui.openWindow('pond', {
+    context: 'Lily'
+  });
 
   //desktop.ui.positionWindow('#' + windowKey, 'left')
   // TODO: remove this line. required due to initial blink on lily pond
   setTimeout(function(){
     $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
   }, 3000);
-  $('#window_pond').hide();
 }
 
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {

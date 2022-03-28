@@ -105,6 +105,9 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Cancel mousedown.
+  /*
+  Canceling mousedown has been removed 5/28
+  These lines should be able to be removed pending further testing
   d.mousedown(function(ev) {
     var tags = [
       'a',
@@ -123,6 +126,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       }
     }
   });
+  */
 
   // Cancel right-click.
   d.on('contextmenu', function() {

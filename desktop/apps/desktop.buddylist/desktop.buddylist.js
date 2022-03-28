@@ -413,7 +413,9 @@ function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
         let context = $(this).html();
         let windowKey = desktop.ui.openWindow('buddy_message', context, position);
         let windowId = '#' + windowKey;
-        $('.buddy_message_text', windowId).focus();
+        if (!isMobile) {
+          $('.buddy_message_text', windowId).focus();
+        }
         $('.buddy_message_to', windowId).val(context)
         $('.buddy_message_from', windowId).val(buddypond.me);
       });

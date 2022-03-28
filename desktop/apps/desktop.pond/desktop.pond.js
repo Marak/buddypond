@@ -28,14 +28,22 @@ desktop.app.pond.load = function loadPond (params, next) {
       desktop.ui.windowPool['pond_message'].push(window_id)
     }
 
-    $('#window_pond').css('width', 300);
-    $('#window_pond').css('height', 340);
 
-    $('#window_pond').css('left', 33);
-    $('#window_pond').css('top', 66);
+    $('#window_pond').css('width', '22vw');
+    $('#window_pond').css('height', '66vh');
+    $('#window_pond').css('top', '9vh');
+    $('#window_pond').css('left', '5vw');
+
+
 
     $('.pondNameList').hide();
     $('.pondMessagesHolder').hide();
+
+    $('.openPond').on('click', function(){
+      let chan = $(this).html();
+      chan = chan.substr(1, chan.length - 1);
+      desktop.ui.openWindow('pond', { context: chan });
+    });
 
     $('.sendPondMessage').on('click', function(){
       desktop.app.pond.sendMessage(this);
@@ -155,7 +163,9 @@ desktop.app.pond.openWindow = function (params) {
   let windowId = '#' + windowKey;
 
   $('.window-context-title', windowId).html(params.context + ' Pond');
-  $('.pond_message_text', windowId).focus();
+  if (!isMobile) {
+    $('.pond_message_text', windowId).focus();
+  }
   $('.pond_message_to', windowId).val(params.context)
   $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;

@@ -136,8 +136,16 @@
     opacity: 0.44;
   }
 
+  .ponds td {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 3px;
+  }
+  .pondDesc {
+    font-style: italic;
+  }
 </style>
-<div id="window_pond" class="abs window pond_message" data-window-index="0">
+<div id="window_pond" class="abs window pond_list" data-window-index="0">
   <div class="abs window_inner">
     <div class="window_top">
       <span class="float_left">
@@ -158,19 +166,64 @@
         <div class="loggedIn">
           <h2>Join Pond</h2>
           <br />
-          <form class="joinPondForm">
-            <label for="customPondName">
-              <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"
-                placeholder="enter pond name..." type="text" size="16" />
-            </label>
-            <br />
-            <button type="submit" class="joinPond desktopButton">Join Pond</button>
-          </form>
-          <br />
-          <br />
           <p>
-            A pond is a room where many buddies can chat with each other.
+            A pond is a room where many buddies can chat with each other. <br/><br/>Click on the pond to hop in!
           </p>
+          <br />
+          <table class="ponds">
+            <tr>
+              <td>
+                <a class="openPond" href="#">#Lily</a>
+              </td>
+              <td>
+                <span class="pondDesc">
+                  General Buddy Chats
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a class="openPond" href="#">#Paints</a>
+              </td>
+              <td>
+                <span class="pondDesc">
+                  MSPaint Based Image Room
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a class="openPond" href="#">#Memes</a>
+              </td>
+              <td>
+                <span class="pondDesc">
+                  Dank Memes Images Only
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a class="openPond" href="#openPond">#Alpha</a>
+              </td>
+              <td>
+                <span class="pondDesc">
+                  Buddy Pond Alpha Dev Chat
+                </span>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <div align="center">
+            <p><em>Want to create your own Pond? <br/>Just type in the name below!</em></p>
+            <form class="joinPondForm">
+              <label for="customPondName">
+                <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"
+                  placeholder="enter pond name..." type="text" size="16" />
+              </label>
+              <button type="submit" class="joinPond desktopButton">Join Pond</button>
+              <br />
+            </form>
+          </div>
         </div>
       </div>
     </div>
