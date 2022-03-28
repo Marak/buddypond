@@ -1050,8 +1050,10 @@ iframe {
 
 /* TODO: move these CSS to respective App files */
 .snapsImage {
+  /*
   width: 320px;
   height: 240px;
+  */
   /*
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
