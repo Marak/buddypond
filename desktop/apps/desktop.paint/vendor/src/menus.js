@@ -104,9 +104,8 @@ var menus = {
 		$MenuBar.DIVIDER,
 		{
 			item: "E&xit",
-			shortcut: "Alt+F4",
 			action: function(){
-				close();
+        parent.postMessage('app_paint_needs_close', '*');
 			},
 			description: "Quits Paint.",
 		}

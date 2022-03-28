@@ -56,8 +56,7 @@ desktop.app.paint.send = function sendPaint (params) {
   } else {
     $('.touchPaint').hide();
   }
-  // TODO: why is it sending wrong data / no data at all?
-  // TODO: check if context is gifstudio, if so, send the gif there as frameindex ( either existing or new )
+
   let output = desktop.app.paint.output;
   let context = desktop.app.paint.context;
 
@@ -153,6 +152,20 @@ desktop.app.paint.openWindow = function openWindow (params) {
     $('.sendPaint').show();
     $('.sendGifStudio').hide();
   }
+
+  var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+  var eventer = window[eventMethod];
+  var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+  // Remark: Frame message passing for paint currently only being used to support top left menu File->Exit command
+  // Listen to message from child window
+  eventer(messageEvent,function(e) {
+      var key = e.message ? "message" : "data";
+      var data = e[key];
+      if (data === 'app_paint_needs_close') {
+        JQDX.closeWindow('#window_paint');
+      }
+  },false);
 
   if (params.src) {
     // send the base64 source as part of the frame

@@ -5,10 +5,11 @@ We have many issues open and welcomed for first time contributors!
 
 Fixes
 
+  - local storage should remember subscribed chat windows and reopen on reload
+  - remix snap has wrong context in BM?
   - adjust UI UX positions on open of chat messages and windowpopups
   - Flags need to show for memes and snaps and sounds, etc
   - why does extra carriage return happen on enter key in chat, breaks links and text
-  - paint exit drop-down menu should actually close window
 
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
   - ensure desktop settings form wont crash app
@@ -16,6 +17,7 @@ Fixes
 
   when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
   - add default loading images for memes and snaps? so it doesnt show an X on load?
+
 
 Refactors
 
@@ -33,15 +35,19 @@ Refactors
   ? - add min display time to loading gifs ( to avoid flicker )
 
 Features
-  - nice mesage of the buddylist should change every 3 minutes and 33 seconds ( fade )
+  - add 1000 memes to memepool
+
+  - instead of joining lily pond, show list of default ponds ( Lily ( ), Paint, )
+
+
   - play sound alert if buddypond.me is mentioned in chat
   - App.SoundRecorder should show context and type when sending
   - add YT preview cards to chat for smart links YT
-  - add 1000 memes to memepool
   - show yt preview images
     - client side ajax call possible
     - have remix button on images ( why not )
 
+  - remix image icons should only appear on mouseover
   - play buddy sound when buddy logs in ( door open aim )
   - add UX indactor for ajax disconnect with desktop.log and top right bar
   - add back button to interdemon cable / mtv / all video players
@@ -183,14 +189,18 @@ Post Beta
 
 
 
-
+¢∞§§§§§§§§§§§§§§§§========>
+¢∞§§§§§§§§§§§§§§§§==============>
+¢∞§§§§§§§§§§§§§§§§========>
 
 
 
 
 ++++++++++++WELL++++++++++
 
-
+X - paint exit drop-down menu should actually close window
+X - gifstudio missing dock icon
+X - nice mesage of the buddylist should change every 3 minutes and 33 seconds ( fade )
 
 X - increase chat history length for ponds and buddies ( check if images count twice? )
 X - fix documentations for atob(forbiddenNotes.base64)
