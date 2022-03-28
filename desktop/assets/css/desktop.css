@@ -586,7 +586,7 @@ a:hover {
 }
 
 .datetime {
-  font-size: 8px;
+  font-size: clamp(8px, 1vw, 18px);
   font-decoration: italic;
 }
 
@@ -1143,4 +1143,18 @@ iframe {
 .youtubeSmartLink img {
   width: 16px;
   height: 16px;
+}
+
+.chatMessage {
+  font-size: clamp(12px, 0.8vw, 24px);
+}
+
+.message {
+  font-size: clamp(12px, 0.8vw, 24px);
+}
+
+.datetime {
+  font-style: italic;
+  font-size: clamp(10px, 0.7vw, 24px);
+  opacity: 0.77;
 }
