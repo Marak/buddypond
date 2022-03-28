@@ -30,6 +30,7 @@ desktop.app.pond.load = function loadPond (params, next) {
 
     $('#window_pond').css('width', 300);
     $('#window_pond').css('height', 340);
+
     $('#window_pond').css('left', 33);
     $('#window_pond').css('top', 66);
 
@@ -159,8 +160,8 @@ desktop.app.pond.openWindow = function (params) {
   $('.pond_message_from', windowId).val(buddypond.me);
   pondOpened = true;
 
-  desktop.ui.positionWindow(windowId, 'left')
-  $(windowId).css('height', 440);
+  $(windowId).css('left', '30vw');
+
   return windowId;
 
   // TODO: doc element title

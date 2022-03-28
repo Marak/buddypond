@@ -164,8 +164,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('#window_buddylist').show();
   let windowId = desktop.app.pond.openWindow({ context: 'Lily'});
 
-  $(windowId).css('top', 60);
-  $(windowId).css('left', 250);
   //desktop.ui.positionWindow('#' + windowKey, 'left')
   // TODO: remove this line. required due to initial blink on lily pond
   setTimeout(function(){
@@ -178,8 +176,8 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').show();
-  $('#window_login').css('width', 800);
-  $('#window_login').css('height', 400);
+  $('#window_login').css('width', '66vw');
+  $('#window_login').css('height', '55vh');
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
   $('#login_desktop_icon').show();

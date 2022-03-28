@@ -675,8 +675,13 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     $(windowId).attr('data-window-context', context);
 
     $(windowId).show();
-    $(windowId).css('width', 600)
-    $(windowId).css('height', 440)
+    
+    // TODO: viewPort mode values? specific values for mobile?
+    $(windowId).css('width', '44vw');
+    $(windowId).css('height', '66vh');
+    $(windowId).css('top', '9vh');
+    $(windowId).css('left', '13vw');
+
 
     // bring newly opened window to front
     JQDX.window_flat();

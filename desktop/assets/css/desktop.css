@@ -12,7 +12,11 @@ body {
 
 body {
   background: #000;
-  font: 12px/1 'Lucida Grande', Arial, 'Liberation Sans', FreeSans, sans-serif;
+  font: clamp(12px, 0.8vw, 24px) 'Lucida Grande', Arial, 'Liberation Sans', FreeSans, sans-serif;
+}
+
+input {
+  font-size: clamp(12px, 0.8vw, 24px);
 }
 
 a {
@@ -178,17 +182,21 @@ div.ui-resizable-handle {
   font-weight: bold;
   overflow: hidden;
   line-height: 30px;
-  padding: 0 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   text-shadow: #000 0 1px 1px;
-  height: 30px;
+  height: 4vh;
 }
 
 .window_top img {
   float: left;
-  margin: 6px 5px 0 0;
+  margin-top: 3px;
+  margin-left: 1px;
+  margin-right: 6px;
+  padding-bottom: 6px;
+  width: clamp(16px, 1.8vw, 32px);
+  height: clamp(16px, 1.8vw, 32px);
 }
-
-
 
 .window_bottom {
   background: #fff url(../images/gui/bar_top.png) repeat-x left bottom;
@@ -274,7 +282,7 @@ div.ui-resizable-handle {
   line-height: 1.5;
   overflow: auto;
   float: left;
-  top: 32px;
+  top: 5vh;
   left: 0px;
   right: 0px;
   bottom: 23px;
@@ -372,11 +380,12 @@ th.shrink {
   background: #fff url(../images/gui/bar_top.png) repeat-x left bottom;
   border-bottom: 1px solid #333;
   color: #999;
-  line-height: 25px;
-  padding-right: 20px;
   text-shadow: #fff 0 1px 1px;
-  height: 25px;
   top: 0;
+  height: 2vh;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  position: absolute;
 }
 
 #bar_bottom {
@@ -414,7 +423,6 @@ th.shrink {
   background-position: -99999px -99999px;
   color: #000;
   overflow: hidden;
-  height: 25px;
   min-height: 1px;
 }
 
@@ -454,6 +462,7 @@ th.shrink {
   background: #fff;
   border-bottom: 1px solid #eee;
   min-width: 180px;
+  padding-top: 1vh;
 }
 
 #bar_top ul.menu li:last-child a {
@@ -582,7 +591,7 @@ a:hover {
 }
 
 .smaller {
-  font-size: 8px;
+  font-size: clamp(8px, 1vw, 18px);
 }
 
 .datetime {
@@ -591,10 +600,10 @@ a:hover {
 }
 
 .desktopInput {
-  width: 140px;
-  padding: 8px;
+  padding: 6px;
+  width: 9vw;
   text-decoration: none;
-  font-size: 12px;
+  font-size: clamp(12px, 0.8vw, 24px);
   margin: 4px 2px;
   border-radius: 4px;
 }
@@ -605,14 +614,14 @@ a:hover {
 }
 
 .sendBuddyRequest {
-  width: 160px;
+}
+
+.loginForm .desktopButton {
+  width: 23vw;
 }
 
 .desktopButton {
-  /*
-  background-color: black;
-  color: #00FF41;
-  */
+  width: 10vw;
   cursor: pointer;
   border: solid;
   border-width: 1px;
@@ -620,7 +629,7 @@ a:hover {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: clamp(12px, 0.8vw, 24px);
   margin: 4px 2px;
   border-radius: 4px;
 }
@@ -674,8 +683,7 @@ a:hover {
   text-align: left;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
+  font-size: clamp(12px, 0.8vw, 24px);
   border-radius: 4px;
 }
 
@@ -835,6 +843,10 @@ video {
   display:none;
 }
 
+#window_login {
+  min-height: 444px;
+}
+
 #window_games .icon {
   color: white;
 }
@@ -868,7 +880,6 @@ iframe {
 }
 
 .tiny {
-  font-size: 12px;
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -879,8 +890,10 @@ iframe {
 }
 
 .navbarControl {
-  font-size: 16px;
+  font-size: clamp(8px, 0.8vw, 22px);
   cursor: pointer;
+  padding-top: 6px;
+  padding-bottom: 6px;
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -1162,3 +1175,4 @@ iframe {
   font-size: clamp(10px, 0.7vw, 24px);
   opacity: 0.77;
 }
+
