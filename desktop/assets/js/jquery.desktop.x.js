@@ -240,8 +240,13 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $('.remixPaint', holder).hide();
   });
 
-  // Respond to double-click.
-  d.on('dblclick', 'a.icon', function() {
+  // App icons are double click on to open on desktop
+  let eventName = 'dblclick';
+  if (isMobile) {
+    // Single click to open Apps icons on mobile
+    eventName = 'click';
+  }
+  d.on(eventName, 'a.icon', function() {
     var iconDock = $(this).attr('href');
     var appName = iconDock.replace('#icon_dock_', '');
     JQDX.openWindow(appName)

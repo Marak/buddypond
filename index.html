@@ -13,6 +13,7 @@ window.top.location = 'ie.html';
 <![endif]-->
 
 <script type="text/javascript">
+  let isMobile = false;
   // certain websites are currently not supported as referrer
   let notCurrentlySupportedSites = ['reddit.com', 'news.ycombinator.com'];
   notCurrentlySupportedSites.forEach(function(site){
@@ -25,12 +26,14 @@ window.top.location = 'ie.html';
   // redirect to the mobile site for smaller screened devices
   if (window.location.search === '?desktop=enabled') {
     // if the desktop is enabled, load as normal
+    isMobile = true;
   } else {
     // if desktop enabled flag is not set, check screen size for mobile device
     if (screen.width <= 699) {
       document.location = "mobile.html";
     }
   }
+  alert(isMobile)
 </script>
 
 <link rel="stylesheet" href="desktop/assets/css/reset.css">
