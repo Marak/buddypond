@@ -46,14 +46,53 @@ JQDX.frame_breaker = function frame_breaker () {
   }
 }
 
+// TODO: App.resizeWindow() ??
+// TODO: desktop.ui.onresize = function () { // array of event handlers, etc use jquery ?}
+
+desktop.ui.view = 'Normal';
+
+window.onresize = function () {
+  // TODO: better magic numbers for view mode sizes
+  // TODO: move magic numbers into variables
+  let width = $(document).width();
+  let height = $(document).height();
+
+  if (width <= 699) {
+    desktop.ui.view = 'Mobile';
+  }
+
+  if (width > 699 && width < 2600) {
+    desktop.ui.view = 'Normal';
+  }
+
+  if (width >= 2600) {
+    desktop.ui.view = 'MegaDesk';
+  }
+
+  if (desktop.ui.view === 'Mobile') {
+    // TODO: re-arrange windows to mobile view
+  }
+
+  if (desktop.ui.view === 'Normal') {
+    $('.window_top').css('height', 30);
+    $('.window_top').css('padding-top', 0);
+    $('.window_content').css('top', 33);
+  }
+
+  if (desktop.ui.view === 'MegaDesk') {
+    $('.window_top').css('height', 40);
+    $('.window_top').css('padding-top', 10);
+    $('.window_content').css('top', 53);
+  }
+  // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
+}
+
 //
 // Resize modal window.
 //
 JQDX.window_resize = function window_resize (el) {
   // Nearest parent window.
   var win = $(el).closest('div.window');
-
-  // TODO: App.resizeWindow() ??
 
   // Is it maximized already?
   if (win.hasClass('window_full')) {
