@@ -165,7 +165,7 @@ desktop.app.pond.openWindow = function (params) {
   JQDX.window_flat();
   $(windowId).addClass('window_stack').show();
 
-  if (params.context === 'Paints') {
+  if (params.context === 'Paint') {
     $('.pond_message_text', windowId).hide();
     $('.pond_emoji_picker', windowId).hide();
     $('.insertSound', windowId).hide();
