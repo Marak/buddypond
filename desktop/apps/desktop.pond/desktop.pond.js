@@ -213,11 +213,6 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
   $('.pondNameList').show();
   $('.pondMessagesHolder').show();
 
-  if (!defaultPondOpened && pondOpened) {
-    defaultPondOpened = true;
-    desktop.ui.openWindow('pond_message', 'Lily');
-  }
-
   // TODO: can we remove this?
   let str = JSON.stringify(data);
   // TODO: use key count for garbage collection and trim if size grows

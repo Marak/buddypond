@@ -338,7 +338,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       // show buddy profile panel
       $('#panel_buddy_profile').html(buddyProfileText);
       $('#panel_buddy_profile').show();
-      $('.window').removeClass('window_stack');
       $('#panel_buddy_profile').addClass('window_stack');
     }
   });
@@ -359,7 +358,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // Focus active window.
   d.on('mousedown', 'div.window', function() {
     // Bring window to front.
-    JQDX.window_flat();
     $(this).addClass('window_stack');
   });
 
@@ -488,10 +486,7 @@ JQDX.showWindow = function showWindow(appName, params) {
     $(iconDock).show('fast');
   }
 
-  // TODO: why this no work on gif studio load
-  // Bring window to front.
-  // $('.window_stack').remove('window_stack')
-  JQDX.window_flat();
+  $('div.window').removeClass('window_stack');
   $(appWindow).addClass('window_stack').show();
 
   // check to see if desktop[appName].openWindow method is available,
@@ -734,13 +729,11 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     $(windowId).attr('data-window-context', context);
 
     $(windowId).show();
-    
     // TODO: viewPort mode values? specific values for mobile?
     $(windowId).css('width', '44vw');
     $(windowId).css('height', '66vh');
     $(windowId).css('top', '9vh');
     $(windowId).css('left', '13vw');
-
 
     // bring newly opened window to front
     JQDX.window_flat();
