@@ -323,6 +323,11 @@ window.top.location = 'ie.html';
 
       .ready(function(err, apps){
         // desktop.log("Loaded", desktop.apps.loaded);
+        try {
+          window.onresize();
+        } catch (err) {
+          
+        }
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
         // Desktop is ready, start refreshing it's state immediately
         desktop.refresh();
