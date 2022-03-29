@@ -172,11 +172,10 @@ desktop.app.pond.openWindow = function (params) {
 
   $(windowId).css('left', '30vw');
 
+  JQDX.window_flat();
+  $(windowId).addClass('window_stack').show();
   return windowId;
 
-  // TODO: doc element title
-  // $('.dock_title', dockElement).html(context);
-  // $('.pondNameList').show();
 }
 
 desktop.app.pond.sendMessage = function sendPondMessage (context) {

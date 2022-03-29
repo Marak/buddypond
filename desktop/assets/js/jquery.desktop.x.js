@@ -358,6 +358,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // Focus active window.
   d.on('mousedown', 'div.window', function() {
     // Bring window to front.
+    JQDX.window_flat();
     $(this).addClass('window_stack');
   });
 
@@ -486,7 +487,7 @@ JQDX.showWindow = function showWindow(appName, params) {
     $(iconDock).show('fast');
   }
 
-  $('div.window').removeClass('window_stack');
+  JQDX.window_flat();
   $(appWindow).addClass('window_stack').show();
 
   // check to see if desktop[appName].openWindow method is available,
@@ -735,6 +736,7 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
     $(windowId).css('top', '9vh');
     $(windowId).css('left', '13vw');
 
+    // only for new / fresh windows
     // bring newly opened window to front
     JQDX.window_flat();
     $(windowId).addClass('window_stack').show();
