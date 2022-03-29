@@ -1176,3 +1176,7 @@ iframe {
   opacity: 0.77;
 }
 
+.canvasBackground {
+  /* TODO this !important shouldnt be needed, but i couldn't find which style was overwriting it more specifcally??? */
+  cursor: default !important;
+}

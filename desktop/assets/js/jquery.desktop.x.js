@@ -224,6 +224,17 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     }
   });
 
+  // Hide top nav drop down menu if Buddy moves mouse away from active / open menu
+  d.on('mouseenter', 'ul.menu', function() {
+  });
+
+  d.on('mouseleave', 'ul.menu', function() {
+    if ($('ul.menu').is(':visible')) {
+      JQDX.clear_active();
+      $('ul.menu').hide();
+    }
+  });
+
   // Cancel single-click.
   d.on('mousedown', 'a.icon', function() {
     // Highlight the icon.
