@@ -28,16 +28,10 @@ desktop.app.pond.load = function loadPond (params, next) {
       desktop.ui.windowPool['pond_message'].push(window_id)
     }
 
-
     $('#window_pond').css('width', '22vw');
     $('#window_pond').css('height', '66vh');
     $('#window_pond').css('top', '9vh');
     $('#window_pond').css('left', '5vw');
-
-
-
-    $('.pondNameList').hide();
-    $('.pondMessagesHolder').hide();
 
     $('.openPond').on('click', function(){
       let chan = $(this).html();
@@ -143,8 +137,6 @@ desktop.app.pond.load = function loadPond (params, next) {
 
 };
 
-let pondOpened = false;
-
 desktop.app.pond.openWindow = function (params) {
   params = params || {};
   if(!params.context) {
@@ -154,7 +146,6 @@ desktop.app.pond.openWindow = function (params) {
   // when pond app loads, open default pond for all buddies
   let rightPadding = 10;
   let topPadding = 10;
-  
   if (!buddypond.qtokenid) {
     // return;
   }
@@ -168,12 +159,24 @@ desktop.app.pond.openWindow = function (params) {
   }
   $('.pond_message_to', windowId).val(params.context)
   $('.pond_message_from', windowId).val(buddypond.me);
-  pondOpened = true;
 
   $(windowId).css('left', '30vw');
 
   JQDX.window_flat();
   $(windowId).addClass('window_stack').show();
+
+  if (params.context === 'Paints') {
+    $('.pond_message_text', windowId).hide();
+    $('.pond_emoji_picker', windowId).hide();
+    $('.insertSound', windowId).hide();
+    $('.insertSnap', windowId).hide();
+  } else {
+    $('.pond_message_text', windowId).show();
+    $('.pond_emoji_picker', windowId).show();
+    $('.insertSound', windowId).show();
+    $('.insertSnap', windowId).show();
+  }
+
   return windowId;
 
 }
@@ -202,15 +205,9 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   });
 }
 
-// Remark: Temporary fix for current UX of Lily Pond loading
-let defaultPondOpened = false;
-
 desktop.app.pond.lastNotified = 0;
 
 desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
-
-  $('.pondNameList').show();
-  $('.pondMessagesHolder').show();
 
   // TODO: can we remove this?
   let str = JSON.stringify(data);

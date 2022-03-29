@@ -19,6 +19,10 @@ if (desktop.mode === 'dev') {
   desktop.origin = window.origin;
 }
 
+if (isMobile) {
+  desktop.isMobile = true;
+}
+
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
 desktop.app = {};
 
@@ -511,6 +515,16 @@ desktop.utils.isValidYoutubeTime  = function isValidYoutubeTime (str) {
   const res = /^&amp;t=\d+s|\?t=\d+$/.exec(str);
   const valid = !!res;
   return valid;
+}
+
+desktop.utils.parseQueryString = function parseQueryString (queryString) {
+  var query = {};
+  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split('=');
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+  }
+  return query;
 }
 
 // starts photo record
