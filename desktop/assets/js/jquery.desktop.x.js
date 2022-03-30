@@ -168,10 +168,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   */
 
   // Cancel right-click.
-  d.on('contextmenu', function() {
-    // console.log('right click is disabled in jquery.desktop.js file. you can turn it back on for fun.');
-    //return false;
-  });
+  // d.on('contextmenu', function() {
+  //   console.log('right click is disabled in jquery.desktop.js file. you can turn it back on for fun.');
+  //   return false;
+  // });
 
   d.on('click', 'a.openIDC', function(ev) {
     let id = $(this).html()
@@ -324,26 +324,67 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       containment: 'parent',
       stop: function() {
         desktop.ui.getDesktopIconPositions();
-       }
+      }
     });
   });
 
-  // Mouse over buddy name to see profile preview
-  d.on('mouseenter', 'a.messageBuddy', function() {
-    // TODO: move this out of this file?
-    let buddyName = $(this).html();
-    let buddyProfileText = desktop.buddyListData.buddylist['buddies/' + buddyName].myProfile || '';
-    // console.log('buddyName', buddyName, 'buddyProfileText', buddyProfileText);
-    if (buddyProfileText) {
-      // show buddy profile panel
-      $('#panel_buddy_profile').html(buddyProfileText);
-      $('#panel_buddy_profile').show();
-      $('#panel_buddy_profile').addClass('window_stack');
+  // to build a contextmenu like this add this to your html (styles are applied globally):
+  // <div id="your context menu id" class="context-menu" style="display: none">
+  //   <ul id="your context list id" class="context-list"></ul>
+  // </div>
+  d.on('contextmenu', 'a.messageBuddy', function(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const currentBuddy = $(this).html();
+    const buddyProfileText = desktop.buddyListData.buddylist['buddies/' + currentBuddy].myProfile || '';
+
+    if (
+      desktop.ui.contextMenu &&
+      desktop.ui.contextMenu.currentBuddy &&
+      desktop.ui.contextMenu.currentBuddy !== currentBuddy
+    ) {
+      desktop.ui.clearContextMenu('#contextListBuddy');
+    }
+
+    if ($('#contextListBuddy').children().length === 0) {
+      
+      desktop.ui.contextMenu = {
+        currentBuddy
+      };
+
+      const renderedItemsLength = desktop.ui.buildContextMenu({
+        listId: '#contextListBuddy',
+        menuItems: [
+          {
+            id: 'profile',
+            text: 'Buddy profile',
+            renderItem: () => buddyProfileText.length > 0,
+            clickHandler: () => {
+              $('#panel_buddy_profile').html(buddyProfileText),
+              $('#panel_buddy_profile').show(),
+              $('#panel_buddy_profile').addClass('window_stack')
+            }
+          }
+        ]
+      });
+
+      if (renderedItemsLength > 0) {
+        const rect = $(this).parents('li')[0].getBoundingClientRect();
+        $('#contextMenuBuddy').css({
+          display: 'block',
+          left: ev.clientX - rect.left,
+          top: ev.clientY - rect.top / 2.5,
+          zIndex: 9999
+        });
+
+        document.addEventListener('click', desktop.ui.buildContextMenuEventListener('#contextListBuddy'));
+      }
     }
   });
 
-  // mouse out of buddy name to hide profile preview
-  d.on('mouseleave', 'a.messageBuddy', function() {
+  // mouse out of buddy profile to hide profile preview
+  d.on('mouseleave', '#panel_buddy_profile', function() {
     // TODO: move this out of this file?
     $('#panel_buddy_profile').hide();
     $('#panel_buddy_profile').removeClass('window_stack');
@@ -962,4 +1003,59 @@ desktop.clock = function desktopClock () {
   // Update every 60 seconds.
   setTimeout(desktop.clock, 60000);
   
+}
+
+desktop.ui.buildContextMenu = function buildContextMenu (config) {
+  if (!config) {
+    return;
+  }
+
+  const {
+    listId,
+    menuItems,
+  } = config;
+
+  let renderedItemsLength = 0;
+
+  
+  for (const item of menuItems) {
+    const {
+      id,
+      text,
+      renderItem,
+      clickHandler,
+    } = item;
+
+    if (renderItem()) {
+      renderedItemsLength++;
+      const menuItem = $('<li>', {
+        class: 'context-menu-item',
+        id: id,
+        text: text,
+        click: clickHandler || function () {},
+      });
+      
+      $(listId).append(menuItem);
+    }
+  }
+
+  return renderedItemsLength;
+}
+
+desktop.ui.clearContextMenu = function clearContextMenu (listId) {
+  desktop.ui.contextMenu = {};
+  $(listId).children().remove();
+}
+
+desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListener (contextListId) {
+  const contextListener = (event) => {
+    const isClickedOutsideOfContainer = !$(contextListId).is(event.target) && $(contextListId).has(event.target).length === 0;
+
+    if (isClickedOutsideOfContainer) {
+      desktop.ui.clearContextMenu(contextListId);
+      document.removeEventListener('click', contextListener);
+    }
+  }
+
+  return contextListener;
 }
