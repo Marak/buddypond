@@ -1049,9 +1049,9 @@ desktop.ui.clearContextMenu = function clearContextMenu (listId) {
 
 desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListener (contextListId) {
   const contextListener = (event) => {
-    const isClickedOutsideContextMenu = !$(contextListId).is(event.target) && $(contextListId).has(event.target).length === 0;
+    const isClickedOutsideOfContainer = !$(contextListId).is(event.target) && $(contextListId).has(event.target).length === 0;
 
-    if (isClickedOutsideContextMenu) {
+    if (isClickedOutsideOfContainer) {
       desktop.ui.clearContextMenu(contextListId);
       document.removeEventListener('click', contextListener);
     }
