@@ -260,6 +260,14 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   $('.pond_message_text', form).val('');
   // $('.emoji-wysiwyg-editor').html("");
   //console.log('sending the message to pond', message)
+
+  // Check if user wants to quit then log the user out
+  let text = '';
+  text = message.text.split(' ');
+  if (text[0] === '/quit') {
+    desktop.app.login.logoutDesktop();
+  }
+
   buddypond.pondSendMessage(message.to, message.text, function(err, data){
     //console.log('buddypond.pondSendMessage', err, data)
   });
