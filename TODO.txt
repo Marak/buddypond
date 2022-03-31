@@ -2,18 +2,15 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-
 Fixes
 
   - local storage should remember subscribed chat windows and reopen on reload
-
   - Flags need to show for memes and snaps and sounds, etc
   - Flag mouseover should show alt title of locale
-  
   - why does extra carriage return happen on enter key in chat, breaks links and text
-
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
   - ensure desktop settings form wont crash app
+
   1/2 - broke something else - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
 
   when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
@@ -38,9 +35,8 @@ Refactors
 Features
   - add 1000 memes to memepool
 
-  - instead of joining lily pond, show list of default ponds ( Lily ( ), Paint, )
-
-
+  X - instead of joining lily pond, show list of default ponds ( Lily , Paint, Memes, Alpha )
+  
   - play sound alert if buddypond.me is mentioned in chat
   - App.SoundRecorder should show context and type when sending
   - add YT preview cards to chat for smart links YT
@@ -198,6 +194,9 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+
+X - window stack for buddylist
 
 X- font size should be responsive for larger windows
   X - https://www.w3schools.com/howto/howto_css_responsive_text.asp
