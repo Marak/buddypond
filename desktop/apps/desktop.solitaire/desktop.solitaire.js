@@ -1,5 +1,5 @@
 desktop.app.solitaire = {};
-desktop.app.solitaire.label = "Solitaire";
+desktop.app.solitaire.label = 'Solitaire';
 
 desktop.app.solitaire.load = function loadSolitaireGames (params, next) {
   desktop.load.remoteAssets([

@@ -1,16 +1,16 @@
 desktop.app.streamsquad = {};
-desktop.app.streamsquad.label = "streamsquad";
+desktop.app.streamsquad.label = 'streamsquad';
 
 desktop.app.streamsquad.streamers = {
-  "Marak": {
+  'Marak': {
     'description': 'DJ Sets, Live Coding, Buddy Pond QA',
     'homepage': 'https://www.youtube.com/user/MarakSquires'
   },
-  "SkratchBastidTV": {
+  'SkratchBastidTV': {
     'description': 'DJ Sets',
     'homepage': 'https://www.youtube.com/user/SkratchBastidTV'
   },
-  "Andrew Potthast": {
+  'Andrew Potthast': {
     'description': 'DJ Sets',
     'homepage': 'https://soundcloud.com/andrew-potthast'
   }
@@ -24,7 +24,7 @@ desktop.app.streamsquad.openStream = function (data) {
     //console.log('vvv', videoId)
     desktop.ui.openWindow('interdimensionalcable', { videoId: videoId, title: data.name + ' is LIVE' });
   }
-}
+};
 
 desktop.app.streamsquad.renderStreamersList = function (currentStreamer) {
   $('.streamersTable tbody').html('');
@@ -46,9 +46,9 @@ desktop.app.streamsquad.renderStreamersList = function (currentStreamer) {
       </tr>
     `);
   }
-}
+};
 
-desktop.on('streamer-is-offline', 'render-streamer-list', function(data){
+desktop.on('streamer-is-offline', 'render-streamer-list', function (data) {
   // console.log('streamer-is-offline')
   if (!desktop.app.streamsquad.offline) {
     desktop.app.streamsquad.offline = true;
@@ -60,7 +60,7 @@ desktop.on('streamer-is-offline', 'render-streamer-list', function(data){
   }
 });
 
-desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function(data){
+desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function (data) {
   // console.log('streamer-is-online')
   // check to see if stream is already open or user already closed the window
   desktop.app.streamsquad.offline = false;
@@ -88,7 +88,7 @@ desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function(data
     $('.isStreamingNow').show();
     $('.nextStreamSoon').hide();
   }
-})
+});
 
 desktop.app.streamsquad.load = function loadstreamsquadGames (params, next) {
   desktop.load.remoteAssets([

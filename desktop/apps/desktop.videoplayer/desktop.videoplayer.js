@@ -9,32 +9,32 @@ desktop.app.videoplayer.load = function (params, next) {
       if (desktop.app.videoplayer.youtubeEmbedReady) {
         next();
       } else {
-        setTimeout(function(){
+        setTimeout(function () {
           desktop.log('Youtube iframe has been embeded, but did not report ready yet. trying again.');
           waitForAsyncEmbedAction();
-        }, 3000)
+        }, 3000);
       }
     }
     waitForAsyncEmbedAction();
   });
 };
 
-desktop.app.videoplayer.playRandomVideo = function playRandomVideo(_player, playlist) {
+desktop.app.videoplayer.playRandomVideo = function playRandomVideo (_player, playlist) {
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
   if (_player) {
     let yt_id = key;
-    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
+    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id);
     _player.loadVideoById(yt_id);
-    setTimeout(function(){
+    setTimeout(function () {
       if (_player.play) {
         _player.play();
       }
-    }, 5000)
+    }, 5000);
   }
 };
 
-function onYouTubeIframeAPIReady() {
+function onYouTubeIframeAPIReady () {
   // TODO: emit?
   desktop.app.videoplayer.youtubeEmbedReady = true;
 }

@@ -5,14 +5,14 @@ desktop.app.tts.label = 'Text To Speech';
 desktop.app.tts.voices = [];
 desktop.app.tts.load = function loadtts (params, next) {
 
-  if ('speechSynthesis' in window){
+  if ('speechSynthesis' in window) {
     desktop.app.tts.available = true;
   }
 
   function populateVoices () {
-    var voices = speechSynthesis.getVoices();
+    let voices = speechSynthesis.getVoices();
     desktop.app.tts.voices = [];
-    for(var i = 0; i < voices.length; i++) {
+    for (let i = 0; i < voices.length; i++) {
       desktop.app.tts.voices.push(voices[i]);
     }
   }
@@ -40,7 +40,7 @@ desktop.app.tts.say = function speakText (text) {
   }
 
   if (desktop.app.tts.available && desktop.settings.audio_enabled && desktop.settings.audio_tts_enabled) {
-    var speech = new SpeechSynthesisUtterance(text);
+    let speech = new SpeechSynthesisUtterance(text);
     // TODO: configure voice and language to locality
     // TODO: localStorage desktop.settings for tts settings
     // speech.lang = desktop.app.tts.lang || 'en-US';
@@ -48,7 +48,7 @@ desktop.app.tts.say = function speakText (text) {
     speech.voice = desktop.app.tts.voices[desktop.settings.tts_voice_index] || desktop.app.tts.voices[0];
     window.speechSynthesis.speak(speech);
   }
-}
+};
 
 desktop.app.tts.processMessage = function processTTSMessage (message) {
 
@@ -79,4 +79,4 @@ desktop.app.tts.processMessage = function processTTSMessage (message) {
       desktop.app.tts.say(msg || 'nope');
     }
   }
-}
+};

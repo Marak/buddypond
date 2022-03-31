@@ -1,6 +1,6 @@
-(function initCanvasVideo() {
+(function initCanvasVideo () {
   class CanvasVideo {
-    constructor(videoSelector, canvasSelector) {
+    constructor (videoSelector, canvasSelector) {
       this.video = document.querySelector(videoSelector);
       this.canvas = document.querySelector(canvasSelector);
       this.canvasContext = this.canvas.getContext('2d');
@@ -9,14 +9,14 @@
       this.timerCallback = this.timerCallback.bind(this);
     }
 
-    unbindPlayEvent() {
+    unbindPlayEvent () {
       this.video.removeEventListener('play', this.timerCallback);
     }
 
-    bindPlayEvent() {
+    bindPlayEvent () {
       this.video.addEventListener('play', this.timerCallback);
     }
-    greyscale() {
+    greyscale () {
       const frame = this.canvasContext
         .getImageData(0, 0, this.videoWidth, this.videoHeight);
 
@@ -40,7 +40,7 @@
       const frame = this.canvasContext
         .getImageData(0, 0, this.videoWidth, this.videoHeight);
 
-      let Filter = JSManipulate[filterName]
+      let Filter = JSManipulate[filterName];
       if (Filter) {
         Filter.filter(frame, Filter.defaultValues);
       }
@@ -48,7 +48,7 @@
       this.canvasContext.putImageData(frame, 0, 0);
     }
 
-    applyFilter() {
+    applyFilter () {
       if (!this.filter) { return; }
       if (this.filter === 'greyscale') {
         this[this.filter]();
@@ -57,14 +57,14 @@
       }
     }
 
-    computeFrame() {
+    computeFrame () {
       this.canvasContext
         .drawImage(this.video, 0, 0, this.videoWidth, this.videoHeight);
 
       this.applyFilter();
     }
 
-    timerCallback() {
+    timerCallback () {
       if (this.video.paused || this.video.ended) { return; }
 
       this.videoWidth = this.video.videoWidth;
