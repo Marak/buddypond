@@ -18,7 +18,10 @@ desktop.app.notifications.notifyBuddy = function notifyBuddy (text) {
   }
 
   if (desktop.settings.notifications_web_enabled) {
-    let notification = new Notification(text);
+    // Remark: Only show web notifications if window is hidden
+    if (document.visibilityState === 'hidden') {
+      let notification = new Notification(text);
+    }
   }
 
 }

@@ -156,7 +156,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
     $('.connection_last_response_time').html(buddypond.lastResponseTime());
   }, 1000);
 
-  
   // TODO: route default view based on query string
   let params = desktop.utils.parseQueryString(document.location.search);
 
@@ -167,10 +166,12 @@ desktop.app.login.success = function desktopLoginSuccess () {
   } else {
     $('#window_buddylist').show();
     desktop.ui.openWindow('buddylist');
+    desktop.ui.openWindow('pond');
     desktop.ui.openWindow('pond', {
       context: 'Lily'
     });
   }
+
 
   //desktop.ui.positionWindow('#' + windowKey, 'left')
   // TODO: remove this line. required due to initial blink on lily pond

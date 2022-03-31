@@ -1,6 +1,8 @@
 desktop.app.buddylist = {};
 desktop.app.buddylist.label = "Buddy List";
 
+desktop.app.buddylist.subscribedBuddies = [];
+
 desktop.app.buddylist.positiveAffirmations = [
   "Hello. You like nice today.",
   "You are the most amazing person I know.",
@@ -55,23 +57,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     // clone window_buddy_message_0 ten times
     // clone icon_dock_buddy_message_0 ten times
     // this creates 10 windows available for chatting with buddies
-    let clone = $('#window_buddy_message_0').html();
-    let dockItemClone = $('#icon_dock_buddy_message_0').html();
-    for (let i = 1; i<11; i++) {
-      let window_id = 'window_buddy_message_' + i;
-      let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + i);
-      _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + i);
-      _clone = _clone.replace('emoji_picker_0', 'buddy_emoji_picker');
-      let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message" data-window-index="' + i + '" data-window-type="buddy_message">' + _clone + '</div>'
-      // console.log('appending', buddyChatStr)
-      $('#desktop').append(buddyChatStr);
-      let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + i)
-      dockStr = '<li id="icon_dock_buddy_message_' + i +'">' + dockStr + '</li>'
-      $('#dock').append(dockStr);
-      // register these new elements into the windowPool
-      // these ids are used later when desktop.ui.openWindow('buddy_message') is called
-      desktop.ui.windowPool['buddy_message'].push(window_id)
-    }
 
     $('#window_buddylist').css('width', '15vw');
     $('#window_buddylist').css('height', '66vh');
@@ -96,7 +81,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
         }
       });
     }, 199800); // 3 minutes, 33 seconds
-
     $('.positiveAffirmation').on('click', function(){
       updatePositiveAffirmation();
     })
@@ -107,22 +91,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
 
     $('.addBuddyForm').on('submit', function () {
       return false;
-    });
-
-    $('.sendBuddyMessage').on('click', function(){
-      desktop.app.buddylist.sendMessage(this);
-      return false;
-    });
-
-    $('.insertBuddyGif').on('click', function(){
-      let form = $(this).parent().parent();
-      let context, output;
-      output = 'buddy';
-      context = $('.buddy_message_to', form).val();
-      JQDX.openWindow('gifstudio', { 
-        output: output,
-        context: context
-      });
     });
 
     $('.sendBuddyRequest').on('click', function(){
@@ -157,10 +125,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     $('.buddyListHolder').hide();
     $('#buddyname').focus();
 
-    $('.buddy_message_text').bind("enterKey",function(e){
-      desktop.app.buddylist.sendMessage(this);
-      return false;
-    });
 
     $('.buddy_message_text').keyup(function(e){
         if (e.shiftKey==1) {
@@ -172,29 +136,46 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
         }
     });
 
-    $('.buddy_emoji_picker').on('click', function (e) {
-      e.target.parentNode?.querySelector('.buddy_message_text').focus();
-    });
+    let d = $(document);
 
-    $('.buddy_message_text').on('focus', function (e) {
+    d.on('mousedown', '.buddy_emoji_picker', function (ev) {
+      let holder = $(ev.target).parent().parent();
+      let textarea = $('.buddy_message_text', holder);
       $('.activeTextArea').removeClass('activeTextArea');
-      e.target.classList.add('activeTextArea');
+      $(textarea).addClass('activeTextArea');
+      $('.buddy_message_text', holder).focus();
     });
 
-    $('.insertBuddySnap').on('click', function (e) {
-      var form = $(this).parent();
+    d.keypress(function(ev){
+      if (ev.which === 13) {
+        if ($(ev.target).hasClass('buddy_message_text')) {
+          desktop.app.buddylist.sendMessage($(ev.target));
+        }
+        return false;
+      }
+    });
+
+    // cancel all form submits ( or entire page will redirect )
+    d.on('submit', 'form', function(){
+      return false;
+    });
+
+    d.on('mousedown', '.sendBuddyMessage', function (ev) {
+      desktop.app.buddylist.sendMessage(this);
+      return false;
+    });
+
+    d.on('mousedown', '.insertBuddySnap', function (ev) {
+      var form = $(ev.target).parent();
       let context = $('.buddy_message_to', form).val();
       JQDX.showWindow('mirror', { type:'buddy', context: context});
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
     });
 
-    $('.insertBuddySound').on('click', function (e) {
-      var form = $(this).parent();
-      let context = $('.buddy_message_to', form).val();
-      JQDX.openWindow('soundrecorder', { type:'buddy', context: context});
-    });
-
-    $('.insertBuddyPaint').on('click', function(){
-      let form = $(this).parent();
+    d.on('mousedown', '.insertBuddyPaint', function (ev) {
+      var form = $(ev.target).parent();
       let context, output;
       output = 'buddy';
       context = $('.buddy_message_to', form).val();
@@ -202,6 +183,41 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
         output: output,
         context: context
       });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    d.on('mousedown', '.insertBuddyGif', function (ev) {
+      let form = $(ev.target).parent().parent();
+      let context, output;
+      output = 'buddy';
+      context = $('.buddy_message_to', form).val();
+      JQDX.openWindow('gifstudio', { 
+        output: output,
+        context: context
+      });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    d.on('mousedown', '.insertBuddySound', function (ev) {
+      let form = $(ev.target).parent();
+      let to;
+      to = $('.buddy_message_to', form).val();
+      JQDX.openWindow('soundrecorder', { type: 'buddy', context: to });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    d.on('click', '.purple:not(.message)', function () {
+      const parent = $(this).parents('.window.buddy_message');
+      const textBox = parent.find('textarea[name="buddy_message_text"]');
+      parent.find('textarea[name="buddy_message_text"]').val(
+        `${textBox.val()}@${$(this).text().split(':')[0]}`
+      );
     });
 
     try {
@@ -216,6 +232,23 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     next();
   });
 
+}
+
+desktop.app.buddylist.renderChatWindow = function (context) {
+  let clone = $('#window_buddy_message_0').html();
+  let dockItemClone = $('#icon_dock_buddy_message_0').html();
+
+  let window_id = 'window_buddy_message_' + context;
+  let _clone = clone.replace('icon_dock_buddy_message_0', 'icon_dock_buddy_message_' + context);
+  _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + context);
+  _clone = _clone.replace('emoji_picker_0', 'buddy_emoji_picker');
+
+  let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message"  data-app="buddylist" data-type="biddu_message" data-context="' + context + '">' + _clone + '</div>'
+  $('#desktop').append(buddyChatStr);
+  let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + context)
+  dockStr = '<li id="icon_dock_buddy_message_' + context +'">' + dockStr + '</li>'
+  $('#dock').append(dockStr);
+  desktop.ui.renderDockElement('buddy_message_' + context, context)
 }
 
 desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
@@ -237,6 +270,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   buddypond.sendMessage(message.to, message.text, function(err, data){
     // console.log('buddypond.sendMessage', err, data)
   });
+  return false;
 }
 
 desktop.app.buddylist.profileState = {
@@ -299,7 +333,7 @@ function openNewBuddyMessagesNow (data) {
     if (profile && profile.newMessages === true) {
       let buddyName = b.replace('buddies/', '');
       // TODO: move to newMessage event?
-      desktop.ui.openWindow('buddy_message', buddyName)
+      desktop.ui.openWindow('buddylist', { context: buddyName })
     }
   });
 }
@@ -410,8 +444,12 @@ function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
         position.my = position.my || "left top";
         position.at = position.at || 'left+33 top+33';
         let context = $(this).html();
-        let windowKey = desktop.ui.openWindow('buddy_message', context, position);
-        let windowId = '#' + windowKey;
+
+        // let windowKey = desktop.ui.openWindow('buddy_message', { context: context }, position);
+        desktop.ui.openWindow('buddylist', { context: context});
+        // desktop.app.buddylist.openWindow({ context: context});
+        
+        let windowId = '#window_buddy_message_' + context;
         if (!isMobile) {
           $('.buddy_message_text', windowId).focus();
         }
@@ -506,12 +544,12 @@ function checkForNewStreamers (data) {
   }
 }
 
-desktop.app.updateBuddyList = function updateBuddyList () {
+desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
 
   if (!buddypond.qtokenid) {
     // no session, wait five seconds and try again
     setTimeout(function(){
-      desktop.app.updateBuddyList();
+      desktop.app.buddylist.updateBuddyList();
     }, 10);
     return;
   } else {
@@ -521,7 +559,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
         desktop.log(err);
         // TODO: show disconnect error in UX
         setTimeout(function(){
-          desktop.app.updateBuddyList();
+          desktop.app.buddylist.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
@@ -541,7 +579,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
       if (desktop.cache.buddyListDataCache[serializedBuddyList]) {
         // TODO: use key count for garbage collection and trim if size grows
         setTimeout(function(){
-          desktop.app.updateBuddyList();
+          desktop.app.buddylist.updateBuddyList();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
       }
@@ -562,7 +600,7 @@ desktop.app.updateBuddyList = function updateBuddyList () {
       $('.buddyListHolder').show();
 
       setTimeout(function(){
-        desktop.app.updateBuddyList();
+        desktop.app.buddylist.updateBuddyList();
       }, desktop.DEFAULT_AJAX_TIMER);
     });
   }
@@ -602,11 +640,10 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     // New messages are coming in from server, we'll need to render them
     //
     // Get all the open buddy_message windows
-    let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
+    // let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
     // Find the specific window which is open for this buddy
-    let windowId = '#' + openBuddyWindows[buddyKey];
-    // console.log('rendering messages to buddy window', windowId)
-    // console.log('writing new message to ', windowId, message.from, message.to)
+    // let windowId = '#' + openBuddyWindows[buddyKey];
+    let windowId = '#window_buddy_message_' + buddyKey;
 
     // accumulate all the message html so we can perform a single document write,
     // instead of a document write per message
@@ -676,12 +713,10 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
     } else {
       str += '<span class="datetime">' + message.ctime + ' </span> <span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
-      if (document.visibilityState === 'hidden') {
-        let now = new Date().getTime();
-        if (now - desktop.app.buddylist.lastNotified > 1600) {
-          desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
-          desktop.app.buddylist.lastNotified = now;
-        }
+      let now = new Date().getTime();
+      if (now - desktop.app.buddylist.lastNotified > 3333) {
+        desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
+        desktop.app.buddylist.lastNotified = now;
       }
     }
 
@@ -705,8 +740,8 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
 
     desktop.messages._processed.push(message.uuid);
-    desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
-    desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
+    //desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
+    //desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
   });
 
   //
@@ -731,6 +766,76 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
   cb(null, true);
 }
 
+
+desktop.app.buddylist.openWindow = function (params) {
+
+  params = params || {};
+  if (params.context) {
+    // for pond windows, if there is a context we will want to create a new window instance
+
+    let windowId = '#window_buddy_message_' + params.context;
+
+    // check to see if window already exists, if so do not re-render
+    // Remark: In the future, we shouldn't have to make this check as it will be expected window is always removed
+    if (desktop.app.buddylist.subscribedBuddies.indexOf(params.context) === -1) {
+      desktop.app.buddylist.subscribedBuddies.push(params.context);
+    }
+
+    // Ensures that notifications are marked as read on the client ( dont want spamming popups after close )
+    desktop.app.buddylist.profileState.updates["buddies/" + params.context] = desktop.app.buddylist.profileState.updates["buddies/" + params.context] || {};
+    desktop.app.buddylist.profileState.updates["buddies/" + params.context].newMessages = false;
+
+    if ($(windowId).length === 0) {
+      desktop.app.buddylist.renderChatWindow(params.context);
+      $('.window-context-title', windowId).html('Chat with ' + params.context);
+      if (!isMobile) {
+        $('.buddy_message_text', windowId).focus();
+      }
+      $('.buddy_message_to', windowId).val(params.context)
+      $('.buddy_message_from', windowId).val(buddypond.me);
+
+      $(windowId).css('left', '30vw');
+
+      if (params.context === 'Paint') {
+        $('.buddy_message_text', windowId).hide();
+        $('.buddy_emoji_picker', windowId).hide();
+        $('.insertSound', windowId).hide();
+        $('.insertSnap', windowId).hide();
+      } else {
+        $('.buddy_message_text', windowId).show();
+        $('.buddy_emoji_picker', windowId).show();
+        $('.insertSound', windowId).show();
+        $('.insertSnap', windowId).show();
+      }
+
+      $(windowId).css('width', '44vw');
+      $(windowId).css('height', '66vh');
+      $(windowId).css('top', '9vh');
+      $(windowId).css('left', '30vw');
+      // flatten other windows, show that window as active top stack
+      JQDX.window_flat();
+      $(windowId).addClass('window_stack').show();
+    }
+
+    return;
+  }
+
+}
+
+desktop.app.buddylist.closeWindow = function (params) {
+  // if instance window, we'll want to remove it from DOM
+  // this is so we don't get many shadow windows with render HTML hidden in DOM not being used
+
+  // Remark: This is currently commented out due to message cache invalidation
+  //         We will need to invalidate the message cache for this buddy_message context,
+  //         so then when / if it is re-opened it will re-load messages
+  //$('#window_buddy_message_' + params.context).remove();
+  if (params.context) {
+    let index = desktop.app.buddylist.subscribedBuddies.indexOf(params.context)
+    desktop.app.buddylist.subscribedBuddies.splice(index, 1);
+  }
+}
+
 //
 // desktop.app.buddylist.onWindowOpen() is called when a desktop.ui.openWindow() instances opens
 //
@@ -744,7 +849,7 @@ desktop.app.buddylist.onWindowOpen = function (windowId, context) {
   $('.buddy_message_to', windowId).val(context)
   $('.buddy_message_from', windowId).val(buddypond.me);
 
-  // can these lines now be removed?
+  // Ensures that notifications are marked as read on the client ( dont want spamming popups after close )
   desktop.app.buddylist.profileState.updates["buddies/" + context] = desktop.app.buddylist.profileState.updates["buddies/" + context] || {};
   desktop.app.buddylist.profileState.updates["buddies/" + context].newMessages = false;
 }

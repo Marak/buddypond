@@ -52,7 +52,6 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 // TODO: can we now remove this due to processedMessages?
 desktop.cache = {};
 desktop.cache.buddyListDataCache = {};
-desktop.cache.buddyMessageCache = {};
 
 // `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
 // this scope if populated by the `jquery.desktop.x.js` file
@@ -63,7 +62,6 @@ desktop.messages = {};
 // processedMessage[] is used to stored message ids which have already been processed by Desktop Client
 // TODO: Have the desktop trim desktop.messages._processed if processed messages exceeds MAX_ALLOWED_PROCESSED_MESSAGES
 desktop.messages._processed = [];
-
 desktop.messages._processedCards = [];
 
 
@@ -263,7 +261,7 @@ desktop._ready = function _ready (finish) {
 
 desktop.refresh = function refreshDesktop () {
   if (desktop.app.buddylist) {
-    desktop.app.updateBuddyList();
+    desktop.app.buddylist.updateBuddyList();
     desktop.messages.process(desktop.apps.loaded);
   }
 }
@@ -285,11 +283,11 @@ desktop.messages.process = function processMessages (apps) {
     //
     // calculate list of subscribed buddies and subscribed ponds
     //
-    var subscribedBuddies = Object.keys(desktop.ui.openWindows['buddy_message'])
-    var subscribedPonds = Object.keys(desktop.ui.openWindows['pond_message'])
+    var subscribedBuddies = desktop.app.buddylist.subscribedBuddies;
+    var subscribedPonds = desktop.app.buddylist.subscribedPonds;
 
     // TODO: Configure desktop.messages.process() to still check for agent and systems messages here
-    if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
+    if (subscribedBuddies.length === 0 && desktop.app.pond.subscribedPonds.length === 0) {
       setTimeout(function(){
         desktop.messages.process();
       }, 10);
@@ -297,8 +295,8 @@ desktop.messages.process = function processMessages (apps) {
     }
 
     let params = {
-      buddyname: subscribedBuddies.toString(),
-      pondname: subscribedPonds.toString(),
+      buddyname: desktop.app.buddylist.subscribedBuddies.toString(),
+      pondname: desktop.app.pond.subscribedPonds.toString(),
       ignoreMessages: desktop.messages._processedCards
     };
 
@@ -327,11 +325,10 @@ desktop.messages.process = function processMessages (apps) {
       let newMessages = [];
       data.messages.forEach(function(message){
         if (desktop.messages._processed.indexOf(message.uuid) === -1) {
-          newMessages.push(message)
+          newMessages.push(message);
         }
       });
-      // console.log(data.messages.length, ' messages came in');
-      // console.log(newMessages.length, ' are being rendered');
+
       data.messages = newMessages;
 
       // iterate through every app that is loaded and see if it exports `App.processMessages` function

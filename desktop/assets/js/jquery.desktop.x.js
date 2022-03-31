@@ -517,9 +517,19 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
-JQDX.showWindow = function showWindow(appName, params) {
+JQDX.showWindow = function showWindow (appName, params) {
 
   let appWindow = '#window_' + appName;
+
+  if (appName === 'pond' && params.context) {
+    appWindow += '_message_' + params.context;
+  }
+
+  // TODO: rename "buddylist" app to "buddy"
+  if (appName === 'buddylist' && params.context) {
+    appWindow = '#window_buddy_message_' + params.context;
+  }
+
   let iconDock = '#icon_dock_' + appName
 
   // Show the taskbar button.
@@ -549,29 +559,34 @@ JQDX.showWindow = function showWindow(appName, params) {
 // will attempt to JQDX.loadWindow() if no window is found
 JQDX.openWindow = function openWindow (appName, params, cb) {
 
-  let appWindow = '#window_' + appName;
-
   params = params || {};
 
-  if (!JQDX.loading[appName]) {
-    JQDX.loading[appName] = true;
-  } else {
-    console.log('Warning: Will not open window which is already loading.')
+  let appWindow = '#window_' + appName;
+
+  if (desktop.ui.windowTypes.indexOf(appName) !== -1) {
+    JQDX.showWindow(appName, params);
     return;
   }
-  // check to see if the `App` is trying to load, but is currently deffered
-  // if so, put a spinning icon on the mouse cursor
-  // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
-  if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
-    // set global cursor to spinning progress icon
-    // TODO: spinning progress notifications should be per `App` and not a global state
-    document.querySelectorAll('*').forEach(function(node) {
-      node.style.cursor = 'progress';
-    });
-    // set a flag to indicate this App should open when defered loading completes
-    desktop.app[appName].openWhenLoaded = true;
-    return;
-  }
+
+  //
+  // Remark: Can this block be removed? is it no longer being called?
+  //
+    // check to see if the `App` is trying to load, but is currently deffered
+    // if so, put a spinning icon on the mouse cursor
+    // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
+    if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
+      // set global cursor to spinning progress icon
+      // TODO: spinning progress notifications should be per `App` and not a global state
+      document.querySelectorAll('*').forEach(function(node) {
+        node.style.cursor = 'progress';
+      });
+      // set a flag to indicate this App should open when defered loading completes
+      desktop.app[appName].openWhenLoaded = true;
+      return;
+    }
+  //
+  //
+  //
 
   // this window appName has no associated apps waiting to be loaded,
   // check to see if there is an associated window_* id to show,
@@ -588,7 +603,23 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
       JQDX.showWindow(appName, params);
     })
   } else {
+
+    // TODO: buddy message window should not pop-up in mimized,
+    // instead it's suppose to add rainbow class to indicate alert ( regression 3/30 )
+    // if the window is open and not visible, it means it is minimized
+    /*
+    let el = $(appWindow);
+    let dockEl = (appWindow).replace('window_', 'icon_dock_');
+    if (!$(el).is(':visible')) {
+      // check to see if subscribed to context, if so that means window is minimized
+      $('.dock_title', dockEl).addClass('rainbow');
+    } else {
+      $('.dock_title', dockEl).removeClass('rainbow');
+    }
+    */
+
     JQDX.showWindow(appName, params);
+
   }
 };
 
@@ -619,18 +650,28 @@ JQDX.closeWindow = function closeWindow (el) {
   closestWindow.hide();
   $($(el).attr('href')).hide('fast');
 
+  let type = $(closestWindow).data('type');
+  let appName = $(closestWindow).data('app');
+  let context = $(closestWindow).data('context');
+
   let windowType = $(closestWindow).attr('data-window-type');
   let windowContext = $(closestWindow).attr('data-window-context');
   let windowId = $(closestWindow).attr('id').replace('window_', '');
 
-  if (windowType && windowContext) {
-    desktop.ui.closeWindow(windowType, windowContext);
+  // it's expected app window html has data-app="appName" attribute
+  // if there is no data-app attribute, default to window_* name
+  // this will work for most apps which do not require contextual window instances
+  if (!appName) {
+    appName = windowId;
   }
 
   // check to see if the App which made this window supports a .closeWindow() method
   // this covers Apps which are not instanced
-  if (desktop.app[windowId] && desktop.app[windowId].closeWindow) {
-    desktop.app[windowId].closeWindow();
+  if (desktop.app[appName] && desktop.app[appName].closeWindow) {
+    desktop.app[appName].closeWindow({
+      type: type,
+      context: context
+    });
   }
 
   $('#icon_dock_' + windowId).hide('fast');
@@ -687,166 +728,13 @@ desktop.ui.renderDockElement = function (key, context) {
 // windowIndex is used to keep track of all created windows
 desktop.ui.windowIndex = {};
 
-// openWindows is used to keep track of currently open windows
-desktop.ui.openWindows = {
-  buddy_message: {},
-  pond_message: {}
-};
-
-// windowPool is used to keep track of pre-created windows
-// windowPool is only used for App's which require multiple window instances ( like chats )
-// most Apps will not require the window pool as they load with a static window HTML fragment
-desktop.ui.windowPool = {}
-desktop.ui.windowPool['buddy_message'] = [];
-desktop.ui.windowPool['pond_message'] = [];
+// special mapping for pond and buddylist, which allow N windows to open based on context
+// all other apps are currently set to 1 window only
+// TODO: remove `desktop.ui.windowTypes` from API and have more intelligent openWindow()
 desktop.ui.windowTypes = ['buddy_message', 'pond_message'];
 
-//
-//
-// desktop.ui.openWindow() function is used to create instances of a window class
-// this allows for multiple window instances to share the same logic
-// as of today, windowType can be "buddy_message" or "pond_message"
-// this implies there are already HTML elements named window_buddy_message_0 and window_pond_message_0
-// these will be incremented by 1 for each window , etc window_buddy_message_1, window_buddy_message_2
-// in the future we can have other windowTypes
-// for most applications you won't need this method and you can just 
-// use $(window_id).hide() or $(window_id).show() instead
-//
-//
-desktop.ui.openWindow = function openWindow (windowType, context, position) {
-
-  // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
-  // these are used for almost all applications, since most applications do not require N windows ( like chat )
-  if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
-    // TODO: needs to keep track of static windows as well?
-    JQDX.openWindow(windowType, context, position);
-    return true;
-  }
-
-  desktop.ui.openWindows = desktop.ui.openWindows || {};
-  desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};
-
-  desktop.ui.windowIndex = desktop.ui.windowIndex || {};
-  desktop.ui.windowIndex[windowType] = desktop.ui.windowIndex[windowType] || {};
-
-  let windowKey;
-
-  if (desktop.ui.openWindows[windowType][context]) {
-    // console.log('window already open, doing nothing', desktop.ui.openWindows[windowType][context])
-    // if the window is open and not visible, it means it is minimized
-    let el = ('#' + desktop.ui.openWindows[windowType][context]);
-    let dockEl = ('#' + desktop.ui.openWindows[windowType][context]).replace('window_', 'icon_dock_');
-    if (!$(el).is(':visible')) {
-      $('.dock_title', dockEl).addClass('rainbow');
-    } else {
-      $('.dock_title', dockEl).removeClass('rainbow');
-    }
-    //JQDX.maxWindow(false, $(el));
-    return desktop.ui.openWindows[windowType][context];
-  }
-
-  desktop.log(`desktop.ui.openWindow("${windowType}", "${context}")`);
-
-  if (desktop.ui.windowIndex[windowType][context]) {
-    let windowId = desktop.ui.windowIndex[windowType][context];
-    windowKey = '#' + windowId;
-    // console.log('reopening window id', windowId)
-    // TODO: check to see if window is min, if so, open it from dock
-    // desktop.ui.renderDockElement(windowType + '_' + window_id, context);
-    JQDX.window_flat();
-    $(windowKey).show().addClass('window_stack');
-    return windowKey;
-  } else {
-    // TODO: max windows message
-    windowKey = desktop.ui.windowPool[windowType].pop();
-    if (!windowKey) {
-      alert(`No windows available in windowPool["${windowType}"]\n\n Are too many chat windows open?`);
-      return;
-    }
-
-    let windowId = '#' + windowKey;
-    // console.log('allocating window from pool', windowId)
-    $('.window-context-title', windowId).html(context);
-    $('.window-context-title', windowId).html(context);
-    $(windowId).attr('data-window-context', context);
-
-    $(windowId).show();
-    // TODO: viewPort mode values? specific values for mobile?
-    $(windowId).css('width', '44vw');
-    $(windowId).css('height', '66vh');
-    $(windowId).css('top', '9vh');
-    $(windowId).css('left', '13vw');
-
-    // only for new / fresh windows
-    // bring newly opened window to front
-    JQDX.window_flat();
-    $(windowId).addClass('window_stack').show();
-
-    // assign window id from pool into windowIndex
-    //
-    // for example: desktop.ui.windowIndex['buddy_message']['Marak] = '#window_buddy_message_0';
-    //
-    desktop.ui.windowIndex[windowType][context] = windowId;
-
-    // render the bottom bar dock element
-    desktop.ui.renderDockElement(windowKey.replace('window_', ''), context);
-
-    // a new window is being opened, figure out where it should be positioned next to
-    // default position is next to the buddylist
-    let openNextTo = "#window_buddylist";
-
-    // gather all open buddy_messsage windows and find the first one
-    // if the first one exists, assign that to open next to
-    
-    let first = Object.keys(desktop.ui.openWindows.buddy_message)[0];
-    if (desktop.ui.openWindows.buddy_message[first]) {
-      openNextTo = '#' + desktop.ui.openWindows.buddy_message[first];
-    } else {
-      // do nothing
-    }
-
-    position = position || {}
-    position.my = position.my || "left top",
-    position.at = position.at || 'right top',
-    position.of = position.of || openNextTo
-
-    // TODO: this shouldn't happen. refactor chat window positioning to not depend on buddylist being visible
-    try {
-      $(windowId).position(position);
-    } catch (err) {
-      // console.log('Warning: Error in showing ' + windowId, err);
-    }
-    
-    if (windowType === 'buddy_message') {
-
-      // invalidate previous processed messages for this buddy
-      desktop.messages._processed = desktop.messages._processed.filter(function(uuid){
-        if (desktop.cache.buddyMessageCache[buddypond.me + '/' + context]) {
-          if (desktop.cache.buddyMessageCache[buddypond.me + '/' + context].indexOf(uuid) !== -1) {
-            return false
-          }
-        }
-        return true;
-      });
-      desktop.app.buddylist.onWindowOpen(windowId, context);
-    }
-
-  }
-
-  // the window is now open ( either its new or it's been re-opened )
-  // assign this window key into desktop.ui.openWindows
-  desktop.ui.openWindows[windowType][context] = windowKey;
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  return windowKey;
-}
+// maps to JQDX.openWindow
+desktop.ui.openWindow = JQDX.openWindow;
 
 //
 // desktop.ui.closeWindow() function is used to close instanced windows
@@ -856,75 +744,15 @@ desktop.ui.openWindow = function openWindow (windowType, context, position) {
 // This is to ensure UI is only polling for messages on windows that are actually open
 //
 desktop.ui.closeWindow = function openWindow (windowType, context) {
-
   // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
   // these are used for almost all applications, since most applications require N windows ( like chat )
+  // TODO: can we remove all this code and map desktop.ui.closeWindow -> JQDX.closeWindow
   if (desktop.ui.windowTypes.indexOf(windowType) === -1) {
     // TODO: needs to keep track of static windows as well?
     JQDX.closeWindow($('#window_' + windowType));
     return;
   }
-
-  desktop.ui.openWindows = desktop.ui.openWindows || {};
-  desktop.ui.openWindows[windowType] = desktop.ui.openWindows[windowType] || {};
-
-  // console.log('pushing window back into pool', desktop.ui.openWindows[windowType][context])
-
-  // Since the window is now closed, we can push it back into the windowPool,
-  // based on it's windowType and context
-  // for example: desktop.ui.windowPool['buddy_message'].push(desktop.ui.openWindows['buddy_message']['Marak'])
-
-  // TODO: check to see if window is actually open before attempting to close
-  desktop.ui.windowPool[windowType].push(desktop.ui.openWindows[windowType][context])
-
-  if (windowType === 'buddy_message') {
-    desktop.log('Subscribed Buddies: ', Object.keys(desktop.ui.openWindows[windowType]))
-    // remove newMessages notification for this buddy
-    // TODO: move this to buddylist.closeWindw()
-    desktop.app.buddylist.profileState.updates["buddies/" + context] = desktop.app.buddylist.profileState.updates["buddies/" + context] || {};
-    desktop.app.buddylist.profileState.updates["buddies/" + context].newMessages = false;
-    $('.chat_messages', '#' + desktop.ui.openWindows[windowType][context]).html('');
-  }
-
-  if (windowType === 'pond_message') {
-    desktop.log('Subscribed Ponds: ', Object.keys(desktop.ui.openWindows[windowType]))
-  }
-
-  // TODO: replace delete statements?
-  //
-  // Remove the closed window from openWindows and windowIndex ( as it's no longer being tracked )
-  //
-  delete desktop.ui.openWindows[windowType][context];
-  delete desktop.ui.windowIndex[windowType][context];
-
 }
-
-desktop.ui.positionWindow = function positionWindow (windowId, position) {
-  position = position || 'right';
-  let windowWidth =  $(windowId).width() / 2;
-  let windowPadding = 32;
-  if (position === 'left') {
-    $(windowId).position({
-      my: "left top",
-      at: "left"  + ' top+' + windowPadding,
-      of: 'body'
-    });
-  }
-  if (position === 'right') {
-    $(windowId).position({
-      my: "right top",
-      at: "right-" + (windowWidth + windowPadding) + ' top+' + windowPadding,
-      of: 'body'
-    });
-  }
-}
-
-/*
-
-  refactor openWindow and openWindowInstance to JQDX
-  have desktop.ui = JQDX;, one-liner in desktop.js
-
-*/
 
 // TODO: move this into separate app with timezones and better clock / date format / calendar
 desktop.clock = function desktopClock () {

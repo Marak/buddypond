@@ -1,69 +1,33 @@
 desktop.app.pond = {};
 desktop.app.pond.label = "Pond";
 
+desktop.app.pond.subscribedPonds = [];
+
 desktop.app.pond.load = function loadPond (params, next) {
 
   desktop.load.remoteAssets([
     'pond' // this loads the sibling desktop.app.pond.html file into <div id="window_pond"></div>
   ], function (err) {
 
-    let clone = $('#window_pond_message_0').html();
-    let dockItemClone = $('#icon_dock_pond_message_0').html();
-
-    for (let i = 1; i<11; i++) {
-
-      let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + i)
-      _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + i);
-      _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker');
-
-      let window_id = 'window_pond_message_' + i;
-      let pondChatStr = '<div id="' + window_id + '" class="abs window pond_message" data-window-index="' + i + '" data-window-type="pond_message">' + _clone + '</div>'
-
-      $('#desktop').append(pondChatStr);
-      let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + i)
-      dockStr = '<li id="icon_dock_pond_message_' + i +'">' + dockStr + '</li>'
-      $('#dock').append(dockStr);
-      // register these new elements into the windowPool
-      // these ids are used later when desktop.ui.openWindow('buddy_message') is called
-      desktop.ui.windowPool['pond_message'].push(window_id)
-    }
-
     $('#window_pond').css('width', '22vw');
     $('#window_pond').css('height', '66vh');
     $('#window_pond').css('top', '9vh');
     $('#window_pond').css('left', '5vw');
 
+    //
+    // "#window_pond" event handlers
+    // used for joining Ponds, clicking on pond names, general pond settings, etc
+    //
     $('.openPond').on('click', function(){
       let chan = $(this).html();
       chan = chan.substr(1, chan.length - 1);
       desktop.ui.openWindow('pond', { context: chan });
     });
 
-    $('.sendPondMessage').on('click', function(){
-      desktop.app.pond.sendMessage(this);
-      return false;
-    });
-
     // cancel form submit for joining a pond by name
     $('.joinPondForm').on('submit', function(){
       $('.joinPond').trigger('click');
       return false;
-    });
-
-    $('.pond_message_text').bind("enterKey",function(e){
-      desktop.app.pond.sendMessage(this);
-      return false;
-    });
-
-    $('.pond_message_text').keyup(function(e){
-        if (e.shiftKey==1) {
-          // TODO: multi-line chat box
-          return false;
-        }
-        if (e.keyCode == 13) {
-          desktop.app.pond.sendMessage(this)
-          return false;
-        }
     });
 
     $('.joinPond').on('click', function(){
@@ -76,23 +40,63 @@ desktop.app.pond.load = function loadPond (params, next) {
       }
     });
 
-    $('.pond_emoji_picker').on('click', function (e) {
-      //??? who wrote this selector, rewrite to make more readable please!
-      e.target.parentNode?.querySelector('.pond_message_text').focus();
+    //
+    // "#window_pond_*" event handlers
+    // used for handling dynamic pond windows with a context
+    //
+    let d = $(document);
+
+    // cancel all form submits ( or entire page will redirect )
+    d.on('submit', 'form', function(){
+      return false;
     });
 
-    $('.pond_message_text').on('focus', function (e) {
-      $('.activeTextArea').removeClass('activeTextArea');
-      e.target.classList.add('activeTextArea')
+    d.on('mousedown', '.sendPondMessage', function (ev) {
+      desktop.app.pond.sendMessage(this);
+      return false;
     });
-    $('.insertSnap').on('click', function (e) {
-      var form = $(this).parent();
+
+    d.keypress(function(ev){
+      if (ev.which === 13) {
+        if ($(ev.target).hasClass('pond_message_text')) {
+          desktop.app.pond.sendMessage($(ev.target));
+        }
+        return false;
+      }
+    });
+
+    /* TODO: bring back holding shift key to make multiline, doesnt work now anyway due to trim() elsewhere
+    $('.pond_message_text').keyup(function(e){
+        if (e.shiftKey==1) {
+          // TODO: multi-line chat box
+          return false;
+        }
+        if (e.keyCode == 13) {
+          desktop.app.pond.sendMessage(this)
+          return false;
+        }
+    });
+    */
+
+    d.on('mousedown', '.pond_emoji_picker', function (ev) {
+      let holder = $(ev.target).parent().parent();
+      let textarea = $('.pond_message_text', holder);
+      $('.activeTextArea').removeClass('activeTextArea');
+      $(textarea).addClass('activeTextArea');
+      $('.pond_message_text', holder).focus();
+    });
+
+    d.on('mousedown', '.insertSnap', function (ev) {
+      var form = $(ev.target).parent();
       let context = $('.pond_message_to', form).val();
       JQDX.showWindow('mirror', { type:'pond', context: context});
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
     });
 
-    $('.insertPaint').on('click', function(){
-      let form = $(this).parent();
+    d.on('mousedown', '.insertPaint', function (ev) {
+      var form = $(ev.target).parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -100,10 +104,13 @@ desktop.app.pond.load = function loadPond (params, next) {
         output: output,
         context: context
       });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
     });
 
-    $('.icon_gifstudio_64').on('click', function(){
-      let form = $(this).parent().parent();
+    d.on('mousedown', '.icon_gifstudio_64', function (ev) {
+      let form = $(ev.target).parent().parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -111,10 +118,13 @@ desktop.app.pond.load = function loadPond (params, next) {
         output: output,
         context: context
       });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
     });
 
-    $('.insertSound').on('click', function(){
-      let form = $(this).parent();
+    d.on('mousedown', '.insertSound', function (ev) {
+      let form = $(ev.target).parent();
       let to;
       if (form.hasClass('pond_send_message_form')) {
         to = $('.pond_message_to', form).val();
@@ -122,9 +132,12 @@ desktop.app.pond.load = function loadPond (params, next) {
         to = $('.buddy_message_to', form).val();
       }
       JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
+      // required to not re-trigger window_stack on pond window itself ( with click )
+      ev.preventDefault();
+      ev.stopPropagation();
     });
 
-    $(document).on('click', '.purple:not(.message)', function () {
+    d.on('click', '.purple:not(.message)', function () {
       const parent = $(this).parents('.window.pond_message');
       const textBox = parent.find('textarea[name="pond_message_text"]');
       parent.find('textarea[name="pond_message_text"]').val(
@@ -137,48 +150,95 @@ desktop.app.pond.load = function loadPond (params, next) {
 
 };
 
+desktop.app.pond.renderChatWindow = function (context) {
+
+  let clone = $('#window_pond_message_0').html();
+  let dockItemClone = $('#icon_dock_pond_message_0').html();
+
+  let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + context)
+  _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + context);
+  _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker');
+
+  let window_id = 'window_pond_message_' + context;
+
+  let pondChatWindowHTML = `
+    <div id="${window_id}" class="abs window pond_message"  data-app="pond" data-type="pond_message" data-context="${context}">${_clone} </div>
+  `;
+
+  $('#desktop').append(pondChatWindowHTML);
+  let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + context)
+  dockStr = '<li id="icon_dock_pond_message_' + context +'">' + dockStr + '</li>';
+  $('#dock').append(dockStr);
+  desktop.ui.renderDockElement('pond_message_' + context, context)
+
+}
+
 desktop.app.pond.openWindow = function (params) {
+
   params = params || {};
-  if(!params.context) {
-    params.context = "Lily";
+  
+  if (params.context) {
+    // for pond windows, if there is a context we will want to create a new window instance
+    let windowId = '#window_pond_message_' + params.context;
+
+    // check to see if window already exists, if so do not re-render
+    // Remark: In the future, we shouldn't have to make this check as it will be expected window is always removed
+    if (desktop.app.pond.subscribedPonds.indexOf(params.context) === -1) {
+      desktop.app.pond.subscribedPonds.push(params.context);
+    }
+
+    if ($(windowId).length === 0) {
+      desktop.app.pond.renderChatWindow(params.context);
+    
+      $('.window-context-title', windowId).html(params.context + ' Pond');
+      if (!isMobile) {
+        $('.pond_message_text', windowId).focus();
+      }
+      $('.pond_message_to', windowId).val(params.context)
+      $('.pond_message_from', windowId).val(buddypond.me);
+
+      $(windowId).css('left', '30vw');
+
+      if (params.context === 'Paint') {
+        $('.pond_message_text', windowId).hide();
+        $('.pond_emoji_picker', windowId).hide();
+        $('.insertSound', windowId).hide();
+        $('.insertSnap', windowId).hide();
+      } else {
+        $('.pond_message_text', windowId).show();
+        $('.pond_emoji_picker', windowId).show();
+        $('.insertSound', windowId).show();
+        $('.insertSnap', windowId).show();
+      }
+
+      $(windowId).css('width', '44vw');
+      $(windowId).css('height', '66vh');
+      $(windowId).css('top', '9vh');
+      $(windowId).css('left', '30vw');
+      // flatten other windows, show that window as active top stack
+      JQDX.window_flat();
+      $(windowId).addClass('window_stack').show();
+    } else {
+      
+    }
+
+    return;
   }
 
-  // when pond app loads, open default pond for all buddies
-  let rightPadding = 10;
-  let topPadding = 10;
-  if (!buddypond.qtokenid) {
-    // return;
+}
+
+desktop.app.pond.closeWindow = function (params) {
+  // if instance window, we'll want to remove it from DOM
+  // this is so we don't get many shadow windows with render HTML hidden in DOM not being used
+
+  // Remark: This is currently commented out due to message cache invalidation
+  //         We will need to invalidate the message cache for this pond_message context,
+  //         so then when / if it is re-opened it will re-load messages
+  //$('#window_pond_message_' + params.context).remove();
+  if (params.context) {
+    let index = desktop.app.pond.subscribedPonds.indexOf(params.context)
+    desktop.app.pond.subscribedPonds.splice(index, 1);
   }
-
-  let windowKey = desktop.ui.openWindow('pond_message', params.context);
-  let windowId = '#' + windowKey;
-
-  $('.window-context-title', windowId).html(params.context + ' Pond');
-  if (!isMobile) {
-    $('.pond_message_text', windowId).focus();
-  }
-  $('.pond_message_to', windowId).val(params.context)
-  $('.pond_message_from', windowId).val(buddypond.me);
-
-  $(windowId).css('left', '30vw');
-
-  JQDX.window_flat();
-  $(windowId).addClass('window_stack').show();
-
-  if (params.context === 'Paint') {
-    $('.pond_message_text', windowId).hide();
-    $('.pond_emoji_picker', windowId).hide();
-    $('.insertSound', windowId).hide();
-    $('.insertSnap', windowId).hide();
-  } else {
-    $('.pond_message_text', windowId).show();
-    $('.pond_emoji_picker', windowId).show();
-    $('.insertSound', windowId).show();
-    $('.insertSnap', windowId).show();
-  }
-
-  return windowId;
-
 }
 
 desktop.app.pond.sendMessage = function sendPondMessage (context) {
@@ -209,14 +269,6 @@ desktop.app.pond.lastNotified = 0;
 
 desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
-  // TODO: can we remove this?
-  let str = JSON.stringify(data);
-  // TODO: use key count for garbage collection and trim if size grows
-  if (desktop.cache.buddyMessageCache[str]) {
-    cb(new Error('Will not re-render for cached data'))
-    return;
-  }
-
   let html = {};
 
   data.messages.forEach(function(message){
@@ -234,9 +286,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     let index = keys.indexOf(pondKey);
     var windowKey = '#window_pond_message_' + index;
     */
-    let openPondWindows = desktop.ui.openWindows['pond_message'];
-    let windowId = '#' + openPondWindows[message.to]
-
+    let windowId = '#window_pond_message_' + message.to;
     message.text = forbiddenNotes.filter(message.text);
 
     desktop.app.tts.processMessage(message);
