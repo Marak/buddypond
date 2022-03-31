@@ -207,6 +207,13 @@ Ex: `JQDX.openWindow('paint');`
 
 The mobile friendly client is in progress. We have stubs placed in `./mobile` and will have a version of Buddy Pond working for iOS and Andriod soon. Please [reach out](https://github.com/Marak/buddypond/issues) if you can help!
 
+## Linting / `eslint`
+
+To lint codebase you can install and run `eslint`
+
+`npm install -g eslint@8.12.0`
+`eslint ./path/to/file.js --fix`
+
 ## Buddy Pond Backend Server
 So you've made it to the end of the `ReadMe.md`? Neat.
 
