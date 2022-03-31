@@ -261,15 +261,12 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   // $('.emoji-wysiwyg-editor').html("");
   //console.log('sending the message to pond', message)
 
-  // Check if user wants to quit then log the user out
-  let text = '';
-  text = message.text.split(' ');
-  if (text[0] === '/quit') {
-    desktop.app.login.logoutDesktop();
-  }
-
   buddypond.pondSendMessage(message.to, message.text, function(err, data){
     //console.log('buddypond.pondSendMessage', err, data)
+    // Remark: This will check for local user text commands such as /quit
+    //         These are done *after* the message is sent to the server to ensure,
+    //         that the message is sent before buddy logs out
+    desktop.commands.postProcessMessage(message);
   });
 }
 

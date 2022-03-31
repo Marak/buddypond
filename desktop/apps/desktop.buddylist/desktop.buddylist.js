@@ -269,6 +269,10 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   $('.emoji-wysiwyg-editor').html("");
   buddypond.sendMessage(message.to, message.text, function(err, data){
     // console.log('buddypond.sendMessage', err, data)
+    // Remark: This will check for local user text commands such as /quit
+    //         These are done *after* the message is sent to the server to ensure,
+    //         that the message is sent before buddy logs out
+    desktop.commands.postProcessMessage(message);
   });
   return false;
 }

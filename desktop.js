@@ -456,6 +456,18 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
   }
 }
 
+desktop.commands = {};
+
+// processes a message which was just sent for any potential local desktop commands ( such as /quit )
+desktop.commands.postProcessMessage = function postProcessMessage (message) {
+  // Check if user wants to quit then log the user out
+  let text = '';
+  text = message.text.split(' ');
+  if (text[0] === '/quit') {
+    desktop.app.login.logoutDesktop();
+  }
+}
+
 desktop.utils = {};
 
 /* untested, made the wrong one oops
