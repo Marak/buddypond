@@ -12,10 +12,11 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
     'desktop/assets/js/gif.js',
     'gifstudio' // this loads the sibling desktop.app.gifstudio.html file into <div id="window_gifstudio"></div>
   ], function (err) {
-    $('#window_gifstudio').css('width', 640);
-    $('#window_gifstudio').css('height', 520);
-    $('#window_gifstudio').css('left', 200);
-    $('#window_gifstudio').css('top', 120);
+    
+    $('#window_gifstudio').css('width', '44vw');
+    $('#window_gifstudio').css('height', '77vh');
+    $('#window_gifstudio').css('top', '9vh');
+    $('#window_gifstudio').css('left', '6vw');
 
     let d = $(document);
     d.on('mousedown', '.openPaint', function (ev) {

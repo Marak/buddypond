@@ -37,7 +37,9 @@ desktop.app.mtv.load = function (params, next) {
     });
 
     $('#window_mtv').css('width', 644);
-    $('#window_mtv').css('height', 590);
+    $('#window_mtv').css('left', 400);
+    $('#window_mtv').css('top', 40);
+
     next();
   });
 };

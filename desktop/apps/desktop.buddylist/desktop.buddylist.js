@@ -54,9 +54,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
         insertInto: '.activeTextArea'
       }
     ];
-    // clone window_buddy_message_0 ten times
-    // clone icon_dock_buddy_message_0 ten times
-    // this creates 10 windows available for chatting with buddies
 
     $('#window_buddylist').css('width', '15vw');
     $('#window_buddylist').css('height', '66vh');
@@ -81,6 +78,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
         }
       });
     }, 199800); // 3 minutes, 33 seconds
+
     $('.positiveAffirmation').on('click', function () {
       updatePositiveAffirmation();
     });

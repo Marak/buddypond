@@ -7,10 +7,11 @@ desktop.app.settings.load = function loadsettings (params, next) {
   desktop.load.remoteAssets([
     'settings' // this loads the sibling desktop.settings.html file into <div id="window_settings"></div>
   ], function (err) {
-    $('#window_settings').css('width', 520);
-    $('#window_settings').css('height', 495);
-    $('#window_settings').css('left', 80);
-    $('#window_settings').css('top', 80);
+
+    $('#window_settings').css('width', '33vw');
+    $('#window_settings').css('height', '77vh');
+    $('#window_settings').css('top', '9vh');
+    $('#window_settings').css('left', '3vw');
 
     //
     // BEGIN SET DEFAULTS FOR ALL DESKTOP SETTINGS

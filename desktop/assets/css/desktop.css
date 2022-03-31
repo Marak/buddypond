@@ -127,7 +127,6 @@ div.ui-resizable-handle {
   display: none;
   width: 700px;
   height: 300px;
-  top: 30px;
   left: 120px;
   z-index: 2;
 }

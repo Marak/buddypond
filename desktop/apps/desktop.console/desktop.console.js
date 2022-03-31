@@ -10,6 +10,12 @@ desktop.app.console.load = function loadDesktop (params, next) {
   ], function (err) {
     // Remark: map shortcut method for easily calling `desktop.log()` from apps
     desktop.log = desktop.app.console.log;
+
+    $('#window_console').css('width', '100vw');
+    $('#window_console').css('height', '40vh');
+    $('#window_console').css('bottom', 41);
+    $('#window_console').css('left', '0vw');
+
     next();
   });
 };

@@ -8,6 +8,11 @@ desktop.app.memepool.load = function (params, next) {
     'memepool' // this loads the sibling desktop.app.memepool.html file into <div id="window_memepool"></div>
   ], function (err) {
 
+    $('#window_memepool').css('width', '44vw');
+    $('#window_memepool').css('height', '77vh');
+    $('#window_memepool').css('top', '9vh');
+    $('#window_memepool').css('left', '6vw');
+
     $('.memePoolImage').on('click', function () {
       desktop.app.memepool.showRandomMeme();
     });
@@ -27,8 +32,6 @@ desktop.app.memepool.showRandomMeme = function showRandomMeme () {
 };
 
 desktop.app.memepool.openWindow = function (params) {
-  $('#window_memepool').css('top', 75);
-  $('#window_memepool').css('height', 444);
   return true;
 };
 
