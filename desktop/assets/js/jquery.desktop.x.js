@@ -77,12 +77,22 @@ window.onresize = function () {
     $('.window_top').css('height', 30);
     $('.window_top').css('padding-top', 0);
     $('.window_content').css('top', 33);
+    $('.window_top img').css('width', 16);
+    $('.window_top img').css('height', 16);
   }
 
   if (desktop.ui.view === 'MegaDesk') {
     $('.window_top').css('height', 40);
     $('.window_top').css('padding-top', 10);
     $('.window_content').css('top', 53);
+
+    $('.window_top img').css('width', 24);
+    $('.window_top img').css('height', 24);
+    // TODO: add this so we can have larger desktop button
+    // Remark: Needs to resize image? Probably best to slice up buttons into three images ( six with hover state )
+    //$('.window_min, .window_resize, .window_close').css('width', 56);
+    //$('.window_min, .window_resize, .window_close').css('height', 30);
+
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
 }

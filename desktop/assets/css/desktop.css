@@ -190,12 +190,16 @@ div.ui-resizable-handle {
 
 .window_top img {
   float: left;
-  margin-top: 3px;
-  margin-left: 1px;
-  margin-right: 6px;
+  padding-top: 6px;
+  padding-left: 1px;
+  padding-right: 6px;
   padding-bottom: 6px;
+  width: 16px;
+  height: 16px;
+  /*
   width: clamp(16px, 1.8vw, 32px);
   height: clamp(16px, 1.8vw, 32px);
+  */
 }
 
 .window_bottom {

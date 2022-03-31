@@ -9,10 +9,10 @@ desktop.app.pond.load = function loadPond (params, next) {
     'pond' // this loads the sibling desktop.app.pond.html file into <div id="window_pond"></div>
   ], function (err) {
 
-    $('#window_pond').css('width', '22vw');
+    $('#window_pond').css('width', '21vw');
     $('#window_pond').css('height', '66vh');
     $('#window_pond').css('top', '9vh');
-    $('#window_pond').css('left', '5vw');
+    $('#window_pond').css('left', '6vw');
 
     //
     // "#window_pond" event handlers
