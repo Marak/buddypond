@@ -47,7 +47,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     let d = $(document);
 
     // cancel all form submits ( or entire page will redirect )
-    d.on('submit', 'form', function(){
+    d.on('submit', '.pond_send_message_form', function(){
       return false;
     });
 
@@ -60,8 +60,8 @@ desktop.app.pond.load = function loadPond (params, next) {
       if (ev.which === 13) {
         if ($(ev.target).hasClass('pond_message_text')) {
           desktop.app.pond.sendMessage($(ev.target));
+          return false;
         }
-        return false;
       }
     });
 

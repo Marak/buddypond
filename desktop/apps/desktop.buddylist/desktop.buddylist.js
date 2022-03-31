@@ -150,13 +150,13 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
       if (ev.which === 13) {
         if ($(ev.target).hasClass('buddy_message_text')) {
           desktop.app.buddylist.sendMessage($(ev.target));
+          return false;
         }
-        return false;
       }
     });
 
     // cancel all form submits ( or entire page will redirect )
-    d.on('submit', 'form', function(){
+    d.on('submit', '.buddy_send_message_form', function(){
       return false;
     });
 
@@ -714,6 +714,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     } else {
       str += '<span class="datetime">' + message.ctime + ' </span> <span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
       let now = new Date().getTime();
+      // TODO: better control of IM sounds, check ctime and only play fresh sounds
       if (now - desktop.app.buddylist.lastNotified > 3333) {
         desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
         desktop.app.buddylist.lastNotified = now;
