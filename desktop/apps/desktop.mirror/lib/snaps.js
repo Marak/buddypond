@@ -1,3 +1,7 @@
+// starts photo record
+let MAX_FRAMES_PER_SNAP = 10;
+let DEFAULT_SNAP_TIMER = 777;
+
 desktop.app.mirror.CAMERA_SHUTTER_DELAY = 55;
 
 desktop.app.mirror.createGif = function createGif (delay) {
