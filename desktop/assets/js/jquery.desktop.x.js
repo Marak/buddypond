@@ -51,12 +51,23 @@ JQDX.frame_breaker = function frame_breaker () {
 
 desktop.ui.view = 'Normal';
 
+desktop.ui.goMobile = function () {
+  $('#bar_bottom').css('height', 120)
+  $('#bar_bottom').css('z-index', 420)
+  // TODO: bottom bar with four large icons ( BuddyList / Ponds / Entertainment / Settings )
+  // TODO: circular "home" button which opens navigation overlay with all Apps on a 4/4 grid with horizontal scroll
+  // show home button and bottom nav bar
+  // take the current active window and max it
+  // minimize all open windows
+}
+
 window.onresize = function () {
+
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
+
   let width = $(document).width();
   let height = $(document).height();
-
   if (width <= 699) {
     desktop.ui.view = 'Mobile';
   }
@@ -71,6 +82,7 @@ window.onresize = function () {
 
   if (desktop.ui.view === 'Mobile') {
     // TODO: re-arrange windows to mobile view
+    // desktop.ui.goMobile();
   }
 
   if (desktop.ui.view === 'Normal') {
