@@ -8,7 +8,7 @@ desktop.app.audioplayer.load = function loadAudioPlayer (params, next) {
 desktop.app.audioplayer.playing = {};
 
 desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback) {
-  callback = callback || function noop () {}
+  callback = callback || function noop () {};
   if (!desktop.settings.audio_enabled) {
     // do not play any audio if desktop audio is not enabled
     return callback(null, false);
@@ -21,8 +21,8 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
     // set a flag for this audio file path to ensure we don't attempt to play it concurrently with itself
     desktop.app.audioplayer.playing[soundPath] = true;
     try {
-      var audio = new Audio(soundPath);
-      audio.addEventListener('ended', function() {
+      const audio = new Audio(soundPath);
+      audio.addEventListener('ended', function () {
         // the audio file has completed, reset the flag to indicate the audio file path can be played again
         desktop.app.audioplayer.playing[soundPath] = false;
         if (callback) {
@@ -33,7 +33,7 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
       // Remark: Wrap audio.play() promise in _play function to allow `tryHard` retries
       //         This allows the Desktop to optionaly retry audio if the the first attempt fails
       //.        This is currently being used to ensure WELCOME sound plays on first document interaction
-      function _play () {
+      const _play = () => {
         audio.play()
           .then(() => {
             // success
@@ -43,18 +43,18 @@ desktop.app.audioplayer.play = function playAudio (soundPath, tryHard, callback)
             desktop.app.audioplayer.playing[soundPath] = false;
             if (tryHard) {
               tryHard--;
-              setTimeout(function(){
+              setTimeout(function () {
                 _play();
-              }, 333)
+              }, 333);
             }
-        });
-      }
+          });
+      };
       _play();
 
     } catch (err) {
-      console.log('Warning Audio Error:', err.message)
+      console.log('Warning Audio Error:', err.message);
       desktop.app.audioplayer.playing[soundPath] = false;
       return callback(err, false);
     }
   }
-}
+};

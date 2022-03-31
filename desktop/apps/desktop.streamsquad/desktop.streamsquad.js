@@ -1,16 +1,16 @@
 desktop.app.streamsquad = {};
-desktop.app.streamsquad.label = "streamsquad";
+desktop.app.streamsquad.label = 'streamsquad';
 
 desktop.app.streamsquad.streamers = {
-  "Marak": {
+  'Marak': {
     'description': 'DJ Sets, Live Coding, Buddy Pond QA',
     'homepage': 'https://www.youtube.com/user/MarakSquires'
   },
-  "SkratchBastidTV": {
+  'SkratchBastidTV': {
     'description': 'DJ Sets',
     'homepage': 'https://www.youtube.com/user/SkratchBastidTV'
   },
-  "Andrew Potthast": {
+  'Andrew Potthast': {
     'description': 'DJ Sets',
     'homepage': 'https://soundcloud.com/andrew-potthast'
   }
@@ -20,16 +20,16 @@ desktop.app.streamsquad.openStream = function (data) {
   if (data && data.link) {
     // TODO: separate function in streamsquad
     //console.log('ddd', data)
-    let videoId = data.link.replace('https://www.youtube.com/watch?v=', '');
+    const videoId = data.link.replace('https://www.youtube.com/watch?v=', '');
     //console.log('vvv', videoId)
     desktop.ui.openWindow('interdimensionalcable', { videoId: videoId, title: data.name + ' is LIVE' });
   }
-}
+};
 
 desktop.app.streamsquad.renderStreamersList = function (currentStreamer) {
   $('.streamersTable tbody').html('');
-  for (let s in desktop.app.streamsquad.streamers) {
-    let streamer = desktop.app.streamsquad.streamers[s];
+  for (const s in desktop.app.streamsquad.streamers) {
+    const streamer = desktop.app.streamsquad.streamers[s];
     let onlineStatus = '🟠';
     let onlineStatusText = 'OFFLINE';
     if (s === currentStreamer) {
@@ -46,9 +46,9 @@ desktop.app.streamsquad.renderStreamersList = function (currentStreamer) {
       </tr>
     `);
   }
-}
+};
 
-desktop.on('streamer-is-offline', 'render-streamer-list', function(data){
+desktop.on('streamer-is-offline', 'render-streamer-list', function (data) {
   // console.log('streamer-is-offline')
   if (!desktop.app.streamsquad.offline) {
     desktop.app.streamsquad.offline = true;
@@ -60,14 +60,14 @@ desktop.on('streamer-is-offline', 'render-streamer-list', function(data){
   }
 });
 
-desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function(data){
+desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function (data) {
   // console.log('streamer-is-online')
   // check to see if stream is already open or user already closed the window
   desktop.app.streamsquad.offline = false;
   if (desktop.app.streamsquad.streamers[data.name]) {
     // console.log("EE: stream-is-registered locally", data);
     // check to see if ctime is fresh
-    let previousStream = desktop.app.streamsquad.streamers[data.name];
+    const previousStream = desktop.app.streamsquad.streamers[data.name];
     if (previousStream.ctime !== data.ctime) {
       // console.log("EE: stream-is-online-reconnect", data);
       desktop.app.streamsquad.streamers[data.name] = data;
@@ -75,7 +75,7 @@ desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function(data
       desktop.app.streamsquad.renderStreamersList(data.name);
       $('.isStreamingNow').show();
       $('.nextStreamSoon').hide();
-      let videoId = data.link.replace('https://www.youtube.com/watch?v=', '');
+      const videoId = data.link.replace('https://www.youtube.com/watch?v=', '');
       $('.openIDC', '#window_streamsquad').data('videoid', videoId);
       // update UI to show streamer
     }
@@ -88,7 +88,7 @@ desktop.on('streamer-is-online', 'open-streamsquad-with-streamer', function(data
     $('.isStreamingNow').show();
     $('.nextStreamSoon').hide();
   }
-})
+});
 
 desktop.app.streamsquad.load = function loadstreamsquadGames (params, next) {
   desktop.load.remoteAssets([

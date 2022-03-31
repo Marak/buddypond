@@ -1,7 +1,7 @@
 desktop.app.automaton = {};
 desktop.app.automaton.automatons = {};
 
-desktop.app.automaton.label = "Automaton";
+desktop.app.automaton.label = 'Automaton';
 
 desktop.app.automaton.load = function loadautomatonGames (params, next) {
   desktop.load.remoteAssets([
@@ -31,26 +31,27 @@ desktop.app.automaton.processMessages = function processAutomatonMessages (data,
     return callback(null, 'skipped');
   }
 
-  Object.keys(desktop.app.automaton.automatons).forEach(function(automatonName){
-    let auto = desktop.app.automaton.automatons[automatonName];
+  Object.keys(desktop.app.automaton.automatons).forEach(function (automatonName) {
+    const auto = desktop.app.automaton.automatons[automatonName];
     // console.log('auto', auto)
-    data.messages.forEach(function(message){
+    data.messages.forEach(function (message) {
       // perform exported action
       let numbery = 20;
-      let arg = message.text.split(' ')[1] || numbery;
+      const arg = message.text.split(' ')[1] || numbery;
       try {
         numbery = new Number(arg);
       } catch (err) {
+        // ignore
       }
-      let result = auto.roll(numbery);
+      const result = auto.roll(numbery);
       if (message.text.substr(0, 5) === '/roll') {
         if (message.type === 'pond') {
-          buddypond.pondSendMessage(message.to, result.toString(), function(err, data){
+          buddypond.pondSendMessage(message.to, result.toString(), function (err, data) {
             console.log('auto roll result', err, data);
           });
         }
         if (message.type === 'buddy') {
-          buddypond.sendMessage(message.from, result.toString(), function(err, data){
+          buddypond.sendMessage(message.from, result.toString(), function (err, data) {
             console.log('auto roll result', err, data);
             desktop.app.closeWindow('buddy_message', message.from);
           });
@@ -58,7 +59,7 @@ desktop.app.automaton.processMessages = function processAutomatonMessages (data,
       } else {
         // TODO: give numbers in response to PMs
         if (message.type === 'buddy') {
-          buddypond.sendMessage(message.from, result.toString(), function(err, data){
+          buddypond.sendMessage(message.from, result.toString(), function (err, data) {
             console.log('auto roll result', err, data);
             desktop.app.closeWindow('buddy_message', message.from);
           });
@@ -67,7 +68,7 @@ desktop.app.automaton.processMessages = function processAutomatonMessages (data,
     });
   });
   callback(null, data);
-}
+};
 
 desktop.app.automaton.openWindow = function openWindow () {
   return true;

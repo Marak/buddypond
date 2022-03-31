@@ -1,10 +1,10 @@
 desktop.app.wallpaper = {};
 desktop.app.wallpaper.canvas = null;
-desktop.app.wallpaper.label = "Wallpaper"
-desktop.app.wallpaper.settings = null
-desktop.app.wallpaper.init = false
-desktop.app.wallpaper.width = 0
-desktop.app.wallpaper.height = 0
+desktop.app.wallpaper.label = 'Wallpaper';
+desktop.app.wallpaper.settings = null;
+desktop.app.wallpaper.init = false;
+desktop.app.wallpaper.width = 0;
+desktop.app.wallpaper.height = 0;
 
 desktop.app.wallpaper.wallpapers = {};
 
@@ -25,7 +25,7 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
 
     desktop.app.wallpaper.start();
 
-    desktop.on('desktop.settings.wallpaper_name', 'update-wallpaper-active', function(wallpaperName){
+    desktop.on('desktop.settings.wallpaper_name', 'update-wallpaper-active', function (wallpaperName) {
       // stop the current wallpaper
       desktop.app.wallpaper.stop();
       // swap the active wallpaper
@@ -41,7 +41,7 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       }
     });
 
-    desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function(color){
+    desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function (color) {
       desktop.app.wallpaper.wallpapers[ desktop.app.wallpaper.active].changeColor(color);
     });
 
@@ -55,7 +55,7 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       $('#wallPaperRadioSolid').prop('checked', true);
     }
 
-    $('.pauseWallpaper').on('click', function(){
+    $('.pauseWallpaper').on('click', function () {
       if (desktop.app.wallpaper.paused) {
         desktop.app.wallpaper.start();
         $('.pauseWallpaper ').html('Pause Wallpaper');
@@ -67,18 +67,18 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     });
 
     $('input[name=wallpaper_opt]').on('input', function () {
-      var radioValue = $('input[name=wallpaper_opt]:checked').val();
+      const radioValue = $('input[name=wallpaper_opt]:checked').val();
       // update desktop.settings.wallpaper_name
       desktop.set('wallpaper_name', radioValue);
     });
 
-    $( window ).resize(function(e) {
+    $( window ).resize(function (e) {
       if (e.target !== window) {
-        return
+        return;
       }
       desktop.app.wallpaper.resizeCanvasToWindow();
       desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].resize();
-    })
+    });
 
     function onSelect (context, hex) {
       desktop.set('wallpaper_color', '#' + hex);
@@ -89,57 +89,57 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     }
 
     $('.wallpaperOptionColor').simpleColor({
-        boxHeight: 20,
-        cellWidth: 16,
-        cellHeight: 16,
-        defaultColor: desktop.settings.wallpaper_color || '#008F11',
-        inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
-        chooserCSS: { 'border': '1px solid #660033', 'right': '0px', 'top': '-150px' },
-        displayCSS: {  },
-        displayColorCode: true,
-        livePreview: true,
-        insert: 'before',
-        onSelect: function(hex, element) {
-          onSelect(desktop.app.wallpaper.active, hex);
-        },
-        onCellEnter: function(hex, element) {
-          onCellEnter(desktop.app.wallpaper.active, hex);
-        },
-        onClose: function(element) {
-        }
-      })
+      boxHeight: 20,
+      cellWidth: 16,
+      cellHeight: 16,
+      defaultColor: desktop.settings.wallpaper_color || '#008F11',
+      inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
+      chooserCSS: { 'border': '1px solid #660033', 'right': '0px', 'top': '-150px' },
+      displayCSS: {  },
+      displayColorCode: true,
+      livePreview: true,
+      insert: 'before',
+      onSelect: function (hex, element) {
+        onSelect(desktop.app.wallpaper.active, hex);
+      },
+      onCellEnter: function (hex, element) {
+        onCellEnter(desktop.app.wallpaper.active, hex);
+      },
+      onClose: function (element) {
+      }
+    });
     next();
-  })
+  });
 };
 
-desktop.app.wallpaper.resizeCanvasToWindow = function() {
-  var c = document.getElementById("c");
+desktop.app.wallpaper.resizeCanvasToWindow = function () {
+  const c = document.getElementById('c');
   c.height = window.innerHeight;
   c.width = window.innerWidth;
   desktop.app.wallpaper.height = window.innerHeight;
   desktop.app.wallpaper.width = window.innerWidth;
-}
+};
 
 desktop.app.wallpaper.start = function startWallpaper () {
   desktop.app.wallpaper.paused = false;
-  desktop.app.wallpaper.resizeCanvasToWindow()
+  desktop.app.wallpaper.resizeCanvasToWindow();
   // TODO: choose active wallpaper
   desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].start();
-}
+};
 
 desktop.app.wallpaper.clear = function () {
-  var c = document.getElementById("c")
-  var ctx = c.getContext("2d")
-  ctx.clearRect(0, 0, c.width, c.height)
-}
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+};
 
 desktop.app.wallpaper.pause = function pauseWallpaper () {
   desktop.app.wallpaper.paused = true;
   desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].pause();
-}
+};
 
 desktop.app.wallpaper.stop = function () {
   desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].stop();
   //desktop.app.wallpaper.pause()
-  desktop.app.wallpaper.clear()
-}
+  desktop.app.wallpaper.clear();
+};

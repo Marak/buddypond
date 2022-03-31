@@ -1,6 +1,6 @@
 desktop.app.interdimensionalcable = {};
-desktop.app.interdimensionalcable.label = "IDC Cable";
-desktop.app.interdimensionalcable.depends_on = ['videoplayer'];
+desktop.app.interdimensionalcable.label = 'IDC Cable';
+desktop.app.interdimensionalcable.depends_on = [ 'videoplayer' ];
 desktop.app.interdimensionalcable.activeVideo = 'rZhbnty03U4'; // default tv static
 desktop.app.interdimensionalcable.mode = 'playlist';
 desktop.app.interdimensionalcable.load = function (params, next) {
@@ -10,7 +10,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     'interdimensionalcable' // this loads the sibling desktop.app.interdimensionalcable.html file into <div id="window_interdimensionalcable"></div>
   ], function (err) {
 
-    function interDemonPlayerReady(event) {
+    function interDemonPlayerReady (event) {
       if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
         $('.orbHolder').hide();
         $('#window_interdimensionalcable').css('height', 440);
@@ -18,17 +18,17 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       } else {
         $('.orbHolder').show();
         $('#window_interdimensionalcable').css('height', 590);
-        desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+        desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
       }
       next();
     }
 
-    function interDemonPlayerStateChange(event) {
+    function interDemonPlayerStateChange (event) {
       if (event.data == 0) {
         if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
-          JQDX.closeWindow('interdimensionalcable')
+          JQDX.closeWindow('interdimensionalcable');
         } else {
-          desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+          desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
         }
       }
     }
@@ -56,7 +56,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
       origin: window.document.location.origin
     });
 
-    $('.ponderinterdimensionalcable').on('click', function(){
+    $('.ponderinterdimensionalcable').on('click', function () {
       desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
     });
 
@@ -67,19 +67,19 @@ desktop.app.interdimensionalcable.load = function (params, next) {
 
 };
 
-desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo(_player, playlist) {
-  let keys = playlist;
-  let key =   keys[Math.floor(Math.random() * keys.length)];
+desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo (_player, playlist) {
+  const keys = playlist;
+  const key =   keys[Math.floor(Math.random() * keys.length)];
   if (_player) {
-    let yt_id = key;
-    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
+    const yt_id = key;
+    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id);
     _player.loadVideoById(yt_id);
     // TODO: timer to repeat until its actually ready?
-    setTimeout(function(){
+    setTimeout(function () {
       if (_player.play) {
         _player.play();
       }
-    }, 5000)
+    }, 5000);
   }
 };
 
@@ -101,14 +101,14 @@ desktop.app.interdimensionalcable.openWindow = function (params) {
     desktop.app.interdimensionalcable.mode = 'playlist';
     $('#window_interdimensionalcable').css('height', 590);
     $('.orbHolder').show();
-    desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist)
+    desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
   }
   if (params.title) {
-    $('.windowTitle', '#window_interdimensionalcable').html(params.title)
+    $('.windowTitle', '#window_interdimensionalcable').html(params.title);
   } else {
-    $('.windowTitle', '#window_interdimensionalcable').html('Interdimensional Cable')
+    $('.windowTitle', '#window_interdimensionalcable').html('Interdimensional Cable');
   }
-}
+};
 
 desktop.app.interdimensionalcable.closeWindow = function () {
   // TODO: remove embeds? unload entire App?
@@ -116,7 +116,7 @@ desktop.app.interdimensionalcable.closeWindow = function () {
   if (desktop.app.interdimensionalcable.player && desktop.app.interdimensionalcable.player.pauseVideo) {
     desktop.app.interdimensionalcable.player.pauseVideo();
   }
-}
+};
 
 // way easier to type
 desktop.app.IDC = desktop.app.interdimensionalcable;

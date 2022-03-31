@@ -1,5 +1,5 @@
 desktop.app.games = {};
-desktop.app.games.label = "Games";
+desktop.app.games.label = 'Games';
 desktop.app.games.icon = 'folder';
 
 desktop.app.games.load = function loadDesktopGames (params, next) {

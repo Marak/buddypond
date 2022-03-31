@@ -1,6 +1,6 @@
 desktop.app.localstorage = {};
-desktop.app.localstorage.icon = "folder";
-desktop.app.localstorage.label = "localstorage";
+desktop.app.localstorage.icon = 'folder';
+desktop.app.localstorage.label = 'localstorage';
 
 desktop.app.localstorage.prefix = '_buddypond_desktop_';
 
@@ -10,11 +10,11 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
   
   if (typeof key === 'object') {
     // batch update with multple key / values
-    let obj = key;
-    for (let k in obj) {
+    const obj = key;
+    for (const k in obj) {
       // TODO: check previous prop and only emit event if prop has actually changed
       desktop.settings[k] = obj[k];
-      let val = JSON.stringify(obj[k]);
+      const val = JSON.stringify(obj[k]);
       localStorage.setItem(desktop.app.localstorage.prefix + k, val);
       desktop.emit('desktop.settings.' + k, desktop.settings[k]);
     }
@@ -28,29 +28,29 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
 
   desktop.emit('desktop.settings', desktop.settings);
 
-}
+};
 
 desktop.app.localstorage.get = function getLocalStorage (key) {
   let parsed;
-  let data = localStorage.getItem(desktop.app.localstorage.prefix + key);
+  const data = localStorage.getItem(desktop.app.localstorage.prefix + key);
   try {
     parsed = JSON.parse(data);
   } catch (err) {
     alert('Error parsing localstorage JSON. Did you store bad JSON?');
   }
   return parsed;
-}
+};
 
 desktop.app.localstorage.removeItem = function removeLocalStorage (key) {
   localStorage.removeItem(desktop.app.localstorage.prefix + key);
-}
+};
 
 desktop.app.localstorage.sync = function syncSettings () {
   // syncs all data from localStorage into `desktop.settings`
   // attempts to JSON.parse() each localStorage value if possible
-  for (var key in localStorage){
+  for (const key in localStorage) {
     if (key.search(desktop.app.localstorage.prefix) !== -1) {
-      let param = key.replace(desktop.app.localstorage.prefix, '');
+      const param = key.replace(desktop.app.localstorage.prefix, '');
       try {
         desktop.settings[param] = JSON.parse(localStorage[key]);
       } catch (err) {
@@ -58,7 +58,7 @@ desktop.app.localstorage.sync = function syncSettings () {
       }
     }
   }
-}
+};
 
 desktop.app.localstorage.load = function loadLocalStorage (param, next) {
   desktop.app.localstorage.sync();

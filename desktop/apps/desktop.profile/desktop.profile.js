@@ -1,5 +1,5 @@
 desktop.app.profile = {};
-desktop.app.profile.label = "Profile";
+desktop.app.profile.label = 'Profile';
 
 desktop.app.profile.load = function loadDesktop (params, next) {
   desktop.load.remoteAppHtml('profile', function (responseText, textStatus, jqXHR) {
@@ -12,41 +12,41 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     });
 
     if (!buddypond.qtokenid) {
-      $('.editProfileLink').addClass('editProfileLinkDisabled')
+      $('.editProfileLink').addClass('editProfileLinkDisabled');
     }
 
-    $('.editProfileLink').on('click', function(){
+    $('.editProfileLink').on('click', function () {
       if (buddypond.qtokenid) {
         $(this).closest('.menu').hide();
         desktop.app.profile.openWindow();
-      } else {
-        
       }
+      
       return false;
     });
 
-    desktop.app.tts.voices.forEach(function(v){
-      $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`)
+    desktop.app.tts.voices.forEach(function (v) {
+      $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`);
     });
 
     if (desktop.settings.tts_voice_index) {
       $('.ttsVoice').prop('selectedIndex', desktop.settings.tts_voice_index);
     }
 
-    $('.ttsVoice').on('change', function(){
+    $('.ttsVoice').on('change', function () {
       desktop.app.tts.voice = desktop.app.tts.voices[$(this).prop('selectedIndex')];
       desktop.set('tts_voice', desktop.app.tts.voice);
       desktop.set('tts_voice_index', $(this).prop('selectedIndex'));
       desktop.say('Hello Beautiful');
     });
 
-    $('.setStatus').on('click', function(){
-      let replaceThisWithBetterUXThankYou = prompt('( alert lol )\n\nType your custom status:');
+    $('.setStatus').on('click', function () {
+      // TODO: replace this with better UX thank you
+      prompt('( alert lol )\n\nType your custom status:');
     });
 
     // Remark: also being triggered by enter event on form, jquery.desktop.app.js?
-    $('.updateProfileButton').on('click', function(){
-      let updates = {};
+    $('.updateProfileButton').on('click', function () {
+      const updates = {};
       updates.email = $('.buddy_email').val();
       updates.password = $('.buddy_password').val();
       updates.confirmPassword = $('.confirm_buddy_password').val();
@@ -59,28 +59,28 @@ desktop.app.profile.load = function loadDesktop (params, next) {
         }
       }
       $('.updateProfileResponse').removeClass('error');
-      buddypond.updateBuddyProfile({ updates: updates }, function(err, res){
+      buddypond.updateBuddyProfile({ updates: updates }, function (err, res) {
         if (res.error) {
           alert(res.message);
           return;
         }
         $('.updateProfileResponse').html('Updated!');
-      })
+      });
     });
 
-    $('.updateProfileMarkdown').on('click', function(){
+    $('.updateProfileMarkdown').on('click', function () {
       desktop.app.buddylist.profileState.updates.myProfile = $('.profileMarkdown').val();
     });
 
-    $('.hideFlag').on('click', function(){
+    $('.hideFlag').on('click', function () {
       if ($(this).prop('checked')) {
         desktop.set('geo_flag_hidden', true);
       } else {
         desktop.set('geo_flag_hidden', false);
       }
-    })
+    });
 
-    $("#profileTabs" ).tabs();
+    $('#profileTabs' ).tabs();
     next();
   });
 };
@@ -89,4 +89,4 @@ desktop.app.profile.openWindow = function openWindow () {
   $('#window_profile').addClass('window_stack').show();
   $('#window_profile').css('height', 540);
   $('#window_profile').css('width', 460);
-}
+};

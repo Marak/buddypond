@@ -15,14 +15,15 @@ see: https://github.com/nathansmith/jQuery-Desktop
 //
 // Kick things off.
 //
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   JQDX.bindDocumentEventHandlers();
   JQDX.frame_breaker();
   desktop.clock();
 });
 
 // extended JDQ functions added by Marak
-var JQDX = {};
+// eslint-disable-next-line no-redeclare
+const JQDX = {};
 JQDX.loading = {};
 
 //
@@ -30,7 +31,7 @@ JQDX.loading = {};
 //
 JQDX.window_flat = function window_flat () {
   $('div.window').removeClass('window_stack');
-}
+};
 
 //
 // Clear active states, hide menus.
@@ -38,13 +39,13 @@ JQDX.window_flat = function window_flat () {
 JQDX.clear_active = function clear_active () {
   $('a.active, tr.active').removeClass('active');
   $('ul.menu').hide();
-}
+};
 
 JQDX.frame_breaker = function frame_breaker () {
   if (window.location !== window.top.location) {
     window.top.location = window.location;
   }
-}
+};
 
 // TODO: App.resizeWindow() ??
 // TODO: desktop.ui.onresize = function () { // array of event handlers, etc use jquery ?}
@@ -54,8 +55,8 @@ desktop.ui.view = 'Normal';
 window.onresize = function () {
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
-  let width = $(document).width();
-  let height = $(document).height();
+  const width = $(document).width();
+  // const height = $(document).height();
 
   if (width <= 699) {
     desktop.ui.view = 'Mobile';
@@ -95,14 +96,14 @@ window.onresize = function () {
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
-}
+};
 
 //
 // Resize modal window.
 //
 JQDX.window_resize = function window_resize (el) {
   // Nearest parent window.
-  var win = $(el).closest('div.window');
+  const win = $(el).closest('div.window');
 
   // Is it maximized already?
   if (win.hasClass('window_full')) {
@@ -139,16 +140,16 @@ JQDX.window_resize = function window_resize (el) {
   // Bring window to front.
   JQDX.window_flat();
   win.addClass('window_stack');
-}
+};
 
 JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   
-  var d = $(document);
+  const d = $(document);
 
-  d.on('keydown', function(event) {
-    if(event.key == "Escape") {
+  d.on('keydown', function (event) {
+    if (event.key == 'Escape') {
       // find active open window and close it
-      let topWindow = $('.window_stack').attr('id')
+      const topWindow = $('.window_stack').attr('id');
       JQDX.closeWindow('#' + topWindow);
     }
   });
@@ -183,26 +184,26 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   //   return false;
   // });
 
-  d.on('click', 'a.openIDC', function(ev) {
-    let id = $(this).html()
-    let videoId = $(this).data('videoid')
-    let start = $(this).data('videot')
-    if(start){
+  d.on('click', 'a.openIDC', function (ev) {
+    // const id = $(this).html();
+    const videoId = $(this).data('videoid');
+    const start = $(this).data('videot');
+    if (start) {
       desktop.ui.openWindow('interdimensionalcable', { videoId: videoId, start: start });
     } else {
       desktop.ui.openWindow('interdimensionalcable', { videoId: videoId });
     }
   });
 
-  d.on('click', 'a.openSound', function(ev) {
-    let id = $(this).html()
-    let soundUrl = $(this).data('soundurl')
+  d.on('click', 'a.openSound', function (ev) {
+    // const id = $(this).html();
+    const soundUrl = $(this).data('soundurl');
     desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
   });
 
   // Relative or remote links?
-  d.on('click', 'a', function(ev) {
-    var url = $(this).attr('href');
+  d.on('click', 'a', function (ev) {
+    const url = $(this).attr('href');
     this.blur();
 
     if (url.match(/^#/)) {
@@ -216,7 +217,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Make top menus active.
-  d.on('mousedown', 'a.menu_trigger', function() {
+  d.on('mousedown', 'a.menu_trigger', function () {
     if ($(this).next('ul.menu').is(':hidden')) {
       JQDX.clear_active();
       $(this).addClass('active').next('ul.menu').show();
@@ -227,7 +228,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Transfer focus, if already open.
-  d.on('mouseenter', 'a.menu_trigger', function() {
+  d.on('mouseenter', 'a.menu_trigger', function () {
     if ($('ul.menu').is(':visible')) {
       JQDX.clear_active();
       $(this).addClass('active').next('ul.menu').show();
@@ -235,10 +236,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Hide top nav drop down menu if Buddy moves mouse away from active / open menu
-  d.on('mouseenter', 'ul.menu', function() {
+  d.on('mouseenter', 'ul.menu', function () {
   });
 
-  d.on('mouseleave', 'ul.menu', function() {
+  d.on('mouseleave', 'ul.menu', function () {
     if ($('ul.menu').is(':visible')) {
       JQDX.clear_active();
       $('ul.menu').hide();
@@ -246,18 +247,18 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Cancel single-click.
-  d.on('mousedown', 'a.icon', function() {
+  d.on('mousedown', 'a.icon', function () {
     // Highlight the icon.
     JQDX.clear_active();
     $(this).addClass('active');
   });
 
   // Click remix paint icon to remix images in Paint App
-  d.on('mousedown', 'img.remixPaint, img.remixMeme', function() {
-    let form = $(this).parent();
-    let url = $('.image', form).attr('src');
-    let output = $(this).data('output');
-    let context = $(this).data('context');
+  d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
+    const form = $(this).parent();
+    const url = $('.image', form).attr('src');
+    const output = $(this).data('output');
+    const context = $(this).data('context');
     JQDX.openWindow('paint', {
       src: url,
       output: output,
@@ -266,11 +267,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Click remix GIF icon to remix gifs in Gif Studio App
-  d.on('mousedown', 'img.remixGif', function(ev) {
-    let form = $(this).parent();
-    let url = $('.image', form).attr('src');
-    let output = $(this).data('output');
-    let context = $(this).data('context');
+  d.on('mousedown', 'img.remixGif', function (ev) {
+    const form = $(this).parent();
+    const url = $('.image', form).attr('src');
+    const output = $(this).data('output');
+    const context = $(this).data('context');
 
     // TOOD: get count instead of frame index
     // let frameIndex = $(this).data('frameindex') || 0;
@@ -288,17 +289,17 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     });
   });
 
-  d.on('mouseover', '.message img', function(){
-    let img = $(this);
-    let holder = img.parent();
+  d.on('mouseover', '.message img', function () {
+    const img = $(this);
+    const holder = img.parent();
     //img.css('opacity', 0.7777);
     $('.remixGif', holder).show();
     $('.remixPaint', holder).show();
   });
 
-  d.on('mouseleave', '.message img', function(){
-    let img = $(this);
-    let holder = img.parent();
+  d.on('mouseleave', '.message img', function () {
+    const img = $(this);
+    const holder = img.parent();
     //img.css('opacity', 1.0);
     $('.remixGif', holder).hide();
     $('.remixPaint', holder).hide();
@@ -310,29 +311,29 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     // Single click to open Apps icons on mobile
     eventName = 'click';
   }
-  d.on(eventName, 'a.icon', function() {
-    var iconDock = $(this).attr('href');
-    var appName = iconDock.replace('#icon_dock_', '');
-    JQDX.openWindow(appName)
+  d.on(eventName, 'a.icon', function () {
+    const iconDock = $(this).attr('href');
+    const appName = iconDock.replace('#icon_dock_', '');
+    JQDX.openWindow(appName);
   });
 
-  d.on('mousedown', '.startNewGif', function(){
-    let app = $(this).attr('href');
-    app = app.replace('#', '');
+  d.on('mousedown', '.startNewGif', function () {
+    // let app = $(this).attr('href');
+    // app = app.replace('#', '');
     desktop.app.gifstudio.insertMode = 'insert';
     JQDX.openWindow('paint', {
       output: 'gifstudio',
       context: 'new-gif'
     });
     return false;
-  })
+  });
 
   // Make icons draggable.
-  d.on('mouseenter', 'a.icon', function() {
+  d.on('mouseenter', 'a.icon', function () {
     $(this).off('mouseenter').draggable({
       revert: false,
       containment: 'parent',
-      stop: function() {
+      stop: function () {
         desktop.ui.getDesktopIconPositions();
       }
     });
@@ -342,7 +343,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // <div id="your context menu id" class="context-menu" style="display: none">
   //   <ul id="your context list id" class="context-list"></ul>
   // </div>
-  d.on('contextmenu', 'a.messageBuddy', function(ev) {
+  d.on('contextmenu', 'a.messageBuddy', function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
@@ -373,7 +374,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
             clickHandler: () => {
               $('#panel_buddy_profile').html(buddyProfileText),
               $('#panel_buddy_profile').show(),
-              $('#panel_buddy_profile').addClass('window_stack')
+              $('#panel_buddy_profile').addClass('window_stack');
             }
           }
         ]
@@ -394,7 +395,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // mouse out of buddy profile to hide profile preview
-  d.on('mouseleave', '#panel_buddy_profile', function() {
+  d.on('mouseleave', '#panel_buddy_profile', function () {
     // TODO: move this out of this file?
     $('#panel_buddy_profile').hide();
     $('#panel_buddy_profile').removeClass('window_stack');
@@ -402,19 +403,19 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   // Taskbar buttons.
   // TODO: JQDX.maxWindow
-  d.on('click', '#dock a', function() {
+  d.on('click', '#dock a', function () {
     JQDX.maxWindow(this);
   });
 
   // Focus active window.
-  d.on('mousedown', 'div.window', function() {
+  d.on('mousedown', 'div.window', function () {
     // Bring window to front.
     JQDX.window_flat();
     $(this).addClass('window_stack');
   });
 
   // Make windows draggable.
-  d.on('mouseenter', 'div.window', function() {
+  d.on('mouseenter', 'div.window', function () {
     $(this).off('mouseenter').draggable({
       // Confine to desktop.
       // Movable via top bar only.
@@ -429,12 +430,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Double-click top bar to resize, ala Windows OS.
-  d.on('dblclick', 'div.window_top', function() {
+  d.on('dblclick', 'div.window_top', function () {
     JQDX.window_resize(this);
   });
 
   // Double click top bar icon to close, ala Windows OS.
-  d.on('dblclick', 'div.window_top img', function() {
+  d.on('dblclick', 'div.window_top img', function () {
     // Traverse to the close button, and hide its taskbar button.
     $($(this).closest('div.window_top').find('a.window_close').attr('href')).hide('fast');
 
@@ -446,41 +447,41 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Minimize the window.
-  d.on('click', 'a.window_min', function() {
+  d.on('click', 'a.window_min', function () {
     JQDX.minWindow(this);
   });
 
   // Maximize or restore the window.
-  d.on('click', 'a.window_resize', function() {
+  d.on('click', 'a.window_resize', function () {
     JQDX.window_resize(this);
   });
 
   // Close the window.
-  d.on('click', 'a.window_close', function() {
+  d.on('click', 'a.window_close', function () {
     JQDX.closeWindow(this);
   });
 
   // Show desktop button, ala Windows OS.
-  d.on('mousedown', '#show_desktop', function() {
+  d.on('mousedown', '#show_desktop', function () {
     // If any windows are visible, hide all.
     if ($('div.window:visible').length) {
       $('div.window').hide();
     }
     else {
       // Otherwise, reveal hidden windows that are open.
-      $('#dock li:visible a').each(function() {
+      $('#dock li:visible a').each(function () {
         $($(this).attr('href')).show();
       });
     }
   });
 
   // this needs to re-trigger on re-renders
-  $('table.data').each(function() {
+  $('table.data').each(function () {
     // Add zebra striping, ala Mac OS X.
     $(this).find('tbody tr:odd').addClass('zebra');
   });
 
-  d.on('mousedown', 'table.data tr', function() {
+  d.on('mousedown', 'table.data tr', function () {
     // Clear active state.
     JQDX.clear_active();
 
@@ -488,42 +489,42 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $(this).closest('tr').addClass('active');
   });
 
-}
+};
 
 JQDX.loadWindow = function loadWindow (appName, params, callback) {
-  desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js`], function () {
+  desktop.load.remoteJS([ `desktop/apps/desktop.${appName}/desktop.${appName}.js` ], function () {
     /* TODO: support N app dep, currently hard-coded to 1
     desktop.app[appName].depends_on.forEach(function(appDep){
       desktop.preloader.push(appDep);
     });
     */
     if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
-      let depName = desktop.app[appName].depends_on[0];
+      const depName = desktop.app[appName].depends_on[0];
       desktop.log('Loading: App.' + depName);
-      desktop.load.remoteJS([`desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js`], function () {
+      desktop.load.remoteJS([ `desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js` ], function () {
         desktop.log('Ready: App.' + depName);
-        let depApp = desktop.app[appName].depends_on[0];
-        desktop.app[depApp].load(params, function(){
-          desktop.app[appName].load(params, function(){
+        const depApp = desktop.app[appName].depends_on[0];
+        desktop.app[depApp].load(params, function () {
+          desktop.app[appName].load(params, function () {
             desktop.log('Ready: App.' + appName);
-            document.querySelectorAll('*').forEach(function(node) {
+            document.querySelectorAll('*').forEach(function (node) {
               node.style.cursor = 'pointer';
             });
             callback();
           });
-        })
+        });
       });
     } else {
-      desktop.app[appName].load(params, function(){
+      desktop.app[appName].load(params, function () {
         desktop.log('Ready: App.' + appName);
-        document.querySelectorAll('*').forEach(function(node) {
+        document.querySelectorAll('*').forEach(function (node) {
           node.style.cursor = 'pointer';
         });
         callback();
       });
     }
-  })
-}
+  });
+};
 
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
@@ -540,7 +541,7 @@ JQDX.showWindow = function showWindow (appName, params) {
     appWindow = '#window_buddy_message_' + params.context;
   }
 
-  let iconDock = '#icon_dock_' + appName
+  const iconDock = '#icon_dock_' + appName;
 
   // Show the taskbar button.
   if ($(iconDock).is(':hidden')) {
@@ -563,15 +564,15 @@ JQDX.showWindow = function showWindow (appName, params) {
     cb(null);
   }
   */
-}
+};
 
 // attempts to open a window based on name and parameters
 // will attempt to JQDX.loadWindow() if no window is found
-JQDX.openWindow = function openWindow (appName, params, cb) {
+JQDX.openWindow = function openWindow (appName, params, _cb) {
 
   params = params || {};
 
-  let appWindow = '#window_' + appName;
+  const appWindow = '#window_' + appName;
 
   if (desktop.ui.windowTypes.indexOf(appName) !== -1) {
     JQDX.showWindow(appName, params);
@@ -581,19 +582,19 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   //
   // Remark: Can this block be removed? is it no longer being called?
   //
-    // check to see if the `App` is trying to load, but is currently deffered
-    // if so, put a spinning icon on the mouse cursor
-    // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
-    if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
-      // set global cursor to spinning progress icon
-      // TODO: spinning progress notifications should be per `App` and not a global state
-      document.querySelectorAll('*').forEach(function(node) {
-        node.style.cursor = 'progress';
-      });
-      // set a flag to indicate this App should open when defered loading completes
-      desktop.app[appName].openWhenLoaded = true;
-      return;
-    }
+  // check to see if the `App` is trying to load, but is currently deffered
+  // if so, put a spinning icon on the mouse cursor
+  // we set the `openWhenLoaded` flag on the `App` and this will cause the `App` window to open when it's ready
+  if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
+    // set global cursor to spinning progress icon
+    // TODO: spinning progress notifications should be per `App` and not a global state
+    document.querySelectorAll('*').forEach(function (node) {
+      node.style.cursor = 'progress';
+    });
+    // set a flag to indicate this App should open when defered loading completes
+    desktop.app[appName].openWhenLoaded = true;
+    return;
+  }
   //
   //
   //
@@ -601,17 +602,17 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   // this window appName has no associated apps waiting to be loaded,
   // check to see if there is an associated window_* id to show,
   // if not, assume user is trying to load an app which is not loaded yet
-  let windowExists = $(appWindow).length;
+  const windowExists = $(appWindow).length;
   if (windowExists === 0) {
     // TODO: spinning progress notifications should be per `App` and not a global state
-    document.querySelectorAll('*').forEach(function(node) {
+    document.querySelectorAll('*').forEach(function (node) {
       node.style.cursor = 'progress';
     });
     desktop.log('Loading: App.' + appName);
-    JQDX.loadWindow(appName, params, function(){
+    JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
-    })
+    });
   } else {
 
     // TODO: buddy message window should not pop-up in mimized,
@@ -635,11 +636,11 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
 
 JQDX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
-}
+};
 
 JQDX.maxWindow = function maxWindow (el, $el) {
   // Get the link's target.
-  var x = $($(el).attr('href'));
+  let x = $($(el).attr('href'));
   if ($el) {
     x = $el;
   }
@@ -653,20 +654,20 @@ JQDX.maxWindow = function maxWindow (el, $el) {
     JQDX.window_flat();
     x.show().addClass('window_stack');
   }
-}
+};
 
 JQDX.closeWindow = function closeWindow (el) {
-  let closestWindow = $(el).closest('div.window');
+  const closestWindow = $(el).closest('div.window');
   closestWindow.hide();
   $($(el).attr('href')).hide('fast');
 
-  let type = $(closestWindow).data('type');
+  const type = $(closestWindow).data('type');
   let appName = $(closestWindow).data('app');
-  let context = $(closestWindow).data('context');
+  const context = $(closestWindow).data('context');
 
-  let windowType = $(closestWindow).attr('data-window-type');
-  let windowContext = $(closestWindow).attr('data-window-context');
-  let windowId = $(closestWindow).attr('id').replace('window_', '');
+  // const windowType = $(closestWindow).attr('data-window-type');
+  // const windowContext = $(closestWindow).attr('data-window-context');
+  const windowId = $(closestWindow).attr('id').replace('window_', '');
 
   // it's expected app window html has data-app="appName" attribute
   // if there is no data-app attribute, default to window_* name
@@ -686,7 +687,7 @@ JQDX.closeWindow = function closeWindow (el) {
 
   $('#icon_dock_' + windowId).hide('fast');
 
-}
+};
 
 // creates icon for dock bar ( min / max )
 desktop.ui.renderDockIcon = function (app) {
@@ -694,7 +695,7 @@ desktop.ui.renderDockIcon = function (app) {
   if (desktop.isMobile) {
     return false;
   }
-  let html = `
+  const html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
         <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop.app[app].icon || app}_64.png" />
@@ -711,21 +712,21 @@ desktop.ui.renderDockIcon = function (app) {
 // desktop.renderDesktopIcon = function () {}; // creates desktop icon ( double click to start app )
 // desktop.renderWindow = function () {};   // creates new "#window_foo" DOM elements ( single instance, not openWindow() )
 
-desktop.ui.removeDockElement = function (windowType, context) {
-  var dockElement = '#icon_dock_' + windowType;
+desktop.ui.removeDockElement = function (windowType, _context) {
+  const dockElement = '#icon_dock_' + windowType;
   $(dockElement).hide();
   return;
-  if ($(dockElement).is(':hidden')) {
-    $(dockElement).remove().appendTo('#dock');
-    $(dockElement).show('fast');
-  }
-  if (context) {
-    $('.dock_title', dockElement).html(context);
-  }
-}
+  // if ($(dockElement).is(':hidden')) {
+  //   $(dockElement).remove().appendTo('#dock');
+  //   $(dockElement).show('fast');
+  // }
+  // if (context) {
+  //   $('.dock_title', dockElement).html(context);
+  // }
+};
 
 desktop.ui.renderDockElement = function (key, context) {
-  var dockElement = '#icon_dock_' + key;
+  const dockElement = '#icon_dock_' + key;
   if ($(dockElement).is(':hidden')) {
     $(dockElement).remove().appendTo('#dock');
     $(dockElement).show('fast');
@@ -733,7 +734,7 @@ desktop.ui.renderDockElement = function (key, context) {
   if (context) {
     $('.dock_title', dockElement).html(context);
   }
-}
+};
 
 // windowIndex is used to keep track of all created windows
 desktop.ui.windowIndex = {};
@@ -741,7 +742,7 @@ desktop.ui.windowIndex = {};
 // special mapping for pond and buddylist, which allow N windows to open based on context
 // all other apps are currently set to 1 window only
 // TODO: remove `desktop.ui.windowTypes` from API and have more intelligent openWindow()
-desktop.ui.windowTypes = ['buddy_message', 'pond_message'];
+desktop.ui.windowTypes = [ 'buddy_message', 'pond_message' ];
 
 // maps to JQDX.openWindow
 desktop.ui.openWindow = JQDX.openWindow;
@@ -753,7 +754,7 @@ desktop.ui.openWindow = JQDX.openWindow;
 // are updated when the user closes the window in the UI
 // This is to ensure UI is only polling for messages on windows that are actually open
 //
-desktop.ui.closeWindow = function openWindow (windowType, context) {
+desktop.ui.closeWindow = function openWindow (windowType, _context) {
   // if the incoming windowType is not a registered window type, assume it's a non-instanistanble window
   // these are used for almost all applications, since most applications require N windows ( like chat )
   // TODO: can we remove all this code and map desktop.ui.closeWindow -> JQDX.closeWindow
@@ -762,27 +763,27 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
     JQDX.closeWindow($('#window_' + windowType));
     return;
   }
-}
+};
 
 // TODO: move this into separate app with timezones and better clock / date format / calendar
 desktop.clock = function desktopClock () {
 
-  var clock = $('#clock');
+  const clock = $('#clock');
 
   if (!clock.length) {
     return;
   }
 
   // Date variables.
-  var date_obj = new Date();
-  var hour = date_obj.getHours();
-  var minute = date_obj.getMinutes();
-  var day = date_obj.getDate();
-  var year = date_obj.getFullYear();
-  var suffix = 'AM';
+  const date_obj = new Date();
+  let hour = date_obj.getHours();
+  let minute = date_obj.getMinutes();
+  const day = date_obj.getDate();
+  const year = date_obj.getFullYear();
+  let suffix = 'AM';
 
   // Array for weekday.
-  var weekday = [
+  let weekday = [
     'Sunday',
     'Monday',
     'Tuesday',
@@ -793,7 +794,7 @@ desktop.clock = function desktopClock () {
   ];
 
   // Array for month.
-  var month = [
+  let month = [
     'January',
     'February',
     'March',
@@ -832,8 +833,8 @@ desktop.clock = function desktopClock () {
   }
 
   // Build two HTML strings.
-  var clock_time = weekday + ' ' + hour + ':' + minute + ' ' + suffix;
-  var clock_date = month + ' ' + day + ', ' + year;
+  const clock_time = weekday + ' ' + hour + ':' + minute + ' ' + suffix;
+  const clock_date = month + ' ' + day + ', ' + year;
 
   // Shove in the HTML.
   clock.html(clock_time).attr('title', clock_date);
@@ -841,7 +842,7 @@ desktop.clock = function desktopClock () {
   // Update every 60 seconds.
   setTimeout(desktop.clock, 60000);
   
-}
+};
 
 desktop.ui.buildContextMenu = function buildContextMenu (config) {
   if (!config) {
@@ -878,12 +879,12 @@ desktop.ui.buildContextMenu = function buildContextMenu (config) {
   }
 
   return renderedItemsLength;
-}
+};
 
 desktop.ui.clearContextMenu = function clearContextMenu (listId) {
   desktop.ui.contextMenu = {};
   $(listId).children().remove();
-}
+};
 
 desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListener (contextListId) {
   const contextListener = (event) => {
@@ -893,7 +894,7 @@ desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListene
       desktop.ui.clearContextMenu(contextListId);
       document.removeEventListener('click', contextListener);
     }
-  }
+  };
 
   return contextListener;
-}
+};

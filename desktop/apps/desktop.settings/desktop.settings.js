@@ -1,6 +1,6 @@
 desktop.app.settings = {}; // since localStorage is loaded first and already populated desktop.settings scope
 // desktop.settings.icon = "folder";
-desktop.app.settings.label = "Settings";
+desktop.app.settings.label = 'Settings';
 
 desktop.app.settings.load = function loadsettings (params, next) {
 
@@ -63,7 +63,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     // END SET DEFAULTS FOR ALL DESKTOP SETTINGS
     //
 
-    desktop.on('desktop.settings', 'update-settings-form', function(){
+    desktop.on('desktop.settings', 'update-settings-form', function () {
       desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
     });
 
@@ -74,10 +74,10 @@ desktop.app.settings.load = function loadsettings (params, next) {
     function saveSettings () {
       // serialize form and apply each setting to localstorage
       // this will also set the desktop.settings scope
-      let updated = {};
-      for (let key in desktop.settings) {
-        let val = desktop.settings[key];
-        let formVal = $('#' + desktop.app.localstorage.prefix + key).val();
+      const updated = {};
+      for (const key in desktop.settings) {
+        // const val = desktop.settings[key];
+        const formVal = $('#' + desktop.app.localstorage.prefix + key).val();
         try {
           updated[key] = JSON.parse(formVal);
         } catch (err) {
@@ -88,19 +88,19 @@ desktop.app.settings.load = function loadsettings (params, next) {
     }
 
     // cancel the form submit
-    $('.updateDesktopSettingsForm').on('submit', function(){
+    $('.updateDesktopSettingsForm').on('submit', function () {
       saveSettings();
       return false;
-    })
+    });
 
-    $('.editDesktopSettingsLink').on('click', function(){
+    $('.editDesktopSettingsLink').on('click', function () {
       $(this).closest('.menu').hide();
       desktop.ui.openWindow('settings');
       return false;
     });
 
-    $('.restoreDesktopSettings').on('click', function(){
-      let yes = confirm('Are you certain?\n\nThis will restore all Desktop Settings to their original values and log you out.');
+    $('.restoreDesktopSettings').on('click', function () {
+      const yes = confirm('Are you certain?\n\nThis will restore all Desktop Settings to their original values and log you out.');
       if (!yes) {
         return;
       }
@@ -109,14 +109,14 @@ desktop.app.settings.load = function loadsettings (params, next) {
       document.location = 'index.html';
     });
 
-    $('.enableWebNotifications').on('change', function(){
-      let notificationsEnabled = $(this).prop("checked");
+    $('.enableWebNotifications').on('change', function () {
+      const notificationsEnabled = $(this).prop('checked');
       if (notificationsEnabled) {
-        Notification.requestPermission().then(function(permission) {
+        Notification.requestPermission().then(function (permission) {
           desktop.set('notifications_web_enabled', true);
-          desktop.app.notifications.notifyBuddy("Buddy Pond Notifications Enabled!");
+          desktop.app.notifications.notifyBuddy('Buddy Pond Notifications Enabled!');
           desktop.log('Browser has granted Notification permissions');
-          console.log(permission)
+          console.log(permission);
         });
       } else {
         // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
@@ -128,8 +128,8 @@ desktop.app.settings.load = function loadsettings (params, next) {
       $('.enableWebNotifications').prop('checked', true);
     }
 
-    $('.enableAudioNotifications').on('change', function(){
-      let audioNotificationsEnabled = $(this).prop("checked");
+    $('.enableAudioNotifications').on('change', function () {
+      const audioNotificationsEnabled = $(this).prop('checked');
       if (audioNotificationsEnabled) {
         desktop.set('notifications_audio_enabled', true);
         desktop.log('Audio Notifications have been enabled.');
@@ -154,8 +154,8 @@ desktop.app.settings.load = function loadsettings (params, next) {
       $('.audioTTSEnabled').prop('checked', true);
     }
 
-    $('.audioEnabled').on('change', function(){
-      let audioMuted = $(this).prop("checked");
+    $('.audioEnabled').on('change', function () {
+      const audioMuted = $(this).prop('checked');
       if (audioMuted) {
         desktop.set('audio_enabled', true);
         desktop.log('Desktop Audio has been muted.');
@@ -165,8 +165,8 @@ desktop.app.settings.load = function loadsettings (params, next) {
       }
     });
 
-    $('.audioTTSEnabled').on('change', function(){
-      let audioMuted = $(this).prop("checked");
+    $('.audioTTSEnabled').on('change', function () {
+      const audioMuted = $(this).prop('checked');
       if (audioMuted) {
         desktop.set('audio_tts_enabled', true);
         desktop.say('Text to speech enabled');
@@ -176,15 +176,15 @@ desktop.app.settings.load = function loadsettings (params, next) {
     });
 
     $('#settingsTabs').tabs({
-      activate: function(event ,ui){
+      activate: function (event ,ui) {
         console.log(ui.newTab.index());
-          if (ui.newTab.index() === 0) {
-            /*
+        if (ui.newTab.index() === 0) {
+          /*
             setTimeout(function(){
               $('.simpleColorDisplay').trigger('click');
             }, 1); // move to next tick, could also be zero ( unsure if browsers complain )
             */
-          }
+        }
       }
     });
 
@@ -197,10 +197,10 @@ desktop.app.settings.load = function loadsettings (params, next) {
 //.          ( except settings.load, settings.openWindow, etc)
 desktop.app.settings.renderForm = function renderDesktopSettingsForm (el) {
   $('.desktopSettingsTable tbody').html('');
-  let keys = Object.keys(desktop.settings).sort();
-  keys.forEach(function(key){
-    let val = desktop.settings[key];
-    let actualKey = desktop.app.localstorage.prefix + key;
+  const keys = Object.keys(desktop.settings).sort();
+  keys.forEach(function (key) {
+    const val = desktop.settings[key];
+    const actualKey = desktop.app.localstorage.prefix + key;
     
     if (typeof val === 'object') {
       //val = JSON.stringify(val, true, 2);
@@ -212,19 +212,19 @@ desktop.app.settings.renderForm = function renderDesktopSettingsForm (el) {
           </tr>
       `);
     }
-  })
+  });
 
-  $('.desktopSettingsTable').each(function() {
+  $('.desktopSettingsTable').each(function () {
     // Add zebra striping, ala Mac OS X.
     $(this).find('tbody tr:odd').addClass('zebra');
   });
 
-}
+};
 
 desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
-  let elements = [];
-  $('a.icon').each(function(i, item){
-    let el = {};
+  const elements = [];
+  $('a.icon').each(function (i, item) {
+    const el = {};
     // TODO: unique IDs might be required for syncing window position
     // el.id = $(this).attr('id');
     el.href = $(this).attr('href');
@@ -237,10 +237,10 @@ desktop.ui.getDesktopIconPositions = function getDesktopIconPositions () {
 };
 
 desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
-  let elements = desktop.settings.desktop_icon_positions || [];
+  const elements = desktop.settings.desktop_icon_positions || [];
   if (elements && elements.forEach) {
-    elements.forEach(function(el){
-      let _el = $(`a.icon[href=${el.href}]`)
+    elements.forEach(function (el) {
+      const _el = $(`a.icon[href=${el.href}]`);
       _el.css('left', el.left);
       _el.css('right', el.right);
       _el.css('top', el.top);

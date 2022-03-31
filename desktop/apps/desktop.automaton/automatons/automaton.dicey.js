@@ -9,16 +9,16 @@ desktop.app.automaton.automatons.dicey.roll = function diceyRoll (max) {
   if (typeof max === 'undefined') {
     max = 20;
   }
-  let roll = Math.floor(Math.random() * max);
+  const roll = Math.floor(Math.random() * max);
   return roll;
 };
 
 // dicey will auto-accept friend requests
 if (buddypond.me === 'Dicey') {
-  desktop.on('Buddy::IncomingBuddyRequest', 'automaton-dicey-autoaccepts-buddyrequest', function(buddyrequest){
+  desktop.on('Buddy::IncomingBuddyRequest', 'automaton-dicey-autoaccepts-buddyrequest', function (buddyrequest) {
     // will spam a little bit, we can fix this later but adding lock / concurrency to emitter
-    buddypond.approveBuddy(buddyrequest.from, function(err, res){
-      console.log('buddypond.approveBuddy back', err, res)
+    buddypond.approveBuddy(buddyrequest.from, function (err, res) {
+      console.log('buddypond.approveBuddy back', err, res);
     });
   });
 }

@@ -1,5 +1,5 @@
 desktop.app.login = {};
-desktop.app.login.label = "Login";
+desktop.app.login.label = 'Login';
 
 desktop.app.login.load = function loadDesktopLogin (params, next) {
 
@@ -12,32 +12,32 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     });
 
     // if user clicks login button, attempt to auth with server
-    $('.loginButton').on('click', function(){
+    $('.loginButton').on('click', function () {
       desktop.app.login.auth($('#buddyname').val(), $('#buddypassword').val());
     });
 
     // everyone shares the anonymous account!
-    $('.loginAnonButton').on('click', function(){
+    $('.loginAnonButton').on('click', function () {
       desktop.app.login.auth('anonymous', 'password');
     });
 
     // if user clicks on top left menu, focus on login form
-    $('.loginLink').on('click', function(){
+    $('.loginLink').on('click', function () {
       desktop.ui.openWindow('login');
       $('#buddyname').focus();
     });
 
     // if user clicks logout link on top left menu, logout the user
-    $('.logoutLink').on('click', function(){
-      desktop.app.login.logoutDesktop()
+    $('.logoutLink').on('click', function () {
+      desktop.app.login.logoutDesktop();
     });
 
     desktop.ui.renderDockElement('login');
 
-    let localToken = localStorage.getItem("qtokenid");
-    let me = localStorage.getItem("me");
+    const localToken = localStorage.getItem('qtokenid');
+    const me = localStorage.getItem('me');
     if (localToken) {
-      buddypond.verifyToken(me, localToken, function(err, data){
+      buddypond.verifyToken(me, localToken, function (err, data) {
         if (err) {
           alert('server is down. please try again in a moment.');
         }
@@ -68,15 +68,15 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
   });
 
-}
+};
 
 desktop.app.login.auth = function authDesktop (buddyname, password) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
-  buddypond.authBuddy(buddyname, password, function(err, data){
+  buddypond.authBuddy(buddyname, password, function (err, data) {
 
     if (err) {
-      console.log('err', err, data)
+      console.log('err', err, data);
       alert('server is down. please try again in a moment.');
       return;
     }
@@ -92,8 +92,8 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
     if (data.success) {
       desktop.log('Authentication successful');
       // TODO: desktop.set()
-      localStorage.setItem("qtokenid", data.qtokenid);
-      localStorage.setItem("me", buddypond.me);
+      localStorage.setItem('qtokenid', data.qtokenid);
+      localStorage.setItem('me', buddypond.me);
       buddypond.qtokenid = data.qtokenid;
       desktop.app.login.success();
     } else {
@@ -101,16 +101,16 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
         alert(data.message);
       }
       $('#buddypassword').addClass('error');
-      $('.buddyLoginTable .invalidPassword').show()
+      $('.buddyLoginTable .invalidPassword').show();
     }
-    console.log(err, data)
+    console.log(err, data);
   });
-}
+};
 
 desktop.app.login.success = function desktopLoginSuccess () {
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
-  desktop.play('WELCOME.wav', Infinity)
+  desktop.play('WELCOME.wav', Infinity);
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
@@ -123,13 +123,13 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.desktopDisconnected').hide();
   desktop.ui.removeDockElement('login');
   try {
-    let dateString = DateFormat.format.date(new Date(), "ddd HH:mm:ss");
-    $('.connection_ctime').html(dateString)
+    const dateString = DateFormat.format.date(new Date(), 'ddd HH:mm:ss');
+    $('.connection_ctime').html(dateString);
   } catch (err) {
     console.log('Warning: DateFormat was not defined, this should not happend', err);
   }
-  $('.connection_packets_sent').html("1");
-  $('.connection_packets_recieved').html("1");
+  $('.connection_packets_sent').html('1');
+  $('.connection_packets_recieved').html('1');
   $('.editProfileLink').show();
   
   $('.editProfileLink').html('Edit Profile');
@@ -137,19 +137,19 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.loggedIn').show();
 
   // TODO: move this is a separate function
-  setTimeout(function(){
+  setTimeout(function () {
     if (!buddypond.email || buddypond.email.length < 3) {
       desktop.emit('merlin-speaks', 'Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
     } else {
-       desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
+      desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
     }
-    setTimeout(function(){
+    setTimeout(function () {
       desktop.emit('merlin-hides');
-    }, 14444)
-  }, 2000)
+    }, 14444);
+  }, 2000);
 
   // start packets update interval timer
-  setInterval(function(){
+  setInterval(function () {
     $('.connection_packets_sent').html(buddypond.packetsSent);
     $('.connection_packets_recieved').html(buddypond.packetsReceived);
     $('.connection_average_response_time').html(buddypond.averageResponseTime());
@@ -157,7 +157,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
   }, 1000);
 
   // TODO: route default view based on query string
-  let params = desktop.utils.parseQueryString(document.location.search);
+  const params = desktop.utils.parseQueryString(document.location.search);
 
   if (params.pond) {
     desktop.ui.openWindow('pond', {
@@ -175,10 +175,10 @@ desktop.app.login.success = function desktopLoginSuccess () {
 
   //desktop.ui.positionWindow('#' + windowKey, 'left')
   // TODO: remove this line. required due to initial blink on lily pond
-  setTimeout(function(){
+  setTimeout(function () {
     $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
   }, 3000);
-}
+};
 
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
@@ -190,12 +190,12 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('top', 111);
   $('#login_desktop_icon').show();
   $('#buddyname').focus();
-}
+};
 
 desktop.app.login.logoutDesktop = function logoutDesktop () {
-  localStorage.removeItem('qtokenid')
-  localStorage.removeItem('me')
-  desktop.play('GOODBYE.wav', false, function(){
-    document.location = "index.html";
+  localStorage.removeItem('qtokenid');
+  localStorage.removeItem('me');
+  desktop.play('GOODBYE.wav', false, function () {
+    document.location = 'index.html';
   });
-}
+};

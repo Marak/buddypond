@@ -1,6 +1,6 @@
 desktop.app.paint = {};
-desktop.app.paint.label = "Paint";
-desktop.app.paint.icon = "folder";
+desktop.app.paint.label = 'Paint';
+desktop.app.paint.icon = 'folder';
 
 desktop.app.paint.load = function loadpaintGames (params, next) {
   desktop.load.remoteAssets([
@@ -11,7 +11,7 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
     $('#window_paint').css('left', 50);
     $('#window_paint').css('top', 50);
 
-    $('.sendPaint').on('click', function(){
+    $('.sendPaint').on('click', function () {
       if ($(this).hasClass('updateGif')) {
         desktop.app.paint.send({
           action: 'insert'
@@ -23,8 +23,8 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
       }
     });
 
-    $('.sendGifStudio').on('click', function(){
-      let action = $(this).data('action');
+    $('.sendGifStudio').on('click', function () {
+      const action = $(this).data('action');
       desktop.app.paint.send({ action: action });
     });
 
@@ -39,10 +39,10 @@ desktop.app.paint.send = function sendPaint (params) {
     action: 'insert'
   };
 
-  let keys = Object.keys(localStorage);
+  const keys = Object.keys(localStorage);
   let firstImg = null;
   let firstKey = null;
-  keys.forEach(function(k){
+  keys.forEach(function (k) {
     if (k.search('image#') !== -1) {
       firstImg = localStorage.getItem(k);
       firstKey = k;
@@ -50,17 +50,17 @@ desktop.app.paint.send = function sendPaint (params) {
   });
 
   if (!firstKey) {
-    console.log("FAILED TO FIND IMAGE IN LOCALSTORAGE. SOMEONE PLEASE FIX JSPAINT INTEGRATION")
+    console.log('FAILED TO FIND IMAGE IN LOCALSTORAGE. SOMEONE PLEASE FIX JSPAINT INTEGRATION');
     $('.touchPaint').show();
     return;
   } else {
     $('.touchPaint').hide();
   }
 
-  let output = desktop.app.paint.output;
-  let context = desktop.app.paint.context;
+  const output = desktop.app.paint.output;
+  const context = desktop.app.paint.context;
 
-  setTimeout(function(){
+  setTimeout(function () {
 
     // send the paint to `gifstudio` as a frame ( either existing or new )
     if (output === 'gifstudio') {
@@ -78,28 +78,28 @@ desktop.app.paint.send = function sendPaint (params) {
     // send the paint to pond or buddy chat windows as a Snap
     if (output === 'pond' || output === 'buddy') {
       // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
-      buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function(err, data){
-        keys.forEach(function(k){
+      buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function (err, data) {
+        keys.forEach(function (k) {
           if (k.search('image#') !== -1) {
             localStorage.removeItem(k);
-            console.log('clearing key', firstKey)
+            console.log('clearing key', firstKey);
           }
         });
       });
     }
-  }, 333)
+  }, 333);
   // TODO: only close window on replace updates? or not at all?
   // JQDX.closeWindow('#window_paint');
 
-}
+};
 
 desktop.app.paint.openWindow = function openWindow (params) {
   // clear out localstorage images on window open
   // this will clear out all images on browser refresh
   // Remark: It's best to do this for now since we dont want to cache to grow
   //         We can later add photo manager for localstorage images
-  let keys = Object.keys(localStorage);
-  keys.forEach(function(k){
+  const keys = Object.keys(localStorage);
+  keys.forEach(function (k) {
     if (k.search('image#') !== -1) {
       localStorage.removeItem(k);
     }
@@ -120,7 +120,7 @@ desktop.app.paint.openWindow = function openWindow (params) {
   $('.paintOutputTarget').html(desktop.app.paint.output + '/' + desktop.app.paint.context);
 
   if (buddypond.me || (desktop.app.paint.output && desktop.app.paint.output !== 'localhost')) {
-    $('.sendPaintHolder .sendPaint').html("SEND PAINT");
+    $('.sendPaintHolder .sendPaint').html('SEND PAINT');
     $('.sendPaintHolder').show();
   } else {
     $('.sendPaintHolder').hide();
@@ -153,18 +153,18 @@ desktop.app.paint.openWindow = function openWindow (params) {
     $('.sendGifStudio').hide();
   }
 
-  var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-  var eventer = window[eventMethod];
-  var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+  const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+  const eventer = window[eventMethod];
+  const messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
 
   // Remark: Frame message passing for paint currently only being used to support top left menu File->Exit command
   // Listen to message from child window
-  eventer(messageEvent,function(e) {
-      var key = e.message ? "message" : "data";
-      var data = e[key];
-      if (data === 'app_paint_needs_close') {
-        JQDX.closeWindow('#window_paint');
-      }
+  eventer(messageEvent,function (e) {
+    const key = e.message ? 'message' : 'data';
+    const data = e[key];
+    if (data === 'app_paint_needs_close') {
+      JQDX.closeWindow('#window_paint');
+    }
   },false);
 
   if (params.src) {
