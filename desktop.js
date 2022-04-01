@@ -263,6 +263,10 @@ desktop.refresh = function refreshDesktop () {
   if (desktop.app.buddylist) {
     desktop.app.buddylist.updateBuddyList();
     desktop.messages.process(desktop.apps.loaded);
+  } else {
+    setTimeout(function(){
+      refreshDesktop();
+    }, 10)
   }
 };
 
@@ -283,8 +287,16 @@ desktop.messages.process = function processMessages (apps) {
     //
     // calculate list of subscribed buddies and subscribed ponds
     //
-    let subscribedBuddies = desktop.app.buddylist.subscribedBuddies;
-    let subscribedPonds = desktop.app.pond.subscribedPonds;
+    let subscribedBuddies = [];
+    let subscribedPonds = [];
+
+    if (desktop.app.buddylist) {
+      subscribedBuddies= desktop.app.buddylist.subscribedBuddies;
+    }
+
+    if (desktop.app.pond) {
+      subscribedPonds = desktop.app.pond.subscribedPonds;
+    }
 
     // TODO: Configure desktop.messages.process() to still check for agent and systems messages here
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {

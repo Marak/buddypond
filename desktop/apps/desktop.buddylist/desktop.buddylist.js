@@ -241,7 +241,7 @@ desktop.app.buddylist.renderChatWindow = function (context) {
   _clone = _clone.replace('buddy_message_text_0', 'buddy_message_text_' + context);
   _clone = _clone.replace('emoji_picker_0', 'buddy_emoji_picker');
 
-  let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message"  data-app="buddylist" data-type="biddu_message" data-context="' + context + '">' + _clone + '</div>';
+  let buddyChatStr = '<div id="' + window_id + '" class="abs window buddy_message"  data-app="buddylist" data-type="buddy_message" data-context="' + context + '">' + _clone + '</div>';
   $('#desktop').append(buddyChatStr);
   let dockStr = dockItemClone.replace('window_buddy_message_0', 'window_buddy_message_' + context);
   dockStr = '<li id="icon_dock_buddy_message_' + context +'">' + dockStr + '</li>';

@@ -20,12 +20,14 @@ desktop.app.videochat.load = function loadVideochat () {
 
     desktop.app.videochat.loaded = true;
 
-    $('.startVideoCall').on('click', function () {
+    let d = $(document);
+    
+    d.on('mousedown', '.startVideoCall', function () {
       if (buddypond.me === 'anonymous') {
         alert('You must create an account. anonymous cannot make video calls');
         return;
       }
-      let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
+      let buddyName = $(this).closest('.buddy_message').data('context');
       // TODO: do not attempt to call buddies who are currently offline
       if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
         desktop.app.videochat.startCall(true, buddyName);
@@ -34,8 +36,8 @@ desktop.app.videochat.load = function loadVideochat () {
       }
     });
 
-    $('.endVideoCall').on('click', function () {
-      let buddyName = $(this).closest('.buddy_message').attr('data-window-context');
+    d.on('mousedown', '.endVideoCall', function () {
+      let buddyName = $(this).closest('.buddy_message').data('context');
       desktop.app.videochat.endCall(buddyName);
     });
 

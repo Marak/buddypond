@@ -799,8 +799,6 @@ JQDX.closeWindow = function closeWindow (el) {
   let appName = $(closestWindow).data('app');
   let context = $(closestWindow).data('context');
 
-  let windowType = $(closestWindow).attr('data-window-type');
-  let windowContext = $(closestWindow).attr('data-window-context');
   let windowId = $(closestWindow).attr('id').replace('window_', '');
 
   // it's expected app window html has data-app="appName" attribute
