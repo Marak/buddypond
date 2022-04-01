@@ -109,7 +109,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       ev.stopPropagation();
     });
 
-    d.on('mousedown', '.icon_gifstudio_64', function (ev) {
+    d.on('mousedown', '.insertGif', function (ev) {
       let form = $(ev.target).parent().parent();
       let context, output;
       output = 'pond';

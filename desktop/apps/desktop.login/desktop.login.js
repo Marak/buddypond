@@ -136,6 +136,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.editProfileLink').removeClass('editProfileLinkDisabled');
   $('.loggedIn').show();
 
+
   // TODO: move this is a separate function
   setTimeout(function () {
     if (!buddypond.email || buddypond.email.length < 3) {
@@ -172,6 +173,8 @@ desktop.app.login.success = function desktopLoginSuccess () {
     });
   }
 
+  // manually call resize event, special case for logged in session with refresh
+  desktop.ui.windowResizeEventHandler();
 
   //desktop.ui.positionWindow('#' + windowKey, 'left')
   // TODO: remove this line. required due to initial blink on lily pond
@@ -184,12 +187,16 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').show();
+  JQDX.window_flat();
+  $('#window_login').addClass('window_stack');
   $('#window_login').css('width', '66vw');
   $('#window_login').css('height', '55vh');
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
   $('#login_desktop_icon').show();
   $('#buddyname').focus();
+  // manually call resize event, make login full screen
+  desktop.ui.windowResizeEventHandler();
 };
 
 desktop.app.login.logoutDesktop = function logoutDesktop () {

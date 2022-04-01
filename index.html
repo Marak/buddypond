@@ -319,13 +319,12 @@ window.top.location = 'ie.html';
       .use('mirror', { defer: true })
       .use('videochat', { defer: true })
       .use('automaton', { defer: true })
-
       .ready(function(err, apps){
         // desktop.log("Loaded", desktop.apps.loaded);
         try {
-          window.onresize();
+          desktop.ui.windowResizeEventHandler();
         } catch (err) {
-          
+          // alert(err.message)
         }
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
         // Desktop is ready, start refreshing it's state immediately

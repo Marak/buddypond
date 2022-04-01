@@ -13,7 +13,33 @@ see: https://github.com/nathansmith/jQuery-Desktop
 */
 
 //
-// Kick things off.
+// First thing desktop must do is calculate current viewport height and width to determine
+// which desktop.ui.view value will be used to initially render ( Mobile / Normal / MegaDesk )
+// These view modes are used to conditionally render specific UI and UX experiences.
+// The majority of the layout uses `vh` and `vw` values and doesn't depend on desktop.ui.view
+//
+let width = Math.max(
+  document.documentElement["clientWidth"],
+  document.body["scrollWidth"],
+  document.documentElement["scrollWidth"],
+  document.body["offsetWidth"],
+  document.documentElement["offsetWidth"]
+);
+
+if (width <= 980) {
+  desktop.ui.view = 'Mobile';
+}
+
+if (width > 980 && width < 2600) {
+  desktop.ui.view = 'Normal';
+}
+
+if (width >= 2600) {
+  desktop.ui.view = 'MegaDesk';
+}
+
+//
+// Original JQDX document.ready handler ( this can be removed soon )
 //
 jQuery(document).ready(function() {
   JQDX.bindDocumentEventHandlers();
@@ -46,14 +72,35 @@ JQDX.frame_breaker = function frame_breaker () {
   }
 }
 
+desktop.ui.getActiveWindow = function getActiveWindow () {
+  let el = $('.window_stack');
+  return el;
+}
+
 // TODO: App.resizeWindow() ??
 // TODO: desktop.ui.onresize = function () { // array of event handlers, etc use jquery ?}
 
-desktop.ui.view = 'Normal';
 
 desktop.ui.goMobile = function () {
-  $('#bar_bottom').css('height', 120)
-  $('#bar_bottom').css('z-index', 420)
+  $('#bar_bottom').css('height', '23%');
+  $('#bar_bottom').css('z-index', 420);
+
+  $('.chatControl').css('height', 64);
+  $('.chatControl').css('width', 64);
+  $('.chatControl').css('font-size', 64);
+
+  $('.pond_message .window_content').css('bottom', 90);
+  
+  $('#dock li img').css('height', 48);
+  $('#dock li img').css('width', 48);
+  
+  $('#show_desktop img').css('width', 64);
+  $('#show_desktop img').css('height', 64);
+
+  // find active window stack, maximize
+  let activeWindow = desktop.ui.getActiveWindow();
+  JQDX.window_maximize(activeWindow);
+
   // TODO: bottom bar with four large icons ( BuddyList / Ponds / Entertainment / Settings )
   // TODO: circular "home" button which opens navigation overlay with all Apps on a 4/4 grid with horizontal scroll
   // show home button and bottom nav bar
@@ -61,18 +108,24 @@ desktop.ui.goMobile = function () {
   // minimize all open windows
 }
 
-window.onresize = function () {
+desktop.ui.exitMobile = function () {
+  return;
+  // TODO: use css class names and addClass() removeClass()
+}
+
+desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
 
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
 
   let width = $(document).width();
   let height = $(document).height();
-  if (width <= 699) {
+
+  if (width <= 980) {
     desktop.ui.view = 'Mobile';
   }
 
-  if (width > 699 && width < 2600) {
+  if (width > 980 && width < 2600) {
     desktop.ui.view = 'Normal';
   }
 
@@ -80,10 +133,14 @@ window.onresize = function () {
     desktop.ui.view = 'MegaDesk';
   }
 
+  /*
   if (desktop.ui.view === 'Mobile') {
     // TODO: re-arrange windows to mobile view
-    // desktop.ui.goMobile();
+    desktop.ui.goMobile();
+  } else {
+    desktop.ui.exitMobile();
   }
+  */
 
   if (desktop.ui.view === 'Normal') {
     $('.window_top').css('height', 30);
@@ -91,6 +148,21 @@ window.onresize = function () {
     $('.window_content').css('top', 33);
     $('.window_top img').css('width', 16);
     $('.window_top img').css('height', 16);
+
+    // set icons back to regular size
+    $('.icon img').css('height', 32)
+    $('.icon img').css('width', 32)
+    $('.icon').css('font-size', 12);
+
+    /*
+    $('.icon').each(function(e, i){
+      let el = $(this);
+      el.css('left', Number(el.css('left').replace('px', '')) * -1.33)
+      el.css('top', Number(el.css('top').replace('px', '')) * -1.33)
+    })
+    */
+
+
   }
 
   if (desktop.ui.view === 'MegaDesk') {
@@ -105,8 +177,70 @@ window.onresize = function () {
     //$('.window_min, .window_resize, .window_close').css('width', 56);
     //$('.window_min, .window_resize, .window_close').css('height', 30);
 
+    // TODO: enlarge icons
+    // Remark: This will require icon layout algo in order to place icons of dynamic size pixel precise on desktop with drag
+    /*
+      $('.icon img').css('height', 64)
+      $('.icon img').css('width', 64)
+      $('.icon').css('font-size', 28);
+    */
+      /*
+      $('.icon').each(function(e, i){
+        let el = $(this);
+        el.css('left', Number(el.css('left').replace('px', '')) * 1.33)
+        el.css('top', Number(el.css('top').replace('px', '')) * 1.33)
+      })
+      */
+
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
+};
+
+window.onresize = desktop.ui.windowResizeEventHandler;
+
+JQDX.window_maximize = function window_maximize (win, opts) {
+  if (desktop.ui.view === 'Mobile') {
+    win.attr({
+      // Save window position.
+      'data-t': win.css('top'),
+      'data-l': win.css('left'),
+      'data-r': win.css('right'),
+      'data-b': win.css('bottom'),
+      'data-w': win.css('width'),
+      'data-h': win.css('height')
+    }).addClass('window_full_mobile').css({
+      // Maximize dimensions.
+      'top': '0',
+      'left': '0',
+      'right': '0',
+      'bottom': '0',
+      'width': '100%',
+      'height': '77%'
+    });
+  } else {
+    win.attr({
+      // Save window position.
+      'data-t': win.css('top'),
+      'data-l': win.css('left'),
+      'data-r': win.css('right'),
+      'data-b': win.css('bottom'),
+      'data-w': win.css('width'),
+      'data-h': win.css('height')
+    }).addClass('window_full').css({
+      // Maximize dimensions.
+      'top': '0',
+      'left': '0',
+      'right': '0',
+      'bottom': '0',
+      'width': '100%',
+      'height': '100%'
+    });
+  }
+
+  // Bring window to front.
+  JQDX.window_flat();
+  win.addClass('window_stack');
+
 }
 
 //
@@ -129,23 +263,7 @@ JQDX.window_resize = function window_resize (el) {
     });
   }
   else {
-    win.attr({
-      // Save window position.
-      'data-t': win.css('top'),
-      'data-l': win.css('left'),
-      'data-r': win.css('right'),
-      'data-b': win.css('bottom'),
-      'data-w': win.css('width'),
-      'data-h': win.css('height')
-    }).addClass('window_full').css({
-      // Maximize dimensions.
-      'top': '0',
-      'left': '0',
-      'right': '0',
-      'bottom': '0',
-      'width': '100%',
-      'height': '100%'
-    });
+    JQDX.window_maximize(win);
   }
 
   // Bring window to front.
@@ -318,14 +436,15 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   // App icons are double click on to open on desktop
   let eventName = 'dblclick';
-  if (isMobile) {
+
+  if (desktop.ui.view === 'Mobile') {
     // Single click to open Apps icons on mobile
     eventName = 'click';
   }
   d.on(eventName, 'a.icon', function() {
     var iconDock = $(this).attr('href');
     var appName = iconDock.replace('#icon_dock_', '');
-    JQDX.openWindow(appName)
+    JQDX.openWindow(appName);
   });
 
   d.on('mousedown', '.startNewGif', function(){
@@ -540,11 +659,11 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
-
+  console.log('JQDX.showWindow', appName)
   let appWindow = '#window_' + appName;
 
   if (appName === 'pond' && params.context) {
-    appWindow += '_message_' + params.context;
+    appWindow += 'pond_message_' + params.context;
   }
 
   // TODO: rename "buddylist" app to "buddy"
@@ -562,6 +681,10 @@ JQDX.showWindow = function showWindow (appName, params) {
 
   JQDX.window_flat();
   $(appWindow).addClass('window_stack').show();
+
+  if (desktop.ui.view === 'Mobile') {
+    JQDX.window_maximize($(appWindow));
+  }
 
   // check to see if desktop[appName].openWindow method is available,
   // if so, call this method

@@ -774,7 +774,7 @@ desktop.app.buddylist.openWindow = function (params) {
 
   params = params || {};
   if (params.context) {
-    // for pond windows, if there is a context we will want to create a new window instance
+    // for buddy chat windows, if there is a context we will want to create a new window instance
 
     let windowId = '#window_buddy_message_' + params.context;
 
@@ -811,13 +811,17 @@ desktop.app.buddylist.openWindow = function (params) {
         $('.insertSnap', windowId).show();
       }
 
-      $(windowId).css('width', '44vw');
-      $(windowId).css('height', '66vh');
-      $(windowId).css('top', '9vh');
-      $(windowId).css('left', '30vw');
-      // flatten other windows, show that window as active top stack
-      JQDX.window_flat();
-      $(windowId).addClass('window_stack').show();
+      if (desktop.ui.view === 'Mobile') {
+        JQDX.window_maximize(windowId);
+      } else {
+        $(windowId).css('width', '44vw');
+        $(windowId).css('height', '66vh');
+        $(windowId).css('top', '9vh');
+        $(windowId).css('left', '30vw');
+        // flatten other windows, show that window as active top stack
+        JQDX.window_flat();
+        $(windowId).addClass('window_stack').show();
+      }
     }
 
     return;
