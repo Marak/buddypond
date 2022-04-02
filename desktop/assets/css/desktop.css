@@ -1189,39 +1189,42 @@ iframe {
   cursor: default !important;
 }
 
-  .context-menu { 
-    position: absolute;
-  } 
+.help-text {
+  margin-left: 25px;
+}
+.context-menu {
+  position: absolute;
+}
 
-  .context-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 10px 20px rgba(64, 64, 64, 0.596);
-    padding: 10px 0;
-  }
-  
-  .context-menu-item {
-    font: inherit;
-    border: 0;
-    padding: 10px 30px 10px 15px;
-    width: auto;
-    display: flex;
-    align-items: center;
-    position: relative;
-    text-decoration: unset;
-    color: #000;
-    font-weight: 500;
-    transition: 0.5s linear;
-    -webkit-transition: 0.5s linear;
-    -moz-transition: 0.5s linear;
-    -ms-transition: 0.5s linear;
-    -o-transition: 0.5s linear;
-  }
-  
-  .context-menu-item:hover {
-    background:#f1f3f7;
-    color: #4b00ff;
+.context-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(64, 64, 64, 0.596);
+  padding: 10px 0;
+}
+
+.context-menu-item {
+  font: inherit;
+  border: 0;
+  padding: 10px 30px 10px 15px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  text-decoration: unset;
+  color: #000;
+  font-weight: 500;
+  transition: 0.5s linear;
+  -webkit-transition: 0.5s linear;
+  -moz-transition: 0.5s linear;
+  -ms-transition: 0.5s linear;
+  -o-transition: 0.5s linear;
+}
+
+.context-menu-item:hover {
+  background: #f1f3f7;
+  color: #4b00ff;
   }
