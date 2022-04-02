@@ -1191,6 +1191,11 @@ iframe {
 
 .help-text {
   margin-left: 25px;
+  white-space: pre;
+  display: flex;
+}
+.command {
+  width: 15%;
 }
 .context-menu {
   position: absolute;

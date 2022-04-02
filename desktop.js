@@ -487,13 +487,13 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
         <p>
           As of right now, the following chat text commands are available:
         </p>
-        <p class="help-text"><i>/meme</i>                - sends random meme</p>
-        <p class="help-text"><i>/meme</i> cool           - searches all memes for "cool beans"</p>
-        <p class="help-text"><i>/say</i> hello world     - Speaks "hello world" to the chat using Text-To-Speech</p>
-        <p class="help-text"><i>/say</i> 😇              - Speaks "smiling face with halo" ( translated to browser language )</p>
-        <p class="help-text"><i>/roll</i> 20             - Rolls a d20 dice</p>
-        <p class="help-text"><i>/quit</i>                - Logs you out of here</p>
-        <p class="help-text"><i>/help</i>                - Shows this message</p>
+        <div class="help-text"><div class="command"><i>/meme</i></div>- sends random meme</div>
+        <div class="help-text"><div class="command"><i>/meme</i> cool</div>- searches all memes for "cool beans"</div>
+        <div class="help-text"><div class="command"><i>/say</i> hello world</div>- Speaks "hello world" to the chat using Text-To-Speech</div>
+        <div class="help-text"><div class="command"><i>/say</i> 😇</div>- Speaks "smiling face with halo" ( translated to browser language )</div>
+        <div class="help-text"><div class="command"><i>/roll</i> 20</div>- Rolls a d20 dice</div>
+        <div class="help-text"><div class="command"><i>/quit</i></div>- Logs you out of here</div>
+        <div class="help-text"><div class="command"><i>/help</i></div>- Shows this message</div>
       <div>
     `;
 
