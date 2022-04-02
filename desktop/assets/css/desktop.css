@@ -952,7 +952,9 @@ iframe {
 }
 
 .purple:not(.message):hover {
-  text-decoration: underline;
+  animation: rainbow 2.5s linear;
+  animation-iteration-count: infinite;
+  cursor: pointer;
 }
 
 
@@ -1232,4 +1234,4 @@ iframe {
 .context-menu-item:hover {
   background: #f1f3f7;
   color: #4b00ff;
-  }
+}
