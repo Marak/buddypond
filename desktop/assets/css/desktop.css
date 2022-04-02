@@ -718,6 +718,7 @@ a:hover {
 .orb {
   cursor: pointer;
   border: solid;
+  width: inherit;
 }
 
 .orb img {
