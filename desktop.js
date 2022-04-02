@@ -494,10 +494,10 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
         <p class="help-text"><i>/roll</i> 20             - Rolls a d20 dice</p>
       <div>
     `;
-    console.log($('.chat_messages', windowId));
-    $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
 
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
     $('.no_chat_messages', windowId).hide();
+
     let el = $('.window_content', windowId);
     $(el).scrollTop(999999);
 

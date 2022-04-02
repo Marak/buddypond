@@ -218,8 +218,6 @@ desktop.app.pond.openWindow = function (params) {
       // flatten other windows, show that window as active top stack
       JQDX.window_flat();
       $(windowId).addClass('window_stack').show();
-    } else {
-      
     }
 
     return;
