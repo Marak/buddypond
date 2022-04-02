@@ -492,6 +492,8 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
         <p class="help-text"><i>/say</i> hello world     - Speaks "hello world" to the chat using Text-To-Speech</p>
         <p class="help-text"><i>/say</i> 😇              - Speaks "smiling face with halo" ( translated to browser language )</p>
         <p class="help-text"><i>/roll</i> 20             - Rolls a d20 dice</p>
+        <p class="help-text"><i>/quit</i>                - Logs you out of here</p>
+        <p class="help-text"><i>/help</i>                - Shows this message</p>
       <div>
     `;
 
