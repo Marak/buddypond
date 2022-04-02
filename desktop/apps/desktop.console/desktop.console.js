@@ -1,5 +1,5 @@
 desktop.app.console = {};
-desktop.app.console.label = "Console";
+desktop.app.console.label = 'Console';
 
 desktop.app.console.MAX_CONSOLE_OUTPUT = Infinity;
 
@@ -10,13 +10,19 @@ desktop.app.console.load = function loadDesktop (params, next) {
   ], function (err) {
     // Remark: map shortcut method for easily calling `desktop.log()` from apps
     desktop.log = desktop.app.console.log;
+
+    $('#window_console').css('width', '100vw');
+    $('#window_console').css('height', '40vh');
+    $('#window_console').css('bottom', 41);
+    $('#window_console').css('left', '0vw');
+
     next();
   });
 };
 
 desktop.app.console.log = function logDesktop () {
   // first send desktop.log statements to the actual console
-  console.log.apply(this, arguments)
+  console.log.apply(this, arguments);
   let consoleItems = $('.console li').length;
   if (consoleItems > desktop.app.console.MAX_CONSOLE_OUTPUT) {
     $('.console li').get(0).remove();
@@ -26,17 +32,17 @@ desktop.app.console.log = function logDesktop () {
   for (let arg in arguments) {
     let str = arguments[arg];
     if (typeof str === 'object') {
-      str = JSON.stringify(str, true, 2)
+      str = JSON.stringify(str, true, 2);
     }
     output += (str + ' ');
   }
   // output = output.substr(0, output.length - 2);
   let now = new Date();
   
-  let dateString = DateFormat.format.date(new Date(), "HH:mm:ss");
+  let dateString = DateFormat.format.date(new Date(), 'HH:mm:ss');
   $('.console').append('<li>' + dateString + ': ' + output + '</li>');
   // TODO: fix scrollTop issue ( should scroll to bottom )
   let el = $('.console li');
   //$('.console').scrollTop($(el)[0].scrollHeight + 300);
-}
+};
 

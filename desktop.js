@@ -76,11 +76,11 @@ desktop.images.preloaded = false;
 // this also means that the entire Desktop is blocked from being ready until all current document images are loaded
 // TODO: We could add this same code inside desktop.load.remoteAssets()
 //       to ensure images in injected HTML fragments block App injection until loaded
-var imgs = document.images,
-    totalNewImages = imgs.length,
-    totalNewLoadedImages = 0;
+let imgs = document.images,
+  totalNewImages = imgs.length,
+  totalNewLoadedImages = 0;
 
-[].forEach.call(imgs, function(img) {
+[].forEach.call(imgs, function (img) {
   if (img.complete) {
     imageLoaded();
   } else {
@@ -88,7 +88,7 @@ var imgs = document.images,
   }
 });
 
-function imageLoaded() {
+function imageLoaded () {
   totalNewLoadedImages++;
   if (totalNewLoadedImages === totalNewImages) {
     // all new images have loaded
@@ -97,7 +97,7 @@ function imageLoaded() {
 }
 
 desktop.preloader = [];
-desktop.use = function use(app, params) {
+desktop.use = function use (app, params) {
   // queue arguments for preloader
   params = params || {};
   if (typeof app === 'function') {
@@ -106,18 +106,18 @@ desktop.use = function use(app, params) {
     desktop.preloader.push({ appName: app, params: params });
   }
   return this;
-}
+};
 
 desktop.ready = function ready (finish) {
   // preload all the App folders which were requested by desktop.use()
   let scriptArr = [];
-  desktop.preloader.forEach(function(app){
+  desktop.preloader.forEach(function (app) {
     if (typeof app === 'object' && !app.params.defer) {
-      scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`)
+      scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`);
     }
   });
-  desktop.load.remoteAssets(scriptArr, function(){
-    desktop.preloader.forEach(function(app){
+  desktop.load.remoteAssets(scriptArr, function () {
+    desktop.preloader.forEach(function (app) {
       if (typeof app === 'function') {
         app();
       } else {
@@ -126,10 +126,10 @@ desktop.ready = function ready (finish) {
     });
     // desktop is ready, clear out preloader ( it could be used again )
     desktop.preloader = [];
-    desktop._ready(finish)
-  })
+    desktop._ready(finish);
+  });
   return this;
-}
+};
 
 desktop._use = function _use (app, params) {
 
@@ -166,19 +166,19 @@ desktop._use = function _use (app, params) {
   }
 
   desktop.apps.loading.push({ name: app, params: params });
-  desktop.log("Loading", 'App.' + app);
+  desktop.log('Loading', 'App.' + app);
 
   if (desktop.apps.loaded.indexOf(app) !== -1) {
-    desktop.log("Cached", 'App.' + app);
+    desktop.log('Cached', 'App.' + app);
     return this;
   }
 
   // Remark: async `App.load` *must* continue with a callback or `Desktop.ready` will never fire
-  desktop.app[app].load(params, function(err, re){
+  desktop.app[app].load(params, function (err, re) {
     desktop.ui.renderDockIcon(app);
     desktop.apps.loaded.push(app);
     desktop.apps.mostRecentlyLoaded.push(app);
-    desktop.apps.loading = desktop.apps.loading.filter(function(a){
+    desktop.apps.loading = desktop.apps.loading.filter(function (a) {
       if (a.name === app) {
         return false;
       }
@@ -188,36 +188,36 @@ desktop._use = function _use (app, params) {
 
   return this;
 
-}
+};
 
 desktop._ready = function _ready (finish) {
 
   if (!desktop.images.preloaded || desktop.apps.loading.length > 0) {
-    setTimeout(function(){
+    setTimeout(function () {
       if (new Date().getTime() - desktop.apps.loadingStartedAt.getTime() > desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME) {
-        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.')
+        throw new Error('desktop.use() took over ' + desktop.DESKTOP_DOT_USE_MAX_LOADING_TIME / 1000 + ' seconds and gave up. Check that all App.load functions are returning values OR firing provided callbacks. If you are loading new assets in your App check Network Tab to ensure all assets are actually returning.');
       }
       desktop._ready(finish);
-    }, 10)
+    }, 10);
   } else {
     desktop.apps.loadingEndedAt = new Date();
     // all Desktop.use() that are *not* deferred have been loaded
     // call finish for Desktop.ready(), then continue to proess the deffered Apps
     finish(null, desktop.loaded);
     // now that all Apps and their assets have loaded, lets load any deferred Apps
-    desktop.log("Now loading deferred apps");
+    desktop.log('Now loading deferred apps');
     // Remark: we might have to put a concurrency limit here
     // TODO: Investigate what will happen if there are 1,000 deferred scripts
     //       Will the browser complain or be able to queue them up?
     let scriptArr = [];
-    desktop.apps.deferred.forEach(function(app){
+    desktop.apps.deferred.forEach(function (app) {
       if (typeof app === 'object') {
-        scriptArr.push(`desktop/apps/desktop.${app.name}/desktop.${app.name}.js`)
+        scriptArr.push(`desktop/apps/desktop.${app.name}/desktop.${app.name}.js`);
       }
     });
 
-    desktop.load.remoteAssets(scriptArr, function(){
-      desktop.apps.deferred.forEach(function(app){
+    desktop.load.remoteAssets(scriptArr, function () {
+      desktop.apps.deferred.forEach(function (app) {
         desktop.app[app.name].deferredLoad = true;
         function _open () {
           desktop.apps.loaded.push(app.name);
@@ -231,23 +231,23 @@ desktop._ready = function _ready (finish) {
               JQDX.window_flat();
               $(key).show().addClass('window_stack');
               // TODO: loading status cursor indicator should be per App, not global
-              document.querySelectorAll('*').forEach(function(node) {
+              document.querySelectorAll('*').forEach(function (node) {
                 node.style.cursor = 'pointer';
               });
             } else {
-              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow')
+              desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow');
             }
           }
         }
 
         if (desktop.apps.loaded.indexOf(app) !== -1) {
-          desktop.log("Cached", 'App.' + app);
+          desktop.log('Cached', 'App.' + app);
           // desktop.ui.openWindow(app);
           finish(null, desktop.loaded);
           return this;
         }
-        desktop.log("Loading App." + app.name);
-        desktop.app[app.name].load(app.params, function lazyNoop(){
+        desktop.log('Loading App.' + app.name);
+        desktop.app[app.name].load(app.params, function lazyNoop () {
           _open();
         });
 
@@ -257,14 +257,18 @@ desktop._ready = function _ready (finish) {
   }
   return this;
 
-}
+};
 
 desktop.refresh = function refreshDesktop () {
   if (desktop.app.buddylist) {
     desktop.app.buddylist.updateBuddyList();
     desktop.messages.process(desktop.apps.loaded);
+  } else {
+    setTimeout(function(){
+      refreshDesktop();
+    }, 10)
   }
-}
+};
 
 //
 // desktop.messages.process() queries the server for new messages and then
@@ -275,7 +279,7 @@ desktop.messages.process = function processMessages (apps) {
   if (!buddypond.qtokenid) {
     // no session, wait a short tick and try again
     // this most likely indicates login is in progress
-    setTimeout(function(){
+    setTimeout(function () {
       desktop.messages.process();
     }, 10);
   } else {
@@ -283,12 +287,20 @@ desktop.messages.process = function processMessages (apps) {
     //
     // calculate list of subscribed buddies and subscribed ponds
     //
-    var subscribedBuddies = desktop.app.buddylist.subscribedBuddies;
-    var subscribedPonds = desktop.app.buddylist.subscribedPonds;
+    let subscribedBuddies = [];
+    let subscribedPonds = [];
+
+    if (desktop.app.buddylist) {
+      subscribedBuddies= desktop.app.buddylist.subscribedBuddies;
+    }
+
+    if (desktop.app.pond) {
+      subscribedPonds = desktop.app.pond.subscribedPonds;
+    }
 
     // TODO: Configure desktop.messages.process() to still check for agent and systems messages here
-    if (subscribedBuddies.length === 0 && desktop.app.pond.subscribedPonds.length === 0) {
-      setTimeout(function(){
+    if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {
+      setTimeout(function () {
         desktop.messages.process();
       }, 10);
       return;
@@ -305,14 +317,14 @@ desktop.messages.process = function processMessages (apps) {
     //
     // console.log('sending params', params)
     // console.log('calling, buddylist.getMessages', params);
-    buddypond.getMessages(params, function(err, data){
+    buddypond.getMessages(params, function (err, data) {
       // console.log('calling back, buddylist.getMessages', err, data);
       if (err) {
         console.log('error in getting messages', err);
         // TODO: show disconnect error in UX
         // if an error has occured, give up on processing messages
         // and retry again shortly
-        setTimeout(function(){
+        setTimeout(function () {
           desktop.messages.process();
         }, desktop.DEFAULT_AJAX_TIMER);
         return;
@@ -323,7 +335,7 @@ desktop.messages.process = function processMessages (apps) {
       // filter out any messaages which have already been processed by uuid
       // the deskop UX will only process each message once as to not re-render / flicker elements and message events
       let newMessages = [];
-      data.messages.forEach(function(message){
+      data.messages.forEach(function (message) {
         if (desktop.messages._processed.indexOf(message.uuid) === -1) {
           newMessages.push(message);
         }
@@ -334,11 +346,11 @@ desktop.messages.process = function processMessages (apps) {
       // iterate through every app that is loaded and see if it exports `App.processMessages` function
       // currently we processMessages for: `App.buddylist`, `App.pond`, and `App.automaton`
       let appNameProcessMessagesList = [];
-      apps.forEach(function(app){
+      apps.forEach(function (app) {
         if (typeof desktop.app[app].processMessages === 'function') {
-          appNameProcessMessagesList.push(desktop.app[app].processMessages)
+          appNameProcessMessagesList.push(desktop.app[app].processMessages);
         }
-      })
+      });
 
       //
       // once we have the message data and know which Apps have `App.processMessages` available...
@@ -354,13 +366,13 @@ desktop.messages.process = function processMessages (apps) {
           //
           // All apps have completed rendering messages, set a timer and try again shortly
           //
-          setTimeout(function(){
+          setTimeout(function () {
             desktop.messages.process(desktop.apps.loaded);
           }, desktop.DEFAULT_AJAX_TIMER);
-      });
+        });
     });
   }
-}
+};
 
 desktop._events = {};
 
@@ -419,10 +431,10 @@ desktop.on = function desktopEventEmitterOn (eventName, eventLabel, fn) {
 desktop.emit = function desktopEventEmitterEmit (eventName, data) {
   // find all listening events
   if (desktop._events[eventName] && desktop._events[eventName].length) {
-    desktop._events[eventName].forEach(function(_event){
+    desktop._events[eventName].forEach(function (_event) {
       // console.log('calling event', eventName, _event.eventLabel, data)
       _event.fn(data);
-    })
+    });
   }
 };
 
@@ -433,12 +445,12 @@ desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
     return;
   }
   if (desktop._events[eventName] &&  desktop._events[eventName].length) {
-     desktop._events[eventName] = desktop._events[eventName].filter(function(_event){
-       if (_event.eventLabel === eventLabel) {
-         return false;
-       }
-       return true;
-     })
+    desktop._events[eventName] = desktop._events[eventName].filter(function (_event) {
+      if (_event.eventLabel === eventLabel) {
+        return false;
+      }
+      return true;
+    });
   }
 };
 
@@ -447,14 +459,26 @@ desktop.off = function desktopEventEmitterOff (eventName, eventLabel) {
 desktop.play = function desktopPlay (soundFx, tryHard, callback) {
   callback = callback || function noop () {
 
-  }
+  };
   if (desktop.app.audioplayer && desktop.app.audioplayer.play) {
     desktop.app.audioplayer.play('desktop/assets/audio/' + soundFx, tryHard, callback);
   } else {
     console.log('App.AudioPlayer was not detected. Is it ready? Was it loaded?');
     callback(null, false);
   }
-}
+};
+
+desktop.commands = {};
+
+// processes a message which was just sent for any potential local desktop commands ( such as /quit )
+desktop.commands.postProcessMessage = function postProcessMessage (message) {
+  // Check if user wants to quit then log the user out
+  let text = '';
+  text = message.text.split(' ');
+  if (text[0] === '/quit') {
+    desktop.app.login.logoutDesktop();
+  }
+};
 
 desktop.utils = {};
 
@@ -477,16 +501,16 @@ desktop.utils.asyncForEach = function asyncForEach(arr, fn, finish) {
 desktop.utils.asyncApplyEach = function asyncApplyEach (fns, data, finish) {
   let completed = 0;
   let results = [];
-  fns.forEach(function(fn){
+  fns.forEach(function (fn) {
     fn(data, function (err, result) {
       results.push(err, result);
       completed++;
       if (completed === fns.length) {
-        finish(null, results)
+        finish(null, results);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
   /* 
@@ -497,10 +521,11 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
     - Underscores (_)
     - Dashes (-)
   */
+  /* eslint-disable-next-line */
   const res = /^[a-zA-Z0-9_\-]+$/.exec(str);
   const valid = !!res;
   return valid;
-}
+};
 
 desktop.utils.isValidYoutubeTime  = function isValidYoutubeTime (str) {
   /* 
@@ -512,51 +537,17 @@ desktop.utils.isValidYoutubeTime  = function isValidYoutubeTime (str) {
   const res = /^&amp;t=\d+s|\?t=\d+$/.exec(str);
   const valid = !!res;
   return valid;
-}
+};
 
 desktop.utils.parseQueryString = function parseQueryString (queryString) {
-  var query = {};
-  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-  for (var i = 0; i < pairs.length; i++) {
-    var pair = pairs[i].split('=');
+  let query = {};
+  let pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+  for (let i = 0; i < pairs.length; i++) {
+    let pair = pairs[i].split('=');
     query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
   }
   return query;
-}
-
-// starts photo record
-let MAX_FRAMES_PER_SNAP = 10;
-let DEFAULT_SNAP_TIMER = 777;
-let currentFrame = 0;
-
-desktop.playSnaps = function playSnaps (opts) {
-  let el = opts.el;
-  let snaps = opts.snaps;
-  let index = opts.index;
-  let delay = $(el).data('delay') || opts.delay || DEFAULT_SNAP_TIMER;
-  $(el).data('delay', delay);
-  if (typeof index === 'undefined') {
-    index = 0;
-  }
-  if ($(el).data('stopped')) {
-    // do not repeat
-    return;
-  }
-  $(el).attr('src', 'data:image/png;base64,' + snaps[index]);
-  setTimeout(function(){
-    if (index === snaps.length - 1) {
-      index = 0;
-    } else {
-      index++;
-    }
-    playSnaps({
-      el: el,
-      snaps: snaps,
-      index: index,
-      delay: delay
-    });
-  }, delay)
-}
+};
 
 desktop.smartlinks = {};
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
@@ -571,7 +562,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
     if (searchYouTubeLongLink !== -1) {
       //If the youtube link is a Long link i.e., https://www.youtube.com/watch?
       let youtubeId = cleanText.substr(searchYouTubeLongLink + 32, 11);
-      let youtubeVideoTime = cleanText.substr(searchYouTubeLongLink + 43, 13).split(" ")[0];
+      let youtubeVideoTime = cleanText.substr(searchYouTubeLongLink + 43, 13).split(' ')[0];
       let isValidYoutubeId = desktop.utils.isValidYoutubeID(youtubeId);
       let isValidYoutubeTime = desktop.utils.isValidYoutubeTime(youtubeVideoTime);
 
@@ -609,7 +600,7 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
       https://youtu.be/v1K4EAXe2oo?t=26
       */
       let youtubeId = cleanText.substr(searchYouTubeShortLink + 17, 11);
-      let youtubeVideoTime = cleanText.substr(searchYouTubeShortLink + 28, 10).replace(/[\n\r]+/g, '').split(" ")[0];
+      let youtubeVideoTime = cleanText.substr(searchYouTubeShortLink + 28, 10).replace(/[\n\r]+/g, '').split(' ')[0];
       let isValidYoutubeId = desktop.utils.isValidYoutubeID(youtubeId);
       let isValidYoutubeTime = desktop.utils.isValidYoutubeTime(youtubeVideoTime);
 

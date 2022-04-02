@@ -1,6 +1,6 @@
 desktop.app.mtv = {};
-desktop.app.mtv.label = "Music Television";
-desktop.app.mtv.depends_on = ['videoplayer'];
+desktop.app.mtv.label = 'Music Television';
+desktop.app.mtv.depends_on = [ 'videoplayer' ];
 desktop.app.mtv.player = null;
 desktop.app.mtv.load = function (params, next) {
 
@@ -9,13 +9,13 @@ desktop.app.mtv.load = function (params, next) {
     'mtv' // this loads the sibling desktop.app.mtv.html file into <div id="window_mtv"></div>
   ], function (err) {
 
-    function mtvPlayerReady(event) {
+    function mtvPlayerReady (event) {
       // event.target.playVideo();
     }
 
-    function mtvPlayerStateChange(event) {
+    function mtvPlayerStateChange (event) {
       if (event.data == 0) {
-        desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist)
+        desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist);
       }
     }
 
@@ -32,28 +32,30 @@ desktop.app.mtv.load = function (params, next) {
       origin: window.document.location.origin
     });
 
-    $('.ponderMTV').on('click', function(){
+    $('.ponderMTV').on('click', function () {
       desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist);
     });
 
     $('#window_mtv').css('width', 644);
-    $('#window_mtv').css('height', 590);
+    $('#window_mtv').css('left', 400);
+    $('#window_mtv').css('top', 40);
+
     next();
   });
 };
 
-desktop.app.mtv.playRandomVideo = function playRandomVideo(_player, playlist) {
+desktop.app.mtv.playRandomVideo = function playRandomVideo (_player, playlist) {
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
   if (_player) {
     let yt_id = key;
-    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id)
+    desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id);
     _player.loadVideoById(yt_id);
-    setTimeout(function(){
+    setTimeout(function () {
       if (_player.play) {
         _player.play();
       }
-    }, 5000)
+    }, 5000);
   }
 };
 
@@ -61,4 +63,4 @@ desktop.app.mtv.closeWindow = function () {
   if (desktop.app.mtv.player && desktop.app.mtv.player.pauseVideo) {
     desktop.app.mtv.player.pauseVideo();
   }
-}
+};

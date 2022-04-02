@@ -1,5 +1,5 @@
 desktop.app.minesweeper = {};
-desktop.app.minesweeper.label = "Minesweeper";
+desktop.app.minesweeper.label = 'Minesweeper';
 
 desktop.app.minesweeper.load = function loadminesweeperGames (params, next) {
   desktop.load.remoteAssets([

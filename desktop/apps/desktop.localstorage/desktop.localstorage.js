@@ -1,6 +1,6 @@
 desktop.app.localstorage = {};
-desktop.app.localstorage.icon = "folder";
-desktop.app.localstorage.label = "localstorage";
+desktop.app.localstorage.icon = 'folder';
+desktop.app.localstorage.label = 'localstorage';
 
 desktop.app.localstorage.prefix = '_buddypond_desktop_';
 
@@ -28,7 +28,7 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
 
   desktop.emit('desktop.settings', desktop.settings);
 
-}
+};
 
 desktop.app.localstorage.get = function getLocalStorage (key) {
   let parsed;
@@ -39,16 +39,16 @@ desktop.app.localstorage.get = function getLocalStorage (key) {
     alert('Error parsing localstorage JSON. Did you store bad JSON?');
   }
   return parsed;
-}
+};
 
 desktop.app.localstorage.removeItem = function removeLocalStorage (key) {
   localStorage.removeItem(desktop.app.localstorage.prefix + key);
-}
+};
 
 desktop.app.localstorage.sync = function syncSettings () {
   // syncs all data from localStorage into `desktop.settings`
   // attempts to JSON.parse() each localStorage value if possible
-  for (var key in localStorage){
+  for (let key in localStorage) {
     if (key.search(desktop.app.localstorage.prefix) !== -1) {
       let param = key.replace(desktop.app.localstorage.prefix, '');
       try {
@@ -58,7 +58,7 @@ desktop.app.localstorage.sync = function syncSettings () {
       }
     }
   }
-}
+};
 
 desktop.app.localstorage.load = function loadLocalStorage (param, next) {
   desktop.app.localstorage.sync();

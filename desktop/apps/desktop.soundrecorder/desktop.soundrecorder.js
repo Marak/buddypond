@@ -1,5 +1,5 @@
 desktop.app.soundrecorder = {};
-desktop.app.soundrecorder.label = "Sound Recorder";
+desktop.app.soundrecorder.label = 'Sound Recorder';
 
 desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) {
   desktop.load.remoteAssets([
@@ -10,7 +10,7 @@ desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) 
     $('#window_soundrecorder').css('left', 50);
     $('#window_soundrecorder').css('top', 50);
 
-    $('.sendSound').on('click', function(){
+    $('.sendSound').on('click', function () {
       desktop.set('soundrecorder_send_active', true);
     });
 
@@ -19,17 +19,17 @@ desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) 
       desktop.set('soundrecorder_active_context', 'Lily');
     }
 
-    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-    var eventer = window[eventMethod];
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    let eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+    let eventer = window[eventMethod];
+    let messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
 
     // Listen to message from child window
-    eventer(messageEvent,function(e) {
-        var key = e.message ? "message" : "data";
-        var data = e[key];
-        if (data === 'app_soundrecorder_needs_close') {
-          JQDX.closeWindow('#window_soundrecorder');
-        }
+    eventer(messageEvent,function (e) {
+      let key = e.message ? 'message' : 'data';
+      let data = e[key];
+      if (data === 'app_soundrecorder_needs_close') {
+        JQDX.closeWindow('#window_soundrecorder');
+      }
     },false);
 
     next();

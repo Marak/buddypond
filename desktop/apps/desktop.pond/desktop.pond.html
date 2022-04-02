@@ -76,14 +76,14 @@
     cursor: pointer;
   }
 
-  .icon_gifstudio_64 {
+  .insertGif {
     padding-right: 5px;
     padding-top: 12px;
     width: 16px;
     height: 16px;
   }
 
-  .icon_gifstudio_64:hover {
+  .insertGif:hover {
     width: 16px;
     height: 16px;
     opacity: 0.44;
@@ -265,11 +265,11 @@
       <div class="abs window_bottom_chat">
         <div class="pond_send_message_form">
           <form method="POST" action="" align="right" class="pond_send_message_form">
-            <span class="insertSnap" title="Insert Snap">📷</span>
-            <img title="Insert Audio" class="insertSound" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>         
-            <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="icon_gifstudio_64" src="desktop/assets/images/icons/icon_gifstudio_64.png"/></a>
-            <img title="Insert Paint" class="insertPaint" src="desktop/assets/images/icons/icon_paint_64.png"/>
-            <span title="Insert Emoji" class="pond_emoji_picker_0 emojiPicker emojiTitleBar">😀</span><br/><br/>
+            <span class="insertSnap chatControl" title="Insert Snap">📷</span>
+            <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>
+            <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png"/></a>
+            <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png"/>
+            <span title="Insert Emoji" class="pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span><br/><br/>
             <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
               cols="44"></textarea>
             <button name="pond_message_submit" class="sendPondMessage">Send</button>

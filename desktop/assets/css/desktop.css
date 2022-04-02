@@ -127,7 +127,6 @@ div.ui-resizable-handle {
   display: none;
   width: 700px;
   height: 300px;
-  top: 30px;
   left: 120px;
   z-index: 2;
 }
@@ -164,6 +163,17 @@ div.ui-resizable-handle {
   width: 100%;
   height: 100%;
 }
+
+.window_full_mobile {
+  border: 0;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -webkit-background-clip: padding-box;
+  width: 100%;
+  height: 100%;
+}
+
 
 .window_full .ui-resizable-se {
   display: none;
@@ -400,8 +410,6 @@ th.shrink {
   line-height: 30px;
   opacity: 0.8;
   overflow: hidden;
-  padding-top: 5px;
-  padding-bottom: 5px;
   text-shadow: #000 0 1px 1px;
   height: 30px;
   bottom: 0;
@@ -508,7 +516,7 @@ th.shrink {
   color: #fff;
   overflow: hidden;
   padding: 0 10px;
-  height: 30px;
+  /* height: 30px; */
 }
 
 #bar_bottom a:hover {
@@ -847,10 +855,6 @@ video {
   display:none;
 }
 
-#window_login {
-  min-height: 444px;
-}
-
 #window_games .icon {
   color: white;
 }
@@ -1153,7 +1157,7 @@ iframe {
   /*overflow: hidden;*/
   text-align: center;
   text-shadow: #fff 0 1px 1px;
-  height: 33px;
+  /* height: 33px; */
   width: 100%;
   left: 1px;
   right: 1px;

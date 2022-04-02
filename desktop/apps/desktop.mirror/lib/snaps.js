@@ -1,28 +1,32 @@
+// starts photo record
+let MAX_FRAMES_PER_SNAP = 10;
+let DEFAULT_SNAP_TIMER = 777;
+let currentFrame = 0;
 desktop.app.mirror.CAMERA_SHUTTER_DELAY = 55;
 
 desktop.app.mirror.createGif = function createGif (delay) {
-  var gif = new GIF({
+  let gif = new GIF({
     workers: 2,
     quality: 3,
     width: 320,
     height: 240
   });
 
-  gif.on('finished', function(blob) {
-    var reader = new FileReader();
+  gif.on('finished', function (blob) {
+    let reader = new FileReader();
     reader.readAsDataURL(blob);
-    reader.onloadend = function() {
-      var base64data = reader.result;
+    reader.onloadend = function () {
+      let base64data = reader.result;
       $('#snapsPreview').attr('src', base64data);
-    }
+    };
   });
 
-  $('.gifFrames img', '#window_mirror').each(function(i, e){
+  $('.gifFrames img', '#window_mirror').each(function (i, e) {
     gif.addFrame(e, { delay: delay });
-  })
+  });
 
   gif.render();
-}
+};
 
 desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
   $('.cameraControls').hide();
@@ -33,8 +37,8 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
   $('.recordSnap').hide();
   $('.mirrorVideoHolder').css('opacity', '1');
   // runs until max frames or hits stop
-  var destinationCanvas = document.getElementById('snaps');
-  var destCtx = destinationCanvas.getContext('2d');
+  let destinationCanvas = document.getElementById('snaps');
+  let destCtx = destinationCanvas.getContext('2d');
 
   if (maxFrames > 1) {
     desktop.play('CAMERA_SHUTTER.wav', true);
@@ -44,12 +48,12 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
   destinationCanvas.height = 240;
   destCtx.scale(0.5, 0.5);
 
-  destCtx.drawImage(document.getElementById("mirrorCanvasMe"), 0, 0);
+  destCtx.drawImage(document.getElementById('mirrorCanvasMe'), 0, 0);
 
-  var imagebase64data = destinationCanvas.toDataURL("image/png");
-  var gifbase64data = destinationCanvas.toDataURL("image/gif");
+  let imagebase64data = destinationCanvas.toDataURL('image/png');
+  let gifbase64data = destinationCanvas.toDataURL('image/gif');
 
-  $('.gifFrames', '#window_mirror').append(`<img src="${gifbase64data}"/>`)
+  $('.gifFrames', '#window_mirror').append(`<img src="${gifbase64data}"/>`);
   imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
   desktop.app.mirror.snaps.push(imagebase64data);
 
@@ -59,7 +63,7 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
   $('.mirrorVideoHolder').css('opacity', '1');
   if (currentFrame >= maxFrames) {
     currentFrame = 0;
-    setTimeout(function(){
+    setTimeout(function () {
 
       desktop.app.mirror.createGif(delay);
 
@@ -79,13 +83,13 @@ desktop.app.mirror.recordSnaps = function recordSnaps (maxFrames, delay, mode) {
         $('.retrySnap').show();
         $('.snapDelaySliderControl').show();
       }
-    }, desktop.app.mirror.CAMERA_SHUTTER_DELAY) // TODO: make configurable with existing delay slider
+    }, desktop.app.mirror.CAMERA_SHUTTER_DELAY); // TODO: make configurable with existing delay slider
     return;
   }
-  setTimeout(function(){
+  setTimeout(function () {
     desktop.app.mirror.recordSnaps(maxFrames, delay, mode);
-  }, delay)
-}
+  }, delay);
+};
 
 desktop.app.mirror.takeSingleSnap = function takeSingleSnap () {
   //$('#mirrorCanvasMe').css('width', 640);
@@ -95,34 +99,34 @@ desktop.app.mirror.takeSingleSnap = function takeSingleSnap () {
   if (!desktop.settings.mirror_snaps_camera_countdown_enabled) {
     if (currentFrame === 0) {
       desktop.play('CAMERA_SNAP.wav');
-      setTimeout(function(){
+      setTimeout(function () {
         desktop.app.mirror.recordSnaps(1);
-      }, 44)
+      }, 44);
       return;
     }
   }
 
   desktop.play('CAMERA_COUNTDOWN.wav');
   $('.snapCountDown').show();
-  setTimeout(function(){
+  setTimeout(function () {
     $('.snapCountDown').html('2...');
-    setTimeout(function(){
+    setTimeout(function () {
       $('.snapCountDown').html('1...');
-      setTimeout(function(){
+      setTimeout(function () {
         $('.snapCountDown').hide();
         $('.snapCountDown').html('3...');
-          setTimeout(function(){
-            if (currentFrame === 0) {
-              desktop.play('CAMERA_SNAP.wav');
-              setTimeout(function(){
-                desktop.app.mirror.recordSnaps(1);
-              }, 44)
-            }
-          }, 333)
-        }, 1000)
-      }, 1000)
-    }, 1000)
-}
+        setTimeout(function () {
+          if (currentFrame === 0) {
+            desktop.play('CAMERA_SNAP.wav');
+            setTimeout(function () {
+              desktop.app.mirror.recordSnaps(1);
+            }, 44);
+          }
+        }, 333);
+      }, 1000);
+    }, 1000);
+  }, 1000);
+};
 
 desktop.app.mirror.takeSnap = function takeSnap () {
   //$('#mirrorCanvasMe').css('width', 640);
@@ -131,30 +135,30 @@ desktop.app.mirror.takeSnap = function takeSnap () {
 
   if (!desktop.settings.mirror_snaps_camera_countdown_enabled) {
     if (currentFrame === 0) {
-      setTimeout(function(){
+      setTimeout(function () {
         desktop.app.mirror.recordSnaps(10, 100, 'film');
-      }, 44)
+      }, 44);
       return;
     }
   }
 
   desktop.play('CAMERA_COUNTDOWN.wav');
   $('.snapCountDown').show();
-  setTimeout(function(){
+  setTimeout(function () {
     $('.snapCountDown').html('2...');
-    setTimeout(function(){
+    setTimeout(function () {
       $('.snapCountDown').html('1...');
-      setTimeout(function(){
+      setTimeout(function () {
         $('.snapCountDown').hide();
         $('.snapCountDown').html('3...');
-        setTimeout(function(){
+        setTimeout(function () {
           if (currentFrame === 0) {
-            setTimeout(function(){
+            setTimeout(function () {
               desktop.app.mirror.recordSnaps(10, 100, 'film');
-            }, 44)
+            }, 44);
           }
-        }, 333)
-      }, 1000)
-    }, 1000)
-  }, 1000)
-}
+        }, 333);
+      }, 1000);
+    }, 1000);
+  }, 1000);
+};

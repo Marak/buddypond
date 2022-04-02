@@ -1,5 +1,5 @@
 desktop.app.pond = {};
-desktop.app.pond.label = "Pond";
+desktop.app.pond.label = 'Pond';
 
 desktop.app.pond.subscribedPonds = [];
 
@@ -18,25 +18,25 @@ desktop.app.pond.load = function loadPond (params, next) {
     // "#window_pond" event handlers
     // used for joining Ponds, clicking on pond names, general pond settings, etc
     //
-    $('.openPond').on('click', function(){
+    $('.openPond').on('click', function () {
       let chan = $(this).html();
       chan = chan.substr(1, chan.length - 1);
       desktop.ui.openWindow('pond', { context: chan });
     });
 
     // cancel form submit for joining a pond by name
-    $('.joinPondForm').on('submit', function(){
+    $('.joinPondForm').on('submit', function () {
       $('.joinPond').trigger('click');
       return false;
     });
 
-    $('.joinPond').on('click', function(){
+    $('.joinPond').on('click', function () {
       if ($('.customPondName').val().length === 0) {
         $('.customPondName').addClass('error');
       } else {
         $('.customPondName').removeClass('error');
         let pondName = $('.customPondName').val();
-        desktop.app.pond.openWindow({ context: pondName});
+        desktop.app.pond.openWindow({ context: pondName });
       }
     });
 
@@ -47,7 +47,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     let d = $(document);
 
     // cancel all form submits ( or entire page will redirect )
-    d.on('submit', '.pond_send_message_form', function(){
+    d.on('submit', '.pond_send_message_form', function () {
       return false;
     });
 
@@ -56,7 +56,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       return false;
     });
 
-    d.keypress(function(ev){
+    d.keypress(function (ev) {
       if (ev.which === 13) {
         if ($(ev.target).hasClass('pond_message_text')) {
           desktop.app.pond.sendMessage($(ev.target));
@@ -87,16 +87,16 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertSnap', function (ev) {
-      var form = $(ev.target).parent();
+      let form = $(ev.target).parent();
       let context = $('.pond_message_to', form).val();
-      JQDX.showWindow('mirror', { type:'pond', context: context});
+      JQDX.showWindow('mirror', { type: 'pond', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
       ev.stopPropagation();
     });
 
     d.on('mousedown', '.insertPaint', function (ev) {
-      var form = $(ev.target).parent();
+      let form = $(ev.target).parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -109,7 +109,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       ev.stopPropagation();
     });
 
-    d.on('mousedown', '.icon_gifstudio_64', function (ev) {
+    d.on('mousedown', '.insertGif', function (ev) {
       let form = $(ev.target).parent().parent();
       let context, output;
       output = 'pond';
@@ -155,7 +155,7 @@ desktop.app.pond.renderChatWindow = function (context) {
   let clone = $('#window_pond_message_0').html();
   let dockItemClone = $('#icon_dock_pond_message_0').html();
 
-  let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + context)
+  let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + context);
   _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + context);
   _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker');
 
@@ -166,12 +166,12 @@ desktop.app.pond.renderChatWindow = function (context) {
   `;
 
   $('#desktop').append(pondChatWindowHTML);
-  let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + context)
+  let dockStr = dockItemClone.replace('window_pond_message_0', 'window_pond_message_' + context);
   dockStr = '<li id="icon_dock_pond_message_' + context +'">' + dockStr + '</li>';
   $('#dock').append(dockStr);
-  desktop.ui.renderDockElement('pond_message_' + context, context)
+  desktop.ui.renderDockElement('pond_message_' + context, context);
 
-}
+};
 
 desktop.app.pond.openWindow = function (params) {
 
@@ -194,7 +194,7 @@ desktop.app.pond.openWindow = function (params) {
       if (!isMobile) {
         $('.pond_message_text', windowId).focus();
       }
-      $('.pond_message_to', windowId).val(params.context)
+      $('.pond_message_to', windowId).val(params.context);
       $('.pond_message_from', windowId).val(buddypond.me);
 
       $(windowId).css('left', '30vw');
@@ -225,7 +225,7 @@ desktop.app.pond.openWindow = function (params) {
     return;
   }
 
-}
+};
 
 desktop.app.pond.closeWindow = function (params) {
   // if instance window, we'll want to remove it from DOM
@@ -236,20 +236,20 @@ desktop.app.pond.closeWindow = function (params) {
   //         so then when / if it is re-opened it will re-load messages
   //$('#window_pond_message_' + params.context).remove();
   if (params.context) {
-    let index = desktop.app.pond.subscribedPonds.indexOf(params.context)
+    let index = desktop.app.pond.subscribedPonds.indexOf(params.context);
     desktop.app.pond.subscribedPonds.splice(index, 1);
   }
-}
+};
 
 desktop.app.pond.sendMessage = function sendPondMessage (context) {
   let message = {};
   // console.log('desktop.app.pond.sendMessage context', context);
-  var form = $(context).parent();
+  let form = $(context).parent();
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
   message.from = $('.pond_message_from', form).val();
 
-  if (message.text.trim() === "") {
+  if (message.text.trim() === '') {
     return;
   }
 
@@ -260,10 +260,15 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   $('.pond_message_text', form).val('');
   // $('.emoji-wysiwyg-editor').html("");
   //console.log('sending the message to pond', message)
-  buddypond.pondSendMessage(message.to, message.text, function(err, data){
+
+  buddypond.pondSendMessage(message.to, message.text, function (err, data) {
     //console.log('buddypond.pondSendMessage', err, data)
+    // Remark: This will check for local user text commands such as /quit
+    //         These are done *after* the message is sent to the server to ensure,
+    //         that the message is sent before buddy logs out
+    desktop.commands.postProcessMessage(message);
   });
-}
+};
 
 desktop.app.pond.lastNotified = 0;
 
@@ -271,7 +276,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
   let html = {};
 
-  data.messages.forEach(function(message){
+  data.messages.forEach(function (message) {
 
     // route message based on incoming type / format
     // default message.type is undefined and defaults to "text" type
@@ -391,10 +396,10 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     try {
       if (data.messages.length > 0) {
         //      let el = $('.chat_messages', '.pond_message_main')
-        setTimeout(function(){
+        setTimeout(function () {
           let el = $('.window_content', key);
           $(el).scrollTop(999999);
-        }, 1111)
+        }, 1111);
       }
     } catch (err) {
       console.log('Waring: Was unable to scrollTop on pond messages', err);
@@ -402,4 +407,4 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
   }
 
   cb(null, true);
-}
+};
