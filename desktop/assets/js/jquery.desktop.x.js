@@ -659,11 +659,11 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
-  console.log('JQDX.showWindow', appName)
+  // console.log('JQDX.showWindow', appName, params)
   let appWindow = '#window_' + appName;
 
   if (appName === 'pond' && params.context) {
-    appWindow += 'pond_message_' + params.context;
+    appWindow = '#window_pond_message_' + params.context;
   }
 
   // TODO: rename "buddylist" app to "buddy"
