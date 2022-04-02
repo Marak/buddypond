@@ -14,6 +14,7 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     'desktop/assets/js/jquery.simple-color.js',
     'wallpaper',
     'desktop/apps/desktop.wallpaper/wallpapers/solid.js',
+    'desktop/apps/desktop.wallpaper/wallpapers/ripples.js',
     'desktop/apps/desktop.wallpaper/wallpapers/matrix.js'
   ], function (err) {
 
@@ -33,11 +34,15 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       // start the new one
       desktop.app.wallpaper.start();
       
-      // TODO: support N wallpapers ( use select drop down? )
+      // TODO: support N wallpapers, remove hard-coded names ( use select drop down? )
       if (desktop.app.wallpaper.active === 'matrix') {
         $('#wallPaperRadioMatrix').prop('checked', true);
-      } else {
+      }
+      if (desktop.app.wallpaper.active === 'solid') {
         $('#wallPaperRadioSolid').prop('checked', true);
+      }
+      if (desktop.app.wallpaper.active === 'ripples') {
+        $('#wallPaperRadioRipples').prop('checked', true);
       }
     });
 
@@ -48,11 +53,15 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     $('#window_wallpaper').css('width', 366);
     $('#window_wallpaper').css('height', 444);
 
-    // TODO: support N wallpapers ( use select drop down? )
+    // TODO: support N wallpapers, remove hard-coded names ( use select drop down? )
     if (desktop.app.wallpaper.active === 'matrix') {
       $('#wallPaperRadioMatrix').prop('checked', true);
-    } else {
+    }
+    if (desktop.app.wallpaper.active === 'solid') {
       $('#wallPaperRadioSolid').prop('checked', true);
+    }
+    if (desktop.app.wallpaper.active === 'ripples') {
+      $('#wallPaperRadioRipples').prop('checked', true);
     }
 
     $('.pauseWallpaper').on('click', function () {
