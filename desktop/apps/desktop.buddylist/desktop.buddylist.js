@@ -260,11 +260,18 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
     return;
   }
 
-  // desktop.log(`${message.from} sent message to ${message.to}`);
-
   // empty text area input
   $('.buddy_message_text', form).val('');
   $('.emoji-wysiwyg-editor').html('');
+
+  const processed = desktop.commands.processInternalMessage(message, '#window_buddy_message_' + message.to);
+
+  if (processed) {
+    return;
+  }
+
+  // desktop.log(`${message.from} sent message to ${message.to}`);
+
   buddypond.sendMessage(message.to, message.text, function (err, data) {
     // console.log('buddypond.sendMessage', err, data)
     // Remark: This will check for local user text commands such as /quit

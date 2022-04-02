@@ -4,6 +4,7 @@
 
 */
 
+// eslint-disable-next-line no-redeclare
 const desktop = {};
 
 // time the desktop object was created in browser
@@ -264,9 +265,9 @@ desktop.refresh = function refreshDesktop () {
     desktop.app.buddylist.updateBuddyList();
     desktop.messages.process(desktop.apps.loaded);
   } else {
-    setTimeout(function(){
+    setTimeout(function () {
       refreshDesktop();
-    }, 10)
+    }, 10);
   }
 };
 
@@ -469,13 +470,50 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
 };
 
 desktop.commands = {};
+desktop.commands.chatCommands = {
+  QUIT: '/quit',
+  HELP: '/help'
+};
+
+desktop.commands.processInternalMessage = function processInternalMessage (message, windowId) {
+  // don't process the message on the server if it's the help command
+  // instead capture it and send back the immediate response text
+  const text = message.text.split(' ')[0];
+  if (text === desktop.commands.chatCommands.HELP) {
+    const helpText = `
+      <div class="help">
+        <h3>Welcome to Buddy Pond my good Buddy!</h3>
+        <span>This chat area supports both text and multimedia ( Paints, Snaps, Sounds )</span>
+        <p>
+          As of right now, the following chat text commands are available:
+        </p>
+        <div class="help-text"><div class="command"><i>/meme</i></div>- sends random meme</div>
+        <div class="help-text"><div class="command"><i>/meme</i> cool</div>- searches all memes for "cool beans"</div>
+        <div class="help-text"><div class="command"><i>/say</i> hello world</div>- Speaks "hello world" to the chat using Text-To-Speech</div>
+        <div class="help-text"><div class="command"><i>/say</i> 😇</div>- Speaks "smiling face with halo" ( translated to browser language )</div>
+        <div class="help-text"><div class="command"><i>/roll</i> 20</div>- Rolls a d20 dice</div>
+        <div class="help-text"><div class="command"><i>/quit</i></div>- Logs you out of here</div>
+        <div class="help-text"><div class="command"><i>/help</i></div>- Shows this message</div>
+      <div>
+    `;
+
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
+    $('.no_chat_messages', windowId).hide();
+
+    let el = $('.window_content', windowId);
+    $(el).scrollTop(999999);
+
+    return true;
+  }
+
+  return false;
+};
 
 // processes a message which was just sent for any potential local desktop commands ( such as /quit )
 desktop.commands.postProcessMessage = function postProcessMessage (message) {
   // Check if user wants to quit then log the user out
-  let text = '';
-  text = message.text.split(' ');
-  if (text[0] === '/quit') {
+  const text = message.text.split(' ')[0];
+  if (text === desktop.commands.chatCommands.QUIT) {
     desktop.app.login.logoutDesktop();
   }
 };

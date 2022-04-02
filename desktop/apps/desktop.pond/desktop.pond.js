@@ -218,8 +218,6 @@ desktop.app.pond.openWindow = function (params) {
       // flatten other windows, show that window as active top stack
       JQDX.window_flat();
       $(windowId).addClass('window_stack').show();
-    } else {
-      
     }
 
     return;
@@ -253,11 +251,18 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
     return;
   }
 
+  // empty text area input
+  $('.pond_message_text', form).val('');
+
+  const processed = desktop.commands.processInternalMessage(message, '#window_pond_message_' + message.to);
+
+  if (processed) {
+    return;
+  }
+
   // TODO: have console display more info about event
   $('.console').val(JSON.stringify(message, true, 2));
 
-  // empty text area input
-  $('.pond_message_text', form).val('');
   // $('.emoji-wysiwyg-editor').html("");
   //console.log('sending the message to pond', message)
 
