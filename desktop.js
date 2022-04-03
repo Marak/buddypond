@@ -480,6 +480,41 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
   // instead capture it and send back the immediate response text
   const text = message.text.split(' ')[0];
   if (text === desktop.commands.chatCommands.HELP) {
+    const commandSet = [
+      {
+        command: '/meme',
+        helpText: '- sends random meme'
+      },
+      {
+        command: '/meme',
+        additional: ' cool',
+        helpText: '- searches all memes for "cool beans"'
+      },
+      {
+        command: '/say',
+        additional: ' hello world',
+        helpText: '- sends random meme'
+      },
+      {
+        command: '/say',
+        additional: ' 😇',
+        helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
+      },
+      {
+        command: '/roll',
+        additional: ' 20',
+        helpText: '- Rolls a d20 dice'
+      },
+      {
+        command: '/quit',
+        helpText: '- Logs you out of here'
+      },
+      {
+        command: '/help',
+        helpText: '- Shows this message'
+      },
+    ];
+
     const helpText = `
       <div class="help">
         <h3>Welcome to Buddy Pond my good Buddy!</h3>
@@ -487,13 +522,14 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
         <p>
           As of right now, the following chat text commands are available:
         </p>
-        <div class="help-text"><div class="command"><i>/meme</i></div>- sends random meme</div>
-        <div class="help-text"><div class="command"><i>/meme</i> cool</div>- searches all memes for "cool beans"</div>
-        <div class="help-text"><div class="command"><i>/say</i> hello world</div>- Speaks "hello world" to the chat using Text-To-Speech</div>
-        <div class="help-text"><div class="command"><i>/say</i> 😇</div>- Speaks "smiling face with halo" ( translated to browser language )</div>
-        <div class="help-text"><div class="command"><i>/roll</i> 20</div>- Rolls a d20 dice</div>
-        <div class="help-text"><div class="command"><i>/quit</i></div>- Logs you out of here</div>
-        <div class="help-text"><div class="command"><i>/help</i></div>- Shows this message</div>
+        ${commandSet.map(item => `
+          <div class="help-text">
+            <div class="help-command">
+              <i>${item.command}</i>${item.additional || ''}
+            </div>
+            <span class="help-description">${item.helpText}</span>
+          </div>
+        `).join('')}
       <div>
     `;
 
