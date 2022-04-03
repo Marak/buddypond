@@ -7,6 +7,9 @@ desktop.app.soundcloud.load = function loadSoundcloud (params, next) {
       desktop.app.soundcloud.widget.play();
       desktop.app.soundcloud.widget.next();
     });
+    $('#window_soundcloud').css('width', 644);
+    $('#window_soundcloud').css('left', 377);
+    $('#window_soundcloud').css('top', 40);
     next();
   });
 };
