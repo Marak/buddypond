@@ -664,6 +664,10 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     // replace cards
     
+    let dataContext = message.from;
+    if (message.from === buddypond.me) {
+      dataContext = message.to;
+    }
     
     if (message.card && message.card.type === 'snaps') {
       message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
@@ -672,8 +676,8 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       if (ext === 'gif') {
         $('.chat_messages', windowId).append(`
          <span class="message">
-          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+          <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
         </span>
         <br/>
@@ -681,8 +685,8 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       } else {
         $('.chat_messages', windowId).append(`
          <span class="message">
-          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+          <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
          </span>
          <br/>
@@ -700,8 +704,8 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
          <span class="message">
            <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
            <br/>
-           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-           <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${message.from}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+           <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
            <img class="card-meme image" src="${message.card.filename}"/>
          </span>
          <br/>
