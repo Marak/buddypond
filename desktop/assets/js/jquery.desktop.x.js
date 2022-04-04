@@ -693,6 +693,7 @@ JQDX.showWindow = function showWindow (appName, params) {
     desktop.app[appName].openWindow(params);
   }
   JQDX.loading[appName] = false;
+  desktop.ui.windowResizeEventHandler();
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
   if (typeof cb === 'function') {
     cb(null);
