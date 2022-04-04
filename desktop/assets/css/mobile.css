@@ -1,0 +1,15 @@
+#bar_bottom.mobile_bar_bottom {
+  height: 23%;
+  z-index: 420;
+}
+
+.mobile_chatControl {
+  width: 64px;
+  height: 64px;
+  font-size: 64px;
+}
+
+.mobile_show_desktop_img {
+  width: 64px;
+  height: 64px;
+}

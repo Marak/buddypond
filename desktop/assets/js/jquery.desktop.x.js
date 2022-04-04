@@ -82,9 +82,11 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 
 desktop.ui.goMobile = function () {
-  $('#bar_bottom').css('height', '23%');
-  $('#bar_bottom').css('z-index', 420);
 
+  $('#bar_bottom').addClass('mobile_bar_bottom');
+  $('.chatControl').addClass('mobile_chatControl')
+  $('#show_desktop img').addClass('mobile_show_desktop_img')
+  /*
   $('.chatControl').css('height', 64);
   $('.chatControl').css('width', 64);
   $('.chatControl').css('font-size', 64);
@@ -94,8 +96,7 @@ desktop.ui.goMobile = function () {
   $('#dock li img').css('height', 48);
   $('#dock li img').css('width', 48);
   
-  $('#show_desktop img').css('width', 64);
-  $('#show_desktop img').css('height', 64);
+  */
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -109,6 +110,9 @@ desktop.ui.goMobile = function () {
 }
 
 desktop.ui.exitMobile = function () {
+  $('#bar_bottom').removeClass('mobile_bar_bottom');
+  $('.chatControl').removeClass('mobile_chatControl')
+  $('#show_desktop img').removeClass('mobile_show_desktop_img')
   return;
   // TODO: use css class names and addClass() removeClass()
 }
@@ -133,14 +137,11 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     desktop.ui.view = 'MegaDesk';
   }
 
-  /*
   if (desktop.ui.view === 'Mobile') {
-    // TODO: re-arrange windows to mobile view
-    desktop.ui.goMobile();
+    //desktop.ui.goMobile();
   } else {
-    desktop.ui.exitMobile();
+    //desktop.ui.exitMobile();
   }
-  */
 
   if (desktop.ui.view === 'Normal') {
     $('.window_top').css('height', 30);
@@ -659,7 +660,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
-  // console.log('JQDX.showWindow', appName, params)
+  console.log('JQDX.showWindow', appName, params)
   let appWindow = '#window_' + appName;
 
   if (appName === 'pond' && params.context) {
@@ -779,16 +780,12 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   if ($el) {
     x = $el;
   }
-
-  // Hide, if visible.
-  if (x.is(':visible')) {
-    x.hide();
-  }
-  else {
-    // Bring window to front.
-    JQDX.window_flat();
-    x.show().addClass('window_stack');
-  }
+  // Remark: Always brings the window to the front after maximize
+  //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
+  //         Instead, this could be done elsewhere in the code
+  JQDX.window_flat();
+  x.show().addClass('window_stack');
+  desktop.ui.windowResizeEventHandler();
 }
 
 JQDX.closeWindow = function closeWindow (el) {
