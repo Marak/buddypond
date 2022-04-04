@@ -1,7 +1,11 @@
 desktop.app.wallpaper.wallpapers.ripples = {};
 
+desktop.app.wallpaper.wallpapers.ripples.changeColor = function (color) {
+  // TODO: add ability to change background color
+};
+
 desktop.app.wallpaper.wallpapers.ripples.changeImage = function (color) {
-  // desktop.app.wallpaper.wallpapers.image.draw(color);
+  // TODO: add ability to change background image
 };
 
 desktop.app.wallpaper.wallpapers.ripples.draw = function (color) {
@@ -33,4 +37,5 @@ desktop.app.wallpaper.wallpapers.ripples.stop = function () {
   $('#c').show();
   
 };
+
 desktop.app.wallpaper.wallpapers.ripples.pause = function () {};

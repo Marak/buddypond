@@ -190,7 +190,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   JQDX.window_flat();
   $('#window_login').addClass('window_stack');
   $('#window_login').css('width', '66vw');
-  $('#window_login').css('height', '55vh');
+  $('#window_login').css('height', '70vh');
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
   $('#login_desktop_icon').show();

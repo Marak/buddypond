@@ -6,16 +6,34 @@ desktop.app.wallpaper.init = false;
 desktop.app.wallpaper.width = 0;
 desktop.app.wallpaper.height = 0;
 
+
+// initially empty reference to store wallpapers as they are loaded
 desktop.app.wallpaper.wallpapers = {};
+
+// internal reference for wallpaper names and remote script locations
+desktop.app.wallpaper._wallpapers = {
+  'solid':  {
+    label: 'Solid',
+    src: ['desktop/apps/desktop.wallpaper/wallpapers/solid.js']
+  },
+  'matrix':  {
+    label: 'Matrix',
+    src: ['desktop/apps/desktop.wallpaper/wallpapers/matrix.js']
+  },
+  'ripples':  {
+    label: 'Ripples',
+    src: [
+      'desktop/apps/desktop.wallpaper/wallpapers/ripples/vendor/jquery.ripples.js',
+      'desktop/apps/desktop.wallpaper/wallpapers/ripples/ripples.js'
+    ]
+  }
+};
 
 desktop.app.wallpaper.paused = false;
 desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
   desktop.load.remoteAssets([
     'desktop/assets/js/jquery.simple-color.js',
     'wallpaper',
-    'desktop/apps/desktop.wallpaper/wallpapers/solid.js',
-    'desktop/apps/desktop.wallpaper/wallpapers/ripples.js',
-    'desktop/apps/desktop.wallpaper/wallpapers/matrix.js'
   ], function (err) {
 
     // adjust the wallpaper size to the current window size
@@ -34,16 +52,6 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       // start the new one
       desktop.app.wallpaper.start();
       
-      // TODO: support N wallpapers, remove hard-coded names ( use select drop down? )
-      if (desktop.app.wallpaper.active === 'matrix') {
-        $('#wallPaperRadioMatrix').prop('checked', true);
-      }
-      if (desktop.app.wallpaper.active === 'solid') {
-        $('#wallPaperRadioSolid').prop('checked', true);
-      }
-      if (desktop.app.wallpaper.active === 'ripples') {
-        $('#wallPaperRadioRipples').prop('checked', true);
-      }
     });
 
     desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function (color) {
@@ -53,16 +61,6 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     $('#window_wallpaper').css('width', 366);
     $('#window_wallpaper').css('height', 444);
 
-    // TODO: support N wallpapers, remove hard-coded names ( use select drop down? )
-    if (desktop.app.wallpaper.active === 'matrix') {
-      $('#wallPaperRadioMatrix').prop('checked', true);
-    }
-    if (desktop.app.wallpaper.active === 'solid') {
-      $('#wallPaperRadioSolid').prop('checked', true);
-    }
-    if (desktop.app.wallpaper.active === 'ripples') {
-      $('#wallPaperRadioRipples').prop('checked', true);
-    }
 
     $('.pauseWallpaper').on('click', function () {
       if (desktop.app.wallpaper.paused) {
@@ -132,8 +130,16 @@ desktop.app.wallpaper.resizeCanvasToWindow = function () {
 desktop.app.wallpaper.start = function startWallpaper () {
   desktop.app.wallpaper.paused = false;
   desktop.app.wallpaper.resizeCanvasToWindow();
-  // TODO: choose active wallpaper
-  desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].start();
+  // check to see if wallpaper is already loaded
+  if (!desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active]) {
+    // if not, load the wallpaper before calling .start()
+    let remoteScript = desktop.app.wallpaper._wallpapers[desktop.app.wallpaper.active].src;
+    desktop.load.remoteAssets(remoteScript, function (err) {
+      desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].start();
+    });
+  } else {
+    desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].start();
+  }
 };
 
 desktop.app.wallpaper.clear = function () {

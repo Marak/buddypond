@@ -16,6 +16,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     //
     // BEGIN SET DEFAULTS FOR ALL DESKTOP SETTINGS
     //
+    // TODO: move these to separate file or function block
     if (typeof desktop.settings.audio_enabled === 'undefined') {
       desktop.set('audio_enabled', true);
       // will also update -> desktop.settings.audio_enabled = true
@@ -65,12 +66,17 @@ desktop.app.settings.load = function loadsettings (params, next) {
     //
 
     desktop.on('desktop.settings', 'update-settings-form', function () {
-      desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
+      desktop.app.settings.renderAllSettingsForm($('.desktopSettingsTable tbody'));
     });
 
     desktop.ui.setDesktopIconPositions();
 
-    desktop.app.settings.renderForm($('.desktopSettingsTable tbody'));
+    desktop.app.settings.renderAllSettingsForm($('.desktopSettingsTable tbody'));
+
+    // wallpaper app might not be loaded into desktop ( such as LYTE mode )
+    if (desktop.app.wallpaper) {
+      desktop.app.settings.renderWallpaperTypes($('.wallpaperTypes'));
+    }
 
     function saveSettings () {
       // serialize form and apply each setting to localstorage
@@ -146,7 +152,6 @@ desktop.app.settings.load = function loadsettings (params, next) {
       $('.enableAudioNotifications').prop('checked', true);
     }
 
-
     if (desktop.settings.audio_enabled) {
       $('.audioEnabled').prop('checked', true);
     }
@@ -193,9 +198,21 @@ desktop.app.settings.load = function loadsettings (params, next) {
 
 };
 
+desktop.app.settings.renderWallpaperTypes = function renderWallpaperTypes (el) {
+  for (let w in desktop.app.wallpaper._wallpapers) {
+    let _wallpaper = desktop.app.wallpaper._wallpapers[w];
+    let str = `
+    <input type="radio" id="wallPaperRadio${w}" name="wallpaper_opt" class="wallpaper_opt" value="${w}">
+    <label for="wallPaperRadio${w}">${_wallpaper.label}</label>
+    <br>
+    `;
+    el.append(str);
+  }
+}
+
 // Remark: _ scope is used here since we assume all settings.* properties are actual settings 
 //.          ( except settings.load, settings.openWindow, etc)
-desktop.app.settings.renderForm = function renderDesktopSettingsForm (el) {
+desktop.app.settings.renderAllSettingsForm = function renderDesktopSettingsForm (el) {
   $('.desktopSettingsTable tbody').html('');
   let keys = Object.keys(desktop.settings).sort();
   keys.forEach(function (key) {
@@ -249,6 +266,7 @@ desktop.ui.setDesktopIconPositions = function getDesktopIconPositions () {
 };
 
 desktop.app.settings.openWindow = function openWindow () {
+  $('.wallpaper_opt[value="' + desktop.app.wallpaper.active + '"]').prop('checked', true);
   // $('.simpleColorDisplay').trigger('click');
   return true;
 };

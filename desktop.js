@@ -20,7 +20,7 @@ if (desktop.mode === 'dev') {
   desktop.origin = window.origin;
 }
 
-if (isMobile) {
+if (typeof isMobile !== 'undefined' && isMobile) {
   desktop.isMobile = true;
 }
 
