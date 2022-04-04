@@ -19,7 +19,7 @@ Fixes
 
 Refactors
 
-   - cards aren't replayed on chat close / open / reload
+  X - cards aren't replayed on chat close / open / reload
     - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
   - refactor dynamic windowing system ( buddy_chat and pond_pond )
   - swap online / offline emoji icons for images
@@ -28,6 +28,7 @@ Refactors
   - move call button to side of text area?
   - send paint should be "SAVE PAINT" if not logged in
   - Add replies / comments to messages ( discord style? )
+  - port Dicey to server
   
   ! - ensure rainbow tv is preloaded for mirror
   ? - add min display time to loading gifs ( to avoid flicker )
@@ -195,7 +196,7 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
-
+X - remix losing context again on buddy chat
 X - window stack for buddylist
 
 X- font size should be responsive for larger windows
