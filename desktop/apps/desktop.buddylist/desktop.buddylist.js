@@ -457,9 +457,8 @@ function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
         // let windowKey = desktop.ui.openWindow('buddy_message', { context: context }, position);
         desktop.ui.openWindow('buddylist', { context: context });
         // desktop.app.buddylist.openWindow({ context: context});
-        
         let windowId = '#window_buddy_message_' + context;
-        if (!isMobile) {
+        if (desktop.ui.view === 'Mobile') {
           $('.buddy_message_text', windowId).focus();
         }
         $('.buddy_message_to', windowId).val(context);
@@ -802,7 +801,7 @@ desktop.app.buddylist.openWindow = function (params) {
     if ($(windowId).length === 0) {
       desktop.app.buddylist.renderChatWindow(params.context);
       $('.window-context-title', windowId).html('Chat with ' + params.context);
-      if (!isMobile) {
+      if (desktop.ui.view === 'Mobile') {
         $('.buddy_message_text', windowId).focus();
       }
       $('.buddy_message_to', windowId).val(params.context);

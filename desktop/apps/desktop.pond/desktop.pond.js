@@ -191,7 +191,7 @@ desktop.app.pond.openWindow = function (params) {
       desktop.app.pond.renderChatWindow(params.context);
     
       $('.window-context-title', windowId).html(params.context + ' Pond');
-      if (!isMobile) {
+      if (desktop.ui.view === 'Mobile') {
         $('.pond_message_text', windowId).focus();
       }
       $('.pond_message_to', windowId).val(params.context);

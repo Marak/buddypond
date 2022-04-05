@@ -10,8 +10,7 @@
 }
 
 .mobile_show_desktop_img {
-  width: 64px !important;;
-  height: 64px !important;;
+  width: 16vw !important;
 }
 
 .mobile_larger_font {
@@ -21,4 +20,9 @@
 .mobile_larger_icons {
   width: 128px !important;;
   height: 128px !important;;
+}
+
+.mobile_dock_bar {
+  position: absolute;
+  bottom: 0px;
 }

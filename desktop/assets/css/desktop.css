@@ -101,9 +101,6 @@ div.ui-resizable-handle {
 
 .icon:hover a,
 .icon.ui-draggable-dragging {
-  background-position: 0 0;
-  background-repeat: repeat;
-  border: 1px solid #fff;
   padding: 5px 0 5px;
   color: #00FF41;
 }
@@ -514,8 +511,11 @@ th.shrink {
   -webkit-background-clip: padding-box;
   color: #fff;
   overflow: hidden;
-  padding: 0 10px;
   /* height: 30px; */
+}
+
+#show_desktop img {
+  width: 22px;
 }
 
 #bar_bottom a:hover {
@@ -525,7 +525,6 @@ th.shrink {
 #bar_bottom a:active {
   background: #c60;
   border: 1px solid #fff;
-  padding: 0 9px;
 }
 
 #bar_bottom li a img {

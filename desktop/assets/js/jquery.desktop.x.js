@@ -83,31 +83,37 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 desktop.ui.goMobile = function () {
 
+  // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img')
 
+  // hides the text label for icons
+  $('.dock_title').hide();
+
+  // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
   $('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
   $('a').addClass('mobile_larger_font');
 
+  // increase all the embedded icon sizes and chat control icons
   $('.emojiIcon').addClass('mobile_larger_icons');
-  $('.dock_title').hide();
   $('.chatControl').addClass('mobile_chatControl')
+
+  // hides the entire top navigation bar including clock and menus ( for now )
   $('#bar_top').hide();
   $('.grid-container').css('width', '100%');
   $('.grid-container').css('overflow', 'auto');
-  $('.grid-container').css('top', '0px')
+  $('.grid-container').css('top', '0px');
+
+  //$('#dock').addClass('mobile_dock_bar');
   /*
   $('.chatControl').css('height', 64);
   $('.chatControl').css('width', 64);
   $('.chatControl').css('font-size', 64);
-
   $('.pond_message .window_content').css('bottom', 90);
-  
   $('#dock li img').css('height', 48);
   $('#dock li img').css('width', 48);
-  
   */
 
   // find active window stack, maximize
@@ -122,18 +128,28 @@ desktop.ui.goMobile = function () {
 }
 
 desktop.ui.exitMobile = function () {
+
+  // restore bottom bar sizes ( shrinks )
   $('#bar_bottom').removeClass('mobile_bar_bottom');
-  $('.chatControl').removeClass('mobile_chatControl')
   $('#show_desktop img').removeClass('mobile_show_desktop_img')
 
+  // restores bottom bar labels
+  $('.dock_title').show();
+  $('#dock').removeClass('mobile_dock_bar');
+
+  // removes all emoji icons and chat controls
+  $('.chatControl').removeClass('mobile_chatControl')
+  $('.emojiIcon').removeClass('mobile_larger_icons');
+
+  // restores font sizes to last setting
   $('body').removeClass('mobile_larger_font');
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
   $('a').removeClass('mobile_larger_font');
 
-  $('.emojiIcon').removeClass('mobile_larger_icons');
-  $('.dock_title').show();
+  // restores the top navigation bar
   $('#bar_top').show();
+
   return;
 }
 
@@ -157,13 +173,11 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     desktop.ui.view = 'MegaDesk';
   }
 
-  /*
   if (desktop.ui.view === 'Mobile') {
     desktop.ui.goMobile();
   } else {
     desktop.ui.exitMobile();
   }
-  */
 
   if (desktop.ui.view === 'Normal') {
     $('.window_top').css('height', 30);
@@ -840,10 +854,6 @@ JQDX.closeWindow = function closeWindow (el) {
 
 // creates icon for dock bar ( min / max )
 desktop.ui.renderDockIcon = function (app) {
-  // Remark: temp conditional, remove later
-  if (desktop.isMobile) {
-    return false;
-  }
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
