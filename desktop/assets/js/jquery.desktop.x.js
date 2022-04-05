@@ -62,7 +62,7 @@ JQDX.window_flat = function window_flat () {
 // Clear active states, hide menus.
 //
 JQDX.clear_active = function clear_active () {
-  $('a.active, tr.active').removeClass('active');
+  $('a.active, tr.active, div.active').removeClass('active');
   $('ul.menu').hide();
 }
 
@@ -84,8 +84,20 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 desktop.ui.goMobile = function () {
 
   $('#bar_bottom').addClass('mobile_bar_bottom');
-  $('.chatControl').addClass('mobile_chatControl')
   $('#show_desktop img').addClass('mobile_show_desktop_img')
+
+  $('body').addClass('mobile_larger_font');
+  $('span').addClass('mobile_larger_font');
+  $('input').addClass('mobile_larger_font');
+  $('a').addClass('mobile_larger_font');
+
+  $('.emojiIcon').addClass('mobile_larger_icons');
+  $('.dock_title').hide();
+  $('.chatControl').addClass('mobile_chatControl')
+  $('#bar_top').hide();
+  $('.grid-container').css('width', '100%');
+  $('.grid-container').css('overflow', 'auto');
+  $('.grid-container').css('top', '0px')
   /*
   $('.chatControl').css('height', 64);
   $('.chatControl').css('width', 64);
@@ -113,8 +125,16 @@ desktop.ui.exitMobile = function () {
   $('#bar_bottom').removeClass('mobile_bar_bottom');
   $('.chatControl').removeClass('mobile_chatControl')
   $('#show_desktop img').removeClass('mobile_show_desktop_img')
+
+  $('body').removeClass('mobile_larger_font');
+  $('span').removeClass('mobile_larger_font');
+  $('input').removeClass('mobile_larger_font');
+  $('a').removeClass('mobile_larger_font');
+
+  $('.emojiIcon').removeClass('mobile_larger_icons');
+  $('.dock_title').show();
+  $('#bar_top').show();
   return;
-  // TODO: use css class names and addClass() removeClass()
 }
 
 desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
@@ -137,11 +157,13 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     desktop.ui.view = 'MegaDesk';
   }
 
+  /*
   if (desktop.ui.view === 'Mobile') {
-    //desktop.ui.goMobile();
+    desktop.ui.goMobile();
   } else {
-    //desktop.ui.exitMobile();
+    desktop.ui.exitMobile();
   }
+  */
 
   if (desktop.ui.view === 'Normal') {
     $('.window_top').css('height', 30);
@@ -178,20 +200,12 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     //$('.window_min, .window_resize, .window_close').css('width', 56);
     //$('.window_min, .window_resize, .window_close').css('height', 30);
 
-    // TODO: enlarge icons
-    // Remark: This will require icon layout algo in order to place icons of dynamic size pixel precise on desktop with drag
-    /*
-      $('.icon img').css('height', 64)
-      $('.icon img').css('width', 64)
-      $('.icon').css('font-size', 28);
-    */
-      /*
-      $('.icon').each(function(e, i){
-        let el = $(this);
-        el.css('left', Number(el.css('left').replace('px', '')) * 1.33)
-        el.css('top', Number(el.css('top').replace('px', '')) * 1.33)
-      })
-      */
+    $('.icon img').css('height', 64)
+    $('.icon img').css('width', 64)
+    $('.icon').css('font-size', 28);
+    $('.icon a').addClass('mobile_larger_font');
+    $('.grid-container').css('width', '20vw');
+    $('.icon').css('width', 145)
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
@@ -377,10 +391,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // Cancel single-click.
-  d.on('mousedown', 'a.icon', function() {
+  d.on('mousedown', 'div.icon', function() {
     // Highlight the icon.
     JQDX.clear_active();
-    $(this).addClass('active');
+    //$(this).addClass('active');
   });
 
   // Click remix paint icon to remix images in Paint App
@@ -442,9 +456,14 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     // Single click to open Apps icons on mobile
     eventName = 'click';
   }
-  d.on(eventName, 'a.icon', function() {
+
+  // clicking on an icon opens the window
+  d.on(eventName, '.icon a', function() {
     var iconDock = $(this).attr('href');
     var appName = iconDock.replace('#icon_dock_', '');
+      if (appName === 'download_buddypond') {
+      window.open("https://github.com/marak/buddypond", "_blank");
+    }
     JQDX.openWindow(appName);
   });
 
@@ -460,10 +479,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   })
 
   // Make icons draggable.
-  d.on('mouseenter', 'a.icon', function() {
+  d.on('mouseenter', 'div.icon', function() {
     $(this).off('mouseenter').draggable({
       revert: false,
-      containment: 'parent',
+      containment: 'none',
       stop: function() {
         desktop.ui.getDesktopIconPositions();
       }

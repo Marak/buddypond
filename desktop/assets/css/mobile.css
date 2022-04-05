@@ -6,10 +6,19 @@
 .mobile_chatControl {
   width: 64px;
   height: 64px;
-  font-size: 64px;
+  font-size: 64px !important;
 }
 
 .mobile_show_desktop_img {
-  width: 64px;
-  height: 64px;
+  width: 64px !important;;
+  height: 64px !important;;
+}
+
+.mobile_larger_font {
+  font-size: 32px !important;
+}
+
+.mobile_larger_icons {
+  width: 128px !important;;
+  height: 128px !important;;
 }

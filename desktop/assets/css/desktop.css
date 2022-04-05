@@ -72,7 +72,7 @@ div.ui-resizable-handle {
 /* `Icons
 ----------------------------------------------------------------------------------------------------*/
 
-.icon {
+.icon a {
   background: url(../images/gui/trans_white.png) no-repeat -99999px -99999px;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -82,7 +82,6 @@ div.ui-resizable-handle {
   font-size: 11px;
   font-weight: bold;
   line-height: 1.3;
-  padding: 6px 1px 6px;
   text-align: center;
   text-shadow: #000 0 1px 2px;
   width: 80px;
@@ -100,7 +99,7 @@ div.ui-resizable-handle {
   height: 32px;
 }
 
-.icon:hover,
+.icon:hover a,
 .icon.ui-draggable-dragging {
   background-position: 0 0;
   background-repeat: repeat;
@@ -551,6 +550,47 @@ th.shrink {
   bottom: 0px;
 }
 
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  /*
+  background-color: #2196F3;
+  */
+  padding: 10px;
+  height: 74vh;
+  top: 5vh;
+  position: absolute;
+  overflow: none;
+  width: 12vw;
+}
+
+.grid-container > div {
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  text-align: center;
+  font-size: 30px;
+}
+
+.grid-container-folder {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  /*
+  background-color: #2196F3;
+  */
+  padding: 10px;
+  height: 74vh;
+  overflow: none;
+  width: 66%;
+  text-align: left;
+}
+
+.grid-container-folder > div {
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  text-align: center;
+  font-size: 30px;
+}
+
 #wrapper {
   top: 0;
   left: 0;
@@ -751,7 +791,6 @@ a:hover {
 }
 
 .splash {
-  /* width: 1200px; */
   padding-top: 16px;
   padding-left: 33px;
   
@@ -760,6 +799,7 @@ a:hover {
 .splashImage {
   position: absolute;
   right: 55px;
+  bottom: 0px;
   float: right;
   text-align: center;
 }

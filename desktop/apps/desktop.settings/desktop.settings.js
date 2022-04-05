@@ -69,7 +69,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
       desktop.app.settings.renderAllSettingsForm($('.desktopSettingsTable tbody'));
     });
 
-    desktop.ui.setDesktopIconPositions();
+    // desktop.ui.setDesktopIconPositions();
 
     desktop.app.settings.renderAllSettingsForm($('.desktopSettingsTable tbody'));
 
