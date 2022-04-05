@@ -1,7 +1,7 @@
 desktop.app.profile = {};
 desktop.app.profile.label = 'Profile';
 
-desktop.app.profile.load = function loadDesktop (params, next) {
+desktop.app.profile.load = function loadProfile (params, next) {
   desktop.load.remoteAppHtml('profile', function (responseText, textStatus, jqXHR) {
     $('.lastSeen').html(new Date().toString());
 
@@ -18,7 +18,7 @@ desktop.app.profile.load = function loadDesktop (params, next) {
     $('.editProfileLink').on('click', function () {
       if (buddypond.qtokenid) {
         $(this).closest('.menu').hide();
-        desktop.app.profile.openWindow();
+        desktop.ui.openWindow('profile');
       } else {
         
       }
@@ -86,7 +86,8 @@ desktop.app.profile.load = function loadDesktop (params, next) {
 };
 
 desktop.app.profile.openWindow = function openWindow () {
-  $('#window_profile').addClass('window_stack').show();
-  $('#window_profile').css('height', 540);
-  $('#window_profile').css('width', 460);
+  $('#window_profile').css('width', '44vw');
+  $('#window_profile').css('height', '66vh');
+  $('#window_profile').css('top', '6vh');
+  $('#window_profile').css('left', '2vw');
 };
