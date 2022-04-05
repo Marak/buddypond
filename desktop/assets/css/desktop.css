@@ -883,6 +883,9 @@ video {
   color: black;
 }
 
+#clock:hover {
+  cursor: pointer;
+}
 .loggedIn {
   display: none;
 }
