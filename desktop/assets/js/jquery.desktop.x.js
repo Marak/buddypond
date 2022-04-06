@@ -113,6 +113,9 @@ desktop.ui.goMobile = function () {
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
+  $('.window_content').css('top', '8vh');
+
+
   //$('#dock').addClass('mobile_dock_bar');
   /*
   $('.chatControl').css('height', 64);
@@ -122,6 +125,9 @@ desktop.ui.goMobile = function () {
   $('#dock li img').css('height', 48);
   $('#dock li img').css('width', 48);
   */
+
+  $('.pond_message .window_content').css('height', '70%');
+  $('.buddy_message .window_content').css('height', '70%');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -157,6 +163,10 @@ desktop.ui.exitMobile = function () {
   $('.window_top').css('padding-top', 0);
   $('.window_top').css('padding-bottom', 0);
 
+  //$('.pond_message .window_content').css('height', '100%');
+  //$('.buddy_message .window_content').css('height', '100%');
+
+  $('.window_content').css('top', '7vh');
 
   // restores the top navigation bar
   $('#bar_top').show();
@@ -717,8 +727,10 @@ JQDX.showWindow = function showWindow (appName, params) {
   if (desktop.app[appName] && desktop.app[appName].openWindow) {
     desktop.app[appName].openWindow(params);
   }
+
   JQDX.loading[appName] = false;
   desktop.ui.windowResizeEventHandler();
+
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
   if (typeof cb === 'function') {
     cb(null);
@@ -811,10 +823,10 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   // Remark: Always brings the window to the front after maximize
   //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
   //         Instead, this could be done elsewhere in the code
-
   // check to see if window is already active, if so min it
-  if ($(x).hasClass('window_stack')) {
-    JQDX.minWindow(x);
+  if ($(x).is(':visible')) {
+    //JQDX.minWindow(x);
+    x.removeClass('window_stack');
     x.hide();
   } else {
     JQDX.window_flat();

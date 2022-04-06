@@ -292,11 +292,10 @@ div.ui-resizable-handle {
   line-height: 1.5;
   overflow: auto;
   float: left;
-  /*top: 8vh;*/
   left: 0px;
   right: 0px;
   bottom: 17vh;
-  height: 83%;
+  height: 77%;
 }
 
 .window_aside {
@@ -1140,8 +1139,8 @@ iframe {
 
 .remixPaint {
   position: absolute;
-  left: 6px;
-  top: 48px;
+  left: 46px;
+  top: 6px;
   width: 32px;
   height: 32px;
   z-index: 99;
@@ -1286,4 +1285,8 @@ iframe {
 .memeCard {
   text-align: center;
   background-color: black;
+}
+
+.no_chat_messages {
+  padding-left: 6px;
 }
