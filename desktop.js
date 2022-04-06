@@ -50,6 +50,11 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 desktop.cache = {};
 desktop.cache.buddyListDataCache = {};
 
+// Adds jquery.dateformat to desktop.dateformat scope ( if available )
+if (typeof DateFormat === 'object') {
+  desktop.DateFormat = DateFormat;
+}
+
 // `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
 // this scope if populated by the `jquery.desktop.x.js` file
 desktop.ui = {};

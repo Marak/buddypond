@@ -44,6 +44,9 @@ desktop.app.videochat.load = function loadVideochat () {
     $('#window_videochat').css('width', 777);
     $('#window_videochat').css('height', 666);
 
+    $('#window_videochat').css('top', '22vh');
+    $('#window_videochat').css('left', '33vw');
+
     $('.selectCamera').on('change', function () {
       let newDeviceLabel = $(this).val();
       // TODO: use localstorage to set device preference
