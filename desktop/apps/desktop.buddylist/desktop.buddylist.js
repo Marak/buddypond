@@ -4,7 +4,7 @@ desktop.app.buddylist.label = 'Buddy List';
 desktop.app.buddylist.subscribedBuddies = [];
 
 desktop.app.buddylist.positiveAffirmations = [
-  'Hello. You like nice today.',
+  'Hello. You look nice today.',
   'You are the most amazing person I know.',
   'Your presence just lights up the room.',
   'You are perfect as you are.',
