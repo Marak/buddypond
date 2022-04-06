@@ -292,10 +292,11 @@ div.ui-resizable-handle {
   line-height: 1.5;
   overflow: auto;
   float: left;
-  top: 8vh;
+  /*top: 8vh;*/
   left: 0px;
   right: 0px;
   bottom: 17vh;
+  height: 83%;
 }
 
 .window_aside {
@@ -517,6 +518,7 @@ th.shrink {
 
 #show_desktop img {
   width: 22px;
+  cursor: pointer;
 }
 
 #bar_bottom a:hover {
@@ -1138,12 +1140,12 @@ iframe {
 
 .remixPaint {
   position: absolute;
-  left: 16px;
-  bottom: 33px;
+  left: 6px;
+  top: 48px;
   width: 32px;
   height: 32px;
   z-index: 99;
-  display: none;
+  display: block;
   cursor: pointer;
 }
 
@@ -1154,12 +1156,12 @@ iframe {
 
 .remixGif {
   position: absolute;
-  left: 16px;
+  left: 3px;
+  top: 6px;
   width: 32px;
   height: 32px;
-  top: 32px;
   z-index: 99;
-  display: none;
+  display: block;
 }
 
 .remixGif:hover {
@@ -1215,6 +1217,7 @@ iframe {
 
 .chatMessage {
   font-size: clamp(12px, 0.8vw, 24px);
+  padding-left: 6px;
 }
 
 .message {

@@ -10,7 +10,7 @@ desktop.app.pond.load = function loadPond (params, next) {
   ], function (err) {
 
     $('#window_pond').css('width', '21vw');
-    $('#window_pond').css('height', '66vh');
+    $('#window_pond').css('height', '72vh');
     $('#window_pond').css('top', '9vh');
     $('#window_pond').css('left', '6vw');
 
@@ -345,21 +345,21 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         let ext = arr[arr.length -1];
         if (ext === 'gif') {
           $('.chat_messages', windowId).append(`
-            <span class="message">
+            <div class="message">
               <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
               <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
               <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
-            </span>
+            </div>
             <br/>
           `);
         } else {
           // TODO: should work as single frame in gif studio, new gif single frame
           $('.chat_messages', windowId).append(`
-            <span class="message">
+            <div class="message">
               <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
               <img class="remixPaint" title="Remix this Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
               <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
-            </span>
+            </div>
             <br/>
           `);
         }

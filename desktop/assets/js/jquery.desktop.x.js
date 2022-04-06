@@ -455,22 +455,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     });
   });
 
-  d.on('mouseover', '.message img', function () {
-    let img = $(this);
-    let holder = img.parent();
-    //img.css('opacity', 0.7777);
-    $('.remixGif', holder).show();
-    $('.remixPaint', holder).show();
-  });
-
-  d.on('mouseleave', '.message img', function () {
-    let img = $(this);
-    let holder = img.parent();
-    //img.css('opacity', 1.0);
-    $('.remixGif', holder).hide();
-    $('.remixPaint', holder).hide();
-  });
-
   // App icons are double click on to open on desktop
   let eventName = 'dblclick';
 
@@ -485,6 +469,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let appName = iconDock.replace('#icon_dock_', '');
     if (appName === 'download_buddypond') {
       window.open('https://github.com/marak/buddypond', '_blank');
+      return;
     }
     JQDX.openWindow(appName);
   });
@@ -749,7 +734,10 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
 
   let appWindow = '#window_' + appName;
 
+  // windowTypes is used to store instance window types, currently just chat windows "buddy_message" and "pond_message"
   if (desktop.ui.windowTypes.indexOf(appName) !== -1) {
+    // this is either buddy_message or pond_message
+    // do not attempt to load any apps ( buddylist and ponds should already be loaded )
     JQDX.showWindow(appName, params);
     return;
   }
@@ -813,6 +801,7 @@ JQDX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
 };
 
+// TODO: toggleMaxWindow? its doing two states min and max
 JQDX.maxWindow = function maxWindow (el, $el) {
   // Get the link's target.
   let x = $($(el).attr('href'));
@@ -822,9 +811,17 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   // Remark: Always brings the window to the front after maximize
   //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
   //         Instead, this could be done elsewhere in the code
-  JQDX.window_flat();
-  x.show().addClass('window_stack');
-  desktop.ui.windowResizeEventHandler();
+
+  // check to see if window is already active, if so min it
+  if ($(x).hasClass('window_stack')) {
+    JQDX.minWindow(x);
+    x.hide();
+  } else {
+    JQDX.window_flat();
+    x.addClass('window_stack');
+    x.show();
+  }
+  //desktop.ui.windowResizeEventHandler();
 };
 
 JQDX.closeWindow = function closeWindow (el) {
