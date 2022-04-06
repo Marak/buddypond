@@ -302,7 +302,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     desktop.app.tts.processMessage(message);
 
     message.ctime = new Date(message.ctime).toString();
-    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd yyyy HH:mm:ss a');
+    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd yyyy hh:mm:ss a');
 
     html[windowId] = html[windowId] || '';
 
