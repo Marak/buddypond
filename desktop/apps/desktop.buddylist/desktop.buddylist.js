@@ -659,6 +659,9 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
     message.text = forbiddenNotes.filter(message.text);
 
+    message.ctime = new Date(message.ctime).toString();
+    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd yyyy HH:mm:ss a');
+
     desktop.app.tts.processMessage(message);
 
     // replace cards
