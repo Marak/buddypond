@@ -32,8 +32,6 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       desktop.app.login.logoutDesktop();
     });
 
-    desktop.ui.renderDockElement('login');
-
     let localToken = localStorage.getItem('qtokenid');
     let me = localStorage.getItem('me');
     if (localToken) {
@@ -186,14 +184,15 @@ desktop.app.login.success = function desktopLoginSuccess () {
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
-  $('#window_login').show();
-  JQDX.window_flat();
-  $('#window_login').addClass('window_stack');
+  $('#window_login').addClass('window_stack').show();
   $('#window_login').css('width', '66vw');
   $('#window_login').css('height', '70vh');
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 111);
   $('#login_desktop_icon').show();
+  $('#icon_dock_login').show();
+
+  //$('#icon_dock_login').show();
   $('#buddyname').focus();
   // manually call resize event, make login full screen
   desktop.ui.windowResizeEventHandler();

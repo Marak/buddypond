@@ -92,12 +92,16 @@ desktop.ui.goMobile = function () {
 
   // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
-  $('span').addClass('mobile_larger_font');
+  //$('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
   $('a').addClass('mobile_larger_font');
 
+  //$('.datetime').addClass('mobile_datetime');
+
   // increase all the embedded icon sizes and chat control icons
-  $('.emojiIcon').addClass('mobile_larger_icons');
+  $('#dock .emojiIcon').addClass('mobile_larger_icons');
+  $('#desktop .emojiIcon').addClass('mobile_larger_icons');
+
   $('.chatControl').addClass('mobile_chatControl');
 
   // hides the entire top navigation bar including clock and menus ( for now )
@@ -105,6 +109,9 @@ desktop.ui.goMobile = function () {
   $('.grid-container').css('width', '100%');
   $('.grid-container').css('overflow', 'auto');
   $('.grid-container').css('top', '0px');
+
+  $('.window_top').css('padding-top', 10);
+  $('.window_top').css('padding-bottom', 10);
 
   //$('#dock').addClass('mobile_dock_bar');
   /*
@@ -146,6 +153,10 @@ desktop.ui.exitMobile = function () {
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
   $('a').removeClass('mobile_larger_font');
+
+  $('.window_top').css('padding-top', 0);
+  $('.window_top').css('padding-bottom', 0);
+
 
   // restores the top navigation bar
   $('#bar_top').show();

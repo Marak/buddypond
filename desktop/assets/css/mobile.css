@@ -26,3 +26,8 @@
   position: absolute;
   bottom: 0px;
 }
+
+.mobile_datetime {
+  font-size: 11px;
+  font-decoration: italic;
+}
