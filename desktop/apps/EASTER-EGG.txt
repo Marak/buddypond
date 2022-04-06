@@ -56,6 +56,8 @@ Ideas for community apps:
     - can accept both text and image as input
   - ai art bot that generates images / art based on chat stream
 
+- Simple Contact Manager ( with local storage )
+
 - Camera FX and Shaders
   - Add many more cool effects to the camera
   - see: https://github.com/Marak/buddypond/issues/35
@@ -65,8 +67,7 @@ Ideas for community apps:
   - add goose sound effect
 
 - Add Notepad app
-  - https://github.com/1j01/98/tree/master/programs/notepad
-  - Can save simple notes to postgres DB
+  - Can save simple notes to localstorage
   - Can share notes as smartlinks with buddies
 
 - Mini 3d earth globe with random geoIP pings of user sessions
