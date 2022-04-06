@@ -295,7 +295,7 @@ div.ui-resizable-handle {
   left: 0px;
   right: 0px;
   bottom: 17vh;
-  height: 92%;
+  /*height: 88%;*/
 }
 
 .window_aside {
