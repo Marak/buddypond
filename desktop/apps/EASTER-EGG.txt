@@ -20,6 +20,7 @@ Ideas for community apps:
   - Not Butterchurn or Audio Viz ( see existing open issue: https://github.com/Marak/buddypond/issues/26 )
 
 - Games
+  - https://github.com/nbarkhina/N64Wasm
   - small games to pack in main distribution
   - pick js1k winners / entries?
   - https://github.com/k4zmu2a/SpaceCadetPinball
