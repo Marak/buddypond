@@ -44,10 +44,11 @@ if (width >= 2600) {
 jQuery(document).ready(function () {
   JQDX.bindDocumentEventHandlers();
   JQDX.frame_breaker();
-  desktop.clock();
+  desktop.setClock();
 });
 
 // extended JDQ functions added by Marak
+// eslint-disable-next-line no-redeclare
 const JQDX = {};
 JQDX.loading = {};
 
@@ -654,6 +655,23 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $(this).closest('tr').addClass('active');
   });
 
+  d.on('click', '#clock', function () {
+    const format = desktop.app.localstorage.get('clock');
+    // clear before we switch to a new format
+
+    if (desktop.clockTimeout) {
+      clearTimeout(desktop.clockTimeout);
+    }
+
+    // switch clock format depending on what is set
+    if (format && format === 'dd-mm-yyyy') {
+      desktop.app.localstorage.set('clock', 'mm-dd-yyyy');
+      desktop.setClock();
+    } else {
+      desktop.app.localstorage.set('clock', 'dd-mm-yyyy');
+      desktop.setClock();
+    }
+  });
 };
 
 JQDX.loadWindow = function loadWindow (appName, params, callback) {
@@ -941,21 +959,26 @@ desktop.ui.closeWindow = function openWindow (windowType, context) {
 };
 
 // TODO: move this into separate app with timezones and better clock / date format / calendar
-desktop.clock = function desktopClock () {
-
-  let clock = $('#clock');
+desktop.setClock = function setClock () {
+  const clock = $('#clock');
 
   if (!clock.length) {
     return;
   }
 
+  let format;
+
+  if (desktop.app.localstorage) {
+    format = desktop.app.localstorage.get('clock');
+  }
+
+
   // Date variables.
-  let date_obj = new Date();
+  const date_obj = new Date();
   let hour = date_obj.getHours();
   let minute = date_obj.getMinutes();
-  let day = date_obj.getDate();
-  let year = date_obj.getFullYear();
-  let suffix = 'AM';
+  const day = date_obj.getDate();
+  const year = date_obj.getFullYear();
 
   // Array for weekday.
   let weekday = [
@@ -988,35 +1011,53 @@ desktop.clock = function desktopClock () {
   weekday = weekday[date_obj.getDay()];
   month = month[date_obj.getMonth()];
 
-  // AM or PM?
-  if (hour >= 12) {
-    suffix = 'PM';
-  }
-
-  // Convert to 12-hour.
-  if (hour > 12) {
-    hour = hour - 12;
-  }
-  else if (hour === 0) {
-    // Display 12:XX instead of 0:XX.
-    hour = 12;
-  }
-
   // Leading zero, if needed.
   if (minute < 10) {
     minute = '0' + minute;
   }
 
-  // Build two HTML strings.
-  let clock_time = weekday + ' ' + hour + ':' + minute + ' ' + suffix;
-  let clock_date = month + ' ' + day + ', ' + year;
+  if (!format || format === 'mm-dd-yyyy') {
+    let suffix = 'AM';
+    // default to US time format with 12h
 
-  // Shove in the HTML.
-  clock.html(clock_time).attr('title', clock_date);
+    // AM or PM?
+    if (hour >= 12) {
+      suffix = 'PM';
+    }
 
-  // Update every 60 seconds.
-  setTimeout(desktop.clock, 60000);
-  
+    // Convert to 12-hour.
+    if (hour > 12) {
+      hour = hour - 12;
+    }
+    else if (hour === 0) {
+    // Display 12:XX instead of 0:XX.
+      hour = 12;
+    }
+
+    // Build two HTML strings.
+    const clock_time = weekday + ' ' + hour + ':' + minute + ' ' + suffix;
+    const clock_date = month + ' ' + day + ', ' + year;
+
+    // Shove in the HTML.
+    clock.html(clock_time).attr('title', clock_date);
+
+    // Update every 60 seconds.
+    desktop.clockTimeout = setTimeout(desktop.setClock, 60000);
+  } else {
+    if (hour < 12) {
+      hour = '0' + hour;
+    }
+
+    // Build two HTML strings.
+    const clock_time = weekday + ' ' + hour + ':' + minute;
+    const clock_date = day + ' ' + month + ', ' + year;
+
+    // Shove in the HTML.
+    clock.html(clock_time).attr('title', clock_date);
+
+    // Update every 60 seconds.
+    desktop.clockTimeout = setTimeout(desktop.setClock, 60000);
+  }
 };
 
 desktop.ui.buildContextMenu = function buildContextMenu (config) {
