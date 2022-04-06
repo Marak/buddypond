@@ -101,9 +101,6 @@ div.ui-resizable-handle {
 
 .icon:hover a,
 .icon.ui-draggable-dragging {
-  background-position: 0 0;
-  background-repeat: repeat;
-  border: 1px solid #fff;
   padding: 5px 0 5px;
   color: #00FF41;
 }
@@ -295,10 +292,10 @@ div.ui-resizable-handle {
   line-height: 1.5;
   overflow: auto;
   float: left;
-  top: 5vh;
+  top: 8vh;
   left: 0px;
   right: 0px;
-  bottom: 23px;
+  bottom: 17vh;
 }
 
 .window_aside {
@@ -474,6 +471,7 @@ th.shrink {
   border-bottom: 1px solid #eee;
   min-width: 180px;
   padding-top: 1vh;
+  padding-bottom: 1vh;
 }
 
 #bar_top ul.menu li:last-child a {
@@ -514,8 +512,11 @@ th.shrink {
   -webkit-background-clip: padding-box;
   color: #fff;
   overflow: hidden;
-  padding: 0 10px;
   /* height: 30px; */
+}
+
+#show_desktop img {
+  width: 22px;
 }
 
 #bar_bottom a:hover {
@@ -525,7 +526,6 @@ th.shrink {
 #bar_bottom a:active {
   background: #c60;
   border: 1px solid #fff;
-  padding: 0 9px;
 }
 
 #bar_bottom li a img {
@@ -959,7 +959,7 @@ iframe {
 }
 
 .card-meme {
- max-width: 98%;
+ max-width: 100%;
 }
 
 .rainbow-bg{
@@ -1121,7 +1121,7 @@ iframe {
 
 /* TODO: move these CSS to respective App files */
 .snapsImage {
-  width: 96%;
+  width: 100%;
   /*
   width: 320px;
   height: 240px;
@@ -1136,7 +1136,7 @@ iframe {
   */
 }
 .paintsImage {
-  width: 96%;
+  width: 100%;
 }
 
 .remixPaint {
@@ -1281,4 +1281,8 @@ iframe {
 .context-menu-item:hover {
   background: #f1f3f7;
   color: #4b00ff;
+}
+
+.memeCard {
+  text-align: center;
 }

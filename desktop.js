@@ -20,10 +20,6 @@ if (desktop.mode === 'dev') {
   desktop.origin = window.origin;
 }
 
-if (typeof isMobile !== 'undefined' && isMobile) {
-  desktop.isMobile = true;
-}
-
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
 desktop.app = {};
 

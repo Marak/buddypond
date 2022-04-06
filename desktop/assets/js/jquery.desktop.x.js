@@ -49,7 +49,7 @@ jQuery(document).ready(function () {
 
 // extended JDQ functions added by Marak
 // eslint-disable-next-line no-redeclare
-let JQDX = {};
+const JQDX = {};
 JQDX.loading = {};
 
 //
@@ -84,31 +84,44 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 desktop.ui.goMobile = function () {
 
+  // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img');
 
+  // hides the text label for icons
+  $('.dock_title').hide();
+
+  // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
-  $('span').addClass('mobile_larger_font');
+  //$('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
   $('a').addClass('mobile_larger_font');
 
-  $('.emojiIcon').addClass('mobile_larger_icons');
-  $('.dock_title').hide();
+  //$('.datetime').addClass('mobile_datetime');
+
+  // increase all the embedded icon sizes and chat control icons
+  $('#dock .emojiIcon').addClass('mobile_larger_icons');
+  $('#desktop .emojiIcon').addClass('mobile_larger_icons');
+
   $('.chatControl').addClass('mobile_chatControl');
+
+  // hides the entire top navigation bar including clock and menus ( for now )
   $('#bar_top').hide();
   $('.grid-container').css('width', '100%');
   $('.grid-container').css('overflow', 'auto');
   $('.grid-container').css('top', '0px');
+
+  $('.window_top').css('padding-top', 10);
+  $('.window_top').css('padding-bottom', 10);
+
+  //$('#dock').addClass('mobile_dock_bar');
   /*
   $('.chatControl').css('height', 64);
   $('.chatControl').css('width', 64);
   $('.chatControl').css('font-size', 64);
-
   $('.pond_message .window_content').css('bottom', 90);
-  
   $('#dock li img').css('height', 48);
   $('#dock li img').css('width', 48);
-  
   */
 
   // find active window stack, maximize
@@ -123,18 +136,32 @@ desktop.ui.goMobile = function () {
 };
 
 desktop.ui.exitMobile = function () {
+
+  // restore bottom bar sizes ( shrinks )
   $('#bar_bottom').removeClass('mobile_bar_bottom');
-  $('.chatControl').removeClass('mobile_chatControl');
   $('#show_desktop img').removeClass('mobile_show_desktop_img');
 
+  // restores bottom bar labels
+  $('.dock_title').show();
+  $('#dock').removeClass('mobile_dock_bar');
+
+  // removes all emoji icons and chat controls
+  $('.chatControl').removeClass('mobile_chatControl');
+  $('.emojiIcon').removeClass('mobile_larger_icons');
+
+  // restores font sizes to last setting
   $('body').removeClass('mobile_larger_font');
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
   $('a').removeClass('mobile_larger_font');
 
-  $('.emojiIcon').removeClass('mobile_larger_icons');
-  $('.dock_title').show();
+  $('.window_top').css('padding-top', 0);
+  $('.window_top').css('padding-bottom', 0);
+
+
+  // restores the top navigation bar
   $('#bar_top').show();
+
   return;
 };
 
@@ -144,7 +171,6 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
   // TODO: move magic numbers into variables
 
   let width = $(document).width();
-  // let height = $(document).height();
 
   if (width <= 980) {
     desktop.ui.view = 'Mobile';
@@ -158,13 +184,11 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     desktop.ui.view = 'MegaDesk';
   }
 
-  /*
   if (desktop.ui.view === 'Mobile') {
     desktop.ui.goMobile();
   } else {
     desktop.ui.exitMobile();
   }
-  */
 
   if (desktop.ui.view === 'Normal') {
     $('.window_top').css('height', 30);
@@ -330,7 +354,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // });
 
   d.on('click', 'a.openIDC', function (ev) {
-    // let id = $(this).html();
     let videoId = $(this).data('videoid');
     let start = $(this).data('videot');
     if (start) {
@@ -341,7 +364,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   d.on('click', 'a.openSound', function (ev) {
-    // let id = $(this).html();
     let soundUrl = $(this).data('soundurl');
     desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
   });
@@ -469,8 +491,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   d.on('mousedown', '.startNewGif', function () {
-    // let app = $(this).attr('href');
-    // app = app.replace('#', '');
     desktop.app.gifstudio.insertMode = 'insert';
     JQDX.openWindow('paint', {
       output: 'gifstudio',
@@ -669,9 +689,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
     if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
       let depName = desktop.app[appName].depends_on[0];
       desktop.log('Loading: App.' + depName);
-      desktop.load.remoteJS([ 
-        `desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js`
-      ], function () {
+      desktop.load.remoteJS([ `desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js` ], function () {
         desktop.log('Ready: App.' + depName);
         let depApp = desktop.app[appName].depends_on[0];
         desktop.app[depApp].load(params, function () {
@@ -860,10 +878,6 @@ JQDX.closeWindow = function closeWindow (el) {
 
 // creates icon for dock bar ( min / max )
 desktop.ui.renderDockIcon = function (app) {
-  // Remark: temp conditional, remove later
-  if (desktop.isMobile) {
-    return false;
-  }
   let html = `
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
@@ -884,14 +898,15 @@ desktop.ui.renderDockIcon = function (app) {
 desktop.ui.removeDockElement = function (windowType, context) {
   let dockElement = '#icon_dock_' + windowType;
   $(dockElement).hide();
-  return;
-  // if ($(dockElement).is(':hidden')) {
-  //   $(dockElement).remove().appendTo('#dock');
-  //   $(dockElement).show('fast');
-  // }
-  // if (context) {
-  //   $('.dock_title', dockElement).html(context);
-  // }
+  /*
+  if ($(dockElement).is(':hidden')) {
+    $(dockElement).remove().appendTo('#dock');
+    $(dockElement).show('fast');
+  }
+  if (context) {
+    $('.dock_title', dockElement).html(context);
+  }
+  */
 };
 
 desktop.ui.renderDockElement = function (key, context) {

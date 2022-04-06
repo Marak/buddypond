@@ -457,9 +457,8 @@ function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
         // let windowKey = desktop.ui.openWindow('buddy_message', { context: context }, position);
         desktop.ui.openWindow('buddylist', { context: context });
         // desktop.app.buddylist.openWindow({ context: context});
-        
         let windowId = '#window_buddy_message_' + context;
-        if (!isMobile) {
+        if (desktop.ui.view === 'Mobile') {
           $('.buddy_message_text', windowId).focus();
         }
         $('.buddy_message_to', windowId).val(context);
@@ -675,20 +674,20 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       let ext = arr[arr.length -1];
       if (ext === 'gif') {
         $('.chat_messages', windowId).append(`
-         <span class="message">
+         <div class="message">
           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
           <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
-        </span>
+        </div>
         <br/>
         `);
       } else {
         $('.chat_messages', windowId).append(`
-         <span class="message">
+         <div class="message">
           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
           <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
           <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
-         </span>
+         </div>
          <br/>
         `);
       }
@@ -802,7 +801,7 @@ desktop.app.buddylist.openWindow = function (params) {
     if ($(windowId).length === 0) {
       desktop.app.buddylist.renderChatWindow(params.context);
       $('.window-context-title', windowId).html('Chat with ' + params.context);
-      if (!isMobile) {
+      if (desktop.ui.view === 'Mobile') {
         $('.buddy_message_text', windowId).focus();
       }
       $('.buddy_message_to', windowId).val(params.context);

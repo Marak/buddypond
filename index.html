@@ -13,7 +13,7 @@ window.top.location = 'ie.html';
 <![endif]-->
 
 <script type="text/javascript">
-  let isMobile = false;
+
   // certain websites are currently not supported as referrer
   let notCurrentlySupportedSites = ['reddit.com', 'news.ycombinator.com'];
   notCurrentlySupportedSites.forEach(function(site){
@@ -23,6 +23,8 @@ window.top.location = 'ie.html';
     }
   });
 
+  /* As of 4/5/22 Mobile is now integrated into index.html and desktop.js
+     mobile.html should no longer be needed
   // redirect to the mobile site for smaller screened devices
   if (window.location.search === '?desktop=enabled') {
     // if the desktop is enabled, load as normal
@@ -33,6 +35,7 @@ window.top.location = 'ie.html';
       document.location = "mobile.html";
     }
   }
+  */
 </script>
 
 <link rel="stylesheet" href="desktop/assets/css/reset.css">
@@ -290,7 +293,7 @@ window.top.location = 'ie.html';
   </div>
   <div class="abs" id="bar_bottom">
     <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
-      <img src="desktop/assets/images/icons/icon_22_desktop.png" />
+      <img src="desktop/assets/images/icons/home-icon.png" />
     </a>
     <ul id="dock">
       <li id="icon_dock_buddy_message_0">
