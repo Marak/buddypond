@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-us"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>SaltyNES</title>
+		<link type="image/x-icon" href="http://workhorsy.org/SaltyNES/favicon.ico" rel="shortcut icon">
+		<link type="text/css" href="./SaltyNES_files/styles.css" media="screen" rel="Stylesheet">
+		<script type="text/javascript" src="./SaltyNES_files/no_more_jquery.js">
+      </script>
+  	<body>
+		<div id="control_holder">
+			<div>
+				<input type="button" value="Zoom -" id="button_zoom_out" class="ui_button" disabled="disabled">
+				<input type="button" value="Zoom +" id="button_zoom_in" class="ui_button" disabled="disabled">
+			</div>
+			<div>
+				<input type="button" value="Fullscreen" id="button_full_screen" class="ui_button" disabled="disabled">
+			</div>
+			<div>
+				<input type="button" value="Sound On" id="button_toggle_sound" class="ui_button" disabled="disabled">
+			</div>
+			<div>
+				<input type="button" value="Console On" id="button_toggle_console" class="ui_button">
+			</div>
+		</div>
+
+		<div id="screen_holder">
+			<canvas id="screen" class="" width="256" height="240" style=""></canvas>
+
+			<div id="status"></div>
+
+			<div>
+				<progress value="100" max="100" id="progress" class="hidden"></progress>
+			</div>
+		</div>
+
+		<div id="game_holder">
+			<select id="select_game" class="ui_select">
+				<option>Select a Game ...</option>
+				<option value="roms/dpadhero.nes">D-Pad Hero</option>
+				<option value="roms/dpadhero2.nes">D-Pad Hero 2</option>
+				<option value="roms/BladeBuster.nes">Blade Buster</option>
+				<option value="roms/mojon-twins--jet-paco.nes">Jet-Paco</option>
+				<option value="roms/tiger_1.nes">Tiger Jenny</option>
+			</select>
+			<input id="fileupload" type="file" class="">
+		</div>
+
+		<h3>Controls</h3>
+		<table>
+			<tbody><tr>
+				<td><b>Direction:</b></td>
+				<td>WASD</td>
+			</tr>
+			<tr>
+				<td><b>B / A:</b></td>
+				<td>J / K</td>
+			</tr>
+			<tr>
+				<td><b>Start / Select:</b></td>
+				<td>Enter / Shift</td>
+			</tr>
+		</tbody></table>
+
+		<textarea id="output" rows="8"></textarea>
+
+		<script type="text/javascript" src="./SaltyNES_files/setup.js"></script>
+	
+
+</body></html>
