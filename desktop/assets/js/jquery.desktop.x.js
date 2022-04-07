@@ -84,6 +84,7 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 desktop.ui.goMobile = function () {
 
+  $('.desktopOnly').hide();
   // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img');
@@ -142,6 +143,8 @@ desktop.ui.goMobile = function () {
 };
 
 desktop.ui.exitMobile = function () {
+
+  $('.desktopOnly').show();
 
   // restore bottom bar sizes ( shrinks )
   $('#bar_bottom').removeClass('mobile_bar_bottom');
