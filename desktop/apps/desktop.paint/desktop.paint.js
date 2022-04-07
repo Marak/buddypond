@@ -35,6 +35,8 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
 
 desktop.app.paint.send = function sendPaint (params) {
 
+  $('.sendPaint').attr('disabled', true);
+
   params = params || {
     action: 'insert'
   };
@@ -72,6 +74,8 @@ desktop.app.paint.send = function sendPaint (params) {
         desktop.app.gifstudio.currentFrameIndex++;
       }
       desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex, params.action);
+      JQDX.closeWindow('#window_paint');
+      $('.sendPaint').attr('disabled', false);
       return;
     }
 
@@ -79,17 +83,23 @@ desktop.app.paint.send = function sendPaint (params) {
     if (output === 'pond' || output === 'buddy') {
       // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
       buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function (err, data) {
+        if (err) {
+          alert('Issue sending Paint. Please try again or contact support.');
+          desktop.log(err);
+          $('.sendPaint').attr('disabled', false);
+          return;
+        }
         keys.forEach(function (k) {
           if (k.search('image#') !== -1) {
             localStorage.removeItem(k);
             console.log('clearing key', firstKey);
           }
         });
+        JQDX.closeWindow('#window_paint');
+        $('.sendPaint').attr('disabled', false);
       });
     }
   }, 333);
-  // TODO: only close window on replace updates? or not at all?
-  // JQDX.closeWindow('#window_paint');
 
 };
 
