@@ -15,7 +15,9 @@ desktop.app.profile.load = function loadProfile (params, next) {
       $('.editProfileLink').addClass('editProfileLinkDisabled');
     }
 
-    $('.editProfileLink').on('click', function () {
+    let d = $(document);
+    
+    d.on('mousedown', '.editProfileLink', function () {
       if (buddypond.qtokenid) {
         $(this).closest('.menu').hide();
         desktop.ui.openWindow('profile');

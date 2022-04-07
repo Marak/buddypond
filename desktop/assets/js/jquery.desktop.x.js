@@ -500,7 +500,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       revert: false,
       containment: 'none',
       stop: function () {
-        desktop.ui.getDesktopIconPositions();
+        // desktop.ui.getDesktopIconPositions();
       }
     });
   });
