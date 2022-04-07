@@ -105,7 +105,6 @@
   }
 
   .buddy_send_message_form>form .buddy_message_text {
-    height: 3.2em;
     width: 100%;
     margin: 5px;
     resize: none;
@@ -118,15 +117,8 @@
     border-radius: var(--pond-border-radius);
   }
 
-  .pond_send_message_form>form .pond_message_text:focus-visible {
-    border: none;
-    outline: none;
-  }
-
   .sendBuddyMessage {
     padding: 5px;
-    margin: auto 0.3em auto 0.3em;
-    height: 85%;
     width: 70px;
     border-radius: var(--pond-border-radius);
     border: none;
@@ -320,25 +312,8 @@
               <span title="Insert Emoji"
                 class="buddy_emoji_picker_0 buddy_emoji_picker emojiPicker emojiTitleBar">😀</span><br /><br />
               <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"
-                placeholder="Enter your message...">></textarea>
-              <button name="buddy_message_submit" class="sendBuddyMessage">
-                <div class="
-                submit_svg_container">
-                  <svg class="message_send_svg" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" copyright="cc-by-sa Android Icons" id="Layer_1" x="0px" y="0px"
-                    viewBox="0 0 512 512" style="
-                    " xml:space="preserve">
-                    <style type="text/css">
-                      .st0 {
-                        fill: #333333;
-                      }
-                    </style>
-                    <g id="XMLID_2_">
-                      <polygon id="XMLID_4_" class="st0" points="0,0 49.6,233.9 352.1,256 49.6,278.1 0,512 512,256  ">
-                      </polygon>
-                    </g>
-                  </svg>
-              </button>
+                placeholder=""></textarea>
+              <button name="buddy_message_submit" class="sendBuddyMessage">SEND</button>
               <input name="buddy_message_from" class="buddy_message_from" type="hidden" />
               <input name="buddy_message_to" class="buddy_message_to" type="hidden" />
             </form>

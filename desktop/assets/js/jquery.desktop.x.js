@@ -128,8 +128,8 @@ desktop.ui.goMobile = function () {
   $('#dock li img').css('width', 48);
   */
 
-  $('.pond_message .window_content').css('height', '70%');
-  $('.buddy_message .window_content').css('height', '70%');
+  $('.pond_message .window_content').css('height', '88%');
+  $('.buddy_message .window_content').css('height', '88%');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -223,6 +223,8 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     })
     */
 
+    $('.pond_send_message_form').css('padding-bottom', 0);
+    $('.buddy_send_message_form').css('padding-bottom', 0);
 
   }
 
@@ -244,6 +246,8 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.icon a').addClass('mobile_larger_font');
     $('.grid-container').css('width', '20vw');
     $('.icon').css('width', 145);
+    $('.pond_send_message_form').css('padding-bottom', 12);
+    $('.buddy_send_message_form').css('padding-bottom', 12);
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
