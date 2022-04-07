@@ -581,7 +581,7 @@ th.shrink {
   background-color: #2196F3;
   */
   padding: 10px;
-  height: 74vh;
+  /* height: 74vh; */
   overflow: none;
   width: 66%;
   text-align: left;

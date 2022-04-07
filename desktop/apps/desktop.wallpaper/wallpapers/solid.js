@@ -17,7 +17,10 @@ desktop.app.wallpaper.wallpapers.solid.resize = function () {
 };
 
 desktop.app.wallpaper.wallpapers.solid.start = function () {
-  desktop.app.wallpaper.wallpapers.solid.draw(desktop.settings.wallpaper_color);
+  // give a short pause to allow other canvas timers to stop
+  setTimeout(function(){
+    desktop.app.wallpaper.wallpapers.solid.draw(desktop.settings.wallpaper_color);
+  }, 33)
 };
 
 desktop.app.wallpaper.wallpapers.solid.stop = function () {};
