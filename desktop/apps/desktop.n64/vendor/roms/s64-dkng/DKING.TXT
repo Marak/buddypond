@@ -1,0 +1,135 @@
+
+                               Dragon King
+                               by CrowTRobo
+                             October 22, 1999
+
+
+Introduction
+------------
+
+Dragon King is a RPG which was inspired by the old NES game Dragon
+Warrior.You play a young knight who must save the realm of Eloria
+from the Dragon King and his army of monsters.
+
+
+Saving
+------
+
+The game uses EEPROM to save. The menu after the title screen will only
+have the option to continue a game if a Dragon King save is detected
+in EEPROM. You can save your progress at any of the towns by going to
+the Inn.
+
+
+Difficulty
+----------
+
+There are three levels of difficulty: 'Normal' is the original
+difficulty, 'Harder' makes monsters more accurate and 'Hardest' makes
+monsters more accurate and stronger.
+
+
+Controls
+--------
+
+Use the control pad to move around.
+
+Press START to see your status which also pauses the game.Press START
+again to resume playing.
+
+The A or B button is the 'action' button. It's used to talk, select items
+from a menu, advance through text windows and open chests.
+
+     
+Playing the game
+----------------
+
+Your ultimate goal is to destroy the Dragon King.But you will need
+experience in combat.As you travel around Eloria you will encounter
+many monsters.By fighting and successfully defeating these monsters,
+you will gain experience and gold.As you gain experience you also gain
+levels which will make you slightly stronger.The type and difficulty
+of the monsters you run into depends on the type of terrain you are
+traveling on and also where you are in the world.
+
+Your health is represented by Hit Points or HP.There is a limit on the
+amount of Hit Points you can have which is your Maximum HP.This rises
+each time you gain an experience level.Anytime your HP drops to 0 or
+below, you will die.You can continue playing but are penalized by losing
+half your experience points and half your gold.
+
+
+Fighting
+--------
+
+When you encounter a monster a menu will appear allowing you to Fight,
+use Items or Run.
+
+When you select Fight you will attack the monster.
+
+Selecting Items will bring up another menu showing how many Herbs or
+Potions you have.An herb adds half of your Maximum HP to your current
+HP.A Potion completely heals you.Select the item you want to use from
+the menu or select "Nevermind" to cancel and go back to the fight menu.
+
+By choosing Run, you will try to run away from the monster.
+
+After you select an action, the monster will attack.The process keeps
+repeating until either the monster or you have died.
+
+
+Status
+------
+
+To view your status, press START. A description of each field follows:
+
+Level:          Your current experience level.
+Experience:     Amount of experience points you have earned.
+Exp Needed:     How many more exp. points you need to reach the next level.
+Maximum HP:     Maximum amount of Hit Points you are allowed.
+HP:             Current amount of Hit Points.
+Gold:           Current amount of gold.
+Weapon:         The weapon you are currently using.
+Armor:          The armor you are currently wearing.
+Herbs:          Amount of herbs you possess.
+Potions:        Amount of potions you possess.
+Crystals:       How many crystals you have found.
+
+
+Towns
+-----
+
+Towns are where you can buy weapons, armor and items as well as talk
+to the citizens.To talk to someone, walk up to them and press the
+action button.To buy something in a shop, walk up to the counter and
+press the action button.
+
+At the Inn you can stay a night to recover your Hit Points and to
+save your game.
+
+
+Caves
+-----
+
+Caves are basically mazes that you must make your way through.You will
+find stairs in caves that will lead down into the next level or up to
+the previous one.
+
+There are a few chests in the game that you can open.There is one in
+the castle and one in each cave.To open a chest, walk over it and press
+the action button.
+
+
+Terrain
+-------
+
+You cannot walk on mountains, water or concrete blocks.There are a few
+bridges however that allow you to cross water.
+
+You will find some areas of the world covered with slime (looks like
+dark green grass).Each time you walk into slime, you lose 2 HP.
+
+
+CrowTRobo
+crowtrobo@hotmail.com
+
