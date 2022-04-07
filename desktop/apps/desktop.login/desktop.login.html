@@ -4,7 +4,9 @@
   }
 
   .loginForm table td {
-    padding: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 6px;
   }
 
   .loginButton {
@@ -24,6 +26,19 @@
     width: 300px;
   }
 
+  .splashImage {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    float: right;
+    text-align: center;
+  }
+  
+  .splashImage img {
+    width: 12vw;
+    height: 12vw;
+  }
+
   @keyframes loginButton {
     from {background-color: #000000;}
     to {background-color: #00FF41;}
@@ -33,6 +48,19 @@
     padding: 16px;
     display: none;
   }
+  
+  .buddyLoginTable {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .buddyLoginTable input {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .buddyLoginTable .loginButton {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
 
 </style>
 
@@ -79,16 +107,12 @@
                   <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
                 </tbody>
               </table>
+              <br/>
+              
                <button type="submit" class="loginButton desktopButton">Login</button>
-               <button type="submit" class="loginAnonButton desktopButton">Login as anonymous</button>
+              <button type="submit" class="loginAnonButton desktopButton">Login as anonymous</button>
             </form>
           </div>
-          <br/>
-          <ul>
-            <li>New Users just pick a name and password</li>
-            <li><strong>The login is the password</strong></li>
-            <li><em>There is no registration process</em></li>
-          </ul>
           <div class="tryLYTE">
             Low CPU? Low bandwidth? Try <a href="/lyte">BUDDY POND LYTE</a>
           </div>

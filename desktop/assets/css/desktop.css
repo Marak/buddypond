@@ -671,7 +671,7 @@ a:hover {
 }
 
 .loginForm .desktopButton {
-  width: 23vw;
+  width: 100%;
 }
 
 .desktopButton {
@@ -683,7 +683,7 @@ a:hover {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: clamp(12px, 0.8vw, 24px);
+  font-size: clamp(32px, 6vw, 52px);
   margin: 4px 2px;
   border-radius: 4px;
 }
@@ -796,14 +796,6 @@ a:hover {
   padding-top: 16px;
   padding-left: 33px;
   
-}
-
-.splashImage {
-  position: absolute;
-  right: 55px;
-  bottom: 0px;
-  float: right;
-  text-align: center;
 }
 
 .me_title {
