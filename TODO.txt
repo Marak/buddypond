@@ -2,83 +2,86 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-Fixes
+Chat Windows
 
-  - local storage should remember subscribed chat windows and reopen on reload
-  - remember seralized desktop state ( windows open / close + x / y positions ... )
+- local storage should remember subscribed chat windows and reopen on reload
+- remember seralized desktop state ( windows open / close + x / y positions ... )
 
-  - Flags need to show for memes and snaps and sounds, etc
-  - Flag mouseover should show alt title of locale
+- Flags need to show for memes and snaps and sounds, etc
+- Flag mouseover should show alt title of locale
 
-  - why does extra carriage return happen on enter key in chat, breaks links and text
-  - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+- why does extra carriage return happen on enter key in chat, breaks links and text
+- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
-  1/2 - broke something else - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+Snaps
 
-  when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
-  - add default loading images for memes and snaps? so it doesnt show an X on load?
+  - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
+  - issue with flipped image and paints shared css class...
 
-Refactors
 
-  X - cards aren't replayed on chat close / open / reload
-    - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
-  - swap online / offline emoji icons for images
-  - dont allow icons to be hidden on smaller windows?
-  - move call button to side of text area?
-  - Add replies / comments to messages ( discord style? )
-  - port Dicey to server
-  
-  ! - ensure rainbow tv is preloaded for mirror
-  ? - add min display time to loading gifs ( to avoid flicker )
+Mirror -
 
-Features
+  CSS Alignment issues when taking pictures, no instructions on how to take sequence
 
-  - add 1000 memes to memepool
+when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
+- add default loading images for memes and snaps? so it doesnt show an X on load?
 
-  - play sound alert if buddypond.me is mentioned in chat
+1/2  - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
+- swap online / offline emoji icons for images
+- dont allow icons to be hidden on smaller windows?
+- move call button to side of text area?
+- Add replies / comments to messages ( discord style? )
+- port Dicey to server
 
-  - add YT preview cards to chat for smart links YT
-  - show yt preview images
-    - client side ajax call possible
-    - have remix button on images ( why not )
+! - ensure rainbow tv is preloaded for mirror
+? - add min display time to loading gifs ( to avoid flicker )
 
-  - remix image icons should only appear on mouseover
-  - play buddy sound when buddy logs in ( door open aim )
-  - add UX indactor for ajax disconnect with desktop.log and top right bar
-  - add back button to interdemon cable / mtv / all video players
-  - add openinoious appicus spell for helping open app remotely
-    - required to open hidden apps / non-installed apps
-  - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
-  - console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
-  - add away / watching status based on client is visible API
-  - add friend requests to automatons that autoaccept
-      - have youtube and soundcloud players respect mute / volume levels
-      - not hard...i think...
-  - clicking on active windows should change context and type
-    - other apps like paint and snaps should use this active context
-    - ensure active context is shown inside paint and recorder app
-  - global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
-    - at least mute button should work for YT!
-  - switch all file names to fancy btc like hash names
-  - logout should only logout and close chat windows, not close entire app ( better exp )
-  - youtube playrandom video should not play the same video twice ( check N times before quit )
-  - youtube player should keep temporary play history for back button ( easy patch )
-  - add sigils and signets
-    - sigils are for system powers like matrix agent spell casting
-    - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
-  - create icons for data pulse ( drop in and drop out)
-  - create icons for connected / disconnected
-  - add spell for making user unable to say, cause echo back
-  - add bandwidth speed test? is that even possible?
-  - detect slow connection speeds and adjust merlin?
-  - idc custom playlists
-    - user upload playlists
-    - send playlists from localhost storage instead?
-    - share playlists
-  - add mute shutter sound option to mirror
-  - drag and drop should work on entire document and use context based on active window
-  - add dropdown list of all programs in top left menu ( click to open )
-  - when adding new photos to snap, add remove last photo button ( easy-ish )
+- add 1000 memes to memepool
+
+- play sound alert if buddypond.me is mentioned in chat
+
+- add YT preview cards to chat for smart links YT
+- show yt preview images
+  - client side ajax call possible
+  - have remix button on images ( why not )
+
+- remix image icons should only appear on mouseover
+- play buddy sound when buddy logs in ( door open aim )
+- add UX indactor for ajax disconnect with desktop.log and top right bar
+- add back button to interdemon cable / mtv / all video players
+- add openinoious appicus spell for helping open app remotely
+  - required to open hidden apps / non-installed apps
+- spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
+- console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
+- add away / watching status based on client is visible API
+- add friend requests to automatons that autoaccept
+    - have youtube and soundcloud players respect mute / volume levels
+    - not hard...i think...
+- clicking on active windows should change context and type
+  - other apps like paint and snaps should use this active context
+  - ensure active context is shown inside paint and recorder app
+- global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
+  - at least mute button should work for YT!
+- switch all file names to fancy btc like hash names
+- logout should only logout and close chat windows, not close entire app ( better exp )
+- youtube playrandom video should not play the same video twice ( check N times before quit )
+- youtube player should keep temporary play history for back button ( easy patch )
+- add sigils and signets
+  - sigils are for system powers like matrix agent spell casting
+  - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
+- create icons for data pulse ( drop in and drop out)
+- create icons for connected / disconnected
+- add spell for making user unable to say, cause echo back
+- add bandwidth speed test? is that even possible?
+- detect slow connection speeds and adjust merlin?
+- idc custom playlists
+  - user upload playlists
+  - send playlists from localhost storage instead?
+  - share playlists
+- add mute shutter sound option to mirror
+- drag and drop should work on entire document and use context based on active window
+- add dropdown list of all programs in top left menu ( click to open )
+- when adding new photos to snap, add remove last photo button ( easy-ish )
 
 Apps
 
@@ -124,42 +127,6 @@ Apps
        - fix resize issue from Paint
        - add drag and drop frames
 
-  v2 Snaps
-  
-    - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
-    - issue with flipped image and paints shared css class...
-  
-    X - resize live camera preview to same size as preview
-    X - add slider bar for changing delay / capture speed between frames ( same same )
-    X - add checkbox for Play Countdown Timer
-    X camera source and filter go bottom
-    X video align top of window
-    X checkbox camera go bottom
-    X only show slider in PREP mode for films or photos > 1
-    X continue to snap button should hide controls and go back to prep mode with single icon ( photo )
-    X if adding another one and cancel, go back to prep
-    X - dont show camera select source when previewing snap ( filters / switch wont work )
-    X - when setting camera, use localStorage to set default
-      X!! - ensure that rainbow loading plays for at least 2-3 seconds
-
-    X - add mode confirmingApproving snap ( for hiding controls toggle )
-    X - add button on that toggles between preview and live camera ( single button snap control )
-
-  v1 Image Remixer
-    X - canvas should be able to load image from localstorage into canvas
-    X - jspaint app
-    X - add ability to send jspaint localstorage as snap
-    X - add remix button to open image in jspaint
-  X v2 
-    X - png out from jspaint
-    X - convert single frame gif to jspaint
-    X- if already png no convert
-
-  X Audio Recorder
-    X - audio effects / modulation
-    X - save and send audio the same way gifs are saved
-
-
 Post Beta
   - Switch default wallpaper to water ripples with clicks
   - start thinking about multiple logins from multiple locations same account
@@ -178,6 +145,41 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+X v2 Snaps
+
+  X - resize live camera preview to same size as preview
+  X - add slider bar for changing delay / capture speed between frames ( same same )
+  X - add checkbox for Play Countdown Timer
+  X camera source and filter go bottom
+  X video align top of window
+  X checkbox camera go bottom
+  X only show slider in PREP mode for films or photos > 1
+  X continue to snap button should hide controls and go back to prep mode with single icon ( photo )
+  X if adding another one and cancel, go back to prep
+  X - dont show camera select source when previewing snap ( filters / switch wont work )
+  X - when setting camera, use localStorage to set default
+    X!! - ensure that rainbow loading plays for at least 2-3 seconds
+
+  X - add mode confirmingApproving snap ( for hiding controls toggle )
+  X - add button on that toggles between preview and live camera ( single button snap control )
+
+v1 Image Remixer
+  X - canvas should be able to load image from localstorage into canvas
+  X - jspaint app
+  X - add ability to send jspaint localstorage as snap
+  X - add remix button to open image in jspaint
+X v2 
+  X - png out from jspaint
+  X - convert single frame gif to jspaint
+  X- if already png no convert
+
+X Audio Recorder
+  X - audio effects / modulation
+  X - save and send audio the same way gifs are saved
+
+XX - FIXED - broke something else - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
+X - cards aren't replayed on chat close / open / reload
 
 X - instead of joining lily pond, show list of default ponds ( Lily , Paint, Memes, Alpha )
 X - App.SoundRecorder should show context and type when sending
