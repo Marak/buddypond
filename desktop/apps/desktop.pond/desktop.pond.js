@@ -89,7 +89,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     d.on('mousedown', '.insertSnap', function (ev) {
       let form = $(ev.target).parent();
       let context = $('.pond_message_to', form).val();
-      JQDX.showWindow('mirror', { type: 'pond', context: context });
+      desktop.ui.openWindow('mirror', { type: 'pond', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
       ev.stopPropagation();

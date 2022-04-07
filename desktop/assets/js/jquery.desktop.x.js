@@ -103,7 +103,6 @@ desktop.ui.goMobile = function () {
   // increase all the embedded icon sizes and chat control icons
   $('#dock .emojiIcon').addClass('mobile_larger_icons');
   $('#desktop .emojiIcon').addClass('mobile_larger_icons');
-
   $('.chatControl').addClass('mobile_chatControl');
 
   // hides the entire top navigation bar including clock and menus ( for now )
@@ -117,6 +116,8 @@ desktop.ui.goMobile = function () {
 
   $('.window_content').css('top', '8vh');
 
+  // TODO: remove this line
+  $('.emojiTitleBar').css('padding-top', 32);
 
   //$('#dock').addClass('mobile_dock_bar');
   /*
@@ -130,6 +131,9 @@ desktop.ui.goMobile = function () {
 
   $('.pond_message .window_content').css('height', '88%');
   $('.buddy_message .window_content').css('height', '88%');
+  // TODO: remove these lines
+  $('.sendBuddyMessage').css('width', '33vw');
+  $('.sendPondMessage').css('width', '33vw');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -169,6 +173,12 @@ desktop.ui.exitMobile = function () {
 
   //$('.pond_message .window_content').css('height', '100%');
   //$('.buddy_message .window_content').css('height', '100%');
+
+  // TODO: remove this line
+  $('.emojiTitleBar').css('padding-top', 10);
+  $('.sendBuddyMessage').css('width', '9vw');
+  $('.sendPondMessage').css('width', '9vw');
+
 
   $('.window_content').css('top', '7vh');
 
@@ -225,6 +235,8 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
 
     $('.pond_send_message_form').css('padding-bottom', 0);
     $('.buddy_send_message_form').css('padding-bottom', 0);
+    $('.pond_message_text').css('margin', 5);
+    $('.sendPondMessage').css('margin', 5);
 
   }
 
@@ -248,6 +260,15 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.icon').css('width', 145);
     $('.pond_send_message_form').css('padding-bottom', 12);
     $('.buddy_send_message_form').css('padding-bottom', 12);
+
+    // increase all the embedded icon sizes and chat control icons
+    $('#dock .emojiIcon').addClass('mobile_larger_icons');
+    $('#desktop .emojiIcon').addClass('mobile_larger_icons');
+    $('.chatControl').addClass('mobile_chatControl');
+    // TODO: remove this line
+    $('.emojiTitleBar').css('padding-top', 32);
+    $('.pond_message_text').css('margin', 16);
+    $('.sendPondMessage').css('margin', 16);
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
