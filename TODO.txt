@@ -5,28 +5,26 @@ We have many issues open and welcomed for first time contributors!
 Fixes
 
   - local storage should remember subscribed chat windows and reopen on reload
+  - remember seralized desktop state ( windows open / close + x / y positions ... )
+
   - Flags need to show for memes and snaps and sounds, etc
   - Flag mouseover should show alt title of locale
+
   - why does extra carriage return happen on enter key in chat, breaks links and text
   - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
-  - ensure desktop settings form wont crash app
 
   1/2 - broke something else - if user clicks on buddyname in buddylist while minimize chat, restore window ( easy )
 
   when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
   - add default loading images for memes and snaps? so it doesnt show an X on load?
 
-
 Refactors
 
   X - cards aren't replayed on chat close / open / reload
     - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
-  - refactor dynamic windowing system ( buddy_chat and pond_pond )
   - swap online / offline emoji icons for images
   - dont allow icons to be hidden on smaller windows?
-  - fix mouse events for mobile ( drag not working , double click vs click)
   - move call button to side of text area?
-  - send paint should be "SAVE PAINT" if not logged in
   - Add replies / comments to messages ( discord style? )
   - port Dicey to server
   
@@ -34,12 +32,11 @@ Refactors
   ? - add min display time to loading gifs ( to avoid flicker )
 
 Features
+
   - add 1000 memes to memepool
 
-  X - instead of joining lily pond, show list of default ponds ( Lily , Paint, Memes, Alpha )
-  
   - play sound alert if buddypond.me is mentioned in chat
-  - App.SoundRecorder should show context and type when sending
+
   - add YT preview cards to chat for smart links YT
   - show yt preview images
     - client side ajax call possible
@@ -62,7 +59,6 @@ Features
     - ensure active context is shown inside paint and recorder app
   - global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
     - at least mute button should work for YT!
-  - remember seralized desktop state ( windows open / close + x / y positions ... )
   - switch all file names to fancy btc like hash names
   - logout should only logout and close chat windows, not close entire app ( better exp )
   - youtube playrandom video should not play the same video twice ( check N times before quit )
@@ -169,19 +165,6 @@ Post Beta
   - start thinking about multiple logins from multiple locations same account
   - consider replacing emoji area with https://github.com/mervick/emojionearea
 
-  - dblclick / singleclick for mobile
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -196,6 +179,16 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+X - instead of joining lily pond, show list of default ponds ( Lily , Paint, Memes, Alpha )
+X - App.SoundRecorder should show context and type when sending
+
+X  - dblclick / singleclick for mobile
+X - fix mouse events for mobile ( drag not working , double click vs click)
+
+X - refactor dynamic windowing system ( buddy_chat and pond_pond )
+X - send paint should be "SAVE PAINT" if not logged in
+
+X - ensure desktop settings form wont crash app
 X - remix losing context again on buddy chat
 X - window stack for buddylist
 
