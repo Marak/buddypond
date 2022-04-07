@@ -19,7 +19,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     // used for joining Ponds, clicking on pond names, general pond settings, etc
     //
     $('.openPond').on('click', function () {
-      let chan = $(this).html();
+      let chan = $(this).attr('href');
       chan = chan.substr(1, chan.length - 1);
       desktop.ui.openWindow('pond', { context: chan });
     });
