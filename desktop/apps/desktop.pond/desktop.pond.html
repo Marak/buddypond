@@ -1,17 +1,22 @@
 <style>
+  :root {
+    --pond-border-radius: 10px;
+    --pond-input-background-colour: #ebebeb;
+  }
   div.pond_main {
     padding: 16px;
   }
 
   div.pond_message_main {
     padding-top: 0px;
-    bottom: 27px;
     position: relative;
+    overflow-y: scroll;
   }
 
   .chat_area {
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   .pond_send_message_form {
@@ -26,34 +31,59 @@
 
   .pond_emoji_picker {
     position: static !important;
-    margin: auto auto auto 0.5em;
+    padding-top: 12px;
+    /* margin: auto auto auto auto; */
   }
 
   .pond_send_message_form>form .pond_message_text {
-    height: 2em;
+    height: 3.2em;
     width: 100%;
-    margin-right: 0.2em;
+    margin: 5px;
     resize: none;
+    cursor: text;
+    box-sizing: border-box;
+    background-color: #ebebeb;
+    padding: 2px 10px;
+    flex-grow: 1;
+    border: none;
+    border-radius: var(--pond-border-radius);
+  }
+  .pond_send_message_form>form .pond_message_text:focus-visible {
+    border: none;
+    outline: none;
   }
 
-  .pond_message .window_content {
-    bottom: 75px;
-    /*
-    height: 88%;
-    */
-    /* overflow-y: hidden; */
-  }
 
   .sendPondMessage {
-    float: right;
-    padding: 0px;
-    margin: 0 1em 0 0;
-    height: 81%;
-    width: 80px;
+    padding: 5px;
+    margin: auto 0.3em auto 0.3em;
+    height: 85%;
+    width: 70px;
+    border-radius: var(--pond-border-radius);
+    border: none;
+    background-color: var(--pond-input-background-colour);
+  }
+
+  .submit_svg_container {
+    position: relative;
+    width:100%;
+    height:100%;
+  }
+
+  .message_send_svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .pondNameList {
     padding: 16px;
+  }
+
+  .chat_media_buttons {
+    display: flex;
   }
 
   .insertSnap {
@@ -62,6 +92,7 @@
     padding-top: 9px;
     cursor: pointer;
   }
+
   .insertSnap:hover {
     opacity: 0.44;
   }
@@ -120,7 +151,7 @@
     opacity: 0.44;
   }
 
-   .memeImage .remixPaint {
+  .memeImage .remixPaint {
     cursor: pointer;
     position: absolute;
     top: 5px;
@@ -130,7 +161,7 @@
     z-index: 99;
   }
 
-   .memeImage .remixPaint:hover {
+  .memeImage .remixPaint:hover {
     opacity: 0.44;
   }
 
@@ -139,6 +170,7 @@
     padding-right: 6px;
     padding-bottom: 3px;
   }
+
   .pondDesc {
     font-style: italic;
   }
@@ -165,7 +197,7 @@
           <h2>Join Pond</h2>
           <br />
           <p>
-            A pond is a room where many buddies can chat with each other. <br/><br/>Click on the pond to hop in!
+            A pond is a room where many buddies can chat with each other. <br /><br />Click on the pond to hop in!
           </p>
           <br />
           <table class="ponds">
@@ -210,9 +242,9 @@
               </td>
             </tr>
           </table>
-          <br/>
+          <br />
           <div align="center">
-            <p><em>Want to create your own Pond? <br/>Just type in the name below!</em></p>
+            <p><em>Want to create your own Pond? <br />Just type in the name below!</em></p>
             <form class="joinPondForm">
               <label for="customPondName">
                 <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"
@@ -231,6 +263,7 @@
   </div>
   <span class="abs ui-resizable-handle ui-resizable-se"></span>
 </div>
+
 <div id="window_pond_message_0" class="abs window pond_message" data-app="pond">
   <div class="abs window_inner">
     <div class="window_top">
@@ -244,8 +277,8 @@
         <a href="#icon_dock_pond_message_0" class="window_close"></a>
       </span>
     </div>
-    <div class="chat_area">
-      <div class="abs window_content">
+    <div class="abs window_content">
+      <div class="chat_area">
         <div class="window_main pond_message_main">
           <div class="buddy_pond_not_connected">
             You'll need to login in order to access the Buddy Pond.
@@ -259,25 +292,48 @@
             <hr />
           </div>
         </div>
-      </div>
-      <div class="abs window_bottom_chat">
-        <div class="pond_send_message_form">
-          <form method="POST" action="" align="right" class="pond_send_message_form">
-            <span class="insertSnap chatControl" title="Insert Snap">📷</span>
-            <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/>
-            <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png"/></a>
-            <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png"/>
-            <span title="Insert Emoji" class="pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span><br/><br/>
-            <textarea name="pond_message_text" class="pond_message_text pond_message_text_0" rows="1"
-              cols="44"></textarea>
-            <button name="pond_message_submit" class="sendPondMessage">Send</button>
-            <input name="pond_message_from" class="pond_message_from" type="hidden" />
-            <input name="pond_message_to" class="pond_message_to" type="hidden" />
-          </form>
+        <div class="window_bottom_chat">
+          <div class="pond_send_message_form">
+            <form method="POST" action="" align="right" class="pond_send_message_form">
+              <!-- <div class="chat_media_buttons"> --> <!-- This is commented out because it breaks JSPAINT integration for some reason. -->
+                <span class="insertSnap chatControl" title="Insert Snap">📷</span>
+                <img title="Insert Audio" class="insertSound chatControl"
+                  src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
+                <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertGif chatControl"
+                    src="desktop/assets/images/icons/icon_gifstudio_64.png" /></a>
+                <img title="Insert Paint" class="insertPaint chatControl"
+                  src="desktop/assets/images/icons/icon_paint_64.png" />
+                <span title="Insert Emoji"
+                  class="pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span><br /><br />
+              <!-- </div> -->
+              <textarea name="pond_message_text" class="pond_message_text pond_message_text_0"
+                placeholder="Enter your message..."></textarea>
+              <button name="pond_message_submit" class="sendPondMessage">
+                <div class="
+            submit_svg_container">
+                  <svg class="message_send_svg" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" copyright="cc-by-sa Android Icons" id="Layer_1" x="0px" y="0px"
+                    viewBox="0 0 512 512" style="
+                " xml:space="preserve">
+                    <style type="text/css">
+                      .st0 {
+                        fill: #333333;
+                      }
+                    </style>
+                    <g id="XMLID_2_">
+                      <polygon id="XMLID_4_" class="st0" points="0,0 49.6,233.9 352.1,256 49.6,278.1 0,512 512,256  ">
+                      </polygon>
+                    </g>
+                  </svg>
+                </div>
+              </button>
+              <input name="pond_message_from" class="pond_message_from" type="hidden" />
+              <input name="pond_message_to" class="pond_message_to" type="hidden" />
+            </form>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="abs window_bottom">
       Build: v4.20.69
     </div>

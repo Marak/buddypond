@@ -770,7 +770,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       if (data.messages.length > 0) {
         //      let el = $('.chat_messages', '.pond_message_main')
         setTimeout(function () {
-          let el = $('.window_content', key);
+          let el = $('.buddy_message_main', key);
           $(el).scrollTop(999999);
         }, 1111);
       }
