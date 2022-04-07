@@ -405,7 +405,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       if (data.messages.length > 0) {
         //      let el = $('.chat_messages', '.pond_message_main')
         setTimeout(function () {
-          let el = $('.window_content', key);
+          let el = $('.pond_message_main', key);
           $(el).scrollTop(999999);
         }, 1111);
       }
