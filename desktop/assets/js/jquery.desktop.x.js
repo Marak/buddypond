@@ -740,7 +740,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
-  console.log('JQDX.showWindow', appName, params);
+  // console.log('JQDX.showWindow', appName, params);
   let appWindow = '#window_' + appName;
 
   if (appName === 'pond' && params.context) {
@@ -787,7 +787,7 @@ JQDX.showWindow = function showWindow (appName, params) {
 // attempts to open a window based on name and parameters
 // will attempt to JQDX.loadWindow() if no window is found
 JQDX.openWindow = function openWindow (appName, params, cb) {
-
+  // console.log('JQDX.openWindow', appName, params)
   params = params || {};
 
   let appWindow = '#window_' + appName;
@@ -861,8 +861,13 @@ JQDX.minWindow = function minWindow (el) {
 
 // TODO: toggleMaxWindow? its doing two states min and max
 JQDX.maxWindow = function maxWindow (el, $el) {
+
+  let windowId = $(el).attr('href');
+  // console.log('JQDX.maxWindow', windowId)
+
   // Get the link's target.
-  let x = $($(el).attr('href'));
+  let x = $(windowId);
+
   if ($el) {
     x = $el;
   }
@@ -870,8 +875,8 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
   //         Instead, this could be done elsewhere in the code
   // check to see if window is already active, if so min it
-  if ($(x).is(':visible')) {
-    //JQDX.minWindow(x);
+  
+  if (x.hasClass('window_stack')) {
     x.removeClass('window_stack');
     x.hide();
   } else {
@@ -879,6 +884,7 @@ JQDX.maxWindow = function maxWindow (el, $el) {
     x.addClass('window_stack');
     x.show();
   }
+
   //desktop.ui.windowResizeEventHandler();
 };
 
