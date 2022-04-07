@@ -683,7 +683,6 @@ a:hover {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: clamp(32px, 6vw, 52px);
   margin: 4px 2px;
   border-radius: 4px;
 }

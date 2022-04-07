@@ -212,7 +212,7 @@ desktop.app.pond.openWindow = function (params) {
       }
 
       $(windowId).css('width', '44vw');
-      $(windowId).css('height', '66vh');
+      $(windowId).css('height', '72vh');
       $(windowId).css('top', '9vh');
       $(windowId).css('left', '30vw');
       // flatten other windows, show that window as active top stack

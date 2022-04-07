@@ -56,7 +56,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     ];
 
     $('#window_buddylist').css('width', '15vw');
-    $('#window_buddylist').css('height', '66vh');
+    $('#window_buddylist').css('height', '72vh');
     $('#window_buddylist').css('top', '9vh');
     $('#window_buddylist').css('left', '77vw');
 
