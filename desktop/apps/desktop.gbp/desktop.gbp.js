@@ -18,8 +18,7 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
     let prices = {};
     let marketData = {};
 
-    $('.gbpAmount').on('change', function () {
-      let gbpAmount = $(this).val();
+    function updatePurchaseCosts (gbpAmount) {
       $('.estimatedCostUSD').html('$' + (gbpAmount * marketData.gbpActualValue));
       
       let ethCost = (gbpAmount * marketData.gbpActualValue) / prices['ETH'];
@@ -33,7 +32,18 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
 
       //$('.estimatedCostBTC').html((amount / prices['BTC']));
       //$('.estimatedCostDOGE').html((amount / prices['DOGE']));
+    }
+
+    $('.gbpAmount').on('change', function () {
+      let gbpAmount = $(this).val();
+      updatePurchaseCosts(gbpAmount);
     });
+
+    $('.gbpAmount').on('keyup', function () {
+      let gbpAmount = $(this).val();
+      updatePurchaseCosts(gbpAmount);
+    });
+
 
     $('.buyGBPForm').on('submit', function () {
 
@@ -68,7 +78,22 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
         $('.balanceData .points').html(desktop.utils.numberFormat.format(balance.gbp));
         $('.balanceData .value').html(desktop.utils.usdFormat.format(balance.value));
         $('.balanceData .expectedValue').html(desktop.utils.usdFormat.format(balance.expectedValue));
-        $('#gbpTabs').tabs();
+        
+        buddypond.getGbpRecentTransactions({}, function(err, transactions){
+          transactions.forEach(function(t){
+            $('.recentTransactions').append(`
+              <tr>
+                <td>${desktop.DateFormat.format.date(new Date(t.createdAt), desktop.dateTimeFormat)}</td>
+                <td>${t.from}</td>
+                <td>${t.to}</td>
+                <td>${t.amount}</td>
+                <td>${desktop.utils.usdFormat.format(t.value)}</td>
+                <td>${t.text}</td>
+              </tr>
+              `);
+          })
+          $('#gbpTabs').tabs();
+        });
       });
       next();
     });

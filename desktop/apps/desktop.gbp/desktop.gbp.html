@@ -40,6 +40,9 @@
   .marketData {
     font-size: 24px;
   }
+  .recentTransactions {
+    font-size: 16px;
+  }
 </style>
 
 <div id="window_gbp" class="abs window" align="center">
@@ -90,7 +93,6 @@
             <div class="marketData">
               <strong>Secured Cap:</strong> <span class="marketCap"></span>
             </div>
-            
             <div class="buyGBPHolder">
               <h2>BUY GBP NOW</h2>
               <form class="buyGBPForm">
@@ -117,33 +119,26 @@
             Your Good Buddy Points Balance
             <div class="balanceData">
               <div class="marketData">
-                Good Buddy Points: <span class="points"></span>
+                <strong>Good Buddy Points:</strong> <span class="points"></span>
               </div>
               <div class="marketData">
-                Value: <span class="expectedValue"></span>
+                <strong>Value:</strong> <span class="expectedValue"></span>
               </div>
               <div class="marketData">
-                Backed Value: <span class="value"></span>
+                <strong>Backed Value:</strong> <span class="value"></span>
               </div>
             </div>
           </div>
           <div id="tabs-3">
-            Blockchain explorer goes here.
-            Last 30 transactions:
-            <table class="data table">
+            Last 10 Blockchain Transactions:
+            <table class="data table recentTransactions">
               <tr>
                 <th>Date</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Amount</th>
+                <th>Value</th>
                 <th>Message</th>
-              </tr>
-              <tr>
-                <td>Today</td>
-                <td>Dave</td>
-                <td>Marak</td>
-                <td>123</td>
-                <td>Cheers!</td>
               </tr>
             </table>
           </div>

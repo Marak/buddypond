@@ -201,6 +201,12 @@ buddypond.getGbpBalance = function purchaseGbp (params, cb) {
   })
 }
 
+buddypond.getGbpRecentTransactions = function recentGbpTransactions (params, cb) {
+  apiRequest('/gbp/recent', 'GET', params, function(err, data){
+    cb(err, data);
+  })
+}
+
 buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);

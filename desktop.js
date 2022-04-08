@@ -55,6 +55,8 @@ if (typeof DateFormat === 'object') {
   desktop.DateFormat = DateFormat;
 }
 
+desktop.dateTimeFormat = 'E MMMM dd yyyy hh:mm:ss a';
+
 // `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
 // this scope if populated by the `jquery.desktop.x.js` file
 desktop.ui = {};
@@ -480,12 +482,13 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
   if (command[0] === '/give') {
     let to = message.text.split(' ')[1];
     let amount = message.text.split(' ')[2];
+    let text = message.text.split(' ')[3] || '';
     
     let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
     if (!yorn) {
       return true;
     }
-    buddypond.giveGbp({ buddyname: to, amount: amount }, function (err, transfer){
+    buddypond.giveGbp({ buddyname: to, amount: amount, text: text }, function (err, transfer){
       let points = 0;
       if (transfer.error) {
         alert(transfer.error.message);
