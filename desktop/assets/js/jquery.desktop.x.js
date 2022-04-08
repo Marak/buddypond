@@ -1146,22 +1146,30 @@ desktop.ui.clearContextMenu = function clearContextMenu (listId) {
 
 desktop.ui.cards = {}
 desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
+  let currentValue = 'NO VALUE';
+  if (message.card.value) {
+    currentValue = `<em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>`;
+  }
   if (message.card.action === 'got') {
     return `
       <div class="message pointsCard rainbow">
         <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
         <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
-        <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>
+        ${currentValue}
         <br/>
       </div>
       <br/>
     `;
   } else {
+    let balance = desktop.utils.numberFormat.format(message.card.balance);
+    if (message.card.balance === 0) {
+      balance = 'ZERO';
+    }
     return `
       <div class="message pointsCard rainbow">
         <strong>${message.card.buddyname}</strong><br/>
-        <strong>${desktop.utils.numberFormat.format(message.card.balance)} GOOD BUDDY POINTS</strong><br/>
-        <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>
+        <strong>${balance} GOOD BUDDY POINTS</strong><br/>
+        ${currentValue}
         <br/>
       </div>
       <br/>

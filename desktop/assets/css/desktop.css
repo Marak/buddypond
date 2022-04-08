@@ -1285,6 +1285,7 @@ iframe {
 
 .pointsCard {
   padding-top: 16px;
+  padding-bottom: 16px;
   text-align: center;
   background-color: black;
 }
