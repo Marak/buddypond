@@ -1,0 +1,77 @@
+desktop.app.gbp = {};
+desktop.app.gbp.label = 'GBP';
+desktop.app.gbp.icon = 'folder';
+
+desktop.app.gbp.load = function loadDesktopgbp (params, next) {
+  desktop.load.remoteAssets([
+    'gbp' // this loads the sibling desktop.app.gbp.html file into <div id="window_gbp"></div>
+  ], function (err) {
+    $('.marketCap').html('123123');
+    $('.totalCoins').html('33333');
+    $('.marketPrice').html('$123');
+
+    $('#window_gbp').css('width', '66vw');
+    $('#window_gbp').css('height', '70vh');
+    $('#window_gbp').css('left', 222);
+    $('#window_gbp').css('top', 111);
+
+    let prices = {};
+    let marketData = {};
+
+    $('.gbpAmount').on('change', function () {
+      let gbpAmount = $(this).val();
+      $('.estimatedCostUSD').html('$' + (gbpAmount * marketData.gbpActualValue));
+      
+      let ethCost = (gbpAmount * marketData.gbpActualValue) / prices['ETH'];
+      $('.estimatedCostETH').html(ethCost);
+
+      let btcCost = (gbpAmount * marketData.gbpActualValue) / prices['BTC'];
+      $('.estimatedCostBTC').html(btcCost);
+
+      let dogeCost = (gbpAmount * marketData.gbpActualValue) / prices['DOGE'];
+      $('.estimatedCostDOGE').html(dogeCost);
+
+      //$('.estimatedCostBTC').html((amount / prices['BTC']));
+      //$('.estimatedCostDOGE').html((amount / prices['DOGE']));
+    });
+
+    $('.buyGBPForm').on('submit', function () {
+
+      
+      return false;
+    });
+    
+    $('.buyGBPButton').on('click', function () {
+      buddypond.purchaseGbp({
+        buddyname: buddypond.me,
+        amount: Number($('.gbpAmount').val()),
+        purchaseType: 'ETH',
+        currentCost: Number($('.estimatedCostETH').html())
+      },function(err, data){
+        if (err) {
+          alert(err);
+        }
+      });
+    });
+
+    buddypond.getGbpMarket(function(err, data){
+      marketData = data;
+      prices = data.prices;
+      $('.marketCap').html(desktop.utils.usdFormat.format(data.total));
+      $('.projectedMarketCap').html(desktop.utils.usdFormat.format(data.expected));
+      $('.totalGbpSupply').html(desktop.utils.numberFormat.format(data.supply));
+      $('.marketValue').html(desktop.utils.usdFormat.format(data.gbpExpectedValue));
+      $('.marketPrice').html(desktop.utils.usdFormat.format(data.gbpActualValue));
+      $('.buddyMultiplier').html(data.multiplier + 'x');
+      buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
+        //$('.marketData').html(JSON.stringify(data, true, 2))
+        $('.balanceData .points').html(desktop.utils.numberFormat.format(balance.gbp));
+        $('.balanceData .value').html(desktop.utils.usdFormat.format(balance.value));
+        $('.balanceData .expectedValue').html(desktop.utils.usdFormat.format(balance.expectedValue));
+        $('#gbpTabs').tabs();
+      });
+      next();
+    });
+
+  });
+};

@@ -471,16 +471,66 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
 };
 
 desktop.commands = {};
-desktop.commands.chatCommands = {
-  QUIT: '/quit',
-  HELP: '/help'
-};
+desktop.commands.chatCommands = ['/quit', '/help', '/points']
 
-desktop.commands.processInternalMessage = function processInternalMessage (message, windowId) {
+desktop.commands.preProcessMessage = function processInternalMessage (message, windowId) {
   // don't process the message on the server if it's the help command
   // instead capture it and send back the immediate response text
-  const text = message.text.split(' ')[0];
-  if (text === desktop.commands.chatCommands.HELP) {
+  let command = message.text.split(' ');
+  if (command[0] === '/give') {
+    let to = message.text.split(' ')[1];
+    let amount = message.text.split(' ')[2];
+    
+    let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
+    if (!yorn) {
+      return true;
+    }
+    buddypond.giveGbp({ buddyname: to, amount: amount }, function (err, transfer){
+      let points = 0;
+      if (transfer.error) {
+        alert(transfer.error.message);
+        return;
+      }
+    });
+    return false;
+  }
+
+  if (command[0] === '/points' && command.length === 1) {
+
+    buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
+      console.log(err, balance)
+      let points = 0;
+      let value = 0;
+      if (!balance.error) {
+        points = balance.gbp;
+        value = balance.expectedValue;
+      }
+      const pointsText = `
+        <div class="help">
+          <h3>Your current Good Buddy Points</h3>
+          <span>Show Market Cap data here?</span>
+          <p>
+            Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
+          </p
+          <p>
+            Estimated Value: ${desktop.utils.usdFormat.format(value)}
+          </p
+            
+        <div>
+      `;
+
+      $('.chat_messages', windowId).append(`<div class="chatMessage">${pointsText}</div>`);
+      $('.no_chat_messages', windowId).hide();
+
+      let el = $('.window_content', windowId);
+      $(el).scrollTop(999999);
+    });
+    // Remark: Must return true or /points message will get sent to server
+    return true;
+
+  }
+
+  if (command[0] === '/help') {
     const commandSet = [
       {
         command: '/meme',
@@ -703,3 +753,20 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
     }
   }
 };
+
+// formats numbers into USD currency locale
+desktop.utils.usdFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+// formats numbers into USD currency locale
+desktop.utils.numberFormat = new Intl.NumberFormat('en-US', {
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});

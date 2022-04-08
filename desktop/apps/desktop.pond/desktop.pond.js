@@ -254,7 +254,7 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   // empty text area input
   $('.pond_message_text', form).val('');
 
-  const processed = desktop.commands.processInternalMessage(message, '#window_pond_message_' + message.to);
+  const processed = desktop.commands.preProcessMessage(message, '#window_pond_message_' + message.to);
 
   if (processed) {
     return;
@@ -342,6 +342,11 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     // replace cards
     if (message.card) {
+      if (message.card.type === 'points') {
+        $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
+        desktop.messages._processedCards.push(message.uuid);
+        return;
+      }
       if (message.card.type === 'snaps') {
         message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
         let arr = message.card.snapURL.split('.');

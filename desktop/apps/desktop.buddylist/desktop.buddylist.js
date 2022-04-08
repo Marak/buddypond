@@ -264,7 +264,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   $('.buddy_message_text', form).val('');
   $('.emoji-wysiwyg-editor').html('');
 
-  const processed = desktop.commands.processInternalMessage(message, '#window_buddy_message_' + message.to);
+  const processed = desktop.commands.preProcessMessage(message, '#window_buddy_message_' + message.to);
 
   if (processed) {
     return;
@@ -669,6 +669,12 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     let dataContext = message.from;
     if (message.from === buddypond.me) {
       dataContext = message.to;
+    }
+
+    if (message.card && message.card.type === 'points') {
+      $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
+      desktop.messages._processedCards.push(message.uuid);
+      return;
     }
     
     if (message.card && message.card.type === 'snaps') {

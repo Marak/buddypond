@@ -177,6 +177,30 @@ buddypond.getMessages = function getMessages (params, cb) {
   })
 }
 
+buddypond.getGbpMarket = function getGbpMarket (cb) {
+  apiRequest('/gbp/market', 'GET', {}, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.purchaseGbp = function purchaseGbp (params, cb) {
+  apiRequest('/gbp/purchase', 'POST', params, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.giveGbp = function giveGbp (params, cb) {
+  apiRequest('/gbp/send', 'POST', params, function(err, data){
+    cb(err, data);
+  })
+}
+
+buddypond.getGbpBalance = function purchaseGbp (params, cb) {
+  apiRequest('/gbp/balance', 'GET', params, function(err, data){
+    cb(err, data);
+  })
+}
+
 buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);

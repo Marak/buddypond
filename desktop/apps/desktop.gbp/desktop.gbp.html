@@ -1,0 +1,217 @@
+<style>
+  #window_gbp  {
+    width: 600px;
+    height: 500px;
+  }
+   #window_gbp .gbpHolder {
+    text-align: left;
+    padding: 16px;
+    margin: 16px;
+  }
+  #window_gbp_purchase .gbpHolder {
+   text-align: left;
+   padding: 16px;
+   margin: 16px;
+ }
+  .gbpHolder > h2 {
+    font-size: 32px;
+  }
+  .buyGBPHolder > h2 {
+    font-size: 28px;
+  }
+  .gbpBackgroundImage {
+    position: absolute;
+    z-index: -1;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    opacity: 0.222;
+  }
+  .buyGBPHolder {
+    text-align: center;
+    border: solid;
+    font-size: 24px;
+    z-index: 99;
+  }
+  .buyGBPHolder input {
+    font-size: 24px;
+  }
+  .marketData {
+    font-size: 24px;
+  }
+</style>
+
+<div id="window_gbp" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img src="desktop/assets/images/icons/icon_gbp_64.png" />
+        GBP - Good Buddy Points
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_gbp" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <img src="desktop/assets/images/misc/gbp-doge.png" class="gbpBackgroundImage"/>
+      <div class="window_main gbpHolder">
+        <div id="gbpTabs">
+          <ul>
+            <li><a href="#tabs-1">Market</a></li>
+            <li><a href="#tabs-2">Balance</a></li>
+            <li><a href="#tabs-3">Blockchain Explorer</a></li>
+          </ul>
+          <div id="tabs-1">
+            <div class="marketData">
+              <strong>Market Cap:</strong> <span class="projectedMarketCap"></span>
+            </div>
+            <div class="marketData">
+              <strong>Circulation:</strong> <span class="totalGbpSupply"></span>
+            </div>
+            <div class="marketData">
+              <strong>Supply:</strong> <span class="fixedSupply">100,000,000</span>
+            </div>
+            <!--
+            <div class="marketData">
+              Estimated GBP Price: <span class="marketPrice"></span>
+            </div>
+            -->
+            <div class="marketData">
+              <strong>GBP Current Value:</strong> <span class="marketValue"></span>
+            </div>
+            
+            <div class="marketData">
+              <strong>Buddy Multiplier:</strong> <span class="buddyMultiplier"></span>
+            </div>
+
+            <div class="marketData">
+              <strong>Secured Cap:</strong> <span class="marketCap"></span>
+            </div>
+            
+            <div class="buyGBPHolder">
+              <h2>BUY GBP NOW</h2>
+              <form class="buyGBPForm">
+                Amount: <input type="number" name="gbpAmount" class="gbpAmount" value="42" min="1" max="9999999"/>
+                <br/>
+                Estimated Cost ( USD ) 
+                <span class="estimatedCostUSD">$999.999</span>
+                <br/>
+                Estimated Cost ( BTC )
+                <span class="estimatedCostBTC">$999.999</span>
+                 <br/>
+                Estimated Cost ( ETH )
+                <span class="estimatedCostETH">$999.999</span>
+                 <br/>
+                Estimated Cost ( DOGE )
+                <span class="estimatedCostDOGE">$999.999</span>
+                <br/>
+                <button class="rainbowBG desktopButton buyGBPButton">BUY GBP!</button>
+              </form>
+            </div>
+            <br/>
+          </div>
+          <div id="tabs-2">
+            Your Good Buddy Points Balance
+            <div class="balanceData">
+              <div class="marketData">
+                Good Buddy Points: <span class="points"></span>
+              </div>
+              <div class="marketData">
+                Value: <span class="expectedValue"></span>
+              </div>
+              <div class="marketData">
+                Backed Value: <span class="value"></span>
+              </div>
+            </div>
+          </div>
+          <div id="tabs-3">
+            Blockchain explorer goes here.
+            Last 30 transactions:
+            <table class="data table">
+              <tr>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+                <th>Message</th>
+              </tr>
+              <tr>
+                <td>Today</td>
+                <td>Dave</td>
+                <td>Marak</td>
+                <td>123</td>
+                <td>Cheers!</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>
+
+<div id="window_gbp_purchase" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder.png" />
+        Purchase Good Buddy Points
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_gbp" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <img src="desktop/assets/images/misc/gbp-doge.png" class="gbpBackgroundImage"/>
+      <div class="window_main gbpHolder">
+
+        <div class="buyGBPHolder">
+          <h2>Confirm Purchase</h2>
+          <span class="hint">You purchase amount will automatically be linked to your GBP Balance Address</span>
+          <form>
+            Public Address: <input type="number" name="gbpAmount" class="gbpAmount" value="42" min="1" max="9999999"/>
+            <br/>
+            <button class="rainbowBG desktopButton">Confirm your public address</button>
+            <div class="waitingForFunds">
+              We have verified your public address and are now awaiting funds. <br/>
+              Once a few confirmations have completed you will get your Good Buddy Points!
+            </div>
+            Estimated Cost ( USD ) <br/>
+            <span class="estimatedCost">$999.999</span>
+            <br/>
+            Send Funds to one of these addresses:
+            <table class="table">
+              <tr>
+                <td>DOGE</td>
+                <td>123123123123123</td>
+              </tr>
+              <tr>
+                <td>BTC</td>
+                <td>123123123123123</td>
+              </tr>
+              <tr>
+                <td>ETH</td>
+                <td>123123123123123</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <br/>
+        <hr>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

@@ -1136,6 +1136,32 @@ desktop.ui.clearContextMenu = function clearContextMenu (listId) {
   $(listId).children().remove();
 };
 
+desktop.ui.cards = {}
+desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
+  if (message.card.action === 'got') {
+    return `
+      <div class="message memeCard rainbow">
+        <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
+        <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
+        <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>
+        <br/>
+      </div>
+      <br/>
+    `;
+  } else {
+    return `
+      <div class="message memeCard rainbow">
+        <strong>${message.card.buddyname}</strong><br/>
+        <strong>${desktop.utils.numberFormat.format(message.card.balance)} GOOD BUDDY POINTS</strong><br/>
+        <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>
+        <br/>
+      </div>
+      <br/>
+    `;
+  }
+
+};
+
 desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListener (contextListId) {
   const contextListener = (event) => {
     const isClickedOutsideOfContainer = !$(contextListId).is(event.target) && $(contextListId).has(event.target).length === 0;
