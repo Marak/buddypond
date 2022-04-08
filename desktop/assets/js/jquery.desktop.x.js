@@ -652,9 +652,16 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.window_min', function () {
     JQDX.minWindow(this);
   });
+  d.on('click', 'a.minWindow', function () {
+    JQDX.minWindow(this);
+  });
+
 
   // Maximize or restore the window.
   d.on('click', 'a.window_resize', function () {
+    JQDX.window_resize(this);
+  });
+  d.on('click', 'a.maxWindow', function () {
     JQDX.window_resize(this);
   });
 
@@ -662,6 +669,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.window_close', function () {
     JQDX.closeWindow(this);
   });
+  d.on('click', 'a.exitWindow', function () {
+    JQDX.closeWindow(this);
+  });
+
+
 
   // Show desktop button, ala Windows OS.
   d.on('mousedown', '#show_desktop', function () {

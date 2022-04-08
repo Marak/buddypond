@@ -4,7 +4,7 @@ desktop.app.gbp.icon = 'folder';
 
 desktop.app.gbp.depositAddresses = {
   'BTC': '148dBGs99rnFHSu3euZYziABse6Prs5L7J',
-  'ETH': '0x150eF95cdB28f7ac32926917b9342C0759DbEe04'
+  'ETH': 'buddypond.eth'
 };
 
 desktop.app.gbp.load = function loadDesktopgbp (params, next) {
@@ -27,16 +27,16 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
     $('.buyGBPHolder').hide();
 
     function updatePurchaseCosts (gbpAmount) {
-      $('.estimatedCostUSD').html('$' + (gbpAmount * marketData.gbpActualValue));
+      $('.estimatedCostUSD').html('$' + (gbpAmount * marketData.gbpExpectedValue));
       
-      let ethCost = (gbpAmount * marketData.gbpActualValue) / prices['ETH'];
+      let ethCost = (gbpAmount * marketData.gbpExpectedValue) / prices['ETH'];
       $('.estimatedCostETH').html(ethCost);
 
-      let btcCost = (gbpAmount * marketData.gbpActualValue) / prices['BTC'];
+      let btcCost = (gbpAmount * marketData.gbpExpectedValue) / prices['BTC'];
       $('.estimatedCostBTC').html(btcCost);
 
-      let dogeCost = (gbpAmount * marketData.gbpActualValue) / prices['DOGE'];
-      $('.estimatedCostDOGE').html(dogeCost);
+      //let dogeCost = (gbpAmount * marketData.gbpActualValue) / prices['DOGE'];
+      //$('.estimatedCostDOGE').html(dogeCost);
 
       //$('.estimatedCostBTC').html((amount / prices['BTC']));
       //$('.estimatedCostDOGE').html((amount / prices['DOGE']));
@@ -48,18 +48,31 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
     });
 
     $('.gbpAmount').on('keyup', function () {
-      let gbpAmount = $(this).val();
+      var max = parseInt($(this).attr('max'));
+       var min = parseInt($(this).attr('min'));
+       if ($(this).val() > max) {
+         $(this).val(max);
+       } else if ($(this).val() < min) {
+         $(this).val(min);
+       }
+       let gbpAmount = $(this).val();
+
+      
       updatePurchaseCosts(gbpAmount);
     });
 
-
     $('.buyGBPForm').on('submit', function () {
-
-      
       return false;
     });
-    
+
     $('.buyGBPButton').on('click', function () {
+      
+      //$('.importantConfirmationsScreen').show();
+      $('.buyGBPForm').fadeOut()
+      // TODO
+      // $('.pendingGBPPurchase').fadeIn()
+      return;
+      
       buddypond.purchaseGbp({
         buddyname: buddypond.me,
         amount: Number($('.gbpAmount').val()),
@@ -72,9 +85,15 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
       });
     });
 
+    $('.depositAddresses').hide();
+    $('.buyGBPButton').attr('disabled', true);
+    $('.buyGBPButton').removeClass('desktopButton');
+
     buddypond.getGbpMarket(function(err, data){
       marketData = data;
       prices = data.prices;
+      $('.gbpAmount').attr('max', 100000000);
+      $('.gbpAmount').attr('min', 1);
       $('.marketCap').html(desktop.utils.usdFormat.format(data.total));
       $('.projectedMarketCap').html(desktop.utils.usdFormat.format(data.expected));
       $('.totalGbpSupply').html(desktop.utils.numberFormat.format(data.supply));
@@ -104,7 +123,8 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
                 <td>${t.text}</td>
               </tr>
               `);
-          })
+          });
+          updatePurchaseCosts(42);
           $('#gbpTabs').tabs();
         });
       });
