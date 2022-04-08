@@ -1156,7 +1156,6 @@ desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
         <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
         <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
         ${currentValue}
-        <br/>
       </div>
       <br/>
     `;
@@ -1170,7 +1169,6 @@ desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
         <strong>${message.card.buddyname}</strong><br/>
         <strong>${balance} GOOD BUDDY POINTS</strong><br/>
         ${currentValue}
-        <br/>
       </div>
       <br/>
     `;
