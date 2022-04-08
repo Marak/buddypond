@@ -18,6 +18,9 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
     let prices = {};
     let marketData = {};
 
+    // for now
+    $('.buyGBPHolder').hide();
+
     function updatePurchaseCosts (gbpAmount) {
       $('.estimatedCostUSD').html('$' + (gbpAmount * marketData.gbpActualValue));
       

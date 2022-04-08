@@ -237,6 +237,8 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.buddy_send_message_form').css('padding-bottom', 0);
     $('.pond_message_text').css('margin', 5);
     $('.sendPondMessage').css('margin', 5);
+    $('.recentTransactions').css('font-size', 16);
+    
 
   }
 
@@ -269,6 +271,7 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.emojiTitleBar').css('padding-top', 32);
     $('.pond_message_text').css('margin', 16);
     $('.sendPondMessage').css('margin', 16);
+    $('.recentTransactions').css('font-size', 32);
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
@@ -404,6 +407,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.openSound', function (ev) {
     let soundUrl = $(this).data('soundurl');
     desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
+  });
+
+  d.on('click', 'a.openApp', function (ev) {
+    let appName = $(this).data('app');
+    desktop.ui.openWindow(appName);
   });
 
   // Relative or remote links?
@@ -1140,7 +1148,7 @@ desktop.ui.cards = {}
 desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
   if (message.card.action === 'got') {
     return `
-      <div class="message memeCard rainbow">
+      <div class="message pointsCard rainbow">
         <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
         <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
         <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>
@@ -1150,7 +1158,7 @@ desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
     `;
   } else {
     return `
-      <div class="message memeCard rainbow">
+      <div class="message pointsCard rainbow">
         <strong>${message.card.buddyname}</strong><br/>
         <strong>${desktop.utils.numberFormat.format(message.card.balance)} GOOD BUDDY POINTS</strong><br/>
         <em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>

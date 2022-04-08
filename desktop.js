@@ -511,7 +511,7 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
       const pointsText = `
         <div class="help">
           <h3>Your current Good Buddy Points</h3>
-          <span>Show Market Cap data here?</span>
+          <span><a class="openApp" data-app="gbp" href="#openGBP">Show Market Data</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Balance</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Recent Transactions</a></span>
           <p>
             Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
           </p

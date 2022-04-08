@@ -1283,6 +1283,12 @@ iframe {
   background-color: black;
 }
 
+.pointsCard {
+  padding-top: 16px;
+  text-align: center;
+  background-color: black;
+}
+
 .no_chat_messages {
   padding-left: 6px;
 }
