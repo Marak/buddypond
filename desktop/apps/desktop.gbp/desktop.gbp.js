@@ -2,6 +2,11 @@ desktop.app.gbp = {};
 desktop.app.gbp.label = 'GBP';
 desktop.app.gbp.icon = 'folder';
 
+desktop.app.gbp.depositAddresses = {
+  'BTC': '148dBGs99rnFHSu3euZYziABse6Prs5L7J',
+  'ETH': '0x150eF95cdB28f7ac32926917b9342C0759DbEe04'
+};
+
 desktop.app.gbp.load = function loadDesktopgbp (params, next) {
   desktop.load.remoteAssets([
     'gbp' // this loads the sibling desktop.app.gbp.html file into <div id="window_gbp"></div>
@@ -78,10 +83,15 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
       $('.buddyMultiplier').html(data.multiplier + 'x');
       buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
         //$('.marketData').html(JSON.stringify(data, true, 2))
-        $('.balanceData .points').html(desktop.utils.numberFormat.format(balance.gbp));
-        $('.balanceData .value').html(desktop.utils.usdFormat.format(balance.value));
-        $('.balanceData .expectedValue').html(desktop.utils.usdFormat.format(balance.expectedValue));
-        
+        if (balance.gbp) {
+          $('.balanceData .points').html(desktop.utils.numberFormat.format(balance.gbp));
+        }
+        if (balance.value) {
+          $('.balanceData .value').html(desktop.utils.usdFormat.format(balance.value));
+        }
+        if (balance.expectedValue) {
+          $('.balanceData .expectedValue').html(desktop.utils.usdFormat.format(balance.expectedValue));
+        }
         buddypond.getGbpRecentTransactions({}, function(err, transactions){
           transactions.forEach(function(t){
             $('.recentTransactions').append(`
