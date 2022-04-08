@@ -78,7 +78,7 @@ desktop.app.gbp.load = function loadDesktopgbp (params, next) {
       $('.marketCap').html(desktop.utils.usdFormat.format(data.total));
       $('.projectedMarketCap').html(desktop.utils.usdFormat.format(data.expected));
       $('.totalGbpSupply').html(desktop.utils.numberFormat.format(data.supply));
-      $('.marketValue').html(desktop.utils.usdFormat.format(data.gbpExpectedValue));
+      $('.marketValue').html(desktop.utils.usdFormatSmall.format(data.gbpExpectedValue));
       $('.marketPrice').html(desktop.utils.usdFormat.format(data.gbpActualValue));
       $('.buddyMultiplier').html(data.multiplier + 'x');
       buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){

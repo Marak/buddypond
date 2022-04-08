@@ -491,7 +491,7 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     buddypond.giveGbp({ buddyname: to, amount: amount, text: text }, function (err, transfer){
       let points = 0;
       if (transfer.error) {
-        alert(transfer.error.message);
+        alert(transfer.message);
         return;
       }
     });
@@ -516,9 +516,8 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
             Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
           </p
           <p>
-            Estimated Value: ${desktop.utils.usdFormat.format(value)}
+            Estimated Value: ${desktop.utils.usdFormatSmall.format(value)}
           </p
-            
         <div>
       `;
 
@@ -761,11 +760,24 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
 desktop.utils.usdFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
+  minimumFractionDigits: 2
 
   // These options are needed to round to whole numbers if that's what you want.
   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
+
+// formats numbers into USD currency locale with 8 decimals places
+desktop.utils.usdFormatSmall = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 8
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
 
 // formats numbers into USD currency locale
 desktop.utils.numberFormat = new Intl.NumberFormat('en-US', {
