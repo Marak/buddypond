@@ -1148,7 +1148,7 @@ desktop.ui.cards = {}
 desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
   let currentValue = 'NO VALUE';
   if (message.card.value) {
-    currentValue = `<em>CURRENT VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>`;
+    currentValue = `<em>ESTIMATED VALUE: ${desktop.utils.usdFormat.format(message.card.value)}</em><br/>`;
   }
   if (message.card.action === 'got') {
     return `
