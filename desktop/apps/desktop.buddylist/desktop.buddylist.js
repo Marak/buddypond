@@ -255,6 +255,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   message.text = $('.buddy_message_text', form).val();
   message.to = $('.buddy_message_to', form).val();
   message.from = $('.buddy_message_from', form).val();
+  message.type = 'buddy';
 
   if (message.text.trim() === '') {
     return;

@@ -246,6 +246,7 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
   message.from = $('.pond_message_from', form).val();
+  message.type = 'pond';
 
   if (message.text.trim() === '') {
     return;

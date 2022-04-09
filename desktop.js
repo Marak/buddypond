@@ -488,7 +488,7 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     if (!yorn) {
       return true;
     }
-    buddypond.giveGbp({ buddyname: to, amount: amount, text: text }, function (err, transfer){
+    buddypond.giveGbp({ buddyname: to, amount: amount, text: text, messageType: message.type, messageTo: message.to }, function (err, transfer){
       let points = 0;
       if (transfer.error) {
         alert(transfer.message);
