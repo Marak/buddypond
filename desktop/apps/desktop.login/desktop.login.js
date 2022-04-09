@@ -116,8 +116,8 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
       if (data.banned) {
         alert(data.message);
       }
+      $('.buddyPasswordRow').show();
       if (buddyname === password) {
-        // $('.buddyPasswordRow').show();
         $('.buddyPasswordRow').show();
         $('#buddypassword').focus();
       } else {
