@@ -544,6 +544,11 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
         helpText: '- searches all memes for "cool beans"'
       },
       {
+        command: '/points',
+        additional: '',
+        helpText: '- Show your current amount of Good Buddy Points'
+      },
+      {
         command: '/say',
         additional: ' hello world',
         helpText: '- sends random meme'
@@ -553,11 +558,13 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
         additional: ' 😇',
         helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
       },
+      /*
       {
         command: '/roll',
         additional: ' 20',
         helpText: '- Rolls a d20 dice'
       },
+      */
       {
         command: '/quit',
         helpText: '- Logs you out of here'
@@ -602,7 +609,7 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
 desktop.commands.postProcessMessage = function postProcessMessage (message) {
   // Check if user wants to quit then log the user out
   const text = message.text.split(' ')[0];
-  if (text === desktop.commands.chatCommands.QUIT) {
+  if (text === '/quit') {
     desktop.app.login.logoutDesktop();
   }
 };
