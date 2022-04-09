@@ -10,7 +10,7 @@
   }
 
   .loginButton {
-    width: 300px;
+    width: 100%;
   }
 
   .loginButton:hover {
@@ -23,7 +23,7 @@
   }
 
   .loginAnonButton {
-    width: 300px;
+    width: 100%;
   }
 
   .splashImage {
@@ -35,8 +35,9 @@
   }
   
   .splashImage img {
-    width: 12vw;
-    height: 12vw;
+    width: 6vw;
+    height: 6vw;
+    cursor: pointer;
   }
 
   @keyframes loginButton {
@@ -69,7 +70,9 @@
     font-size: clamp(32px, 2vw, 64px);
   }
   
-
+  .buddyPasswordRow {
+    display: none;
+  }
 
 </style>
 
@@ -89,40 +92,41 @@
     <div class="abs window_content">
       <div class="window_main">
         <div class="splash">
-          <h1>Welcome to Buddy Pond!</h1>
-          <em>Peer to Peer Multimedia Buddy Messaging</em>
+          <h1>Welcome Buddy!</h1>
+          <em>Cloud Desktop. Peer to Peer Messaging</em>
           <br/>
           <em>No followers or following counts, just Buddies!</em>
-          <div class="splashImage">
-            <img src="desktop/assets/images/misc/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
-            <br/>
-            <em class="smaller">This is a Buddy at the pond.</em>
-          </div>
           <br/>
+          <div class="splashImage">
+            <img src="desktop/assets/images/misc/pond.jpeg" title="This is a Buddy at the pond." alt="This is a Buddy at the pond."/>
+          </div>
           <div>
             <form method="POST" action="/login" class="loginForm">
               <table class="buddyLoginTable">
                 <tbody>
                   <tr>
-                    <td><label for="buddyname">Buddy Name:</label></td>
+                    <td><label for="buddyname">Your name to continue:</label></td>
                     <td>
-                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" />
+                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" placeholder="CoolVibes99" />
                     </td>
                   </tr>
-                  <tr>
-                    <td><label for="buddypassword">Buddy Password:</label></td>
+                  <tr class="buddyPasswordRow">
+                    <td><label for="buddypassword">Password:</label></td>
                     <td><input class="" id="buddypassword" name="buddypassword" type="password" size="16"/></td>
                   </tr>
                   <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
+                  <tr>
+                    <td colspan="2">
+                      <button type="submit" class="loginButton">Login</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <button type="submit" class="loginAnonButton">I would like to be anonymous</button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-               <button type="submit" class="loginButton desktopButton">Login</button>
-               <br/>
-              <button type="submit" class="loginAnonButton desktopButton">Login as anonymous</button>
             </form>
           </div>
           <div class="tryLYTE">
