@@ -1,12 +1,13 @@
 #bar_bottom.mobile_bar_bottom {
   height: 23%;
+  min-height: 137px;
   z-index: 420;
 }
 
 .mobile_chatControl {
-  width: 64px;
+  width: 86px;
   height: 64px;
-  font-size: 64px !important;
+  font-size: 77px !important;
 }
 
 .mobile_show_desktop_img {
@@ -15,6 +16,10 @@
 
 .mobile_larger_font {
   font-size: 32px !important;
+}
+
+.mobile_doubly_larger_font {
+  font-size: 48px !important;
 }
 
 .mobile_larger_icons {

@@ -30,15 +30,13 @@
   }
 
   .pond_emoji_picker {
-    position: static !important;
-    padding-top: 12px;
+    position: relative;
+    top: 10px;
     /* margin: auto auto auto auto; */
   }
 
   .pond_send_message_form>form .pond_message_text {
-    height: 3.2em;
     width: 100%;
-    margin: 5px;
     resize: none;
     cursor: text;
     box-sizing: border-box;
@@ -53,12 +51,10 @@
     outline: none;
   }
 
-
   .sendPondMessage {
+    margin: 5px;
     padding: 5px;
-    margin: auto 0.3em auto 0.3em;
-    height: 85%;
-    width: 70px;
+    width: 9vw;
     border-radius: var(--pond-border-radius);
     border: none;
     background-color: var(--pond-input-background-colour);
@@ -89,7 +85,8 @@
   .insertSnap {
     font-size: 20px;
     padding-right: 5px;
-    padding-top: 9px;
+    top: 8px;
+    position: relative;
     cursor: pointer;
   }
 
@@ -174,18 +171,33 @@
   .pondDesc {
     font-style: italic;
   }
+  .openPond {
+    cursor: pointer;
+  }
+  .getHelp {
+    position: absolute;
+    font-size: 18px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .getHelp:hover {
+    opacity: 0.44;
+  }
+  .joinPondTable td {
+    cursor: pointer;
+  }
 </style>
 <div id="window_pond" class="abs window pond_list" data-window-index="0">
   <div class="abs window_inner">
     <div class="window_top">
       <span class="float_left">
         <img src="desktop/assets/images/icons/icon_pond_64.png" />
-        <span class="window-context-title">Pond</span>
+        <span class="window-context-title">Ponds</span>
       </span>
-      <span class="float_right">
-        <a href="#" class="window_min"></a>
-        <a href="#" class="window_resize"></a>
-        <a href="#icon_dock_buddypond" class="window_close"></a>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
       </span>
     </div>
     <div class="abs window_content">
@@ -194,62 +206,92 @@
           You'll need to login in order to access the Buddy Pond.
         </div>
         <div class="loggedIn">
-          <h2>Join Pond</h2>
-          <br />
-          <p>
-            A pond is a room where many buddies can chat with each other. <br /><br />Click on the pond to hop in!
-          </p>
-          <br />
-          <table class="ponds">
-            <tr>
+          <h2>Join Ponds</h2>
+          <table class="joinPondTable data table">
+
+            <tr class="openPond" href="#Lily">
               <td>
-                <a class="openPond" href="#">#Lily</a>
+                #Lily
               </td>
               <td>
-                <span class="pondDesc">
-                  General Buddy Chats
-                </span>
+                <em>General Buddy Chats</em>
+              </td>
+              <td>
+                333
               </td>
             </tr>
-            <tr>
+
+            <tr class="openPond" href="#Paint">
               <td>
-                <a class="openPond" href="#">#Paint</a>
+                #Paint
               </td>
               <td>
-                <span class="pondDesc">
-                  MSPaint Based Image Room
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a class="openPond" href="#">#Memes</a>
+                <em>MSPaint Based Image Room ( Images Only )</em>
               </td>
               <td>
-                <span class="pondDesc">
-                  Memes Images Only
-                </span>
+                144
               </td>
             </tr>
-            <tr>
+            <tr class="openPond" href="#Memes">
               <td>
-                <a class="openPond" href="#openPond">#Alpha</a>
+                #Memes
               </td>
               <td>
-                <span class="pondDesc">
-                  Buddy Pond Alpha Dev Chat
-                </span>
+                 <em>Memes ( Images Only )</em>
+              </td>
+              <td>
+                212
+              </td>
+            </tr>
+            <tr class="openPond" href="#Alpha">
+              <td>
+                #Alpha
+              </td>
+              <td>
+                <em>Alpha Buddy Pond Developer Chat</em>
+              </td>
+              <td>
+                113
+              </td>
+            </tr>
+            <tr href="#backrooms" style="opacity: 0.33;" title="Matrix Agents only!">
+              <td>
+                #backrooms
+              </td>
+              <td>
+                <em>Liminal Backrooms</em>
+              </td>
+              <td>
+                432
+              </td>
+            </tr>
+            <tr class="openPond" href="#Brooklyn">
+              <td>
+                #Brooklyn
+              </td>
+              <td>
+                <em>Brooklyn, New York City</em>
+              </td>
+              <td>
+                33
               </td>
             </tr>
           </table>
-          <br />
+          <p>
+            🐸🗿🧊🌊
+          </p>
+          <br/>
           <div align="center">
+            <p>
+              A pond is a room where many buddies can chat with each other.
+            </p>
             <p><em>Want to create your own Pond? <br />Just type in the name below!</em></p>
             <form class="joinPondForm">
               <label for="customPondName">
-                <input id="customPondName" name="customPondName" class="customPondName desktopInput rainbow-border"
+                <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
                   placeholder="enter pond name..." type="text" size="16" />
               </label>
+              <br/>
               <button type="submit" class="joinPond desktopButton">Join Pond</button>
               <br />
             </form>
@@ -271,15 +313,15 @@
         <img width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
         <span class="window-context-title">Pond</span>
       </span>
-      <span class="float_right">
-        <a href="#" class="window_min"></a>
-        <a href="#" class="window_resize"></a>
-        <a href="#icon_dock_pond_message_0" class="window_close"></a>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
       </span>
     </div>
     <div class="abs window_content">
       <div class="chat_area">
-        <div class="window_main pond_message_main">
+        <div class="window_main pond_message_main  message_main">
           <div class="buddy_pond_not_connected">
             You'll need to login in order to access the Buddy Pond.
           </div>
@@ -293,39 +335,20 @@
           </div>
         </div>
         <div class="window_bottom_chat">
+          <div class="pond_send_message_chatcontrols_form">
+              <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
+              <img title="Insert Animation" class="insertGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
+              <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" />
+              <span class="insertSnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
+              <span title="Insert Emoji" class="desktopOnly pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span>
+              <span title="Get Help" class="desktopOnly getHelp chatControl">🦮</span>
+          </div>
           <div class="pond_send_message_form">
             <form method="POST" action="" align="right" class="pond_send_message_form">
-              <!-- <div class="chat_media_buttons"> --> <!-- This is commented out because it breaks JSPAINT integration for some reason. -->
-                <span class="insertSnap chatControl" title="Insert Snap">📷</span>
-                <img title="Insert Audio" class="insertSound chatControl"
-                  src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-                <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertGif chatControl"
-                    src="desktop/assets/images/icons/icon_gifstudio_64.png" /></a>
-                <img title="Insert Paint" class="insertPaint chatControl"
-                  src="desktop/assets/images/icons/icon_paint_64.png" />
-                <span title="Insert Emoji"
-                  class="pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span><br /><br />
-              <!-- </div> -->
               <textarea name="pond_message_text" class="pond_message_text pond_message_text_0"
-                placeholder="Enter your message..."></textarea>
+                placeholder=""></textarea>
               <button name="pond_message_submit" class="sendPondMessage">
-                <div class="
-            submit_svg_container">
-                  <svg class="message_send_svg" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" copyright="cc-by-sa Android Icons" id="Layer_1" x="0px" y="0px"
-                    viewBox="0 0 512 512" style="
-                " xml:space="preserve">
-                    <style type="text/css">
-                      .st0 {
-                        fill: #333333;
-                      }
-                    </style>
-                    <g id="XMLID_2_">
-                      <polygon id="XMLID_4_" class="st0" points="0,0 49.6,233.9 352.1,256 49.6,278.1 0,512 512,256  ">
-                      </polygon>
-                    </g>
-                  </svg>
-                </div>
+                SEND
               </button>
               <input name="pond_message_from" class="pond_message_from" type="hidden" />
               <input name="pond_message_to" class="pond_message_to" type="hidden" />

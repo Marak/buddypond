@@ -9,17 +9,17 @@ desktop.app.pond.load = function loadPond (params, next) {
     'pond' // this loads the sibling desktop.app.pond.html file into <div id="window_pond"></div>
   ], function (err) {
 
-    $('#window_pond').css('width', '21vw');
-    $('#window_pond').css('height', '72vh');
+    $('#window_pond').css('width', '44vw');
+    $('#window_pond').css('height', '75vh');
     $('#window_pond').css('top', '9vh');
-    $('#window_pond').css('left', '6vw');
+    $('#window_pond').css('left', '21vw');
 
     //
     // "#window_pond" event handlers
     // used for joining Ponds, clicking on pond names, general pond settings, etc
     //
     $('.openPond').on('click', function () {
-      let chan = $(this).html();
+      let chan = $(this).attr('href');
       chan = chan.substr(1, chan.length - 1);
       desktop.ui.openWindow('pond', { context: chan });
     });
@@ -79,7 +79,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     */
 
     d.on('mousedown', '.pond_emoji_picker', function (ev) {
-      let holder = $(ev.target).parent().parent();
+      let holder = $(ev.target).parent().parent().parent();
       let textarea = $('.pond_message_text', holder);
       $('.activeTextArea').removeClass('activeTextArea');
       $(textarea).addClass('activeTextArea');
@@ -87,16 +87,16 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertSnap', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context = $('.pond_message_to', form).val();
-      JQDX.showWindow('mirror', { type: 'pond', context: context });
+      desktop.ui.openWindow('mirror', { type: 'pond', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
       ev.stopPropagation();
     });
 
     d.on('mousedown', '.insertPaint', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -110,7 +110,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertGif', function (ev) {
-      let form = $(ev.target).parent().parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -124,13 +124,9 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertSound', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let to;
-      if (form.hasClass('pond_send_message_form')) {
-        to = $('.pond_message_to', form).val();
-      } else {
-        to = $('.buddy_message_to', form).val();
-      }
+      to = $('.pond_message_to', form).val() ||  $('.buddy_message_to', form).val();
       JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
@@ -143,6 +139,10 @@ desktop.app.pond.load = function loadPond (params, next) {
       parent.find('textarea[name="pond_message_text"]').val(
         `${textBox.val()}@${$(this).text().split(':')[0]}`
       );
+    });
+
+    d.on('click', '.getHelp', function () {
+      desktop.commands.chat.help();
     });
 
     next();
@@ -190,7 +190,7 @@ desktop.app.pond.openWindow = function (params) {
     if ($(windowId).length === 0) {
       desktop.app.pond.renderChatWindow(params.context);
     
-      $('.window-context-title', windowId).html(params.context + ' Pond');
+      $('.window-context-title', windowId).html('#' + params.context);
       if (desktop.ui.view === 'Mobile') {
         $('.pond_message_text', windowId).focus();
       }
@@ -212,7 +212,7 @@ desktop.app.pond.openWindow = function (params) {
       }
 
       $(windowId).css('width', '44vw');
-      $(windowId).css('height', '66vh');
+      $(windowId).css('height', '75vh');
       $(windowId).css('top', '9vh');
       $(windowId).css('left', '30vw');
       // flatten other windows, show that window as active top stack
@@ -246,6 +246,7 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   message.text = $('.pond_message_text', form).val();
   message.to = $('.pond_message_to', form).val();
   message.from = $('.pond_message_from', form).val();
+  message.type = 'pond';
 
   if (message.text.trim() === '') {
     return;
@@ -254,7 +255,7 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
   // empty text area input
   $('.pond_message_text', form).val('');
 
-  const processed = desktop.commands.processInternalMessage(message, '#window_pond_message_' + message.to);
+  const processed = desktop.commands.preProcessMessage(message, '#window_pond_message_' + message.to);
 
   if (processed) {
     return;
@@ -342,6 +343,11 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
     // replace cards
     if (message.card) {
+      if (message.card.type === 'points') {
+        $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
+        desktop.messages._processedCards.push(message.uuid);
+        return;
+      }
       if (message.card.type === 'snaps') {
         message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
         let arr = message.card.snapURL.split('.');

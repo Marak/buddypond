@@ -2,7 +2,7 @@ desktop.app.gifstudio = {};
 desktop.app.gifstudio.label = 'Gif Studio';
 desktop.app.gifstudio.currentFrameIndex = 0;
 desktop.app.gifstudio.renderingCount = 0;
-desktop.app.mirror.gifDelay = 200;
+desktop.app.gifstudio.gifDelay = 200;
 
 // TODO: three view modes ( same as Mirror, Full, Normal, Half )
 // TODO: create perfect loop by duplicating set and reversing it <<<<<<||>>>>>>
@@ -37,7 +37,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $(holder.clone()).insertAfter(holder);
       // wait a short moment for dom to insert and render base64 src ( should be less <3ms)
       setTimeout(function () {
-        desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay);
+        desktop.app.gifstudio.createGif(desktop.app.gifstudio.gifDelay);
       }, 33);
     });
 
@@ -46,7 +46,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       let frameHolder = $(ev.target).parent();
       $(frameHolder).remove();
       // TODO: use correct delay scope
-      desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay);
+      desktop.app.gifstudio.createGif(desktop.app.gifstudio.gifDelay);
     });
 
     $('.clearGIF').on('click', function () {
@@ -129,7 +129,7 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   }
   desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, desktop.app.gifstudio.insertMode);
   setTimeout(function () {
-    desktop.app.gifstudio.createGif(desktop.app.mirror.gifDelay, function (err, imgData) {
+    desktop.app.gifstudio.createGif(desktop.app.gifstudio.gifDelay, function (err, imgData) {
       // desktop.app.gifstudio.drawFrames({ url: imgData, frames: 'all' })
     });
   }, 333);

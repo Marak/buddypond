@@ -1,14 +1,17 @@
 <style>
   .loginForm {
-    padding: 16px;
+    margin: 0px;
+    padding: 0px;
   }
 
   .loginForm table td {
-    padding: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 6px;
   }
 
   .loginButton {
-    width: 300px;
+    width: 100%;
   }
 
   .loginButton:hover {
@@ -21,7 +24,30 @@
   }
 
   .loginAnonButton {
-    width: 300px;
+    width: 100%;
+  }
+
+  .splash {
+    padding-top: 16px;
+    padding-left: 0px;
+  }
+  
+  .splash h1 {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .splashImage {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    float: right;
+    text-align: center;
+  }
+  
+  .splashImage img {
+    width: 6vw;
+    height: 6vw;
+    cursor: pointer;
   }
 
   @keyframes loginButton {
@@ -31,6 +57,33 @@
 
   .tryLYTE {
     padding: 16px;
+    display: none;
+  }
+  
+  .buddyLoginTable {
+    padding: 0px;
+    margin: 0px;
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .buddyLoginTable input {
+    font-size: clamp(32px, 2vw, 64px);
+    width: 100%;
+  }
+
+  .buddyLoginTable .loginButton {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .loginButton {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+
+  .loginAnonButton {
+    font-size: clamp(32px, 2vw, 64px);
+  }
+  
+  .buddyPasswordRow {
     display: none;
   }
 
@@ -43,52 +96,50 @@
         <img class="title_icon" src="desktop/assets/images/icons/icon_login_64.png" />
         Desktop Login
       </span>
-      <span class="float_right">
-        <a href="#" class="window_min"></a>
-        <a href="#" class="window_resize"></a>
-        <a href="#icon_dock_login" class="window_close"></a>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
       </span>
     </div>
     <div class="abs window_content">
       <div class="window_main">
-        <div class="splash">
-          <h1>Welcome to Buddy Pond!</h1>
-          <em>Peer to Peer Multimedia Buddy Messaging</em>
-          <br/>
-          <em>No followers or following counts, just Buddies!</em>
-          <div class="splashImage">
-            <img src="desktop/assets/images/misc/pond.jpeg" width="144" height="144" title="Buddy in a pond"/>
-            <br/>
-            <em class="smaller">This is a Buddy at the pond.</em>
-          </div>
-          <br/>
-          <div>
+        <div class="splash" align="center">
+          <h1>Desktop Login</h1>
+          <div align="center">
             <form method="POST" action="/login" class="loginForm">
               <table class="buddyLoginTable">
                 <tbody>
                   <tr>
-                    <td><label for="buddyname">Buddy Name:</label></td>
-                    <td>
-                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" />
+                    <td colspan="2">
+                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" placeholder="Enter name..." />
+                    </td>
+                  </tr>
+                  <tr class="buddyPasswordRow">
+                    <td colspan="2">
+                      <input class="" id="buddypassword" name="buddypassword" type="password" size="16" placeholder="Enter password..."/></td>
+                  </tr>
+                  <tr class="invalidPassword">
+                    <td colspan="2" class="error">Invalid Password</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <button type="submit" class="loginButton">Login</button>
                     </td>
                   </tr>
                   <tr>
-                    <td><label for="buddypassword">Buddy Password:</label></td>
-                    <td><input class="" id="buddypassword" name="buddypassword" type="password" size="16"/></td>
+                    <td colspan="2">
+                      <button type="submit" class="loginAnonButton">Remain Anonymous</button>
+                    </td>
                   </tr>
-                  <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
                 </tbody>
               </table>
-               <button type="submit" class="loginButton desktopButton">Login</button>
-               <button type="submit" class="loginAnonButton desktopButton">Login as anonymous</button>
             </form>
           </div>
           <br/>
-          <ul>
-            <li>New Users just pick a name and password</li>
-            <li><strong>The login is the password</strong></li>
-            <li><em>There is no registration process</em></li>
-          </ul>
+          <div>
+            🌊 Buddy Pond 2022 🐸
+          </div>
           <div class="tryLYTE">
             Low CPU? Low bandwidth? Try <a href="/lyte">BUDDY POND LYTE</a>
           </div>
@@ -101,3 +152,16 @@
   </div>
   <span class="abs ui-resizable-handle ui-resizable-se"></span>
 </div>
+
+<!--
+
+          <em>Cloud Desktop. Peer to Peer Messaging</em>
+          <br/>
+          <em>No followers or following counts, just Buddies!</em>
+          <br/>
+          <div class="splashImage">
+            <img src="desktop/assets/images/misc/pond.jpeg" title="This is a Buddy at the pond." alt="This is a Buddy at the pond."/>
+          </div>
+
+
+-->

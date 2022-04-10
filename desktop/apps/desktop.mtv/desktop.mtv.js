@@ -36,6 +36,7 @@ desktop.app.mtv.load = function (params, next) {
       desktop.app.mtv.playRandomVideo(desktop.app.mtv.player, desktop.app.ytPlaylist);
     });
 
+    $('#window_mtv').css('height', 540);
     $('#window_mtv').css('width', 644);
     $('#window_mtv').css('left', 400);
     $('#window_mtv').css('top', 40);

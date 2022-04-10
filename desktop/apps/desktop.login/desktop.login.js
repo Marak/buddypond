@@ -32,6 +32,18 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       desktop.app.login.logoutDesktop();
     });
 
+    $('.splashImage').on('click', function(){
+      let roll = Math.floor(Math.random() * 2);
+      if (roll) {
+        desktop.play('RIBBIT-J.wav');
+      } else {
+        desktop.play('RIBBIT.wav');
+      }
+    });
+
+    //
+    // Checks to see if there is a qtokenid stored locally, if so check to see if server has matching session
+    //
     let localToken = localStorage.getItem('qtokenid');
     let me = localStorage.getItem('me');
     if (localToken) {
@@ -71,6 +83,12 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 desktop.app.login.auth = function authDesktop (buddyname, password) {
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
+
+  if (typeof password !== 'undefined' && password === "") {
+    // password is username big head
+    password = buddyname;
+  }
+
   buddypond.authBuddy(buddyname, password, function (err, data) {
 
     if (err) {
@@ -98,8 +116,16 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
       if (data.banned) {
         alert(data.message);
       }
-      $('#buddypassword').addClass('error');
-      $('.buddyLoginTable .invalidPassword').show();
+      $('.buddyPasswordRow').show();
+      $('#buddypassword').attr('placeholder', 'Invalid Password')
+      if (buddyname === password) {
+        $('.buddyPasswordRow').show();
+        $('#buddypassword').focus();
+        $('#window_login').css('height', '62vh');
+      } else {
+        $('#buddypassword').addClass('error');
+        $('.buddyLoginTable .invalidPassword').show();
+      }
     }
     console.log(err, data);
   });
@@ -185,17 +211,20 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').addClass('window_stack').show();
-  $('#window_login').css('width', '66vw');
-  $('#window_login').css('height', '70vh');
-  $('#window_login').css('left', 222);
-  $('#window_login').css('top', 111);
+  $('#window_login').css('width', '30vw');
+  $('#window_login').css('height', '55vh');
+  $('#window_login').css('left', '33vw');
+  $('#window_login').css('top', '16vh');
   $('#login_desktop_icon').show();
   $('#icon_dock_login').show();
 
   //$('#icon_dock_login').show();
-  $('#buddyname').focus();
   // manually call resize event, make login full screen
   desktop.ui.windowResizeEventHandler();
+  setTimeout(function(){
+    $('#buddyname').focus();
+  }, 500)
+  
 };
 
 desktop.app.login.logoutDesktop = function logoutDesktop () {

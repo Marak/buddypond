@@ -13,6 +13,11 @@
 				overflow: hidden;
 				background: var(--ButtonFace);
 			}
+      .sendSoundTarget {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+      }
 		</style>
 		<link href="../../lib/os-gui/layout.css" rel="stylesheet" type="text/css">
 		<link href="../../lib/os-gui/windows-98.css" rel="stylesheet" type="text/css">
@@ -134,6 +139,7 @@
         if (!type || !context) {
           $('.sendSound').hide();
         } else {
+          $('.sendSoundTarget').html(type + '/' + context);
           $('.saveSound').hide();
         }
 
@@ -169,6 +175,7 @@
 
   <div class="sendSoundHolder">
     <button class="sendSound">SEND SOUND</button>
+    <span class="sendSoundTarget"></span>
     <button class="saveSound">SAVE SOUND</button>
     <!--
       <button class="touchSound">JSsound DID NOT UPDATE CLICK AROUND CANVAS MORE AND TRY CLICKING SEND sound AGAIN</button>

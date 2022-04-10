@@ -4,7 +4,7 @@ desktop.app.buddylist.label = 'Buddy List';
 desktop.app.buddylist.subscribedBuddies = [];
 
 desktop.app.buddylist.positiveAffirmations = [
-  'Hello. You like nice today.',
+  'Hello. You look nice today.',
   'You are the most amazing person I know.',
   'Your presence just lights up the room.',
   'You are perfect as you are.',
@@ -56,7 +56,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     ];
 
     $('#window_buddylist').css('width', '15vw');
-    $('#window_buddylist').css('height', '66vh');
+    $('#window_buddylist').css('height', '75vh');
     $('#window_buddylist').css('top', '9vh');
     $('#window_buddylist').css('left', '77vw');
 
@@ -164,16 +164,16 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddySnap', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context = $('.buddy_message_to', form).val();
-      JQDX.showWindow('mirror', { type: 'buddy', context: context });
+      desktop.ui.openWindow('mirror', { type: 'buddy', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
       ev.stopPropagation();
     });
 
     d.on('mousedown', '.insertBuddyPaint', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'buddy';
       context = $('.buddy_message_to', form).val();
@@ -187,7 +187,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddyGif', function (ev) {
-      let form = $(ev.target).parent().parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'buddy';
       context = $('.buddy_message_to', form).val();
@@ -201,7 +201,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddySound', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let to;
       to = $('.buddy_message_to', form).val();
       JQDX.openWindow('soundrecorder', { type: 'buddy', context: to });
@@ -255,6 +255,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   message.text = $('.buddy_message_text', form).val();
   message.to = $('.buddy_message_to', form).val();
   message.from = $('.buddy_message_from', form).val();
+  message.type = 'buddy';
 
   if (message.text.trim() === '') {
     return;
@@ -264,7 +265,7 @@ desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
   $('.buddy_message_text', form).val('');
   $('.emoji-wysiwyg-editor').html('');
 
-  const processed = desktop.commands.processInternalMessage(message, '#window_buddy_message_' + message.to);
+  const processed = desktop.commands.preProcessMessage(message, '#window_buddy_message_' + message.to);
 
   if (processed) {
     return;
@@ -670,6 +671,12 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     if (message.from === buddypond.me) {
       dataContext = message.to;
     }
+
+    if (message.card && message.card.type === 'points') {
+      $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
+      desktop.messages._processedCards.push(message.uuid);
+      return;
+    }
     
     if (message.card && message.card.type === 'snaps') {
       message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
@@ -825,10 +832,10 @@ desktop.app.buddylist.openWindow = function (params) {
       }
 
       if (desktop.ui.view === 'Mobile') {
-        JQDX.window_maximize(windowId);
+        JQDX.window_maximize($(windowId));
       } else {
         $(windowId).css('width', '44vw');
-        $(windowId).css('height', '66vh');
+        $(windowId).css('height', '72vh');
         $(windowId).css('top', '9vh');
         $(windowId).css('left', '30vw');
         // flatten other windows, show that window as active top stack

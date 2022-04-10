@@ -20,6 +20,10 @@ desktop.app.wallpaper._wallpapers = {
     label: 'Matrix',
     src: ['desktop/apps/desktop.wallpaper/wallpapers/matrix.js']
   },
+  'nyancat':  {
+    label: 'Nyan Cat',
+    src: ['desktop/apps/desktop.wallpaper/wallpapers/nyancat.js']
+  },
   'ripples':  {
     label: 'Ripples',
     src: [

@@ -50,6 +50,13 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 desktop.cache = {};
 desktop.cache.buddyListDataCache = {};
 
+// Adds jquery.dateformat to desktop.dateformat scope ( if available )
+if (typeof DateFormat === 'object') {
+  desktop.DateFormat = DateFormat;
+}
+
+desktop.dateTimeFormat = 'E MMMM dd yyyy hh:mm:ss a';
+
 // `desktop.ui` scope is used to handle all window related events ( open / close / min / max / drag )
 // this scope if populated by the `jquery.desktop.x.js` file
 desktop.ui = {};
@@ -466,75 +473,141 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
 };
 
 desktop.commands = {};
-desktop.commands.chatCommands = {
-  QUIT: '/quit',
-  HELP: '/help'
-};
+desktop.commands.chat = {}
 
-desktop.commands.processInternalMessage = function processInternalMessage (message, windowId) {
-  // don't process the message on the server if it's the help command
-  // instead capture it and send back the immediate response text
-  const text = message.text.split(' ')[0];
-  if (text === desktop.commands.chatCommands.HELP) {
-    const commandSet = [
-      {
-        command: '/meme',
-        helpText: '- sends random meme'
-      },
-      {
-        command: '/meme',
-        additional: ' cool',
-        helpText: '- searches all memes for "cool beans"'
-      },
-      {
-        command: '/say',
-        additional: ' hello world',
-        helpText: '- sends random meme'
-      },
-      {
-        command: '/say',
-        additional: ' 😇',
-        helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
-      },
-      {
-        command: '/roll',
-        additional: ' 20',
-        helpText: '- Rolls a d20 dice'
-      },
-      {
-        command: '/quit',
-        helpText: '- Logs you out of here'
-      },
-      {
-        command: '/help',
-        helpText: '- Shows this message'
-      },
-    ];
-
-    const helpText = `
+desktop.commands.chat.points = function chatPoints (message, windowId) {
+  buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
+    let points = 0;
+    let value = 0;
+    if (!balance.error) {
+      points = balance.gbp;
+      value = balance.expectedValue;
+    }
+    const pointsText = `
       <div class="help">
-        <h3>Welcome to Buddy Pond my good Buddy!</h3>
-        <span>This chat area supports both text and multimedia ( Paints, Snaps, Sounds )</span>
+        <h3>Your current Good Buddy Points</h3>
+        <span><a class="openApp" data-app="gbp" href="#openGBP">Show Market Data</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Balance</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Recent Transactions</a></span>
         <p>
-          As of right now, the following chat text commands are available:
-        </p>
-        ${commandSet.map(item => `
-          <div class="help-text">
-            <div class="help-command">
-              <i>${item.command}</i>${item.additional || ''}
-            </div>
-            <span class="help-description">${item.helpText}</span>
-          </div>
-        `).join('')}
+          Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
+        </p
+        <p>
+          Estimated Value: ${desktop.utils.usdFormatSmall.format(value)}
+        </p
       <div>
     `;
 
-    $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${pointsText}</div>`);
     $('.no_chat_messages', windowId).hide();
 
-    let el = $('.window_content', windowId);
+    let el = $('.pond_message_main', windowId);
     $(el).scrollTop(999999);
+  });
+};
 
+
+desktop.commands.chat.give = function givePoints (message, windowId) {
+  let to = message.text.split(' ')[1];
+  let amount = message.text.split(' ')[2];
+  let text = message.text.split(' ')[3] || '';
+  let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
+  if (!yorn) {
+    return true;
+  }
+  buddypond.giveGbp({ buddyname: to, amount: amount, text: text, messageType: message.type, messageTo: message.to }, function (err, transfer){
+    let points = 0;
+    if (transfer.error) {
+      alert(transfer.message);
+      return;
+    }
+  });
+};
+
+desktop.commands.chat.help = function helpCommands (message, windowId) {
+  const commandSet = [
+    {
+      command: '/meme',
+      helpText: '- sends random meme'
+    },
+    {
+      command: '/meme',
+      additional: ' cool',
+      helpText: '- searches all memes for "cool"'
+    },
+    {
+      command: '/points',
+      additional: '',
+      helpText: '- Show your current amount of Good Buddy Points'
+    },
+    {
+      command: '/say',
+      additional: ' hello world',
+      helpText: '- Speaks "hello world" to the chat'
+    },
+    {
+      command: '/say',
+      additional: ' 😇',
+      helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
+    },
+    /*
+    {
+      command: '/roll',
+      additional: ' 20',
+      helpText: '- Rolls a d20 dice'
+    },
+    */
+    {
+      command: '/quit',
+      helpText: '- Log out of Desktop'
+    },
+    {
+      command: '/help',
+      helpText: '- Shows this message'
+    },
+  ];
+
+  const helpText = `
+    <div class="help">
+      <h3>🐸 Welcome to Buddy Pond my good Buddy 🐸</h3>
+      <span>This chat area supports multimedia messaging</span>
+      <p>
+        The following chat text commands are available:
+      </p>
+      ${commandSet.map(item => `
+        <div class="help-text">
+          <div class="help-command">
+            <i>${item.command}</i>${item.additional || ''}
+          </div>
+          <span class="help-description">${item.helpText}</span>
+        </div>
+      `).join('')}
+    <div>
+  `;
+
+  $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
+  $('.no_chat_messages', windowId).hide();
+  let el = $('.message_main', windowId);
+  $(el).scrollTop(999999);
+  // desktop.play('WOOFWOOF-J.wav');
+}
+
+desktop.commands.preProcessMessage = function processInternalMessage (message, windowId) {
+  // don't process the message on the server if it's the help command
+  // instead capture it and send back the immediate response text
+  let command = message.text.split(' ');
+  if (command[0] === '/give') {
+    desktop.commands.chat.give(message, windowId);
+    return false;
+  }
+
+  if (command[0] === '/points' && command.length === 1) {
+    desktop.commands.chat.points(message, windowId);
+    // Remark: Must return true or /points message will get sent to server
+    return true;
+
+  }
+
+  if (command[0] === '/help') {
+    desktop.commands.chat.help(message, windowId);
     return true;
   }
 
@@ -545,7 +618,7 @@ desktop.commands.processInternalMessage = function processInternalMessage (messa
 desktop.commands.postProcessMessage = function postProcessMessage (message) {
   // Check if user wants to quit then log the user out
   const text = message.text.split(' ')[0];
-  if (text === desktop.commands.chatCommands.QUIT) {
+  if (text === '/quit') {
     desktop.app.login.logoutDesktop();
   }
 };
@@ -698,3 +771,33 @@ desktop.smartlinks.replaceYoutubeLinks = function (el) {
     }
   }
 };
+
+// formats numbers into USD currency locale
+desktop.utils.usdFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+// formats numbers into USD currency locale with 8 decimals places
+desktop.utils.usdFormatSmall = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 8
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+
+// formats numbers into USD currency locale
+desktop.utils.numberFormat = new Intl.NumberFormat('en-US', {
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});

@@ -38,6 +38,11 @@ if (width >= 2600) {
   desktop.ui.view = 'MegaDesk';
 }
 
+// "displayMode" is used to switch between display modes of desktop ( not views )
+// "windows" displayMode is default display state ( normal window behavior in desktop or mobile )
+// could also be: "min" ( min all windows ) or "profile" ( show profile page)
+desktop.ui.displayMode = 'windows';
+
 //
 // Original JQDX document.ready handler ( this can be removed soon )
 //
@@ -84,6 +89,8 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 desktop.ui.goMobile = function () {
 
+  $('.desktopOnly').hide();
+  $('.maxWindow').hide();
   // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img');
@@ -96,13 +103,14 @@ desktop.ui.goMobile = function () {
   //$('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
   $('a').addClass('mobile_larger_font');
+  $('textarea').addClass('mobile_larger_font');
+  $('.trafficLight a').addClass('mobile_doubly_larger_font');
 
   //$('.datetime').addClass('mobile_datetime');
 
   // increase all the embedded icon sizes and chat control icons
   $('#dock .emojiIcon').addClass('mobile_larger_icons');
   $('#desktop .emojiIcon').addClass('mobile_larger_icons');
-
   $('.chatControl').addClass('mobile_chatControl');
 
   // hides the entire top navigation bar including clock and menus ( for now )
@@ -114,8 +122,10 @@ desktop.ui.goMobile = function () {
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
-  $('.window_content').css('top', '8vh');
+  $('.window_content').css('top', '3vh');
 
+  // TODO: remove this line
+  $('.emojiTitleBar').css('padding-top', 32);
 
   //$('#dock').addClass('mobile_dock_bar');
   /*
@@ -127,8 +137,13 @@ desktop.ui.goMobile = function () {
   $('#dock li img').css('width', 48);
   */
 
-  $('.pond_message .window_content').css('height', '70%');
-  $('.buddy_message .window_content').css('height', '70%');
+  $('.pond_message .window_content').css('height', '88%');
+  $('.buddy_message .window_content').css('height', '88%');
+  // TODO: remove these lines
+  $('.sendBuddyMessage').css('width', '33vw');
+  $('.sendPondMessage').css('width', '33vw');
+  $('.insertSnap').css('top', '22px');
+  $('.insertBuddySnap').css('top', '22px');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -142,6 +157,11 @@ desktop.ui.goMobile = function () {
 };
 
 desktop.ui.exitMobile = function () {
+
+  $('.desktopOnly').show();
+  $('.maxWindow').show();
+
+  // TODO: remember resize max positions and size of windows from data() and resume
 
   // restore bottom bar sizes ( shrinks )
   $('#bar_bottom').removeClass('mobile_bar_bottom');
@@ -159,6 +179,8 @@ desktop.ui.exitMobile = function () {
   $('body').removeClass('mobile_larger_font');
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
+  $('textarea').removeClass('mobile_larger_font');
+
   $('a').removeClass('mobile_larger_font');
 
   $('.window_top').css('padding-top', 0);
@@ -166,6 +188,14 @@ desktop.ui.exitMobile = function () {
 
   //$('.pond_message .window_content').css('height', '100%');
   //$('.buddy_message .window_content').css('height', '100%');
+
+  // TODO: remove this line
+  $('.emojiTitleBar').css('padding-top', 10);
+  $('.sendBuddyMessage').css('width', '9vw');
+  $('.sendPondMessage').css('width', '9vw');
+  //$('.grid-container').css('width', '22vw');
+  $('.insertSnap').css('top', '8px');
+  $('.insertBuddySnap').css('top', '8px');
 
   $('.window_content').css('top', '7vh');
 
@@ -220,6 +250,14 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     })
     */
 
+    $('.pond_send_message_form').css('padding-bottom', 0);
+    $('.buddy_send_message_form').css('padding-bottom', 0);
+    $('.pond_message_text').css('margin-top', 6);
+    $('.pond_message_text').css('margin-bottom', 6);
+    $('.buddy_message_text').css('margin-top', 6);
+    $('.buddy_message_text').css('margin-bottom', 6);
+    $('.sendPondMessage').css('margin', 5);
+    $('.recentTransactions').css('font-size', 16);
 
   }
 
@@ -241,6 +279,25 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.icon a').addClass('mobile_larger_font');
     $('.grid-container').css('width', '20vw');
     $('.icon').css('width', 145);
+    $('.pond_send_message_form').css('padding-bottom', 12);
+    $('.buddy_send_message_form').css('padding-bottom', 12);
+
+    // increase all the embedded icon sizes and chat control icons
+    $('#dock .emojiIcon').addClass('mobile_larger_icons');
+    $('#desktop .emojiIcon').addClass('mobile_larger_icons');
+    $('.chatControl').addClass('mobile_chatControl');
+    // TODO: remove these line
+    $('.emojiTitleBar').css('padding-top', 32);
+    $('.pond_message_text').css('margin', 16);
+    $('.buddy_message_text').css('margin', 16);
+    $('.insertSnap').css('top', '22px');
+    $('.insertBuddySnap').css('top', '22px');
+    $('.emojiPicker').css('top', '22px');
+    $('.getHelp').css('right', '44px');
+    $('.getHelp').css('padding-top', '16px');
+
+    $('.sendPondMessage').css('margin', 16);
+    $('.recentTransactions').css('font-size', 32);
 
   }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
@@ -249,7 +306,9 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
 window.onresize = desktop.ui.windowResizeEventHandler;
 
 JQDX.window_maximize = function window_maximize (win, opts) {
+  console.log('win', win)
   if (desktop.ui.view === 'Mobile') {
+    JQDX.minAllWindows();
     win.attr({
       // Save window position.
       'data-t': win.css('top'),
@@ -289,6 +348,7 @@ JQDX.window_maximize = function window_maximize (win, opts) {
 
   // Bring window to front.
   JQDX.window_flat();
+  win.show();
   win.addClass('window_stack');
 
 };
@@ -376,6 +436,16 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.openSound', function (ev) {
     let soundUrl = $(this).data('soundurl');
     desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
+  });
+
+  d.on('click', 'a.openApp', function (ev) {
+    let appName = $(this).data('app');
+    desktop.ui.openWindow(appName);
+  });
+
+  d.on('click', 'tr.openApp', function (ev) {
+    let appName = $(this).data('app');
+    desktop.ui.openWindow(appName);
   });
 
   // Relative or remote links?
@@ -500,7 +570,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       revert: false,
       containment: 'none',
       stop: function () {
-        desktop.ui.getDesktopIconPositions();
+        // desktop.ui.getDesktopIconPositions();
       }
     });
   });
@@ -616,9 +686,16 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.window_min', function () {
     JQDX.minWindow(this);
   });
+  d.on('click', 'a.minWindow', function () {
+    JQDX.minWindow(this);
+  });
+
 
   // Maximize or restore the window.
   d.on('click', 'a.window_resize', function () {
+    JQDX.window_resize(this);
+  });
+  d.on('click', 'a.maxWindow', function () {
     JQDX.window_resize(this);
   });
 
@@ -626,15 +703,28 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   d.on('click', 'a.window_close', function () {
     JQDX.closeWindow(this);
   });
+  d.on('click', 'a.exitWindow', function () {
+    JQDX.closeWindow(this);
+  });
+
+
 
   // Show desktop button, ala Windows OS.
   d.on('mousedown', '#show_desktop', function () {
-    // If any windows are visible, hide all.
-    if ($('div.window:visible').length) {
+    // toggle between three states: open windows, min windows, profile page
+    if (desktop.ui.displayMode === 'windows') {
+      desktop.ui.displayMode = 'profile';
+      desktop.ui.openWindow('profile');
+    }
+    else if (desktop.ui.displayMode === 'profile') {
+      desktop.ui.closeWindow('profile');
+      desktop.ui.displayMode = 'min';
+      // If any windows are visible, hide all.
       $('div.window').hide();
     }
-    else {
-      // Otherwise, reveal hidden windows that are open.
+    else if (desktop.ui.displayMode === 'min') {
+      desktop.ui.displayMode = 'windows';
+      // show all windows that are invisible
       $('#dock li:visible a').each(function () {
         $($(this).attr('href')).show();
       });
@@ -712,7 +802,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
-  console.log('JQDX.showWindow', appName, params);
+  // console.log('JQDX.showWindow', appName, params);
   let appWindow = '#window_' + appName;
 
   if (appName === 'pond' && params.context) {
@@ -759,7 +849,7 @@ JQDX.showWindow = function showWindow (appName, params) {
 // attempts to open a window based on name and parameters
 // will attempt to JQDX.loadWindow() if no window is found
 JQDX.openWindow = function openWindow (appName, params, cb) {
-
+  // console.log('JQDX.openWindow', appName, params)
   params = params || {};
 
   let appWindow = '#window_' + appName;
@@ -831,10 +921,19 @@ JQDX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
 };
 
+JQDX.minAllWindows = function minWindow (el) {
+  $('div.window').hide();
+};
+
 // TODO: toggleMaxWindow? its doing two states min and max
 JQDX.maxWindow = function maxWindow (el, $el) {
+
+  let windowId = $(el).attr('href');
+  // console.log('JQDX.maxWindow', windowId)
+
   // Get the link's target.
-  let x = $($(el).attr('href'));
+  let x = $(windowId);
+
   if ($el) {
     x = $el;
   }
@@ -842,8 +941,8 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
   //         Instead, this could be done elsewhere in the code
   // check to see if window is already active, if so min it
-  if ($(x).is(':visible')) {
-    //JQDX.minWindow(x);
+  
+  if (x.hasClass('window_stack')) {
     x.removeClass('window_stack');
     x.hide();
   } else {
@@ -851,6 +950,7 @@ JQDX.maxWindow = function maxWindow (el, $el) {
     x.addClass('window_stack');
     x.show();
   }
+
   //desktop.ui.windowResizeEventHandler();
 };
 
@@ -1100,6 +1200,38 @@ desktop.ui.buildContextMenu = function buildContextMenu (config) {
 desktop.ui.clearContextMenu = function clearContextMenu (listId) {
   desktop.ui.contextMenu = {};
   $(listId).children().remove();
+};
+
+desktop.ui.cards = {}
+desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
+  let currentValue = 'NO VALUE';
+  if (message.card.value) {
+    currentValue = `<em>ESTIMATED VALUE: ${desktop.utils.usdFormatSmall.format(message.card.value)}</em><br/>`;
+  }
+  if (message.card.action === 'got') {
+    return `
+      <div class="message pointsCard rainbow">
+        <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
+        <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
+        ${currentValue}
+      </div>
+      <br/>
+    `;
+  } else {
+    let balance = desktop.utils.numberFormat.format(message.card.balance);
+    if (message.card.balance === 0) {
+      balance = 'ZERO';
+    }
+    return `
+      <div class="message pointsCard rainbow">
+        <strong>${message.card.buddyname}</strong><br/>
+        <strong>${balance} GOOD BUDDY POINTS</strong><br/>
+        ${currentValue}
+      </div>
+      <br/>
+    `;
+  }
+
 };
 
 desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListener (contextListId) {

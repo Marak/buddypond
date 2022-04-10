@@ -1,0 +1,221 @@
+<style>
+  #window_gbp  {
+    width: 600px;
+    height: 500px;
+  }
+   #window_gbp .gbpHolder {
+    text-align: left;
+    padding: 16px;
+    margin: 16px;
+  }
+  #window_gbp_purchase .gbpHolder {
+   text-align: left;
+   padding: 16px;
+   margin: 16px;
+ }
+  .gbpHolder > h2 {
+    font-size: 32px;
+  }
+  .buyGBPHolder > h2 {
+    font-size: 28px;
+  }
+  .gbpBackgroundImage {
+    position: absolute;
+    z-index: -1;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    opacity: 0.222;
+  }
+  .buyGBPHolder {
+    padding-top:32px;
+    padding-bottom:32px;
+    text-align: center;
+    border: solid;
+    font-size: 24px;
+    z-index: 99;
+  }
+  .buyGBPHolder input {
+    font-size: 24px;
+  }
+  .marketData {
+    font-size: 24px;
+  }
+  .recentTransactions {
+    font-size: 16px;
+  }
+</style>
+
+<div id="window_gbp" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img src="desktop/assets/images/icons/icon_gbp_64.png" />
+        GBP - Good Buddy Points
+      </span>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <img src="desktop/assets/images/misc/gbp-doge.png" class="gbpBackgroundImage"/>
+      <div class="window_main gbpHolder">
+        <div id="gbpTabs">
+          <ul>
+            <li><a href="#tabs-1">Market</a></li>
+            <li><a href="#tabs-2">Balance</a></li>
+            <li><a href="#tabs-3">Blockchain Explorer</a></li>
+          </ul>
+          <div id="tabs-1">
+            <div class="marketData">
+              <strong>Market Cap:</strong> <span class="projectedMarketCap"></span>
+            </div>
+            <div class="marketData">
+              <strong>Circulation:</strong> <span class="totalGbpSupply"></span>
+            </div>
+            <div class="marketData">
+              <strong>Supply:</strong> <span class="fixedSupply">100,000,000</span>
+            </div>
+            <!--
+            <div class="marketData">
+              Estimated GBP Price: <span class="marketPrice"></span>
+            </div>
+            -->
+            <div class="marketData">
+              <strong>GBP Estimated Value:</strong> <span class="marketValue"></span>
+            </div>
+            <div class="marketData">
+              <strong>Buddy Multiplier:</strong> <span class="buddyMultiplier"></span>
+            </div>
+            <div class="marketData">
+              <strong>Secured Cap:</strong> <span class="marketCap"></span>
+            </div>
+            <br/>
+            <div class="buyGBPHolder rainbow-border-active">
+              <h2>BUY GBP NOW</h2>
+              <br/>
+              <form class="buyGBPForm">
+                Amount: <input type="number" name="gbpAmount" class="gbpAmount" value="42" min="1" max="100000000"/>
+                <button class="rainbowBG desktopButton buyGBPButton">BUY!</button>
+                <br/>
+                <br/>
+                <strong>Estimated Cost ( ETH )</strong><br/>
+                <span class="estimatedCostETH">$999.999</span>
+                <br/>
+                <br/>
+                <strong>Estimated Cost ( BTC )</strong><br/>
+                <span class="estimatedCostBTC">$999.999</span>
+                <br/>
+                <br/>
+                <strong>Estimated Cost ( USD )</strong><br/> 
+                <span class="estimatedCostUSD">$999.999</span>
+                <br/>
+                <div class="depositAddresses">
+                  <span class="ethDepositNamedAddress">
+                    buddypond.eth
+                  </span>
+                  <span class="btcDepositAddress">
+                    148dBGs99rnFHSu3euZYziABse6Prs5L7J
+                  </span>
+                  <br/>
+                  <span class="ethDepositAddress">
+                    0x150eF95cdB28f7ac32926917b9342C0759DbEe04
+                  </span>
+                </div>
+              </form>
+            </div>
+            <br/>
+          </div>
+          <div id="tabs-2">
+            Your Good Buddy Points Balance
+            <div class="balanceData">
+              <div class="marketData">
+                <strong>Good Buddy Points:</strong> <span class="points">You have no Good Buddy Points yet.</span>
+              </div>
+              <div class="marketData">
+                <strong>Value:</strong> <span class="expectedValue">None yet.</span>
+              </div>
+              <div class="marketData">
+                <strong>Backed Value:</strong> <span class="value">None yet.</span>
+              </div>
+            </div>
+          </div>
+          <div id="tabs-3">
+            Last 10 Blockchain Transactions:
+            <table class="data table recentTransactions">
+              <tr>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+                <th>Value</th>
+                <th>Message</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>
+
+<div id="window_gbp_purchase" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder.png" />
+        Purchase Good Buddy Points
+      </span>
+      <span class="float_right">
+        <a href="#" class="window_min"></a>
+        <a href="#" class="window_resize"></a>
+        <a href="#icon_dock_gbp" class="window_close"></a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <img src="desktop/assets/images/misc/gbp-doge.png" class="gbpBackgroundImage"/>
+      <div class="window_main gbpHolder">
+        <div class="buyGBPHolder">
+          <h2>Confirm Purchase</h2>
+          <span class="hint">You purchase amount will automatically be linked to your GBP Balance Address</span>
+          <form>
+            Public Address: <input type="number" name="gbpAmount" class="gbpAmount" value="42" min="1" max="9999999"/>
+            <br/>
+            <button class="rainbowBG desktopButton">Confirm your public address</button>
+            <div class="waitingForFunds">
+              We have verified your public address and are now awaiting funds. <br/>
+              Once a few confirmations have completed you will get your Good Buddy Points!
+            </div>
+            Estimated Cost ( USD ) <br/>
+            <span class="estimatedCost">$999.999</span>
+            <br/>
+            Send Funds to one of these addresses:
+            <table class="table">
+              <tr>
+                <td>BTC</td>
+                <td>123123123123123</td>
+              </tr>
+              <tr>
+                <td>ETH</td>
+                <td>123123123123123</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <br/>
+        <hr>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>
