@@ -170,6 +170,8 @@ desktop.boo.load = function (params, next) {
 }
 ```
 
+You may now open `App.Boo` by calling `desktop.ui.openWindow('boo', { foo: 'bar' })`
+
 ### `defer` or `lazy` load of `App`
 
 Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`. 
