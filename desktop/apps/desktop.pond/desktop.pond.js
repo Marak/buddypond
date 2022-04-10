@@ -9,10 +9,10 @@ desktop.app.pond.load = function loadPond (params, next) {
     'pond' // this loads the sibling desktop.app.pond.html file into <div id="window_pond"></div>
   ], function (err) {
 
-    $('#window_pond').css('width', '21vw');
-    $('#window_pond').css('height', '72vh');
+    $('#window_pond').css('width', '44vw');
+    $('#window_pond').css('height', '75vh');
     $('#window_pond').css('top', '9vh');
-    $('#window_pond').css('left', '6vw');
+    $('#window_pond').css('left', '21vw');
 
     //
     // "#window_pond" event handlers
@@ -190,7 +190,7 @@ desktop.app.pond.openWindow = function (params) {
     if ($(windowId).length === 0) {
       desktop.app.pond.renderChatWindow(params.context);
     
-      $('.window-context-title', windowId).html(params.context + ' Pond');
+      $('.window-context-title', windowId).html('#' + params.context);
       if (desktop.ui.view === 'Mobile') {
         $('.pond_message_text', windowId).focus();
       }
@@ -212,7 +212,7 @@ desktop.app.pond.openWindow = function (params) {
       }
 
       $(windowId).css('width', '44vw');
-      $(windowId).css('height', '72vh');
+      $(windowId).css('height', '75vh');
       $(windowId).css('top', '9vh');
       $(windowId).css('left', '30vw');
       // flatten other windows, show that window as active top stack

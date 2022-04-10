@@ -183,13 +183,16 @@
   .getHelp:hover {
     opacity: 0.44;
   }
+  .joinPondTable td {
+    cursor: pointer;
+  }
 </style>
 <div id="window_pond" class="abs window pond_list" data-window-index="0">
   <div class="abs window_inner">
     <div class="window_top">
       <span class="float_left">
         <img src="desktop/assets/images/icons/icon_pond_64.png" />
-        <span class="window-context-title">Pond</span>
+        <span class="window-context-title">Ponds</span>
       </span>
       <span class="float_right trafficLight">
         <a href="#min" class="minWindow" title="Min Window">🟠</a>
@@ -203,51 +206,102 @@
           You'll need to login in order to access the Buddy Pond.
         </div>
         <div class="loggedIn">
-          <h2>Join Pond</h2>
-          <a class="openPond" href="#Lily">
-          #Lily -
-            <span class="pondDesc">
-              General Buddy Chats
-            </span>
-          </a>
-          <br/>
-          <a class="openPond" href="#Paint">
-          #Paint -
-            <span class="pondDesc">
-               MSPaint Based Image Room
-            </span>
-          </a>
-          <br/>
-          <a class="openPond" href="#Memes">
-          #Memes -
-            <span class="pondDesc">
-              Memes Images Only
-            </span>
-          </a>
-          <br/>
-          <a class="openPond" href="#Alpha">
-          #Alpha -
-            <span class="pondDesc">
-               Buddy Pond Alpha Dev Chat
-            </span>
-          </a>
-          <br />
-          <br />
+          <h2>Join Ponds</h2>
+          <table class="joinPondTable data table">
+            <tr>
+              <th>
+                Pond Name
+              </th>
+              <th>
+                Pond Description
+              </th>
+              <th>
+                Connected Buddies
+              </th>
+            </tr>
+            <tr class="openPond" href="#Lily">
+              <td>
+                #Lily
+              </td>
+              <td>
+                General Buddy Chats
+              </td>
+              <td>
+                333
+              </td>
+            </tr>
+
+            <tr class="openPond" href="#Paint">
+              <td>
+                #Paint
+              </td>
+              <td>
+                MSPaint Based Image Room ( Images Only )
+              </td>
+              <td>
+                144
+              </td>
+            </tr>
+            <tr class="openPond" href="#Paint">
+              <td>
+                #Memes
+              </td>
+              <td>
+                 Memes ( Images Only )
+              </td>
+              <td>
+                212
+              </td>
+            </tr>
+            <tr class="openPond" href="#Alpha">
+              <td>
+                #Alpha
+              </td>
+              <td>
+                Alpha
+              </td>
+              <td>
+                113
+              </td>
+            </tr>
+            <tr class="openPond" href="#Brooklyn">
+              <td>
+                #Brooklyn
+              </td>
+              <td>
+                Brooklyn, New York City
+              </td>
+              <td>
+                33
+              </td>
+            </tr>
+            <tr href="#backrooms" style="opacity: 0.33;" title="Matrix Agents only!">
+              <td>
+                #backrooms
+              </td>
+              <td>
+                Liminal Backrooms
+              </td>
+              <td>
+                432
+              </td>
+            </tr>
+          </table>
           <p>
-            <em>Click on the pond to hop on in.</em>
+            🐸🗿🧊🌊
           </p>
           <br/>
-          <p>
-            A pond is a room where many buddies can chat with each other.
-          </p>
-          <br />
           <div align="center">
+            <p>
+              A pond is a room where many buddies can chat with each other.
+            </p>
             <p><em>Want to create your own Pond? <br />Just type in the name below!</em></p>
             <form class="joinPondForm">
               <label for="customPondName">
                 <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
                   placeholder="enter pond name..." type="text" size="16" />
               </label>
+              <br/>
               <button type="submit" class="joinPond desktopButton">Join Pond</button>
               <br />
             </form>

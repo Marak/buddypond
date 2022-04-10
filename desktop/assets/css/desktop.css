@@ -1324,3 +1324,10 @@ iframe {
 .openApp td {
   cursor: pointer;
 }
+
+.verticalUpright {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-weight: bold;
+  float: left;
+}
