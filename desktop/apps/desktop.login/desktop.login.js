@@ -210,7 +210,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.logoutLink').hide();
   $('#window_login').addClass('window_stack').show();
   $('#window_login').css('width', '60vw');
-  $('#window_login').css('height', '60vh');
+  $('#window_login').css('height', '55vh');
   $('#window_login').css('left', 222);
   $('#window_login').css('top', 75);
   $('#login_desktop_icon').show();

@@ -38,6 +38,11 @@ if (width >= 2600) {
   desktop.ui.view = 'MegaDesk';
 }
 
+// "displayMode" is used to switch between display modes of desktop ( not views )
+// "windows" displayMode is default display state ( normal window behavior in desktop or mobile )
+// could also be: "min" ( min all windows ) or "profile" ( show profile page)
+desktop.ui.displayMode = 'windows';
+
 //
 // Original JQDX document.ready handler ( this can be removed soon )
 //
@@ -438,6 +443,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.ui.openWindow(appName);
   });
 
+  d.on('click', 'tr.openApp', function (ev) {
+    let appName = $(this).data('app');
+    desktop.ui.openWindow(appName);
+  });
+
   // Relative or remote links?
   d.on('click', 'a', function (ev) {
     let url = $(this).attr('href');
@@ -701,12 +711,20 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   // Show desktop button, ala Windows OS.
   d.on('mousedown', '#show_desktop', function () {
-    // If any windows are visible, hide all.
-    if ($('div.window:visible').length) {
+    // toggle between three states: open windows, min windows, profile page
+    if (desktop.ui.displayMode === 'windows') {
+      desktop.ui.displayMode = 'profile';
+      desktop.ui.openWindow('profile');
+    }
+    else if (desktop.ui.displayMode === 'profile') {
+      desktop.ui.closeWindow('profile');
+      desktop.ui.displayMode = 'min';
+      // If any windows are visible, hide all.
       $('div.window').hide();
     }
-    else {
-      // Otherwise, reveal hidden windows that are open.
+    else if (desktop.ui.displayMode === 'min') {
+      desktop.ui.displayMode = 'windows';
+      // show all windows that are invisible
       $('#dock li:visible a').each(function () {
         $($(this).attr('href')).show();
       });

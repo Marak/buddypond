@@ -36,11 +36,184 @@
       <div class="window_main console_holder">
         <div id="profileTabs">
           <ul>
-            <li><a href="#tabs-1">User Profile Settings</a></li>
+            <li><a href="#tabs-1">Buddy Apps</a></li>
             <li><a href="#tabs-2">Public Profile</a></li>
-            <li><a href="#tabs-3">Buddy Apps</a></li>
+            <li><a href="#tabs-3">User Profile Settings</a></li>
           </ul>
           <div id="tabs-1">
+            <table class="data table">
+              <tr>
+                <th>
+                  Installed
+                </th>
+                <th>
+                  App Name
+                </th>
+              </tr>
+              <tr class="openApp" data-app="memepool">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_memepool_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                 Meme Pool ( Powered By:  Mnemosyne )
+                </td>
+              </tr>
+              <tr class="openApp" data-app="interdimensionalcable">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Interdimensional Cable
+                </td>
+              </tr>
+              <tr class="openApp" data-app="mtv">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mtv_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Music Television
+                </td>
+              </tr>
+              <tr class="openApp" data-app="soundcloud">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Sound Cloud Playlists
+                </td>
+              </tr>
+              <tr class="openApp" data-app="lofi">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_lofi_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Lofi Vibes
+                </td>
+              </tr>
+              <tr class="openApp" data-app="visuals">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_visuals_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Audio Visualizer ( Requires Microphone )
+                </td>
+              </tr>
+              
+              <tr class="openApp" data-app="mirror">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mirror_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Mirror
+                </td>
+              </tr>
+              <tr class="openApp" data-app="buddylist">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Buddy List
+                </td>
+              </tr>
+              <tr class="openApp" data-app="pond">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_pond_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Pond
+                </td>
+              </tr>
+              <tr class="openApp" data-app="paint">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_paint_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Paint
+                </td>
+              </tr>
+              <tr class="openApp" data-app="soundrecorder">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Sound Recorder
+                </td>
+              </tr>
+              
+              <tr class="openApp" data-app="games">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_folder_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Games
+                </td>
+              </tr>
+              <tr class="openApp" data-app="settings">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Desktop Settings
+                </td>
+              </tr>
+              <tr class="openApp" data-app="console">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_console_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                  Console
+                </td>
+              </tr>
+            </table>
+            <br/>
+            <p align="left">
+              <img title="Custom Desktop App Configurations coming soon!" height="32" width="32" src="desktop/assets/images/icons/icon_locked.png" />
+              Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
+              <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
+            
+              </p>
+            
+            <br/>
+            
+            <!--
+              <p>
+                Refresh entire page to for Buddy Apps to reload.
+              </p>
+            -->
+          </div>
+          <div id="tabs-2">
+            <h2>Your current Buddy Profile:</h2>
+            <br/>
+            <div class="publicProfilePreviewHolder desktopButton">
+              <div class="border">
+                <p class="me">Marak</p>
+                <p><em>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></em></p>
+              </div>
+              <br/>
+              <div class="publicProfilePreview"></div>
+            </div>
+            <br/>
+            <br/>
+            <div class="profileEditor">
+              <textarea name="profileMarkdown" class="profileMarkdown" cols="60" rows="15"></textarea>
+              <button class="desktopButton updateProfileMarkdown">Update Profile</button>
+            </div>
+          </div>
+          <div id="tabs-3" align="center">
             <span class="updateProfileResponse"></span>
             <form class="updateProfileForm">
               <h2>User Profile Settings</h2>
@@ -101,141 +274,11 @@
                 </tr>
 
               </table>
-              <br/>
               <button type="submit" class="desktopPanel updateProfileButton">Update Profile</button>
+              <!-- TODO logoout button 
+              <button type="submit" class="desktopPanel updateProfileButton">Logout</button>
+                -->
             </form>
-          </div>
-          <div id="tabs-2">
-            <h2>Your current Buddy Profile:</h2>
-            <br/>
-            <div class="publicProfilePreviewHolder desktopButton">
-              <div class="border">
-                <p class="me">Marak</p>
-                <p><em>Last Seen: <span class="lastSeen">2/22/2022 14:40pm</span></em></p>
-              </div>
-              <br/>
-              <div class="publicProfilePreview"></div>
-            </div>
-            <br/>
-            <br/>
-            <div class="profileEditor">
-              <textarea name="profileMarkdown" class="profileMarkdown" cols="60" rows="15"></textarea>
-              <button class="desktopButton updateProfileMarkdown">Update Profile</button>
-            </div>
-          </div>
-          <div id="tabs-3" align="center">
-            <p align="left">
-              <img title="Custom Desktop App Configurations coming soon!" height="32" width="32" src="desktop/assets/images/icons/icon_locked.png" />
-              Buddy Desktop Apps are *Locked* for Buddy Pond Alpha.
-              <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
-              
-              </p>
-            <table class="data table">
-              <tr>
-                <th>
-                  Enabled
-                </th>
-                <th>
-                  App Name
-                </th>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_console_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Console
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_profile_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Profile
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_buddylist_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Buddy List
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_pond_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Buddy Pond
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mirror_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Mirror
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_videochat_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Video Chat
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_mtv_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Music Television
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Interdimensional Cable
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_folder_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Games
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
-                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
-                </td>
-                <td>
-                  Wallpaper
-                </td>
-              </tr>
-            </table>
-            <br/>
-            <!--
-              <p>
-                Refresh entire page to for Buddy Apps to reload.
-              </p>
-            -->
           </div>
         </div>
       </div>
