@@ -117,7 +117,7 @@ desktop.ui.goMobile = function () {
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
-  $('.window_content').css('top', '8vh');
+  $('.window_content').css('top', '3vh');
 
   // TODO: remove this line
   $('.emojiTitleBar').css('padding-top', 32);
