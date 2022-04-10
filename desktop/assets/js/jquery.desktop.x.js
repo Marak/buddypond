@@ -285,6 +285,9 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.emojiTitleBar').css('padding-top', 32);
     $('.pond_message_text').css('margin', 16);
     $('.buddy_message_text').css('margin', 16);
+    $('.insertSnap').css('top', '22px');
+    $('.insertBuddySnap').css('top', '22px');
+    $('.emojiPicker').css('top', '22px');
 
     $('.sendPondMessage').css('margin', 16);
     $('.recentTransactions').css('font-size', 32);
