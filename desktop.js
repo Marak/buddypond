@@ -531,7 +531,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     {
       command: '/meme',
       additional: ' cool',
-      helpText: '- searches all memes for "cool beans"'
+      helpText: '- searches all memes for "cool"'
     },
     {
       command: '/points',
