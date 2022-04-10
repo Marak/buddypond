@@ -791,12 +791,6 @@ a:hover {
   resize: none;
 }
 
-.splash {
-  padding-top: 16px;
-  padding-left: 33px;
-  
-}
-
 .me_title {
   float: left;
   text-align: center;
@@ -974,7 +968,7 @@ iframe {
 		animation-iteration-count: infinite;
 }
 
-.rainbow{
+.rainbow {
 		animation: rainbow 2.5s linear;
 		animation-iteration-count: infinite;
 }

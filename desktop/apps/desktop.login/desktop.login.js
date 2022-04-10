@@ -117,9 +117,11 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
         alert(data.message);
       }
       $('.buddyPasswordRow').show();
+      $('#buddypassword').attr('placeholder', 'Invalid Password')
       if (buddyname === password) {
         $('.buddyPasswordRow').show();
         $('#buddypassword').focus();
+        $('#window_login').css('height', '62vh');
       } else {
         $('#buddypassword').addClass('error');
         $('.buddyLoginTable .invalidPassword').show();
@@ -209,10 +211,10 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').addClass('window_stack').show();
-  $('#window_login').css('width', '60vw');
+  $('#window_login').css('width', '30vw');
   $('#window_login').css('height', '55vh');
-  $('#window_login').css('left', 222);
-  $('#window_login').css('top', 75);
+  $('#window_login').css('left', '33vw');
+  $('#window_login').css('top', '16vh');
   $('#login_desktop_icon').show();
   $('#icon_dock_login').show();
 

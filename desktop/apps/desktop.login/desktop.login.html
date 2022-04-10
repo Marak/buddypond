@@ -1,6 +1,7 @@
 <style>
   .loginForm {
-    padding: 16px;
+    margin: 0px;
+    padding: 0px;
   }
 
   .loginForm table td {
@@ -24,6 +25,15 @@
 
   .loginAnonButton {
     width: 100%;
+  }
+
+  .splash {
+    padding-top: 16px;
+    padding-left: 0px;
+  }
+  
+  .splash h1 {
+    font-size: clamp(32px, 2vw, 64px);
   }
 
   .splashImage {
@@ -51,11 +61,14 @@
   }
   
   .buddyLoginTable {
+    padding: 0px;
+    margin: 0px;
     font-size: clamp(32px, 2vw, 64px);
   }
 
   .buddyLoginTable input {
     font-size: clamp(32px, 2vw, 64px);
+    width: 100%;
   }
 
   .buddyLoginTable .loginButton {
@@ -91,30 +104,24 @@
     </div>
     <div class="abs window_content">
       <div class="window_main">
-        <div class="splash">
-          <h1>Welcome Buddy!</h1>
-          <em>Cloud Desktop. Peer to Peer Messaging</em>
-          <br/>
-          <em>No followers or following counts, just Buddies!</em>
-          <br/>
-          <div class="splashImage">
-            <img src="desktop/assets/images/misc/pond.jpeg" title="This is a Buddy at the pond." alt="This is a Buddy at the pond."/>
-          </div>
+        <div class="splash" align="center">
+          <h1>Desktop Login</h1>
           <div align="center">
             <form method="POST" action="/login" class="loginForm">
               <table class="buddyLoginTable">
                 <tbody>
                   <tr>
-                    <td><label for="buddyname">Your name:</label></td>
-                    <td>
-                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" placeholder="CoolVibes99" />
+                    <td colspan="2">
+                      <input class="rainbow-border" id="buddyname" name="buddyname" type="text" size="16" placeholder="Enter name..." />
                     </td>
                   </tr>
                   <tr class="buddyPasswordRow">
-                    <td><label for="buddypassword">Password:</label></td>
-                    <td><input class="" id="buddypassword" name="buddypassword" type="password" size="16"/></td>
+                    <td colspan="2">
+                      <input class="" id="buddypassword" name="buddypassword" type="password" size="16" placeholder="Enter password..."/></td>
                   </tr>
-                  <tr class="invalidPassword"><td colspan="2" class="error">Invalid Password, please try again.</td></tr>
+                  <tr class="invalidPassword">
+                    <td colspan="2" class="error">Invalid Password</td>
+                  </tr>
                   <tr>
                     <td colspan="2">
                       <button type="submit" class="loginButton">Login</button>
@@ -122,12 +129,16 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <button type="submit" class="loginAnonButton">I would like to be anonymous</button>
+                      <button type="submit" class="loginAnonButton">Remain Anonymous</button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </form>
+          </div>
+          <br/>
+          <div>
+            🌊 Buddy Pond 2022 🐸
           </div>
           <div class="tryLYTE">
             Low CPU? Low bandwidth? Try <a href="/lyte">BUDDY POND LYTE</a>
@@ -141,3 +152,16 @@
   </div>
   <span class="abs ui-resizable-handle ui-resizable-se"></span>
 </div>
+
+<!--
+
+          <em>Cloud Desktop. Peer to Peer Messaging</em>
+          <br/>
+          <em>No followers or following counts, just Buddies!</em>
+          <br/>
+          <div class="splashImage">
+            <img src="desktop/assets/images/misc/pond.jpeg" title="This is a Buddy at the pond." alt="This is a Buddy at the pond."/>
+          </div>
+
+
+-->
