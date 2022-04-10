@@ -541,7 +541,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     {
       command: '/say',
       additional: ' hello world',
-      helpText: '- sends random meme'
+      helpText: '- Speaks "hello world" to the chat'
     },
     {
       command: '/say',
@@ -557,7 +557,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     */
     {
       command: '/quit',
-      helpText: '- Logs you out of here'
+      helpText: '- Log out of Desktop'
     },
     {
       command: '/help',

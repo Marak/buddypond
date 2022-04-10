@@ -1320,3 +1320,7 @@ iframe {
 .trafficLight a {
   margin-left: 2px;
 }
+
+.openApp td {
+  cursor: pointer;
+}
