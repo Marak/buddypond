@@ -281,13 +281,15 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('#dock .emojiIcon').addClass('mobile_larger_icons');
     $('#desktop .emojiIcon').addClass('mobile_larger_icons');
     $('.chatControl').addClass('mobile_chatControl');
-    // TODO: remove this line
+    // TODO: remove these line
     $('.emojiTitleBar').css('padding-top', 32);
     $('.pond_message_text').css('margin', 16);
     $('.buddy_message_text').css('margin', 16);
     $('.insertSnap').css('top', '22px');
     $('.insertBuddySnap').css('top', '22px');
     $('.emojiPicker').css('top', '22px');
+    $('.getHelp').css('right', '44px');
+    $('.getHelp').css('padding-top', '16px');
 
     $('.sendPondMessage').css('margin', 16);
     $('.recentTransactions').css('font-size', 32);
