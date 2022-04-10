@@ -164,7 +164,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddySnap', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context = $('.buddy_message_to', form).val();
       desktop.ui.openWindow('mirror', { type: 'buddy', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
@@ -173,7 +173,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddyPaint', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'buddy';
       context = $('.buddy_message_to', form).val();
@@ -187,7 +187,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddyGif', function (ev) {
-      let form = $(ev.target).parent().parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'buddy';
       context = $('.buddy_message_to', form).val();
@@ -201,7 +201,7 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     d.on('mousedown', '.insertBuddySound', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let to;
       to = $('.buddy_message_to', form).val();
       JQDX.openWindow('soundrecorder', { type: 'buddy', context: to });
@@ -832,10 +832,10 @@ desktop.app.buddylist.openWindow = function (params) {
       }
 
       if (desktop.ui.view === 'Mobile') {
-        JQDX.window_maximize(windowId);
+        JQDX.window_maximize($(windowId));
       } else {
         $(windowId).css('width', '44vw');
-        $(windowId).css('height', '66vh');
+        $(windowId).css('height', '72vh');
         $(windowId).css('top', '9vh');
         $(windowId).css('left', '30vw');
         // flatten other windows, show that window as active top stack

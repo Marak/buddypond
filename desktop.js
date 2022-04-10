@@ -473,132 +473,141 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
 };
 
 desktop.commands = {};
-desktop.commands.chatCommands = ['/quit', '/help', '/points']
+desktop.commands.chat = {}
+
+desktop.commands.chat.points = function chatPoints (message, windowId) {
+  buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
+    let points = 0;
+    let value = 0;
+    if (!balance.error) {
+      points = balance.gbp;
+      value = balance.expectedValue;
+    }
+    const pointsText = `
+      <div class="help">
+        <h3>Your current Good Buddy Points</h3>
+        <span><a class="openApp" data-app="gbp" href="#openGBP">Show Market Data</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Balance</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Recent Transactions</a></span>
+        <p>
+          Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
+        </p
+        <p>
+          Estimated Value: ${desktop.utils.usdFormatSmall.format(value)}
+        </p
+      <div>
+    `;
+
+    $('.chat_messages', windowId).append(`<div class="chatMessage">${pointsText}</div>`);
+    $('.no_chat_messages', windowId).hide();
+
+    let el = $('.pond_message_main', windowId);
+    $(el).scrollTop(999999);
+  });
+};
+
+
+desktop.commands.chat.give = function givePoints (message, windowId) {
+  let to = message.text.split(' ')[1];
+  let amount = message.text.split(' ')[2];
+  let text = message.text.split(' ')[3] || '';
+  let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
+  if (!yorn) {
+    return true;
+  }
+  buddypond.giveGbp({ buddyname: to, amount: amount, text: text, messageType: message.type, messageTo: message.to }, function (err, transfer){
+    let points = 0;
+    if (transfer.error) {
+      alert(transfer.message);
+      return;
+    }
+  });
+};
+
+desktop.commands.chat.help = function helpCommands (message, windowId) {
+  const commandSet = [
+    {
+      command: '/meme',
+      helpText: '- sends random meme'
+    },
+    {
+      command: '/meme',
+      additional: ' cool',
+      helpText: '- searches all memes for "cool beans"'
+    },
+    {
+      command: '/points',
+      additional: '',
+      helpText: '- Show your current amount of Good Buddy Points'
+    },
+    {
+      command: '/say',
+      additional: ' hello world',
+      helpText: '- sends random meme'
+    },
+    {
+      command: '/say',
+      additional: ' 😇',
+      helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
+    },
+    /*
+    {
+      command: '/roll',
+      additional: ' 20',
+      helpText: '- Rolls a d20 dice'
+    },
+    */
+    {
+      command: '/quit',
+      helpText: '- Logs you out of here'
+    },
+    {
+      command: '/help',
+      helpText: '- Shows this message'
+    },
+  ];
+
+  const helpText = `
+    <div class="help">
+      <h3>🐸 Welcome to Buddy Pond my good Buddy 🐸</h3>
+      <span>This chat area supports multimedia messaging</span>
+      <p>
+        The following chat text commands are available:
+      </p>
+      ${commandSet.map(item => `
+        <div class="help-text">
+          <div class="help-command">
+            <i>${item.command}</i>${item.additional || ''}
+          </div>
+          <span class="help-description">${item.helpText}</span>
+        </div>
+      `).join('')}
+    <div>
+  `;
+
+  $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
+  $('.no_chat_messages', windowId).hide();
+  let el = $('.message_main', windowId);
+  $(el).scrollTop(999999);
+  // desktop.play('WOOFWOOF-J.wav');
+}
 
 desktop.commands.preProcessMessage = function processInternalMessage (message, windowId) {
   // don't process the message on the server if it's the help command
   // instead capture it and send back the immediate response text
   let command = message.text.split(' ');
   if (command[0] === '/give') {
-    let to = message.text.split(' ')[1];
-    let amount = message.text.split(' ')[2];
-    let text = message.text.split(' ')[3] || '';
-    
-    let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
-    if (!yorn) {
-      return true;
-    }
-    buddypond.giveGbp({ buddyname: to, amount: amount, text: text, messageType: message.type, messageTo: message.to }, function (err, transfer){
-      let points = 0;
-      if (transfer.error) {
-        alert(transfer.message);
-        return;
-      }
-    });
+    desktop.commands.chat.give(message, windowId);
     return false;
   }
 
   if (command[0] === '/points' && command.length === 1) {
-
-    buddypond.getGbpBalance({ buddyname: buddypond.me}, function (err, balance){
-      console.log(err, balance)
-      let points = 0;
-      let value = 0;
-      if (!balance.error) {
-        points = balance.gbp;
-        value = balance.expectedValue;
-      }
-      const pointsText = `
-        <div class="help">
-          <h3>Your current Good Buddy Points</h3>
-          <span><a class="openApp" data-app="gbp" href="#openGBP">Show Market Data</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Balance</a> | <a class="openApp" data-app="gbp" href="#openGBP">Show Recent Transactions</a></span>
-          <p>
-            Current Good Buddy Points: ${desktop.utils.numberFormat.format(points)}
-          </p
-          <p>
-            Estimated Value: ${desktop.utils.usdFormatSmall.format(value)}
-          </p
-        <div>
-      `;
-
-      $('.chat_messages', windowId).append(`<div class="chatMessage">${pointsText}</div>`);
-      $('.no_chat_messages', windowId).hide();
-
-      let el = $('.window_content', windowId);
-      $(el).scrollTop(999999);
-    });
+    desktop.commands.chat.points(message, windowId);
     // Remark: Must return true or /points message will get sent to server
     return true;
 
   }
 
   if (command[0] === '/help') {
-    const commandSet = [
-      {
-        command: '/meme',
-        helpText: '- sends random meme'
-      },
-      {
-        command: '/meme',
-        additional: ' cool',
-        helpText: '- searches all memes for "cool beans"'
-      },
-      {
-        command: '/points',
-        additional: '',
-        helpText: '- Show your current amount of Good Buddy Points'
-      },
-      {
-        command: '/say',
-        additional: ' hello world',
-        helpText: '- sends random meme'
-      },
-      {
-        command: '/say',
-        additional: ' 😇',
-        helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
-      },
-      /*
-      {
-        command: '/roll',
-        additional: ' 20',
-        helpText: '- Rolls a d20 dice'
-      },
-      */
-      {
-        command: '/quit',
-        helpText: '- Logs you out of here'
-      },
-      {
-        command: '/help',
-        helpText: '- Shows this message'
-      },
-    ];
-
-    const helpText = `
-      <div class="help">
-        <h3>Welcome to Buddy Pond my good Buddy!</h3>
-        <span>This chat area supports both text and multimedia ( Paints, Snaps, Sounds )</span>
-        <p>
-          As of right now, the following chat text commands are available:
-        </p>
-        ${commandSet.map(item => `
-          <div class="help-text">
-            <div class="help-command">
-              <i>${item.command}</i>${item.additional || ''}
-            </div>
-            <span class="help-description">${item.helpText}</span>
-          </div>
-        `).join('')}
-      <div>
-    `;
-
-    $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
-    $('.no_chat_messages', windowId).hide();
-
-    let el = $('.window_content', windowId);
-    $(el).scrollTop(999999);
-
+    desktop.commands.chat.help(message, windowId);
     return true;
   }
 

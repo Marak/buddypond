@@ -30,14 +30,13 @@
   }
 
   .pond_emoji_picker {
-    position: static !important;
-    padding-top: 12px;
+    position: relative;
+    top: 10px;
     /* margin: auto auto auto auto; */
   }
 
   .pond_send_message_form>form .pond_message_text {
     width: 100%;
-    margin: 5px;
     resize: none;
     cursor: text;
     box-sizing: border-box;
@@ -86,7 +85,8 @@
   .insertSnap {
     font-size: 20px;
     padding-right: 5px;
-    padding-top: 9px;
+    top: 8px;
+    position: relative;
     cursor: pointer;
   }
 
@@ -173,6 +173,15 @@
   }
   .openPond {
     cursor: pointer;
+  }
+  .getHelp {
+    position: absolute;
+    font-size: 18px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .getHelp:hover {
+    opacity: 0.44;
   }
 </style>
 <div id="window_pond" class="abs window pond_list" data-window-index="0">
@@ -268,7 +277,7 @@
     </div>
     <div class="abs window_content">
       <div class="chat_area">
-        <div class="window_main pond_message_main">
+        <div class="window_main pond_message_main  message_main">
           <div class="buddy_pond_not_connected">
             You'll need to login in order to access the Buddy Pond.
           </div>
@@ -282,19 +291,16 @@
           </div>
         </div>
         <div class="window_bottom_chat">
+          <div class="pond_send_message_chatcontrols_form">
+              <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
+              <img title="Insert Animation" class="insertGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
+              <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" />
+              <span class="insertSnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
+              <span title="Insert Emoji" class="desktopOnly pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span>
+              <span title="Get Help" class="desktopOnly getHelp chatControl">🦮</span>
+          </div>
           <div class="pond_send_message_form">
             <form method="POST" action="" align="right" class="pond_send_message_form">
-              <!-- <div class="chat_media_buttons"> --> <!-- This is commented out because it breaks JSPAINT integration for some reason. -->
-                <span class="insertSnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
-                <img title="Insert Audio" class="insertSound chatControl"
-                  src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-                <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="insertGif chatControl"
-                    src="desktop/assets/images/icons/icon_gifstudio_64.png" /></a>
-                <img title="Insert Paint" class="insertPaint chatControl"
-                  src="desktop/assets/images/icons/icon_paint_64.png" />
-                <span title="Insert Emoji"
-                  class="pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span><br /><br />
-              <!-- </div> -->
               <textarea name="pond_message_text" class="pond_message_text pond_message_text_0"
                 placeholder=""></textarea>
               <button name="pond_message_submit" class="sendPondMessage">

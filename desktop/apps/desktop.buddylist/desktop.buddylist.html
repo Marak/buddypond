@@ -100,13 +100,12 @@
   }
 
   .buddy_emoji_picker {
-    position: static !important;
-    padding-top: 12px;
+    position: relative;
+    top: 10px;
   }
 
   .buddy_send_message_form>form .buddy_message_text {
     width: 100%;
-    margin: 5px;
     resize: none;
     cursor: text;
     box-sizing: border-box;
@@ -118,8 +117,8 @@
   }
 
   .sendBuddyMessage {
-    padding: 5px;
     margin: 5px;
+    padding: 5px;
     width: 9vw;
     border-radius: var(--pond-border-radius);
     border: none;
@@ -143,7 +142,8 @@
   .insertBuddySnap {
     font-size: 20px;
     padding-right: 5px;
-    padding-top: 9px;
+    top: 22px;
+    position: relative;
     cursor: pointer;
   }
 
@@ -159,8 +159,6 @@
   }
 
   .insertBuddyPaint:hover {
-    width: 16px;
-    height: 16px;
     opacity: 0.44;
     cursor: pointer;
   }
@@ -287,7 +285,7 @@
         <!-- <span title="End Video Call" class="endVideoCall emojiIcon context">🚫</span> -->
 
         <img title="Start Video Call" class="startVideoCall context" src="desktop/assets/images/icons/icon_phone.png" />
-        <div class="window_main buddy_message_main">
+        <div class="window_main buddy_message_main  message_main">
           <div class="chatMessagesHolder">
             <div class="no_chat_messages">
               Your conversation has just started. You can send a message using the form below.
@@ -298,19 +296,19 @@
           </div>
         </div>
         <div class="window_bottom_chat">
+          <div class="buddy_send_message_chatcontrols_form">
+              <img title="Insert Audio" class="insertBuddySound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
+              <img title="Insert Animation" class="insertBuddyGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
+              <img title="Insert Paint" class="insertBuddyPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" />
+              <span class="insertBuddySnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
+              <span title="Insert Emoji" class="desktopOnly emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span>
+              <span title="Get Help" class="desktopOnly getHelp chatControl">🦮</span>
+          </div>
           <div class="buddy_send_message_form">
             <form method="POST" action="" align="right" class="buddy_send_message_form">
-              <span class="insertBuddySnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
-              <img title="Insert Audio" class="chatControl insertBuddySound"
-                src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-              <a href="#gifstudio" class="openApp"><img title="Insert Animation" class="chatControl insertBuddyGif"
-                  src="desktop/assets/images/icons/icon_gifstudio_64.png" /></a>
-              <img title="Insert Paint" class="chatControl insertBuddyPaint" src="desktop/assets/images/icons/icon_paint_64.png" />
-              <span title="Insert Emoji"
-                class="chatControl buddy_emoji_picker_0 buddy_emoji_picker emojiPicker emojiTitleBar">😀</span><br /><br />
               <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"
                 placeholder=""></textarea>
-              <button name="buddy_message_submit" class="sendBuddyMessage">SEND</button>
+                <button name="buddy_message_submit" class="sendBuddyMessage">SEND</button>
               <input name="buddy_message_from" class="buddy_message_from" type="hidden" />
               <input name="buddy_message_to" class="buddy_message_to" type="hidden" />
             </form>

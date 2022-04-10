@@ -79,7 +79,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     */
 
     d.on('mousedown', '.pond_emoji_picker', function (ev) {
-      let holder = $(ev.target).parent().parent();
+      let holder = $(ev.target).parent().parent().parent();
       let textarea = $('.pond_message_text', holder);
       $('.activeTextArea').removeClass('activeTextArea');
       $(textarea).addClass('activeTextArea');
@@ -87,7 +87,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertSnap', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context = $('.pond_message_to', form).val();
       desktop.ui.openWindow('mirror', { type: 'pond', context: context });
       // required to not re-trigger window_stack on pond window itself ( with click )
@@ -96,7 +96,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertPaint', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -110,7 +110,7 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertGif', function (ev) {
-      let form = $(ev.target).parent().parent();
+      let form = $(ev.target).parent().parent().parent();
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
@@ -124,13 +124,9 @@ desktop.app.pond.load = function loadPond (params, next) {
     });
 
     d.on('mousedown', '.insertSound', function (ev) {
-      let form = $(ev.target).parent();
+      let form = $(ev.target).parent().parent().parent();
       let to;
-      if (form.hasClass('pond_send_message_form')) {
-        to = $('.pond_message_to', form).val();
-      } else {
-        to = $('.buddy_message_to', form).val();
-      }
+      to = $('.pond_message_to', form).val() ||  $('.buddy_message_to', form).val();
       JQDX.openWindow('soundrecorder', { type: 'pond', context: to });
       // required to not re-trigger window_stack on pond window itself ( with click )
       ev.preventDefault();
@@ -143,6 +139,10 @@ desktop.app.pond.load = function loadPond (params, next) {
       parent.find('textarea[name="pond_message_text"]').val(
         `${textBox.val()}@${$(this).text().split(':')[0]}`
       );
+    });
+
+    d.on('click', '.getHelp', function () {
+      desktop.commands.chat.help();
     });
 
     next();

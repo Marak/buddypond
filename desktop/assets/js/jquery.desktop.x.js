@@ -85,6 +85,7 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 desktop.ui.goMobile = function () {
 
   $('.desktopOnly').hide();
+  $('.maxWindow').hide();
   // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img');
@@ -97,6 +98,8 @@ desktop.ui.goMobile = function () {
   //$('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
   $('a').addClass('mobile_larger_font');
+  $('textarea').addClass('mobile_larger_font');
+  $('.trafficLight a').addClass('mobile_doubly_larger_font');
 
   //$('.datetime').addClass('mobile_datetime');
 
@@ -134,6 +137,8 @@ desktop.ui.goMobile = function () {
   // TODO: remove these lines
   $('.sendBuddyMessage').css('width', '33vw');
   $('.sendPondMessage').css('width', '33vw');
+  $('.insertSnap').css('top', '22px');
+  $('.insertBuddySnap').css('top', '22px');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -149,6 +154,9 @@ desktop.ui.goMobile = function () {
 desktop.ui.exitMobile = function () {
 
   $('.desktopOnly').show();
+  $('.maxWindow').show();
+
+  // TODO: remember resize max positions and size of windows from data() and resume
 
   // restore bottom bar sizes ( shrinks )
   $('#bar_bottom').removeClass('mobile_bar_bottom');
@@ -166,6 +174,8 @@ desktop.ui.exitMobile = function () {
   $('body').removeClass('mobile_larger_font');
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
+  $('textarea').removeClass('mobile_larger_font');
+
   $('a').removeClass('mobile_larger_font');
 
   $('.window_top').css('padding-top', 0);
@@ -178,7 +188,9 @@ desktop.ui.exitMobile = function () {
   $('.emojiTitleBar').css('padding-top', 10);
   $('.sendBuddyMessage').css('width', '9vw');
   $('.sendPondMessage').css('width', '9vw');
-
+  //$('.grid-container').css('width', '22vw');
+  $('.insertSnap').css('top', '8px');
+  $('.insertBuddySnap').css('top', '8px');
 
   $('.window_content').css('top', '7vh');
 
@@ -235,10 +247,12 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
 
     $('.pond_send_message_form').css('padding-bottom', 0);
     $('.buddy_send_message_form').css('padding-bottom', 0);
-    $('.pond_message_text').css('margin', 5);
+    $('.pond_message_text').css('margin-top', 6);
+    $('.pond_message_text').css('margin-bottom', 6);
+    $('.buddy_message_text').css('margin-top', 6);
+    $('.buddy_message_text').css('margin-bottom', 6);
     $('.sendPondMessage').css('margin', 5);
     $('.recentTransactions').css('font-size', 16);
-    
 
   }
 
@@ -270,6 +284,8 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     // TODO: remove this line
     $('.emojiTitleBar').css('padding-top', 32);
     $('.pond_message_text').css('margin', 16);
+    $('.buddy_message_text').css('margin', 16);
+
     $('.sendPondMessage').css('margin', 16);
     $('.recentTransactions').css('font-size', 32);
 
@@ -280,7 +296,9 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
 window.onresize = desktop.ui.windowResizeEventHandler;
 
 JQDX.window_maximize = function window_maximize (win, opts) {
+  console.log('win', win)
   if (desktop.ui.view === 'Mobile') {
+    JQDX.minAllWindows();
     win.attr({
       // Save window position.
       'data-t': win.css('top'),
@@ -320,6 +338,7 @@ JQDX.window_maximize = function window_maximize (win, opts) {
 
   // Bring window to front.
   JQDX.window_flat();
+  win.show();
   win.addClass('window_stack');
 
 };
@@ -877,6 +896,10 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
 
 JQDX.minWindow = function minWindow (el) {
   $(el).closest('div.window').hide();
+};
+
+JQDX.minAllWindows = function minWindow (el) {
+  $('div.window').hide();
 };
 
 // TODO: toggleMaxWindow? its doing two states min and max
