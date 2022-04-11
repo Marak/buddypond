@@ -317,7 +317,7 @@ div.ui-resizable-handle {
   */
   margin: 0 0 0 0px;
   padding: 0 0 0 0px;
-  min-height: 77%;
+  /* min-height: 77%; NO!! */
 }
 
 .window_full .window_top,
@@ -1195,8 +1195,14 @@ iframe {
   /* width: 100%; */
   left: 1px;
   right: 1px;
-  padding-left: 8px;
+  padding: 0 8px;
   margin: 3px 0 3px 0;
+}
+
+.send_message_chatcontrols_form {
+  display: flex;
+  /* padding: 5px; */
+  margin: 5px 0;
 }
 
 .youtubeSmartLink img {
@@ -1206,12 +1212,26 @@ iframe {
 
 .chatMessage {
   font-size: clamp(12px, 0.8vw, 24px);
-  padding-left: 6px;
+  padding: 0 6px;
+}
+
+.chatControl {
+  /* font-size: 16pt; */
+  padding-right: 5px;
+  /* padding-top: 12px; */
+  width: 18pt;
+  cursor: pointer;
+
+}
+
+.chatControl:hover {
+  opacity: 0.44;
 }
 
 .message {
   font-size: clamp(12px, 0.8vw, 24px);
 }
+
 
 .datetime {
   font-style: italic;
