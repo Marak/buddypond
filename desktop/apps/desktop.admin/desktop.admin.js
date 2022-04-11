@@ -1,5 +1,5 @@
 desktop.app.admin = {}; // since localStorage is loaded first and already populated desktop.admin scope
-// desktop.admin.icon = "folder";
+desktop.app.admin.icon = "folder";
 desktop.app.admin.label = 'admin';
 
 desktop.app.admin.load = function loadadmin (params, next) {

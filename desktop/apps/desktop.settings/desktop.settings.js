@@ -60,6 +60,61 @@ desktop.app.settings.load = function loadsettings (params, next) {
   //
   // END SET DEFAULTS FOR ALL DESKTOP SETTINGS
   //
+  
+  // RENDER DEFAULT DESKTOP ICONS HERE ( for now )
+
+  //  if (typeof desktop.settings.apps_installed === 'undefined') {
+      let defaultApps = [ 
+        { name: 'profile', label: 'Profile', version: '4.20.69' },
+        { name: 'buddylist', label: 'Buddy List', version: '4.20.69' },
+        { name: 'pond', label: 'Pond', version: '4.20.69' },
+        { name: 'interdimensionalcable', label: 'Inter Dimensional Cable', version: '4.20.69' },
+        { name: 'memepool', label: 'Meme Pool', version: '4.20.69' },
+        { name: 'soundcloud', label: 'Sound Cloud', version: '4.20.69' },
+        { name: 'soundrecorder', label: 'Sound Recorder', version: '4.20.69' },
+        { name: 'paint', label: 'Paint', version: '4.20.69' },
+        { name: 'mirror', label: 'Mirror', version: '4.20.69' },
+        { name: 'visuals', label: 'Audio Visualizer', version: '4.20.69' },
+        { name: 'games', label: 'Games', icon: 'folder', version: '4.20.69' },
+        { placeholder: true },
+        { name: 'download', label: 'Download Buddy Pond', icon: 'drive', version: '4.20.69' },
+        { name: 'login', label: 'Login', icon: 'login', class: 'loginIcon', version: '4.20.69' },
+        { name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn', version: '4.20.69' },
+        { placeholder: true },
+        { placeholder: true },
+        { placeholder: true },
+        { placeholder: true }
+        // { name: 'appstore', label: 'App Store', version: '4.20.69' }
+      ];
+      defaultApps.reverse();
+      desktop.set('apps_installed', defaultApps);
+  //  }
+
+      // find which apps are installed into this desktop and render their icons
+      desktop.settings.apps_installed.forEach(function(app){
+        if (app.placeholder) {
+          $('.desktop-shortcuts-container').prepend(`
+            <div class="icon shortcut">
+            </div>
+          `);
+        } else {
+          let href = `#icon_dock_${app.name}`;
+          if (app.href) {
+            href = app.href;
+          }
+          $('.desktop-shortcuts-container').prepend(`
+            <div class="icon shortcut ${app.class}">
+              <a href="${href}">
+                <img class="emojiIcon" src="desktop/assets/images/icons/icon_${app.icon || app.name}_64.png" />
+                <span class="title">
+                  ${app.label || app.name}
+                </span>
+              </a>
+            </div>
+          `);
+        }
+  
+      });
 
   next();
 

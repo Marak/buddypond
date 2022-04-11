@@ -115,14 +115,14 @@ desktop.ui.goMobile = function () {
 
   // hides the entire top navigation bar including clock and menus ( for now )
   $('#bar_top').hide();
-  $('.grid-container').css('width', '100%');
-  $('.grid-container').css('overflow', 'auto');
-  $('.grid-container').css('top', '0px');
-
+  $('.desktop-shortcuts-container').css('width', '100%');
+  $('.desktop-shortcuts-container').css('overflow', 'auto');
+  $('.desktop-shortcuts-container').css('top', '0px');
+  $('.desktop-shortcuts-container').hide();
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
-  $('.window_content').css('top', '3vh');
+  $('.window_content').css('top', '9vh');
 
   // TODO: remove this line
   $('.emojiTitleBar').css('padding-top', 32);
@@ -193,7 +193,7 @@ desktop.ui.exitMobile = function () {
   $('.emojiTitleBar').css('padding-top', 10);
   $('.sendBuddyMessage').css('width', '9vw');
   $('.sendPondMessage').css('width', '9vw');
-  //$('.grid-container').css('width', '22vw');
+  //$('.desktop-shortcuts-container').css('width', '22vw');
   $('.insertSnap').css('top', '8px');
   $('.insertBuddySnap').css('top', '8px');
 
@@ -277,7 +277,7 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.icon img').css('width', 64);
     $('.icon').css('font-size', 28);
     $('.icon a').addClass('mobile_larger_font');
-    $('.grid-container').css('width', '20vw');
+    $('.desktop-shortcuts-container').css('width', '20vw');
     $('.icon').css('width', 145);
     $('.pond_send_message_form').css('padding-bottom', 12);
     $('.buddy_send_message_form').css('padding-bottom', 12);
@@ -552,6 +552,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       window.open('https://github.com/marak/buddypond', '_blank');
       return;
     }
+    if (appName === 'logout') {
+      desktop.app.login.logoutDesktop();
+      return;
+    }
     JQDX.openWindow(appName);
   });
 
@@ -711,19 +715,29 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   // Show desktop button, ala Windows OS.
   d.on('mousedown', '#show_desktop', function () {
+
     // toggle between three states: open windows, min windows, profile page
     if (desktop.ui.displayMode === 'windows') {
       desktop.ui.displayMode = 'profile';
       desktop.ui.openWindow('profile');
+      if (desktop.ui.view === 'Mobile') {
+        $('.desktop-shortcuts-container').hide();
+      }
     }
     else if (desktop.ui.displayMode === 'profile') {
       desktop.ui.closeWindow('profile');
       desktop.ui.displayMode = 'min';
+      if (desktop.ui.view === 'Mobile') {
+        $('.desktop-shortcuts-container').show();
+      }
       // If any windows are visible, hide all.
       $('div.window').hide();
     }
     else if (desktop.ui.displayMode === 'min') {
       desktop.ui.displayMode = 'windows';
+      if (desktop.ui.view === 'Mobile') {
+        $('.desktop-shortcuts-container').hide();
+      }
       // show all windows that are invisible
       $('#dock li:visible a').each(function () {
         $($(this).attr('href')).show();

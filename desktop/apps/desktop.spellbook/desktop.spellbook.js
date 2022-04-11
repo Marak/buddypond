@@ -83,12 +83,12 @@ desktop.app.spellbook.alert = function spellbookAlert () {
 // instructs desktop client to log buddy out of the system locally
 // this is useful if you need to sign out your account on a remote device
 desktop.app.spellbook.logout = function logoutBuddy () {
-  desktop.login.logoutDesktop();
+  desktop.app.login.logoutDesktop();
 }; 
 
 desktop.app.spellbook.banhammer = function banBuddy () {
   alert('You have been banned from the Mickey Mouse Club for inappropiate behavior.');
-  desktop.login.logoutDesktop();
+  desktop.app.login.logoutDesktop();
 }; 
 
 // sends Desktop client to a new url

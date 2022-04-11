@@ -64,279 +64,128 @@ window.top.location = 'ie.html';
 -->
 
 <div id="mainOverlay">
-
   <div class="abs" id="wrapper">
-  <div class="abs" id="desktop">
-  </a>
-
-    <div class="grid-container">
-      <div class="icon">
-        <a id="profile_desktop_icon" href="#icon_dock_profile">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_profile_64.png" />
-          Profile
-        </a>
-        <a id="login_desktop_icon" href="#icon_dock_login">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_login_64.png" />
-          Login
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_buddylist">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
-          Buddy List
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_pond">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_pond_64.png" />
-          Ponds
-        </a>
-      </div>
-      
-      <div class="icon">
-        <a href="#icon_dock_interdimensionalcable">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_interdimensionalcable_64.png" />
-          Inter Dimensional Cable
-        </a>
-      </div>
-
-      <div class="icon">
-        <a href="#icon_dock_memepool">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_memepool_64.png" />
-          Meme Pool
-        </a>
-      </div>
-
-      <div class="icon">
-        <a href="#icon_dock_mtv">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_mtv_64.png" />
-          Music Television
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_mirror">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_mirror_64.png" />
-          Mirror
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_paint">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_paint_64.png" />
-          Paint
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_soundcloud">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundcloud_64.png" />
-          SoundCloud
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_soundrecorder">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-          Sound Recorder
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_visuals">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_visuals_64.png" />
-          Audio Visuals
-        </a>
-      </div>
-      <!--
-      <div class="icon desktopOnly">
-        <a href="#icon_dock_midifighter">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_midifighter_64.png" />
-          MIDI Fighter Pad
-        </a>
-      </div>
-        <div class="icon">
-          <a href="#icon_dock_lofi">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_lofi_64.png" />
-            Lofi Room
-          </a>
-        </div>
-        <div class="icon">
-          <a href="#icon_dock_gifstudio">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
-            Gif Studio
-          </a>
-        </div>
-
-        <div class="icon">
-          <a href="#icon_dock_spellbook">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_spellbook_64.png" />
-            Spellbook
-          </a>
-        </div>
-
-        <div class="icon">
-          <a href="#icon_dock_streamsquad">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_streamsquad_64.png" />
-            Stream Squad
-          </a>
-        </div>
-        <div class="icon loggedIn">
-          <a href="#icon_dock_gbp">
-            <img class="emojiIcon" src="desktop/assets/images/icons/icon_gbp_64.png" />
-            GBP
-          </a>
-        </div>
-      -->
-      <div class="icon">
-        <a href="#icon_dock_games">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_folder_64.png" />
-          Games
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_settings">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
-          Settings
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_console">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_console_64.png" />
-          Console
-        </a>
-      </div>
-      <div class="icon">
-        <a href="#icon_dock_download_buddypond">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_32_drive.png" />
-          Download Buddy Pond
-        </a>
-      </div>
+    <div class="abs" id="desktop">
+    <!-- default desktop icons are currently rendered in `app.settings.load()` -->
+    <div class="desktop-shortcuts-container">
     </div>
     <canvas class="canvasBackground" id="c"></canvas>
-    
-    <!--
-    <a class="abs icon" style="right:20px;top:333px;" href="#icon_dock_themes">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_wallpaper_64.png" />
-      Switch Themes
-    </a>
-    <a class="abs icon" style="left:110px;top:500px;" href="#icon_dock_automaton">
-      <img class="emojiIcon" src="desktop/assets/images/icons/icon_automaton_64.png" />
-      Automaton
-    </a>
-    -->
-  </div>
-  <div class="abs" id="bar_top">
-    <ul>
-      <li>
-        <!-- Remark: Currently used to log window resize events <div class="debugWindow">DEBUG</div> -->
-        <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
-        <ul class="menu">
-          <!--
-          <li>
-            <a class="editProfileLink"  href="#">Set Status - Online</a>
-          </li>
-          <li>
-            <a class="editProfileLink"  href="#">Set Status - Away</a>
-          </li>
-          <li>
-            <a class="editProfileLink"  href="#">Set Status - Predisposed</a>
-          </li>
-          <li>
-            <a class="setStatus"  href="#">Set Status - Custom</a>
-          </li>
-          <li class="emptyMenuCell">&nbsp;</li>
-          <li class="emptyMenuCell">&nbsp;</li>
-          -->
-          <li>
-            <span class="tiny"><em>We are stoked to be your buddy</em></span>
-          </li>
-          <li class="emptyMenuCell">&nbsp;</li>
-          <li>
-            <a class="editProfileLink" title="Login to Edit Profile"href="#">Edit Profile</a>
-          </li>
-          <li class="emptyMenuCell">&nbsp;</li>
-          <li>
-            <a class="loginLink" href="#">Login</a>
-          </li>
-          <li>
-            <a class="logoutLink"  href="#">Logout</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <span class="float_right" id="clock"></span>
-    <span class="float_right" id="volume">
-      <span class="navbarControl volumeToggle volumeFull">🔉</span>
-      <span class="navbarControl volumeToggle volumeMuted">🔇</span>
-    </span>
-    <ul class="float_right">
-      <li>
-        <a class="menu_trigger" href="#">Buddy Pond</a>
-        <ul class="menu">
-          <li>
-            <a href="https://github.com/marak/buddypond">Source Code</a>
-          </li>
-          <li>
-            <a href="https://buddypond.com/sdk/client">Client SDK</a>
-          </li>
-          <li>
-            <a href="https://github.com/marak/buddypond">Home Page</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="float_right">
-      <li>
-        <a class="menu_trigger" href="#">
-          <!--
-          <span class="desktopConnected float_right">Connection Established</span>
+    <div class="abs" id="bar_top">
+      <ul>
+        <li>
+          <!-- Remark: Currently used to log window resize events <div class="debugWindow">DEBUG</div> -->
+          <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
+          <ul class="menu">
+            <!--
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Online</a>
+            </li>
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Away</a>
+            </li>
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Predisposed</a>
+            </li>
+            <li>
+              <a class="setStatus"  href="#">Set Status - Custom</a>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li class="emptyMenuCell">&nbsp;</li>
             -->
-          <span class="totalConnected float_right"><span class="totalConnectedCount">0</span> Users Connected</span>
-          <span class="desktopDisconnected float_right">Disconnected</span>
-        </a>
-        <ul class="menu connectionDetails">
-          <li>
-            Connection Started: <span class="connection_ctime"></span> <br/>
-            Packets Sent <span class="connection_packets_sent"></span> <br/>
-            Packets Recieved <span class="connection_packets_recieved"></span> <br/>
-          </li>
-          <li>
-            Last Response Time: <span class="connection_last_response_time">33ms</span> <br/>
-            Average Response Time: <span class="connection_average_response_time">33ms</span> <br/>
-            <!-- Server Load <span class="">Low</span> <br/> -->
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
-      <option>Select music playlist...</option>
-      <option value="942151069">Andrew Potthast: Bangas</option>
-      <option value="938848927">Andrew Potthast: Burning Man Set</option>
-      <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
-      <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
-      <option value="839091662">Featured Indie Producer: Andrew Potthast</option>
-    </select>
+            <li>
+              <span class="tiny"><em>We are stoked to be your buddy</em></span>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li>
+              <a class="editProfileLink" title="Login to Edit Profile"href="#">Edit Profile</a>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li>
+              <a class="loginLink" href="#">Login</a>
+            </li>
+            <li>
+              <a class="logoutLink"  href="#">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span class="float_right" id="clock"></span>
+      <span class="float_right" id="volume">
+        <span class="navbarControl volumeToggle volumeFull">🔉</span>
+        <span class="navbarControl volumeToggle volumeMuted">🔇</span>
+      </span>
+      <ul class="float_right">
+        <li>
+          <a class="menu_trigger" href="#">Buddy Pond</a>
+          <ul class="menu">
+            <li>
+              <a href="https://github.com/marak/buddypond">Source Code</a>
+            </li>
+            <li>
+              <a href="https://buddypond.com/sdk/client">Client SDK</a>
+            </li>
+            <li>
+              <a href="https://github.com/marak/buddypond">Home Page</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="float_right">
+        <li>
+          <a class="menu_trigger" href="#">
+            <!--
+            <span class="desktopConnected float_right">Connection Established</span>
+              -->
+            <span class="totalConnected float_right"><span class="totalConnectedCount">0</span> Users Connected</span>
+            <span class="desktopDisconnected float_right">Disconnected</span>
+          </a>
+          <ul class="menu connectionDetails">
+            <li>
+              Connection Started: <span class="connection_ctime"></span> <br/>
+              Packets Sent <span class="connection_packets_sent"></span> <br/>
+              Packets Recieved <span class="connection_packets_recieved"></span> <br/>
+            </li>
+            <li>
+              Last Response Time: <span class="connection_last_response_time">33ms</span> <br/>
+              Average Response Time: <span class="connection_average_response_time">33ms</span> <br/>
+              <!-- Server Load <span class="">Low</span> <br/> -->
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
+        <option>Select music playlist...</option>
+        <option value="942151069">Andrew Potthast: Bangas</option>
+        <option value="938848927">Andrew Potthast: Burning Man Set</option>
+        <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
+        <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
+        <option value="839091662">Featured Indie Producer: Andrew Potthast</option>
+      </select>
+    </div>
+    <div class="abs" id="bar_bottom">
+      <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
+        <img src="desktop/assets/images/icons/home-icon.png" />
+      </a>
+      <ul id="dock">
+        <li id="icon_dock_buddy_message_0">
+          <a href="#window_buddy_message_0">
+            <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+            <span class="dock_title">
+              Chat with X
+            </span>
+          </a>
+        </li>
+        <li id="icon_dock_pond_message_0">
+          <a href="#window_pond_message_0">
+            <img class="emojiIcon" width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
+            <span class="dock_title">
+              Chat with X
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div class="abs" id="bar_bottom">
-    <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
-      <img src="desktop/assets/images/icons/home-icon.png" />
-    </a>
-    <ul id="dock">
-      <li id="icon_dock_buddy_message_0">
-        <a href="#window_buddy_message_0">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
-          <span class="dock_title">
-            Chat with X
-          </span>
-        </a>
-      </li>
-      <li id="icon_dock_pond_message_0">
-        <a href="#window_pond_message_0">
-          <img class="emojiIcon" width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
-          <span class="dock_title">
-            Chat with X
-          </span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
 </div>
 
 <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
@@ -418,9 +267,9 @@ window.top.location = 'ie.html';
           desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
         });
 
+        // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
         // never gonna work due to: 
         // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
-        // desktop.ui.openWindow('webview', { browser: 'chrome' });
 
         if (!desktop.settings.audio_enabled) {
           $('.volumeFull').hide();

@@ -23,7 +23,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
     // if user clicks on top left menu, focus on login form
     $('.loginLink').on('click', function () {
-      desktop.ui.openWindow('login');
+      JQDX.showWindow('login');
       $('#buddyname').focus();
     });
 
@@ -61,7 +61,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         // token has not validated, log out the client
         if (data.success === false) {
           desktop.app.login.logoutDesktop();
-          desktop.app.login.openWindow();
+          JQDX.showWindow('login');
         } else {
         // token is valid, show client login success
           buddypond.qtokenid = localToken;
@@ -72,7 +72,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
-      desktop.app.login.openWindow();
+      JQDX.showWindow('login');
       return next(null);
     }
 
@@ -146,7 +146,9 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.totalConnected').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
-  desktop.ui.removeDockElement('login');
+// desktop.ui.removeDockElement('login');
+  desktop.ui.renderDockIcon('login');
+  $('.loginIcon').hide();
   try {
     let dateString = DateFormat.format.date(new Date(), 'ddd HH:mm:ss');
     $('.connection_ctime').html(dateString);
@@ -156,11 +158,10 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.connection_packets_sent').html('1');
   $('.connection_packets_recieved').html('1');
   $('.editProfileLink').show();
-  
   $('.editProfileLink').html('Edit Profile');
   $('.editProfileLink').removeClass('editProfileLinkDisabled');
   $('.loggedIn').show();
-
+  $('.loginIcon .title').html('Logout');
 
   // TODO: move this is a separate function
   setTimeout(function () {
@@ -212,19 +213,18 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').addClass('window_stack').show();
-  $('#window_login').css('width', '30vw');
-  $('#window_login').css('height', '55vh');
-  $('#window_login').css('left', '33vw');
-  $('#window_login').css('top', '16vh');
+  $('#window_login').css('width', '66vw');
+  $('#window_login').css('max-width', '1200px');
+  $('#window_login').css('height', '75vh');
+  $('#window_login').css('left', '22vw');
+  $('#window_login').css('top', '9vh');
   $('#login_desktop_icon').show();
-  $('#icon_dock_login').show();
-
-
   //$('#icon_dock_login').show();
   // manually call resize event, make login full screen
-  desktop.ui.windowResizeEventHandler();
   setTimeout(function(){
     $('#buddyname').focus();
+    $('#icon_dock_login').show();
+    desktop.ui.windowResizeEventHandler();
   }, 500)
   
 };
