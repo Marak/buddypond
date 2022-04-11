@@ -117,14 +117,15 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
         alert(data.message);
       }
       $('.buddyPasswordRow').show();
-      $('#buddypassword').attr('placeholder', 'Invalid Password')
       if (buddyname === password) {
         $('.buddyPasswordRow').show();
         $('#buddypassword').focus();
         $('#window_login').css('height', '62vh');
+        $('#buddypassword').attr('placeholder', 'Enter Password')
       } else {
         $('#buddypassword').addClass('error');
         $('.buddyLoginTable .invalidPassword').show();
+        $('#buddypassword').attr('placeholder', 'Invalid Password')
       }
     }
     console.log(err, data);
@@ -217,6 +218,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('top', '16vh');
   $('#login_desktop_icon').show();
   $('#icon_dock_login').show();
+
 
   //$('#icon_dock_login').show();
   // manually call resize event, make login full screen
