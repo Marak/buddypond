@@ -122,7 +122,7 @@ desktop.ui.goMobile = function () {
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
-  $('.window_content').css('top', '9vh');
+  $('.window_content').css('top', '3vh');
 
   // TODO: remove this line
   $('.emojiTitleBar').css('padding-top', 32);
@@ -137,9 +137,12 @@ desktop.ui.goMobile = function () {
   $('#dock li img').css('width', 48);
   */
 
-  $('.pond_message .window_content').css('height', '88%');
-  $('.buddy_message .window_content').css('height', '88%');
   // TODO: remove these lines
+  //$('.pond_message .window_content').css('height', '88%');
+  //$('.buddy_message .window_content').css('height', '88%');
+  
+  $('.desktop-shortcuts-container').css('margin-left', '32px');
+  $('.desktop-shortcuts-container').css('row-gap', '222px');
   $('.sendBuddyMessage').css('width', '33vw');
   $('.sendPondMessage').css('width', '33vw');
   $('.insertSnap').css('top', '22px');
@@ -197,7 +200,7 @@ desktop.ui.exitMobile = function () {
   $('.insertSnap').css('top', '8px');
   $('.insertBuddySnap').css('top', '8px');
 
-  $('.window_content').css('top', '7vh');
+  // $('.window_content').css('top', '7vh');
 
   // restores the top navigation bar
   $('#bar_top').show();
@@ -283,9 +286,11 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     $('.buddy_send_message_form').css('padding-bottom', 12);
 
     // increase all the embedded icon sizes and chat control icons
-    $('#dock .emojiIcon').addClass('mobile_larger_icons');
-    $('#desktop .emojiIcon').addClass('mobile_larger_icons');
+    //$('#dock .emojiIcon').addClass('mobile_larger_icons');
+    //$('#desktop .emojiIcon').addClass('mobile_larger_icons');
     $('.chatControl').addClass('mobile_chatControl');
+    // $('#bar_bottom').addClass('mobile_bar_bottom');
+
     // TODO: remove these line
     $('.emojiTitleBar').css('padding-top', 32);
     $('.pond_message_text').css('margin', 16);

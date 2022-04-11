@@ -555,16 +555,17 @@ th.shrink {
 .desktop-shortcuts-container {
   display: inline-grid;
   grid-template-columns: auto auto auto;
-  gap: 10px;
+  row-gap: 33px;
+  column-gap: 10px;
   /*
   background-color: #2196F3;
   */
   padding: 10px;
-  height: 74vh;
   top: 5vh;
   position: absolute;
   overflow: none;
   width: 12vw;
+  height: 74vh;
 }
 
 .desktop-shortcuts-container > div {
@@ -1333,6 +1334,7 @@ iframe {
 
 .shortcut {
   width: 64px;
+  max-height: 64px;
 }
 
 .shortcut .title {
