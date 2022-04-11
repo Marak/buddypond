@@ -120,6 +120,7 @@
 
                 <!-- ROM LIST -->
                 <div class="form-group mt-2 mb-4" rv-if="data.hasRoms" style="width: 300px;margin-left: auto; margin-right:auto;">
+                    <label for="selRom">Select ROM a rom, or browse for your own!</label>
                     <select class="form-control" id="romselect">
                         <option rv-each-rom="data.romList" rv-value="rom.url">{rom.title}</option>
                     </select>
@@ -732,9 +733,6 @@
         </div>
     </div>
     <div>
-      <h2>The Default HOMEBREW N64 GAMES are located in: `desktop/apps/desktop.n64/roms/` directory</h2>
-      <h3>Can someone please connect these .n64 files to a dropdown here we can load?</h3>
-      <h4>`Twintris.v64` is good default game to load on when this window opens</h4>
     </div>
     <script src="input_controller.js"></script>
     <script src="settings.js"></script>
