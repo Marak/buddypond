@@ -1232,6 +1232,10 @@ iframe {
   font-size: clamp(12px, 0.8vw, 24px);
 }
 
+.chatControl.getHelp {
+  margin-left: auto;
+}
+
 
 .datetime {
   font-style: italic;
