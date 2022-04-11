@@ -37,8 +37,13 @@
         <div id="profileTabs">
           <ul>
             <li><a href="#tabs-1">Buddy Apps</a></li>
-            <li><a href="#tabs-2">Public Profile</a></li>
-            <li><a href="#tabs-3">User Profile Settings</a></li>
+            <li><a href="#tabs-2">Themes</a></li>
+            <li><a href="#tabs-3">Settings</a></li>
+            <li><a href="#tabs-4">Audio</a></li>
+            <li><a href="#tabs-5">Camera</a></li>
+            <!--
+            <li><a href="#tabs-2">App Store</a></li>
+            -->
           </ul>
           <div id="tabs-1">
             <table class="data table">
@@ -222,6 +227,15 @@
                   Console
                 </td>
               </tr>
+              <tr class="openApp" data-app="admin">
+                <td>
+                  <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_folder_64.png" />
+                  <input type="checkbox" CHECKED="checked" DISABLED="disabled" title="Cannot disable App in Alpha"/>
+                </td>
+                <td>
+                 Admin Panel
+                </td>
+              </tr>
             </table>
             <br/>
             <p align="left">
@@ -240,6 +254,127 @@
             -->
           </div>
           <div id="tabs-2">
+            <div class="wallpaperSettings">
+              <div class="wallpaperTypes">
+                  <h2>Wallpaper Type</h2>
+              </div>
+              <br>
+              <br>
+              <div>
+                <h2>Wallpaper Options</h2>
+                <div>
+                    <label>Color</label>
+                    <div class="wallpaperOptionColor"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="tabs-3" align="left">
+            <span class="updateProfileResponse"></span>
+            <form class="updateProfileForm">
+              <table class="profileTable table data">
+                <tr class="loggedIn">
+                  <td>Username</td>
+                  <td class="me">Marak</td>
+                </tr>
+                <!--
+                <tr>
+                  <td>Avatar</td>
+                  <td class="me">
+                    <input type="file"/>
+                  </td>
+                </tr>
+                -->
+                <tr class="loggedIn">
+                  <td>Email</td>
+                  <td>
+                    <input type="text" size="32" name="buddy_email" class="buddy_email" value=""/>
+                  </td>
+                </tr>
+                <tr class="loggedIn">
+                  <td>Password</td>
+                  <td>
+                    <input type="password" size="32" name="buddy_password" class="buddy_password"/>
+                  </td>
+                </tr>
+                <tr class="loggedIn">
+                  <td>Confirm Password</td>
+                  <td>
+                    <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Text To Speech Voice</td>
+                  <td>
+                    <select name="ttsVoice" class="ttsVoice"></select>
+                  </td>
+                </tr>
+                <tr class="loggedIn">
+                  <td>Hide Geo Flag</td>
+                  <td>
+                    <input type="checkbox" name="hideFlag" class="hideFlag"/>
+                  </td>
+                </tr>
+                <!--
+                <tr>
+                  <td>Geo Flag Country Code</td>
+                  <td>
+                    <img class="buddyGeoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>
+                    <select name="geoFlags" class="geoFlags">
+                      <option>Select Country Flag...</option>
+                    </select>
+                  </td>
+                </tr>
+                -->
+                <tr>
+                  <td>Enable Web Notifications</td>
+                  <td>
+                    <input type="checkbox" size="32" name="notifications_web_enabled" class="enableWebNotifications" title="This will enable the browser's Notification settings allow Buddy Pond to notify you have new buddy messages while the website tab is not visible."/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Enable Audio Notifications</td>
+                  <td>
+                    <input type="checkbox" size="32" name="notifications_audio_enabled" class="enableAudioNotifications" title="This will enable audio notifications in the browser window while the website tab is not visible."/>
+                  </td>
+                </tr>
+
+              </table>
+              <button type="submit" class="desktopPanel updateProfileButton loggedIn">Save Profile</button>
+              <!-- TODO logoout button 
+              <button type="submit" class="desktopPanel updateProfileButton">Logout</button>
+                -->
+            </form>
+          </div>
+          <div id="tabs-4">
+            <div id="tabs-2">
+              <div class="wallpaperSettings">
+                <table class="data table">
+                  <tr>
+                    <td>Enable Desktop Audio</td>
+                    <td>
+                      <input type="checkbox" size="32" name="audio_enabled" class="audioEnabled" title="This will enable or mute all Audio on the Desktop."/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Enable Text-To-Speech (TTS) Audio</td>
+                    <td>
+                      <input type="checkbox" size="32" name="audio_tts_enabled" class="audioTTSEnabled" title="This will enable or mute all Text-To-Speech Audio on the Desktop."/>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="tabs-5" align="center">
+            To Adjust Default Camera Settings <a href="#mirror" class="desktopLink openApp" data-app="mirror">Please Open Mirror App</a>
+            <br/>
+             <a href="#mirror" class="desktopLink openApp" data-app="mirror">
+               <img src="desktop/assets/images/icons/icon_mirror_64.png" />
+             </a>
+          </div>
+          <!-- BUDDY PROFILE
+          <div id="tabs-2">
             <h2>Your current Buddy Profile:</h2>
             <br/>
             <div class="publicProfilePreviewHolder desktopButton">
@@ -257,73 +392,7 @@
               <button class="desktopButton updateProfileMarkdown">Update Profile</button>
             </div>
           </div>
-          <div id="tabs-3" align="center">
-            <span class="updateProfileResponse"></span>
-            <form class="updateProfileForm">
-              <h2>User Profile Settings</h2>
-              <table class="profileTable table data">
-                <tr>
-                  <td>Username</td>
-                  <td class="me">Marak</td>
-                </tr>
-                <!--
-                <tr>
-                  <td>Avatar</td>
-                  <td class="me">
-                    <input type="file"/>
-                  </td>
-                </tr>
-                -->
-                <tr>
-                  <td>Email</td>
-                  <td>
-                    <input type="text" size="32" name="buddy_email" class="buddy_email" value=""/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Password</td>
-                  <td>
-                    <input type="password" size="32" name="buddy_password" class="buddy_password"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Confirm Password</td>
-                  <td>
-                    <input type="password" size="32" name="confirm_buddy_password" class="confirm_buddy_password"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Hide Geo Flag</td>
-                  <td>
-                    <input type="checkbox" name="hideFlag" class="hideFlag"/>
-                  </td>
-                </tr>
-                <!--
-                <tr>
-                  <td>Geo Flag Country Code</td>
-                  <td>
-                    <img class="buddyGeoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>
-                    <select name="geoFlags" class="geoFlags">
-                      <option>Select Country Flag...</option>
-                    </select>
-                  </td>
-                </tr>
-                -->
-
-                <tr>
-                  <td>Text To Speech Voice</td>
-                  <td>
-                    <select name="ttsVoice" class="ttsVoice"></select>
-                  </td>
-                </tr>
-
-              </table>
-              <button type="submit" class="desktopPanel updateProfileButton">Update Profile</button>
-              <!-- TODO logoout button 
-              <button type="submit" class="desktopPanel updateProfileButton">Logout</button>
-                -->
-            </form>
-          </div>
+          -->
         </div>
       </div>
     </div>

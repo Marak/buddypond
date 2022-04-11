@@ -248,10 +248,7 @@ window.top.location = 'ie.html';
           </li>
           <li class="emptyMenuCell">&nbsp;</li>
           <li>
-            <a class="editProfileLink" title="Login to Edit Profile"href="#">Login To Edit Profile</a>
-          </li>
-          <li>
-            <a class="editDesktopSettingsLink"  href="#">Edit Desktop Settings</a>
+            <a class="editProfileLink" title="Login to Edit Profile"href="#">Edit Profile</a>
           </li>
           <li class="emptyMenuCell">&nbsp;</li>
           <li>
@@ -375,8 +372,8 @@ window.top.location = 'ie.html';
       .use('buddylist')
       .use('pond')
       .use('streamsquad')
+      .use('profile')
       .use('login', { defer: true })
-      .use('profile', { defer: true })
       .use('videochat', { defer: true })
       .use('automaton', { defer: true })
       .ready(function(err, apps){

@@ -12,15 +12,15 @@ desktop.app.profile.load = function loadProfile (params, next) {
     });
 
     if (!buddypond.qtokenid) {
-      $('.editProfileLink').addClass('editProfileLinkDisabled');
+      // $('.editProfileLink').addClass('editProfileLinkDisabled');
     }
 
     let d = $(document);
     
     d.on('mousedown', '.editProfileLink', function () {
+      $(this).closest('.menu').hide();
+      desktop.ui.openWindow('profile');
       if (buddypond.qtokenid) {
-        $(this).closest('.menu').hide();
-        desktop.ui.openWindow('profile');
       } else {
         
       }
@@ -82,10 +82,93 @@ desktop.app.profile.load = function loadProfile (params, next) {
       }
     });
 
+    // wallpaper app might not be loaded into desktop ( such as LYTE mode )
+    if (desktop.app.wallpaper) {
+      desktop.app.profile.renderWallpaperTypes($('.wallpaperTypes'));
+    }
+    $('.enableWebNotifications').on('change', function () {
+      let notificationsEnabled = $(this).prop('checked');
+      if (notificationsEnabled) {
+        Notification.requestPermission().then(function (permission) {
+          desktop.set('notifications_web_enabled', true);
+          desktop.app.notifications.notifyBuddy('Buddy Pond Notifications Enabled!');
+          desktop.log('Browser has granted Notification permissions');
+          console.log(permission);
+        });
+      } else {
+        // TODO: keeps browser setting active, but disables Desktop Client from emitting Notification events
+        desktop.set('notifications_web_enabled', false);
+      }
+    });
+
+    if (desktop.settings.notifications_web_enabled) {
+      $('.enableWebNotifications').prop('checked', true);
+    }
+
+    $('.enableAudioNotifications').on('change', function () {
+      let audioNotificationsEnabled = $(this).prop('checked');
+      if (audioNotificationsEnabled) {
+        desktop.set('notifications_audio_enabled', true);
+        desktop.log('Audio Notifications have been enabled.');
+        $('.audioEnabled').prop('checked', true);
+        $('.audioEnabled').trigger('change');
+      } else {
+        desktop.set('notifications_audio_enabled', false);
+        desktop.log('Audio Notifications have been disabled.');
+      }
+    });
+
+    if (desktop.settings.notifications_audio_enabled) {
+      $('.enableAudioNotifications').prop('checked', true);
+    }
+
+    if (desktop.settings.audio_enabled) {
+      $('.audioEnabled').prop('checked', true);
+    }
+
+    if (desktop.settings.audio_tts_enabled) {
+      $('.audioTTSEnabled').prop('checked', true);
+    }
+
+    $('.audioEnabled').on('change', function () {
+      let audioMuted = $(this).prop('checked');
+      if (audioMuted) {
+        desktop.set('audio_enabled', true);
+        desktop.log('Desktop Audio has been muted.');
+      } else {
+        desktop.set('audio_enabled', false);
+        desktop.log('Desktop Audio has is back on.');
+      }
+    });
+
+    $('.audioTTSEnabled').on('change', function () {
+      let audioMuted = $(this).prop('checked');
+      if (audioMuted) {
+        desktop.set('audio_tts_enabled', true);
+        desktop.say('Text to speech enabled');
+      } else {
+        desktop.set('audio_tts_enabled', false);
+      }
+    });
+
     $('#profileTabs' ).tabs();
     next();
   });
 };
+
+
+desktop.app.profile.renderWallpaperTypes = function renderWallpaperTypes (el) {
+  for (let w in desktop.app.wallpaper._wallpapers) {
+    let _wallpaper = desktop.app.wallpaper._wallpapers[w];
+    let str = `
+    <input type="radio" id="wallPaperRadio${w}" name="wallpaper_opt" class="wallpaper_opt" value="${w}">
+    <label for="wallPaperRadio${w}">${_wallpaper.label}</label>
+    <br>
+    `;
+    el.append(str);
+  }
+}
+
 
 desktop.app.profile.openWindow = function openWindow () {
   $('#window_profile').css('width', '44vw');
