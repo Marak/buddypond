@@ -3,6 +3,7 @@
     --pond-border-radius: 10px;
     --pond-input-background-colour: #ebebeb;
   }
+
   div.pond_main {
     padding: 16px;
   }
@@ -11,6 +12,8 @@
     padding-top: 0px;
     position: relative;
     overflow-y: scroll;
+    flex: 1;
+    word-wrap: break-word;
   }
 
   .chat_area {
@@ -31,7 +34,6 @@
 
   .pond_emoji_picker {
     position: relative;
-    top: 10px;
     /* margin: auto auto auto auto; */
   }
 
@@ -46,6 +48,7 @@
     border: none;
     border-radius: var(--pond-border-radius);
   }
+
   .pond_send_message_form>form .pond_message_text:focus-visible {
     border: none;
     outline: none;
@@ -62,8 +65,8 @@
 
   .submit_svg_container {
     position: relative;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
   }
 
   .message_send_svg {
@@ -78,57 +81,23 @@
     padding: 16px;
   }
 
-  .chat_media_buttons {
-    display: flex;
-  }
+  .insertSnap {}
 
-  .insertSnap {
-    font-size: 20px;
-    padding-right: 5px;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-  }
+  .insertSnap:hover {}
 
-  .insertSnap:hover {
-    opacity: 0.44;
-  }
+  .insertPaint {}
 
-  .insertPaint {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
+  .insertPaint:hover {}
 
-  .insertPaint:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
+  .insertGif {}
 
-  .insertGif {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
+  .insertGif:hover {}
 
-  .insertGif:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
+  .insertSound {}
 
-  .insertSound {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
 
-  .insertSound:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
+  .insertSound:hover {}
+
 
   .memeImage {
     position: relative;
@@ -171,18 +140,20 @@
   .pondDesc {
     font-style: italic;
   }
+
   .openPond {
     cursor: pointer;
   }
+
   .getHelp {
-    position: absolute;
-    font-size: 18px;
-    right: 10px;
+    margin-left: auto;
     cursor: pointer;
   }
+
   .getHelp:hover {
     opacity: 0.44;
   }
+
   .joinPondTable td {
     cursor: pointer;
   }
@@ -237,7 +208,7 @@
                 #Memes
               </td>
               <td>
-                 <em>Memes ( Images Only )</em>
+                <em>Memes ( Images Only )</em>
               </td>
               <td>
                 212
@@ -280,7 +251,7 @@
           <p>
             🐸🗿🧊🌊
           </p>
-          <br/>
+          <br />
           <div align="center">
             <p>
               A pond is a room where many buddies can chat with each other.
@@ -291,7 +262,7 @@
                 <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
                   placeholder="enter pond name..." type="text" size="16" />
               </label>
-              <br/>
+              <br />
               <button type="submit" class="joinPond desktopButton">Join Pond</button>
               <br />
             </form>
@@ -335,13 +306,13 @@
           </div>
         </div>
         <div class="window_bottom_chat">
-          <div class="pond_send_message_chatcontrols_form">
-              <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-              <img title="Insert Animation" class="insertGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
-              <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" />
-              <span class="insertSnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
-              <span title="Insert Emoji" class="desktopOnly pond_emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span>
-              <span title="Get Help" class="desktopOnly getHelp chatControl">🦮</span>
+          <div class="pond_send_message_chatcontrols_form send_message_chatcontrols_form">
+            <img title="Insert Audio" class="insertSound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" /> <!-- "/desktop/assets/images/icons/svg/icon_microphone.svg" -->
+            <img title="Insert Animation" class="insertGif chatControl" src="/desktop/assets/images/icons/icon_gifstudio_64.png" /> <!-- "/desktop/assets/images/icons/svg/icon_film.svg" -->
+            <img title="Insert Paint" class="insertPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png"/> <!-- "/desktop/assets/images/icons/svg/icon_paint.svg" -->
+            <img title="Insert Snap" class="insertSnap chatControl" src="/desktop/assets/images/icons/svg/icon_snap.svg"/>
+            <img title="Insert Emoji" class="desktopOnly pond_emoji_picker_0 emojiPicker chatControl" src="/desktop/assets/images/icons/svg/icon_smile.svg"/>
+            <img title="Get Help" class="desktopOnly getHelp chatControl" src="/desktop/assets/images/icons/svg/icon_guidedog.svg"/>
           </div>
           <div class="pond_send_message_form">
             <form method="POST" action="" align="right" class="pond_send_message_form">
