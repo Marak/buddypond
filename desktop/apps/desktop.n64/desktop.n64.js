@@ -5,10 +5,10 @@ desktop.app.n64.load = function loadn64Games (params, next) {
   desktop.load.remoteAssets([
     'n64' // this loads the sibling desktop.app.n64.html file into <div id="window_n64"></div>
   ], function (err) {
-    $('#window_n64').css('width', 662);
-    $('#window_n64').css('height', 495);
-    $('#window_n64').css('left', 50);
-    $('#window_n64').css('top', 50);
+    $('#window_n64').css('width', '44vw');
+    $('#window_n64').css('height', '75vh');
+    $('#window_n64').css('top', '9vh');
+    $('#window_n64').css('left', '26vw');
     next();
   });
 };
