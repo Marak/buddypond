@@ -7,6 +7,13 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     'login' // this loads the sibling desktop.app.login.html file into <div id="window_login"></div>
   ], function (err) {
 
+    let d = $(document);
+
+    d.on('mousedown', '.splashImagesHolder', function (ev) {
+      desktop.ui.toggleDisplayMode();
+    });
+
+    // TODO: Refactor these event handlers to use document ^^^
     $('.loginForm').on('submit', function () {
       return false;
     });
@@ -213,7 +220,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
   $('#window_login').addClass('window_stack').show();
-  $('#window_login').css('width', '66vw');
+  $('#window_login').css('width', '72vw');
   $('#window_login').css('max-width', '1200px');
   $('#window_login').css('height', '75vh');
   $('#window_login').css('left', '22vw');
