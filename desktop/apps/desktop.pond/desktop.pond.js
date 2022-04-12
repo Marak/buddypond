@@ -198,11 +198,17 @@ desktop.app.pond.openWindow = function (params) {
       $('.pond_message_from', windowId).val(buddypond.me);
 
       $(windowId).css('left', '30vw');
-
       if (params.context === 'Paint') {
         $('.pond_message_text', windowId).hide();
         $('.pond_emoji_picker', windowId).hide();
         $('.insertSound', windowId).hide();
+        $('.insertSnap', windowId).hide();
+      } else if (params.context === 'Memes') {
+        // $('.pond_message_text', windowId).attr('placeholder', 'Anything you type here will get converted into a Meme by Mnemosyne');
+        $('.pond_emoji_picker', windowId).hide();
+        $('.insertSound', windowId).hide();
+        $('.insertGif', windowId).hide();
+        $('.insertPaint', windowId).hide();
         $('.insertSnap', windowId).hide();
       } else {
         $('.pond_message_text', windowId).show();
