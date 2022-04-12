@@ -153,8 +153,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
   $('.totalConnected').show();
   $('.desktopConnected').show();
   $('.desktopDisconnected').hide();
-// desktop.ui.removeDockElement('login');
-  desktop.ui.renderDockIcon('login');
+  $('#icon_dock_login').hide();
   $('.loginIcon').hide();
   try {
     let dateString = DateFormat.format.date(new Date(), 'ddd HH:mm:ss');
