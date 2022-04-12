@@ -549,8 +549,8 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
       helpText: '- show your current amount of Good Buddy Points'
     },
     {
-      command: '/points Randolph',
-      additional: '',
+      command: '/points',
+      additional: ' Randolph',
       helpText: '- shows how many Good Buddy Points Randolph has'
     },
     {
@@ -589,7 +589,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
           <div class="help-command">
             <i>${item.command}</i>${item.additional || ''}
           </div>
-          <span class="help-description">${item.helpText}</span>
+          <span class="help-description">&nbsp;${item.helpText}</span>
         </div>
       `).join('')}
     <div>
