@@ -1367,3 +1367,27 @@ iframe {
 .shortcut .title {
   width: 32px;
 }
+
+.incomingBuddyScript {
+  background-color: black;
+  color: white;
+  padding-top: 8px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 8px;
+}
+
+.incomingBuddyScript p {
+  margin-left: 18px;
+}
+
+.buddyScript {
+  cursor: pointer;
+  color: #00FF41;
+;
+}
+
+.runBuddyScript {
+  cursor: pointer;
+  padding: 6px;
+}

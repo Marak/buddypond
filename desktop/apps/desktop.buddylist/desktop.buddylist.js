@@ -672,6 +672,13 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       dataContext = message.to;
     }
 
+    let command = message.text.split(' ');
+    if (command[0] === '<' && command.length > 1) {
+      message.text = message.text.replace('<', '>'); // for now
+      desktop.commands.chat.console(message, windowId);
+      desktop.messages._processedCards.push(message.uuid);
+    }
+
     if (message.card && message.card.type === 'points') {
       $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
       desktop.messages._processedCards.push(message.uuid);

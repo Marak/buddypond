@@ -504,6 +504,33 @@ desktop.commands.chat.points = function chatPoints (message, windowId) {
   });
 };
 
+desktop.commands.chat.console = function chatPoints (message, windowId) {
+  const consoleEvalText = `
+    <div class="">
+      <h3>🤖 Jarvis Has Detected Incoming BuddyScript 🤖</h3>
+      <p>> Static Code Analysis: <span title="Safe to run">🟢</span> </p>
+      <p>
+       > ${message.from} has asked you to run a BuddyScript
+      </p
+      <br/>
+      <p>
+        <code title="Click to Run" class="buddyScript">${message.text}</code>
+      </p
+      <br/>
+      <br/>
+      <div>
+        <button class="runBuddyScript">🟣 Run BuddyScript</button>
+      </div>
+    <div>
+  `;
+
+  $('.chat_messages', windowId).append(`<div class="message incomingBuddyScript">${consoleEvalText}</div>`);
+  $('.no_chat_messages', windowId).hide();
+
+  let el = $('.pond_message_main', windowId);
+  $(el).scrollTop(999999);
+};
+
 
 desktop.commands.chat.give = function givePoints (message, windowId) {
   let to = message.text.split(' ')[1];
@@ -606,6 +633,22 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
   // don't process the message on the server if it's the help command
   // instead capture it and send back the immediate response text
   let command = message.text.split(' ');
+
+  if (command[0] === '<' && command.length > 1) {
+    if (desktop.app.console.isValidBuddyScript(command[1])) {
+      // command is valid, do nothing, allow message to continue processing
+    } else {
+      alert('Invalid BuddScript. Will not send.');
+      return true;
+    }
+  }
+
+  if (command[0] === '>' && command.length > 1) {
+    desktop.app.console.evalCoode(command[1])
+    return true;
+  }
+
+
   if (command[0] === '/give') {
     desktop.commands.chat.give(message, windowId);
     return false;
@@ -615,7 +658,6 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     desktop.commands.chat.points(message, windowId);
     // Remark: Must return true or /points message will get sent to server
     return true;
-
   }
 
   if (command[0] === '/help') {

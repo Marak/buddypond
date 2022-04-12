@@ -17,24 +17,21 @@ desktop.app.console.load = function loadDesktop (params, next) {
       return false;
     })
 
-    // Remark: Is not code as this point, it's coode
-    function evalCoode (coode) {
-      eval(coode);
-    };
-
     d.on('mousedown', '.consoleMessageSubmit', function () {
       // Remark: Is not code as this point, it's coode
       let str = $('.console_message_text').val();
-      evalCoode(str);
+      desktop.app.console.evalCoode(str);
     });
 
+    /*
     d.keypress(function (ev) {
-      if (ev.which === 13) {
+      if (ev.which === 13 && $(ev.target).hasClass('')) {
         let str = $('.console_message_text').val();
-        evalCoode(str);
+        desktop.app.console.evalCoode(str);
         return false;
       }
     });
+    */
 
     $('#window_console').css('width', '100vw');
     $('#window_console').css('height', '40vh');
@@ -72,3 +69,51 @@ desktop.app.console.log = function logDesktop () {
   //$('.console').scrollTop($(el)[0].scrollHeight + 300);
 };
 
+// TODO: map all known apps
+
+desktop.app.console._allowCommands = {
+    idc: {
+      command: 'desktop.ui.openWindow("interdimensionalcable");'
+    },
+    gifstudio: {
+      command: 'desktop.ui.openWindow("interdimensionalcable");'
+    },
+    paint: {
+      command: 'desktop.ui.openWindow("paint");'
+    },
+    mirror: {
+      command: 'desktop.ui.openWindow("mirror");'
+    },
+    mtv: {
+      command: 'desktop.ui.openWindow("mtv");'
+    },
+    soundrecorder: {
+      command: 'desktop.ui.openWindow("soundrecorder");'
+    }
+  }
+
+desktop.app.console.isValidBuddyScript = function isValidBuddyScript (coode) {
+  let isValidBuddyScript = false;
+  let tokens = coode.split(' ');
+  // only allow specific command mappings to eval
+  if (Object.keys(desktop.app.console._allowCommands).indexOf(tokens[0]) !== -1) {
+    isValidBuddyScript = true;
+  }
+  return isValidBuddyScript;
+}
+
+// Remark: Is not code as this point, it's coode
+desktop.app.console.evalCoode = function (coode) {
+  let tokens = coode.split(' ');
+    let isValid = desktop.app.console.isValidBuddyScript(coode);
+  if (isValid) {
+    try {
+      eval(desktop.app.console._allowCommands[tokens[0]].command);
+    } catch (err) {
+      alert('Tokenized eval() threw an error. This should *never* happen. Please Contact Support.');
+    }
+  } else {
+    alert('Invalid BuddyScript');
+    //desktop.log('Invalid BuddyScript! Ask your Buddy about the BuddyScript they sent you?');
+  }
+}

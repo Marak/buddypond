@@ -437,6 +437,30 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.ui.openWindow(appName);
   });
 
+  function runBuddyScript (coode) {
+    coode = coode.split(' ');
+    coode = coode.slice(1, coode.length);
+    coode = coode.join(' ');
+    desktop.log('Attempting to eval() string ' + coode);
+    desktop.app.console.evalCoode(coode);
+  }
+
+  d.on('click', '.runBuddyScript', function (ev) {
+    // Remark It's not code yet, it's "coode"
+    let holder = $(this).parent().parent();
+    let coode = $('.buddyScript', holder).html();
+    runBuddyScript(coode);
+    return false;
+  });
+
+  d.on('click', '.buddyScript', function (ev) {
+    // Remark It's not code yet, it's "coode"
+    let holder = $(this).parent().parent();
+    let coode = $('.buddyScript', holder).html();
+    runBuddyScript(coode);
+    return false;
+  });
+
   d.on('click', 'tr.openApp', function (ev) {
     let appName = $(this).data('app');
     desktop.ui.openWindow(appName);

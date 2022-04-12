@@ -347,6 +347,14 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     // TODO: smart links for audio links
     desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
 
+    let command = message.text.split(' ');
+    if (command[0] === '<' && command.length > 1) {
+      message.text = message.text.replace('<', '>'); // for now
+      desktop.commands.chat.console(message, windowId);
+      desktop.messages._processedCards.push(message.uuid);
+      return;
+    }
+
     // replace cards
     if (message.card) {
       if (message.card.type === 'points') {
