@@ -117,10 +117,11 @@ desktop.ui.goMobile = function () {
 
   // hides the entire top navigation bar including clock and menus ( for now )
   $('#bar_top').hide();
+  /*
   $('.desktop-shortcuts-container').css('width', '100%');
   $('.desktop-shortcuts-container').css('overflow', 'auto');
   $('.desktop-shortcuts-container').css('top', '0px');
-  $('.desktop-shortcuts-container').hide();
+  */
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
@@ -1243,28 +1244,30 @@ desktop.ui.previewWindow = function previewWindow () {
 
 // TODO: make switching display mode and view mode event emitter events, much cleaner, such wow
 desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
+  
+  if (desktop.ui.view === 'Mobile') {
+    $('.desktop-shortcuts-container .shortcut').hide();
+    if (buddypond.me) {
+      $('.logoutShortcut').show();
+    } else {
+      $('.loginShortcut').show();
+    }
+  }
+  
+  
   // toggle between three states: open windows, min windows, profile page
   if (desktop.ui.displayMode === 'windows') {
     desktop.ui.displayMode = 'profile';
     desktop.ui.openWindow('profile', { noDockIcon: true });
-    if (desktop.ui.view === 'Mobile') {
-      $('.desktop-shortcuts-container').hide();
-    }
   }
   else if (desktop.ui.displayMode === 'profile') {
     desktop.ui.closeWindow('profile');
     desktop.ui.displayMode = 'min';
-    if (desktop.ui.view === 'Mobile') {
-      $('.desktop-shortcuts-container').hide();
-    }
     // If any windows are visible, hide all.
     $('div.window').hide();
   }
   else if (desktop.ui.displayMode === 'min') {
     desktop.ui.displayMode = 'windows';
-    if (desktop.ui.view === 'Mobile') {
-      $('.desktop-shortcuts-container').hide();
-    }
     // show all windows that are invisible
     $('#dock li:visible a').each(function () {
       $($(this).attr('href')).show();
