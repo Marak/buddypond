@@ -11,11 +11,37 @@ desktop.app.console.load = function loadDesktop (params, next) {
     // Remark: map shortcut method for easily calling `desktop.log()` from apps
     desktop.log = desktop.app.console.log;
 
+    let d = $(document);
+
+    d.on('submit', function(){
+      return false;
+    })
+
+    // Remark: Is not code as this point, it's coode
+    function evalCoode (coode) {
+      eval(coode);
+    };
+
+    d.on('mousedown', '.consoleMessageSubmit', function () {
+      // Remark: Is not code as this point, it's coode
+      let str = $('.console_message_text').val();
+      evalCoode(str);
+    });
+
+    d.keypress(function (ev) {
+      if (ev.which === 13) {
+        let str = $('.console_message_text').val();
+        evalCoode(str);
+        return false;
+      }
+    });
+
     $('#window_console').css('width', '100vw');
     $('#window_console').css('height', '40vh');
     $('#window_console').css('bottom', 41);
     $('#window_console').css('left', '0vw');
-
+    // for now
+    $('.console_send_message_form').hide();
     next();
   });
 };

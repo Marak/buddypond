@@ -5,6 +5,49 @@
     overflow: auto;
     margin: 16px;
   }
+  .consoleMessageSubmit {
+    width: 120px;
+  }
+  
+  .console_send_message_form {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .console_message_form>form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .console_emoji_picker {
+    position: relative;
+  }
+
+  .console_send_message_form>form .console_message_text {
+    width: 100%;
+    resize: none;
+    cursor: text;
+    box-sizing: border-box;
+    background-color: #ebebeb;
+    padding: 2px 10px;
+    flex-grow: 1;
+    border: none;
+    border-radius: var(--console-border-radius);
+  }
+
+  .console_send_message_form>form .console_message_text:focus-visible {
+    border: none;
+    outline: none;
+  }
+  
+  .chat_area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
   </style>
 
 <div id="window_console" class="abs window">
@@ -20,10 +63,26 @@
         <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
       </span>
     </div>
-    <div class="abs window_content">
-      <div class="window_main console_holder">
-        <ul class="console">
-        </ul>
+    <div class="chat_area">
+    
+      <div class="abs window_content">
+        <div class="window_main console_holder">
+          <ul class="console">
+          </ul>
+        </div>
+        <div class="window_bottom_chat">
+          <div class="console_send_message_form">
+            <form method="POST" action="" align="right" class="console_send_message_form">
+              <textarea name="console_message_text" class="console_message_text console_message_text_0"
+                placeholder="">desktop.log('hello desktop');</textarea>
+              <button name="console_message_submit" class="consoleMessageSubmit console_message_submit">
+                §~~~> RUN
+              </button>
+              <input name="console_message_from" class="console_message_from" type="hidden" />
+              <input name="console_message_to" class="console_message_to" type="hidden" />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
     <div class="abs window_bottom">
