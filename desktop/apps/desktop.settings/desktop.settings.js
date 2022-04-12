@@ -46,7 +46,11 @@ desktop.app.settings.load = function loadsettings (params, next) {
   }
 
   if (typeof desktop.settings.wallpaper_name === 'undefined') {
-    desktop.set('wallpaper_name', 'matrix');
+    if (desktop.ui.view === 'Mobile') {
+      desktop.set('wallpaper_name', 'nyancat');
+    } else {
+      desktop.set('wallpaper_name', 'matrix');
+    }
   }
 
   if (typeof desktop.settings.wallpaper_color === 'undefined') {

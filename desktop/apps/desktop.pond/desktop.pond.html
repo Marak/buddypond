@@ -129,6 +129,20 @@
   .joinPondTable td {
     cursor: pointer;
   }
+  .welcomePonds {
+    font-size: 24px;
+  }
+  .customPondName {
+    cursor: pointer;
+    border: solid;
+    border-width: 1px;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 4px;
+  }
 </style>
 <div id="window_pond" class="abs window pond_list" data-window-index="0">
   <div class="abs window_inner">
@@ -224,17 +238,17 @@
             🐸🗿🧊🌊
           </p>
           <br />
-          <div align="center">
+          <div align="center" class="welcomePonds">
             <p>
-              A pond is a room where many buddies can chat with each other.
+              Click A Pond To Chat With Buddies
             </p>
-            <p><em>Want to create your own Pond? <br />Just type in the name below!</em></p>
+            <p><em>Wish to create your own Pond? <br />Type in the name below...</em></p>
+            <br/>
             <form class="joinPondForm">
               <label for="customPondName">
                 <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
                   placeholder="enter pond name..." type="text" size="16" />
               </label>
-              <br />
               <button type="submit" class="joinPond desktopButton">Join Pond</button>
               <br />
             </form>

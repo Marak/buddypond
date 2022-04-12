@@ -113,6 +113,8 @@ desktop.ui.goMobile = function () {
   $('#desktop .emojiIcon').addClass('mobile_larger_icons');
   $('.chatControl').addClass('mobile_chatControl');
 
+  $('.welcomePonds').addClass('mobile_larger_font');
+
   // hides the entire top navigation bar including clock and menus ( for now )
   $('#bar_top').hide();
   $('.desktop-shortcuts-container').css('width', '100%');
@@ -1225,6 +1227,7 @@ desktop.ui.previewWindow = function previewWindow () {
   
 }
 
+// TODO: make switching display mode and view mode event emitter events, much cleaner, such wow
 desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
   // toggle between three states: open windows, min windows, profile page
   if (desktop.ui.displayMode === 'windows') {
@@ -1238,7 +1241,7 @@ desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
     desktop.ui.closeWindow('profile');
     desktop.ui.displayMode = 'min';
     if (desktop.ui.view === 'Mobile') {
-      $('.desktop-shortcuts-container').show();
+      $('.desktop-shortcuts-container').hide();
     }
     // If any windows are visible, hide all.
     $('div.window').hide();
