@@ -213,9 +213,9 @@ The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` 
 
 Ex: `JQDX.openWindow('paint');`
 
-## Buddy Pond Mobile Client
+## Buddy Pond `AppStore`
 
-The mobile friendly client is in progress. We have stubs placed in `./mobile` and will have a version of Buddy Pond working for iOS and Andriod soon. Please [reach out](https://github.com/Marak/buddypond/issues) if you can help!
+See: https://github.com/Marak/buddypond-appstore
 
 ## Linting / `eslint`
 
