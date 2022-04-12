@@ -127,26 +127,10 @@ desktop.ui.goMobile = function () {
   // TODO: remove this line
   $('.emojiTitleBar').css('padding-top', 32);
 
-  //$('#dock').addClass('mobile_dock_bar');
-  /*
-  $('.chatControl').css('height', 64);
-  $('.chatControl').css('width', 64);
-  $('.chatControl').css('font-size', 64);
-  $('.pond_message .window_content').css('bottom', 90);
-  $('#dock li img').css('height', 48);
-  $('#dock li img').css('width', 48);
-  */
-
-  // TODO: remove these lines
-  //$('.pond_message .window_content').css('height', '88%');
-  //$('.buddy_message .window_content').css('height', '88%');
-  
   $('.desktop-shortcuts-container').css('margin-left', '32px');
   $('.desktop-shortcuts-container').css('row-gap', '222px');
   $('.sendBuddyMessage').css('width', '33vw');
   $('.sendPondMessage').css('width', '33vw');
-  $('.insertSnap').css('top', '22px');
-  $('.insertBuddySnap').css('top', '22px');
 
   // find active window stack, maximize
   let activeWindow = desktop.ui.getActiveWindow();
@@ -188,22 +172,14 @@ desktop.ui.exitMobile = function () {
 
   $('.window_top').css('padding-top', 0);
   $('.window_top').css('padding-bottom', 0);
+  $('#bar_top').show();
 
-  //$('.pond_message .window_content').css('height', '100%');
-  //$('.buddy_message .window_content').css('height', '100%');
-
-  // TODO: remove this line
+  // TODO: remove these lines
   $('.emojiTitleBar').css('padding-top', 10);
   $('.sendBuddyMessage').css('width', '9vw');
   $('.sendPondMessage').css('width', '9vw');
   //$('.desktop-shortcuts-container').css('width', '22vw');
-  $('.insertSnap').css('top', '8px');
-  $('.insertBuddySnap').css('top', '8px');
-
-  // $('.window_content').css('top', '7vh');
-
   // restores the top navigation bar
-  $('#bar_top').show();
 
   return;
 };
@@ -799,6 +775,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // will show an existing window that is already in the DOM
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
+  params = params || {};
   // console.log('JQDX.showWindow', appName, params);
   let appWindow = '#window_' + appName;
 
@@ -813,10 +790,14 @@ JQDX.showWindow = function showWindow (appName, params) {
 
   let iconDock = '#icon_dock_' + appName;
 
-  // Show the taskbar button.
-  if ($(iconDock).is(':hidden')) {
-    $(iconDock).remove().appendTo('#dock');
-    $(iconDock).show('fast');
+  if (params.noDockIcon) {
+    
+  } else {
+    // Show the taskbar button.
+    if ($(iconDock).is(':hidden')) {
+      $(iconDock).remove().appendTo('#dock');
+      $(iconDock).show('fast');
+    }
   }
 
   JQDX.window_flat();
@@ -1252,7 +1233,7 @@ desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
   // toggle between three states: open windows, min windows, profile page
   if (desktop.ui.displayMode === 'windows') {
     desktop.ui.displayMode = 'profile';
-    desktop.ui.openWindow('profile');
+    desktop.ui.openWindow('profile', { noDockIcon: true });
     if (desktop.ui.view === 'Mobile') {
       $('.desktop-shortcuts-container').hide();
     }

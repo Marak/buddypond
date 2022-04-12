@@ -2,6 +2,10 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
+- note to self: add ability to link to apps inside chat windows
+- meme room should only post memes and not show the OG text, not require /meme tag
+/ add #Say room which is same logic as above but with TTS
+- curate paint room a bit, at least see whats up with broken remixs? remove messages?
 - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
 - login page needs nice splash screen that scrolls for mobile
 - add loading graphic for mobile ( cursor wont show )
