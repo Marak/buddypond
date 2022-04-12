@@ -534,19 +534,29 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
       helpText: '- searches all memes for "cool"'
     },
     {
-      command: '/points',
-      additional: '',
-      helpText: '- Show your current amount of Good Buddy Points'
-    },
-    {
       command: '/say',
       additional: ' hello world',
-      helpText: '- Speaks "hello world" to the chat'
+      helpText: '- speaks "hello world" to the chat'
     },
     {
       command: '/say',
       additional: ' 😇',
-      helpText: '- Speaks "smiling face with halo" ( translated to browser language )'
+      helpText: '- speaks localized "smiling face with halo"'
+    },
+    {
+      command: '/points',
+      additional: '',
+      helpText: '- show your current amount of Good Buddy Points'
+    },
+    {
+      command: '/points Randolph',
+      additional: '',
+      helpText: '- shows how many Good Buddy Points Randolph has'
+    },
+    {
+      command: '/give',
+      additional: ' Randolph 10',
+      helpText: '- gives Randolph 10 Good Buddy Points'
     },
     /*
     {
@@ -557,11 +567,13 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     */
     {
       command: '/quit',
-      helpText: '- Log out of Desktop'
+      additional: ' message',
+      
+      helpText: '- log out of Desktop'
     },
     {
       command: '/help',
-      helpText: '- Shows this message'
+      helpText: '- shows Help'
     },
   ];
 
