@@ -317,7 +317,8 @@ div.ui-resizable-handle {
   */
   margin: 0 0 0 0px;
   padding: 0 0 0 0px;
-  min-height: 77%;
+  /* min-height: 77%; */
+  flex-grow: 1;
 }
 
 .window_full .window_top,
@@ -797,6 +798,10 @@ a:hover {
   resize: none;
 }
 
+.send_message_chatcontrols_form {
+  display: flex;
+}
+
 .me_title {
   float: left;
   text-align: center;
@@ -1205,6 +1210,10 @@ iframe {
   margin: 3px 0 3px 0;
 }
 
+.message_main {
+  word-break: break-word;
+}
+
 .youtubeSmartLink img {
   width: 16px;
   height: 16px;
@@ -1212,7 +1221,24 @@ iframe {
 
 .chatMessage {
   font-size: clamp(12px, 0.8vw, 24px);
-  padding-left: 6px;
+  padding: 0 6px;
+}
+
+.chatControl {
+  /* font-size: 16pt; */
+  padding-right: 5px;
+  /* padding-top: 12px; */
+  width: 18pt;
+  cursor: pointer;
+
+}
+
+.chatControl:hover {
+  opacity: 0.44;
+}
+
+.chatControl.getHelp {
+  margin-left: auto;
 }
 
 .message {

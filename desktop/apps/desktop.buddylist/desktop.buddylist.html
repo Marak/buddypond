@@ -101,7 +101,6 @@
 
   .buddy_emoji_picker {
     position: relative;
-    top: 10px;
   }
 
   .buddy_send_message_form>form .buddy_message_text {
@@ -139,53 +138,6 @@
     height: 100%;
   }
 
-  .insertBuddySnap {
-    font-size: 20px;
-    padding-right: 5px;
-    top: 22px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .insertBuddySnap:hover {
-    opacity: 0.44;
-  }
-
-  .insertBuddyPaint {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .insertBuddyPaint:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
-
-  .insertBuddySound {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .insertBuddySound:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
-
-  .insertBuddyGif {
-    padding-right: 5px;
-    padding-top: 12px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .insertBuddyGif:hover {
-    opacity: 0.44;
-    cursor: pointer;
-  }
 </style>
 
 <div id="window_buddylist" class="abs window">
@@ -296,14 +248,14 @@
           </div>
         </div>
         <div class="window_bottom_chat">
-          <div class="buddy_send_message_chatcontrols_form">
-              <img title="Insert Audio" class="insertBuddySound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" />
-              <img title="Insert Animation" class="insertBuddyGif chatControl" src="desktop/assets/images/icons/icon_gifstudio_64.png" />
-              <img title="Insert Paint" class="insertBuddyPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" />
-              <span class="insertBuddySnap chatControl emojiTitleBar" title="Insert Snap">📷</span>
-              <span title="Insert Emoji" class="desktopOnly emoji_picker_0 emojiPicker emojiTitleBar chatControl">😀</span>
-              <span title="Get Help" class="desktopOnly getHelp chatControl">🦮</span>
-          </div>
+            <div class="buddy_send_message_chatcontrols_form send_message_chatcontrols_form">
+              <img title="Insert Audio" class="insertBuddySound chatControl" src="desktop/assets/images/icons/icon_soundrecorder_64.png" /><!-- "/desktop/assets/images/icons/svg/1f3a4.svg" -->
+              <img title="Insert Animation" class="insertBuddyGif chatControl" src="/desktop/assets/images/icons/icon_gifstudio_64.png" /><!-- "/desktop/assets/images/icons/svg/1f39e.svg" -->
+              <img title="Insert Paint" class="insertBuddyPaint chatControl" src="desktop/assets/images/icons/icon_paint_64.png" /><!-- "/desktop/assets/images/icons/svg/1f3a8.svg" -->
+              <img title="Insert Snap" class="insertBuddySnap chatControl" src="/desktop/assets/images/icons/svg/1f4f7.svg" />
+              <img title="Insert Emoji" class="desktopOnly emoji_picker_0 emojiPicker chatControl" src="/desktop/assets/images/icons/svg/1f600.svg" />
+              <img title="Get Help" class="desktopOnly getHelp chatControl" src="/desktop/assets/images/icons/svg/1f9ae.svg" />
+            </div>
           <div class="buddy_send_message_form">
             <form method="POST" action="" align="right" class="buddy_send_message_form">
               <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"
