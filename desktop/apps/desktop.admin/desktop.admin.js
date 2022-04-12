@@ -19,10 +19,29 @@ desktop.app.admin.load = function loadadmin (params, next) {
     });
 
     // desktop.ui.setDesktopIconPositions();
+    let d = $(document);
+
+    $('.updateDesktopSettingsForm').on('submit', function () {
+      return false;
+    });
+
+    d.on('mousedown', '.saveDesktopSettings', function () {
+      saveAdminSettings();
+    });
+
+    d.on('mousedown', '.restoreDesktopSettings', function () {
+      let yes = confirm('Are you certain?\n\nThis will restore all Desktop Settings to their original values and log you out.');
+      if (!yes) {
+        return;
+      }
+      desktop.settings = {};
+      localStorage.clear();
+      document.location = 'index.html';
+    });
 
     desktop.app.admin.renderAlladminForm($('.desktopadminTable tbody'));
 
-    function saveadmin () {
+    function saveAdminSettings () {
       // serialize form and apply each setting to localstorage
       // this will also set the desktop.admin scope
       let updated = {};
