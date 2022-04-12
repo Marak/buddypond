@@ -468,6 +468,14 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     }
   });
 
+  /*
+  d.on('click', '.desktopImage', function (ev) {
+    // find the parent <a> tag and us its href
+    let url = $(this).parent().attr('href');
+    let img = $(this).attr('src');
+  });
+  */
+
   // Make top menus active.
   d.on('mousedown', 'a.menu_trigger', function () {
     if ($(this).next('ul.menu').is(':hidden')) {
@@ -716,38 +724,8 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     JQDX.closeWindow(this);
   });
 
-
-
-  // Show desktop button, ala Windows OS.
   d.on('mousedown', '#show_desktop', function () {
-
-    // toggle between three states: open windows, min windows, profile page
-    if (desktop.ui.displayMode === 'windows') {
-      desktop.ui.displayMode = 'profile';
-      desktop.ui.openWindow('profile');
-      if (desktop.ui.view === 'Mobile') {
-        $('.desktop-shortcuts-container').hide();
-      }
-    }
-    else if (desktop.ui.displayMode === 'profile') {
-      desktop.ui.closeWindow('profile');
-      desktop.ui.displayMode = 'min';
-      if (desktop.ui.view === 'Mobile') {
-        $('.desktop-shortcuts-container').show();
-      }
-      // If any windows are visible, hide all.
-      $('div.window').hide();
-    }
-    else if (desktop.ui.displayMode === 'min') {
-      desktop.ui.displayMode = 'windows';
-      if (desktop.ui.view === 'Mobile') {
-        $('.desktop-shortcuts-container').hide();
-      }
-      // show all windows that are invisible
-      $('#dock li:visible a').each(function () {
-        $($(this).attr('href')).show();
-      });
-    }
+    desktop.ui.toggleDisplayMode();
   });
 
   // this needs to re-trigger on re-renders
@@ -1265,3 +1243,37 @@ desktop.ui.buildContextMenuEventListener = function buildContextMenuEventListene
 
   return contextListener;
 };
+
+desktop.ui.previewWindow = function previewWindow () {
+  
+}
+
+desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
+  // toggle between three states: open windows, min windows, profile page
+  if (desktop.ui.displayMode === 'windows') {
+    desktop.ui.displayMode = 'profile';
+    desktop.ui.openWindow('profile');
+    if (desktop.ui.view === 'Mobile') {
+      $('.desktop-shortcuts-container').hide();
+    }
+  }
+  else if (desktop.ui.displayMode === 'profile') {
+    desktop.ui.closeWindow('profile');
+    desktop.ui.displayMode = 'min';
+    if (desktop.ui.view === 'Mobile') {
+      $('.desktop-shortcuts-container').show();
+    }
+    // If any windows are visible, hide all.
+    $('div.window').hide();
+  }
+  else if (desktop.ui.displayMode === 'min') {
+    desktop.ui.displayMode = 'windows';
+    if (desktop.ui.view === 'Mobile') {
+      $('.desktop-shortcuts-container').hide();
+    }
+    // show all windows that are invisible
+    $('#dock li:visible a').each(function () {
+      $($(this).attr('href')).show();
+    });
+  }
+}
