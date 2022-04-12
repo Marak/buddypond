@@ -19,14 +19,6 @@
 ### No followers. No following. No Problem
 
 ### All your localhost works offline
- 
- - Multimedia Instant Messaging
- - Chat rooms ( we call them "Ponds" )
- - Live Video and Audio 
- - So many amazing Apps!
- - No followers or following counts, just Buddies
- - Open-Source: Built By Buddies
- - Developer-friendly REST API
 
 ## Adding Memes
 
