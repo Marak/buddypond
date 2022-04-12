@@ -225,9 +225,12 @@ To lint codebase you can install and run `eslint`
 `eslint ./path/to/file.js --fix`
 
 ## Buddy Pond Backend Server
+
 So you've made it to the end of the `ReadMe.md`? Neat.
 
-Buddy Pond consists of a backend server and front-end client.
+Buddy Pond consists of a backend server and front-end client. T
+
+The server code is currently private access invite-only. We intend to make the server code public in two more weeks.
 
 In order to start your own private Buddy Pond ( not federated ) you can download the Buddy Pond Server at [https://github.com/marak/buddypond-server](https://github.com/marak/buddypond-server)
 
