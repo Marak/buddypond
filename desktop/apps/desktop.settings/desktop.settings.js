@@ -77,7 +77,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
         { name: 'visuals', label: 'Audio Visualizer', version: '4.20.69' },
         { name: 'games', label: 'Games', icon: 'folder', version: '4.20.69' },
         { placeholder: true },
-        { name: 'download', label: 'Download Buddy Pond', icon: 'drive', version: '4.20.69' },
+        { name: 'download', href: 'https://github.com/marak/buddypond', label: 'Download Buddy Pond', icon: 'drive', version: '4.20.69' },
         { name: 'login', label: 'Login', icon: 'login', class: 'loginIcon', version: '4.20.69' },
         { name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn', version: '4.20.69' },
         { placeholder: true },
