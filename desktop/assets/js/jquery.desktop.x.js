@@ -135,14 +135,15 @@ desktop.ui.goMobile = function () {
   $('.sendPondMessage').css('width', '33vw');
 
   // find active window stack, maximize
-  let activeWindow = desktop.ui.getActiveWindow();
-  JQDX.window_maximize(activeWindow);
 
   // TODO: bottom bar with four large icons ( BuddyList / Ponds / Entertainment / Settings )
   // TODO: circular "home" button which opens navigation overlay with all Apps on a 4/4 grid with horizontal scroll
   // show home button and bottom nav bar
   // take the current active window and max it
   // minimize all open windows
+  let activeWindow = desktop.ui.getActiveWindow();
+  JQDX.window_maximize(activeWindow);
+
 };
 
 desktop.ui.exitMobile = function () {
@@ -181,13 +182,13 @@ desktop.ui.exitMobile = function () {
   $('.sendBuddyMessage').css('width', '9vw');
   $('.sendPondMessage').css('width', '9vw');
   //$('.desktop-shortcuts-container').css('width', '22vw');
-  // restores the top navigation bar
 
   return;
 };
 
-desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
+desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (forceUpdate) {
 
+  let currentView = desktop.ui.view || 'calculating';
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
 
@@ -205,80 +206,93 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler () {
     desktop.ui.view = 'MegaDesk';
   }
 
-  if (desktop.ui.view === 'Mobile') {
-    desktop.ui.goMobile();
-  } else {
-    desktop.ui.exitMobile();
+  // Remark: It's not neccesary to re-run the hard-coded view logic if ui.view has not actually changed
+  //.        Here we check current calculated view against ui.view to see if the view mode has changed
+  //         We only run the transformations if view mode has actually changed
+  //         Setting `forceUpdate` parameter will force re-run of transformation logic...
+  //         this is used when a new App is opened to immediately resize its height / width to current view mode
+  if (forceUpdate || (currentView !== desktop.ui.view)) {
+    toggleView();
   }
 
-  if (desktop.ui.view === 'Normal') {
-    $('.window_top').css('height', 30);
-    $('.window_top').css('padding-top', 0);
-    $('.window_content').css('top', 33);
-    $('.window_top img').css('width', 16);
-    $('.window_top img').css('height', 16);
+  function toggleView () {
+    if (desktop.ui.view === 'Mobile') {
+      desktop.ui.goMobile();
+    } else {
+      desktop.ui.exitMobile();
+    }
 
-    // set icons back to regular size
-    $('.icon img').css('height', 32);
-    $('.icon img').css('width', 32);
-    $('.icon').css('font-size', 12);
+    if (desktop.ui.view === 'Normal') {
+      $('.window_top').css('height', 30);
+      $('.window_top').css('padding-top', 0);
+      $('.window_content').css('top', 33);
+      $('.window_top img').css('width', 16);
+      $('.window_top img').css('height', 16);
 
-    /*
-    $('.icon').each(function(e, i){
-      let el = $(this);
-      el.css('left', Number(el.css('left').replace('px', '')) * -1.33)
-      el.css('top', Number(el.css('top').replace('px', '')) * -1.33)
-    })
-    */
+      // set icons back to regular size
+      $('.icon img').css('height', 32);
+      $('.icon img').css('width', 32);
+      $('.icon').css('font-size', 12);
 
-    $('.pond_send_message_form').css('padding-bottom', 0);
-    $('.buddy_send_message_form').css('padding-bottom', 0);
-    $('.pond_message_text').css('margin-top', 6);
-    $('.pond_message_text').css('margin-bottom', 6);
-    $('.buddy_message_text').css('margin-top', 6);
-    $('.buddy_message_text').css('margin-bottom', 6);
-    $('.sendPondMessage').css('margin', 5);
-    $('.recentTransactions').css('font-size', 16);
+      /*
+      $('.icon').each(function(e, i){
+        let el = $(this);
+        el.css('left', Number(el.css('left').replace('px', '')) * -1.33)
+        el.css('top', Number(el.css('top').replace('px', '')) * -1.33)
+      })
+      */
 
+      $('.pond_send_message_form').css('padding-bottom', 0);
+      $('.buddy_send_message_form').css('padding-bottom', 0);
+      $('.pond_message_text').css('margin-top', 6);
+      $('.pond_message_text').css('margin-bottom', 6);
+      $('.buddy_message_text').css('margin-top', 6);
+      $('.buddy_message_text').css('margin-bottom', 6);
+      $('.sendPondMessage').css('margin', 5);
+      $('.recentTransactions').css('font-size', 16);
+
+    }
+
+    if (desktop.ui.view === 'MegaDesk') {
+      $('.window_top').css('height', 40);
+      $('.window_top').css('padding-top', 10);
+      $('.window_content').css('top', 53);
+
+      $('.window_top img').css('width', 24);
+      $('.window_top img').css('height', 24);
+      // TODO: add this so we can have larger desktop button
+      // Remark: Needs to resize image? Probably best to slice up buttons into three images ( six with hover state )
+      //$('.window_min, .window_resize, .window_close').css('width', 56);
+      //$('.window_min, .window_resize, .window_close').css('height', 30);
+
+      $('.icon img').css('height', 64);
+      $('.icon img').css('width', 64);
+      $('.icon').css('font-size', 28);
+      $('.icon a').addClass('mobile_larger_font');
+      $('.desktop-shortcuts-container').css('width', '20vw');
+      $('.icon').css('width', 145);
+      $('.pond_send_message_form').css('padding-bottom', 12);
+      $('.buddy_send_message_form').css('padding-bottom', 12);
+
+      // increase all the embedded icon sizes and chat control icons
+      //$('#dock .emojiIcon').addClass('mobile_larger_icons');
+      //$('#desktop .emojiIcon').addClass('mobile_larger_icons');
+      $('.chatControl').addClass('mobile_chatControl');
+      // $('#bar_bottom').addClass('mobile_bar_bottom');
+
+      // TODO: remove these line
+      $('.pond_message_text').css('margin', 16);
+      $('.buddy_message_text').css('margin', 16);
+      $('.getHelp').css('right', '44px');
+      $('.getHelp').css('padding-top', '16px');
+
+      $('.sendPondMessage').css('margin', 16);
+      $('.recentTransactions').css('font-size', 32);
+
+    }
   }
 
-  if (desktop.ui.view === 'MegaDesk') {
-    $('.window_top').css('height', 40);
-    $('.window_top').css('padding-top', 10);
-    $('.window_content').css('top', 53);
 
-    $('.window_top img').css('width', 24);
-    $('.window_top img').css('height', 24);
-    // TODO: add this so we can have larger desktop button
-    // Remark: Needs to resize image? Probably best to slice up buttons into three images ( six with hover state )
-    //$('.window_min, .window_resize, .window_close').css('width', 56);
-    //$('.window_min, .window_resize, .window_close').css('height', 30);
-
-    $('.icon img').css('height', 64);
-    $('.icon img').css('width', 64);
-    $('.icon').css('font-size', 28);
-    $('.icon a').addClass('mobile_larger_font');
-    $('.desktop-shortcuts-container').css('width', '20vw');
-    $('.icon').css('width', 145);
-    $('.pond_send_message_form').css('padding-bottom', 12);
-    $('.buddy_send_message_form').css('padding-bottom', 12);
-
-    // increase all the embedded icon sizes and chat control icons
-    //$('#dock .emojiIcon').addClass('mobile_larger_icons');
-    //$('#desktop .emojiIcon').addClass('mobile_larger_icons');
-    $('.chatControl').addClass('mobile_chatControl');
-    // $('#bar_bottom').addClass('mobile_bar_bottom');
-
-    // TODO: remove these line
-    $('.pond_message_text').css('margin', 16);
-    $('.buddy_message_text').css('margin', 16);
-    $('.getHelp').css('right', '44px');
-    $('.getHelp').css('padding-top', '16px');
-
-    $('.sendPondMessage').css('margin', 16);
-    $('.recentTransactions').css('font-size', 32);
-
-  }
   // $('.debugWindow').html(width + ' '  + height + ' ' + desktop.ui.view);
 };
 
@@ -813,7 +827,9 @@ JQDX.showWindow = function showWindow (appName, params) {
   }
 
   JQDX.loading[appName] = false;
-  desktop.ui.windowResizeEventHandler();
+  
+  // new windows must be immediately resized to current view
+  desktop.ui.windowResizeEventHandler(true);
 
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
   if (typeof cb === 'function') {
@@ -917,7 +933,6 @@ JQDX.maxWindow = function maxWindow (el, $el) {
   //         Previous JQD behavior was to toggle visible status here after clicking dockbar icon
   //         Instead, this could be done elsewhere in the code
   // check to see if window is already active, if so min it
-  
   if (x.hasClass('window_stack')) {
     x.removeClass('window_stack');
     x.hide();
@@ -927,7 +942,6 @@ JQDX.maxWindow = function maxWindow (el, $el) {
     x.show();
   }
 
-  //desktop.ui.windowResizeEventHandler();
 };
 
 JQDX.closeWindow = function closeWindow (el) {

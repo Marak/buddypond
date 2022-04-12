@@ -2,13 +2,25 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-- note to self: add ability to link to apps inside chat windows
+
+
+- help should not post in all chats
+- clicking help should make help window hide
+- add loading graphic for mobile ( cursor wont show )
+- send paint to local file system link broken?
+
+- after send animation should restore correct window
+- fix mirror app view on mobile 
+- click / active state order of click min icons
+- create witter card for http://buddypond.com
+- add ability to link to apps inside chat windows
 - meme room should only post memes and not show the OG text, not require /meme tag
 / add #Say room which is same logic as above but with TTS
 - curate paint room a bit, at least see whats up with broken remixs? remove messages?
 - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
 - login page needs nice splash screen that scrolls for mobile
-- add loading graphic for mobile ( cursor wont show )
+
+- add "Score" and "Distance" to meme cards / Mnemosyne
 
 Chat Windows
 
