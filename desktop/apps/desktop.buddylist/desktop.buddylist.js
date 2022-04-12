@@ -1,5 +1,5 @@
 desktop.app.buddylist = {};
-desktop.app.buddylist.label = 'Buddy List';
+desktop.app.buddylist.label = 'Buddies';
 
 desktop.app.buddylist.subscribedBuddies = [];
 

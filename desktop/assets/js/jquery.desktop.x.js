@@ -96,7 +96,7 @@ desktop.ui.goMobile = function () {
   $('#show_desktop img').addClass('mobile_show_desktop_img');
 
   // hides the text label for icons
-  $('.dock_title').hide();
+  // $('.dock_title').hide();
 
   // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
@@ -969,9 +969,9 @@ desktop.ui.renderDockIcon = function (app) {
     <li id="icon_dock_${app}">
       <a href="#window_${app}">
         <img class="emojiIcon" src="desktop/assets/images/icons/icon_${desktop.app[app].icon || app}_64.png" />
-        <span class="dock_title">
+        <div class="dock_title">
           ${desktop.app[app].label || app }
-        </span>
+        </div>
       </a>
     </li>
   `;

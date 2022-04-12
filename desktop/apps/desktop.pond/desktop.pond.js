@@ -1,5 +1,5 @@
 desktop.app.pond = {};
-desktop.app.pond.label = 'Pond';
+desktop.app.pond.label = 'Ponds';
 
 desktop.app.pond.subscribedPonds = [];
 

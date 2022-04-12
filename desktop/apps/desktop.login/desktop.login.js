@@ -10,7 +10,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     let d = $(document);
 
     d.on('mousedown', '.splashImagesHolder', function (ev) {
-      desktop.ui.toggleDisplayMode();
+      desktop.ui.openWindow('profile');
     });
 
     // TODO: Refactor these event handlers to use document ^^^
@@ -232,7 +232,6 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
     $('#icon_dock_login').show();
     desktop.ui.windowResizeEventHandler();
   }, 500)
-  
 };
 
 desktop.app.login.logoutDesktop = function logoutDesktop () {
