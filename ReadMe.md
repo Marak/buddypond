@@ -3,6 +3,23 @@
 [https://buddypond.com](https://buddypond.com)
 
  - Cloud Desktop
+ - Buddy Lists! Add Your Buddies
+ - Peer to Peer Instant Messaging
+ - Multimedia Pond Chat Rooms
+ - Image and Paint Editors 
+ - Create Media And Send To Buddies
+ - Remix and Send Media With Single Click
+ - Voice and Video Calls With Buddies!
+ - Interdimensional Cable and Live Streaming
+ - Audio Video Visualizations and VFX
+ - Desktop download browser size is < 1MB ( Uncompressed )
+
+###  Making the Internet Fun Again!
+
+### No followers. No following. No Problem
+
+### All your localhost works offline
+ 
  - Multimedia Instant Messaging
  - Chat rooms ( we call them "Ponds" )
  - Live Video and Audio 
@@ -10,7 +27,6 @@
  - No followers or following counts, just Buddies
  - Open-Source: Built By Buddies
  - Developer-friendly REST API
- - Desktop download size is < 1MB ( Uncompressed )
 
 ## Adding Memes
 
