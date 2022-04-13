@@ -203,7 +203,8 @@ desktop.app.pond.openWindow = function (params) {
         $('.pond_emoji_picker', windowId).hide();
         $('.insertSound', windowId).hide();
         $('.insertSnap', windowId).hide();
-      } else if (params.context === 'Memes') {
+      } else if (params.context === 'Memes' || params.context === 'Say') {
+        // TODO: make #Say a comics chat room with audio
         // $('.pond_message_text', windowId).attr('placeholder', 'Anything you type here will get converted into a Meme by Mnemosyne');
         $('.pond_emoji_picker', windowId).hide();
         $('.insertSound', windowId).hide();

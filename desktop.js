@@ -641,6 +641,11 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
   if (message.to === 'Memes' && message.type === 'pond') {
     message.text = '/meme ' + message.text;
   }
+  // TODO: 'Say' is the hard-coded pond name, replace this with pond configuration settings property
+  //       This will allow any pond to have 'Say Mode' enabled or disabled
+  if (message.to === 'Say' && message.type === 'pond') {
+    message.text = '/say ' + message.text;
+  }
 
   if (command[0] === '<' && command.length > 1) {
     if (desktop.app.console.isValidBuddyScript(command[1])) {

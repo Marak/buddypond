@@ -2,6 +2,13 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
+
+BuddyScript v1
+
+  - enable >>paint, /paint, <<paint, \paint commands
+  - add description to each command, render in UI
+  - switch black bg to metallic grey
+
 - fix padding for mobile top window par
 - put back traffic lights to upper right on mobile
 - run buddy script button should be larger on mobile
@@ -10,6 +17,11 @@ We have many issues open and welcomed for first time contributors!
 - add black background color to memepool?
 - spend 3 hours going through memes this week
 - idc window issue if open twice on mobile?
+
+- add Buddys's Documents Folder
+  - Snaps
+  - Paints
+  - Audio
 
 - still missing reset password by email link UX on login.html
 
