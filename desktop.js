@@ -635,6 +635,13 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
   // instead capture it and send back the immediate response text
   let command = message.text.split(' ');
 
+  // If the Pond is in Meme Mode only, it will take all text and convert them to memes!
+  // TODO: 'Memes' is the hard-coded pond name, replace this with pond configuration settings property
+  //       This will allow any pond to have 'Meme Mode' enabled or disabled
+  if (message.to === 'Memes' && message.type === 'pond') {
+    message.text = '/meme ' + message.text;
+  }
+
   if (command[0] === '<' && command.length > 1) {
     if (desktop.app.console.isValidBuddyScript(command[1])) {
       // command is valid, do nothing, allow message to continue processing
