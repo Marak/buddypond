@@ -11,6 +11,8 @@ We have many issues open and welcomed for first time contributors!
 - spend 3 hours going through memes this week
 - idc window issue if open twice on mobile?
 
+- still missing reset password by email link UX on login.html
+
 - `App.Visuals` has no catch on media check
   - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
       at Object.start (index.html:316:17)

@@ -72,16 +72,28 @@ desktop.app.console.log = function logDesktop () {
 // TODO: map all known apps
 
 desktop.app.console._allowCommands = {
+    console: {
+      command: 'desktop.ui.openWindow("console");'
+    },
+    lofi: {
+      command: 'desktop.ui.openWindow("lofi");'
+    },
     logout: {
       command: 'desktop.app.login.logoutDesktop();'
     },
     idc: {
       command: 'desktop.ui.openWindow("interdimensionalcable");'
     },
-    gbp: {
-      command: 'desktop.ui.openWindow("gbp");'
+    interdimensionalcable: {
+      command: 'desktop.ui.openWindow("interdimensionalcable");'
+    },
+    games: {
+      command: 'desktop.ui.openWindow("games");'
     },
     goodbuddypoints: {
+      command: 'desktop.ui.openWindow("gbp");'
+    },
+    gbp: {
       command: 'desktop.ui.openWindow("gbp");'
     },
     gifstudio: {
@@ -89,6 +101,21 @@ desktop.app.console._allowCommands = {
         let str = `desktop.ui.openWindow("gifstudio", { output: '${params.output}', context: '${params.context}' });`
         return str;
       }
+    },
+    midifighter: {
+      command: 'desktop.ui.openWindow("midifighter");'
+    },
+    memepool: {
+      command: 'desktop.ui.openWindow("memepool");'
+    },
+    memes: {
+      command: 'desktop.ui.openWindow("memepool");'
+    },
+    nes: {
+      command: 'desktop.ui.openWindow("nes");'
+    },
+    n64: {
+      command: 'desktop.ui.openWindow("n64");'
     },
     paint: {
       command: function(params) {
@@ -105,11 +132,38 @@ desktop.app.console._allowCommands = {
     mtv: {
       command: 'desktop.ui.openWindow("mtv");'
     },
+    soundcloud: {
+      command: 'desktop.ui.openWindow("soundcloud");'
+    },
     soundrecorder: {
       command: function(params) {
         let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
         return str;
       }
+    },
+    streamsquad: {
+      command: 'desktop.ui.openWindow("soundcloud");'
+    },
+    /* TODO: > settings audio_tts_enabled false
+             // click to disable tts settings
+    settings: {
+      command: function(params) {
+        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      }
+    },
+    */
+    spellbook: {
+      command: 'desktop.ui.openWindow("spellbook");'
+    },
+    visuals: {
+      command: 'desktop.ui.openWindow("visuals");'
+    },
+    av: {
+      command: 'desktop.ui.openWindow("visuals");'
+    },
+    butterchurn: {
+      command: 'desktop.ui.openWindow("visuals");'
     }
   }
 
