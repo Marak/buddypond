@@ -10,7 +10,13 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     let d = $(document);
 
     d.on('mousedown', '.splashImagesHolder', function (ev) {
-      desktop.ui.openWindow('profile');
+      let gallery = $(ev.target).parent().parent();
+      let app = gallery.data('app');
+      if (app) {
+        desktop.ui.openWindow(app);
+      } else{
+        desktop.ui.openWindow('profile');
+      }
     });
 
     // TODO: Refactor these event handlers to use document ^^^
@@ -140,6 +146,7 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
 };
 
 desktop.app.login.success = function desktopLoginSuccess () {
+
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
   desktop.play('WELCOME.wav', Infinity);
@@ -236,6 +243,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
 desktop.app.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid');
   localStorage.removeItem('me');
+  desktop.set('windows_open', {});
   desktop.play('GOODBYE.wav', false, function () {
     document.location = 'index.html';
   });

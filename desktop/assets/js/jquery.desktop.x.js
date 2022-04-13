@@ -395,6 +395,18 @@ JQDX.window_resize = function window_resize (el) {
   // Bring window to front.
   JQDX.window_flat();
   win.addClass('window_stack');
+
+  desktop.ui.openWindows[win.attr('id')] = {
+    open: true,
+    app: appName,
+    width: win.css('width'),
+    height: win.css('height'),
+    top: win.css('top'),
+    left: win.css('left')
+  }
+
+  desktop.set('windows_open', desktop.ui.openWindows);
+
 };
 
 JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
@@ -709,7 +721,22 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       // Movable via top bar only.
       cancel: 'a',
       containment: 'parent',
-      handle: 'div.window_top'
+      handle: 'div.window_top',
+      stop: function (ev) {
+        // desktop.ui.getDesktopIconPositions();
+        let win = $(this);
+        let windowId =  '#' + win.attr('id');
+        let appName = windowId.replace('#window_', '');
+        desktop.ui.openWindows[windowId] = {
+          open: true,
+          app: appName,
+          width: win.css('width'),
+          height: win.css('height'),
+          top: win.css('top'),
+          left: win.css('left')
+        }
+        desktop.set('windows_open', desktop.ui.openWindows);
+      }
     }).resizable({
       containment: 'parent',
       minWidth: 220,
@@ -878,6 +905,18 @@ JQDX.showWindow = function showWindow (appName, params) {
   // new windows must be immediately resized to current view
   desktop.ui.windowResizeEventHandler(true);
 
+  let win = $(appWindow);
+  desktop.ui.openWindows[appWindow] = {
+    open: true,
+    app: appName,
+    width: win.css('width'),
+    height: win.css('height'),
+    top: win.css('top'),
+    left: win.css('left')
+  }
+
+  desktop.set('windows_open', desktop.ui.openWindows);
+
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
   if (typeof cb === 'function') {
     cb(null);
@@ -890,6 +929,7 @@ JQDX.showWindow = function showWindow (appName, params) {
 JQDX.openWindow = function openWindow (appName, params, cb) {
   // console.log('JQDX.openWindow', appName, params)
   params = params || {};
+  cb = cb || function noop () {};
 
   let appWindow = '#window_' + appName;
 
@@ -898,6 +938,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     // this is either buddy_message or pond_message
     // do not attempt to load any apps ( buddylist and ponds should already be loaded )
     JQDX.showWindow(appName, params);
+    cb();
     return;
   }
 
@@ -934,6 +975,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
+      cb();
     });
   } else {
 
@@ -952,6 +994,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     */
 
     JQDX.showWindow(appName, params);
+    cb();
 
   }
 };
@@ -992,6 +1035,7 @@ JQDX.maxWindow = function maxWindow (el, $el) {
 };
 
 JQDX.closeWindow = function closeWindow (el) {
+  // TODO: clean-up these selectors
   let closestWindow = $(el).closest('div.window');
   closestWindow.hide();
   $($(el).attr('href')).hide('fast');
@@ -1001,6 +1045,8 @@ JQDX.closeWindow = function closeWindow (el) {
   let context = $(closestWindow).data('context');
 
   let windowId = $(closestWindow).attr('id').replace('window_', '');
+  delete desktop.ui.openWindows['#' + $(closestWindow).attr('id')];
+  desktop.set('windows_open', desktop.ui.openWindows);
 
   // it's expected app window html has data-app="appName" attribute
   // if there is no data-app attribute, default to window_* name
@@ -1066,8 +1112,8 @@ desktop.ui.renderDockElement = function (key, context) {
   }
 };
 
-// windowIndex is used to keep track of all created windows
-desktop.ui.windowIndex = {};
+// windowIndex is used to keep track of all open windows
+desktop.ui.openWindows = {};
 
 // special mapping for pond and buddylist, which allow N windows to open based on context
 // all other apps are currently set to 1 window only
@@ -1317,6 +1363,20 @@ desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
     // show all windows that are invisible
     $('#dock li:visible a').each(function () {
       $($(this).attr('href')).show();
+    });
+  }
+}
+
+desktop.ui.openSavedWindows = function openSavedWindows () {
+  return;
+  let previouslyOpenWindows = desktop.get('windows_open');
+  for (let key in previouslyOpenWindows) {
+    let win = previouslyOpenWindows[key];
+    desktop.ui.openWindow(win.app, {}, function(){
+      $(key).css('top', win.top);
+      $(key).css('left', win.left);
+      $(key).css('width', win.width);
+      $(key).css('height', win.height);
     });
   }
 }
