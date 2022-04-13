@@ -26,7 +26,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
     function interDemonPlayerStateChange (event) {
       if (event.data == 0) {
         if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
-          JQDX.closeWindow('interdimensionalcable');
+          JQDX.closeWindow('#window_interdimensionalcable');
         } else {
           desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
         }
