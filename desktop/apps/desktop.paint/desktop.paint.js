@@ -74,6 +74,8 @@ desktop.app.paint.send = function sendPaint (params) {
       }
       desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex, params.action);
       JQDX.closeWindow('#window_paint');
+      // open the window we just outputted to
+      $('#window_gifstudio').show(); // TODO un-hardcode this value? why not use JQDX.showWindow() ?
       $('.sendPaint').attr('disabled', false);
       return;
     }
@@ -95,6 +97,14 @@ desktop.app.paint.send = function sendPaint (params) {
           }
         });
         JQDX.closeWindow('#window_paint');
+        // open the window we just outputted to
+        if (output === 'buddy') {
+          // TODO: buddylist renamed to buddy
+          output = 'buddylist'
+        }
+        JQDX.openWindow(output, {
+          context: context
+        });
         $('.sendPaint').attr('disabled', false);
       });
     }

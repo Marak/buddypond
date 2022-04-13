@@ -87,10 +87,20 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       let form = $(ev.target).parent();
       let src = $('.gifstudio_gifPreview').attr('src');
       $('.gifstudio_gifPreview').show();
-      buddypond.sendSnaps(desktop.app.gifstudio.output, desktop.app.gifstudio.context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, function (err, data) {
+      let output = desktop.app.gifstudio.output;
+      let context = desktop.app.gifstudio.output;
+      buddypond.sendSnaps(output, context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, function (err, data) {
         console.log('Sent GIF as snap completed');
       });
       JQDX.closeWindow('#window_gifstudio');
+      // open the window we just outputted to
+      if (output === 'buddy') {
+        // TODO: buddylist renamed to buddy
+        output = 'buddylist'
+      }
+      JQDX.openWindow(output, {
+        context: context
+      });
     });
 
     d.on('mousedown', '#window_gifstudio .saveGif', function (ev) {
