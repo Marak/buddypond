@@ -1369,7 +1369,7 @@ iframe {
 }
 
 .incomingBuddyScript {
-  background-color: black;
+  background-color: #333;
   color: white;
   padding-top: 8px;
   padding-bottom: 16px;

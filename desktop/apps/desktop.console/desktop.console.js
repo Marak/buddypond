@@ -160,7 +160,8 @@ desktop.app.console._allowCommands = {
       command: 'desktop.ui.openWindow("visuals");'
     },
     av: {
-      command: 'desktop.ui.openWindow("visuals");'
+      command: 'desktop.ui.openWindow("visuals");',
+      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen'
     },
     butterchurn: {
       command: 'desktop.ui.openWindow("visuals");'
