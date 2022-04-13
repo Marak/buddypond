@@ -75,6 +75,12 @@ desktop.app.console._allowCommands = {
     idc: {
       command: 'desktop.ui.openWindow("interdimensionalcable");'
     },
+    gbp: {
+      command: 'desktop.ui.openWindow("gbp");'
+    },
+    goodbuddypoints: {
+      command: 'desktop.ui.openWindow("gbp");'
+    },
     gifstudio: {
       command: 'desktop.ui.openWindow("interdimensionalcable");'
     },

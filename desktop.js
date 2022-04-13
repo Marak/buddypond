@@ -4,8 +4,9 @@
 
 */
 
-// eslint-disable-next-line no-redeclare
-const desktop = {};
+if (typeof desktop === 'undefined') {
+  const desktop = {};
+}
 
 // time the desktop object was created in browser
 desktop.ctime = new Date();
