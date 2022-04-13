@@ -1,6 +1,5 @@
 desktop.app.paint = {};
 desktop.app.paint.label = 'Paint';
-desktop.app.paint.icon = 'folder';
 
 desktop.app.paint.load = function loadpaintGames (params, next) {
   desktop.load.remoteAssets([
