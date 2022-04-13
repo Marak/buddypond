@@ -2,6 +2,20 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
+- fix padding for mobile top window par
+- put back traffic lights to upper right on mobile
+- run buddy script button should be larger on mobile
+- needs to show loading graphic for apps on mobile!
+- better ponder the orb UX for IDC on mobile
+- add black background color to memepool?
+- spend 3 hours going through memes this week
+- idc window issue if open twice on mobile?
+
+- `App.Visuals` has no catch on media check
+  - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
+      at Object.start (index.html:316:17)
+      at HTMLScriptElement.tag.onload (index.html:340:24)
+
 - remove this line from codebase: `$('.console_send_message_form').hide();`
 - allow for <paint and >paint formats to work too ( space not required )
 
