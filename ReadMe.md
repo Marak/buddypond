@@ -2,7 +2,8 @@
 ## *a place for buddies*
 [https://buddypond.com](https://buddypond.com)
 
- - Cloud Desktop
+ - Cloud Operating System
+ - Desktop and Mobile Interfaces
  - Buddy Lists! Add Your Buddies
  - Peer to Peer Instant Messaging
  - Multimedia Pond Chat Rooms
