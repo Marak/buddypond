@@ -98,10 +98,25 @@ desktop.ui.goMobile = function () {
   // hides the text label for icons
   // $('.dock_title').hide();
 
+  //
+  // TODO: REMOVE THESE LINES
+  //
+  $('.minWindow').css('position', 'absolute');
+  $('.minWindow').css('left', '49vw');
+  $('.exitWindow').css('position', 'absolute');
+  $('.exitWindow').css('right', '5vw');
+
+  $('#window_login .minWindow').hide();
+  $('#window_login .exitWindow').hide();
+  //
+  // END TODO
+  //
+
   // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
   //$('span').addClass('mobile_larger_font');
   $('input').addClass('mobile_larger_font');
+
   $('a').addClass('mobile_larger_font');
   $('textarea').addClass('mobile_larger_font');
   $('.trafficLight a').addClass('mobile_doubly_larger_font');
@@ -122,18 +137,24 @@ desktop.ui.goMobile = function () {
   $('.desktop-shortcuts-container').css('overflow', 'auto');
   $('.desktop-shortcuts-container').css('top', '0px');
   */
+  
+  $('.desktop-shortcuts-container .shortcut').hide();
   $('.window_top').css('padding-top', 10);
   $('.window_top').css('padding-bottom', 10);
 
   $('.window_content').css('top', '3vh');
 
-  // TODO: remove this line
+  // TODO: remove these lines
+  $('#window_mirror .window_content').css('height', '50vh');
   $('.emojiTitleBar').css('padding-top', 32);
 
   $('.desktop-shortcuts-container').css('margin-left', '32px');
   $('.desktop-shortcuts-container').css('row-gap', '222px');
   $('.sendBuddyMessage').css('width', '33vw');
   $('.sendPondMessage').css('width', '33vw');
+
+  $('.selectMirrorFilter').addClass('mobile_larger_font');
+  $('.selectMirrorCamera').addClass('mobile_larger_font');
 
   // find active window stack, maximize
 
@@ -170,6 +191,7 @@ desktop.ui.exitMobile = function () {
   $('body').removeClass('mobile_larger_font');
   $('span').removeClass('mobile_larger_font');
   $('input').removeClass('mobile_larger_font');
+  $('select').removeClass('mobile_larger_font');
   $('textarea').removeClass('mobile_larger_font');
 
   $('a').removeClass('mobile_larger_font');
