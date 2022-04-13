@@ -70,7 +70,7 @@ desktop.app.interdimensionalcable.load = function (params, next) {
 desktop.app.interdimensionalcable.playRandomVideo = function playRandomVideo (_player, playlist) {
   let keys = playlist;
   let key =   keys[Math.floor(Math.random() * keys.length)];
-  if (_player) {
+  if (_player && _player.loadVideoById) {
     let yt_id = key;
     desktop.log('Playing: https://www.youtube.com/watch?v=' + yt_id);
     _player.loadVideoById(yt_id);

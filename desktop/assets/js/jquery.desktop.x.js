@@ -823,7 +823,24 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 };
 
+// Remark: JQDX.loadWindow has similiar code to desktop.use()
+//         Most likely we can refactor both of these methods into single smaller function
 JQDX.loadWindow = function loadWindow (appName, params, callback) {
+
+  let alreadyLoading = false;
+  desktop.apps.loading.forEach(function(app){
+    if (app.name === appName) {
+      alreadyLoading = true;
+    }
+  });
+
+  if (alreadyLoading) {
+    desktop.log(`Already opening ${appName}. Will not attempt re-load`);
+    return false;
+  }
+
+  desktop.apps.loading.push({ name: appName, params: params });
+
   desktop.load.remoteJS([ `desktop/apps/desktop.${appName}/desktop.${appName}.js` ], function () {
     /* TODO: support N app dep, currently hard-coded to 1
     desktop.app[appName].depends_on.forEach(function(appDep){
@@ -971,7 +988,6 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     document.querySelectorAll('*').forEach(function (node) {
       node.style.cursor = 'progress';
     });
-    desktop.log('Loading: App.' + appName);
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
@@ -979,7 +995,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     });
   } else {
 
-    // TODO: buddy message window should not pop-up in mimized,
+    // TODO: buddy message window should not pop-up if mimized,
     // instead it's suppose to add rainbow class to indicate alert ( regression 3/30 )
     // if the window is open and not visible, it means it is minimized
     /*
