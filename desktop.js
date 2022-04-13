@@ -508,7 +508,7 @@ desktop.commands.chat.points = function chatPoints (message, windowId) {
 desktop.commands.chat.console = function chatPoints (message, windowId) {
   const consoleEvalText = `
     <div class="">
-      <h3>🤖 Jarvis Has Detected Incoming BuddyScript 🤖</h3>
+      <h3 class="rainbow">🤖 Jarvis Has Detected Incoming BuddyScript 🤖</h3>
       <p>> Static Code Analysis: <span title="Safe to run">🟢</span> </p>
       <p>
        > ${message.from} has asked you to run a BuddyScript
