@@ -72,6 +72,9 @@ desktop.app.console.log = function logDesktop () {
 // TODO: map all known apps
 
 desktop.app.console._allowCommands = {
+    logout: {
+      command: 'desktop.app.login.logoutDesktop();'
+    },
     idc: {
       command: 'desktop.ui.openWindow("interdimensionalcable");'
     },
@@ -82,23 +85,36 @@ desktop.app.console._allowCommands = {
       command: 'desktop.ui.openWindow("gbp");'
     },
     gifstudio: {
-      command: 'desktop.ui.openWindow("interdimensionalcable");'
+      command: function(params) {
+        let str = `desktop.ui.openWindow("gifstudio", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      }
     },
     paint: {
-      command: 'desktop.ui.openWindow("paint");'
+      command: function(params) {
+        let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      }
     },
     mirror: {
-      command: 'desktop.ui.openWindow("mirror");'
+      command: function(params) {
+        let str = `desktop.ui.openWindow("mirror", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      }
     },
     mtv: {
       command: 'desktop.ui.openWindow("mtv");'
     },
     soundrecorder: {
-      command: 'desktop.ui.openWindow("soundrecorder");'
+      command: function(params) {
+        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      }
     }
   }
 
 desktop.app.console.isValidBuddyScript = function isValidBuddyScript (coode) {
+  // TODO: validate pipe section as well
   let isValidBuddyScript = false;
   let tokens = coode.split(' ');
   // only allow specific command mappings to eval
@@ -109,15 +125,26 @@ desktop.app.console.isValidBuddyScript = function isValidBuddyScript (coode) {
 }
 
 // Remark: Is not code as this point, it's coode
-desktop.app.console.evalCoode = function (coode) {
+desktop.app.console.evalCoode = function (coode, params) {
+  params = params || {}
+  // TODO: refactor command parsing code into function
   let tokens = coode.split(' ');
-    let isValid = desktop.app.console.isValidBuddyScript(coode);
+  let pipes = coode.split('|');
+  let output, context;
+  if (pipes.length && pipes.length > 1) {
+    // TODO: allow N pipes
+    let pipeCommandA =  pipes[1].split(' ');
+    params.output = escape(pipeCommandA[1]);
+    params.context = escape(pipeCommandA[2]);
+  }
+
+  let isValid = desktop.app.console.isValidBuddyScript(coode);
   if (isValid) {
-    try {
-      eval(desktop.app.console._allowCommands[tokens[0]].command);
-    } catch (err) {
-      alert('Tokenized eval() threw an error. This should *never* happen. Please Contact Support.');
+    let _command = desktop.app.console._allowCommands[tokens[0]].command;
+    if (typeof _command === 'function') {
+      _command = _command(params);
     }
+    eval(_command);
   } else {
     alert('Invalid BuddyScript');
     //desktop.log('Invalid BuddyScript! Ask your Buddy about the BuddyScript they sent you?');

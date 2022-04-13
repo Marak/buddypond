@@ -5,11 +5,15 @@ We have many issues open and welcomed for first time contributors!
 - remove this line from codebase: `$('.console_send_message_form').hide();`
 - allow for <paint and >paint formats to work too ( space not required )
 
-
 - add loading graphic for mobile ( cursor wont show )
 - send paint to local file system link broken?
-- after send animation should restore correct window
+
 - fix mirror app view on mobile 
+- move join lily pond logic to saved windows default ( not coded into app! )
+
+- after send animation should restore correct window
+- gif issues git uploaded, 20 minute timebox
+
 - click / active state order of click min icons
 
 1 / 2 - meme room should only post memes and not show the OG text, not require /meme tag
@@ -26,6 +30,7 @@ MEDIUM
 / add #Say room which is same logic as above but with TTS
 - curate paint room a bit, at least see whats up with broken remixs? remove messages?
 - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
+- - check to see why empty gif sends on import. test a few gifs
 
 Chat Windows
 

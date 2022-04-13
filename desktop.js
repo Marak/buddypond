@@ -645,7 +645,15 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
   }
 
   if (command[0] === '>' && command.length > 1) {
-    desktop.app.console.evalCoode(command[1])
+    let pipes = message.text.split('|');
+    let output, context;
+    if (pipes.length && pipes.length > 1) {
+      // TODO: allow N pipes
+      let pipeCommandA =  pipes[1].split(' ');
+      output = escape(pipeCommandA[1]);
+      context = escape(pipeCommandA[2]);
+    }
+    desktop.app.console.evalCoode(command[1], { output: output || '', context: context || '' })
     return true;
   }
 
