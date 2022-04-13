@@ -4,7 +4,7 @@ We have many issues open and welcomed for first time contributors!
 
 - remove this line from codebase: `$('.console_send_message_form').hide();`
 - allow for <paint and >paint formats to work too ( space not required )
-- add ability to link to apps inside chat windows
+
 
 - add loading graphic for mobile ( cursor wont show )
 - send paint to local file system link broken?
@@ -168,6 +168,8 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+X - add ability to link to apps inside chat windows
 
 X v2 Snaps
 
