@@ -85,7 +85,9 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
-      JQDX.showWindow('login');
+      if (!desktop.hashMode) {
+        JQDX.showWindow('login');
+      }
       return next(null);
     }
 

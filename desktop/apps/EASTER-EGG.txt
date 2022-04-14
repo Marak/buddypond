@@ -63,6 +63,10 @@ Ideas for community apps:
   - Add many more cool effects to the camera
   - see: https://github.com/Marak/buddypond/issues/35
 
+- MIDI Controller
+  - https://medium.com/swinginc/playing-with-midi-in-javascript-b6999f2913c3
+  - https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess
+
 - Sound FX Board
   - Use midi fighter button pad with sound fx
   - add goose sound effect

@@ -274,13 +274,6 @@ window.top.location = 'ie.html';
           desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
         });
 
-        // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
-        // never gonna work due to: 
-        // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
-        // desktop.ui.openWindow('console');
-
-        // desktop.ui.openSavedWindows();
-
         if (!desktop.settings.audio_enabled) {
           $('.volumeFull').hide();
           $('.volumeMuted').show();
@@ -304,6 +297,32 @@ window.top.location = 'ie.html';
             desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
           }
         });
+
+        //
+        // Remark: You can add JS code here to run after the desktop is ready
+        //
+        //
+        // `App.WebView` ? Perhaps not
+        // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
+        // never gonna work due to:
+        // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
+        // desktop.ui.openWindow('console');
+        // desktop.ui.openSavedWindows();
+
+        //
+        // If there is a valid location.hash, use it to route the desktop to specific `App`
+        // Immediately open `App`, then max it's window
+        //
+        if (location.hash) {
+          // TODO: replace with `bs` script commands
+          // TODO: validate incoming hash to ensure isValidBuddyScript
+          let appName = location.hash.replace('#', '');
+          // TODO: params.size: 'Max'
+          desktop.hashMode = true;
+          desktop.ui.openWindow(appName, {}, function(){
+            JQDX.window_resize('#window_' + appName);
+          });
+        }
 
       });
   });
