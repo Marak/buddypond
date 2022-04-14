@@ -607,7 +607,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     {
       command: '/bs',
       additional: '',
-      helpText: '- Lists all availble BuddyScript Commands'
+      helpText: '- Lists all available BuddyScript Commands'
     },
     {
       command: '/quit',
