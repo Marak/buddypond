@@ -313,7 +313,7 @@ window.top.location = 'ie.html';
         // If there is a valid location.hash, use it to route the desktop to specific `App`
         // Immediately open `App`, then max it's window
         //
-        if (location.hash) {
+        function loadAppByHash () {
           // TODO: replace with `bs` script commands
           // TODO: validate incoming hash to ensure isValidBuddyScript
           let appName = location.hash.replace('#', '');
@@ -323,6 +323,14 @@ window.top.location = 'ie.html';
             JQDX.window_resize('#window_' + appName);
           });
         }
+
+        if (location.hash) {
+          loadAppByHash();
+        }
+
+        window.addEventListener('hashchange', function() {
+          loadAppByHash();
+        }, false);
 
       });
   });
