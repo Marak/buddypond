@@ -2,21 +2,24 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-
 BuddyScript v1
 
-  - enable >>paint, /paint, <<paint, \paint commands
+  X - enable /paint, \paint style commands ( easiest to type and remember )
+  X - switch black bg to metallic grey
   - add description to each command, render in UI
-  - switch black bg to metallic grey
 
-- fix padding for mobile top window par
-- put back traffic lights to upper right on mobile
-- run buddy script button should be larger on mobile
-- needs to show loading graphic for apps on mobile!
-- better ponder the orb UX for IDC on mobile
-- add black background color to memepool?
-- spend 3 hours going through memes this week
-- idc window issue if open twice on mobile?
+  1/2 - add openinoious appicus spell for helping open app remotely
+   X - required to open hidden apps / non-installed apps
+  X - add black background color to memepool?
+
+Mobile Issues
+
+  - fix padding for mobile top window bar
+  - put back traffic lights to upper right on mobile
+  - run buddy script button should be larger on mobile
+  - needs to show loading graphic for apps on mobile!
+  - better ponder the orb UX for IDC on mobile
+  - idc window issue if open twice on mobile?
 
 - add Buddys's Documents Folder
   - Snaps
@@ -24,6 +27,16 @@ BuddyScript v1
   - Audio
 
 - still missing reset password by email link UX on login.html
+- spend 3 hours going through memes this week
+
+\party
+
+Party mode v1
+  - turn on hard-coded mp3 song ( something banging )
+  - /play party-song.mp3
+  - /av
+  - /wallpaper rainbow
+
 
 - `App.Visuals` has no catch on media check
   - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
@@ -105,8 +118,6 @@ when recording snaps in mirror, adding new snap image should show last image in 
 - play buddy sound when buddy logs in ( door open aim )
 - add UX indactor for ajax disconnect with desktop.log and top right bar
 - add back button to interdemon cable / mtv / all video players
-- add openinoious appicus spell for helping open app remotely
-  - required to open hidden apps / non-installed apps
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
 - console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
 - add away / watching status based on client is visible API

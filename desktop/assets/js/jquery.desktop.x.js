@@ -472,9 +472,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   function runBuddyScript (coode) {
-    coode = coode.split(' ');
-    coode = coode.slice(1, coode.length);
-    coode = coode.join(' ');
+    coode = coode.substr(1, coode.length - 1);
     desktop.log('Attempting to eval() string ' + coode);
     desktop.app.console.evalCoode(coode);
   }

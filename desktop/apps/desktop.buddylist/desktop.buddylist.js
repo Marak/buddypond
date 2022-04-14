@@ -672,10 +672,13 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       dataContext = message.to;
     }
 
-    let command = message.text.split(' ');
-    if (command[0] === '<' && command.length > 1) {
-      message.text = message.text.replace('<', '>'); // for now
-      desktop.commands.chat.console(message, windowId);
+    // TODO: replace with budscript.parse, etc
+    let first = message.text.substr(0, 1);
+    if (first === '\\') {
+      let command = message.text.split(' ');
+      command[0] = command[0].substr(1, command[0].length - 1);
+      message.text = message.text.replace('\\', '/'); // for now
+      desktop.commands.chat.buddyscript(message, windowId, command[0]);
       desktop.messages._processedCards.push(message.uuid);
     }
 

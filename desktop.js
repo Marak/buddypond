@@ -473,6 +473,7 @@ desktop.play = function desktopPlay (soundFx, tryHard, callback) {
   }
 };
 
+// TODO: Move all commands.* HTML rendering functions to desktop.x.js ( not core desktop.js file )
 desktop.commands = {};
 desktop.commands.chat = {}
 
@@ -505,10 +506,17 @@ desktop.commands.chat.points = function chatPoints (message, windowId) {
   });
 };
 
-desktop.commands.chat.console = function chatPoints (message, windowId) {
+// TODO: move this out of desktop.js
+desktop.commands.chat.buddyscript = function chatConsole (message, windowId, command) {
+  if (!desktop.app.console._allowCommands[command]) {
+    return false;
+  }
+  let icon = desktop.app.console._allowCommands[command].icon;
+  let src = desktop.app.console._allowCommands[command].img || `desktop/assets/images/icons/icon_${icon}_64.png`;
+
   const consoleEvalText = `
     <div class="">
-      <h3 class="rainbow">🤖 Jarvis Has Detected Incoming BuddyScript 🤖</h3>
+      <h3 class="rainbow">🤖 Incoming BuddyScript 🤖</h3>
       <p>> Static Code Analysis: <span title="Safe to run">🟢</span> </p>
       <p>
        > ${message.from} has asked you to run a BuddyScript
@@ -520,7 +528,10 @@ desktop.commands.chat.console = function chatPoints (message, windowId) {
       <br/>
       <br/>
       <div>
-        <button class="runBuddyScript">🟣 Run BuddyScript</button>
+        ${desktop.app.console._allowCommands[command].description || ''}
+        <br/>
+        <br/>
+        <button class="runBuddyScript">🟣 Run ${message.text} <img src="${src}"/></button> <span class="description"></span>
       </div>
     <div>
   `;
@@ -631,9 +642,6 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
 }
 
 desktop.commands.preProcessMessage = function processInternalMessage (message, windowId) {
-  // don't process the message on the server if it's the help command
-  // instead capture it and send back the immediate response text
-  let command = message.text.split(' ');
 
   // If the Pond is in Meme Mode only, it will take all text and convert them to memes!
   // TODO: 'Memes' is the hard-coded pond name, replace this with pond configuration settings property
@@ -647,8 +655,15 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     message.text = '/say ' + message.text;
   }
 
-  if (command[0] === '<' && command.length > 1) {
-    if (desktop.app.console.isValidBuddyScript(command[1])) {
+
+  // don't process the message on the server if it's the help command
+  // instead capture it and send back the immediate response text
+  let command = message.text.split(' ');
+  let first = message.text.substr(0, 1);
+  command[0] = command[0].substr(1, command[0].length - 1);
+
+  if (first === '\\') {
+    if (desktop.app.console.isValidBuddyScript(command[0])) {
       // command is valid, do nothing, allow message to continue processing
     } else {
       alert('Invalid BuddScript. Will not send.');
@@ -656,7 +671,8 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     }
   }
 
-  if (command[0] === '>' && command.length > 1) {
+  if (first === '/') {
+    // TODO: move pipe parsing logic to BuddyScript.parser(), etc
     let pipes = message.text.split('|');
     let output, context;
     if (pipes.length && pipes.length > 1) {
@@ -665,24 +681,21 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
       output = escape(pipeCommandA[1]);
       context = escape(pipeCommandA[2]);
     }
-    desktop.app.console.evalCoode(command[1], { output: output || '', context: context || '' })
-    return true;
+    let result = desktop.app.console.evalCoode(command[0], { message: message, windowId: windowId, output: output || '', context: context || '' })
+    if (result) {
+      return true;
+    }
   }
 
-
-  if (command[0] === '/give') {
+  // don't allow buddies to send these commands out as executable
+  if (command[0] === 'give') {
     desktop.commands.chat.give(message, windowId);
     return false;
   }
 
-  if (command[0] === '/points' && command.length === 1) {
+  if (command[0] === 'points' && command.length === 1) {
     desktop.commands.chat.points(message, windowId);
     // Remark: Must return true or /points message will get sent to server
-    return true;
-  }
-
-  if (command[0] === '/help') {
-    desktop.commands.chat.help(message, windowId);
     return true;
   }
 

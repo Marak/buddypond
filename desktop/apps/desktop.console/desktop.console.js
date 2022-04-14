@@ -73,76 +73,147 @@ desktop.app.console.log = function logDesktop () {
 
 desktop.app.console._allowCommands = {
     console: {
-      command: 'desktop.ui.openWindow("console");'
+      command: 'desktop.ui.openWindow("console");',
+      description: 'Buddy Pond Console Terminal ( For Hackers )',
+      icon: 'lofi'
     },
     lofi: {
-      command: 'desktop.ui.openWindow("lofi");'
+      command: 'desktop.ui.openWindow("lofi");',
+      description: 'Chill Vibes Lofi Music Channel',
+      icon: 'lofi'
     },
     logout: {
-      command: 'desktop.app.login.logoutDesktop();'
+      command: 'desktop.app.login.logoutDesktop();',
+      description: 'Logs you out of Buddy Pond Desktop',
+      icon: 'login'
     },
     idc: {
-      command: 'desktop.ui.openWindow("interdimensionalcable");'
+      command: 'desktop.ui.openWindow("interdimensionalcable");',
+      description: 'Inter Dimensional Cable. Unlimited Multiversal Entertainment.',
+      icon: 'interdimensionalcable'
     },
     interdimensionalcable: {
       command: 'desktop.ui.openWindow("interdimensionalcable");'
     },
     games: {
-      command: 'desktop.ui.openWindow("games");'
+      command: 'desktop.ui.openWindow("games");',
+      description: 'Stay Entertained with Buddy Pond Games',
+      icon: 'folder'
     },
     goodbuddypoints: {
-      command: 'desktop.ui.openWindow("gbp");'
+      command: 'desktop.ui.openWindow("gbp");',
+      icon: 'gbp'
     },
     gbp: {
-      command: 'desktop.ui.openWindow("gbp");'
+      command: 'desktop.ui.openWindow("gbp");',
+      icon: 'gbp'
     },
     gifstudio: {
       command: function(params) {
         let str = `desktop.ui.openWindow("gifstudio", { output: '${params.output}', context: '${params.context}' });`
         return str;
-      }
+      },
+      icon: 'gifstudio'
+    },
+    help: {
+      command: function(params) {
+        let str = `desktop.commands.chat.help();`
+        return str;
+      },
+      img: '/desktop/assets/images/icons/svg/1f9ae.svg'
+    },
+    midi: {
+      command: 'desktop.ui.openWindow("midifighter");',
+      description: 'Make awesome songs. A MIDI Fighter styled Music Pad.',
+      icon: 'midifighter'
     },
     midifighter: {
-      command: 'desktop.ui.openWindow("midifighter");'
+      command: 'desktop.ui.openWindow("midifighter");',
+      description: 'Make awesome songs. A MIDI Fighter styled Music Pad.',
+      icon: 'midifighter'
     },
     memepool: {
-      command: 'desktop.ui.openWindow("memepool");'
+      command: 'desktop.ui.openWindow("memepool");',
+      description: 'Mnemosyne - A.I. Powered Meme Oracle',
+      icon: 'memepool'
     },
     memes: {
-      command: 'desktop.ui.openWindow("memepool");'
+      command: 'desktop.ui.openWindow("memepool");',
+      description: 'Mnemosyne - A.I. Powered Meme Oracle',
+      icon: 'memepool'
     },
     nes: {
-      command: 'desktop.ui.openWindow("nes");'
+      command: 'desktop.ui.openWindow("nes");',
+      description: 'Nintendo Entertainment System',
+      icon: 'nes'
     },
     n64: {
-      command: 'desktop.ui.openWindow("n64");'
+      command: 'desktop.ui.openWindow("n64");',
+      description: 'NINTENDO SIXTY FOOOOOOUUUUURRRR!!!!',
+      icon: 'n64'
     },
     paint: {
       command: function(params) {
         let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
         return str;
-      }
+      },
+      description: 'Paint Editor. Draw cool paintings for Buddies.',
+      icon: 'paint'
     },
     mirror: {
       command: function(params) {
         let str = `desktop.ui.openWindow("mirror", { output: '${params.output}', context: '${params.context}' });`
         return str;
-      }
+      },
+      description: 'Camera App with Visual Effects and Snaps Creator',
+      icon: 'mirror'
     },
     mtv: {
-      command: 'desktop.ui.openWindow("mtv");'
+      command: 'desktop.ui.openWindow("mtv");',
+      description: 'A Music TeleVision Channel with non-top Music Videos.',
+      icon: 'mtv'
     },
     soundcloud: {
-      command: 'desktop.ui.openWindow("soundcloud");'
+      command: 'desktop.ui.openWindow("soundcloud");',
+      description: 'Curated Music Playlists and Buddy Pond Featured Artists.',
+      icon: 'soundcloud'
     },
     soundrecorder: {
       command: function(params) {
         let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
         return str;
-      }
+      },
+      description: 'Send and record sounds with your Buddies.',
+      icon: 'soundrecorder'
+    },
+    sound: {
+      command: function(params) {
+        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      },
+      description: 'Send and record sounds with your Buddies.',
+      icon: 'soundrecorder'
+    },
+    record: {
+      command: function(params) {
+        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      },
+      description: 'Send and record sounds with your Buddies.',
+      icon: 'soundrecorder'
+    },
+    audio: {
+      command: function(params) {
+        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+        return str;
+      },
+      description: 'Send and record sounds with your Buddies.',
+      icon: 'soundrecorder'
     },
     streamsquad: {
-      command: 'desktop.ui.openWindow("soundcloud");'
+      command: 'desktop.ui.openWindow("soundcloud");',
+      description: 'Live Streaming Entertainment with your Buddies',
+      icon: 'soundrecorder'
     },
     /* TODO: > settings audio_tts_enabled false
              // click to disable tts settings
@@ -154,17 +225,24 @@ desktop.app.console._allowCommands = {
     },
     */
     spellbook: {
-      command: 'desktop.ui.openWindow("spellbook");'
+      command: 'desktop.ui.openWindow("spellbook");',
+      description: 'Forbidden Spellbook. Matrix Agents Only.',
+      icon: 'spellbook'
     },
     visuals: {
-      command: 'desktop.ui.openWindow("visuals");'
+      command: 'desktop.ui.openWindow("visuals");',
+      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
+      icon: 'visuals'
     },
     av: {
       command: 'desktop.ui.openWindow("visuals");',
-      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen'
+      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
+      icon: 'visuals'
     },
     butterchurn: {
-      command: 'desktop.ui.openWindow("visuals");'
+      command: 'desktop.ui.openWindow("visuals");',
+      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
+      icon: 'visuals'
     }
   }
 
@@ -192,7 +270,6 @@ desktop.app.console.evalCoode = function (coode, params) {
     params.output = escape(pipeCommandA[1]);
     params.context = escape(pipeCommandA[2]);
   }
-
   let isValid = desktop.app.console.isValidBuddyScript(coode);
   if (isValid) {
     let _command = desktop.app.console._allowCommands[tokens[0]].command;
@@ -200,8 +277,11 @@ desktop.app.console.evalCoode = function (coode, params) {
       _command = _command(params);
     }
     eval(_command);
+    return true;
   } else {
-    alert('Invalid BuddyScript');
+    // not a valid /command, will send message to server since its just text
+    // desktop.log('Invalid BuddyScript', coode);
+    return false;
     //desktop.log('Invalid BuddyScript! Ask your Buddy about the BuddyScript they sent you?');
   }
 }
