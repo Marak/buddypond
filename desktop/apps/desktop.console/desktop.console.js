@@ -70,8 +70,20 @@ desktop.app.console.log = function logDesktop () {
 };
 
 // TODO: map all known apps
-
 desktop.app.console._allowCommands = {
+    av: {
+      command: 'desktop.ui.openWindow("visuals");',
+      description: 'Use the Microphone Audio to create Cool Visuals',
+      icon: 'visuals'
+    },
+    bs: {
+      command: function(params) {
+        let str = `desktop.app.console.listBuddyScriptCommands({ windowId: '${params.windowId}'});`
+        return str;
+      },
+      description: 'Lists all BuddyScript Commands',
+      icon: 'folder'
+    },
     console: {
       command: 'desktop.ui.openWindow("console");',
       description: 'Buddy Pond Console Terminal ( For Hackers )',
@@ -89,23 +101,17 @@ desktop.app.console._allowCommands = {
     },
     idc: {
       command: 'desktop.ui.openWindow("interdimensionalcable");',
-      description: 'Inter Dimensional Cable. Unlimited Multiversal Entertainment.',
+      description: 'Interdimensional Cable',
       icon: 'interdimensionalcable'
-    },
-    interdimensionalcable: {
-      command: 'desktop.ui.openWindow("interdimensionalcable");'
     },
     games: {
       command: 'desktop.ui.openWindow("games");',
       description: 'Stay Entertained with Buddy Pond Games',
       icon: 'folder'
     },
-    goodbuddypoints: {
-      command: 'desktop.ui.openWindow("gbp");',
-      icon: 'gbp'
-    },
     gbp: {
       command: 'desktop.ui.openWindow("gbp");',
+      description: 'Give and receive Good Buddy Points',
       icon: 'gbp'
     },
     gifstudio: {
@@ -113,6 +119,7 @@ desktop.app.console._allowCommands = {
         let str = `desktop.ui.openWindow("gifstudio", { output: '${params.output}', context: '${params.context}' });`
         return str;
       },
+      description: 'Create, Edit, and Remix Animated GIFs',
       icon: 'gifstudio'
     },
     help: {
@@ -120,21 +127,22 @@ desktop.app.console._allowCommands = {
         let str = `desktop.commands.chat.help();`
         return str;
       },
+      description: 'Shows basic Help commands',
       img: '/desktop/assets/images/icons/svg/1f9ae.svg'
     },
-    midi: {
+    instruments: {
       command: 'desktop.ui.openWindow("midifighter");',
-      description: 'Make awesome songs. A MIDI Fighter styled Music Pad.',
+      description: 'Opens Musical Instruments',
       icon: 'midifighter'
     },
     midifighter: {
       command: 'desktop.ui.openWindow("midifighter");',
-      description: 'Make awesome songs. A MIDI Fighter styled Music Pad.',
+      description: 'MIDI Fighter styled Music Pad.',
       icon: 'midifighter'
     },
     memepool: {
       command: 'desktop.ui.openWindow("memepool");',
-      description: 'Mnemosyne - A.I. Powered Meme Oracle',
+      description: 'Manage and Catalog your Memes.',
       icon: 'memepool'
     },
     memes: {
@@ -165,54 +173,30 @@ desktop.app.console._allowCommands = {
         let str = `desktop.ui.openWindow("mirror", { output: '${params.output}', context: '${params.context}' });`
         return str;
       },
-      description: 'Camera App with Visual Effects and Snaps Creator',
+      description: 'Camera with Visual Effects',
       icon: 'mirror'
     },
     mtv: {
       command: 'desktop.ui.openWindow("mtv");',
-      description: 'A Music TeleVision Channel with non-top Music Videos.',
+      description: 'Non-stop Music Videos',
       icon: 'mtv'
     },
     soundcloud: {
       command: 'desktop.ui.openWindow("soundcloud");',
-      description: 'Curated Music Playlists and Buddy Pond Featured Artists.',
+      description: 'Curated Music Playlists and Featured Buddies',
       icon: 'soundcloud'
-    },
-    soundrecorder: {
-      command: function(params) {
-        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
-        return str;
-      },
-      description: 'Send and record sounds with your Buddies.',
-      icon: 'soundrecorder'
-    },
-    sound: {
-      command: function(params) {
-        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
-        return str;
-      },
-      description: 'Send and record sounds with your Buddies.',
-      icon: 'soundrecorder'
     },
     record: {
       command: function(params) {
         let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
         return str;
       },
-      description: 'Send and record sounds with your Buddies.',
-      icon: 'soundrecorder'
-    },
-    audio: {
-      command: function(params) {
-        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
-        return str;
-      },
-      description: 'Send and record sounds with your Buddies.',
+      description: 'Sound Recorder App. Record and Edit Audio',
       icon: 'soundrecorder'
     },
     streamsquad: {
-      command: 'desktop.ui.openWindow("soundcloud");',
-      description: 'Live Streaming Entertainment with your Buddies',
+      command: 'desktop.ui.openWindow("streamsquad");',
+      description: 'Watch Live Streamers with your Buddies',
       icon: 'soundrecorder'
     },
     /* TODO: > settings audio_tts_enabled false
@@ -231,20 +215,52 @@ desktop.app.console._allowCommands = {
     },
     visuals: {
       command: 'desktop.ui.openWindow("visuals");',
-      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
-      icon: 'visuals'
-    },
-    av: {
-      command: 'desktop.ui.openWindow("visuals");',
-      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
-      icon: 'visuals'
-    },
-    butterchurn: {
-      command: 'desktop.ui.openWindow("visuals");',
-      description: 'Cool Audio Visualizer. Uses Microphone to create Visuals on Screen',
+      description: 'Use the Microphone Audio to create Cool Visuals',
       icon: 'visuals'
     }
   }
+
+
+desktop.app.console.listBuddyScriptCommands = function listBuddyScriptCommands (params) {
+  let commands = desktop.app.console._allowCommands;
+  let keys = Object.keys(commands);
+    const helpText = `
+      <div class="help">
+        <h3>🤖 BuddyScript v4.20.69 🤖 </h3>
+        <p>
+          The following <span class="bash">bs</span> commands are available:
+        </p>
+        <br/>
+        ${keys.map(item => `
+          <div class="help-text">
+            <div class="help-command">
+              <i>/${item}</i>${commands[item].additional || ''}
+            </div>
+            <span class="help-description">&nbsp;${commands[item].description}</span>
+          </div>
+        `).join('')}
+        <br/>
+        Typing any of these commands will run the <span class="bash">bs</span> locally.<br/>
+        You can also send <span class="bash">bs</span> to a Buddy by using <span class="bash">\\</span> instead of <span class="bash">/</span><br/>
+        <br/>
+        <strong>Examples:</strong> <br/>
+        <br/>
+        <div class="help-example">
+          Opens Paint Editor Locally<br/>
+          <span class="bash">/paint </span><br/>
+          <br/>
+          Sends Message To Buddy Requesting They Open Paint Editor<br/>
+          <span class="bash">\\paint</span>
+        </div>
+        <br/>
+      <div>
+    `;
+
+    $('.chat_messages', params.windowId).append(`<div class="message">${helpText}</div>`);
+    $('.no_chat_messages', params.windowId).hide();
+    let el = $('.message_main', params.windowId);
+    $(el).scrollTop(999999);
+};
 
 desktop.app.console.isValidBuddyScript = function isValidBuddyScript (coode) {
   // TODO: validate pipe section as well

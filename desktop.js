@@ -605,6 +605,11 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     },
     */
     {
+      command: '/bs',
+      additional: '',
+      helpText: '- Lists all availble BuddyScript Commands'
+    },
+    {
       command: '/quit',
       additional: ' message',
       
@@ -618,8 +623,8 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
 
   const helpText = `
     <div class="help">
-      <h3>🐸 Welcome to Buddy Pond my good Buddy 🐸</h3>
-      <span>This chat area supports multimedia messaging</span>
+      <h3>🌱🧘🏽 Welcome to Buddy Pond my good Buddy 🧘🏽🌱</h3>
+      <br/>
       <p>
         The following chat text commands are available:
       </p>
@@ -631,10 +636,11 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
           <span class="help-description">&nbsp;${item.helpText}</span>
         </div>
       `).join('')}
+      <br/>
     <div>
   `;
 
-  $('.chat_messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
+  $('.chat_messages', windowId).append(`<div class="message">${helpText}</div>`);
   $('.no_chat_messages', windowId).hide();
   let el = $('.message_main', windowId);
   $(el).scrollTop(999999);
@@ -675,6 +681,12 @@ desktop.commands.preProcessMessage = function processInternalMessage (message, w
     // TODO: move pipe parsing logic to BuddyScript.parser(), etc
     let pipes = message.text.split('|');
     let output, context;
+    // get current context of where buddyscript was run
+    // Remark It's not code yet, it's "coode"
+    // TODO: use win.data('type') and win.data('context')
+    let arr = windowId.split('_');
+    output = arr[1];
+    context = arr[2];
     if (pipes.length && pipes.length > 1) {
       // TODO: allow N pipes
       let pipeCommandA =  pipes[1].split(' ');

@@ -1257,6 +1257,11 @@ iframe {
   cursor: default !important;
 }
 
+.help {
+  background-color: #CBD;
+  padding: 6px;
+}
+
 .help-text {
   margin-left: 25px;
   display: flex;
@@ -1264,10 +1269,13 @@ iframe {
 .help-command {
   min-width: 120px;
 }
-
 .help-description {
   word-wrap: break-word
 }
+.help-example {
+  margin-left: 25px;
+}
+
 .context-menu {
   position: absolute;
 }
@@ -1390,4 +1398,8 @@ iframe {
 .runBuddyScript {
   cursor: pointer;
   padding: 6px;
+}
+
+.bash {
+  font-family: monospace, monospace;
 }
