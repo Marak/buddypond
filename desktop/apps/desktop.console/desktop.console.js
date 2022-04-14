@@ -181,6 +181,11 @@ desktop.app.console._allowCommands = {
       description: 'Non-stop Music Videos',
       icon: 'mtv'
     },
+    piano: {
+      command: 'desktop.ui.openWindow("piano");',
+      description: 'Tiny Piano Synth Keyboard for Jamming',
+      icon: 'piano'
+    },
     soundcloud: {
       command: 'desktop.ui.openWindow("soundcloud");',
       description: 'Curated Music Playlists and Featured Buddies',
