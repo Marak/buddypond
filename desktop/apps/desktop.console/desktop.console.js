@@ -122,6 +122,11 @@ desktop.app.console._allowCommands = {
       description: 'Create, Edit, and Remix Animated GIFs',
       icon: 'gifstudio'
     },
+    hack: {
+      command: 'desktop.ui.openWindow("hackertyper");',
+      description: 'A.I. Assisted Auto-Hacking Console',
+      icon: 'hackertyper'
+    },
     help: {
       command: function(params) {
         let str = `desktop.commands.chat.help();`
