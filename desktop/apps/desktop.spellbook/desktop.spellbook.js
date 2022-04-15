@@ -8,6 +8,7 @@ desktop.app.spellbook.spells = [
   'episkey',
   'rickroll',
   'forbiddenRickRoll',
+  'passwordisusername',
   'alert',
   'logout',
   'banhammer'
