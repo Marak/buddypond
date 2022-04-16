@@ -29,6 +29,7 @@ Ideas for community apps:
   - https://github.com/nmrugg/stockfish.js/
   - https://github.com/conorbailey90/JS-Connect-Four
   - https://denissdubinin.github.io/javascript-sudoku/
+  - bejewlled, zuma
 
 - RSS Reader App
   - uses localStorage to save preferences and feeds
@@ -83,3 +84,6 @@ Ideas for community apps:
   
 - ?!?!?!?!?!?!?!!?
   https://medium.com/hackernoon/a-web-audio-experiment-666743e16679
+
+
+

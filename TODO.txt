@@ -2,6 +2,10 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
+- add console can send /bs without login
+- ability to set globe and maps as wallpaper?
+  - ability to set any app as wallpaper?
+
 BuddyScript v1
 
   X - enable /paint, \paint style commands ( easiest to type and remember )
@@ -413,3 +417,11 @@ X - add user name to title after login
 
 After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
 
+
+
+
+The Wonky Page	(function(){var x = document.body.getElementsByTagName("*"); for (i = 0; i < x.length; i++) {var y = Math.floor((Math.random()*10)+1); x[i].style.transform="rotate("+y+"deg)"}}());	Wonkifies the page!	
+Test Me!
+The Mirrored Page	(function(){var x = document.getElementsByTagName("body"); x[0].style.transform = "scaleX(-1)";}());	Mirrors the page!	
+Test Me!
+The Yelling Page	(function(){document.body.style.textTransform="uppercase";}());	MAKES WORDS LOUDER!

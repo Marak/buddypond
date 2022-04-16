@@ -264,6 +264,34 @@ desktop._ready = function _ready (finish) {
 
 };
 
+//
+// Routes the desktop basic on browser's location.hash
+// Will attempt to convert incoming hash structure to BuddyScript ( `bs` )
+//
+desktop.routeFromHash = function routeFromHash () {
+  // TODO: replace with `bs` script commands
+  // TODO: validate incoming hash to ensure isValidBuddyScript
+  let bs = location.hash.replace('#', '/');
+  // TODO: desktop.app.console.isValidBuddyScript
+  bs = bs.split('/');
+  let appName = bs[1];
+  let context = bs[2];
+
+  // TODO: params.size: 'Max'
+  desktop.hashMode = true;
+  desktop.ui.openWindow(appName, {
+    context: context
+  }, function(){
+    // do this for most apps, not buddylist or pond
+    //JQDX.window_resize('#window_' + appName);
+  });
+}
+
+window.addEventListener('hashchange', function() {
+  desktop.routeFromHash();
+}, false);
+
+
 desktop.refresh = function refreshDesktop () {
   if (desktop.app.buddylist) {
     desktop.app.buddylist.updateBuddyList();
@@ -764,7 +792,6 @@ desktop.utils.isValidYoutubeID  = function isValidYoutubeID (str) {
     - Underscores (_)
     - Dashes (-)
   */
-  /* eslint-disable-next-line */
   const res = /^[a-zA-Z0-9_\-]+$/.exec(str);
   const valid = !!res;
   return valid;
@@ -793,6 +820,8 @@ desktop.utils.parseQueryString = function parseQueryString (queryString) {
 };
 
 desktop.smartlinks = {};
+// TODO: Refactor youtube replacement logic, should be much smaller. single regex + query parser for ?t variable,
+//       remove magic numbers and hardcoded variables
 desktop.smartlinks.replaceYoutubeLinks = function (el) {
   let cleanText = el.html();
 

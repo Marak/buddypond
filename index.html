@@ -309,29 +309,6 @@ window.top.location = 'ie.html';
         // desktop.ui.openWindow('console');
         // desktop.ui.openSavedWindows();
 
-        //
-        // If there is a valid location.hash, use it to route the desktop to specific `App`
-        // Immediately open `App`, then max it's window
-        //
-        function loadAppByHash () {
-          // TODO: replace with `bs` script commands
-          // TODO: validate incoming hash to ensure isValidBuddyScript
-          let appName = location.hash.replace('#', '');
-          // TODO: params.size: 'Max'
-          desktop.hashMode = true;
-          desktop.ui.openWindow(appName, {}, function(){
-            JQDX.window_resize('#window_' + appName);
-          });
-        }
-
-        if (location.hash) {
-          loadAppByHash();
-        }
-
-        window.addEventListener('hashchange', function() {
-          loadAppByHash();
-        }, false);
-
       });
   });
 

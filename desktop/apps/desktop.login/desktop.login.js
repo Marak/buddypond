@@ -81,12 +81,19 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
           buddypond.me = me;
           desktop.app.login.success();
         }
+        if (location.hash) {
+          desktop.routeFromHash();
+        }
         return next(null);
       });
     } else {
       $('.totalConnected').hide();
       if (!desktop.hashMode) {
         JQDX.showWindow('login');
+      }
+
+      if (location.hash) {
+        desktop.routeFromHash();
       }
       return next(null);
     }
