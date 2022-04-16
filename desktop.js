@@ -544,7 +544,7 @@ desktop.commands.chat.buddyscript = function chatConsole (message, windowId, com
 
   const consoleEvalText = `
     <div class="">
-      <h3 class="rainbow">🤖 Incoming BuddyScript 🤖</h3>
+      <h3 class="">🤖 Incoming BuddyScript 🤖</h3>
       <p>> Static Code Analysis: <span title="Safe to run">🟢</span> </p>
       <p>
        > ${message.from} has asked you to run a BuddyScript

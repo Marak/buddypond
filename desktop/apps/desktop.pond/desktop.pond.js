@@ -396,7 +396,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       if (message.card && message.card.type === 'meme') {
         message.card.filename = desktop.origin + '/memes/' + message.card.filename;
         $('.chat_messages', windowId).append(`
-          <div class="message memeCard rainbow">
+          <div class="message memeCard">
             <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
             <br/>
             <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>

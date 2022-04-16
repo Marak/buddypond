@@ -720,7 +720,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     if (message.card && message.card.type === 'meme') {
       message.card.filename = desktop.origin + '/memes/' + message.card.filename;
       $('.chat_messages', windowId).append(`
-          <div class="message memeCard rainbow">
+          <div class="message memeCard">
            <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
            <br/>
            <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
