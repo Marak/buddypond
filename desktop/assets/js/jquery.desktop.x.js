@@ -91,6 +91,8 @@ desktop.ui.goMobile = function () {
 
   $('.desktopOnly').hide();
   $('.maxWindow').hide();
+  // $('.emojiPicker').hide();
+
   // makes bottom bar larger and increases bottom bar icon sizes
   $('#bar_bottom').addClass('mobile_bar_bottom');
   $('#show_desktop img').addClass('mobile_show_desktop_img');
@@ -172,6 +174,7 @@ desktop.ui.exitMobile = function () {
 
   $('.desktopOnly').show();
   $('.maxWindow').show();
+  //  $('.emojiPicker').show();
 
   // TODO: remember resize max positions and size of windows from data() and resume
 
@@ -210,7 +213,6 @@ desktop.ui.exitMobile = function () {
 };
 
 desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (forceUpdate) {
-
   let currentView = desktop.ui.view || 'calculating';
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
@@ -931,7 +933,7 @@ JQDX.showWindow = function showWindow (appName, params) {
   }
 
   desktop.set('windows_open', desktop.ui.openWindows);
-
+  // win.focus();
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
   if (typeof cb === 'function') {
     cb(null);
@@ -1307,7 +1309,7 @@ desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
   }
   if (message.card.action === 'got') {
     return `
-      <div class="message pointsCard rainbow">
+      <div class="message pointsCard">
         <strong>${message.card.from} gave Good Buddy Points to ${message.card.to}</strong><br/>
         <strong>${desktop.utils.numberFormat.format(message.card.amount)} GOOD BUDDY POINTS</strong><br/>
         ${currentValue}
@@ -1320,7 +1322,7 @@ desktop.ui.cards.renderGbpCard = function renderGbpCard (message) {
       balance = 'ZERO';
     }
     return `
-      <div class="message pointsCard rainbow">
+      <div class="message pointsCard">
         <strong>${message.card.buddyname}</strong><br/>
         <strong>${balance} GOOD BUDDY POINTS</strong><br/>
         ${currentValue}

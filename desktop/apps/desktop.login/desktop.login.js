@@ -88,10 +88,17 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
-      if (!desktop.hashMode) {
-        JQDX.showWindow('login');
+      /*
+      */
+      // if the buddy has not manually logged out at least once,
+      // log them in anonymous for the first time
+      if (!desktop.settings.buddy_logged_out) {
+        desktop.app.login.auth('anonymous', 'password');
+      } else {
+        if (!desktop.hashMode) {
+          JQDX.showWindow('login');
+        }
       }
-
       if (location.hash) {
         desktop.routeFromHash();
       }
@@ -112,7 +119,6 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
   }
 
   buddypond.authBuddy(buddyname, password, function (err, data) {
-
     if (err) {
       console.log('err', err, data);
       alert('server is down. please try again in a moment.');
@@ -155,7 +161,6 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
 };
 
 desktop.app.login.success = function desktopLoginSuccess () {
-
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
   desktop.play('WELCOME.wav', Infinity);
@@ -207,7 +212,6 @@ desktop.app.login.success = function desktopLoginSuccess () {
 
   // TODO: route default view based on query string
   let params = desktop.utils.parseQueryString(document.location.search);
-
   if (params.pond) {
     desktop.ui.openWindow('pond', {
       context: params.pond
@@ -252,6 +256,7 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
 desktop.app.login.logoutDesktop = function logoutDesktop () {
   localStorage.removeItem('qtokenid');
   localStorage.removeItem('me');
+  desktop.set('buddy_logged_out', true);
   desktop.set('windows_open', {});
   desktop.play('GOODBYE.wav', false, function () {
     document.location = 'index.html';
