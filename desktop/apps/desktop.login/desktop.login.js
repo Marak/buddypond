@@ -88,8 +88,6 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
-      /*
-      */
       // if the buddy has not manually logged out at least once,
       // log them in anonymous for the first time
       if (!desktop.settings.buddy_logged_out) {
@@ -223,6 +221,11 @@ desktop.app.login.success = function desktopLoginSuccess () {
     desktop.ui.openWindow('pond', {
       context: 'Lily'
     });
+    // anounce all new buddies when they join
+    if (buddypond.me === 'anonymous') {
+      buddypond.pondSendMessage('Lily', 'Hello, I am anonymous.', function (err, data) {
+      });
+    }
   }
 
   // manually call resize event, special case for logged in session with refresh
