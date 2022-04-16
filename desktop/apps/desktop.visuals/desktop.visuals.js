@@ -14,10 +14,11 @@ desktop.app.visuals.load = function loadVisuals (params, next) {
 };
 
 desktop.app.visuals.openWindow = function openWindow () {
+  $('#visualsIframe').attr('src', 'desktop/apps/desktop.visuals/vendor/index.html');
   return true;
 };
 
 desktop.app.visuals.closeWindow = function closeWindow () {
-  $('#visualsIframe').attr('src', 'desktop/apps/desktop.visuals/vendor/index.html');
+  $('#visualsIframe').attr('src', '');
   return true;
 };
