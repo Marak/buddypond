@@ -122,6 +122,11 @@ desktop.app.console._allowCommands = {
       description: 'Create, Edit, and Remix Animated GIFs',
       icon: 'gifstudio'
     },
+    globe: {
+      command: 'desktop.ui.openWindow("globe");',
+      description: '3-D Geo Map of World.',
+      icon: 'globe'
+    },
     hack: {
       command: 'desktop.ui.openWindow("hackertyper");',
       description: 'A.I. Assisted Auto-Hacking Console',
@@ -144,6 +149,11 @@ desktop.app.console._allowCommands = {
       command: 'desktop.ui.openWindow("midifighter");',
       description: 'MIDI Fighter styled Music Pad.',
       icon: 'midifighter'
+    },
+    maps: {
+      command: 'desktop.ui.openWindow("maps");',
+      description: '2-D Geo Maps of world.',
+      icon: 'maps'
     },
     memepool: {
       command: 'desktop.ui.openWindow("memepool");',
