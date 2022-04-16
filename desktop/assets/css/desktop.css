@@ -1323,6 +1323,11 @@ iframe {
   padding-bottom: 32px;
   text-align: center;
   background-color: black;
+  color: #00FF41;
+}
+
+.lightMatrixGreen {
+  color: #00FF41;
 }
 
 .no_chat_messages {
