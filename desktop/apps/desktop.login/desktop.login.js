@@ -79,7 +79,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         // token is valid, show client login success
           buddypond.qtokenid = localToken;
           buddypond.me = me;
-          desktop.app.login.success();
+          desktop.app.login.success({ source: 'localToken' });
         }
         if (location.hash) {
           desktop.routeFromHash();
@@ -137,7 +137,7 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
       localStorage.setItem('qtokenid', data.qtokenid);
       localStorage.setItem('me', buddypond.me);
       buddypond.qtokenid = data.qtokenid;
-      desktop.app.login.success();
+      desktop.app.login.success({ source: 'serverToken' });
     } else {
       if (data.banned) {
         alert(data.message);
@@ -158,14 +158,14 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
   });
 };
 
-desktop.app.login.success = function desktopLoginSuccess () {
+desktop.app.login.success = function desktopLoginSuccess (params) {
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
   desktop.play('WELCOME.wav', Infinity);
   $('.logoutLink').show();
   $('.loginLink').hide();
   // $('.qtokenid').val(data);
-  $('#window_login').hide();
+  desktop.ui.closeWindow('login');
   $('.buddy_pond_not_connected').hide();
   $('#login_desktop_icon').hide();
   $('#profile_desktop_icon').show();
@@ -209,22 +209,29 @@ desktop.app.login.success = function desktopLoginSuccess () {
   }, 1000);
 
   // TODO: route default view based on query string
-  let params = desktop.utils.parseQueryString(document.location.search);
-  if (params.pond) {
+  let queryParams = desktop.utils.parseQueryString(document.location.search);
+  if (queryParams.pond) {
     desktop.ui.openWindow('pond', {
-      context: params.pond
+      context: queryParams.pond
     });
   } else {
-    $('#window_buddylist').show();
-    desktop.ui.openWindow('buddylist');
-    desktop.ui.openWindow('pond');
-    desktop.ui.openWindow('pond', {
-      context: 'Lily'
-    });
-    // anounce all new buddies when they join
+    // is the source of the login is a serverToken, this indicates a fresh login
+    // for fresh logins, show the buddy list and join the default Lily Pond
+    // if params.source === 'localToken', this indicates that localStorage remembered the session
+    // and that the desktop should rely on localStorage desktop.settings.windows_open
+    if (params.source === 'serverToken') {
+      $('#window_buddylist').show();
+      desktop.ui.openWindow('buddylist');
+      desktop.ui.openWindow('pond');
+      desktop.ui.openWindow('pond', {
+        context: 'Lily'
+      });
+    }
+    // anounce all new anonymous buddies when they join
     if (buddypond.me === 'anonymous') {
       buddypond.pondSendMessage('Lily', 'Hello, I am anonymous.', function (err, data) {
       });
+      // TODO: show Merlin welcome message
     }
   }
 
@@ -241,7 +248,7 @@ desktop.app.login.success = function desktopLoginSuccess () {
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('.desktopConnected').hide();
   $('.logoutLink').hide();
-  $('#window_login').addClass('window_stack').show();
+  // $('#window_login').addClass('window_stack').show();
   $('#window_login').css('width', '74vw');
   $('#window_login').css('height', '75vh');
   $('#window_login').css('left', '22vw');

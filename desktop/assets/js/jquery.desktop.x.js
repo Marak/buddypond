@@ -397,17 +397,20 @@ JQDX.window_resize = function window_resize (el) {
   // Bring window to front.
   JQDX.window_flat();
   win.addClass('window_stack');
-
-  desktop.ui.openWindows[win.attr('id')] = {
+  /* TODO: windows_open should remember if window min or max
+  let openWindows = desktop.settings.windows_open || {};
+  openWindows[win.attr('id')] = {
     open: true,
-    app: appName,
+    app: win.data('app'),
+    context: win.data('context'),
     width: win.css('width'),
     height: win.css('height'),
     top: win.css('top'),
     left: win.css('left')
   }
-
+  desktop.ui.openWindows = openWindows;
   desktop.set('windows_open', desktop.ui.openWindows);
+  */
 
 };
 
@@ -494,6 +497,15 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     runBuddyScript(coode);
     return false;
   });
+
+  /* TODO: remove help with single click
+  d.on('click', '.help', function (ev) {
+    // Remark It's not code yet, it's "coode"
+    let holder = $(this).parent();
+    holder.hide();
+    return false;
+  });
+  */
 
   d.on('click', 'tr.openApp', function (ev) {
     let appName = $(this).data('app');
@@ -726,10 +738,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
         // desktop.ui.getDesktopIconPositions();
         let win = $(this);
         let windowId =  '#' + win.attr('id');
-        let appName = windowId.replace('#window_', '');
+        let appName = win.data('app');
+        let context = win.data('context');
         desktop.ui.openWindows[windowId] = {
           open: true,
           app: appName,
+          context: context,
           width: win.css('width'),
           height: win.css('height'),
           top: win.css('top'),
@@ -848,6 +862,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
     });
     */
     if (desktop.app[appName] && desktop.app[appName].depends_on && desktop.app[appName].depends_on.length > 0) {
+      // TODO: can we remove this and just use call load.remoteJS() from inside the app.load ( like other deps )
       let depName = desktop.app[appName].depends_on[0];
       desktop.log('Loading: App.' + depName);
       desktop.load.remoteJS([ `desktop/apps/desktop.${depName}/desktop.${desktop.app[appName].depends_on[0]}.js` ], function () {
@@ -906,6 +921,9 @@ JQDX.showWindow = function showWindow (appName, params) {
   JQDX.window_flat();
   $(appWindow).addClass('window_stack').show();
 
+  $(appWindow).data('app', appName);
+  $(appWindow).data('context', params.context);
+
   if (desktop.ui.view === 'Mobile') {
     JQDX.window_maximize($(appWindow));
   }
@@ -925,7 +943,8 @@ JQDX.showWindow = function showWindow (appName, params) {
   let win = $(appWindow);
   desktop.ui.openWindows[appWindow] = {
     open: true,
-    app: appName,
+    app: win.data('app'),
+    context: win.data('context'),
     width: win.css('width'),
     height: win.css('height'),
     top: win.css('top'),
@@ -1383,12 +1402,11 @@ desktop.ui.toggleDisplayMode = function toggleDisplayMode () {
   }
 }
 
-desktop.ui.openSavedWindows = function openSavedWindows () {
-  return;
+desktop.ui.openWindowsFromSavedSettings = function openWindowsFromSavedSettings () {
   let previouslyOpenWindows = desktop.get('windows_open');
   for (let key in previouslyOpenWindows) {
     let win = previouslyOpenWindows[key];
-    desktop.ui.openWindow(win.app, {}, function(){
+    desktop.ui.openWindow(win.app, { context: win.context }, function(){
       $(key).css('top', win.top);
       $(key).css('left', win.left);
       $(key).css('width', win.width);

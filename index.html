@@ -307,7 +307,9 @@ window.top.location = 'ie.html';
         // never gonna work due to:
         // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
         // desktop.ui.openWindow('console');
-        // desktop.ui.openSavedWindows();
+        
+        // re-opens previously opened windows
+        desktop.ui.openWindowsFromSavedSettings();
 
       });
   });
