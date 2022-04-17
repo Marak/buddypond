@@ -41,7 +41,7 @@ Once you've loaded Buddy Pond you can type the following commands to get help:
 
 Type `/help` in any chat window to get help.
 
-**BuddyScript Commands**
+**`BuddyScript` Commands**
 
 Type `/bs` in any chat window to see `BuddyScript` commands.
 

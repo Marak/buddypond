@@ -67,6 +67,7 @@ Ideas for community apps:
 - MIDI Controller
   - https://medium.com/swinginc/playing-with-midi-in-javascript-b6999f2913c3
   - https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess
+  - https://medium.com/@keybaudio/virtual-midi-devices-on-macos-a45cdbdffdaf
 
 - Sound FX Board
   - Use midi fighter button pad with sound fx
@@ -84,6 +85,7 @@ Ideas for community apps:
   
 - ?!?!?!?!?!?!?!!?
   https://medium.com/hackernoon/a-web-audio-experiment-666743e16679
+
 
 
 

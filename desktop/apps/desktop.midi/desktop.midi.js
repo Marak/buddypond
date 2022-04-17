@@ -20,7 +20,11 @@ desktop.app.midi.load = function loadmidiGames (params, next) {
 
     function init() {
       logText("Initializing MIDI...");
-      navigator.requestMIDIAccess().then( onSuccess, onFailure ); //get midi access
+      if (!navigator.requestMIDIAccess) {
+        alert('Could not connect to Web MIDI API.\nTry Opera or Chrome?\n')
+      } else {
+        navigator.requestMIDIAccess().then( onSuccess, onFailure ); //get midi access
+      }
     }
 
     function onSuccess( access ) { 
@@ -41,6 +45,7 @@ desktop.app.midi.load = function loadmidiGames (params, next) {
 
     function onFailure( err ) {
       logText("MIDI Init Error. Error code: " + err.code);
+      alert('Web MIDI Initialization error. Please see console logs.')
     }
 
     function handleMIDIMessage(event){
