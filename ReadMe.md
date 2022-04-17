@@ -1,5 +1,5 @@
 # Buddy Pond ( Alpha )
-## *a place for buddies*
+## *Cloud Operating System and Instant Messenger*
 [https://buddypond.com](https://buddypond.com)
 
  - Cloud Operating System
@@ -8,11 +8,13 @@
  - Peer to Peer Instant Messaging
  - Multimedia Pond Chat Rooms
  - Image and Paint Editors 
+ - Audio MIDI Support
  - Create Media And Send To Buddies
  - Remix and Send Media With Single Click
  - Voice and Video Calls With Buddies!
  - Interdimensional Cable and Live Streaming
  - Audio Video Visualizations and VFX
+ - Integrated Scripting Language ( `BuddyScript` )
  - Desktop download browser size is < 1MB ( Uncompressed )
 
 ###  Making the Internet Fun Again!
@@ -21,15 +23,9 @@
 
 ### All your localhost works offline
 
-## Adding Memes
-
-If you are just looking to add Memes to the Memepool please visit [The Buddy Pond Memepool at Gitlab](https://gitlab.com/Marak1/buddypond-memepool). You can create a quick PR to add memes to the Buddy Pond.
-
 ## Quick Start
 
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
-
-You can sign in immediately with a new unique username and passcode.
 
 **Screenshots**
 
@@ -37,43 +33,57 @@ You can sign in immediately with a new unique username and passcode.
 
 *April 13th, 2022*
 
-<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alpha-demo.gif"/></a>
-<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/alphs-screenshot.png"/></a>
+## Built-in Help Commands
 
-*Feb 22nd, 2022*
+Once you've loaded Buddy Pond you can type the following commands to get help:
+
+**Display chat commands**
+
+Type `/help` in any chat window to get help.
+
+**BuddyScript Commands**
+
+Type `/bs` in any chat window to see `BuddyScript` commands.
+
+
+`BuddyScript` is an integrated scripting languge in Buddy Pond that allows you to fully control the Desktop Application and all Apps through chat commands.
+
+## Contributing to Buddy Pond
+
+### No Build Steps. No Transpiling. No hassles.
+
+### Buddy Pond Base ( Desktop + Base Apps )
+
+Download Buddy Pond Base
+
+```
+git clone  --depth 1 git@github.com:Marak/buddypond.git
+cd buddypond
+```
+
+There will be an `index.html` file in the `buddypond` directory. You must serve this `index.html` from an HTTP server. *Any* HTTP server will work. Try using python SimpleHTTPServer for now:
+
+```
+python -m SimpleHTTPServer
+```
+
+This will start the Buddy Pond application on port 8000. Open http://localhost:8000 in your local browser and you can immediately start adding and messaging buddies.
+
+You may notice that certain apps will be missing. These apps are located in the [AppStore repo](https://github.com/Marak/buddypond-appstore).
+
+### Adding / Modifiying Apps in Buddy Pond AppStore
+
+Buddy Pond has an integrated AppStore which allows buddies to easily contribute new applications to the Buddy Pond ecosystem. It's very simple to use. No installation, compile, or transpiling steps are required.
+
+The AppStore is located at: [https://github.com/Marak/buddypond-appstore](https://github.com/Marak/buddypond-appstore)
+
+If you want to add a new application all you have to do is copy and paste an existing `App` folder and do a single string search on replace. 
+
+Once the new App folder has been created you will now be able to open this `App` via `desktop.ui.openWindow('myapp')`
 
 ## Downloading Buddy Pond
 
 If you want to run your own Buddy Pond it's very simple. Just load the `index.html` file in your browser ( requires a local http server ).
-
-### Installation
-
-Download Buddy Pond as zip... [https://github.com/Marak/buddypond/archive/refs/heads/master.zip](https://github.com/Marak/buddypond/archive/refs/heads/master.zip)
-
-...or you can use `git` to clone Buddy Pond.
-
-```
-git clone  --depth 1 git@github.com:Marak/buddypond.git
-```
-
-Once you have downloaded a local Buddy Pond you can start it!
-
-### Starting Buddy Pond Locally
-
-```
-cd buddypond
-python -m SimpleHTTPServer
-```
-
-This will start the Buddy Pond application on port 8000. Open http://localhost:8000 in your local browser and you can immediately start adding and messaging buddies!
-
-### Starting Buddy Pond with HTTPS / SSL
-
-The `http://` protocol should support all core features like: Buddy List, Buddy Messaging, and Ponds
-
-The `https://` protocol is required for more advanced features like Video Calls.
-
-To start Buddy Pond over HTTPS / SSL, simply place the *entire* contents of *this* folder into any existing secure web server's public HTML directory and Buddy Pond will be accessible.
 
 ### Deploying your Buddy Pond
 
@@ -216,19 +226,21 @@ The Desktop will load these Apps **immediately after** it's ready. If the Buddy 
 
 After the Desktop is ready, additional Apps can be `lazy` loaded by calling: `desktop.use(appName).ready(function(){})` again.
 
-The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `JQDX.openWindow(appName);`. 
+The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `desktop.ui.openWindow(appName);`. 
 
 The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` event until the App has completely loaded.
 
-Ex: `JQDX.openWindow('paint');`
+Ex: `desktop.ui.openWindow('paint');`
 
 ## Buddy Pond `AppStore`
 
 See: https://github.com/Marak/buddypond-appstore
 
-## Linting / `eslint`
+#### Linting / `eslint`
 
-To lint codebase you can install and run `eslint`
+The codebase is currently *loosely linted*. You should be able to contribute to sections of code without asking us to reformat the entire codebase. Please try your best to adhere the best you can to our coding style and `.eslintrc.js` file.
+
+If you need to lint a file you can install and run `eslint`
 
 `npm install -g eslint@8.12.0`
 `eslint ./path/to/file.js --fix`
@@ -237,7 +249,7 @@ To lint codebase you can install and run `eslint`
 
 So you've made it to the end of the `ReadMe.md`? Neat.
 
-Buddy Pond consists of a backend server and front-end client. T
+Buddy Pond consists of a backend server and front-end client.
 
 The server code is currently private access invite-only. We intend to make the server code public in two more weeks.
 
