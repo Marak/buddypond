@@ -235,7 +235,7 @@ window.top.location = 'ie.html';
       .ready(function(err, apps){
         // desktop.log("Loaded", desktop.apps.loaded);
         try {
-          desktop.ui.windowResizeEventHandler();
+          desktop.ui.windowResizeEventHandler(true);
         } catch (err) {
           // alert(err.message)
         }
