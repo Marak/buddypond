@@ -145,6 +145,11 @@ desktop.app.console._allowCommands = {
       description: 'Opens Musical Instruments',
       icon: 'midifighter'
     },
+    midi: {
+      command: 'desktop.ui.openWindow("midi");',
+      description: 'Audio MIDI Setup',
+      icon: 'midi'
+    },
     midifighter: {
       command: 'desktop.ui.openWindow("midifighter");',
       description: 'MIDI Fighter styled Music Pad.',
