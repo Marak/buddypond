@@ -77,13 +77,9 @@ Buddy Pond has an integrated AppStore which allows buddies to easily contribute 
 
 The AppStore is located at: [https://github.com/Marak/buddypond-appstore](https://github.com/Marak/buddypond-appstore)
 
-If you want to add a new application all you have to do is copy and paste an existing `App` folder and do a single string search on replace. 
+If you want to add a new application all you have to do is copy and paste an existing `App` folder and do a single string search and replace. 
 
 Once the new App folder has been created you will now be able to open this `App` via `desktop.ui.openWindow('myapp')`
-
-## Downloading Buddy Pond
-
-If you want to run your own Buddy Pond it's very simple. Just load the `index.html` file in your browser ( requires a local http server ).
 
 ### Deploying your Buddy Pond
 
