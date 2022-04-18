@@ -261,7 +261,20 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
         'My CPU is a nueral net processor. A learning computer.',
         'I am here for Good Buddy Points.',
         'I am here for Good Buddy Points. May I please speak with the HBIC?',
-        'im just here to watch'
+        'im just here to watch',
+        'just came in from youtube. cool site',
+        'just came in from twitter. cool site',
+        'just came in from altavista. cool site',
+        'wheres my lunch',
+        'google brought me here',
+        'found this on github. cool site',
+        'who is the head buddy in charge? i must speak with them immediately',
+        'where are the memes',
+        'where is the meme',
+        'is this real',
+        'this is real?',
+        'how many jQueries does this site use?',
+        'i have over 9000 buddies. each greater than the last.'
       ];
       let randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
 
