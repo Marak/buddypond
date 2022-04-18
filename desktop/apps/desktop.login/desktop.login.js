@@ -282,8 +282,8 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
         'woah using /midi and /piano together is awesome',
         'i just connected /globe and /hack commands and hacked the planet 😎'
       ];
-      let randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
-
+      let allRandomMessages = randomMessages.concat(desktop.app.buddylist.positiveAffirmations);
+      let randomMessage = allRandomMessages[Math.floor(Math.random() * allRandomMessages.length)];
       buddypond.pondSendMessage('Lily', randomMessage, function (err, data) {
       });
     }
