@@ -228,8 +228,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
       });
     }
     // anounce all new anonymous buddies when they join
-    if (buddypond.me === 'anonymous') {
-      
+    if (buddypond.me === 'anonymous' && params.source === 'serverToken') {
       let randomMessages = [
         'Hello. First time here...this place is awesome!',
         'what is this',
