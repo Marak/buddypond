@@ -1,4 +1,6 @@
 desktop.app.themes = {};
+desktop.app.themes.icon = 'folder';
+
 desktop.app.themes.canvas = null;
 desktop.app.themes.label = 'Wallpaper';
 desktop.app.themes.settings = null;
