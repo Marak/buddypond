@@ -85,6 +85,10 @@ desktop.app.profile.load = function loadProfile (params, next) {
     // wallpaper app might not be loaded into desktop ( such as LYTE mode )
     if (desktop.app.wallpaper) {
       desktop.app.profile.renderWallpaperTypes($('.wallpaperTypes'));
+      desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-color-picker', function(color){
+        $('.wallpaperOptionColor').setColor(color)
+        $('.simpleColorDisplay').html(color)
+      });
     }
     $('.enableWebNotifications').on('change', function () {
       let notificationsEnabled = $(this).prop('checked');
@@ -170,9 +174,20 @@ desktop.app.profile.renderWallpaperTypes = function renderWallpaperTypes (el) {
 }
 
 
-desktop.app.profile.openWindow = function openWindow () {
+desktop.app.profile.openWindow = function openWindow (params) {
+
+  params = params || {
+    context: 'themes'
+  };
+
   $('#window_profile').css('width', '44vw');
   $('#window_profile').css('height', '66vh');
   $('#window_profile').css('top', '6vh');
   $('#window_profile').css('left', '2vw');
+
+  // TODO: add other tabs and context
+  if (params.context === 'themes') {
+    $('#profileTabs').tabs({ active: 1});
+  }
+
 };
