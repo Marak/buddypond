@@ -2,12 +2,9 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-- add mission impossible music to minesweeper
 - videochat window needs to open actual window ( min / max mobile issue)
-
 - add console can send /bs without login
 
-- add super mario bros sound fx and gif when you get GBP
 - add anonymous geo location in message ( same permissions as flag? )
 
 - paint loses context / has bug with disabled send after local save
@@ -118,10 +115,11 @@ when recording snaps in mirror, adding new snap image should show last image in 
 - ability to set globe and maps as wallpaper?
   - ability to set any app as wallpaper?
 
-
+- add super mario bros sound fx and gif when you get GBP
 - play buddy sound when buddy logs in ( door open aim )
 - add UX indactor for ajax disconnect with desktop.log and top right bar
 - add back button to interdemon cable / mtv / all video players
+- add mission impossible music to minesweeper
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
 - console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
 - add away / watching status based on client is visible API

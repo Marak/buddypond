@@ -188,6 +188,11 @@ desktop.app.console._allowCommands = {
       description: 'Paint Editor. Draw cool paintings for Buddies.',
       icon: 'paint'
     },
+    profile: {
+      command: 'desktop.ui.openWindow("profile");',
+      description: 'Buddy Profile Settings',
+      icon: 'profile'
+    },
     mirror: {
       command: function(params) {
         let str = `desktop.ui.openWindow("mirror", { output: '${params.output}', context: '${params.context}' });`

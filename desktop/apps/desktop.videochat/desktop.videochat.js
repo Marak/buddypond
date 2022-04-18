@@ -1,5 +1,7 @@
 desktop.app.videochat = {};
 
+desktop.app.videochat.label = "Video Call";
+
 desktop.app.videochat.CALL_IN_PROGRESS = false;
 desktop.app.videochat.CURRENT_CALLER = null;
 
@@ -114,9 +116,15 @@ desktop.app.videochat.startCall = function videoChatStartCall (isHost, buddyName
   $('.endVideoCall').css('opacity', '1');
   $('.startVideoCall').css('opacity', '0.4');
 
-  $('#window_videochat').show();
-  JQDX.window_flat();
-  $('#window_videochat').addClass('window_stack').show();
+  // Remark: This should just be desktop.ui.openWindow('videochat')
+  desktop.ui.showWindow('videochat');
+  desktop.app.videochat.openWindow();
+  desktop.ui.renderDockIcon('videochat', 'Video Call');
+  desktop.ui.renderDockElement('videochat');
+  setTimeout(function(){
+    JQDX.window_flat();
+    $('#window_videochat').addClass('window_stack').show();
+  }, 333);
 
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
     // console.log('got back call buddy', err, re)
@@ -199,7 +207,9 @@ desktop.app.videochat.peer = function peerVideoChat (isHost, buddyName) {
   p.on('error', (err) => {
     console.log('ERROR', err);
     desktop.log('Error: WebRTC peer connection', err);
-    $('#window_console').show();
+    if (desktop.ui.view !== 'Mobile') {
+      $('#window_console').show();
+    }
     desktop.app.videochat.endCall(buddyName);
   });
 
@@ -227,7 +237,10 @@ desktop.app.videochat.endCall = function videoChatEndCall (buddyName, cb) {
   desktop.app.videochat.pollSignal = false;
   $('.startVideoCall').css('opacity', '1');
   $('.endVideoCall').css('opacity', '0.4');
+
+  // Remark: This should be using desktop.ui.closeWindow('video') instead
   $('#window_videochat').hide();
+  $('#icon_dock_videochat').hide();
 
   if (desktop.app.videochat.localStream && desktop.app.videochat.localStream.getTracks) {
     desktop.app.videochat.localStream.getTracks().forEach(function (track) {
@@ -302,6 +315,17 @@ desktop.app.videochat.replaceStream = function replaceStream (label) {
 
   });
 
+};
+
+
+
+
+desktop.app.videochat.openWindow = function closeWindow () {
+  let windowId = '#window_videochat';
+  $(windowId).css('width', '44vw');
+  $(windowId).css('height', '57vh');
+  $(windowId).css('top', '9vh');
+  $(windowId).css('left', '30vw');
 };
 
 desktop.app.videochat.closeWindow = function closeWindow () {
