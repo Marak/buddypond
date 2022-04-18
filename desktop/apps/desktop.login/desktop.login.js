@@ -256,7 +256,12 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
         'who wants to be my buddy?',
         'greetings',
         'hello',
-        'hi'
+        'hi',
+        'Sarah Connor, where is she?',
+        'My CPU is a nueral net processor. A learning computer.',
+        'I am here for Good Buddy Points.',
+        'I am here for Good Buddy Points. May I please speak with the HBIC?',
+        'im just here to watch'
       ];
       let randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
 
