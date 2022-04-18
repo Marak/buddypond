@@ -117,8 +117,8 @@ desktop.app.videochat.startCall = function videoChatStartCall (isHost, buddyName
   $('.startVideoCall').css('opacity', '0.4');
 
   // Remark: This should just be desktop.ui.openWindow('videochat')
-  desktop.ui.showWindow('videochat');
   desktop.app.videochat.openWindow();
+  desktop.ui.showWindow('videochat');
   desktop.ui.renderDockIcon('videochat', 'Video Call');
   desktop.ui.renderDockElement('videochat');
   setTimeout(function(){
