@@ -274,7 +274,13 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
         'is this real',
         'this is real?',
         'how many jQueries does this site use?',
-        'i have over 9000 buddies. each greater than the last.'
+        'i have over 9000 buddies. each greater than the last.',
+        'github ate my homework has anyone seen it',
+        'i tried to install npm but the readme failed to load',
+        'can anyone tell me how to download buddy pond?',
+        'buddyscript is run with /bs command',
+        'woah using /midi and /piano together is awesome',
+        'i just connected /globe and /hack commands and hacked the planet 😎'
       ];
       let randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
 

@@ -100,20 +100,6 @@ desktop.ui.goMobile = function () {
   // hides the text label for icons
   // $('.dock_title').hide();
 
-  //
-  // TODO: REMOVE THESE LINES
-  //
-  $('.minWindow').css('position', 'absolute');
-  $('.minWindow').css('left', '49vw');
-  $('.exitWindow').css('position', 'absolute');
-  $('.exitWindow').css('right', '5vw');
-
-  $('#window_login .minWindow').hide();
-  $('#window_login .exitWindow').hide();
-  //
-  // END TODO
-  //
-
   // increases font size for most thigns
   $('body').addClass('mobile_larger_font');
   //$('span').addClass('mobile_larger_font');
@@ -121,8 +107,6 @@ desktop.ui.goMobile = function () {
 
   $('a').addClass('mobile_larger_font');
   $('textarea').addClass('mobile_larger_font');
-  $('.trafficLight a').addClass('mobile_doubly_larger_font');
-
   //$('.datetime').addClass('mobile_datetime');
 
   // increase all the embedded icon sizes and chat control icons
@@ -141,10 +125,14 @@ desktop.ui.goMobile = function () {
   */
   
   $('.desktop-shortcuts-container .shortcut').hide();
-  $('.window_top').css('padding-top', 10);
-  $('.window_top').css('padding-bottom', 10);
+  $('.window_top').css('padding-left', 22);
+  $('.window_top').css('padding-right', 22);
+  $('.window_top').css('padding-top', 22);
+  $('.window_top').css('padding-bottom', 22);
+  $('.trafficLight a').addClass('mobile_traffic_lights');
 
-  $('.window_content').css('top', '3vh');
+  $('.window_content').css('top', '76px');
+  $('.window_content').css('height', '80%');
 
   // TODO: remove these lines
   $('#window_mirror .window_content').css('height', '50vh');
