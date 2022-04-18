@@ -589,8 +589,13 @@ desktop.commands.chat.give = function givePoints (message, windowId) {
   });
 };
 
-desktop.commands.chat.help = function helpCommands (message, windowId) {
+desktop.commands.chat.help = function helpCommands (windowId) {
   const commandSet = [
+    {
+      command: '/bs',
+      additional: '',
+      helpText: '- shows all available BuddyScript Commands'
+    },
     {
       command: '/meme',
       helpText: '- sends random meme'
@@ -613,7 +618,7 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     {
       command: '/points',
       additional: '',
-      helpText: '- show your current amount of Good Buddy Points'
+      helpText: '- your current amount of Good Buddy Points'
     },
     {
       command: '/points',
@@ -633,25 +638,20 @@ desktop.commands.chat.help = function helpCommands (message, windowId) {
     },
     */
     {
-      command: '/bs',
-      additional: '',
-      helpText: '- Lists all available BuddyScript Commands'
-    },
-    {
       command: '/quit',
       additional: ' message',
       
-      helpText: '- log out of Desktop'
+      helpText: '- logout of Buddy Pond Desktop'
     },
     {
       command: '/help',
-      helpText: '- shows Help'
+      helpText: '- shows this help message'
     },
   ];
 
   const helpText = `
     <div class="help">
-      <h3>🌱🧘🏽 Welcome to Buddy Pond my good Buddy 🧘🏽🌱</h3>
+      <h3 title="Click To Hide">🌱🧘🏽 Welcome To Buddy Pond My Good Buddy 🧘🏽🌱</h3>
       <br/>
       <p>
         The following chat text commands are available:

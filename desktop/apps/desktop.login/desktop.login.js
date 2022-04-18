@@ -231,8 +231,13 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
     if (buddypond.me === 'anonymous') {
       buddypond.pondSendMessage('Lily', 'Hello, I am anonymous.', function (err, data) {
       });
-      // TODO: show Merlin welcome message
     }
+
+    // TODO: show Merlin welcome message
+    setTimeout(function(){
+      desktop.commands.chat.help('#window_pond_message_Lily');
+    }, 2222);
+
   }
 
   // manually call resize event, special case for logged in session with refresh

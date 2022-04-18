@@ -498,14 +498,18 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     return false;
   });
 
-  /* TODO: remove help with single click
-  d.on('click', '.help', function (ev) {
-    // Remark It's not code yet, it's "coode"
+  d.on('click', '.getHelp', function () {
+    // Remark: Closest active chat window is the context for help to show in
+    let win = $(this).closest('div.window');
+    let windowId = '#' + win.attr('id');
+    desktop.commands.chat.help(windowId);
+  });
+
+  d.on('click', '.help h3', function (ev) {
     let holder = $(this).parent();
     holder.hide();
     return false;
   });
-  */
 
   d.on('click', 'tr.openApp', function (ev) {
     let appName = $(this).data('app');

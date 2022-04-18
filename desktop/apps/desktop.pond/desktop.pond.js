@@ -141,10 +141,6 @@ desktop.app.pond.load = function loadPond (params, next) {
       );
     });
 
-    d.on('click', '.getHelp', function () {
-      desktop.commands.chat.help();
-    });
-
     next();
   });
 
