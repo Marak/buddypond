@@ -2,24 +2,31 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-- videochat window needs to open actual window ( min / max mobile issue)
 - add console can send /bs without login
+- clean up /bs
+- ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
 
 - add anonymous geo location in message ( same permissions as flag? )
 
-- paint loses context / has bug with disabled send after local save
-- paint and sound recorder and mirror apps should have drop down select for context output
 
 Mobile Issues
 
-  - fix padding for mobile top window bar
-  - put back traffic lights to upper right on mobile
+  X - fix padding for mobile top window bar
+  X - put back traffic lights to upper right on mobile
   - run buddy script button should be larger on mobile
   - needs to show loading graphic for apps on mobile!
   - better ponder the orb UX for IDC on mobile
   - idc window issue if open twice on mobile?
 
-- add Buddys's Documents Folder
+Context / App Input / Output Issues
+
+  - add dropdown select for selecting send context in app
+  - add ability to switch context if buddy re-presses button in new window
+  - paint loses context / has bug with disabled send after local save
+  - paint and sound recorder and mirror apps should have drop down select for context output
+
+
+- Add Buddys's Documents Folder
   - Snaps
   - Paints
   - Audio
@@ -215,6 +222,7 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+X - videochat window needs to open actual window ( min / max mobile issue)
 X - wallpaper editor form should be moved into themes editor page?
 X - themes editor form should be moved into Desktop Settings page - is now Admin Panel and Profile Page
 
