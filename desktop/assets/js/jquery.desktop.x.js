@@ -1162,6 +1162,9 @@ desktop.ui.windowTypes = [ 'buddy_message', 'pond_message' ];
 // maps to JQDX.openWindow
 desktop.ui.openWindow = JQDX.openWindow;
 
+// maps to JQDX.showWindow
+desktop.ui.showWindow = JQDX.showWindow;
+
 //
 // desktop.ui.closeWindow() function is used to close instanced windows
 // in most cases you can just use $(window_id).hide()
