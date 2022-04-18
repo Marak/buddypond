@@ -229,7 +229,38 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
     }
     // anounce all new anonymous buddies when they join
     if (buddypond.me === 'anonymous') {
-      buddypond.pondSendMessage('Lily', 'Hello, I am anonymous.', function (err, data) {
+      
+      let randomMessages = [
+        'Hello. First time here...this place is awesome!',
+        'what is this',
+        'Marak did you make this?',
+        'I am in love with Buddy Pond.',
+        'has anyone seen my dog?',
+        'I am the very model of a Modern Major General.',
+        'hey guys please follow me on twitter @elonmusk',
+        'omg this is amazing how did you do this',
+        'asl?',
+        'why did AOL redirect me here?',
+        'how anyone seen my cat?',
+        'good morning buddies!',
+        'good afternoon buddies!',
+        'good evening buddies!',
+        'good morning',
+        'good afternoon',
+        'good evening',
+        'salutations',
+        '/say hello and hey',
+        '/roll',
+        'how can i contribute to the project?',
+        'hail buddies!',
+        'who wants to be my buddy?',
+        'greetings',
+        'hello',
+        'hi'
+      ];
+      let randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+
+      buddypond.pondSendMessage('Lily', randomMessage, function (err, data) {
       });
     }
 
