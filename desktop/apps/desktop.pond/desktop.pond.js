@@ -310,7 +310,7 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
     desktop.app.tts.processMessage(message);
 
     message.ctime = new Date(message.ctime).toString();
-    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd yyyy hh:mm:ss a');
+    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
 
     html[windowId] = html[windowId] || '';
 
@@ -322,9 +322,19 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
       }
     }
     if (message.from === buddypond.me) {
-      str += '<span class="datetime">' + message.ctime + ' </span>' + geoFlag + message.from + ': <span class="message"></span><br/>';
+      if (message.from === 'anonymous') {
+        let tripcode = message.tripcode || 'tr1pc0d3';
+        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} (${tripcode}): <span class="message"></span><br/>`;
+      } else {
+        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} : <span class="message"></span><br/>`;
+      }
     } else {
-      str += '<span class="datetime">' + message.ctime + ' </span><span class="purple">' + geoFlag + message.from + ': </span><span class="message purple"></span><br/>';
+      if (message.from === 'anonymous') {
+        let tripcode = message.tripcode || 'tr1pc0d3';
+        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} (${tripcode}): </span><span class="message purple"></span><br/>`;
+      } else {
+        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} : </span><span class="message purple"></span><br/>`;
+      }
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
         if (now - desktop.app.pond.lastNotified > 30000) {
