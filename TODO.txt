@@ -2,30 +2,16 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-- add merlin welcome message ( server-side )
-- port dicey to server
-
 - add mission impossible music to minesweeper
+- videochat window needs to open actual window ( min / max mobile issue)
 
 - add console can send /bs without login
-- ability to set globe and maps as wallpaper?
-  - ability to set any app as wallpaper?
 
 - add super mario bros sound fx and gif when you get GBP
 - add anonymous geo location in message ( same permissions as flag? )
 
 - paint loses context / has bug with disabled send after local save
 - paint and sound recorder and mirror apps should have drop down select for context output
-
-BuddyScript v1
-
-  X - enable /paint, \paint style commands ( easiest to type and remember )
-  X - switch black bg to metallic grey
-  - add description to each command, render in UI
-
-  1/2 - add openinoious appicus spell for helping open app remotely
-   X - required to open hidden apps / non-installed apps
-  X - add black background color to memepool?
 
 Mobile Issues
 
@@ -129,7 +115,10 @@ when recording snaps in mirror, adding new snap image should show last image in 
   - client side ajax call possible
   - have remix button on images ( why not )
 
-- remix image icons should only appear on mouseover
+- ability to set globe and maps as wallpaper?
+  - ability to set any app as wallpaper?
+
+
 - play buddy sound when buddy logs in ( door open aim )
 - add UX indactor for ajax disconnect with desktop.log and top right bar
 - add back button to interdemon cable / mtv / all video players
@@ -227,6 +216,21 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+X - wallpaper editor form should be moved into themes editor page?
+X - themes editor form should be moved into Desktop Settings page - is now Admin Panel and Profile Page
+
+X BuddyScript v1
+
+  X - enable /paint, \paint style commands ( easiest to type and remember )
+  X - switch black bg to metallic grey
+  X - add description to each command, render in UI
+
+  X 1/2 - add openinoious appicus spell for helping open app remotely
+   X - required to open hidden apps / non-installed apps
+  X - add black background color to memepool?
+
+!X - remix image icons should only appear on mouseover
 
 X - add ability to link to apps inside chat windows
 
@@ -427,12 +431,3 @@ X - add user name to title after login
 ¢∞§§§§§§§§§§§§§§§§========>
 
 After the Babel Project's NPM dependency tower falls the only logical conclusion will be for developers to build simulated Windows 95 Desktops with jQuery.
-
-
-
-
-The Wonky Page	(function(){var x = document.body.getElementsByTagName("*"); for (i = 0; i < x.length; i++) {var y = Math.floor((Math.random()*10)+1); x[i].style.transform="rotate("+y+"deg)"}}());	Wonkifies the page!	
-Test Me!
-The Mirrored Page	(function(){var x = document.getElementsByTagName("body"); x[0].style.transform = "scaleX(-1)";}());	Mirrors the page!	
-Test Me!
-The Yelling Page	(function(){document.body.style.textTransform="uppercase";}());	MAKES WORDS LOUDER!

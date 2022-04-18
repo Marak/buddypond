@@ -160,6 +160,19 @@ window.top.location = 'ie.html';
           </ul>
         </li>
       </ul>
+      <!--
+      <select name="selectTheme" class="desktopSelect selectTheme float_right">
+        <option>Select Theme...</option>
+        <option value="Light">Light Theme</option>
+        <option value="Dark">Dark Theme</option>
+        <option value="Nyan">Nyan Theme</option>
+        <option value="Hacker">Hacker Theme</option>
+        <option value="Water">Water Theme</option>
+        <option value="Customize">Customize Theme</option>
+        <option value="Customize">EPIC MODE ( my poor browser ) </option>
+        <option value="Customize">Comic Theme</option> 
+      -->
+      </select>
       <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
         <option>Select music playlist...</option>
         <option value="942151069">Andrew Potthast: Bangas</option>
@@ -222,6 +235,7 @@ window.top.location = 'ie.html';
       .use('localstorage')
       .use('settings')
       .use('wallpaper')
+      .use('themes')
       .use('audioplayer')
       .use('tts')
       .use('notifications')
@@ -272,6 +286,15 @@ window.top.location = 'ie.html';
             desktop.app.soundcloud.embeded = false;
           }
           desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+        });
+
+        $('.selectTheme').on('change', function(){
+          let theme = $(this).val();
+          if (theme === 'Customize') {
+            desktop.ui.openWindow('profile', { context: 'themes' })
+          } else {
+            desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
+          }
         });
 
         if (!desktop.settings.audio_enabled) {
