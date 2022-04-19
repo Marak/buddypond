@@ -147,9 +147,18 @@ window.top.location = 'ie.html';
           </ul>
         </li>
       </ul>
+      <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
+        <option>Select music playlist...</option>
+        <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
+        <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
+        <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
+        <option value="942151069">Andrew Potthast: Bangas</option>
+        <option value="938848927">Andrew Potthast: Burning Man Set</option>
+        <option value="839091662">Featured Buddy: Andrew Potthast</option>
+        <option value="1427279635">Featured Buddy: ioqpvs</option>
+      </select>
       <!--
       <select name="selectTheme" class="desktopSelect selectTheme float_right">
-        <option>Select Theme...</option>
         <option value="Light">Light Theme</option>
         <option value="Dark">Dark Theme</option>
         <option value="Nyan">Nyan Theme</option>
@@ -159,15 +168,6 @@ window.top.location = 'ie.html';
         <option value="Customize">EPIC MODE ( my poor browser ) </option>
         <option value="Customize">Comic Theme</option> 
       -->
-      </select>
-      <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
-        <option>Select music playlist...</option>
-        <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
-        <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
-        <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
-        <option value="942151069">Andrew Potthast: Bangas</option>
-        <option value="938848927">Andrew Potthast: Burning Man Set</option>
-        <option value="839091662">Featured Indie Producer: Andrew Potthast</option>
       </select>
     </div>
     <div class="abs" id="bar_bottom">
@@ -282,6 +282,7 @@ window.top.location = 'ie.html';
             desktop.ui.openWindow('profile', { context: 'themes' })
           } else {
             desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
+            desktop.set('active_theme', theme);
           }
         });
 
