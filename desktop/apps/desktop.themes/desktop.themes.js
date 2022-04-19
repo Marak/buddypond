@@ -32,7 +32,6 @@ desktop.app.themes.applyTheme = function applyTheme (theme) {
   if (!theme) {
     return;
   }
-  console.log(theme)
   
   /*
   // TODO: uncomment this, actually apply styles
