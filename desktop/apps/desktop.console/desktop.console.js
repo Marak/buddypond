@@ -262,7 +262,7 @@ desktop.app.console.listBuddyScriptCommands = function listBuddyScriptCommands (
   let keys = Object.keys(commands);
     const helpText = `
       <div class="help">
-        <h3>🤖 BuddyScript v4.20.69 🤖 </h3>
+        <h2 class="hidesHelp">🤖 BuddyScript v4.20.69 🤖 </h2>
         <p>
           The following <span class="bash">bs</span> commands are available:
         </p>

@@ -599,7 +599,7 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
     <br/>
     Hello new <strong>anonymous</strong> Buddy!
     You are currently logged in as the shared <em>anonymous account</em>.<br/>
-    To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img class="pointer" height="24" width="24" src="desktop/assets/images/icons/icon_login_64.png" /></a>'
+    To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img class="pointer" height="24" width="24" src="desktop/assets/images/icons/icon_login_64.png" /></a>
     <br/>`;
   }
 
