@@ -52,7 +52,17 @@ Type `/bs` in any chat window to see `BuddyScript` commands.
 
 ### No Build Steps. No Transpiling. No hassles.
 
+## Download Buddy Pond with `My Buddy`
+
+[My Buddy](https://github.com/Marak/mybuddy) is a companion app that lets you quickly clone and start Buddy Pond locally without having to run any commands. Get it at: [https://github.com/Marak/mybuddy](https://github.com/Marak/mybuddy)
+
+**Remember**: Buddy Pond and the Buddy Pond AppStore *are just plain HTML and JavaScripts* with no build steps. You can clone either of these repos and use *any* HTTP server to run Buddy Pond locally.
+
+## Download Buddy Pond with `git`
+
 ### Buddy Pond Base ( Desktop + Base Apps )
+
+
 
 Download Buddy Pond Base
 
@@ -79,7 +89,7 @@ The AppStore is located at: [https://github.com/Marak/buddypond-appstore](https:
 
 If you want to add a new application all you have to do is copy and paste an existing `App` folder and do a single string search and replace. 
 
-Once the new App folder has been created you will now be able to open this `App` via `desktop.ui.openWindow('myapp')`
+Once the new App folder has been created you will now be able to open this `App` via `desktop.ui.openWindow('myapp')`. 
 
 ### Deploying your Buddy Pond
 
