@@ -55,7 +55,9 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
       desktop.app.wallpaper.active = wallpaperName;
       // start the new one
       desktop.app.wallpaper.start();
-      
+
+      $(`.wallpaper_opt[value="${wallpaperName}"]`).prop('checked', true);
+
     });
 
     desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function (color) {

@@ -49,7 +49,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     if (desktop.ui.view === 'Mobile') {
       desktop.set('wallpaper_name', 'nyancat');
     } else {
-      desktop.set('wallpaper_name', 'matrix');
+      desktop.set('wallpaper_name', 'nyancat');
     }
   }
 
@@ -64,7 +64,9 @@ desktop.app.settings.load = function loadsettings (params, next) {
   //
   // END SET DEFAULTS FOR ALL DESKTOP SETTINGS
   //
-  
+
+  $('.selectTheme').val(desktop.get('active_theme'));
+
   // RENDER DEFAULT DESKTOP ICONS HERE ( for now )
 
   //  if (typeof desktop.settings.apps_installed === 'undefined') {

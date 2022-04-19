@@ -33,13 +33,16 @@ desktop.app.themes.applyTheme = function applyTheme (theme) {
     return;
   }
   console.log(theme)
-
+  
+  /*
+  // TODO: uncomment this, actually apply styles
   // change all the css tyles
   for (var prop in theme.styles) {
     for (var attr in theme.styles[prop]) {
       $(themeMappings[prop]).css(attr, theme.styles[prop][attr])
     }
   }
+  */
 
   // change the wallapper
   if (theme.wallpaper) {
@@ -83,7 +86,7 @@ desktop.app.themes.themes['Dark'] = {
     },
     'window_main': {
       'background': 'black',
-      'color': '#000000'
+      'color': 'white',
     }
   }
 };

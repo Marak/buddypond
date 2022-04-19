@@ -6,7 +6,6 @@ We have many issues open and welcomed for first time contributors!
 1/2 - clean up /bs
 
 - min window click dock bar restore window not working without 2 clicks? soundcloud
-- have link to gallery / faq / screenshots section in blurb ( reuse login gallery component )
 - add static picture of merlin in /help
   - if you click merlin it launches /merlin app
 
@@ -230,6 +229,8 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+X - have link to gallery / faq / screenshots section in blurb ( reuse login gallery component )
 
 X - update welcome message to include short blurb on what site does
 X - videochat window needs to open actual window ( min / max mobile issue)

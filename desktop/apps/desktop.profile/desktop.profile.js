@@ -160,19 +160,21 @@ desktop.app.profile.load = function loadProfile (params, next) {
   });
 };
 
-
 desktop.app.profile.renderWallpaperTypes = function renderWallpaperTypes (el) {
   for (let w in desktop.app.wallpaper._wallpapers) {
     let _wallpaper = desktop.app.wallpaper._wallpapers[w];
+    let checked = '';
+    if (w === desktop.get('wallpaper_name')) {
+      checked = 'checked';
+    }
     let str = `
-    <input type="radio" id="wallPaperRadio${w}" name="wallpaper_opt" class="wallpaper_opt" value="${w}">
+    <input type="radio" id="wallPaperRadio${w}" name="wallpaper_opt" class="wallpaper_opt" value="${w}" ${checked}>
     <label for="wallPaperRadio${w}">${_wallpaper.label}</label>
     <br>
     `;
     el.append(str);
   }
 }
-
 
 desktop.app.profile.openWindow = function openWindow (params) {
 
