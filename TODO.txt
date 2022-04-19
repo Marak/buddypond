@@ -5,6 +5,15 @@ We have many issues open and welcomed for first time contributors!
 1/2 - show .console_send_message_form in console so buddy can send /bs without login
 1/2 - clean up /bs
 
+- min window click dock bar restore window not working without 2 clicks? soundcloud
+- update welcome message to include short blurb on what site does
+- have link to gallery / faq / screenshots section in blurb ( reuse login gallery component )
+- add static picture of merlin in /help
+  - if you click merlin it launches /merlin app
+
+!!!! - port Dicey to server
+
+
 - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
 - add `App.Download` for downloading buddypond
 
@@ -105,7 +114,6 @@ when recording snaps in mirror, adding new snap image should show last image in 
 - dont allow icons to be hidden on smaller windows?
 - move call button to side of text area?
 - Add replies / comments to messages ( discord style? )
-- port Dicey to server
 
 - add `App.Export` for exporting buddypond data
 

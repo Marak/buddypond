@@ -494,7 +494,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.commands.chat.help({ windowId: windowId });
   });
 
-  d.on('click', '.help h3', function (ev) {
+  d.on('click', '.hidesHelp', function (ev) {
     let holder = $(this).parent();
     holder.hide();
     return false;

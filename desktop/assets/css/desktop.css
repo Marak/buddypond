@@ -1410,6 +1410,6 @@ iframe {
   font-family: monospace, monospace;
 }
 
-.help h3 {
+.hidesHelp {
   cursor: pointer;
 }

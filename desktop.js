@@ -588,6 +588,52 @@ desktop.commands.chat.give = function givePoints (message, windowId) {
   });
 };
 
+
+desktop.commands.chat.welcome = function welcomeMessage (params) {
+  let windowId = params.windowId;
+
+  let freshUserText = '';
+
+  if (buddypond.me === 'anonymous') {
+    freshUserText = `
+    <br/>
+    Hello new <strong>anonymous</strong> Buddy!
+    You are currently logged in as the shared <em>anonymous account</em>.<br/>
+    To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img class="pointer" height="24" width="24" src="desktop/assets/images/icons/icon_login_64.png" /></a>'
+    <br/>`;
+  }
+
+  const welcomeText = `
+    <div class="help">
+      <h2 class="hidesHelp" title="Click To Hide">Welcome To Buddy Pond My Good Buddy 🧘🏽🌱</h2>
+      <em>Cloud Operating System and Instant Messenger</em>
+      <br/>
+      <br/>
+      <h3>What is this place? What can I do here?</h3>
+    <p>
+     You can Chat with Buddies. Make new Buddies.  Watch Interdimensional Cable. Play with your Camera and make Snaps.
+    Do Voice and Video Calls. Create Artwork. Play Video Games. Listen to Music. Create Music.
+    <br/>
+    <br/>
+    There is a lot you can do. Click around a bit and see what you can discover.
+    </p>
+    <br/>
+      <strong>Basically Buddy Pond is an entire Desktop Experience ready right now in your browser.</strong><br/>
+      <br/>
+      To get chat help type: <code>/help</code> <br/>
+      To see available BuddyScript commands type: <code>/bs</code> <br/>
+      ${freshUserText}
+      <br/>
+    <div>
+  `;
+
+  $('.chat_messages', windowId).append(`<div class="message">${welcomeText}</div>`);
+  $('.no_chat_messages', windowId).hide();
+  let el = $('.message_main', windowId);
+  $(el).scrollTop(999999);
+
+}
+
 desktop.commands.chat.help = function helpCommands (params) {
   let windowId = params.windowId;
   const commandSet = [
@@ -598,12 +644,12 @@ desktop.commands.chat.help = function helpCommands (params) {
     },
     {
       command: '/meme',
-      helpText: '- sends random meme'
+      helpText: '- sends Mnemosyne A.I. Powered meme'
     },
     {
       command: '/meme',
       additional: ' cool',
-      helpText: '- searches all memes for "cool"'
+      helpText: '- A.I. Powered meme search'
     },
     {
       command: '/say',
@@ -649,9 +695,20 @@ desktop.commands.chat.help = function helpCommands (params) {
     },
   ];
 
+  let freshUserText = '';
+
+  if (buddypond.me === 'anonymous') {
+    freshUserText = `
+    <br/>
+    Hello new <strong>anonymous</strong> Buddy!
+    You are currently logged in as the shared <em>anonymous account</em>.<br/>
+    To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img height="16" width="16" src="desktop/assets/images/icons/icon_login_64.png" /></a>'
+    <br/>`;
+  }
+
   const helpText = `
     <div class="help">
-      <h3 title="Click To Hide">🌱🧘🏽 Welcome To Buddy Pond My Good Buddy 🧘🏽🌱</h3>
+      <h2 class="hidesHelp" title="Click To Hide">Let's Help You My Good Buddy 🧘🏽🌱</h2>
       <br/>
       <p>
         The following chat text commands are available:

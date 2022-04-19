@@ -41,7 +41,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     });
 
     // if user clicks logout link on top left menu, logout the user
-    $('.logoutLink').on('click', function () {
+    d.on('mousedown', '.logoutLink', function (ev) {
       desktop.app.login.logoutDesktop();
     });
 
@@ -303,7 +303,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
 
     // TODO: show Merlin welcome message
     setTimeout(function(){
-      desktop.commands.chat.help({ windowId: '#window_pond_message_Lily' });
+      desktop.commands.chat.welcome({ windowId: '#window_pond_message_Lily' });
     }, 2222);
 
   }
