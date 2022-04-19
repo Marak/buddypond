@@ -695,17 +695,6 @@ desktop.commands.chat.help = function helpCommands (params) {
     },
   ];
 
-  let freshUserText = '';
-
-  if (buddypond.me === 'anonymous') {
-    freshUserText = `
-    <br/>
-    Hello new <strong>anonymous</strong> Buddy!
-    You are currently logged in as the shared <em>anonymous account</em>.<br/>
-    To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img height="16" width="16" src="desktop/assets/images/icons/icon_login_64.png" /></a>'
-    <br/>`;
-  }
-
   const helpText = `
     <div class="help">
       <h2 class="hidesHelp" title="Click To Hide">Let's Help You My Good Buddy 🧘🏽🌱</h2>
