@@ -2,12 +2,11 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-- add console can send /bs without login
-- clean up /bs
+1/2 - show .console_send_message_form in console so buddy can send /bs without login
+1/2 - clean up /bs
+
 - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
-
-- add anonymous geo location in message ( same permissions as flag? )
-
+- add `App.Download` for downloading buddypond
 
 Mobile Issues
 
@@ -30,6 +29,7 @@ Context / App Input / Output Issues
   - Snaps
   - Paints
   - Audio
+  - add filesystem API with localForage, https://github.com/localForage/localForage 
 
 - still missing reset password by email link UX on login.html
 - spend 3 hours going through memes this week
@@ -106,6 +106,8 @@ when recording snaps in mirror, adding new snap image should show last image in 
 - move call button to side of text area?
 - Add replies / comments to messages ( discord style? )
 - port Dicey to server
+
+- add `App.Export` for exporting buddypond data
 
 ! - ensure rainbow tv is preloaded for mirror
 ? - add min display time to loading gifs ( to avoid flicker )

@@ -279,7 +279,21 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
         'can anyone tell me how to download buddy pond?',
         'buddyscript is run with /bs command',
         'woah using /midi and /piano together is awesome',
-        'i just connected /globe and /hack commands and hacked the planet 😎'
+        'i just connected /globe and /hack commands and hacked the planet 😎',
+        'has anyone seen Dave?',
+        'Daves not here man',
+        'does anyone want to subscribe to my blog its www the internet @ hotpages frontslash mail.me',
+        'yooooooo',
+        'can i get some good buddy points please?',
+        'THIS IS B U D D Y P O N D',
+        'have anyone seen the faker.js?',
+        'where is zalgo, i must speak with him',
+        '/meme terry',
+        '/meme tripply',
+        '\\bs',
+        '\\idc',
+        '\\mtv',
+        '\\memepool'
       ];
       let allRandomMessages = randomMessages.concat(desktop.app.buddylist.positiveAffirmations);
       let randomMessage = allRandomMessages[Math.floor(Math.random() * allRandomMessages.length)];

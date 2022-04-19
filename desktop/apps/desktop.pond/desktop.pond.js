@@ -322,14 +322,14 @@ desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
         let tripcode = message.tripcode || 'tr1pc0d3';
         str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} (${tripcode}): <span class="message"></span><br/>`;
       } else {
-        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} : <span class="message"></span><br/>`;
+        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from}: <span class="message"></span><br/>`;
       }
     } else {
       if (message.from === 'anonymous') {
         let tripcode = message.tripcode || 'tr1pc0d3';
         str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} (${tripcode}): </span><span class="message purple"></span><br/>`;
       } else {
-        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} : </span><span class="message purple"></span><br/>`;
+        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from}: </span><span class="message purple"></span><br/>`;
       }
       if (document.visibilityState === 'hidden') {
         let now = new Date().getTime();
