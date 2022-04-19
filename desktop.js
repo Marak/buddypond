@@ -571,7 +571,6 @@ desktop.commands.chat.buddyscript = function chatConsole (message, windowId, com
   $(el).scrollTop(999999);
 };
 
-
 desktop.commands.chat.give = function givePoints (message, windowId) {
   let to = message.text.split(' ')[1];
   let amount = message.text.split(' ')[2];
@@ -589,7 +588,8 @@ desktop.commands.chat.give = function givePoints (message, windowId) {
   });
 };
 
-desktop.commands.chat.help = function helpCommands (windowId) {
+desktop.commands.chat.help = function helpCommands (params) {
+  let windowId = params.windowId;
   const commandSet = [
     {
       command: '/bs',

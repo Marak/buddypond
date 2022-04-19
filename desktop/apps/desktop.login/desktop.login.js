@@ -289,7 +289,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
 
     // TODO: show Merlin welcome message
     setTimeout(function(){
-      desktop.commands.chat.help('#window_pond_message_Lily');
+      desktop.commands.chat.help({ windowId: '#window_pond_message_Lily' });
     }, 2222);
 
   }

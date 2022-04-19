@@ -464,17 +464,18 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.ui.openWindow(appName);
   });
 
-  function runBuddyScript (coode) {
+  function runBuddyScript (coode, params) {
     coode = coode.substr(1, coode.length - 1);
-    desktop.log('Attempting to eval() string ' + coode);
-    desktop.app.console.evalCoode(coode);
+    desktop.log('Attempting to eval() string ' + coode, 'with params', params);
+    desktop.app.console.evalCoode(coode, params);
   }
 
   d.on('click', '.runBuddyScript', function (ev) {
     // Remark It's not code yet, it's "coode"
     let holder = $(this).parent().parent();
     let coode = $('.buddyScript', holder).html();
-    runBuddyScript(coode);
+    let win = $(this).closest('div.window');
+    runBuddyScript(coode, { windowId: '#' + win.attr('id') });
     return false;
   });
 
@@ -490,7 +491,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     // Remark: Closest active chat window is the context for help to show in
     let win = $(this).closest('div.window');
     let windowId = '#' + win.attr('id');
-    desktop.commands.chat.help(windowId);
+    desktop.commands.chat.help({ windowId: windowId });
   });
 
   d.on('click', '.help h3', function (ev) {

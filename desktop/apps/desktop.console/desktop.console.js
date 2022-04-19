@@ -19,26 +19,31 @@ desktop.app.console.load = function loadDesktop (params, next) {
 
     d.on('mousedown', '.consoleMessageSubmit', function () {
       // Remark: Is not code as this point, it's coode
-      let str = $('.console_message_text').val();
-      desktop.app.console.evalCoode(str);
+      let coode = $('.console_message_text').val();
+      coode = coode.substr(1, coode.length - 1);
+      desktop.log('Attempting to eval() string ' + coode);
+      desktop.app.console.evalCoode(coode,'#window_console' );
+      $('.console_message_text').val('');
     });
 
-    /*
     d.keypress(function (ev) {
-      if (ev.which === 13 && $(ev.target).hasClass('')) {
-        let str = $('.console_message_text').val();
-        desktop.app.console.evalCoode(str);
+      if (ev.which === 13 && $(ev.target).hasClass('console_message_text')) {
+        // Remark: Is not code as this point, it's coode
+        let coode = $('.console_message_text').val();
+        coode = coode.substr(1, coode.length - 1);
+        desktop.log('Attempting to eval() string ' + coode);
+        desktop.app.console.evalCoode(coode,'#window_console' );
+        $('.console_message_text').val('');
         return false;
       }
     });
-    */
+
+    $('.console_send_message_form').hide(); // for now
 
     $('#window_console').css('width', '100vw');
     $('#window_console').css('height', '40vh');
     $('#window_console').css('bottom', 41);
     $('#window_console').css('left', '0vw');
-    // for now
-    $('.console_send_message_form').hide();
     next();
   });
 };
@@ -134,7 +139,8 @@ desktop.app.console._allowCommands = {
     },
     help: {
       command: function(params) {
-        let str = `desktop.commands.chat.help();`
+        // params is windowId as string, such as `#window_console`
+        let str = `desktop.commands.chat.help({ windowId: '${params.windowId}'});`
         return str;
       },
       description: 'Shows basic Help commands',
