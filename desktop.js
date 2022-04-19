@@ -598,7 +598,7 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
     freshUserText = `
     <br/>
     Hello new <strong>anonymous</strong> Buddy!
-    You are currently logged in as the shared <em>anonymous account</em>.<br/>
+    You are currently logged in as the shared <em>anonymous account</em>.
     To logout of anonymous and get your own account <a href="#logout" class="logoutLink">click the key</a><a class="logoutLink" href="#logout"><img class="pointer" height="24" width="24" src="desktop/assets/images/icons/icon_login_64.png" /></a>
     <br/>`;
   }
@@ -613,6 +613,9 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
     <p>
      You can Chat with Buddies. Make new Buddies.  Watch Interdimensional Cable. Play with your Camera and make Snaps.
     Do Voice and Video Calls. Create Artwork. Play Video Games. Listen to Music. Create Music.
+    <br/>
+    <br/>
+    <a href="#" class="openApp" data-app="faq">Check out our Frequently Asked Questions</a>
     <br/>
     <br/>
     There is a lot you can do. Click around a bit and see what you can discover.

@@ -461,7 +461,12 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   d.on('click', 'a.openApp', function (ev) {
     let appName = $(this).data('app');
-    desktop.ui.openWindow(appName);
+    let context =  $(this).data('context');
+    let params = {};
+    if (context) {
+      params.context = context;
+    }
+    desktop.ui.openWindow(appName, params);
   });
 
   function runBuddyScript (coode, params) {

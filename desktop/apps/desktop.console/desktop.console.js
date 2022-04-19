@@ -94,6 +94,11 @@ desktop.app.console._allowCommands = {
       description: 'Buddy Pond Console Terminal ( For Hackers )',
       icon: 'lofi'
     },
+    faq: {
+      command: 'desktop.ui.openWindow("faq");',
+      description: 'Frequently Asked Questions',
+      icon: 'folder'
+    },
     lofi: {
       command: 'desktop.ui.openWindow("lofi");',
       description: 'Chill Vibes Lofi Music Channel',
