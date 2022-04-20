@@ -177,8 +177,9 @@ desktop.app.appstore.addApp = function addApp (appName, params, cb) {
     installedApps[appName] = desktop.app.appstore.apps[appName];
     desktop.set('apps_installed', installedApps);
     desktop.ui.renderDesktopShortCuts();
+    desktop.play('APP-ADD.wav');
     cb();
-  }, 1666)
+  }, 1333)
 }
 
 desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
@@ -187,8 +188,9 @@ desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
     delete installedApps[appName];
     desktop.set('apps_installed', installedApps);
     desktop.ui.renderDesktopShortCuts();
+    desktop.play('APP-REMOVE.wav');
     cb();
-  }, 1666)
+  }, 1333)
 }
 
 /*
