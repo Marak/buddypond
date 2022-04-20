@@ -236,9 +236,11 @@ desktop._ready = function _ready (finish) {
               JQDX.window_flat();
               $(key).show().addClass('window_stack');
               // TODO: loading status cursor indicator should be per App, not global
+              /*
               document.querySelectorAll('*').forEach(function (node) {
                 node.style.cursor = 'pointer';
               });
+              */
             } else {
               desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow');
             }
@@ -276,7 +278,6 @@ desktop.routeFromHash = function routeFromHash () {
   bs = bs.split('/');
   let appName = bs[1];
   let context = bs[2];
-
   // TODO: params.size: 'Max'
   desktop.hashMode = true;
   desktop.ui.openWindow(appName, {

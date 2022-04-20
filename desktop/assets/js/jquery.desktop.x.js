@@ -123,7 +123,6 @@ desktop.ui.goMobile = function () {
   $('.desktop-shortcuts-container').css('overflow', 'auto');
   $('.desktop-shortcuts-container').css('top', '0px');
   */
-  
   $('.desktop-shortcuts-container .shortcut').hide();
   $('.window_top').css('padding-left', 22);
   $('.window_top').css('padding-right', 22);
@@ -467,6 +466,44 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       params.context = context;
     }
     desktop.ui.openWindow(appName, params);
+  });
+
+  d.on('click', 'button.openApp', function (ev) {
+    let appName = $(this).data('app');
+    let context =  $(this).data('context');
+    let params = {};
+    if (context) {
+      params.context = context;
+    }
+    desktop.ui.openWindow(appName, params);
+  });
+
+  d.on('click', 'button.addApp', function (ev) {
+    let appName = $(this).data('app');
+    let context =  $(this).data('context');
+    let params = {
+      appStoreInstall: true,
+      version: '4.20.69'
+    };
+    if (context) {
+      params.context = context;
+    }
+    let el = this;
+    if ($(el).html() === 'Remove') {
+      $(el).html('Adding');
+      $(el).attr('disabled', 'DISABLED');
+      desktop.app.appstore.removeApp(appName, params, function (err, result) {
+        $(el).attr('disabled', null);
+        $(el).html('Add');
+      });
+    } else {
+      $(el).html('Adding');
+      $(el).attr('disabled', 'DISABLED');
+      desktop.app.appstore.addApp(appName, params, function (err, result) {
+        $(el).html('Remove');
+        $(el).attr('disabled', null);
+      });
+    }
   });
 
   function runBuddyScript (coode, params) {
@@ -869,9 +906,11 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
         desktop.app[depApp].load(params, function () {
           desktop.app[appName].load(params, function () {
             desktop.log('Ready: App.' + appName);
+            /*
             document.querySelectorAll('*').forEach(function (node) {
               node.style.cursor = 'pointer';
             });
+            */
             callback();
           });
         });
@@ -879,9 +918,11 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
     } else {
       desktop.app[appName].load(params, function () {
         desktop.log('Ready: App.' + appName);
+        /*
         document.querySelectorAll('*').forEach(function (node) {
           node.style.cursor = 'pointer';
         });
+        */
         callback();
       });
     }
@@ -985,9 +1026,11 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
     // set global cursor to spinning progress icon
     // TODO: spinning progress notifications should be per `App` and not a global state
+    /*
     document.querySelectorAll('*').forEach(function (node) {
       node.style.cursor = 'progress';
     });
+    */
     // set a flag to indicate this App should open when defered loading completes
     desktop.app[appName].openWhenLoaded = true;
     return;
@@ -1001,10 +1044,12 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   // if not, assume user is trying to load an app which is not loaded yet
   let windowExists = $(appWindow).length;
   if (windowExists === 0) {
+    /*
     // TODO: spinning progress notifications should be per `App` and not a global state
     document.querySelectorAll('*').forEach(function (node) {
       node.style.cursor = 'progress';
     });
+    */
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
@@ -1414,4 +1459,58 @@ desktop.ui.openWindowsFromSavedSettings = function openWindowsFromSavedSettings 
       $(key).css('height', win.height);
     });
   }
+}
+
+
+desktop.ui.renderDesktopShortCut = function renderDesktopShortCut (appName, app) {
+  if (app.placeholder) {
+    $('.desktop-shortcuts-container').prepend(`
+      <div class="icon shortcut">
+      </div>
+    `);
+  } else {
+    let href = `#icon_dock_${appName}`;
+    if (app.href) {
+      href = app.href;
+    }
+    $('.desktop-shortcuts-container').append(`
+      <div class="icon shortcut ${app.class}">
+        <a href="${href}">
+          <img class="emojiIcon" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
+          <span class="title">
+            ${app.label || appName}
+          </span>
+        </a>
+      </div>
+    `);
+  }
+}
+
+desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
+  $('.desktop-shortcuts-container').html('');
+  for (let appName in desktop.settings.apps_installed) {
+    let app = desktop.app.appstore.apps[appName];
+    console.log('aaa', appName, app)
+    desktop.ui.renderDesktopShortCut(appName, app);
+  }
+
+  desktop.ui.renderDesktopShortCut('download', {
+    name: 'download',
+    href: 'https://github.com/marak/buddypond',
+    label: 'Download Buddy Pond',
+    icon: 'drive'
+  });
+
+  desktop.ui.renderDesktopShortCut('appstore', {
+    name: 'appstore', label: 'App Store'
+  });
+
+  desktop.ui.renderDesktopShortCut('login', {
+    name: 'login', label: 'Login', icon: 'login', class: 'loginIcon loginShortcut'
+  });
+
+  desktop.ui.renderDesktopShortCut('logout', {
+    name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn logoutShortcut'
+  });
+
 }

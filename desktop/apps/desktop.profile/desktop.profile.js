@@ -155,10 +155,49 @@ desktop.app.profile.load = function loadProfile (params, next) {
       }
     });
 
+    function renderAppList () {
+      $('#window_profile .yourApps tbody').html('');
+      desktop.app.profile.renderProfileApp('appstore')
+      desktop.app.profile.renderProfileApps();
+    }
+
+    renderAppList();
+
+    desktop.on('desktop.settings.apps_installed', 'render-profile-apps-list', function(){
+      renderAppList();
+    })
+
     $('#profileTabs' ).tabs();
     next();
   });
 };
+
+desktop.app.profile.renderProfileApp = function renderProfileApp (appName, app) {
+  if (!app) {
+    app = desktop.app.appstore.apps[appName]
+  }
+  // don't show Profile App itself in Profile App List
+  if (appName === 'profile') {
+    return;
+  }
+  let str = `
+    <tr class="openApp" data-app="${appName}">
+      <td>
+        <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
+      </td>
+      <td>
+       ${app.description || app.label || appName}
+      </td>
+  </tr>`;
+  $('#window_profile .yourApps tbody').append(str);
+}
+
+desktop.app.profile.renderProfileApps = function renderProfileApps () {
+  for (let appName in desktop.settings.apps_installed) {
+    let app = desktop.app.appstore.apps[appName];
+    desktop.app.profile.renderProfileApp(appName, app);
+  }
+}
 
 desktop.app.profile.renderWallpaperTypes = function renderWallpaperTypes (el) {
   for (let w in desktop.app.wallpaper._wallpapers) {
