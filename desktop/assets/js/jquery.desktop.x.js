@@ -1513,4 +1513,9 @@ desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
     name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn logoutShortcut'
   });
 
+  setTimeout(function(){
+    desktop.ui.windowResizeEventHandler(true); // adjusts shortcut padding if needed
+  }, 333)
+
+
 }
