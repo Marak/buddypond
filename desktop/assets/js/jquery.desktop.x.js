@@ -889,18 +889,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
   }
 
   desktop.apps.loading.push({ name: appName, params: params });
-
-  let origin = 'desktop/apps/'; // defaults to whatever the current origin is
-  
-  // checks to see if this is a "based" app, if so, do not attempt to use appstore install
-  if (desktop.basedApps.indexOf(appName) === -1) {
-     // in production mode, for non-core apps,
-    // point app loading to the appstore
-    if (desktop.mode === 'production') {
-      origin = 'http://appstore.buddypond.com/';
-    }
-  }
-  desktop.load.remoteJS([ origin + `desktop.${appName}/desktop.${appName}.js` ], function () {
+  desktop.load.remoteJS([`desktop/apps/desktop.${appName}/desktop.${appName}.js` ], function () {
     /* TODO: support N app dep, currently hard-coded to 1
     desktop.app[appName].depends_on.forEach(function(appDep){
       desktop.preloader.push(appDep);
