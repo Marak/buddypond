@@ -190,7 +190,7 @@ desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
     desktop.ui.renderDesktopShortCuts();
     desktop.play('APP-REMOVE.wav');
     cb();
-  }, 1333e)
+  }, 1333)
 }
 
 /*
