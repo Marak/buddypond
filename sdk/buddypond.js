@@ -11,7 +11,7 @@ if (document.location.protocol === 'https:') {
 }
 
 if (buddypond.mode === 'dev') {
-  buddypond.endpoint = 'http://dev.buddypond.com/api/v3';
+  buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
