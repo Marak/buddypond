@@ -91,8 +91,8 @@ desktop.app.appstore.apps = {
     label: 'Mtv',
     version: '4.20.69'
   },
-  'solitare': {
-    label: 'Solitare',
+  'solitaire': {
+    label: 'Solitaire',
     version: '4.20.69'
   },
   'minesweeper': {
@@ -190,7 +190,7 @@ desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
     desktop.ui.renderDesktopShortCuts();
     desktop.play('APP-REMOVE.wav');
     cb();
-  }, 1333)
+  }, 1333e)
 }
 
 /*
