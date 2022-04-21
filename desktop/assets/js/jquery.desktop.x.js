@@ -904,11 +904,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
         desktop.app[depApp].load(params, function () {
           desktop.app[appName].load(params, function () {
             desktop.log('Ready: App.' + appName);
-            /*
-            document.querySelectorAll('*').forEach(function (node) {
-              node.style.cursor = 'pointer';
-            });
-            */
+            $('html,body').css('cursor','pointer');
             callback();
           });
         });
@@ -916,11 +912,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
     } else {
       desktop.app[appName].load(params, function () {
         desktop.log('Ready: App.' + appName);
-        /*
-        document.querySelectorAll('*').forEach(function (node) {
-          node.style.cursor = 'pointer';
-        });
-        */
+        $('html,body').css('cursor','pointer');
         callback();
       });
     }
@@ -1024,11 +1016,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
     // set global cursor to spinning progress icon
     // TODO: spinning progress notifications should be per `App` and not a global state
-    /*
-    document.querySelectorAll('*').forEach(function (node) {
-      node.style.cursor = 'progress';
-    });
-    */
+    $('html,body').css('cursor','progress');
     // set a flag to indicate this App should open when defered loading completes
     desktop.app[appName].openWhenLoaded = true;
     return;
@@ -1042,12 +1030,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   // if not, assume user is trying to load an app which is not loaded yet
   let windowExists = $(appWindow).length;
   if (windowExists === 0) {
-    /*
-    // TODO: spinning progress notifications should be per `App` and not a global state
-    document.querySelectorAll('*').forEach(function (node) {
-      node.style.cursor = 'progress';
-    });
-    */
+    $('html,body').css('cursor','progress');
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);
