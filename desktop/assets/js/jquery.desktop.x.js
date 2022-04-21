@@ -748,8 +748,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     $('#panel_buddy_profile').removeClass('window_stack');
   });
 
-  // Taskbar buttons.
-  // TODO: JQDX.maxWindow
+  // Clicking on the dock icon
   d.on('click', '#dock a', function () {
     JQDX.maxWindow(this);
   });
@@ -1077,7 +1076,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
 };
 
 JQDX.minWindow = function minWindow (el) {
-  $(el).closest('div.window').hide();
+  $(el).closest('div.window').removeClass('window_stack').hide();
 };
 
 JQDX.minAllWindows = function minWindow (el) {
@@ -1088,7 +1087,7 @@ JQDX.minAllWindows = function minWindow (el) {
 JQDX.maxWindow = function maxWindow (el, $el) {
 
   let windowId = $(el).attr('href');
-  // console.log('JQDX.maxWindow', windowId)
+  // desktop.log('JQDX.maxWindow', windowId)
 
   // Get the link's target.
   let x = $(windowId);
