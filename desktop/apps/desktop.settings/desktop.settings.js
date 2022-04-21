@@ -78,6 +78,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     'games': {},
     'soundrecorder': {},
     'paint': {},
+    'piano': {},
     'mirror': {},
     'visuals': {},
   }
