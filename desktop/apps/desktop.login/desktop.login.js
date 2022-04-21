@@ -61,8 +61,11 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
     let me = localStorage.getItem('me');
     if (localToken) {
       buddypond.verifyToken(me, localToken, function (err, data) {
+
         if (err) {
-          alert('server is down. please try again in a moment.');
+          alert('Hey Buddy...we could not verify the existing qtokenid.\n\nLogging out.\n\nPlease try again.');
+          desktop.app.login.logoutDesktop(true);
+          return;
         }
 
         // server is online and operational, but returned an error message to client state
@@ -70,7 +73,6 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
           alert(data.message);
           return next(null);
         }
-
         // token has not validated, log out the client
         if (data.success === false) {
           desktop.app.login.logoutDesktop();
@@ -119,7 +121,7 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
   buddypond.authBuddy(buddyname, password, function (err, data) {
     if (err) {
       console.log('err', err, data);
-      alert('server is down. please try again in a moment.');
+      alert('Welcome Buddy! The Pond is currently at capacity.\n\nPlease feel free to try again shortly.\n\nClick Around. All Apps and Files will continue to work offline.');
       return;
     }
 
@@ -336,11 +338,15 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   }, 500)
 };
 
-desktop.app.login.logoutDesktop = function logoutDesktop () {
+desktop.app.login.logoutDesktop = function logoutDesktop (immediate) {
   localStorage.removeItem('qtokenid');
   localStorage.removeItem('me');
   desktop.set('buddy_logged_out', true);
   desktop.set('windows_open', {});
+  if (immediate) {
+    document.location = 'index.html';
+    return;
+  }
   desktop.play('GOODBYE.wav', false, function () {
     document.location = 'index.html';
   });
