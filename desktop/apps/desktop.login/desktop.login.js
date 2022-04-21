@@ -90,14 +90,16 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
+      /*
       // if the buddy has not manually logged out at least once,
       // log them in anonymous for the first time
       if (!desktop.settings.buddy_logged_out) {
         desktop.app.login.auth('anonymous', 'password');
       } else {
-        if (!desktop.hashMode) {
-          JQDX.showWindow('login');
-        }
+      }
+      */
+      if (!desktop.hashMode) {
+        JQDX.showWindow('login');
       }
       if (location.hash) {
         desktop.routeFromHash();
