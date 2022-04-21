@@ -42,6 +42,11 @@ desktop.app.buddylist.positiveAffirmations = [
   'I believe in you.'
 ];
 
+buddypond.memePath = 'https://memes.buddypond.com/';
+if (buddypond.mode === 'dev') {
+  buddypond.memePath = window.origin;
+}
+
 desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
 
   desktop.load.remoteAssets([
@@ -689,7 +694,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     }
     
     if (message.card && message.card.type === 'snaps') {
-      message.card.snapURL = desktop.origin + '/' + message.card.snapURL;
+      message.card.snapURL = desktop.filesEndpoint + '/' + message.card.snapURL;
       let arr = message.card.snapURL.split('.');
       let ext = arr[arr.length -1];
       if (ext === 'gif') {
@@ -718,7 +723,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     }
 
     if (message.card && message.card.type === 'meme') {
-      message.card.filename = desktop.origin + '/memes/' + message.card.filename;
+      message.card.filename = buddypond.memePath + 'memes/' + message.card.filename;
       $('.chat_messages', windowId).append(`
           <div class="message memeCard">
            <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
@@ -767,7 +772,7 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
     $('.message', windowId).last().text(message.text);
 
     if (message.card && message.card.type === 'audio') {
-      message.card.soundURL = desktop.origin + '/' + message.card.soundURL;
+      message.card.soundURL = desktop.filesEndpoint + '/' + message.card.soundURL;
       $('.message', windowId).last().append(`
         <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
       `);

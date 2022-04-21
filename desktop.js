@@ -23,6 +23,7 @@ if (desktop.mode === 'dev') {
 
 // apps which are considered "required" for Buddy Pond to work
 desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'midi', 'mirror', 'pond', 'profile', 'themes', 'videochat', 'videoplayer', 'wallpaper'];
+desktop.filesEndpoint = 'https://files.buddypond.com'
 
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
 desktop.app = {};
