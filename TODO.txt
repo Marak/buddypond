@@ -2,17 +2,17 @@ For contributions, please first see: https://github.com/Marak/buddypond/issues
 
 We have many issues open and welcomed for first time contributors!
 
-1/2 - show .console_send_message_form in console so buddy can send /bs without login
-1/2 - clean up /bs
+    1/2 - show .console_send_message_form in console so buddy can send /bs without login
+    1/2 - clean up /bs
 
-- play buddy sound when buddy logs in ( door open aim )
-- play sound alert if buddypond.me is mentioned in chat
+    - play buddy sound when buddy logs in ( door open aim )
+    - play sound alert if buddypond.me is mentioned in chat
 
-- Flags need to show for memes and snaps and sounds, etc
-- Flag mouseover should show alt title of locale
+    - Flags need to show for memes and snaps and sounds, etc
+    - Flag mouseover should show alt title of locale
 
-- add static picture of merlin in /help
-  - if you click merlin it launches /merlin app
+    - add static picture of merlin in /help
+      - if you click merlin it launches /merlin app
 
 \party
 
@@ -22,13 +22,11 @@ Party mode v1
   - /av
   - /wallpaper rainbow
 
-
 - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
 - add `App.Download` for downloading buddypond
 - drag and drop should work on entire document and use context based on active window
 
 Mobile Issues
-
   X - fix padding for mobile top window bar
   X - put back traffic lights to upper right on mobile
   - run buddy script button should be larger on mobile
@@ -39,8 +37,6 @@ Context / App Input / Output Issues
   - clicking on active windows should change context and type
     - other apps like paint and snaps should use this active context
     - ensure active context is shown inside paint and recorder app
-
-
     - add dropdown select for selecting send context in app
     - add ability to switch context if buddy re-presses button in new window
     - paint loses context / has bug with disabled send after local save
@@ -52,27 +48,20 @@ Context / App Input / Output Issues
   - Audio
   - add filesystem API with localForage, https://github.com/localForage/localForage 
 
+Misc 
 - still missing reset password by email link UX on login.html
 - spend 3 hours going through memes this week
-
 - remove this line from codebase: `$('.console_send_message_form').hide();`
 - send paint to local file system link broken?
-
 - move join lily pond logic to saved windows default ( not coded into app! )
-
 - after send animation should restore correct window
 - gif issues git uploaded, 20 minute timebox
-
 - click / active state order of click min icons
-
 1 / 2 - meme room should only post memes and not show the OG text, not require /meme tag
 1 / 2- login page needs nice splash screen that scrolls for mobile
 
-
 MEDIUM 
   - add "Score" and "Distance" to meme cards / Mnemosyne
-  - help should not post in all chats
-  - clicking help should make help window hide
   - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
   - - check to see why empty gif sends on import. test a few gifs
 
@@ -199,6 +188,10 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+
+
+X - help should not post in all chats
+X - clicking help should make help window hide
 X - create twitter card for http://buddypond.com
 X - curate paint room a bit, at least see whats up with broken remixs? remove messages?
 X - / add #Say room which is same logic as above but with TTS
