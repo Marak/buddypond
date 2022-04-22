@@ -239,7 +239,7 @@ desktop._ready = function _ready (finish) {
               $(key).show();
               JQDX.window_flat();
               $(key).show().addClass('window_stack');
-              $('html,body').css('cursor','pointer');
+              desktop.ui.hideLoadingProgressIndicator();
             } else {
               desktop.log('Error:', 'attempted to open a deffered window ( openWhenLoaded ) but could not find ' + app.name +'.openWindow');
             }

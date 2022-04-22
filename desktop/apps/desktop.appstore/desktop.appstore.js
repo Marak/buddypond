@@ -172,23 +172,27 @@ desktop.app.appstore.load = function loadappstoreGames (params, next) {
 
 desktop.app.appstore.addApp = function addApp (appName, params, cb) {
   desktop.play('APP-ADD.wav');
+  desktop.ui.showLoadingProgressIndicator();
   setTimeout(function(){
     let installedApps = desktop.settings.apps_installed;
     // TODO: lookup actual app object from appstore.apps
     installedApps[appName] = desktop.app.appstore.apps[appName];
     desktop.set('apps_installed', installedApps);
     desktop.ui.renderDesktopShortCuts();
+    desktop.ui.hideLoadingProgressIndicator();
     cb();
   }, 1333)
 }
 
 desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
+  desktop.ui.showLoadingProgressIndicator();
   desktop.play('APP-REMOVE.wav');
   setTimeout(function(){
     let installedApps = desktop.settings.apps_installed;
     delete installedApps[appName];
     desktop.set('apps_installed', installedApps);
     desktop.ui.renderDesktopShortCuts();
+    desktop.ui.hideLoadingProgressIndicator();
     cb();
   }, 1333)
 }

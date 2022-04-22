@@ -57,6 +57,24 @@ jQuery(document).ready(function () {
 const JQDX = {};
 JQDX.loading = {};
 
+
+// indicator could be mouse cursor or actual loading graphic ( depending on view mode )
+JQDX.showLoadingProgressIndicator = function showLoadingProgressIndicator () {
+  if (desktop.ui.view === 'Mobile') {
+    $('.mobileLoadingOverlay').show();
+    $('.mobileLoadingOverlay').css('z-index', 421);
+  }
+  $('html,body').css('cursor','progress');
+}
+
+JQDX.hideLoadingProgressIndicator = function showLoadingProgressIndicator () {
+  $('.mobileLoadingOverlay').hide();
+  $('html,body').css('cursor','pointer');
+}
+
+desktop.ui.showLoadingProgressIndicator = JQDX.showLoadingProgressIndicator;
+desktop.ui.hideLoadingProgressIndicator = JQDX.hideLoadingProgressIndicator;
+
 //
 // Zero out window z-index.
 //
@@ -904,7 +922,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
         desktop.app[depApp].load(params, function () {
           desktop.app[appName].load(params, function () {
             desktop.log('Ready: App.' + appName);
-            $('html,body').css('cursor','pointer');
+            desktop.ui.hideLoadingProgressIndicator();
             callback();
           });
         });
@@ -912,7 +930,7 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
     } else {
       desktop.app[appName].load(params, function () {
         desktop.log('Ready: App.' + appName);
-        $('html,body').css('cursor','pointer');
+        desktop.ui.hideLoadingProgressIndicator();
         callback();
       });
     }
@@ -1016,7 +1034,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   if (desktop.app[appName] && desktop.app[appName].deferredLoad) {
     // set global cursor to spinning progress icon
     // TODO: spinning progress notifications should be per `App` and not a global state
-    $('html,body').css('cursor','progress');
+    desktop.ui.showLoadingProgressIndicator();
     // set a flag to indicate this App should open when defered loading completes
     desktop.app[appName].openWhenLoaded = true;
     return;
@@ -1030,7 +1048,7 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
   // if not, assume user is trying to load an app which is not loaded yet
   let windowExists = $(appWindow).length;
   if (windowExists === 0) {
-    $('html,body').css('cursor','progress');
+    desktop.ui.showLoadingProgressIndicator();
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
       JQDX.showWindow(appName, params);

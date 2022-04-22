@@ -1415,3 +1415,13 @@ iframe {
 .selectTheme {
   margin-right: 8px;
 }
+
+.mobileLoadingOverlay {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 128px;
+  width: 100%;
+  z-index: 421;
+  display: none;
+}
