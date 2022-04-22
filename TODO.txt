@@ -5,44 +5,14 @@ We have many issues open and welcomed for first time contributors!
 1/2 - show .console_send_message_form in console so buddy can send /bs without login
 1/2 - clean up /bs
 
+- play buddy sound when buddy logs in ( door open aim )
+- play sound alert if buddypond.me is mentioned in chat
+
+- Flags need to show for memes and snaps and sounds, etc
+- Flag mouseover should show alt title of locale
 
 - add static picture of merlin in /help
   - if you click merlin it launches /merlin app
-
-!!!! - port Dicey to server
-
-
-- add loading graphic for mobile ( cursor wont show )
-
-
-- ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
-- add `App.Download` for downloading buddypond
-
-Mobile Issues
-
-  X - fix padding for mobile top window bar
-  X - put back traffic lights to upper right on mobile
-  - run buddy script button should be larger on mobile
-  - needs to show loading graphic for apps on mobile!
-  - better ponder the orb UX for IDC on mobile
-  - idc window issue if open twice on mobile?
-
-Context / App Input / Output Issues
-
-  - add dropdown select for selecting send context in app
-  - add ability to switch context if buddy re-presses button in new window
-  - paint loses context / has bug with disabled send after local save
-  - paint and sound recorder and mirror apps should have drop down select for context output
-
-
-- Add Buddys's Documents Folder
-  - Snaps
-  - Paints
-  - Audio
-  - add filesystem API with localForage, https://github.com/localForage/localForage 
-
-- still missing reset password by email link UX on login.html
-- spend 3 hours going through memes this week
 
 \party
 
@@ -53,17 +23,41 @@ Party mode v1
   - /wallpaper rainbow
 
 
-- `App.Visuals` has no catch on media check
-  - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
-      at Object.start (index.html:316:17)
-      at HTMLScriptElement.tag.onload (index.html:340:24)
+- ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
+- add `App.Download` for downloading buddypond
+- drag and drop should work on entire document and use context based on active window
+
+Mobile Issues
+
+  X - fix padding for mobile top window bar
+  X - put back traffic lights to upper right on mobile
+  - run buddy script button should be larger on mobile
+  - better ponder the orb UX for IDC on mobile
+  - idc window issue if open twice on mobile?
+
+Context / App Input / Output Issues
+  - clicking on active windows should change context and type
+    - other apps like paint and snaps should use this active context
+    - ensure active context is shown inside paint and recorder app
+
+
+    - add dropdown select for selecting send context in app
+    - add ability to switch context if buddy re-presses button in new window
+    - paint loses context / has bug with disabled send after local save
+    - paint and sound recorder and mirror apps should have drop down select for context output
+
+- Add Buddys's Documents Folder
+  - Snaps
+  - Paints
+  - Audio
+  - add filesystem API with localForage, https://github.com/localForage/localForage 
+
+- still missing reset password by email link UX on login.html
+- spend 3 hours going through memes this week
 
 - remove this line from codebase: `$('.console_send_message_form').hide();`
-- allow for <paint and >paint formats to work too ( space not required )
-
 - send paint to local file system link broken?
 
-- fix mirror app view on mobile 
 - move join lily pond logic to saved windows default ( not coded into app! )
 
 - after send animation should restore correct window
@@ -76,104 +70,78 @@ Party mode v1
 
 
 MEDIUM 
-- Flags need to show for memes and snaps and sounds, etc
-- Flag mouseover should show alt title of locale
-- add "Score" and "Distance" to meme cards / Mnemosyne
-- help should not post in all chats
-- clicking help should make help window hide
-- create twitter card for http://buddypond.com
-/ add #Say room which is same logic as above but with TTS
-- curate paint room a bit, at least see whats up with broken remixs? remove messages?
-- bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
-- - check to see why empty gif sends on import. test a few gifs
+  - add "Score" and "Distance" to meme cards / Mnemosyne
+  - help should not post in all chats
+  - clicking help should make help window hide
+  - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
+  - - check to see why empty gif sends on import. test a few gifs
+
+
+- `App.Visuals` has no catch on media check
+  - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
+      at Object.start (index.html:316:17)
+      at HTMLScriptElement.tag.onload (index.html:340:24)
 
 Chat Windows
 
-- local storage should remember subscribed chat windows and reopen on reload
-- remember seralized desktop state ( windows open / close + x / y positions ... )
-
-
-- why does extra carriage return happen on enter key in chat, breaks links and text
-- ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
-
-Snaps
-
-  - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
-  - issue with flipped image and paints shared css class...
-
-
-Mirror -
-
-  CSS Alignment issues when taking pictures, no instructions on how to take sequence
-
-when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
-- add default loading images for memes and snaps? so it doesnt show an X on load?
+  - remember seralized desktop state ( windows open / close + x / y positions ... )
+  - why does extra carriage return happen on enter key in chat, breaks links and text
+  - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
 1/2  - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
 - swap online / offline emoji icons for images
 - dont allow icons to be hidden on smaller windows?
 - move call button to side of text area?
 - Add replies / comments to messages ( discord style? )
-
 - add `App.Export` for exporting buddypond data
 
-! - ensure rainbow tv is preloaded for mirror
 ? - add min display time to loading gifs ( to avoid flicker )
-
-- add 1000 memes to memepool
-
-- play sound alert if buddypond.me is mentioned in chat
 
 - add YT preview cards to chat for smart links YT
 - show yt preview images
   - client side ajax call possible
   - have remix button on images ( why not )
 
-- ability to set globe and maps as wallpaper?
-  - ability to set any app as wallpaper?
-
-- add super mario bros sound fx and gif when you get GBP
-- play buddy sound when buddy logs in ( door open aim )
 - add UX indactor for ajax disconnect with desktop.log and top right bar
-- add back button to interdemon cable / mtv / all video players
-- add mission impossible music to minesweeper
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
 - console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
 - add away / watching status based on client is visible API
 - add friend requests to automatons that autoaccept
     - have youtube and soundcloud players respect mute / volume levels
     - not hard...i think...
-- clicking on active windows should change context and type
-  - other apps like paint and snaps should use this active context
-  - ensure active context is shown inside paint and recorder app
-- global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
-  - at least mute button should work for YT!
-- switch all file names to fancy btc like hash names
 - logout should only logout and close chat windows, not close entire app ( better exp )
-- youtube playrandom video should not play the same video twice ( check N times before quit )
-- youtube player should keep temporary play history for back button ( easy patch )
-- add sigils and signets
-  - sigils are for system powers like matrix agent spell casting
-  - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
 - create icons for data pulse ( drop in and drop out)
 - create icons for connected / disconnected
 - add spell for making user unable to say, cause echo back
-- add bandwidth speed test? is that even possible?
-- detect slow connection speeds and adjust merlin?
-- idc custom playlists
-  - user upload playlists
-  - send playlists from localhost storage instead?
-  - share playlists
-- add mute shutter sound option to mirror
-- drag and drop should work on entire document and use context based on active window
-- add dropdown list of all programs in top left menu ( click to open )
-- when adding new photos to snap, add remove last photo button ( easy-ish )
 
 Apps
 
+  v1 GBP
+    - add super mario bros sound fx and gif when you get GBP
+
+  v1 Settings
+    - global volume slider for all apps ( youtube + soundcloud + sound recorder... ) browser audio? ...
+      - at least mute button should work for YT!
+
+  v1 idc
+    - clean up orb / navigation view how to navigate
+    - youtube playrandom video should not play the same video twice
+    - youtube player should keep temporary play history for back button ( easy patch )
+    - add back button to interdemon cable / mtv / all video players
+
+  v1 Snaps
+    - when adding new photos to snap, add remove last photo button ( easy-ish )
+    - add mute shutter sound option to mirror
+    - ensure the video resizes when JQDX max event called ( or resize? ) App.resizeWindow() event???
+    - issue with flipped image and paints shared css class...
+    - CSS Alignment issues when taking pictures, no instructions on how to take sequence
+    - when recording snaps in mirror, adding new snap image should show last image in preview gif ( currently stuck at 1 )
+    - add default loading images for memes and snaps? so it doesnt show an X on load?
+    - fix mirror app view on mobile 
+
   v1 Video Calls
     X - camera switching code
-    - ability to use CanvasVideo on video call
+    - ability to use CanvasVideo on video call ( visual effects )
     ! - audio switching code
     ! - have ability to add / remove camera share during call, same with screen
     - add screensharing instead of camera as source
@@ -182,22 +150,12 @@ Apps
     - add mute buttons
     X - dont allow video call to offline buddy
 
-  - Theme switcher
-    - stores preference in localstorage
+  v1 - Theme switcher
+    X - stores preference in localstorage
     - has form editor for making themes
     - can export theme as json ( easy peasy )
-
-  - Add `App.Intercom`
-    - sends TTS to chat window
-    - OR sends audio recording to chat window
-    - add DTMF signal generator ( whot not )
-    - autoplays the audio
-    - deletes file after a few moments ( why not )
-    
-  - does paint app need to close after you send a snap?
-    - how about disable sending button for a moment
-    - then allow re-send?
-    - spam?...dont matter gotta rate limit anyway for all cards
+    - ability to set globe and maps as wallpaper?
+    - ability to set any canvas or image as wallpaper?
 
   v1 Gif Studio
 
@@ -213,13 +171,22 @@ Apps
        - fix resize issue from Paint
        - add drag and drop frames
 
+
 Post Beta
-  - Switch default wallpaper to water ripples with clicks
   - start thinking about multiple logins from multiple locations same account
-  - consider replacing emoji area with https://github.com/mervick/emojionearea
+    - issue with webrtc direct connect signaling
 
+  - idc custom playlists
+    - user upload playlists
+    - send playlists from localhost storage instead?
+    - share playlists
 
+  - add bandwidth speed test? is that even possible?
+  - detect slow connection speeds and adjust merlin?
 
+  - add sigils and signets
+    - sigils are for system powers like matrix agent spell casting
+    - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
 
 
 
@@ -231,6 +198,25 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+
+X - create twitter card for http://buddypond.com
+X - curate paint room a bit, at least see whats up with broken remixs? remove messages?
+X - / add #Say room which is same logic as above but with TTS
+X - local storage should remember subscribed chat windows and reopen on reload
+X! - ensure rainbow tv is preloaded for mirror
+X! - add dropdown list of all programs in top left menu ( click to open )
+X - add 1000 memes to memepool
+X - does paint app need to close after you send a snap?
+  X - how about disable sending button for a moment
+  X - then allow re-send?
+  X - spam?...dont matter gotta rate limit anyway for all cards
+
+X! - allow for <paint and >paint formats to work too ( space not required )
+X - Switch default wallpaper to water ripples with clicks
+X - consider replacing emoji area with https://github.com/mervick/emojionearea
+
+X - needs to show loading graphic for apps on mobile!
+X - add loading graphic for mobile ( cursor wont show )
 
 X - add piano as default app
 X - min window click dock bar restore window not working without 2 clicks? soundcloud
