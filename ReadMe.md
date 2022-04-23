@@ -77,7 +77,7 @@ python -m SimpleHTTPServer
 
 This will start the Buddy Pond application on port 8000. Open http://localhost:8000 in your local browser and you can immediately start adding and messaging buddies.
 
-If you'd like to modify `Apps` see the `./desktop/based/` folder. If you'd like to add a new `based` `App` please be sure to add it to the list of `desktop.basedApps` in `desktop.js` to it won't try to load from the App Store.
+If you'd like to modify the based `Apps` see the `./desktop/based/` folder.
 
 ### Adding / Modifiying Apps in Buddy Pond AppStore
 
