@@ -1,0 +1,32 @@
+<html>
+<head>
+  <style>
+    body {
+      background-color: black
+    }
+    h3 {
+      color: black;
+    }
+    ul li {
+      color: black;
+    }
+  </style>
+
+</head>
+<body>
+  <!-- TODO pull from cdn and cache into project -->
+  <script src="d3.min.js"></script>
+  <script src="topojson.min.js"></script>
+  <script src="dist/datamaps.world.min.js"></script>
+  <div id="container" style="position: relative; width: 500px; height: 300px; text-align: center;"></div>
+  <script>
+      var map = new Datamap({element: document.getElementById('container')});
+  </script>
+  <h3>TODO for anyone who can:</h3>
+  <ul>
+    <li>Add Scroll</li>
+    <li>Add Zoom</li>
+    <li>Map size should be responsive to Window size</li>
+  </ul>
+</body>
+</html>

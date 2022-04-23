@@ -60,18 +60,16 @@ Type `/bs` in any chat window to see `BuddyScript` commands.
 
 ## Download Buddy Pond with `git`
 
-### Buddy Pond Base ( Desktop + Base Apps )
+### Buddy Pond Based ( Desktop + Based Apps )
 
-
-
-Download Buddy Pond Base
+Download Buddy Pond Based
 
 ```
 git clone  --depth 1 git@github.com:Marak/buddypond.git
 cd buddypond
 ```
 
-There will be an `index.html` file in the `buddypond` directory. You must serve this `index.html` from an HTTP server. *Any* HTTP server will work. Try using python SimpleHTTPServer for now:
+There will be an `index.html` file in the `buddypond` directory. You must serve this `index.html` from an HTTP server. *Any* HTTP server will work. You can download [My Buddy](https://github.com/Marak/mybuddy) to host or try using python SimpleHTTPServer for a quick start:
 
 ```
 python -m SimpleHTTPServer
@@ -79,13 +77,13 @@ python -m SimpleHTTPServer
 
 This will start the Buddy Pond application on port 8000. Open http://localhost:8000 in your local browser and you can immediately start adding and messaging buddies.
 
-You may notice that certain apps will be missing. These apps are located in the [AppStore repo](https://github.com/Marak/buddypond-appstore).
+If you'd like to modify `Apps` see the `./desktop/based/` folder. If you'd like to add a new `based` `App` please be sure to add it to the list of `desktop.basedApps` in `desktop.js` to it won't try to load from the App Store.
 
 ### Adding / Modifiying Apps in Buddy Pond AppStore
 
 Buddy Pond has an integrated AppStore which allows buddies to easily contribute new applications to the Buddy Pond ecosystem. It's very simple to use. No installation, compile, or transpiling steps are required.
 
-The AppStore is located at: [https://github.com/Marak/buddypond-appstore](https://github.com/Marak/buddypond-appstore)
+If you'd like to modify `Apps` see the `./desktop/appstore/` folder.
 
 If you want to add a new application all you have to do is copy and paste an existing `App` folder and do a single string search and replace. 
 

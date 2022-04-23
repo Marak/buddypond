@@ -60,8 +60,12 @@ desktop.load.remoteAppHtml = function loadRemoteAppHtml (appName, cb) {
   if (!appName) {
     return cb(null);
   }
-  $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`)
-  $(`.${appName}WindowHolder`).load(`desktop/apps/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
+  $('#shadowRender').append(`<div class="${appName}WindowHolder"></div>`);
+  let appRootPath = 'desktop/based';
+  if (desktop.basedApps.indexOf(appName) === -1) {
+    appRootPath = 'desktop/appstore';
+  }
+  $(`.${appName}WindowHolder`).load(`${appRootPath}/desktop.${appName}/desktop.${appName}.html`, function (responseText, textStatus, jqXHR) {
     let html = $(`.${appName}WindowHolder`).html();
     desktop.loaded.appsHTML[appName] = html;
     $('#desktop').append(html);

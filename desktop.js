@@ -22,7 +22,7 @@ if (desktop.mode === 'dev') {
 }
 
 // apps which are considered "required" for Buddy Pond to work
-desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'midi', 'mirror', 'pond', 'profile', 'themes', 'videochat', 'videoplayer', 'wallpaper'];
+desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'midi', 'mirror', 'notifications', 'pond', 'profile', 'settings', 'spellbook', 'themes', 'tts', 'videochat', 'videoplayer', 'wallpaper'];
 desktop.filesEndpoint = 'https://files.buddypond.com'
 
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
@@ -122,7 +122,11 @@ desktop.ready = function ready (finish) {
   let scriptArr = [];
   desktop.preloader.forEach(function (app) {
     if (typeof app === 'object' && !app.params.defer) {
-      scriptArr.push(`desktop/apps/desktop.${app.appName}/desktop.${app.appName}.js`);
+      let appRootPath = 'desktop/based';
+      if (desktop.basedApps.indexOf(app.appName) === -1) {
+        appRootPath = 'desktop/appstore';
+      }
+      scriptArr.push(`${appRootPath}/desktop.${app.appName}/desktop.${app.appName}.js`);
     }
   });
   desktop.load.remoteAssets(scriptArr, function () {
@@ -221,7 +225,12 @@ desktop._ready = function _ready (finish) {
     let scriptArr = [];
     desktop.apps.deferred.forEach(function (app) {
       if (typeof app === 'object') {
-        scriptArr.push(`desktop/apps/desktop.${app.name}/desktop.${app.name}.js`);
+        let appRootPath = 'desktop/based';
+        if (desktop.basedApps.indexOf(app.name) === -1) {
+          appRootPath = 'desktop/appstore';
+        }
+        
+        scriptArr.push(`${appRootPath}/desktop.${app.name}/desktop.${app.name}.js`);
       }
     });
 
@@ -270,6 +279,38 @@ desktop._ready = function _ready (finish) {
 // Will attempt to convert incoming hash structure to BuddyScript ( `bs` )
 //
 desktop.routeFromHash = function routeFromHash () {
+  
+
+/*
+  
+    // first, replace the "#" with a "/"
+
+    // now take the route and parse out the appName and context
+    // appName is always the first item in the route
+    // context is concatted by "/" until end of string
+
+
+    // now that appName and context have been establised, look for query string params
+
+    // search for the "?" symbol
+    // if not found, there are no query string params
+    // if "?" is found take everything to the right of it and parse it as a query string
+    // take the query string values and use them as params
+
+    TODO: routeFromHash should be able to support query string parameters
+          the easiest way to do this will be having the following format:
+
+          /appName/context?param1=abc&param2=123
+
+      Example:
+
+          /paint/pond/Lily?embed=true
+          /av
+          /av?embed=true
+
+
+*/
+  
   // TODO: replace with `bs` script commands
   // TODO: validate incoming hash to ensure isValidBuddyScript
   let bs = location.hash.replace('#', '/');

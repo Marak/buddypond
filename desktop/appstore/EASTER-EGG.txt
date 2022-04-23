@@ -1,0 +1,107 @@
+Ideas for community apps:
+
+- Notepad App
+  - https://98.js.org/programs/notepad/
+  - use localstorage to save notes
+
+- Boss Button
+  - Goes full screen quickly with some work looking image
+
+- Hacker Mode
+  - Does https://geekprank.com/hacker/ like functionality ( pretend hacking screens )
+  - Auto-coder with typing input
+
+- Trippy Visuals Apps
+  - https://paveldogreat.github.io/WebGL-Fluid-Simulation/
+  - Fractals
+  - Julia Zooms
+  - Mandlebrot Zooms
+  - Various canvas effects too bold for wallpapers
+  - Any visualization that requires manual input ( keystrokes or mouse )
+  - Not Butterchurn or Audio Viz ( see existing open issue: https://github.com/Marak/buddypond/issues/26 )
+
+- Games
+  - small games to pack in main distribution
+  - https://github.com/torch2424/wasmBoy
+  - pick js1k winners / entries?
+  - https://github.com/k4zmu2a/SpaceCadetPinball
+  - https://github.com/mtevans/SkiFree
+  - https://github.com/nmrugg/stockfish.js/
+  - https://github.com/conorbailey90/JS-Connect-Four
+  - https://denissdubinin.github.io/javascript-sudoku/
+  - bejewlled, zuma
+
+- RSS Reader App
+  - uses localStorage to save preferences and feeds
+  - uses AJAX to request RSS over web
+  - does not need buddypond backend
+
+- Comic Chat Rooms
+  https://github.com/gyng/comicchat
+
+- Wallpaper Manager
+  - user contributed wallpapers
+  - custom canvas animations
+  - set picture as wallpaper
+  - Nyan cat wallpaper
+  X - http://sirxemic.github.io/jquery.ripples/
+  - conrads game of life background
+  - CSS animation - pond drip drops    -> https://codepen.io/Coderesting/pen/RwwLPZM
+  - CSS animation - simple waves.      -> https://codepen.io/goodkatz/pen/LYPGxQz?editors=1100
+  - CSS animation - raindrops          -> https://codepen.io/jh3y/pen/WyNdMG
+
+- AI Art Generator?
+  - client-side
+  - canvas based or other
+  - can accept images as input
+  - can accept text as input
+    - can accept both text and image as input
+  - ai art bot that generates images / art based on chat stream
+
+- Simple Contact Manager ( with local storage )
+
+- Camera FX and Shaders
+  - Add many more cool effects to the camera
+  - see: https://github.com/Marak/buddypond/issues/35
+
+- MIDI Controller
+  - https://medium.com/swinginc/playing-with-midi-in-javascript-b6999f2913c3
+  - https://developer.mozilla.org/en-US/docs/Web/API/MIDIAccess
+  - https://medium.com/@keybaudio/virtual-midi-devices-on-macos-a45cdbdffdaf
+
+- Sound FX Board
+  - Use midi fighter button pad with sound fx
+  - add goose sound effect
+
+- Add Notepad app
+  - Can save simple notes to localstorage
+  - Can share notes as smartlinks with buddies
+
+- Mini 3d earth globe with random geoIP pings of user sessions
+  http://planetaryjs.com/examples/rotating.html
+  https://miniature.earth/demo/space-view.htm
+  https://experiments.withgoogle.com/chrome/globe
+  or another
+  
+- ?!?!?!?!?!?!?!!?
+  https://medium.com/hackernoon/a-web-audio-experiment-666743e16679
+
+
+
+- Add `App.Intercom`
+  - sends TTS to chat window
+  - OR sends audio recording to chat window
+  - add DTMF signal generator ( whot not )
+  - autoplays the audio
+  - deletes file after a few moments ( why not )
+  
+
+
+
+
+
+The Wonky Page	(function(){var x = document.body.getElementsByTagName("*"); for (i = 0; i < x.length; i++) {var y = Math.floor((Math.random()*10)+1); x[i].style.transform="rotate("+y+"deg)"}}());	Wonkifies the page!	
+Test Me!
+The Mirrored Page	(function(){var x = document.getElementsByTagName("body"); x[0].style.transform = "scaleX(-1)";}());	Mirrors the page!	
+Test Me!
+The Yelling Page	(function(){document.body.style.textTransform="uppercase";}());	MAKES WORDS LOUDER!

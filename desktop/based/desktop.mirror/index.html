@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="description" content="Buddy Pond - Cloud OS and Instant Messenger all wrapped up in one delightfully fun to use App. We are making the Internet Fun Again." />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://buddypond.com">
+<meta name="twitter:site" content="@marak">
+<meta name="twitter:creator" content="@marak">
+<meta name="twitter:title" content="Buddy Pond Cloud OS and Instant Messenger">
+<meta name="twitter:description" content="Buddy Pond is a Cloud OS and Instant Messenger all wrapped up in one delightfully fun to use App. We are making the Internet Fun Again.">
+<meta name="twitter:image" content="https://github.com/Marak/buddypond-assets/raw/master/promo/buddypond-demo-april-2022.gif">
+<title>Buddy Pond</title>
+<!--[if lt IE 7]>
+<script>
+window.top.location = 'ie.html';
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+
+  // certain websites are currently not supported as referrer
+  let notCurrentlySupportedSites = ['reddit.com', 'news.ycombinator.com'];
+  notCurrentlySupportedSites.forEach(function(site){
+    if (document.referrer.search(site) !== -1) {
+      alert(site + ' is currently not supported by Buddy Pond. \n\n Please check out our Github or try again later.')
+      document.location = 'https://duckduckgo.com/?q=happy+puppies&t=opera&iax=images&ia=images'
+    }
+  });
+
+</script>
+
+<link rel="stylesheet" href="desktop/assets/css/reset.css">
+<link rel="stylesheet" href="desktop/assets/css/loader.css">
+
+<!--[if lt IE 9]>
+<link rel="stylesheet" href="desktop/assets/css/ie.css" />
+<![endif]-->
+
+</head>
+<body>
+<img id="wallpaper" class="abs" src="desktop/assets/images/misc/wallpaper.jpg" />
+<div id="loaderHolder">
+  <div id="loader"></div>
+</div>
+
+<!--
+  <div class="importantConfirmationsScreen">
+    <div class="confirmationForm">
+      CONFIRM
+      <form>
+        <button>Purchase GBP</button>
+      </form>
+    </div>
+  </div>
+-->
+
+<div id="mainOverlay">
+  <img class="mobileLoadingOverlay" src="desktop/assets/images/gui/rainbow-hexagon-lattice.gif"/>
+  <div class="abs" id="wrapper">
+    <div class="abs" id="desktop">
+    <!-- default desktop icons are currently rendered in `app.settings.load()` -->
+    <div class="desktop-shortcuts-container">
+    </div>
+    <canvas class="canvasBackground" id="c"></canvas>
+    <div class="abs" id="bar_top">
+      <ul>
+        <li>
+          <!-- Remark: Currently used to log window resize events <div class="debugWindow">DEBUG</div> -->
+          <a class="menu_trigger" href="#"><span class="me_title" id="me_title">Welcome - You look nice today!</span></a>
+          <ul class="menu">
+            <!--
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Online</a>
+            </li>
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Away</a>
+            </li>
+            <li>
+              <a class="editProfileLink"  href="#">Set Status - Predisposed</a>
+            </li>
+            <li>
+              <a class="setStatus"  href="#">Set Status - Custom</a>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            -->
+            <li>
+              <span class="tiny"><em>We are stoked to be your buddy</em></span>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li>
+              <a class="editProfileLink" title="Login to Edit Profile"href="#">Edit Profile</a>
+            </li>
+            <li class="emptyMenuCell">&nbsp;</li>
+            <li>
+              <a class="loginLink" href="#">Login</a>
+            </li>
+            <li>
+              <a class="logoutLink"  href="#">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span class="float_right" id="clock"></span>
+      <span class="float_right" id="volume">
+        <span class="navbarControl volumeToggle volumeFull">🔉</span>
+        <span class="navbarControl volumeToggle volumeMuted">🔇</span>
+      </span>
+      <ul class="float_right">
+        <li>
+          <a class="menu_trigger" href="#">Buddy Pond</a>
+          <ul class="menu">
+            <li>
+              <a href="https://github.com/marak/buddypond">Source Code</a>
+            </li>
+            <li>
+              <a href="https://buddypond.com/sdk/client">Client SDK</a>
+            </li>
+            <li>
+              <a href="https://github.com/marak/buddypond">Home Page</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="float_right">
+        <li>
+          <a class="menu_trigger" href="#">
+            <!--
+            <span class="desktopConnected float_right">Connection Established</span>
+              -->
+            <span class="totalConnected float_right"><span class="totalConnectedCount">0</span> Buddies Connected</span>
+            <span class="desktopDisconnected float_right">Disconnected</span>
+          </a>
+          <ul class="menu connectionDetails">
+            <li>
+              Connection Started: <span class="connection_ctime"></span> <br/>
+              Packets Sent <span class="connection_packets_sent"></span> <br/>
+              Packets Recieved <span class="connection_packets_recieved"></span> <br/>
+            </li>
+            <li>
+              Last Response Time: <span class="connection_last_response_time">33ms</span> <br/>
+              Average Response Time: <span class="connection_average_response_time">33ms</span> <br/>
+              <!-- Server Load <span class="">Low</span> <br/> -->
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
+        <option>Select music playlist...</option>
+        <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
+        <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
+        <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
+        <option value="942151069">Andrew Potthast: Bangas</option>
+        <option value="938848927">Andrew Potthast: Burning Man Set</option>
+        <option value="839091662">Featured Buddy: Andrew Potthast</option>
+        <option value="1427279635">Featured Buddy: ioqpvs</option>
+      </select>
+      <select name="selectTheme" class="desktopSelect selectTheme float_right">
+        <option value="Light">Light Theme</option>
+        <option value="Dark">Dark Theme</option>
+        <option value="Nyan">Nyan Theme</option>
+        <option value="Hacker">Hacker Theme</option>
+        <option value="Water">Water Theme</option>
+        <option value="Customize">Customize Theme</option>
+        <!--
+          <option value="Customize">EPIC MODE ( my poor browser ) </option>
+          <option value="Customize">Comic Theme</option> 
+        -->
+      </select>
+    </div>
+    <div class="abs" id="bar_bottom">
+      <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
+        <img src="desktop/assets/images/icons/home-icon.png" />
+      </a>
+      <ul id="dock">
+        <li id="icon_dock_buddy_message_0">
+          <a href="#window_buddy_message_0">
+            <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
+            <div class="dock_title">
+              Chat with X
+            </div>
+          </a>
+        </li>
+        <li id="icon_dock_pond_message_0">
+          <a href="#window_pond_message_0">
+            <img class="emojiIcon" width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
+            <div class="dock_title">
+              Chat with X
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/desktop/assets/css/desktop.css" />
+<link rel="stylesheet" href="/desktop/assets/css/mobile.css" />
+<link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css">
+
+<script src="/desktop/assets/js/jquery.js"></script>
+<!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
+<script src="/desktop/assets/js/jquery.ui.js"></script>
+<script src="/desktop/assets/js/jquery.dateformat.js"></script>
+
+
+<script src="/sdk/buddypond.js"></script>
+<script src="/desktop.js"></script>
+<script src="/desktop.load.js"></script>
+<script src="/desktop/assets/js/jquery.desktop.x.js"></script>
+
+<script>
+  // see: ReadMe.md for documentation on `desktop.use`
+  $(document).ready(function(){
+    let documentReadyTime = new Date();
+    desktop.log('Buddy Pond Cloud Desktop Initialized');
+    desktop.log('Now loading apps');
+    desktop
+      .use('localstorage')
+      .use('settings')
+      .use('appstore')
+      .use('mirror')
+
+      .ready(function(err, apps){
+        // desktop.log("Loaded", desktop.apps.loaded);
+        try {
+          desktop.ui.windowResizeEventHandler(true);
+        } catch (err) {
+          // alert(err.message)
+        }
+        desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+        // Desktop is ready, start refreshing it's state immediately
+        desktop.refresh();
+        let now = new Date();
+
+        // For Buddy Experience we'll add some fades and delays
+        let fadeInDelay = 555;
+
+        // If the page has taken over 3.333 seconds to load...
+        // ...reduce the fade in delay ( since the Buddy has waited long enough )
+        if (now.getTime() - documentReadyTime.getTime() > 3333) {
+          fadeInDelay = 111;
+        }
+        $('#loaderHolder').fadeOut({
+          easing: 'linear',
+          duration: fadeInDelay,
+          complete: function(){
+            $('#mainOverlay').fadeIn({
+              easing: 'linear',
+              duration: 333
+            });
+          }
+        });
+
+        // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
+        // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)
+        $('.selectPlaylist').on('change', function(){
+          $('#soundcloudiframe').remove();
+          $('#soundcloudplayer').html('');
+          if (desktop.app.soundcloud) {
+            desktop.app.soundcloud.embeded = false;
+          }
+          desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+        });
+
+        $('.selectTheme').on('change', function(){
+          let theme = $(this).val();
+          if (theme === 'Customize') {
+            desktop.ui.openWindow('profile', { context: 'themes' })
+          } else {
+            desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
+            desktop.set('active_theme', theme);
+          }
+        });
+
+        if (!desktop.settings.audio_enabled) {
+          $('.volumeFull').hide();
+          $('.volumeMuted').show();
+        }
+
+        $('.volumeToggle').on('click', function(){
+          if (desktop.settings.audio_enabled) {
+            desktop.set('audio_enabled', false);
+          } else {
+            desktop.set('audio_enabled', true);
+          }
+        });
+
+        desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function(){
+          if (!desktop.settings.audio_enabled) {
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
+          } else {
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
+            desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
+          }
+        });
+
+        //
+        // Remark: You can add JS code here to run after the desktop is ready
+        //
+        //
+        // `App.WebView` ? Perhaps not
+        // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
+        // never gonna work due to:
+        // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
+        // desktop.ui.openWindow('console');
+        
+        // re-opens previously opened windows
+        // desktop.ui.openWindowsFromSavedSettings();
+        setTimeout(function(){
+          $('#window_mirror').show();
+        }, 333)
+
+      });
+  });
+
+</script>
+  <div id="shadowRender">
+  </div>
+</body>
+</html>

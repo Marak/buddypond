@@ -1,0 +1,48 @@
+<style>
+  #nesIframe {
+    height: 100%;
+    width: 100%;
+  }
+  #window_nes {
+  }
+  .nesGameHolder {
+    height: 100%;
+    width: 100%;
+  }
+  #window_nes .helpingHeader {
+    background-color: purple;
+  }
+</style>
+
+<div id="window_nes" class="abs window" align="center">
+  <div class="abs window_inner">
+    <div class="window_top">
+      <span class="float_left">
+        <img src="desktop/assets/images/icons/icon_nes_64.png" />
+        Nintendo Entertainment System
+      </span>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
+      </span>
+    </div>
+    <div class="abs window_content">
+      <div class="helpingHeader">
+        <h1>The Emulators Section NEEDS YOUR HELP</h1>
+        <h2>Are you ready to level up Gaming?</h2>
+      </div>
+      <h2>Do you wish to earn <a class="openApp" data-app="gbp" href="#gbp">Good Buddy Points?</a></h2>
+      <h2><a href="https://github.com/Marak/buddypond/issues/59">https://github.com/Marak/buddypond/issues/59</a></h2>
+      
+      <br/>
+      <div class="nesGameHolder">
+        <iframe id="nesIframe" class="nesIframe" src="desktop/appstore/desktop.nes/vendor/SaltyNES.html"/>
+      </div>
+    </div>
+    <div class="abs window_bottom">
+      Build: v4.20.69
+    </div>
+  </div>
+  <span class="abs ui-resizable-handle ui-resizable-se"></span>
+</div>

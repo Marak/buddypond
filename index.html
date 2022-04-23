@@ -211,7 +211,7 @@ window.top.location = 'ie.html';
 <script src="sdk/buddypond.js"></script>
 <script src="desktop.js"></script>
 <script src="desktop.load.js"></script>
-<script src="desktop/assets/js/jquery.desktop.x.js"></script>
+<script src="desktop.ui.js"></script>
 
 <script>
   // see: ReadMe.md for documentation on `desktop.use`
@@ -236,8 +236,7 @@ window.top.location = 'ie.html';
       .use('profile')
       .use('login', { defer: true })
       .use('videochat', { defer: true })
-      .use('automaton', { defer: true })
-      .ready(function(err, apps){
+    .ready(function(err, apps){
         // desktop.log("Loaded", desktop.apps.loaded);
         try {
           desktop.ui.windowResizeEventHandler(true);
