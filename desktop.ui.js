@@ -217,7 +217,13 @@ desktop.ui.exitMobile = function () {
   return;
 };
 
-desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (forceUpdate) {
+desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (e, forceUpdate) {
+  // Remark: jQuery resizable events will also trigger window.resize event
+  if (e && $(e.target).hasClass('ui-resizable')) {
+    // do not call entire window resize event for inner resizable windows
+    return false;
+  }
+
   let currentView = desktop.ui.view || 'calculating';
   // TODO: better magic numbers for view mode sizes
   // TODO: move magic numbers into variables
@@ -993,7 +999,7 @@ JQDX.showWindow = function showWindow (appName, params) {
   JQDX.loading[appName] = false;
   
   // new windows must be immediately resized to current view
-  desktop.ui.windowResizeEventHandler(true);
+  desktop.ui.windowResizeEventHandler(null, true);
 
   let win = $(appWindow);
   desktop.ui.openWindows[appWindow] = {
@@ -1520,7 +1526,7 @@ desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
   });
 
   setTimeout(function(){
-    desktop.ui.windowResizeEventHandler(true); // adjusts shortcut padding if needed
+    desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed
   }, 333)
 
 

@@ -1,4 +1,5 @@
 desktop.app.messages = {};
+desktop.app.messages.icon = 'folder';
 
 desktop.app.messages.load = function (params, cb) {
   cb();
