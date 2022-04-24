@@ -128,7 +128,6 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     $('.buddyListHolder').hide();
     $('#buddyname').focus();
 
-
     $('.buddy_message_text').keyup(function (e) {
       if (e.shiftKey==1) {
         return false;
@@ -140,6 +139,20 @@ desktop.app.buddylist.load = function desktopLoadBuddyList (params, next) {
     });
 
     let d = $(document);
+
+    d.on('mousedown', '.messageBuddy',  function () {
+      let position = {};
+      position.my = position.my || 'left top';
+      position.at = position.at || 'left+33 top+33';
+      let context = $(this).parent().data('buddy');
+      desktop.ui.openWindow('buddylist', { context: context });
+      let windowId = '#window_buddy_message_' + context;
+      if (desktop.ui.view === 'Mobile') {
+        $('.buddy_message_text', windowId).focus();
+      }
+      $('.buddy_message_to', windowId).val(context);
+      $('.buddy_message_from', windowId).val(buddypond.me);
+    });
 
     d.on('mousedown', '.buddy_emoji_picker', function (ev) {
       let holder = $(ev.target).parent().parent();
@@ -302,20 +315,6 @@ desktop.app.buddylist.profileState = {
   }
 };
 
-function processIncomingBuddyRequests (data) {
-  // process buddyrequests here so that automatons can perform actions on incoming buddyrequests ( auto-accept buddies )
-  for (let buddy in data.buddyrequests) {
-    let buddyrequest = data.buddyrequests[buddy];
-    buddyrequest = JSON.parse(buddyrequest);
-    if (buddyrequest.to === buddypond.me) {
-      // incoming request to me
-      desktop.emit('Buddy::IncomingBuddyRequest', buddyrequest);
-    } else {
-      // outgoing request to buddy
-    }
-  }
-}
-
 function updateLocalDesktopProfile (data) {
 
   $('.me').html(buddypond.me);
@@ -341,144 +340,12 @@ function updateLocalDesktopProfile (data) {
   desktop.app.buddylist.profileState = { updates: {} };
 }
 
-function openNewBuddyMessagesNow (data) {
-  let buddylist = data.buddylist;
-  Object.keys(buddylist).forEach(function (b) {
-    let profile = buddylist[b];
-    if (profile && profile.newMessages === true) {
-      let buddyName = b.replace('buddies/', '');
-      // TODO: move to newMessage event?
-      desktop.ui.openWindow('buddylist', { context: buddyName });
-    }
-  });
-}
-
-function checkForIncomingVoiceCall (data) {
-  let buddylist = data.buddylist;
-  Object.keys(buddylist).forEach(function (b) {
-    let profile = buddylist[b];
-    if (profile && profile.isCalling === true) {
-      let buddyName = b.replace('buddies/', '');
-      desktop.app.buddylist.profileState.updates[b] = desktop.app.buddylist.profileState.updates[b] || {};
-      desktop.app.buddylist.profileState.updates[b].isCalling = false;
-      // TODO: add isOnCall flag? another icon?
-      //.      needs separate event?
-      desktop.app.videochat.startCall(false, buddyName, function (err, re) {
-        // console.log('call has started', err, re)
-      });
-    }
-  });
-}
-
-function renderBuddyListIfUpdated (data, renderBuddyListIfUpdated) {
-
-  desktop.cache.buddyListDataCache = {};
-
-  let buddies = Object.keys(data.buddylist);
-  if (buddies.length > 0) {
-    $('.you_have_no_buddies').hide();
-  }
-  // a buddy request counts as a buddy in UX ( for now )
-  if (Object.keys(data.buddyrequests).length > 0) {
-    $('.you_have_no_buddies').hide();
-  }
-  $('.loading').remove();
-  if (buddies) {
-    if (buddies.length === 0) {
-      $('.buddylist').html('No buddies yet.');
-    } else {
-      $('.buddylist').html('');
-      desktop.cache.buddyListDataCache = {};
-      desktop.cache.buddyListDataCache[renderBuddyListIfUpdated] = true;
-
-      //
-      // SORT BUDDY LIST
-      // we have buddies to render, let's sort them!
-      //
-      buddies = buddies.sort(function (a, b) {
-        let profileA = data.buddylist[a];
-        let profileB = data.buddylist[b];
-        if (profileA.isConnected) {
-          return -1;
-        }
-        if (profileB.isConnected) {
-          return 1;
-        }
-        if (!profileA.ctime && !profileA.dtime) {
-          return 1;
-        }
-        if (profileA.dtime && profileB.dtime) {
-          if (new Date(profileA.dtime).getTime() > new Date(profileB.dtime).getTime()) {
-            return -1;
-          }
-        }
-        if (profileA.ctime && profileB.ctime) {
-          if (new Date(profileA.ctime).getTime() < new Date(profileB.ctime).getTime()) {
-            return -1;
-          }
-        }
-        return 0;
-      });
-      //
-      // END SORT BUDDY LIST
-      //
-
-      buddies.forEach(function (buddyKey) {
-        let buddy = buddyKey.replace('buddies/', '');
-        let profile = data.buddylist[buddyKey];
-
-        let isConnected = '';
-        if (profile && profile.isConnected) {
-          isConnected = '<span>🟢</span>';
-        } else {
-          isConnected = '<span>🟠</span>';
-        }
-
-        // phone call icon next to buddy name
-        let isCalling = '';
-        if (profile && profile.isCalling) {
-          isCalling = '<span>📞</span>';
-        }
-
-        // new messages chat icon next to buddy name
-        let newMessages = '';
-        if (profile && profile.newMessages) {
-          newMessages = '<span>💬</span>';
-        }
-        /*
-        if (desktop.app.videochat.loaded && profile && profile.isCalling) {
-          openCallWindow(buddy, true);
-        }
-        */
-        $('.buddylist').append('<li>' + newMessages + isConnected + isCalling + '<a class="messageBuddy rainbowLink" href="#">' + buddy + '</a></li>');
-      });
-      $('.apiResult').val(JSON.stringify(data, true, 2));
-      // render buddy list
-      $('.messageBuddy').on('click', function () {
-        let position = {};
-        position.my = position.my || 'left top';
-        position.at = position.at || 'left+33 top+33';
-        let context = $(this).html();
-
-        // let windowKey = desktop.ui.openWindow('buddy_message', { context: context }, position);
-        desktop.ui.openWindow('buddylist', { context: context });
-        // desktop.app.buddylist.openWindow({ context: context});
-        let windowId = '#window_buddy_message_' + context;
-        if (desktop.ui.view === 'Mobile') {
-          $('.buddy_message_text', windowId).focus();
-        }
-        $('.buddy_message_to', windowId).val(context);
-        $('.buddy_message_from', windowId).val(buddypond.me);
-      });
-    }
-  }
-}
-
 function renderBuddyRequests (data) {
 
+  $('.you_have_no_buddies').hide();
+
   if (data.buddyrequests) {
-    // desktop.cache.buddyListDataCache = {}
-    // desktop.cache.buddyListDataCache[str] = true;
+
     $('.pendingIncomingBuddyRequests').html('');
     $('.pendingOutgoingBuddyRequests').html('');
     $('.loading').remove();
@@ -545,6 +412,7 @@ function renderBuddyRequests (data) {
 
 }
 
+// move to streamsquad EE
 function checkForNewStreamers (data) {
   // check MOTM to see if a new streamer has come online
   if (data.system && data.system.motm && data.system.motm.streaming) {
@@ -557,6 +425,79 @@ function checkForNewStreamers (data) {
     }
   }
 }
+
+function renderOrUpdateBuddyInBuddyList (data) {
+  let buddyname = data.name;
+  let buddydata = data.buddydata;
+
+  let connectedStatusIcon = '🟠';
+  if (buddydata.isConnected) {
+    connectedStatusIcon = '🟢';
+  }
+
+  // phone call icon next to buddy name
+  let isCalling = '';
+  if (buddydata && buddydata.isCalling) {
+    isCalling = '<span>📞</span>';
+  }
+
+  // new messages chat icon next to buddy name
+  let newMessages = '';
+  if (buddydata && buddydata.newMessages) {
+    newMessages = '<span>💬</span>';
+  }
+
+  if (buddydata && buddydata.isCalling) {
+    //desktop.app.buddylist.profileState.updates[buddyname] = desktop.app.buddylist.profileState.updates[buddyname] || {};
+    //desktop.app.buddylist.profileState.updates[buddyname].isCalling = false;
+    desktop.emit('profile::buddy::calling', data);
+  }
+
+  // see if this buddy is already rendered
+  let exists = false;
+  $('.buddylist li').each(function(i, e){
+    if ($(e).data('buddy') === buddyname) {
+      exists = e;
+    }
+  });
+
+  if (exists) {
+    // for now
+    $(exists).remove();
+  }
+
+  let buddyListItem = `<li data-buddy="${buddyname}"><span>${newMessages}${connectedStatusIcon}${isCalling}</span> <a class="messageBuddy rainbowLink" href="#">${buddyname}</a></li>`;
+  if (buddydata.isConnected) {
+    $('.buddylist').prepend(buddyListItem);
+  } else {
+    $('.buddylist').append(buddyListItem);
+  }
+
+}
+
+desktop.on('profile::buddy::in', 'render-buddy-on-buddylist', function(data){
+  // TODO: renderer should be smart enough to find if exists and update, or create new
+  renderOrUpdateBuddyInBuddyList(data);
+  desktop.play('BUDDY-IN.wav');
+})
+
+desktop.on('profile::buddy::out', 'render-buddy-out-buddylist', function(data){
+  renderOrUpdateBuddyInBuddyList(data);
+  if (data.wasOnline) {
+    desktop.play('BUDDY-OUT.wav');
+  }
+});
+
+desktop.on('profile::buddy::newmessage', 'open-message-window', function(data){
+  desktop.ui.openWindow('buddylist', { context: data.name });
+});
+
+// TODO: move to video chat app
+desktop.on('profile::buddy::calling', 'open-call-window', function(data){
+  desktop.app.videochat.startCall(false, data.name, function (err, re) {
+    // console.log('call has started', err, re)
+  });
+});
 
 desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
 
@@ -577,36 +518,84 @@ desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
         }, desktop.DEFAULT_AJAX_TIMER); // TODO: expotential backoff algo
         return;
       }
+
       desktop.buddyListData = data;
-
-      // process incoming buddy list data for local profile and incoming notifications
       checkForNewStreamers(data);
-      processIncomingBuddyRequests(data);
       updateLocalDesktopProfile(data);
-      openNewBuddyMessagesNow(data);
-      checkForIncomingVoiceCall(data);
 
-      // notification checks have completed, check to see if we need to re-render the buddy list
-      let serializedBuddyList = JSON.stringify(data);
-      // the data used to generated the buddy list has not changed since the last update
-      // since no data has changed, return here and do not re-render / continue rendering
-      if (desktop.cache.buddyListDataCache[serializedBuddyList]) {
-        // TODO: use key count for garbage collection and trim if size grows
-        setTimeout(function () {
-          desktop.app.buddylist.updateBuddyList();
-        }, desktop.DEFAULT_AJAX_TIMER);
-        return;
+      desktop.buddylist = desktop.buddylist || {};
+
+      if (data.buddylist) {
+        // incoming buddy list, see if it is diff
+        for (let b in data.buddylist) {
+          
+          let incoming = data.buddylist[b];
+          let buddyName = b.replace('buddies/', '');
+          
+          // emit new messages event
+          if (incoming && incoming.newMessages) {
+            desktop.emit('profile::buddy::newmessage', {
+              name: buddyName
+            });
+          }
+
+          // the desktop has not seen this buddy yet, render it
+          if (!desktop.buddylist[b]) {
+            if (data.buddylist[b].isConnected) {
+              desktop.emit('profile::buddy::in', {
+                name: buddyName,
+                buddydata: data.buddylist[b]
+              });
+            } else {
+              desktop.emit('profile::buddy::out', {
+                name: buddyName,
+                buddydata: data.buddylist[b],
+                wasOnline: false
+              });
+            }
+            desktop.buddylist[b] = data.buddylist[b];
+          } else {
+            // check for diff in profile, if incoming profile fresh, re-render in buddylist
+            let prev = desktop.buddylist[b];
+            let buddyName = b.replace('buddies/', '');
+            if (JSON.stringify(prev) !== JSON.stringify(incoming)) {
+              /*
+              console.log('diff detected')
+              console.log('prev', prev);
+              console.log('incoming', incoming);
+              */
+              if (incoming.isConnected) {
+                if (incoming.isConnected !== prev.isConnected) {
+                  desktop.emit('profile::buddy::in', {
+                    name: buddyName,
+                    buddydata: incoming
+                  });
+                }
+              } else {
+                desktop.emit('profile::buddy::out', {
+                  name: buddyName,
+                  buddydata: incoming,
+                  wasOnline: true
+                });
+              }
+              desktop.buddylist[b] = incoming;
+            }
+          }
+        }
       }
-
-      // there is new buddylist data since the last update, re-render the buddylist
-      renderBuddyListIfUpdated(data, serializedBuddyList);
 
       // there are new buddy requests ( either incoming or outgoing ) since last update, re-render the buddy requests
       if (data.buddyrequests) {
-        renderBuddyRequests(data);
+        let prev = desktop.buddyrequests;
+        let incoming = data.buddyrequests;
+        if (JSON.stringify(prev) !== JSON.stringify(incoming)) {
+          renderBuddyRequests(data);
+          desktop.buddyrequests = data.buddyrequests;
+        }
       }
 
       // since new data has been rendered ensure that buddy list is showing
+      // TODO: can we remove these hide() / show() statements?
       $('.loggedIn').show();
       $('.buddy_list_not_connected').hide();
       // TODO: move this to buddy pond scope
@@ -623,15 +612,13 @@ desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
 
 desktop.app.buddylist.lastNotified = 0;
 
+// TODO: replace with EE
 desktop.app.buddylist.processMessages = function processMessagesBuddylist (data, cb) {
 
   // console.log('desktop.app.buddylist.processMessages', data);
-  //desktop.cache.buddyMessageCache[str] = true;
   let html = {};
-  // TODO: this should apply per conversation, not global for all users
+
   data.messages.forEach(function (message) {
-    // route message based on incoming type / format
-    // default message.type is undefined and defaults to "text" type
 
     if (message.type === 'pond') {
       return;
@@ -650,152 +637,12 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
       }
     }
 
-    //
-    // New messages are coming in from server, we'll need to render them
-    //
-    // Get all the open buddy_message windows
-    // let openBuddyWindows = desktop.ui.openWindows['buddy_message'];
-    // Find the specific window which is open for this buddy
-    // let windowId = '#' + openBuddyWindows[buddyKey];
     let windowId = '#window_buddy_message_' + buddyKey;
-
-    // accumulate all the message html so we can perform a single document write,
-    // instead of a document write per message
     html[windowId] = html[windowId] || '';
-
-    message.text = forbiddenNotes.filter(message.text);
-
-    message.ctime = new Date(message.ctime).toString();
-    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd yy hh:mm:ss a');
-
-    desktop.app.tts.processMessage(message);
-
-    // replace cards
-    
-    let dataContext = message.from;
-    if (message.from === buddypond.me) {
-      dataContext = message.to;
-    }
-
-    // TODO: replace with budscript.parse, etc
-    let first = message.text.substr(0, 1);
-    if (first === '\\') {
-      let command = message.text.split(' ');
-      command[0] = command[0].substr(1, command[0].length - 1);
-      message.text = message.text.replace('\\', '/'); // for now
-      desktop.commands.chat.buddyscript(message, windowId, command[0]);
-      desktop.messages._processedCards.push(message.uuid);
-    }
-
-    if (message.card && message.card.type === 'points') {
-      $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
-      desktop.messages._processedCards.push(message.uuid);
-      return;
-    }
-    
-    if (message.card && message.card.type === 'snaps') {
-      message.card.snapURL = desktop.filesEndpoint + '/' + message.card.snapURL;
-      let arr = message.card.snapURL.split('.');
-      let ext = arr[arr.length -1];
-      if (ext === 'gif') {
-        $('.chat_messages', windowId).append(`
-         <div class="message">
-          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-          <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
-        </div>
-        <br/>
-        `);
-      } else {
-        $('.chat_messages', windowId).append(`
-         <div class="message">
-          <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-          <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-          <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
-         </div>
-         <br/>
-        `);
-      }
-      // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
-      desktop.messages._processedCards.push(message.uuid);
-      desktop.messages._processed.push(message.uuid);
-      //return;
-    }
-
-    if (message.card && message.card.type === 'meme') {
-      message.card.filename = buddypond.memePath + 'memes/' + message.card.filename;
-      $('.chat_messages', windowId).append(`
-          <div class="message memeCard">
-           <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
-           <br/>
-           <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-           <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${dataContext}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-           <img class="card-meme image" src="${message.card.filename}"/>
-         </div>
-         <br/>
-      `);
-      desktop.messages._processed.push(message.uuid);
-      return;
-    }
-
-    let str = '';
-    let geoFlag = '';
-    if (message.location) {
-      if (message.location !== 'outer space') {
-        geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
-      }
-    }
-
-    if (message.from === buddypond.me) {
-      if (message.from === 'anonymous') {
-        let tripcode = message.tripcode || 'tr1pc0d3';
-        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} (${tripcode}): <span class="message"></span><br/>`;
-      } else {
-        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} : <span class="message"></span><br/>`;
-      }
-    } else {
-      if (message.from === 'anonymous') {
-        let tripcode = message.tripcode || 'tr1pc0d3';
-        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} (${tripcode}): </span><span class="message purple"></span><br/>`;
-      } else {
-        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} : </span><span class="message purple"></span><br/>`;
-      }
-      let now = new Date().getTime();
-      // TODO: better control of IM sounds, check ctime and only play fresh sounds
-      if (now - desktop.app.buddylist.lastNotified > 3333) {
-        desktop.app.notifications.notifyBuddy(`🐸 ${message.from}: ${message.text}`);
-        desktop.app.buddylist.lastNotified = now;
-      }
-    }
-
-    $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
-    $('.message', windowId).last().text(message.text);
-
-    if (message.card && message.card.type === 'audio') {
-      message.card.soundURL = desktop.filesEndpoint + '/' + message.card.soundURL;
-      $('.message', windowId).last().append(`
-        <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
-      `);
-    }
-
-    let currentlyDisplayedMessages = $('.chatMessage', windowId);
-    // console.log('currentlyDisplayedMessages', windowId, currentlyDisplayedMessages.length)
-    if (currentlyDisplayedMessages.length > 99) {
-      currentlyDisplayedMessages.first().remove();
-    }
-
-    // take the clean text that was just rendered for the last message and check for special embed links
-    desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
-
+    desktop.app.messages.renderChatMessage(message, windowId);
     desktop.messages._processed.push(message.uuid);
-    //desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] = desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey] || [];
-    //desktop.cache.buddyMessageCache[buddypond.me + '/' + buddyKey].push(message.uuid);
   });
 
-  //
-  // All messages have been processed and HTML has been accumulated
-  // Iterate through the generated HTML and write to the correct windows
-  //
   for (let key in html) {
     $('.no_chat_messages', key).hide();
     try {
@@ -813,7 +660,6 @@ desktop.app.buddylist.processMessages = function processMessagesBuddylist (data,
 
   cb(null, true);
 };
-
 
 desktop.app.buddylist.openWindow = function (params) {
 

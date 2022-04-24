@@ -5,7 +5,6 @@ We have many issues open and welcomed for first time contributors!
     1/2 - show .console_send_message_form in console so buddy can send /bs without login
     1/2 - clean up /bs
 
-    - play buddy sound when buddy logs in ( door open aim )
     - play sound alert if buddypond.me is mentioned in chat
 
     - Flags need to show for memes and snaps and sounds, etc
@@ -188,8 +187,7 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
-
-
+X - play buddy sound when buddy logs in / logs out
 X - help should not post in all chats
 X - clicking help should make help window hide
 X - create twitter card for http://buddypond.com

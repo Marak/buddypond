@@ -22,7 +22,7 @@ if (desktop.mode === 'dev') {
 }
 
 // apps which are considered "required" for Buddy Pond to work
-desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'midi', 'mirror', 'notifications', 'pond', 'profile', 'settings', 'spellbook', 'themes', 'tts', 'videochat', 'videoplayer', 'wallpaper'];
+desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'messages', 'midi', 'mirror', 'notifications', 'pond', 'profile', 'settings', 'spellbook', 'themes', 'tts', 'videochat', 'videoplayer', 'wallpaper'];
 desktop.filesEndpoint = 'https://files.buddypond.com'
 
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
@@ -53,7 +53,6 @@ desktop.DEFAULT_AJAX_TIMER = 1000;
 // this is garbage collected on every updated run, so it should never grow
 // TODO: can we now remove this due to processedMessages?
 desktop.cache = {};
-desktop.cache.buddyListDataCache = {};
 
 // Adds jquery.dateformat to desktop.dateformat scope ( if available )
 if (typeof DateFormat === 'object') {
@@ -336,6 +335,7 @@ window.addEventListener('hashchange', function() {
 desktop.refresh = function refreshDesktop () {
   if (desktop.app.buddylist) {
     desktop.app.buddylist.updateBuddyList();
+    // TODO: move messages to separate app and use EE
     desktop.messages.process(desktop.apps.loaded);
   } else {
     setTimeout(function () {
@@ -348,6 +348,7 @@ desktop.refresh = function refreshDesktop () {
 // desktop.messages.process() queries the server for new messages and then
 // delegates those messages to any applications which expose an App.processMessages() function
 //
+// TODO: move to App.Messages
 desktop.messages.process = function processMessages (apps) {
   apps = apps || desktop.apps.loaded;
   if (!buddypond.qtokenid) {
@@ -417,6 +418,9 @@ desktop.messages.process = function processMessages (apps) {
 
       data.messages = newMessages;
 
+      // TODO: replace with EE
+      // Remark: might be best to keep processMessage() pattern here since it has a callback
+      //         currently no async message processing in desktop, could have it later
       // iterate through every app that is loaded and see if it exports `App.processMessages` function
       // currently we processMessages for: `App.buddylist`, `App.pond`, and `App.automaton`
       let appNameProcessMessagesList = [];

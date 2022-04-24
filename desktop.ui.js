@@ -708,6 +708,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // <div id="your context menu id" class="context-menu" style="display: none">
   //   <ul id="your context list id" class="context-list"></ul>
   // </div>
+  /*
   d.on('contextmenu', 'a.messageBuddy', function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -758,6 +759,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       }
     }
   });
+  */
 
   // mouse out of buddy profile to hide profile preview
   d.on('mouseleave', '#panel_buddy_profile', function () {

@@ -174,15 +174,15 @@ desktop.app.pond.openWindow = function (params) {
   params = params || {};
   
   if (params.context) {
-    // for pond windows, if there is a context we will want to create a new window instance
+
     let windowId = '#window_pond_message_' + params.context;
 
-    // check to see if window already exists, if so do not re-render
-    // Remark: In the future, we shouldn't have to make this check as it will be expected window is always removed
     if (desktop.app.pond.subscribedPonds.indexOf(params.context) === -1) {
       desktop.app.pond.subscribedPonds.push(params.context);
     }
 
+    // check to see if window already exists, if so do not re-render
+    // Remark: In the future, we shouldn't have to make this check as it will be expected window is always removed
     if ($(windowId).length === 0) {
       desktop.app.pond.renderChatWindow(params.context);
     
@@ -264,12 +264,6 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
     return;
   }
 
-  // TODO: have console display more info about event
-  $('.console').val(JSON.stringify(message, true, 2));
-
-  // $('.emoji-wysiwyg-editor').html("");
-  //console.log('sending the message to pond', message)
-
   buddypond.pondSendMessage(message.to, message.text, function (err, data) {
     //console.log('buddypond.pondSendMessage', err, data)
     // Remark: This will check for local user text commands such as /quit
@@ -281,150 +275,21 @@ desktop.app.pond.sendMessage = function sendPondMessage (context) {
 
 desktop.app.pond.lastNotified = 0;
 
+// TODO: replace with event emitter
 desktop.app.pond.processMessages = function processMessagesPond (data, cb) {
 
   let html = {};
 
   data.messages.forEach(function (message) {
 
-    // route message based on incoming type / format
-    // default message.type is undefined and defaults to "text" type
-
     if (message.type !== 'pond') {
       return;
     }
 
-    /*
-    var keys = Object.keys(desktop.ui.openWindows['pond_message']);
-    let pondKey = message.to;
-    let index = keys.indexOf(pondKey);
-    var windowKey = '#window_pond_message_' + index;
-    */
     let windowId = '#window_pond_message_' + message.to;
-    message.text = forbiddenNotes.filter(message.text);
-
-    desktop.app.tts.processMessage(message);
-
-    message.ctime = new Date(message.ctime).toString();
-    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
-
+    // TODO: replace html var
     html[windowId] = html[windowId] || '';
-
-    let str = '';
-    let geoFlag = '';
-    if (message.location) {
-      if (message.location !== 'outer space') {
-        geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
-      }
-    }
-    if (message.from === buddypond.me) {
-      if (message.from === 'anonymous') {
-        let tripcode = message.tripcode || 'tr1pc0d3';
-        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from} (${tripcode}): <span class="message"></span><br/>`;
-      } else {
-        str += `<span class="datetime">${message.ctime}</span> ${geoFlag}${message.from}: <span class="message"></span><br/>`;
-      }
-    } else {
-      if (message.from === 'anonymous') {
-        let tripcode = message.tripcode || 'tr1pc0d3';
-        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from} (${tripcode}): </span><span class="message purple"></span><br/>`;
-      } else {
-        str += `<span class="datetime">${message.ctime}</span> <span class="purple">${geoFlag}${message.from}: </span><span class="message purple"></span><br/>`;
-      }
-      if (document.visibilityState === 'hidden') {
-        let now = new Date().getTime();
-        if (now - desktop.app.pond.lastNotified > 30000) {
-          desktop.app.notifications.notifyBuddy(`${message.to} 🐸 ${message.from}: ${message.text}`);
-          desktop.app.pond.lastNotified = now;
-        }
-      }
-    }
-
-    $('.chat_messages', windowId).append(`<div class="chatMessage">${str}</div>`);
-    $('.message', windowId).last().text(message.text);
-
-    let currentlyDisplayedMessages = $('.chatMessage', windowId);
-    if (currentlyDisplayedMessages.length > 99) {
-      currentlyDisplayedMessages.first().remove();
-    }
-
-    // take the clean text that was just rendered for the last message and check for special embed links
-    // TODO: smart links for memes
-    // TODO: smart links for snaps links
-    // TODO: smart links for audio links
-    desktop.smartlinks.replaceYoutubeLinks($('.message', windowId).last());
-
-    // TODO: replace with budscript.parse, etc
-    let first = message.text.substr(0, 1);
-    if (first === '\\') {
-      let command = message.text.split(' ');
-      command[0] = command[0].substr(1, command[0].length - 1);
-      message.text = message.text.replace('\\', '/'); // for now
-      desktop.commands.chat.buddyscript(message, windowId, command[0]);
-      desktop.messages._processedCards.push(message.uuid);
-    }
-
-    // replace cards
-    if (message.card) {
-      if (message.card.type === 'points') {
-        $('.chat_messages', windowId).append(desktop.ui.cards.renderGbpCard(message));
-        desktop.messages._processedCards.push(message.uuid);
-        return;
-      }
-      if (message.card.type === 'snaps') {
-        message.card.snapURL = desktop.filesEndpoint + '/' + message.card.snapURL;
-        let arr = message.card.snapURL.split('.');
-        let ext = arr[arr.length -1];
-        if (ext === 'gif') {
-          $('.chat_messages', windowId).append(`
-            <div class="message">
-              <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-              <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-              <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
-            </div>
-            <br/>
-          `);
-        } else {
-          // TODO: should work as single frame in gif studio, new gif single frame
-          $('.chat_messages', windowId).append(`
-            <div class="message">
-              <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-              <img class="remixPaint" title="Remix this Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-              <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
-            </div>
-            <br/>
-          `);
-        }
-        // don't reply the large media cards ( asks server to ignores them on further getMessages calls)
-        desktop.messages._processedCards.push(message.uuid);
-      }
-
-      if (message.card && message.card.type === 'meme') {
-        message.card.filename = buddypond.memePath + 'memes/' + message.card.filename;
-        $('.chat_messages', windowId).append(`
-          <div class="message memeCard">
-            <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
-            <br/>
-            <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-            <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
-            <img class="card-meme image" src="${message.card.filename}"/>
-          </div>
-          <br/>
-        `);
-        desktop.messages._processed.push(message.uuid);
-        return;
-      }
-
-      if (message.card && message.card.type === 'audio') {
-        message.card.soundURL = desktop.filesEndpoint + '/' + message.card.soundURL;
-        $('.message', windowId).last().append(`
-          <strong><a href="#openSound" class="openSound" data-soundurl="${message.card.soundURL}">Play <img class="playSoundIcon" src="desktop/assets/images/icons/icon_soundrecorder_64.png"/></a></strong>
-        `);
-        desktop.messages._processed.push(message.uuid);
-        return;
-      }
-
-    }
+    desktop.app.messages.renderChatMessage(message, windowId);
     desktop.messages._processed.push(message.uuid);
   });
 
