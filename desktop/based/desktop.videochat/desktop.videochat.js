@@ -43,12 +43,6 @@ desktop.app.videochat.load = function loadVideochat () {
       desktop.app.videochat.endCall(buddyName);
     });
 
-    $('#window_videochat').css('width', 777);
-    $('#window_videochat').css('height', 666);
-
-    $('#window_videochat').css('top', '22vh');
-    $('#window_videochat').css('left', '33vw');
-
     $('.selectCamera').on('change', function () {
       let newDeviceLabel = $(this).val();
       // TODO: use localstorage to set device preference
@@ -321,15 +315,15 @@ desktop.app.videochat.replaceStream = function replaceStream (label) {
 
 
 desktop.app.videochat.openWindow = function closeWindow () {
-  let windowId = '#window_videochat';
-  $(windowId).css('width', '44vw');
-  $(windowId).css('height', '57vh');
-  $(windowId).css('top', '9vh');
-  $(windowId).css('left', '30vw');
+  $('#window_videochat').css('width', '77vw');
+  $('#window_videochat').css('height', '66vh');
+  $('#window_videochat').css('top', '5vh');
+  $('#window_videochat').css('left', '5vw');
 };
 
 desktop.app.videochat.closeWindow = function closeWindow () {
   $('#window_videochat').hide();
   $('.startVideoCall').css('opacity', '1.0');
-  desktop.app.videochat.endCall();
+  let buddyName = $(this).closest('.buddy_message').data('context');
+  desktop.app.videochat.endCall(buddyName);
 };

@@ -448,8 +448,6 @@ function renderOrUpdateBuddyInBuddyList (data) {
   }
 
   if (buddydata && buddydata.isCalling) {
-    //desktop.app.buddylist.profileState.updates[buddyname] = desktop.app.buddylist.profileState.updates[buddyname] || {};
-    //desktop.app.buddylist.profileState.updates[buddyname].isCalling = false;
     desktop.emit('profile::buddy::calling', data);
   }
 

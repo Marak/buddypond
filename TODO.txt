@@ -26,11 +26,7 @@ Party mode v1
 - drag and drop should work on entire document and use context based on active window
 
 Mobile Issues
-  X - fix padding for mobile top window bar
-  X - put back traffic lights to upper right on mobile
-  - run buddy script button should be larger on mobile
   - better ponder the orb UX for IDC on mobile
-  - idc window issue if open twice on mobile?
 
 Context / App Input / Output Issues
   - clicking on active windows should change context and type
@@ -187,6 +183,11 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+
+X - fix padding for mobile top window bar
+X - put back traffic lights to upper right on mobile
+X - run buddy script button should be larger on mobile
+X - idc window issue if open twice on mobile?
 X - play buddy sound when buddy logs in / logs out
 X - help should not post in all chats
 X - clicking help should make help window hide

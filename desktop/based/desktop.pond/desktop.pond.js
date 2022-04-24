@@ -36,7 +36,7 @@ desktop.app.pond.load = function loadPond (params, next) {
       } else {
         $('.customPondName').removeClass('error');
         let pondName = $('.customPondName').val();
-        desktop.app.pond.openWindow({ context: pondName });
+        desktop.ui.openWindow('pond', { context: pondName });
       }
     });
 
