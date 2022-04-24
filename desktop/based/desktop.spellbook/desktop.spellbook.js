@@ -110,13 +110,13 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
   $('#loaderHolder').show();
   $('#mainOverlay').hide();
   
-  desktop.app.Merlin.show();
-  desktop.app.Merlin.speak('Ebublio!');
-  desktop.app.Merlin.play('DoMagic1', 4444, function () {
-    desktop.app.Merlin.speak('Be cool my dude.');
+  desktop.app.merlin.agent.show();
+  desktop.app.merlin.agent.speak('Ebublio!');
+  desktop.app.merlin.agent.play('DoMagic1', 4444, function () {
+    desktop.app.merlin.agent.speak('Be cool my dude.');
     $( '#wallpaper' ).effect('shake', { direction: 'left', distance: 112, times: 111 }, function () {
       $( '#wallpaper' ).effect('shake', { direction: 'down', distance: 112, times: 111 }, function () {
-        desktop.app.Merlin.speak('Would you like to learn Magic with Merlin?');
+        desktop.app.merlin.agent.speak('Would you like to learn Magic with Merlin?');
         $( '#wallpaper' ).effect('shake', { direction: 'right', distance: 112, times: 111 }, function () {
           $( '#wallpaper' ).effect('shake', { direction: 'up', distance: 112, times: 111 }, function () {
             $('#loaderHolder').fadeOut({

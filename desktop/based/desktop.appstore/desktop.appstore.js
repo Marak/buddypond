@@ -62,6 +62,10 @@ desktop.app.appstore.apps = {
     label: 'Lofi Room',
     version: '4.20.69'
   },
+  'merlin': {
+    label: 'Merlin Automated Assistant',
+    version: '4.20.69'
+  },
   'midifighter': {
     label: 'Music Pad',
     version: '4.20.69'

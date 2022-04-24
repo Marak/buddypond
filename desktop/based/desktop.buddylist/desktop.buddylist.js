@@ -460,7 +460,7 @@ function renderOrUpdateBuddyInBuddyList (data) {
     $(exists).remove();
   }
 
-  let buddyListItem = `<li data-buddy="${buddyname}"><span>${newMessages}${connectedStatusIcon}${isCalling}</span> <a class="messageBuddy rainbowLink" href="#">${buddyname}</a></li>`;
+  let buddyListItem = `<li data-buddy="${buddyname}"><span>${newMessages}${connectedStatusIcon}${isCalling}</span> <a class="messageBuddy" href="#">${buddyname}</a></li>`;
   if (buddydata.isConnected) {
     $('.buddylist').prepend(buddyListItem);
   } else {

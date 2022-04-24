@@ -1,25 +1,70 @@
-<div id="window_automaton" class="abs window">
-  <div class="abs window_inner">
+<style>
+  .merlinHolder {
+    height: 100%;
+    width: 96%;
+    padding: 16px;
+  }
+
+  .merlinHolder .openApp img {
+    width: 50px;
+    height: 50px;
+  }
+
+</style>
+
+<div id="window_merlin" class="abs window">
+  <div class="abs window_inner" align="left">
     <div class="window_top">
       <span class="float_left">
-        <img src="desktop/assets/images/icons/icon_automaton_64.png" />
-        Manage Automaton Settings
+        <img src="desktop/assets/images/icons/icon_merlin_64.png" />
+        Merlin Automated Assistant
       </span>
-      <span class="float_right">
-        <a href="#" class="window_min"></a>
-        <a href="#" class="window_resize"></a>
-        <a href="#icon_dock_automaton" class="window_close"></a>
+      <span class="float_right trafficLight">
+        <a href="#min" class="minWindow" title="Min Window">🟠</a>
+        <a href="#max" class="maxWindow" title="Max Window">🟢</a>
+        <a href="#exit" class="exitWindow" title="Exit Window">🔴</a>
       </span>
     </div>
     <div class="abs window_content">
-      <div class="window_main">
-        <br/>
-        <form>
-          <input type="checkbox" id="enableWebautomaton" name="enableWebautomaton" class="enableWebautomaton"/>
-          <label for="enableWebautomaton">Enable Web Automaton</label>
+      <div class="merlinHolder">
+          <h3>Update Your Buddy Pond Profile</h3>
+          <a href="#" class="openApp" data-app="profile">
+            <img src="desktop/assets/images/icons/icon_profile_64.png"/>
+            Profile
+          </a>
           <br/>
           <br/>
-        </form>
+          <br/>
+          <h3>Add / Remove Apps from Desktop</h3>
+          <a href="#" class="openApp" data-app="appstore">
+            <img src="desktop/assets/images/icons/icon_appstore_64.png"/>
+            App Store
+          </a>
+          <br/>
+          <br/>
+          <!--
+          <h3>Share any App or Window with a friend</h3>
+          <h3>Learn <code>bs</code> ( BuddyScript ) from Merlin</h3>
+          <h3>Get a MY BUDDY Companion App</h3>
+          <h3>Spell Casting 101</h3>
+          <a href="#" class="openApp" data-app="spellbook">
+            <img src="desktop/assets/images/icons/icon_spellbook_64.png"/>
+            Spellbook
+          </a>
+          -->
+          <br/>
+          <br/>
+          <h3>Merlin Animations</h3>
+          <label for="merlin_animation_enabled">
+            Enable Merlin Animations:
+          </label>
+          <input type="checkbox" size="32" id="agent_merlin_active" name="agent_merlin_active" class="agent_merlin_active" title="This will enable / disable Clippy.js Merlin animations from the Desktop. Recommended to disable for lower performance systems."/>
+
+          <br/>
+          <br/>
+          <br/>
+          <h3><a href="#" class="openApp" data-app="pond" data-context="Alpha">
+Begin Wizard Training</a></h3>
       </div>
     </div>
     <div class="abs window_bottom">
@@ -28,3 +73,4 @@
   </div>
   <span class="abs ui-resizable-handle ui-resizable-se"></span>
 </div>
+

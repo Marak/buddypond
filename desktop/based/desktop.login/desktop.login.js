@@ -90,6 +90,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
+      /*
       // if the buddy has not manually logged out at least once,
       // log them in anonymous for the first time
       if (!desktop.settings.buddy_logged_out) {
@@ -98,6 +99,10 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         if (!desktop.hashMode) {
           JQDX.showWindow('login');
         }
+      }
+      */
+      if (!desktop.hashMode) {
+        JQDX.showWindow('login');
       }
       if (location.hash) {
         desktop.routeFromHash();
@@ -161,6 +166,9 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
 };
 
 desktop.app.login.success = function desktopLoginSuccess (params) {
+  desktop.ui.openWindow('merlin', {
+    windowless: true
+  });
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
   desktop.play('WELCOME.wav', Infinity);
@@ -193,7 +201,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   // TODO: move this is a separate function
   setTimeout(function () {
     if (!buddypond.email || buddypond.email.length < 3) {
-      desktop.emit('merlin-speaks', 'Welcome to Buddy Pond! Please be sure to set your email address in the top left nav bar!');
+      desktop.emit('merlin-speaks', `Hi ${buddypond.me}! Please be sure to set your email address on your Profile.`);
     } else {
       desktop.emit('merlin-speaks', `Welcome back ${buddypond.me}! Merlin thinks you are fantastic!`);
     }
@@ -329,6 +337,11 @@ desktop.app.login.openWindow = function desktopLoginOpenWindow () {
   $('#window_login').css('left', '22vw');
   $('#window_login').css('top', '9vh');
   $('#login_desktop_icon').show();
+
+  desktop.ui.openWindow('merlin', {
+    windowless: true
+  });
+
   //$('#icon_dock_login').show();
   // manually call resize event, make login full screen
   setTimeout(function(){

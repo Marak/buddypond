@@ -61,7 +61,9 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     });
 
     desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-bg-color', function (color) {
-      desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].changeColor(color);
+      if (desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active]) {
+        desktop.app.wallpaper.wallpapers[desktop.app.wallpaper.active].changeColor(color);
+      }
     });
 
     $('#window_wallpaper').css('width', 366);

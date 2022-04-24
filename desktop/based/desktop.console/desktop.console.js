@@ -181,6 +181,11 @@ desktop.app.console._allowCommands = {
       description: 'Mnemosyne - A.I. Powered Meme Oracle',
       icon: 'memepool'
     },
+    merlin: {
+      command: 'desktop.ui.openWindow("merlin");',
+      description: 'Merlin Automated Assistant',
+      icon: 'merlin'
+    },
     nes: {
       command: 'desktop.ui.openWindow("nes");',
       description: 'Nintendo Entertainment System',

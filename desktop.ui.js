@@ -955,6 +955,11 @@ JQDX.loadWindow = function loadWindow (appName, params, callback) {
 // the window might be hidden or minimized
 JQDX.showWindow = function showWindow (appName, params) {
   params = params || {};
+
+  if (params.windowless) {
+    return false;
+  }
+
   // console.log('JQDX.showWindow', appName, params);
   let appWindow = '#window_' + appName;
 
@@ -1065,7 +1070,9 @@ JQDX.openWindow = function openWindow (appName, params, cb) {
     desktop.ui.showLoadingProgressIndicator();
     JQDX.loadWindow(appName, params, function () {
       desktop.ui.renderDockIcon(appName);
-      JQDX.showWindow(appName, params);
+      if (!params.windowless) {
+        JQDX.showWindow(appName, params);
+      }
       cb();
     });
   } else {
@@ -1505,6 +1512,10 @@ desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
     let app = desktop.app.appstore.apps[appName];
     desktop.ui.renderDesktopShortCut(appName, app);
   }
+
+  desktop.ui.renderDesktopShortCut('merlin', {
+    name: 'merlin', label: 'Merlin Automated Assistant'
+  });
 
   desktop.ui.renderDesktopShortCut('download', {
     name: 'download',

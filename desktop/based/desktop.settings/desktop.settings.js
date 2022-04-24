@@ -45,11 +45,15 @@ desktop.app.settings.load = function loadsettings (params, next) {
     desktop.set('mirror_snaps_camera_countdown_enabled', true);
   }
 
+  if (typeof desktop.settings.active_theme === 'undefined') {
+    desktop.set('active_theme', 'Water');
+  }
+
   if (typeof desktop.settings.wallpaper_name === 'undefined') {
     if (desktop.ui.view === 'Mobile') {
-      desktop.set('wallpaper_name', 'nyancat');
+      desktop.set('wallpaper_name', 'ripples');
     } else {
-      desktop.set('wallpaper_name', 'nyancat');
+      desktop.set('wallpaper_name', 'ripples');
     }
   }
 
