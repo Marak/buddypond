@@ -101,90 +101,7 @@ Interactive API Testing Page: [https://buddypond.com/sdk/client.html](https://bu
 
 JavaScript `buddypond.js` SDK API client: `./sdk/buddypond.js`
 
-## cURL REST API Examples
-
-
-**Sign Up or Get Auth Token for existing account**
-
-```
-curl -X POST "https://buddypond.com/api/v3/auth"  -H 'Content-Type: application/json' -d '{"buddyname":"Dave","buddypassword":"asd"}'
-```
-
-*Return the `qtokenid` uuid which must be used for all subsequent calls to the API session.*
-
-**Send Buddy Request**
-
-```
-curl -X POST "https://buddypond.com/api/v3/buddies/Marak/addbuddy"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
-```
-
-**Send Message To Buddy**
-
-```
-curl -X POST "https://buddypond.com/api/v3/messages/buddy/Marak"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196", "text": "hello buddy!"}'
-```
-
-**Get Messages**
-
-```
-curl -X POST "https://buddypond.com/api/v3/messages/getMessages"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196", "buddyname": "Marak,Dave", "pondname": "Lily"}'
-```
-
-**Get Buddy List and Buddy Requests**
-
-```
-curl -X POST "https://buddypond.com/api/v3/buddies"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
-```
-
-**Approve Buddy Request**
-
-```
-curl -X POST "https://buddypond.com/api/v3/buddies/Marak/approve"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
-```
-
-**Deny Buddy Request**
-
-```
-curl -X POST "https://buddypond.com/api/v3/buddies/Marak/deny"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
-```
-
-**Remove Buddy from Buddy List**
-
-```
-curl -X POST "https://buddypond.com/api/v3/buddies/Marak/remove"  -H 'Content-Type: application/json' -d '{"qtokenid":"00e7fa95-ff2c-40d6-a6c0-0bc4457d6196"}'
-```
-
-## Building custom Buddy Pond `Desktop`
-
-### Example Usage
-
-```js
-$(document).ready(function(){
-  desktop
-    .use('console')
-    .use('localstorage')
-    .use('settings')
-    .use('wallpaper')
-    .use('audioplayer')
-    .use('tts')
-    .use('login')
-    .use('notifications')
-    .use('buddylist')
-    .use('pond')
-    .use('streamsquad')
-    .use('spellbook', { defer: true })
-    .use('profile', { defer: true })
-    .use('mirror', { defer: true })
-    .use('videochat', { defer: true })
-    .use('automaton', { defer: true })
-    .ready(function(err, apps){
-      // desktop.log("Loaded", desktop.apps.loaded);
-      desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-      });
-  });
-```
-
-### Building custom Buddy Pond `App`
+## Building custom Buddy Pond `App`
 
 `desktop.use(appName, params)` will load Buddy Pond Apps which have an `App.load` method.
 
@@ -202,39 +119,6 @@ desktop.boo.load = function (params, next) {
 ```
 
 You may now open `App.Boo` by calling `desktop.ui.openWindow('boo', { foo: 'bar' })`
-
-### `defer` or `lazy` load of `App`
-
-Buddy Pond Desktop supports both `defer` loading and `lazy` loading of `App`. 
-
-`defer` means load after Deskop is ready.
-`lazy` means load after user clicks on `App` icon.
-
-### **Apps load in this order:**
-
-### desktop.use(appName)
-*Sync style blocking loads*
-Calling `desktop.use(appName)` sync style should be used only for mission-critical Apps. 
-
-The Desktop will **not** be ready until these Apps finish loading.
-
-### desktop.use(appName, { defer: true })
-
-*Async style non-blocking loads*
-`defer` indicates the `App` wil load immediately after the Desktop is ready.
-`defer` param should be used for Apps that are non-critical, but frequently used.
-
-The Desktop will load these Apps **immediately after** it's ready. If the Buddy tries to open a deferred App while it is still loading, the UI will respond with a spinning cursor and hold the `openWindow` event until the App has completely loaded.
-
-### After Desktop Ready Completes ( `lazy` loading )
-
-After the Desktop is ready, additional Apps can be `lazy` loaded by calling: `desktop.use(appName).ready(function(){})` again.
-
-The desktop handles this automatically by attempting to `lazy` load any opens which are not loaded and are attempted to be opened with `desktop.ui.openWindow(appName);`. 
-
-The UI will displaying a spinning cursor to the Buddy and hold the `openWindow` event until the App has completely loaded.
-
-Ex: `desktop.ui.openWindow('paint');`
 
 ## Buddy Pond `AppStore`
 
