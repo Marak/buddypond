@@ -447,10 +447,6 @@ function renderOrUpdateBuddyInBuddyList (data) {
     newMessages = '<span>💬</span>';
   }
 
-  if (buddydata && buddydata.isCalling) {
-    desktop.emit('profile::buddy::calling', data);
-  }
-
   // see if this buddy is already rendered
   let exists = false;
   $('.buddylist li').each(function(i, e){
@@ -533,6 +529,12 @@ desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
           // emit new messages event
           if (incoming && incoming.newMessages) {
             desktop.emit('profile::buddy::newmessage', {
+              name: buddyName
+            });
+          }
+
+          if (incoming && incoming.isCalling) {
+            desktop.emit('profile::buddy::calling', {
               name: buddyName
             });
           }
