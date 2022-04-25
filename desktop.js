@@ -650,23 +650,25 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
 
   const welcomeText = `
     <div class="help">
-      <h2 class="hidesHelp" title="Click To Hide">Welcome To Buddy Pond My Good Buddy 🧘🏽🌱</h2>
-      <em>Cloud Operating System and Instant Messenger</em>
+      <h2 class="hidesHelp" title="Click To Hide">Welcome To Buddy Pond My Good Buddy</h2>
+      <em>Cloud Operating System and Instant Messenger - Alpha Edition</em>
       <br/>
       <br/>
-      <h3>What is this place? What can I do here?</h3>
-    <p>
-     You can Chat with Buddies. Make new Buddies.  Watch Interdimensional Cable. Play with your Camera and make Snaps.
-    Do Voice and Video Calls. Create Artwork. Play Video Games. Listen to Music. Create Music.
-    <br/>
-    <br/>
-    <a href="#" class="openApp" data-app="faq">Check out our Frequently Asked Questions</a>
-    <br/>
-    <br/>
-    There is a lot you can do. Click around a bit and see what you can discover.
-    </p>
-    <br/>
-      <strong>Basically Buddy Pond is an entire Desktop Experience ready right now in your browser.</strong><br/>
+      <h3>What is this place?</h3>
+      <p>Buddy Pond is an entire Desktop Experience ready right now in your browser. We are building a singular destination for making the Internet fun again.<br/>
+</p>
+      <br/>
+      <h3>What can I do here?</h3>
+      <p>
+        Create, Play, Produce, Relax, Work, Learn, Teach, or just chill out and watch <a href="#" class="openApp" data-app="interdimensionalcable">Interdimensional Cable</a>. There is a lot you can do here. Click around a bit and see what you can discover.
+        <br/>
+        <br/>
+      </p>
+      <h3>Why do I already have Buddies?</h3>
+      <p>In the Alpha, our good Buddy @Chris will automatically send Buddy Requests to nearby Buddies whenever you join a Pond. Have fun!</p>
+      <br/>
+      <h3><a href="#" class="openApp" data-app="faq">Check out our Frequently Asked Questions</a></h3>
+      <a href="#" class="hidesHelp">Hide this message</a>
       <br/>
       To get chat help type: <code>/help</code> <br/>
       To see available BuddyScript commands type: <code>/bs</code> <br/>
@@ -724,13 +726,11 @@ desktop.commands.chat.help = function helpCommands (params) {
       additional: ' Randolph 10',
       helpText: '- gives Randolph 10 Good Buddy Points'
     },
-    /*
     {
       command: '/roll',
       additional: ' 20',
       helpText: '- Rolls a d20 dice'
     },
-    */
     {
       command: '/quit',
       additional: ' message',
@@ -745,7 +745,7 @@ desktop.commands.chat.help = function helpCommands (params) {
 
   const helpText = `
     <div class="help">
-      <h2 class="hidesHelp" title="Click To Hide">Let's Help You My Good Buddy 🧘🏽🌱</h2>
+      <h2 class="hidesHelp" title="Click To Hide">Let's Help You My Good Buddy</h2>
       <br/>
       <p>
         The following chat text commands are available:

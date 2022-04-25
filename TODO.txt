@@ -56,7 +56,6 @@ Misc
 1 / 2- login page needs nice splash screen that scrolls for mobile
 
 MEDIUM 
-  - add "Score" and "Distance" to meme cards / Mnemosyne
   - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
   - - check to see why empty gif sends on import. test a few gifs
 
@@ -183,7 +182,7 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
-
+X - add "Score" and "Distance" to meme cards / Mnemosyne
 X - fix padding for mobile top window bar
 X - put back traffic lights to upper right on mobile
 X - run buddy script button should be larger on mobile
