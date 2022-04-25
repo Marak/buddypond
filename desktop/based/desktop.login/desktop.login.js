@@ -114,7 +114,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       buddypond.authBuddy('anonymous', 'password', function (err, data) {
         if (data && data.qtokenid) {
           buddypond.qtokenid = data.qtokenid;
-          buddypond.pondSendMessage('Lily', 'has loaded Desktop', function (err, data) {
+          buddypond.pondSendMessage('Lily', 'has loaded the Desktop', function (err, data) {
             // buddypond.qtokenid = null;
           });
         }
