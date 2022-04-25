@@ -242,7 +242,7 @@ desktop._ready = function _ready (finish) {
           desktop.app[app.name].deferredLoad = false;
           if (desktop.app[app.name].openWhenLoaded) {
             if (desktop.app[app.name].openWindow) {
-              desktop.app[app].openWindow(app.name);
+              desktop.app[app.name].openWindow({});
               let key = '#window_' + app.name;
               $(key).show();
               JQDX.window_flat();
