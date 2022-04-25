@@ -111,6 +111,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         desktop.routeFromHash();
       }
 
+      /* Remove for now, buddypond.qtokenid is not safe to change like this, needs instance of sdk
       buddypond.authBuddy('anonymous', 'password', function (err, data) {
         if (data && data.qtokenid) {
           buddypond.qtokenid = data.qtokenid;
@@ -119,6 +120,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
           });
         }
       });
+      */
       return next(null);
     }
 

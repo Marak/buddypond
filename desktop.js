@@ -655,7 +655,7 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
       <br/>
       <br/>
       <h3>What is this place?</h3>
-      <p>Buddy Pond is an entire Desktop Experience ready right now in your browser. We are building a singular destination for making the Internet fun again.<br/>
+      <p>Buddy Pond is the entire Desktop Experience ready right now in your browser. We are building a singular destination for making the Internet fun again.<br/>
 </p>
       <br/>
       <h3>What can I do here?</h3>
