@@ -179,6 +179,7 @@ desktop.app.pond.openWindow = function (params) {
 
     if (desktop.app.pond.subscribedPonds.indexOf(params.context) === -1) {
       desktop.app.pond.subscribedPonds.push(params.context);
+      buddypond.pondSendMessage(params.context, 'has joined the Pond', function (err, data) {});
     }
 
     // check to see if window already exists, if so do not re-render
@@ -222,7 +223,6 @@ desktop.app.pond.openWindow = function (params) {
       JQDX.window_flat();
       $(windowId).addClass('window_stack').show();
     }
-    buddypond.pondSendMessage(params.context, 'has joined the Pond', function (err, data) {});
     return;
   }
 
