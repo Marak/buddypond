@@ -81,6 +81,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         // token is valid, show client login success
           buddypond.qtokenid = localToken;
           buddypond.me = me;
+          desktop.ui.openWindowsFromSavedSettings();
           desktop.app.login.success({ source: 'localToken' });
         }
         if (location.hash) {
@@ -90,6 +91,8 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       });
     } else {
       $('.totalConnected').hide();
+      // re-opens previously opened windows
+      desktop.ui.openWindowsFromSavedSettings();
       /*
       // if the buddy has not manually logged out at least once,
       // log them in anonymous for the first time
