@@ -179,7 +179,9 @@ desktop.app.pond.openWindow = function (params) {
 
     if (desktop.app.pond.subscribedPonds.indexOf(params.context) === -1) {
       desktop.app.pond.subscribedPonds.push(params.context);
+      /*
       buddypond.pondSendMessage(params.context, 'has joined the Pond', function (err, data) {});
+      */
     }
 
     // check to see if window already exists, if so do not re-render
@@ -239,7 +241,9 @@ desktop.app.pond.closeWindow = function (params) {
   if (params.context) {
     let index = desktop.app.pond.subscribedPonds.indexOf(params.context);
     desktop.app.pond.subscribedPonds.splice(index, 1);
+    /*
     buddypond.pondSendMessage(params.context, 'has left the Pond', function (err, data) {});
+    */
   }
 };
 
