@@ -651,7 +651,7 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
   const welcomeText = `
     <div class="help">
       <h2 class="hidesHelp" title="Click To Hide">Welcome To Buddy Pond My Good Buddy</h2>
-      <em>Cloud Operating System and Instant Messenger - Alpha Edition</em>
+      <em>Cloud Desktop and Instant Messenger - Alpha Edition</em>
       <br/>
       <br/>
       <h3>What is this place?</h3>
