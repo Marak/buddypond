@@ -18,6 +18,7 @@ desktop.app.merlin.load = function loadmerlinGames (params, next) {
     if (!desktop.settings.agent_merlin_active) {
       return next();
     }
+
     clippy.load('Merlin', function (agent) {
       desktop.app.merlin.agent = agent;
       agent.show();
@@ -35,9 +36,10 @@ desktop.app.merlin.load = function loadmerlinGames (params, next) {
         agent.speak('Welcome to Buddy Pond! I am Merlin. Please click around and enjoy.');
       }
 
+      next();
+
     });
 
-    next();
   });
 };
 

@@ -1,3 +1,5 @@
+buddypond.MATRIX_AGENTS = ['Marak']; // do you wish to be added to this array? are you a bad enough dude to love yourself?
+
 desktop.app.spellbook = {};
 desktop.app.spellbook.label = 'Spellbook';
 desktop.app.spellbook.spells = [
@@ -5,6 +7,7 @@ desktop.app.spellbook.spells = [
   'zalgo',
   'babel.js',
   'riddikulus',
+  'ebublio',
   'episkey',
   'rickroll',
   'forbiddenRickRoll',
@@ -101,7 +104,9 @@ desktop.app.spellbook.rickroll = function rickroll () {
 desktop.app.spellbook.forbiddenRickRoll = function forbiddenRickRoll () {
   desktop.set('audio_enabled', true);
   desktop.play('FORBIDDEN_RICKROLL.mp3', true);
+  desktop.app.wallpaper.stop();
   $('#wallpaper').attr('src', 'desktop/assets/images/misc/forbidden-rickroll.gif');
+  $('#wallpaper').show();
   $('#c').hide();
 };
 
@@ -109,14 +114,26 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
   // summon Merlin
   $('#loaderHolder').show();
   $('#mainOverlay').hide();
-  
-  desktop.app.merlin.agent.show();
-  desktop.app.merlin.agent.speak('Ebublio!');
-  desktop.app.merlin.agent.play('DoMagic1', 4444, function () {
-    desktop.app.merlin.agent.speak('Be cool my dude.');
+  $('#wallpaper').show();
+
+  if (desktop.app.merlin.agent) {
+    desktop.app.merlin.agent.show();
+    desktop.app.merlin.agent.speak('Ebublio!');
+    desktop.app.merlin.agent.play('DoMagic1', 4444, function () {
+      desktop.app.merlin.agent.speak('Be cool my Buddy.');
+      shakeItOff()
+    });
+  } else {
+    shakeItOff();
+  }
+
+  function shakeItOff() {
     $( '#wallpaper' ).effect('shake', { direction: 'left', distance: 112, times: 111 }, function () {
       $( '#wallpaper' ).effect('shake', { direction: 'down', distance: 112, times: 111 }, function () {
-        desktop.app.merlin.agent.speak('Would you like to learn Magic with Merlin?');
+        if (desktop.app.merlin.agent) {
+          // TODO: Event Emitter insted of conditional check for merlin
+          desktop.app.merlin.agent.speak('Would you like to learn Magic with Merlin?');
+        }
         $( '#wallpaper' ).effect('shake', { direction: 'right', distance: 112, times: 111 }, function () {
           $( '#wallpaper' ).effect('shake', { direction: 'up', distance: 112, times: 111 }, function () {
             $('#loaderHolder').fadeOut({
@@ -127,20 +144,21 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
               easing: 'linear',
               duration: 777,
               complete: function () {
-              // desktop should already be started and running
+                $('#wallpaper').fadeOut();
               }
             });
           });
         });
       });
     });
-  });
+  }
+
 };
 
 
 // please no
 desktop.app.spellbook.zalgo = function castZalgoSpell (params, next) {
-  $('span, label, a').each(function (i, item) {
+  $('span, label, a, .message').each(function (i, item) {
     if ($(this).css('display') === 'block') {
       $(this).attr('data-og-zalgo', $(this).html());
       $(this).html(desktop.app.spellbook._zalgo($(this).html()));
@@ -149,15 +167,15 @@ desktop.app.spellbook.zalgo = function castZalgoSpell (params, next) {
   });
   let count = 0;
   let zalgoInt = setInterval(function () {
-    $('span, label, a').each(function (i, item) {
+    $('span, label, a, .message').each(function (i, item) {
       if ($(this).css('display') === 'block') {
         $(this).html(desktop.app.spellbook._zalgo($(this).attr('data-og-zalgo')));
       }
     });
     count++;
-    if (count > 13) {
+    if (count > 7) {
       clearInterval(zalgoInt);
-      $('span, label, a').each(function (i, item) {
+      $('span, label, a, .message').each(function (i, item) {
         if ($(this).css('display') === 'block') {
           $(this).html($(this).attr('data-og-zalgo'));
           $(this).removeClass('rainbowFast');

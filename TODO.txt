@@ -4,25 +4,22 @@ We have many issues open and welcomed for first time contributors!
 
     1/2 - show .console_send_message_form in console so buddy can send /bs without login
     1/2 - clean up /bs
+      - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
+    
+    - add `App.Download` for downloading buddypond
 
     - play sound alert if buddypond.me is mentioned in chat
-
-    - Flags need to show for memes and snaps and sounds, etc
-    - Flag mouseover should show alt title of locale
-
     - add static picture of merlin in /help
       - if you click merlin it launches /merlin app
 
-\party
 
+\party
 Party mode v1
   - turn on hard-coded mp3 song ( something banging )
   - /play party-song.mp3
   - /av
   - /wallpaper rainbow
 
-- ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
-- add `App.Download` for downloading buddypond
 - drag and drop should work on entire document and use context based on active window
 
 Mobile Issues
@@ -96,6 +93,8 @@ Chat Windows
 - create icons for data pulse ( drop in and drop out)
 - create icons for connected / disconnected
 - add spell for making user unable to say, cause echo back
+- Flag mouseover should show alt title of locale
+  - requires simple JSON list of locale names to local keys
 
 Apps
 
@@ -182,6 +181,7 @@ Post Beta
 
 ++++++++++++WELL++++++++++
 
+X - Flags need to show for memes and snaps and sounds, etc
 X - add "Score" and "Distance" to meme cards / Mnemosyne
 X - fix padding for mobile top window bar
 X - put back traffic lights to upper right on mobile
