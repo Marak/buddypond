@@ -27,7 +27,14 @@
 
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
 
-**Screenshots**
+
+**Screencasts**
+
+<a href="https://www.youtube.com/watch?v=qjrDi1EeMZ4">
+<img src="https://buddypond.com/desktop/assets/images/misc/alpha-youtube.jpeg"/>
+</a>
+
+*April 26th, 2022*
 
 <a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/buddypond-demo-april-2022.gif"/></a>
 
