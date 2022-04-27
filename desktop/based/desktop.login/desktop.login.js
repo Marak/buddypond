@@ -158,7 +158,7 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
       localStorage.setItem('qtokenid', data.qtokenid);
       localStorage.setItem('me', buddypond.me);
       buddypond.qtokenid = data.qtokenid;
-      desktop.app.login.success({ source: 'serverToken' });
+      desktop.app.login.success({ source: 'serverToken', freshAccount: data.freshAccount });
     } else {
       if (data.banned) {
         alert(data.message);
@@ -235,6 +235,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   // TODO: route default view based on query string
   let queryParams = desktop.utils.parseQueryString(document.location.search);
   if (queryParams.pond) {
+    desktop.ui.openWindow('pond');
     desktop.ui.openWindow('pond', {
       context: queryParams.pond
     });
@@ -247,9 +248,11 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
       $('#window_buddylist').show();
       desktop.ui.openWindow('buddylist');
       desktop.ui.openWindow('pond');
-      desktop.ui.openWindow('pond', {
-        context: 'Lily'
-      });
+      if (params.freshAccount) {
+        desktop.ui.openWindow('pond', {
+          context: 'Lily'
+        });
+      }
     }
     // anounce all new anonymous buddies when they join
     if (buddypond.me === 'anonymous' && params.source === 'serverToken') {
