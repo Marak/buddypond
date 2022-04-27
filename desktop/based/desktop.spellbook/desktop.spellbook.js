@@ -48,10 +48,9 @@ desktop.app.spellbook.load = function loadSpellBook (params, next) {
               } else {
                 if (buddyName === buddypond.me) {
                   alert('You targeted yourself? Well played.');
-                } else {
-                  alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
                 }
                 if (desktop.app.spellbook && desktop.app.spellbook[spellName]) {
+                  alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
                   desktop.app.spellbook[spellName]();
                 } else {
                   alert(spellName + ' is forbidden knowledge');
@@ -158,7 +157,7 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
 
 // please no
 desktop.app.spellbook.zalgo = function castZalgoSpell (params, next) {
-  $('span, label, a, .message').each(function (i, item) {
+  $('span, label').each(function (i, item) {
     if ($(this).css('display') === 'block') {
       $(this).attr('data-og-zalgo', $(this).html());
       $(this).html(desktop.app.spellbook._zalgo($(this).html()));
@@ -167,15 +166,15 @@ desktop.app.spellbook.zalgo = function castZalgoSpell (params, next) {
   });
   let count = 0;
   let zalgoInt = setInterval(function () {
-    $('span, label, a, .message').each(function (i, item) {
+    $('span, label').each(function (i, item) {
       if ($(this).css('display') === 'block') {
         $(this).html(desktop.app.spellbook._zalgo($(this).attr('data-og-zalgo')));
       }
     });
     count++;
-    if (count > 7) {
+    if (count > 4) {
       clearInterval(zalgoInt);
-      $('span, label, a, .message').each(function (i, item) {
+      $('span, label').each(function (i, item) {
         if ($(this).css('display') === 'block') {
           $(this).html($(this).attr('data-og-zalgo'));
           $(this).removeClass('rainbowFast');
