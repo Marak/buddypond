@@ -638,12 +638,16 @@ a:hover {
   display: none;
 }
 
+.defaultCursor {
+  cursor: default !important;
+}
+
 .pointer {
   cursor: pointer;
 }
 
 .progress {
-  cursor: progress;
+  cursor: progress !important;
 }
 
 .smaller {

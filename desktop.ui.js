@@ -64,12 +64,19 @@ JQDX.showLoadingProgressIndicator = function showLoadingProgressIndicator () {
     $('.mobileLoadingOverlay').show();
     $('.mobileLoadingOverlay').css('z-index', 421);
   }
-  $('html,body').css('cursor','progress');
+  $('html,body').addClass('progress');
+  $('div.window').addClass('progress');
+  $('a').addClass('progress');
+  $('button').addClass('progress');
 }
 
 JQDX.hideLoadingProgressIndicator = function showLoadingProgressIndicator () {
   $('.mobileLoadingOverlay').hide();
-  $('html,body').css('cursor','pointer');
+  $('html,body').removeClass('progress');
+  $('div.window').removeClass('progress');
+  $('a').removeClass('progress');
+  $('button').removeClass('progress');
+  $('html,body').addClass('defaultCursor');
 }
 
 desktop.ui.showLoadingProgressIndicator = JQDX.showLoadingProgressIndicator;
