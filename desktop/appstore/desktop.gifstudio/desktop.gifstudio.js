@@ -78,7 +78,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       }
 
       desktop.app.gifstudio.currentFrameIndex = frameIndex;
-      JQDX.openWindow('paint', { 
+      desktop.ui.openWindow('paint', { 
         output: 'gifstudio',
         context: title
       });
@@ -131,7 +131,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
 
 desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   // Remark: strange issue with double encoding gif in JSPAINT adding a '"' symbol?
-  img = img.substring(1, img.length -1);
+  img = img.substring(1, img.length-1);
   let action = 'replace';
   let currentFrames = $('#window_gifstudio .gifFrameHolder').length;
   // console.log('desktop.app.gifstudio.loadGifFrame', index, currentFrames)
@@ -139,11 +139,8 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
     action = 'insert';
   }
   desktop.app.gifstudio.renderFrame({ frameIndex: index }, img, desktop.app.gifstudio.insertMode);
-  setTimeout(function () {
-    desktop.app.gifstudio.createGif(desktop.app.gifstudio.gifDelay, function (err, imgData) {
-      // desktop.app.gifstudio.drawFrames({ url: imgData, frames: 'all' })
-    });
-  }, 333);
+  desktop.app.gifstudio.createGif(desktop.app.gifstudio.gifDelay, function (err, imgData) {
+  });
 };
 
 desktop.app.gifstudio.createGif = function createGif (delay, cb) {
@@ -162,6 +159,7 @@ desktop.app.gifstudio.createGif = function createGif (delay, cb) {
   // do not attempt to render a gif which has no frames added
   // Remark: This may happen if .createGif() is called before frames have rendered or any frames have been added
   if ($('.gifstudio_gifFrame').length === 0) {
+    alert('No frames to render. Please try again.');
     return cb(null, false);
   }
 
@@ -192,7 +190,11 @@ desktop.app.gifstudio.createGif = function createGif (delay, cb) {
     gif.addFrame(e, { delay: delay });
   });
 
-  gif.render();
+  // provide one tick of event loop to ensure that all frames render as base64 strings
+  // Remark: Without this delay the last frame appears black on first render
+  setTimeout(function(){
+    gif.render();
+  }, 1)
   
 };
 
@@ -326,24 +328,20 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
     $('.outputTarget').html('');
     $('.sendGif', '#window_gifstudio').hide();
   }
-
   $('.gifFrameHolder', '#window_gifstudio').remove();
 
+
   if (!gifURL) {
-    // if no url has been provided, default to the rainbow gif
-    // Remark: A base 64 value *must* currently be paseed into gifstudio.drawFrames()
-    toDataURL('desktop/appstore/desktop.gifstudio/assets/rainbow.gif')
-      .then(dataUrl => {
-        gifURL = dataUrl;
-        $('.gifstudio_gifPreview').attr('src', gifURL);
-        $('.gifstudio_gifPreview').show();
-        desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' });
-      });
-  } else {
-    $('.gifstudio_gifPreview').attr('src', gifURL);
-    $('.gifstudio_gifPreview').show();
-    desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' });
+    gifURL = 'desktop/appstore/desktop.gifstudio/assets/rainbow.gif';
   }
+
+  toDataURL(gifURL)
+    .then(dataUrl => {
+      gifURL = dataUrl;
+      $('.gifstudio_gifPreview').attr('src', gifURL);
+      $('.gifstudio_gifPreview').show();
+      desktop.app.gifstudio.drawFrames({ url: gifURL, frames: 'all' });
+    });
 
 };
 

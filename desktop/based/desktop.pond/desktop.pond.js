@@ -114,11 +114,13 @@ desktop.app.pond.load = function loadPond (params, next) {
       let context, output;
       output = 'pond';
       context = $('.pond_message_to', form).val();
-      JQDX.openWindow('gifstudio', { 
+      desktop.ui.openWindow('gifstudio', { 
         output: output,
         context: context
       });
-      // required to not re-trigger window_stack on pond window itself ( with click )
+      JQDX.window_front('#window_gifstudio');
+      // Remark: window_stack issue, prevent default required to not re-trigger window_stack
+      //         on pond window itself ( with click )
       ev.preventDefault();
       ev.stopPropagation();
     });

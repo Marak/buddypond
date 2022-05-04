@@ -89,6 +89,11 @@ JQDX.window_flat = function window_flat () {
   $('div.window').removeClass('window_stack');
 };
 
+JQDX.window_front = function window_front (win) {
+  JQDX.window_flat();
+  $(win).addClass('window_stack');
+}
+
 //
 // Clear active states, hide menus.
 //
@@ -666,12 +671,15 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     
     desktop.app.gifstudio = desktop.app.gifstudio || {};
     // -1 or undefined as frame index indicates create new gif
-    JQDX.openWindow('gifstudio', {
+    desktop.ui.openWindow('gifstudio', {
       src: url,
       output: output,
       context: context,
       frameIndex: desktop.app.gifstudio.currentFrameIndex || 0
     });
+    JQDX.window_front('#window_gifstudio');
+    ev.preventDefault();
+    ev.stopPropagation();
   });
 
   // App icons are double click on to open on desktop
@@ -991,8 +999,9 @@ JQDX.showWindow = function showWindow (appName, params) {
     }
   }
 
-  JQDX.window_flat();
-  $(appWindow).addClass('window_stack').show();
+  JQDX.clear_active();
+  $(appWindow).show();
+  JQDX.window_front(appWindow);
 
   $(appWindow).data('app', appName);
   $(appWindow).data('context', params.context);
@@ -1009,7 +1018,7 @@ JQDX.showWindow = function showWindow (appName, params) {
   }
 
   JQDX.loading[appName] = false;
-  
+
   // new windows must be immediately resized to current view
   desktop.ui.windowResizeEventHandler(null, true);
 

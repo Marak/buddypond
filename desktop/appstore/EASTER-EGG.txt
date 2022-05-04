@@ -97,6 +97,7 @@ Ideas for community apps:
   
 
 
+https://github.com/JoshuaKGoldberg/emojisplosion
 
 
 

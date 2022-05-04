@@ -33,7 +33,6 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
 };
 
 desktop.app.paint.send = function sendPaint (params) {
-
   $('.sendPaint').attr('disabled', true);
 
   params = params || {
@@ -62,7 +61,6 @@ desktop.app.paint.send = function sendPaint (params) {
   let context = desktop.app.paint.context;
 
   setTimeout(function () {
-
     // send the paint to `gifstudio` as a frame ( either existing or new )
     if (output === 'gifstudio') {
       // TODO: should not be undefined here
@@ -75,7 +73,10 @@ desktop.app.paint.send = function sendPaint (params) {
       desktop.app.gifstudio.loadGifFrame(firstImg, desktop.app.gifstudio.currentFrameIndex, params.action);
       JQDX.closeWindow('#window_paint');
       // open the window we just outputted to
-      $('#window_gifstudio').show(); // TODO un-hardcode this value? why not use JQDX.showWindow() ?
+      // Remark: Assume gifstudio has already been loaded since we made it here
+      // TODO: we should be able to call gifstudio.openWindow without it reloading entire gif
+      // desktop.ui.openWindow('gifstudio');
+      $('#window_gifstudio').show();
       $('.sendPaint').attr('disabled', false);
       return;
     }
