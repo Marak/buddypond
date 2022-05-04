@@ -1,6 +1,23 @@
 desktop.app.buddylist = {};
 desktop.app.buddylist.label = 'Buddies';
 
+desktop.app.buddylist.setBuddy = function setBuddy (buddyName, updates) {
+  desktop.app.buddylist.profileState.updates['buddies/' + buddyName] = desktop.app.buddylist.profileState.updates['buddies/' + buddyName] || {};
+  for (let p in updates) {
+    desktop.app.buddylist.profileState.updates['buddies/' + buddyName][p] = updates[p];
+  }
+};
+
+/*
+  TODO:
+  // sets local profile property of me, which propigates to server
+  desktop.app.buddylist.setProfile('hello my profile')
+  // gets most recent me profile from local
+  desktop.app.buddylist.getProfile('hello my profile')
+  // sets local profile status to "Away", which propigates to server
+  desktop.app.buddylist.setStatus('Away')
+*/
+
 desktop.app.buddylist.subscribedBuddies = [];
 
 desktop.app.buddylist.positiveAffirmations = [
@@ -502,7 +519,15 @@ desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
     }, 10);
     return;
   } else {
-    //ex: let buddyProfile = { "Dave": { "newMessages": true } };
+    /*
+    
+      When performing the outgoing request to fetch buddylist updates,
+      also send the current local buddylist.profileState ( of me ) to push updates
+    
+      This allows modification of desktop.app.buddylist.profileState scope locally,
+      which will then be sent to the server and propipigate to your buddies
+
+    */
     buddypond.getBuddyProfile(desktop.app.buddylist.profileState, function (err, data) {
       if (err || typeof data !== 'object') {
         desktop.log(err);
@@ -676,8 +701,7 @@ desktop.app.buddylist.openWindow = function (params) {
     }
 
     // Ensures that notifications are marked as read on the client ( dont want spamming popups after close )
-    desktop.app.buddylist.profileState.updates['buddies/' + params.context] = desktop.app.buddylist.profileState.updates['buddies/' + params.context] || {};
-    desktop.app.buddylist.profileState.updates['buddies/' + params.context].newMessages = false;
+    desktop.app.buddylist.setBuddy(params.context, { newMessages: false })
 
     if ($(windowId).length === 0) {
       desktop.app.buddylist.renderChatWindow(params.context);
@@ -748,6 +772,5 @@ desktop.app.buddylist.onWindowOpen = function (windowId, context) {
   $('.buddy_message_from', windowId).val(buddypond.me);
 
   // Ensures that notifications are marked as read on the client ( dont want spamming popups after close )
-  desktop.app.buddylist.profileState.updates['buddies/' + context] = desktop.app.buddylist.profileState.updates['buddies/' + context] || {};
-  desktop.app.buddylist.profileState.updates['buddies/' + context].newMessages = false;
+  desktop.app.buddylist.setBuddy(context, { newMessages: false })
 };

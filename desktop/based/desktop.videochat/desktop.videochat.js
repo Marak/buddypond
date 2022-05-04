@@ -252,12 +252,12 @@ desktop.app.videochat.endCall = function videoChatEndCall (buddyName, cb) {
     return false;
   }
   desktop.app.videochat.CALL_IN_PROGRESS = false;
-  desktop.app.buddylist.profileState.updates['buddies/' + buddyName] = desktop.app.buddylist.profileState.updates['buddies/' + buddyName] || {};
-  desktop.app.buddylist.profileState.updates['buddies/' + buddyName].isCalling = false;
+
+  desktop.app.buddylist.setBuddy(buddyName, { isCalling: false })
+
   if (desktop.app.videochat.webrtc && desktop.app.videochat.webrtc.destroy) {
     desktop.app.videochat.webrtc.destroy();
   }
-
   // clear signal polling timer
   // clear out webrtc connections
   buddypond.endBuddyCall(buddyName, function endBuddyCall () {
