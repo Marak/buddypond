@@ -45,8 +45,8 @@ desktop.app.merlin.load = function loadmerlinGames (params, next) {
 
 // TODO: make window for interacting with merlin / going through each clippy interaction
 desktop.app.merlin.openWindow = function openWindow () {
-  $('#window_merlin').css('width', 299);
-  $('#window_merlin').css('height', 455);
+  $('#window_merlin').css('width', '22vw');
+  $('#window_merlin').css('height', '55vh');
   $('#window_merlin').css('left', 50);
   $('#window_merlin').css('top', 50);
   $('.agent_merlin_active').prop('checked', desktop.settings.agent_merlin_active);
