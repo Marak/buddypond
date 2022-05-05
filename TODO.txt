@@ -1,7 +1,17 @@
 For contributions, please first see: https://github.com/Marak/buddypond/issues
 
+Context / App Input / Output Issues
+  - clicking on active windows should change context and type
+    - other apps like paint and snaps should use this active context
+    - ensure active context is shown inside paint and recorder app
+    - add dropdown select for selecting send context in app
+    - add ability to switch context if buddy re-presses button in new window
+    - paint loses context / has bug with disabled send after local save
+    - paint and sound recorder and mirror apps should have drop down select for context output
+
 We have many issues open and welcomed for first time contributors!
 
+    - clicking on sound should load context in sound recorder to you can remix and send back
     1/2 - show .console_send_message_form in console so buddy can send /bs without login
     1/2 - clean up /bs
       - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
@@ -25,15 +35,6 @@ Party mode v1
 Mobile Issues
   - better ponder the orb UX for IDC on mobile
 
-Context / App Input / Output Issues
-  - clicking on active windows should change context and type
-    - other apps like paint and snaps should use this active context
-    - ensure active context is shown inside paint and recorder app
-    - add dropdown select for selecting send context in app
-    - add ability to switch context if buddy re-presses button in new window
-    - paint loses context / has bug with disabled send after local save
-    - paint and sound recorder and mirror apps should have drop down select for context output
-
 - Add Buddys's Documents Folder
   - Snaps
   - Paints
@@ -41,21 +42,14 @@ Context / App Input / Output Issues
   - add filesystem API with localForage, https://github.com/localForage/localForage 
 
 Misc 
+- adding buddy who is already buddy render issue
 - still missing reset password by email link UX on login.html
 - spend 3 hours going through memes this week
 - remove this line from codebase: `$('.console_send_message_form').hide();`
-- send paint to local file system link broken?
-- move join lily pond logic to saved windows default ( not coded into app! )
-- after send animation should restore correct window
-- gif issues git uploaded, 20 minute timebox
-- click / active state order of click min icons
-1 / 2 - meme room should only post memes and not show the OG text, not require /meme tag
-1 / 2- login page needs nice splash screen that scrolls for mobile
 
 MEDIUM 
   - bottom bar needs to be able to hold N open apps, or at least more than 5 on mobile ( double sized bottom bar issue )
   - - check to see why empty gif sends on import. test a few gifs
-
 
 - `App.Visuals` has no catch on media check
   - index.html:316 Uncaught TypeError: navigator.getUserMedia is not a function
@@ -64,16 +58,15 @@ MEDIUM
 
 Chat Windows
 
-  - remember seralized desktop state ( windows open / close + x / y positions ... )
+  X - 1 / 2- remember seralized desktop state ( windows open / close + x / y positions ... )
+    - window state works, x / y pos works, height and width missing
   - why does extra carriage return happen on enter key in chat, breaks links and text
-  - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 
 1/2  - refactor message cache system ( cards / buddyMessageCache, desktop.messages._processed)
 - swap online / offline emoji icons for images
 - dont allow icons to be hidden on smaller windows?
 - move call button to side of text area?
 - Add replies / comments to messages ( discord style? )
-- add `App.Export` for exporting buddypond data
 
 ? - add min display time to loading gifs ( to avoid flicker )
 
@@ -170,6 +163,8 @@ Post Beta
     - sigils are for system powers like matrix agent spell casting
     - signets are for feature role checks like Buddy Pond Gold or Membership is Guilds, etc
 
+  - add `App.Export` for exporting buddypond data
+
 
 
 ¢∞§§§§§§§§§§§§§§§§========>
@@ -177,10 +172,15 @@ Post Beta
 ¢∞§§§§§§§§§§§§§§§§========>
 
 
-
-
 ++++++++++++WELL++++++++++
-
+!X - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
+X - move join lily pond logic to saved windows default ( not coded into app! )
+X - after send animation should restore correct window
+X - send paint to local file system link broken?
+X - gif issues git uploaded, 20 minute timebox
+X - click / active state order of click min icons
+X 1 / 2 - meme room should only post memes and not show the OG text, not require /meme tag
+X 1 / 2- login page needs nice splash screen that scrolls for mobile
 X - Flags need to show for memes and snaps and sounds, etc
 X - add "Score" and "Distance" to meme cards / Mnemosyne
 X - fix padding for mobile top window bar
