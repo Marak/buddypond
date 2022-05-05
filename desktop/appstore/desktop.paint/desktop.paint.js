@@ -139,7 +139,7 @@ desktop.app.paint.openWindow = function openWindow (params) {
 
   $('.paintOutputTarget').html(desktop.app.paint.output + '/' + desktop.app.paint.context);
 
-  if (buddypond.me || (desktop.app.paint.output && desktop.app.paint.output !== 'localhost')) {
+  if ((desktop.app.paint.output && desktop.app.paint.output !== 'localhost')) {
     $('.sendPaintHolder .sendPaint').html('SEND PAINT');
     $('.sendPaintHolder').show();
   } else {
