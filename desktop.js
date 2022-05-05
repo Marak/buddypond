@@ -14,16 +14,17 @@ desktop.mode = 'production';
 
 // desktop.origin is used as the root path for all buddy uploaded multimedia assets ( Snaps, Paints, Sounds )
 desktop.origin = 'https://buddypond.com';
+desktop.filesEndpoint = 'https://files.buddypond.com'
 
 // desktop.mode = 'dev';
 // if the desktop is in dev mode, use the browser's origin for all multimedia assets ( localhost )
 if (desktop.mode === 'dev') {
   desktop.origin = window.origin;
+  desktop.filesEndpoint = window.origin;
 }
 
 // apps which are considered "required" for Buddy Pond to work
 desktop.basedApps = ['admin', 'appstore', 'automaton', 'audioplayer', 'buddylist', 'console', 'faq', 'localstorage', 'login', 'messages', 'midi', 'mirror', 'notifications', 'pond', 'profile', 'settings', 'spellbook', 'themes', 'tts', 'videochat', 'videoplayer', 'wallpaper'];
-desktop.filesEndpoint = 'https://files.buddypond.com'
 
 // `desktop.app` scope is used to keep track of whole `App` instances that are loaded into memory
 desktop.app = {};
