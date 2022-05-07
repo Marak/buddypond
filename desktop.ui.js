@@ -1556,5 +1556,36 @@ desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
     desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed
   }, 333)
 
+}
 
+desktop.ui.setActiveWindowAsWallpaper = function setActiveWindowAsWallpaper () {
+  let activeWin = desktop.ui.getActiveWindow();
+  desktop.ui.setWindowAsWallpaper(activeWin);
+}
+
+desktop.ui.removeWindowWallpaper = function removeWindowWallpaper () {
+  let windowWallpaper = $(".window_wallpaper");
+  desktop.ui.removeWindowAsWallpaper(windowWallpaper)
+}
+
+desktop.ui.setWindowAsWallpaper = function setWindowAsWallpaper (id) {
+  $(id).removeClass('window');
+  $(id).removeClass('ui-draggable');
+  $(id).removeClass('ui-resizable');
+  $(id).removeClass('window_stack');
+  $(id).addClass('wallpaper');
+  $(id).addClass('window_wallpaper');
+  $(id).css('height', '90%')
+  $('.window_top', id).hide();
+  $('.window_bottom', id).hide();
+}
+
+desktop.ui.removeWindowAsWallpaper = function removeWindowAsWallpaper (id) {
+  $(id).addClass('window');
+  $(id).addClass('ui-draggable');
+  $(id).addClass('ui-resizable');
+  $(id).addClass('window_stack');
+  $(id).removeClass('wallpaper');
+  $('.window_top', id).show();
+  $('.window_bottom', id).show();
 }
