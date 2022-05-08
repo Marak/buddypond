@@ -437,6 +437,16 @@ JQDX.window_resize = function window_resize (el) {
 
 };
 
+JQDX.openFullscreen = function openFullscreen (elem) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
 JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   
   let d = $(document);
@@ -562,6 +572,32 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let holder = $(this).parent().parent();
     let coode = $('.buddyScript', holder).html();
     runBuddyScript(coode);
+    return false;
+  });
+
+  d.on('click', '.setFullscreen', function (ev) {
+    JQDX.openFullscreen($('body').get(0))
+    return false;
+  });
+
+  d.on('click', '.hideAllWindows', function (ev) {
+    desktop.ui.displayMode = 'min';
+    // If any windows are visible, hide all.
+    $('div.window').hide();
+    return false;
+  });
+
+  d.on('click', '.setWindowAsWallpaper', function (ev) {
+    if (!desktop.ui.wallpaperWindow) {
+      desktop.ui.wallpaperWindow = true;
+      desktop.ui.removeWindowWallpaper()
+      desktop.ui.setActiveWindowAsWallpaper();
+      $('.setWindowAsWallpaper').html('Remove Window as Wallpaper');
+    } else {
+      desktop.ui.wallpaperWindow = false;
+      desktop.ui.removeWindowWallpaper();
+      $('.setWindowAsWallpaper').html('Set Active Window to Wallpaper');
+    }
     return false;
   });
 
@@ -1575,9 +1611,12 @@ desktop.ui.setWindowAsWallpaper = function setWindowAsWallpaper (id) {
   $(id).removeClass('window_stack');
   $(id).addClass('wallpaper');
   $(id).addClass('window_wallpaper');
-  $(id).css('height', '90%')
+  $(id).css('height', '90%');
   $('.window_top', id).hide();
   $('.window_bottom', id).hide();
+  // in case app.wallpaper is using canvas
+  // TODO: better API integration into app.wallpaper
+  $('.canvasBackground').hide();
 }
 
 desktop.ui.removeWindowAsWallpaper = function removeWindowAsWallpaper (id) {
@@ -1586,6 +1625,10 @@ desktop.ui.removeWindowAsWallpaper = function removeWindowAsWallpaper (id) {
   $(id).addClass('ui-resizable');
   $(id).addClass('window_stack');
   $(id).removeClass('wallpaper');
+  $(id).removeClass('window_wallpaper');
   $('.window_top', id).show();
   $('.window_bottom', id).show();
+  // in case app.wallpaper is using canvas
+  // TODO: better API integration into app.wallpaper
+  $('.canvasBackground').show();
 }
