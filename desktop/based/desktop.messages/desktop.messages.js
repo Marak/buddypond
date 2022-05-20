@@ -5,6 +5,18 @@ desktop.app.messages.load = function (params, cb) {
   cb();
 };
 
+function renderGeoFlag (message) {
+  let geoFlag = '';
+  if (message.location) {
+    if (message.location !== 'outer space') {
+      geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
+    } else {
+      geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/af.svg"/>`;
+    }
+  }
+  return geoFlag;
+}
+
 // rendering incoming message object as chat html
 desktop.app.messages.renderChatMessage = function renderChatMessage (message, windowId){
 
@@ -16,12 +28,8 @@ desktop.app.messages.renderChatMessage = function renderChatMessage (message, wi
   message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
 
   let str = '';
-  let geoFlag = '';
-  if (message.location) {
-    if (message.location !== 'outer space') {
-      geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
-    }
-  }
+  let geoFlag = renderGeoFlag(message);
+
   if (message.from === buddypond.me) {
     if (message.from === 'anonymous') {
       let tripcode = message.tripcode || 'tr1pc0d3';
@@ -117,13 +125,13 @@ desktop.app.messages.cards.audio = function renderAudioCard (message, windowId) 
 }
 
 desktop.app.messages.cards.meme = function renderMemeCard (message, windowId) {
-  message.card.filename = buddypond.memePath + 'memes/' + message.card.filename;
+  message.card.filename = buddypond.memePath + '/memes/' + message.card.filename;
   $('.chat_messages', windowId).append(`
     <div class="message memeCard">
       <strong>${message.card.title}</strong><br/><em>Levenshtein: ${message.card.levenshtein} Jaro Winkler: ${message.card.winkler}</em>
       <br/>
-      <img class="remixGif" title="Remix in GIF Studio" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-      <img class="remixPaint" title="Remix in Paint" data-output="pond" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+      <img class="remixGif" title="Remix in GIF Studio" data-output="${message.type}" data-context="${message.to}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+      <img class="remixPaint" title="Remix in Paint" data-output="${message.type}" data-context="${message.to}" src="desktop/assets/images/icons/icon_paint_64.png"/>
       <img class="card-meme image" src="${message.card.filename}"/>
     </div>
     <br/>
@@ -132,17 +140,19 @@ desktop.app.messages.cards.meme = function renderMemeCard (message, windowId) {
 
 desktop.app.messages.cards.snap = function renderSnapCard (message, windowId) {
   message.card.snapURL = desktop.filesEndpoint + '/' + message.card.snapURL;
-  let context = message.from;
-  if (message.from === buddypond.me) {
-    context = message.to;
+  let context = message.to;
+  if (message.type === 'buddy') {
+    if (message.from !== buddypond.me) {
+      context = message.from;
+    }
   }
   let arr = message.card.snapURL.split('.');
   let ext = arr[arr.length -1];
   if (ext === 'gif') {
     $('.chat_messages', windowId).append(`
      <div class="message">
-      <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${context}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-      <img class="remixPaint" title="Remix in Paint" data-output="buddy" data-context="${context}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+      <img class="remixGif" title="Remix in GIF Studio" data-output="${message.type}" data-context="${context}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+      <img class="remixPaint" title="Remix in Paint" data-output="${message.type}" data-context="${context}" src="desktop/assets/images/icons/icon_paint_64.png"/>
       <img id="${message.uuid}" class="snapsImage image" src="${message.card.snapURL}"/>
     </div>
     <br/>
@@ -150,8 +160,8 @@ desktop.app.messages.cards.snap = function renderSnapCard (message, windowId) {
   } else {
     $('.chat_messages', windowId).append(`
      <div class="message">
-      <img class="remixGif" title="Remix in GIF Studio" data-output="buddy" data-context="${context}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
-      <img class="remixPaint" title="Remix this Paint" data-output="buddy" data-context="${context}" src="desktop/assets/images/icons/icon_paint_64.png"/>
+      <img class="remixGif" title="Remix in GIF Studio" data-output="${message.type}" data-context="${context}" src="desktop/assets/images/icons/icon_gifstudio_64.png"/>
+      <img class="remixPaint" title="Remix this Paint" data-output="${message.type}" data-context="${context}" src="desktop/assets/images/icons/icon_paint_64.png"/>
       <img id="${message.uuid}" class="paintsImage image" src="${message.card.snapURL}"/>
      </div>
      <br/>
