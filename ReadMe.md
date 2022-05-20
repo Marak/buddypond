@@ -1,8 +1,8 @@
 # Buddy Pond ( Alpha )
-## *Cloud Desktop and Instant Messenger*
+## *Cloud OS and Instant Messenger*
 [https://buddypond.com](https://buddypond.com)
 
- - Cloud Desktop
+ - Cloud OS
  - Desktop and Mobile Interfaces
  - Buddy Lists! Add Your Buddies
  - Peer to Peer Instant Messaging
