@@ -87,6 +87,10 @@ desktop.app.appstore.apps = {
     version: '4.20.69',
     description: 'Meme Pool ( Powered By: Mnemosyne )'
   },
+  'midi': {
+    label: 'MIDI',
+    version: '4.20.69'
+  },
   'mirror': {
     label: 'Mirror',
     version: '4.20.69'

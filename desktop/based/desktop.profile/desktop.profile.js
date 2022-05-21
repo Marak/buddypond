@@ -158,6 +158,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
     function renderAppList () {
       $('#window_profile .yourApps tbody').html('');
       desktop.app.profile.renderProfileApps();
+      desktop.app.profile.renderProfileApp('midi')
       desktop.app.profile.renderProfileApp('appstore')
     }
 
