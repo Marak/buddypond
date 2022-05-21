@@ -347,7 +347,6 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (e, forc
 window.onresize = desktop.ui.windowResizeEventHandler;
 
 JQDX.window_maximize = function window_maximize (win, opts) {
-  console.log('win', win)
   if (desktop.ui.view === 'Mobile') {
     JQDX.minAllWindows();
     win.attr({
@@ -457,6 +456,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       let topWindow = $('.window_stack').attr('id');
       JQDX.closeWindow('#' + topWindow);
     }
+    /*
+    if (event.which == 77 && event.ctrlKey) {
+      alert('toggle spotlight')
+    }
+    */
   });
 
   // Cancel mousedown.
