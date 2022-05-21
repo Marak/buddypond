@@ -109,10 +109,10 @@ desktop.app.console._allowCommands = {
       description: 'Logs you out of Buddy Pond Desktop',
       icon: 'login'
     },
-    idc: {
-      command: 'desktop.ui.openWindow("interdimensionalcable");',
-      description: 'Interdimensional Cable',
-      icon: 'interdimensionalcable'
+    fluids: {
+      command: 'desktop.ui.openWindow("fluidsimulation");',
+      description: 'Fluid Simulations ( Trippy )',
+      icon: 'fluidsimulation'
     },
     games: {
       command: 'desktop.ui.openWindow("games");',
@@ -150,6 +150,11 @@ desktop.app.console._allowCommands = {
       },
       description: 'Shows basic Help commands',
       img: '/desktop/assets/images/icons/svg/1f9ae.svg'
+    },
+    idc: {
+      command: 'desktop.ui.openWindow("interdimensionalcable");',
+      description: 'Interdimensional Cable',
+      icon: 'interdimensionalcable'
     },
     instruments: {
       command: 'desktop.ui.openWindow("midifighter");',
