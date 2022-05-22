@@ -51,7 +51,7 @@ desktop.app.midi.load = function loadmidiGames (params, next) {
           logText("listing input: " + input.name);
           input.onmidimessage = handleMIDIMessage;
           desktop.app.midi.devices[input.name] = input;
-          logText("Connected input: " + desktop.app.midi.input.name);
+          logText("Connected input: " + input.name);
           // desktop.app.midi.currentInput.onmidimessage = handleMIDIMessage;
           $('.midiInputDevice').append(`<li>✅ ${input.name}</li>`)
         }
