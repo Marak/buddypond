@@ -11,7 +11,7 @@ function renderGeoFlag (message) {
     if (message.location !== 'outer space') {
       geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
     } else {
-      geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/af.svg"/>`;
+      geoFlag = ``;
     }
   }
   return geoFlag;

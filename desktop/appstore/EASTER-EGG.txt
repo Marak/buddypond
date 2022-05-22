@@ -86,7 +86,7 @@ Ideas for community apps:
 - ?!?!?!?!?!?!?!!?
   https://medium.com/hackernoon/a-web-audio-experiment-666743e16679
 
-
+https://research.google.com/semantris/
 
 - Add `App.Intercom`
   - sends TTS to chat window
@@ -95,11 +95,20 @@ Ideas for community apps:
   - autoplays the audio
   - deletes file after a few moments ( why not )
   
+Producivity Suite
+
+  - Word
+  - Excel
+  - Power Point
+  - Calendar ( https://fullcalendar.io/demos )
+  - Contacts
+  - File System ( BrowserFS? )
 
 
+https://fullcalendar.io/demos
 https://github.com/JoshuaKGoldberg/emojisplosion
 
-
+https://github.com/amitguptagwl/shabdawali
 
 The Wonky Page	(function(){var x = document.body.getElementsByTagName("*"); for (i = 0; i < x.length; i++) {var y = Math.floor((Math.random()*10)+1); x[i].style.transform="rotate("+y+"deg)"}}());	Wonkifies the page!	
 Test Me!
