@@ -76,6 +76,11 @@ desktop.app.console.log = function logDesktop () {
 
 // TODO: map all known apps
 desktop.app.console._allowCommands = {
+    appstore: {
+      command: 'desktop.ui.openWindow("appstore");',
+      description: 'View Buddy Pond App Store',
+      icon: 'appstore'
+    },
     av: {
       command: 'desktop.ui.openWindow("visuals");',
       description: 'Use the Microphone Audio to create Cool Visuals',
