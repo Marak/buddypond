@@ -1,7 +1,6 @@
 <style type="text/css">
 
   #midi-log{
-    height: 400px;
     overflow: auto;
     border: 1px solid #CCC;
     padding: 20px;
@@ -29,18 +28,40 @@
       <br/>
       <h1>Audio MIDI Setup</h1>
 
-      <p>To test MIDI Input:</p>
       <ol>
         <li>Plug in your MIDI device via USB to your computer.</li>
         <li>Twiddle some knobs. View received MIDI data below.</li>
         <li>All MIDI data is emitted as events to "desktop.emit" ( check console log )</li>
       </ol>
-
+      <br/>
+      <ul name="midiInputDevice" class="midiInputDevice">
+      </ul>
+        
+      </select>
       <br/>
       <br/>
-      <h2>MIDI Data Log</h2>
+      <h2>MIDI Input Log</h2>
 
       <div id="midi-log"></div>
+      <h2>Connect Virtual Instruments</h2>
+      <br/>
+      <div>
+        <div class="appPreview">
+          <a href="#" class="openApp desktopLink" data-app="piano">
+            <div class="appicon"><img src="desktop/assets/images/icons/icon_piano_64.png"/></div>
+            <div class="title">Piano</div>
+          </a>
+        </div>
+        <div class="appPreview">
+          <a href="#" class="openApp desktopLink" data-app="midifighter">
+            <div class="appicon"><img src="desktop/assets/images/icons/icon_midifighter_64.png"/></div>
+            <div class="title">Music Pad</div>
+          </a>
+        </div>
+      </div>
+      <!--
+      <h2>MIDI Ouput Log (TODO )</h2>
+      -->
       
     </div>
     <div class="abs window_bottom">

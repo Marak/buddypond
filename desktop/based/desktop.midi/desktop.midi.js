@@ -1,15 +1,23 @@
 desktop.app.midi = {};
 desktop.app.midi.label = 'Midi Setup';
 
+desktop.app.midi.devices = {};
+desktop.app.midi.currentInput = null;
+
 desktop.app.midi.load = function loadmidiGames (params, next) {
   desktop.load.remoteAssets([
     'midi' // this loads the sibling desktop.app.midi.html file into <div id="window_midi"></div>
   ], function (err) {
-    $('#window_midi').css('width', 662);
+    $('#window_midi').css('width', 777);
     $('#window_midi').css('height', 495);
     $('#window_midi').css('left', 50);
     $('#window_midi').css('top', 50);
     
+    $('.midiInputDevice').on('change', function(){
+      alert('new midi')
+      alert($(this).val())
+    });
+
     desktop.on('midi-message', "log-midi-data-to-console" , function(event){
       desktop.log('MIDI:', event)
     })
@@ -37,9 +45,16 @@ desktop.app.midi.load = function loadmidiGames (params, next) {
       //connect to first device found
       if(inputs.size > 0) {
         var iterator = inputs.values(); // returns an iterator that loops over all inputs
-        var input = iterator.next().value; // get the first input
-        logText("Connected first input: " + input.name);
-        input.onmidimessage = handleMIDIMessage;
+        // console.log('iterator', iterator)
+        for (let i = 0; i < inputs.size; i++) {
+          var input = iterator.next().value; // get the first input
+          logText("listing input: " + input.name);
+          input.onmidimessage = handleMIDIMessage;
+          desktop.app.midi.devices[input.name] = input;
+          logText("Connected input: " + desktop.app.midi.input.name);
+          // desktop.app.midi.currentInput.onmidimessage = handleMIDIMessage;
+          $('.midiInputDevice').append(`<li>✅ ${input.name}</li>`)
+        }
       }
     }
 
@@ -63,9 +78,9 @@ desktop.app.midi.load = function loadmidiGames (params, next) {
     }
 
     function logText(str){
-      log.innerHTML += str;
-      log.innerHTML += "<br>";
-      log.scrollTop = log.scrollHeight;
+      log.innerHTML = str;
+      //log.innerHTML += "<br>";
+      //log.scrollTop = log.scrollHeight;
     }
 
     next();

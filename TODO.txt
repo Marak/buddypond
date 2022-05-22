@@ -1,6 +1,17 @@
 For contributions, please first see: https://github.com/Marak/buddypond/issues
 
+Add spotlight / better console input ( stop using chat windows and #test )
+
+MIDI Improvements
+ - Add drop down for selecting active midi device
+Add link from piano to midi app
+Add ability to send test midi data out from midi app
+Better midi reporting in midi app
+Midi settings should be linked in settings
+Add links to in midi setup to piano / beatpad
+
 Context / App Input / Output Issues
+
   - clicking on active windows should change context and type
     - other apps like paint and snaps should use this active context
     - ensure active context is shown inside paint and recorder app
@@ -18,7 +29,6 @@ We have many issues open and welcomed for first time contributors!
     
     - add `App.Download` for downloading buddypond
 
-    - play sound alert if buddypond.me is mentioned in chat
     - add static picture of merlin in /help
       - if you click merlin it launches /merlin app
 
@@ -75,6 +85,7 @@ Chat Windows
   - client side ajax call possible
   - have remix button on images ( why not )
 
+- play sound alert if buddypond.me is mentioned in chat
 - add UX indactor for ajax disconnect with desktop.log and top right bar
 - spells should queue in client if client is not visible, wait for client to come back and click, then execute spell
 - console app should scroll better / fix scroll top issue with console output ( scroll to bottom like chat )
@@ -82,6 +93,7 @@ Chat Windows
 - add friend requests to automatons that autoaccept
     - have youtube and soundcloud players respect mute / volume levels
     - not hard...i think...
+
 - logout should only logout and close chat windows, not close entire app ( better exp )
 - create icons for data pulse ( drop in and drop out)
 - create icons for connected / disconnected
