@@ -115,3 +115,13 @@ Test Me!
 The Mirrored Page	(function(){var x = document.getElementsByTagName("body"); x[0].style.transform = "scaleX(-1)";}());	Mirrors the page!	
 Test Me!
 The Yelling Page	(function(){document.body.style.textTransform="uppercase";}());	MAKES WORDS LOUDER!
+
+
+https://www.igorski.nl/application/websid/
+https://www.mazbox.com/synths/mz101/
+https://www.g200kg.com/en/docs/webmidilink/index.html
+https://www.webaudiomodules.org/wamsynths/
+
+Wiki / Feather Wiki
+
+https://feather.wiki
