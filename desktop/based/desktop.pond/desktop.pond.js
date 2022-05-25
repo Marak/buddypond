@@ -51,9 +51,31 @@ desktop.app.pond.load = function loadPond (params, next) {
       return false;
     });
 
+    d.on('submit', '.pondLoginForm', function (ev) {
+      let holder = $(ev.target)
+      let buddyname = $('.buddyname', holder).val();
+      let buddypassword = $('.buddypassword', holder).val();
+      desktop.app.login.auth(buddyname, buddypassword, {
+        pondLogin: true
+      });
+    })
+
     d.on('mousedown', '.sendPondMessage', function (ev) {
       desktop.app.pond.sendMessage(this);
       return false;
+    });
+
+    $('.pondMessagesHolder').hide();
+    $('.no_chat_messages').hide();
+    $('.window_bottom_chat').hide();
+
+    d.on('mousedown', '.pondLoginButton', function (ev) {
+      let holder = $(this).parent().parent().parent();
+      let buddyname = $('.buddyname', holder).val();
+      let buddypassword = $('.buddypassword', holder).val();
+      desktop.app.login.auth(buddyname, buddypassword, {
+        pondLogin: true
+      });
     });
 
     d.keypress(function (ev) {
@@ -156,6 +178,8 @@ desktop.app.pond.renderChatWindow = function (context) {
   let _clone = clone.replace('icon_dock_pond_message_0', 'icon_dock_pond_message_' + context);
   _clone = _clone.replace('pond_message_text_0', 'pond_message_text_' + context);
   _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker');
+  _clone = _clone.replace('pond_emoji_picker_0', 'pond_emoji_picker');
+  _clone = _clone.replace('${context}', context);
 
   let window_id = 'window_pond_message_' + context;
 

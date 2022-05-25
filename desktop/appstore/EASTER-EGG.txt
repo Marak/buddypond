@@ -49,6 +49,9 @@ Ideas for community apps:
   - CSS animation - pond drip drops    -> https://codepen.io/Coderesting/pen/RwwLPZM
   - CSS animation - simple waves.      -> https://codepen.io/goodkatz/pen/LYPGxQz?editors=1100
   - CSS animation - raindrops          -> https://codepen.io/jh3y/pen/WyNdMG
+  - https://webglsamples.org
+  - https://webglsamples.org/aquarium/aquarium.html
+  - https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html
 
 - AI Art Generator?
   - client-side
@@ -125,3 +128,7 @@ https://www.webaudiomodules.org/wamsynths/
 Wiki / Feather Wiki
 
 https://feather.wiki
+https://webglsamples.org/imagesphere/imagesphere.html
+https://webglsamples.org/lots-o-images/lots-o-images-draw-elements.html?alpha=false&antialias=false&preserveDrawingBuffer=false&blend=false
+
+https://threejs.org/examples/#webgl_effects_ascii

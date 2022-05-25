@@ -73,6 +73,7 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
           alert(data.message);
           return next(null);
         }
+
         // token has not validated, log out the client
         if (data.success === false) {
           desktop.app.login.logoutDesktop();
@@ -84,9 +85,11 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
           desktop.ui.openWindowsFromSavedSettings();
           desktop.app.login.success({ source: 'localToken' });
         }
+
         if (location.hash) {
           desktop.routeFromHash();
         }
+
         return next(null);
       });
     } else {
@@ -104,11 +107,10 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
         }
       }
       */
-      if (!desktop.hashMode) {
-        JQDX.showWindow('login');
-      }
       if (location.hash) {
         desktop.routeFromHash();
+      } else {
+        JQDX.showWindow('login');
       }
 
       /* Remove for now, buddypond.qtokenid is not safe to change like this, needs instance of sdk
@@ -128,7 +130,8 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
 };
 
-desktop.app.login.auth = function authDesktop (buddyname, password) {
+desktop.app.login.auth = function authDesktop (buddyname, password, params) {
+  params = params || {};
   desktop.log('buddypond.authBuddy ->', buddyname);
   $('#buddypassword').removeClass('error');
 
@@ -158,7 +161,7 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
       localStorage.setItem('qtokenid', data.qtokenid);
       localStorage.setItem('me', buddypond.me);
       buddypond.qtokenid = data.qtokenid;
-      desktop.app.login.success({ source: 'serverToken', freshAccount: data.freshAccount });
+      desktop.app.login.success({ source: 'serverToken', freshAccount: data.freshAccount, pondLogin: params.pondLogin });
     } else {
       if (data.banned) {
         alert(data.message);
@@ -180,16 +183,17 @@ desktop.app.login.auth = function authDesktop (buddyname, password) {
 };
 
 desktop.app.login.success = function desktopLoginSuccess (params) {
-  desktop.ui.openWindow('merlin', {
-    windowless: true
-  });
+
+  //
+  // Required for Desktop to load
+  //
   $('#me_title').html('Welcome - ' + buddypond.me);
   $('.me').html(buddypond.me);
   desktop.play('WELCOME.wav', Infinity);
   $('.logoutLink').show();
   $('.loginLink').hide();
-  // $('.qtokenid').val(data);
   desktop.ui.closeWindow('login');
+
   $('.buddy_pond_not_connected').hide();
   $('#login_desktop_icon').hide();
   $('#profile_desktop_icon').show();
@@ -198,6 +202,9 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   $('.desktopDisconnected').hide();
   $('#icon_dock_login').hide();
   $('.loginIcon').hide();
+  $('.pondMessagesHolder').show();
+  $('.window_bottom_chat').show();
+
   try {
     let dateString = DateFormat.format.date(new Date(), 'ddd HH:mm:ss');
     $('.connection_ctime').html(dateString);
@@ -212,6 +219,29 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   $('.loggedIn').show();
   $('.loginIcon .title').html('Logout');
 
+  // start packets update interval timer
+  setInterval(function () {
+    $('.connection_packets_sent').html(buddypond.packetsSent);
+    $('.connection_packets_recieved').html(buddypond.packetsReceived);
+    $('.connection_average_response_time').html(buddypond.averageResponseTime());
+    $('.connection_last_response_time').html(buddypond.lastResponseTime());
+  }, 1000);
+
+  // manually call resize event, special case for logged in session with refresh
+  desktop.ui.windowResizeEventHandler();
+
+  // for certain types of login loads, do not execution optional login UX
+  if (params.pondLogin || desktop.hashMode || location.hash) {
+    return;
+  }
+
+  //
+  // Optional for user experience
+  //
+  desktop.ui.openWindow('merlin', {
+    windowless: true
+  });
+
   // TODO: move this is a separate function
   setTimeout(function () {
     if (!buddypond.email || buddypond.email.length < 3) {
@@ -224,125 +254,102 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
     }, 14444);
   }, 2000);
 
-  // start packets update interval timer
-  setInterval(function () {
-    $('.connection_packets_sent').html(buddypond.packetsSent);
-    $('.connection_packets_recieved').html(buddypond.packetsReceived);
-    $('.connection_average_response_time').html(buddypond.averageResponseTime());
-    $('.connection_last_response_time').html(buddypond.lastResponseTime());
-  }, 1000);
-
-  // TODO: route default view based on query string
-  let queryParams = desktop.utils.parseQueryString(document.location.search);
-  if (queryParams.pond) {
+  // is the source of the login is a serverToken, this indicates a fresh login
+  // for fresh logins, show the buddy list and join the default Lily Pond
+  // if params.source === 'localToken', this indicates that localStorage remembered the session
+  // and that the desktop should rely on localStorage desktop.settings.windows_open
+  if (params.source === 'serverToken') {
+    $('#window_buddylist').show();
+    desktop.ui.openWindow('buddylist');
     desktop.ui.openWindow('pond');
-    desktop.ui.openWindow('pond', {
-      context: queryParams.pond
-    });
-  } else {
-    // is the source of the login is a serverToken, this indicates a fresh login
-    // for fresh logins, show the buddy list and join the default Lily Pond
-    // if params.source === 'localToken', this indicates that localStorage remembered the session
-    // and that the desktop should rely on localStorage desktop.settings.windows_open
-    if (params.source === 'serverToken') {
-      $('#window_buddylist').show();
-      desktop.ui.openWindow('buddylist');
-      desktop.ui.openWindow('pond');
-      if (params.freshAccount) {
-        desktop.ui.openWindow('pond', {
-          context: 'Lily'
-        });
-      }
-    }
-    // anounce all new anonymous buddies when they join
-    if (buddypond.me === 'anonymous' && params.source === 'serverToken') {
-      let randomMessages = [
-        'Hello. First time here...this place is awesome!',
-        'what is this',
-        'Marak did you make this?',
-        'I am in love with Buddy Pond.',
-        'has anyone seen my dog?',
-        'I am the very model of a Modern Major General.',
-        'hey guys please follow me on twitter @elonmusk',
-        'omg this is amazing how did you do this',
-        'asl?',
-        'why did AOL redirect me here?',
-        'how anyone seen my cat?',
-        'good morning buddies!',
-        'good afternoon buddies!',
-        'good evening buddies!',
-        'good morning',
-        'good afternoon',
-        'good evening',
-        'salutations',
-        '/say hello and hey',
-        '/roll',
-        'how can i contribute to the project?',
-        'hail buddies!',
-        'who wants to be my buddy?',
-        'greetings',
-        'hello',
-        'hi',
-        'Sarah Connor, where is she?',
-        'My CPU is a nueral net processor. A learning computer.',
-        'I am here for Good Buddy Points.',
-        'I am here for Good Buddy Points. May I please speak with the HBIC?',
-        'im just here to watch',
-        'just came in from youtube. cool site',
-        'just came in from twitter. cool site',
-        'just came in from altavista. cool site',
-        'wheres my lunch',
-        'google brought me here',
-        'found this on github. cool site',
-        'who is the head buddy in charge? i must speak with them immediately',
-        'where are the memes',
-        'where is the meme',
-        'is this real',
-        'this is real?',
-        'how many jQueries does this site use?',
-        'i have over 9000 buddies. each greater than the last.',
-        'github ate my homework has anyone seen it',
-        'i tried to install npm but the readme failed to load',
-        'can anyone tell me how to download buddy pond?',
-        'buddyscript is run with /bs command',
-        'woah using /midi and /piano together is awesome',
-        'i just connected /globe and /hack commands and hacked the planet 😎',
-        'has anyone seen Dave?',
-        'Daves not here man',
-        'does anyone want to subscribe to my blog its www the internet @ hotpages frontslash mail.me',
-        'yooooooo',
-        'can i get some good buddy points please?',
-        'THIS IS B U D D Y P O N D',
-        'have anyone seen the faker.js?',
-        'where is zalgo, i must speak with him',
-        '/meme terry',
-        '/meme tripply',
-        '\\bs',
-        '\\idc',
-        '\\mtv',
-        '\\memepool'
-      ];
-      let allRandomMessages = randomMessages.concat(desktop.app.buddylist.positiveAffirmations);
-      let randomMessage = allRandomMessages[Math.floor(Math.random() * allRandomMessages.length)];
-      buddypond.pondSendMessage('Lily', randomMessage, function (err, data) {
+    if (params.freshAccount) {
+      desktop.ui.openWindow('pond', {
+        context: 'Lily'
       });
     }
-
-    // TODO: show Merlin welcome message
-    setTimeout(function(){
-      desktop.commands.chat.welcome({ windowId: '#window_pond_message_Lily' });
-    }, 2222);
-
   }
 
-  // manually call resize event, special case for logged in session with refresh
-  desktop.ui.windowResizeEventHandler();
+  // announce all new buddies when they join
+  // if params.freshAccount, this indicates a new account
+  if (params.freshAccount) {
+    let randomMessages = [
+      'Hello. First time here...this place is awesome!',
+      'what is this',
+      'Marak did you make this?',
+      'I am in love with Buddy Pond.',
+      'has anyone seen my dog?',
+      'I am the very model of a Modern Major General.',
+      'hey guys please follow me on twitter @elonmusk',
+      'omg this is amazing how did you do this',
+      'asl?',
+      'why did AOL redirect me here?',
+      'how anyone seen my cat?',
+      'good morning buddies!',
+      'good afternoon buddies!',
+      'good evening buddies!',
+      'good morning',
+      'good afternoon',
+      'good evening',
+      'salutations',
+      '/say hello and hey',
+      '/roll',
+      'how can i contribute to the project?',
+      'hail buddies!',
+      'who wants to be my buddy?',
+      'greetings',
+      'hello',
+      'hi',
+      'Sarah Connor, where is she?',
+      'My CPU is a nueral net processor. A learning computer.',
+      'I am here for Good Buddy Points.',
+      'I am here for Good Buddy Points. May I please speak with the HBIC?',
+      'im just here to watch',
+      'just came in from youtube. cool site',
+      'just came in from twitter. cool site',
+      'just came in from altavista. cool site',
+      'wheres my lunch',
+      'google brought me here',
+      'found this on github. cool site',
+      'who is the head buddy in charge? i must speak with them immediately',
+      'where are the memes',
+      'where is the meme',
+      'is this real',
+      'this is real?',
+      'how many jQueries does this site use?',
+      'i have over 9000 buddies. each greater than the last.',
+      'github ate my homework has anyone seen it',
+      'i tried to install npm but the readme failed to load',
+      'can anyone tell me how to download buddy pond?',
+      'buddyscript is run with /bs command',
+      'woah using /midi and /piano together is awesome',
+      'i just connected /globe and /hack commands and hacked the planet 😎',
+      'has anyone seen Dave?',
+      'Daves not here man',
+      'does anyone want to subscribe to my blog its www the internet @ hotpages frontslash mail.me',
+      'yooooooo',
+      'can i get some good buddy points please?',
+      'THIS IS B U D D Y P O N D',
+      'have anyone seen the faker.js?',
+      'where is zalgo, i must speak with him',
+      '/meme terry',
+      '/meme tripply',
+      '\\bs',
+      '\\idc',
+      '\\mtv',
+      '\\memepool'
+    ];
+    let allRandomMessages = randomMessages.concat(desktop.app.buddylist.positiveAffirmations);
+    let randomMessage = allRandomMessages[Math.floor(Math.random() * allRandomMessages.length)];
+    buddypond.pondSendMessage('Lily', randomMessage, function (err, data) {
+    });
+  }
 
-  //desktop.ui.positionWindow('#' + windowKey, 'left')
-  // TODO: remove this line. required due to initial blink on lily pond
-  setTimeout(function () {
-    $('.dock_title', '#icon_dock_pond_message_10').removeClass('rainbow');
-  }, 3000);
+  // TODO: show Merlin welcome message
+  setTimeout(function(){
+    desktop.commands.chat.welcome({ windowId: '#window_pond_message_Lily' });
+  }, 2222);
+
+
 };
 
 desktop.app.login.openWindow = function desktopLoginOpenWindow () {

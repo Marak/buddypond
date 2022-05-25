@@ -319,12 +319,26 @@ desktop.routeFromHash = function routeFromHash () {
   let appName = bs[1];
   let context = bs[2];
   // TODO: params.size: 'Max'
+
   desktop.hashMode = true;
+  // TODO: remove this line
+  $('.mobile_bar_bottom').hide();
+
   desktop.ui.openWindow(appName, {
     context: context
   }, function(){
-    // do this for most apps, not buddylist or pond
-    //JQDX.window_resize('#window_' + appName);
+    // TODO: rename pond_message -> pond
+    // TODO: remove this flag and if statement
+    if (appName === 'pond') {
+      appName = 'pond_message';
+    }
+    //JQDX.window_maximize($('#window_pond_message_futureisnow'));
+    if (context) {
+      JQDX.window_maximize($(`#window_${appName}_${context}`));
+    } else {
+      JQDX.window_maximize($(`#window_${appName}`));
+    }
+
   });
 }
 

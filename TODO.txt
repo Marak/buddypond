@@ -1,14 +1,33 @@
-For contributions, please first see: https://github.com/Marak/buddypond/issues
+§§§§§88888=====.======88888§§§§§
+§§§§§88888====...=====88888§§§§§
+§§§§§88888===.....====88888§§§§§
+
+  We have many issues open and welcomed for first time contributors!
+
+  For contributions, please first see: https://github.com/Marak/buddypond/issues
+
+§§§§§88888===.....====88888§§§§§
+§§§§§88888====...=====88888§§§§§
+§§§§§88888=====.======88888§§§§§
+
 
 Add spotlight / better console input ( stop using chat windows and #test )
 
+- Test embed.html page / make docs / call futureisnow 
+
+Fix login UX
+Show login form as mini form
+Show FAQ open as separate window
+Add AppStore to FAQ / Cleanup FAQ Section
+Add news / updates section as default?
+
 MIDI Improvements
  - Add drop down for selecting active midi device
-Add link from piano to midi app
-Add ability to send test midi data out from midi app
-Better midi reporting in midi app
-Midi settings should be linked in settings
-Add links to in midi setup to piano / beatpad
+ - Add link from piano to midi app
+ - Add ability to send test midi data out from midi app
+ - Better midi reporting in midi app
+ - Midi settings should be linked in settings
+ - Add links to in midi setup to piano / beatpad
 
 Context / App Input / Output Issues
 
@@ -20,15 +39,14 @@ Context / App Input / Output Issues
     - paint loses context / has bug with disabled send after local save
     - paint and sound recorder and mirror apps should have drop down select for context output
 
-We have many issues open and welcomed for first time contributors!
+QRCode Support
+  - add ability to link any app / window / context with QR Code
 
     - clicking on sound should load context in sound recorder to you can remix and send back
     1/2 - show .console_send_message_form in console so buddy can send /bs without login
     1/2 - clean up /bs
       - ensure that all /bs commands can be sent and have correct context ( paint / sound / snaps / etc )
-    
     - add `App.Download` for downloading buddypond
-
     - add static picture of merlin in /help
       - if you click merlin it launches /merlin app
 
@@ -185,6 +203,11 @@ Post Beta
 
 
 ++++++++++++WELL++++++++++
+X - This link should open pond chat window full size
+X - ( set flag? check for initial state context on load and set full? )
+X - https://www.buddypond.com/#pond/futureisnow
+X - Add login form to pond chat window
+X - refactor login form to allow for multiple login forms on page
 !X - ensure LYTE mode doesn't play sounds or load anything else larger ( etc )
 X - move join lily pond logic to saved windows default ( not coded into app! )
 X - after send animation should restore correct window

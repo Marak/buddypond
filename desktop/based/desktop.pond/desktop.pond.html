@@ -160,7 +160,7 @@
     <div class="abs window_content">
       <div class="window_main pond_main">
         <div class="buddy_pond_not_connected">
-          You'll need to login in order to access the Buddy Pond.
+          You'll need to login in order to join Ponds.
         </div>
         <div class="loggedIn">
           <h2>Join Ponds</h2>
@@ -290,7 +290,37 @@
       <div class="chat_area">
         <div class="window_main pond_message_main  message_main">
           <div class="buddy_pond_not_connected">
-            You'll need to login in order to access the Buddy Pond.
+            You'll need to login in order to join the #<span class="context">${context}</span> Pond.
+            <form method="POST" action="/pondlogin" class="pondLoginForm">
+              <table class="pondLoginTable">
+                <tbody>
+                  <tr>
+                    <td colspan="2">
+                      <input class="buddyname rainbow-border" name="buddyname" type="text" size="16" placeholder="Enter name..." />
+                    </td>
+                  </tr>
+                  <tr class="buddyPasswordRow">
+                    <td colspan="2">
+                      <input class="buddypassword" name="buddypassword" type="password" size="16" placeholder="Enter password..."/></td>
+                  </tr>
+                  <tr class="invalidPassword">
+                    <td colspan="2" class="error">Invalid Password</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <button type="submit" class="pondLoginButton">Join Pond</button>
+                    </td>
+                  </tr>
+                  <!--
+                  <tr>
+                    <td colspan="2">
+                      <button type="submit" class="loginAnonButton">Remain Anonymous</button>
+                    </td>
+                  </tr>
+                  -->
+                </tbody>
+              </table>
+            </form>
           </div>
           <div class="pondMessagesHolder">
             <div class="no_chat_messages">
