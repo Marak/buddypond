@@ -81,6 +81,11 @@ desktop.app.console._allowCommands = {
       description: 'View Buddy Pond App Store',
       icon: 'appstore'
     },
+    ayyowars: {
+      command: 'desktop.ui.openWindow("ayyowars");',
+      description: 'Alien Wars - Ayyowars Game',
+      icon: 'ayyowars'
+    },
     av: {
       command: 'desktop.ui.openWindow("visuals");',
       description: 'Use the Microphone Audio to create Cool Visuals',
@@ -196,6 +201,13 @@ desktop.app.console._allowCommands = {
       description: 'Merlin Automated Assistant',
       icon: 'merlin'
     },
+    /*
+    office: {
+      command: 'desktop.ui.openWindow("libreoffice");',
+      description: 'Libre Office',
+      icon: 'libreoffice'
+    },
+    */
     nes: {
       command: 'desktop.ui.openWindow("nes");',
       description: 'Nintendo Entertainment System',

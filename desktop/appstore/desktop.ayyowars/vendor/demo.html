@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script src="/vendor/phaser.js"></script>
+    <script src="./js/ayyoWars.js"></script>
+    <script>
+      // window['Behaviors'] = ayyoWars.Behaviors;
+    </script>
+    <style>
+      body {
+        padding: 0px;
+        margin: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-canvas-div"></div>
+    <script type="text/javascript">
+
+
+      /*
+  
+        new page embed syntax
+        design is such that each page reloads the game engine entirely
+  
+      */
+      ayyoWars.Game.init({});
+      ayyoWars.Game.bindCreate(function(){
+        let level0 = ayyoWars.Thing.create({
+          name: 'level-0'
+        })
+       ayyoWars.Behavior.attach('hasStateManager', game);
+       ayyoWars.Behavior.attach('isLevel0', level0);
+      });
+
+    </script>
+
+
+    <h2>Are you a leet hackerperson?</h2>
+    <h3>This page is *fully* HACKABLE</h2>
+
+    <p>
+      Open your console and try this:
+      <code>
+        console.log(Things['PLAYER_1'])
+      </code>
+  
+      Want to see where we store our Game values? Try this: 
+  
+      <code>
+        console.log(Things['PLAYER_1'].G)
+      </code>
+  
+    </p>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <script src="/vendor/phaser.js"></script>
+    <script src="./js/ayyoWars.js"></script>
+    <script>
+      // window['Behaviors'] = ayyoWars.Behaviors;
+    </script>
+    <style>
+      body {
+        padding: 0px;
+        margin: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="/vendor/simplepeer.min.js" type="text/javascript"></script>
+    <script src="/vendor/jquery.js" type="text/javascript"></script>
+    <script src="/vendor/jquery.growl.js" type="text/javascript"></script>
+    <link href="/vendor/jquery.growl.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@geckos.io/snapshot-interpolation@1.0.1/bundle/snapshot-interpolation.js"></script>
+    <script>
+      const { SnapshotInterpolation, Vault } = Snap
+    </script>
+  
+    <div id="game-canvas-div"></div>
+    <script type="text/javascript">
+      let serverConnection, peer, connected = false, currentPlayer;
+      const SI = new SnapshotInterpolation(60);
+      $(document).ready(function() {
+
+        //
+        // Create websocket client connection to server
+        // Websockets are used as signaling server to peer the webrtc nodes
+        //
+        serverConnection = new WebSocket('ws://192.168.1.80:3434'); // TODO: user server IP
+        serverConnection.onmessage = function (msg) {
+          var data = JSON.parse(msg.data);
+          console.log('message data', data);
+          if (data.type && data.type === 'answer') {
+            // alert('got signal send it')
+            // do not attempt to re-signal a connected peer
+            // this most likely means the remote peer was disconnected and attempted to reconect,
+            // while the local peer hasn't figured it out yet. it should fix itself in a few seconds
+            if (!connected && peer.readable /*&& !gameState.connected*/) {
+              peer.signal(data);
+            }
+            // p.signal(data.payload);
+          }
+
+          if (data.type === 'acceptedGame') {
+            console.log('game accepted');
+            currentPlayer = data.playerName;
+            createWebRtcPeer();
+          }
+
+        };
+
+        serverConnection.onopen = function () {
+          $.growl.notice({ message: "Connected to signal server." });
+          let msg = {
+            type: 'joinGame'
+          };
+          serverConnection.send(JSON.stringify(msg, true, 2));
+        };
+        serverConnection.onerror = function () {
+          $.growl.error({ message: "Could not connect to signal server.", fixed: true });
+        };
+        serverConnection.onclose = function () {
+          $.growl.warning({ message: "Connection to signal server closed", fixed: true });
+          console.log('onclose')
+          // alert('onclose');
+        };    
+
+        function createWebRtcPeer () {
+          peer = new SimplePeer({
+            initiator: true,
+            trickle: false,
+            objectMode: true
+          });
+
+          peer.on('error', function (err){ 
+            console.log('peer.error', err);
+          })
+
+          peer.on('signal', data => {
+            $.growl.notice({ message: "Generating Signal. Sending to server." });
+            console.log('SIGNAL', JSON.stringify(data))
+            var msg = {
+              type: 'signal',
+              payload: data
+            };
+            serverConnection.send(JSON.stringify(msg, true, 2));
+          })
+
+          peer.on('data', function(data){
+            try {
+              // recreate the things
+              let json = JSON.parse(data);
+              SI.snapshot.add(json)
+              let currentThings = [];
+              json.state.forEach(function(thingy){
+                ayyoWars.Thing.inflate(thingy);
+                currentThings.push(thingy.name);
+              });
+              // console.log(currentThings)
+              //console.log(Object.keys(ayyoWars.Things))
+              // destroy any things that can't be found
+              /*
+              */
+              //console.log('current', currentThings)
+              for (let t in ayyoWars.Things) {
+                if (currentThings.indexOf(t) === -1) {
+                  ayyoWars.Things[t].G.destroy();
+                }
+              }
+              /*
+              */
+          
+              // console.log('incoming webrtc data', json);
+            } catch (err) {
+              console.log('parse error', err.message)
+            }
+        
+            // $.growl.notice({ message: data });
+          });
+
+          peer.on('connect', () => {
+            console.log('webrtc connected...');
+            connected = true;
+            peer.send('hello jones ' + Math.random());
+          });
+        }
+
+        ayyoWars.Game.clientMode = true;
+        ayyoWars.Game.init({});
+        ayyoWars.Game.bindUpdate(function(){
+
+          // console.log('currentPlayer', currentPlayer)
+          if (Things[currentPlayer] && Things[currentPlayer].inputs) {
+            // TODO: move this to server lib?
+            if (game.input) {
+              for (let input in ayyoWars.inputs['PLAYER_1']) {
+                var key = game.input.keyboard.addKey(ayyoWars.inputs['PLAYER_1'][input]);
+                Things[currentPlayer].inputs = Things[currentPlayer].inputs || {};
+                if (key.isDown) {
+                  Things[currentPlayer].inputs[input] = true;
+                } else {
+                  Things[currentPlayer].inputs[input] = false;
+                }
+              }
+            }
+          }
+
+          // TODO: check for active player?
+          if (Things[currentPlayer] && Things[currentPlayer].inputs) {
+            peer.send(JSON.stringify({
+              name: currentPlayer,
+              inputs: Things[currentPlayer].inputs
+            }))
+          }
+          try {
+            const snapshot = SI.calcInterpolation('x y');
+            const { state } = snapshot;
+            // console.log('sss', state)
+            state.forEach(function(t){
+              const { id, x, y, rotation } = t;
+              if (Things[id]) {
+                Things[id].x = x;
+                Things[id].y = y;
+                Things[id].rotation = rotation;
+            
+              }
+          
+            });
+      
+      
+          } catch (err) {
+        
+          }
+        });
+        ayyoWars.Game.servermode = false;
+        
+        ayyoWars.Game.bindCreate(function(){
+         ayyoWars.Behavior.attach('hasStateManager', game);
+         ayyoWars.Behavior.attach('hasChatBox', game);
+         // ayyoWars.Behavior.attach('isOnlineLevel', game);
+         ayyoWars.Behavior.attach('hasSpeechBubble', ayyoWars.Things['PLAYER_1']);
+         ayyoWars.Behavior.attach('hasSpeechBubble', ayyoWars.Things['PLAYER_2']);
+        });
+      });
+
+    </script>
+
+  </body>
+</html>

@@ -10,6 +10,10 @@ desktop.app.appstore.apps = {
     label: 'App Store',
     version: '4.20.69' 
   },
+  'ayyowars': {
+    label: 'Alien Wars - Ayyo Wars',
+    version: '4.20.69'
+  },
   'console': {
     label: 'Console',
     version: '4.20.69' 
