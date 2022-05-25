@@ -28,6 +28,18 @@
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
 
 
+## Embed Pond Chat On Your Site
+
+It's super easy to embed Buddy Pond Chat on your site. Simply copy and paste the following embed code:
+
+```
+  <iframe src="./index.html#pond/Lily"/>
+```
+
+Just replace `Lily` with your pond name.
+
+see: `./embed.html` for code example
+
 **Screencasts**
 
 <a href="https://www.youtube.com/watch?v=qjrDi1EeMZ4">
