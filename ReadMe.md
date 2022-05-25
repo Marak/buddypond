@@ -33,7 +33,7 @@ Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
 It's super easy to embed Buddy Pond Chat on your site. Simply copy and paste the following embed code:
 
 ```
-  <iframe src="./index.html#pond/Lily"/>
+  <iframe src="https://buddypond.com/#pond/Lily"/>
 ```
 
 Just replace `Lily` with your pond name.
