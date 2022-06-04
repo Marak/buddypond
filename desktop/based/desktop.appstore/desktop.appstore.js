@@ -1,5 +1,5 @@
 desktop.app.appstore = {};
-
+desktop.app.appstore.label = 'App Store';
 desktop.app.appstore.apps = {
   'admin': {
     label: 'Admin',
@@ -11,7 +11,7 @@ desktop.app.appstore.apps = {
     version: '4.20.69' 
   },
   'ayyowars': {
-    label: 'Alien Wars - Ayyo Wars',
+    label: 'Ayyo Wars',
     version: '4.20.69'
   },
   'console': {
