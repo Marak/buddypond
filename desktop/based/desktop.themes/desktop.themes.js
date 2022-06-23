@@ -15,17 +15,30 @@ desktop.app.themes.load = function desktopLoadBuddyList (params, next) {
 // TODO: add all relevant theme mappings from DOM, finalize DOM structure for Alpha
 let themeMappings = {
   
-  'desktop_font': 'body',
-  
+  'background': 'body',
+
   'property_name': 'whateverwtf .cssValue',
+  'window_bar_top': '#bar_top',
+  'window_bar_bottom': '#bar_bottom',
   'window_top': '.window_top',
   'window_main': '.window_main',
+  'window_content': '.window_content',
+  'window_bottom': '.window_bottom',
 
   'desktop_top_bar': '#bar_top',
   'desktop_bottom_bar': '#bar_bottom',
+  'desktop_text': '.desktop-shortcuts-container span.title, .desktop-shortcuts-container-folder a',
   'inputs_text': 'input[type="text"]'
 
 };
+
+let gradients = {
+
+  'rainbow': 'linear-gradient(90deg, rgb(255,0,0) 0%, rgb(143,221,53) 25%, rgb(47,201,226) 50%, rgb(140,16,245) 75%, rgb(255,0,0) 100%)',
+  'matrix': 'linear-gradient(90deg, rgb(11,30,11) 0%, rgb(20,38,20) 20%, rgb(0,0,0) 50%, rgb(17,40,17) 80%, rgb(11,30,11) 100%)',
+  'ripples': 'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)'
+  
+}
 
 // takes a JSON object representing a Buddy Pond Theme and applies it do document and localstorage
 desktop.app.themes.applyTheme = function applyTheme (theme) {
@@ -33,15 +46,12 @@ desktop.app.themes.applyTheme = function applyTheme (theme) {
     return;
   }
   
-  /*
-  // TODO: uncomment this, actually apply styles
   // change all the css tyles
   for (var prop in theme.styles) {
     for (var attr in theme.styles[prop]) {
       $(themeMappings[prop]).css(attr, theme.styles[prop][attr])
     }
   }
-  */
 
   // change the wallapper
   if (theme.wallpaper) {
@@ -59,16 +69,31 @@ desktop.app.themes.themes = {};
 desktop.app.themes.themes['Light'] = {
   'wallpaper': {
     'name': 'solid',
-    'color': '#FFFFFF'
+    'color': '#E3E3E3'
   },
   'styles': {
+    'window_bar_top': {
+      'background': '#E3E3E3',
+      'color': '#181818'
+    },
     'window_top': {
-      'background': 'white',
-      'color': 'black'
+      'background': '#E3E3E3',
+      'color': '#181818'
     },
     'window_main': {
       'background': 'white',
-      'color': 'black'
+      'color': '#181818'
+    },
+    'window_content': {
+      'background': 'white',
+      'color': '#181818'
+    },
+    'window_bottom': {
+      'background': 'white',
+      'color': '#181818'
+    },
+    'desktop_text': {
+      'color': '#181818'
     }
   }
 };
@@ -76,16 +101,31 @@ desktop.app.themes.themes['Light'] = {
 desktop.app.themes.themes['Dark'] = {
   'wallpaper': {
     'name': 'solid',
-    'color': '#000000'
+    'color': '#181818'
   },
   'styles': {
+    'window_bar_top': {
+      'background': '#181818',
+      'color': '#E3E3E3'
+    },
     'window_top': {
-      'background': 'black',
-      'color': 'white'
+      'background': '#181818',
+      'color': '#E3E3E3'
     },
     'window_main': {
-      'background': 'black',
-      'color': 'white',
+      'background': '#181818',
+      'color': '#E3E3E3',
+    },
+    'window_content': {
+      'background': '#181818',
+      'color': '#E3E3E3'
+    },
+    'window_bottom': {
+      'background': '#181818',
+      'color': '#E3E3E3'
+    },
+    'desktop_text': {
+      'color': '#E3E3E3'
     }
   }
 };
@@ -96,29 +136,61 @@ desktop.app.themes.themes['Nyan'] = {
     'name': 'nyancat'
   },
   'styles': {
+    'window_bar_top': {
+      'background': '#181818',
+      'color': '#E3E3E3'
+    },
     'window_top': {
-      'background': 'white',
-      'color': 'pink'
+      'background': gradients['rainbow'],
+      'color': 'hotpink'
     },
     'window_main': {
-      'background': 'white',
-      'color': 'pink'
+      'background': gradients['rainbow'],
+      'color': 'hotpink'
+    },
+    'window_content': {
+      'background': gradients['rainbow'],
+      'color': 'hotpink'
+    },
+    'window_bottom': {
+      'background': gradients['rainbow'],
+      'color': 'hotpink'
+    },
+    'desktop_text': {
+      'color': 'hotpink'
+    },
+    'background': {
+      'background': '#0D1730'
     }
   }
 };
 
 desktop.app.themes.themes['Hacker'] = {
   'wallpaper': {
-    'name': 'matrix',
-    'color': 'green'
+    'name': 'matrix'
   },
   'styles': {
+    'window_bar_top': {
+      'background': '#181818',
+      'color': '#E3E3E3'
+    },
     'window_top': {
-      'background': 'black',
+      'background': gradients['matrix'],
       'color': 'green'
     },
     'window_main': {
-      'background': 'black',
+      'background': gradients['matrix'],
+      'color': 'green'
+    },
+    'window_content': {
+      'background': gradients['matrix'],
+      'color': 'green'
+    },
+    'window_bottom': {
+      'background': '#181818',
+      'color': 'green'
+    },
+    'desktop_text': {
       'color': 'green'
     }
   }
@@ -129,13 +201,31 @@ desktop.app.themes.themes['Water'] = {
     'name': 'ripples'
   },
   'styles': {
+    'window_bar_top': {
+      'background': '#62697C',
+      'color': '#C1DEFF'
+    },
     'window_top': {
-      'background': 'black',
-      'color': 'green'
+      'background': '#62697C',
+      'color': '#C1DEFF'
     },
     'window_main': {
-      'background': 'black',
-      'color': 'green'
+      'background': gradients['ripples'],
+      'color': '#7B92AD'
+    },
+    'window_content': {
+      'background': gradients['ripples'],
+      'color': '#134074'
+    },
+    'window_bottom': {
+      'background': '#62697C',
+      'color': '#C1DEFF'
+    },
+    'desktop_text': {
+      'color': 'white'
+    },
+    'background': {
+      'background': '#62697C'
     }
   }
 };

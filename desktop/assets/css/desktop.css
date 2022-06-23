@@ -431,7 +431,7 @@ th.shrink {
   background-image: url(../images/gui/bar_top_link.png);
   background-repeat: no-repeat;
   background-position: -99999px -99999px;
-  color: #000;
+  color: inherit;
   overflow: hidden;
   min-height: 1px;
 }
