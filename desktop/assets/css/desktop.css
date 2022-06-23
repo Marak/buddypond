@@ -890,10 +890,6 @@ video {
   padding: 11px;
 }
 
-#clock {
-  color: black;
-}
-
 #clock:hover {
   cursor: pointer;
 }

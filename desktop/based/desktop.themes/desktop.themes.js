@@ -167,7 +167,8 @@ desktop.app.themes.themes['Nyan'] = {
 
 desktop.app.themes.themes['Hacker'] = {
   'wallpaper': {
-    'name': 'matrix'
+    'name': 'matrix',
+    'color': 'green'
   },
   'styles': {
     'window_bar_top': {
@@ -192,6 +193,9 @@ desktop.app.themes.themes['Hacker'] = {
     },
     'desktop_text': {
       'color': 'green'
+    },
+    'background': {
+      'background': 'none'
     }
   }
 };
