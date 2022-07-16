@@ -15,15 +15,15 @@ desktop.app.themes.load = function desktopLoadBuddyList (params, next) {
 // TODO: add all relevant theme mappings from DOM, finalize DOM structure for Alpha
 let themeMappings = {
   
-  'background': 'body',
+  //'background': 'body',
 
   'property_name': 'whateverwtf .cssValue',
-  'window_bar_top': '#bar_top',
-  'window_bar_bottom': '#bar_bottom',
-  'window_top': '.window_top',
-  'window_main': '.window_main',
-  'window_content': '.window_content',
-  'window_bottom': '.window_bottom',
+  //'window_bar_top': '#bar_top',
+  //'window_bar_bottom': '#bar_bottom',
+  //'window_top': '.window_top',
+  //'window_main': '.window_main',
+  //'window_content': '.window_content',
+  //'window_bottom': '.window_bottom',
 
   'desktop_top_bar': '#bar_top',
   'desktop_bottom_bar': '#bar_bottom',
