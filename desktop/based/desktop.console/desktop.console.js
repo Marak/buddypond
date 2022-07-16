@@ -15,14 +15,18 @@ desktop.app.console.load = function loadDesktop (params, next) {
 
     d.on('submit', function(){
       return false;
-    })
+    });
+
+    $( ".console_message_text" ).autocomplete({
+     source: Object.keys(desktop.app.console._allowCommands)
+    });
 
     d.on('mousedown', '.consoleMessageSubmit', function () {
       // Remark: Is not code as this point, it's coode
       let coode = $('.console_message_text').val();
-      coode = coode.substr(1, coode.length - 1);
+      // coode = coode.substr(1, coode.length - 1);
       desktop.log('Attempting to eval() string ' + coode);
-      desktop.app.console.evalCoode(coode,'#window_console' );
+      desktop.app.console.evalCoode(coode, { windowId: '#window_console' });
       $('.console_message_text').val('');
     });
 
@@ -30,18 +34,16 @@ desktop.app.console.load = function loadDesktop (params, next) {
       if (ev.which === 13 && $(ev.target).hasClass('console_message_text')) {
         // Remark: Is not code as this point, it's coode
         let coode = $('.console_message_text').val();
-        coode = coode.substr(1, coode.length - 1);
+        //coode = coode.substr(1, coode.length - 1);
         desktop.log('Attempting to eval() string ' + coode);
-        desktop.app.console.evalCoode(coode,'#window_console' );
+        desktop.app.console.evalCoode(coode, { windowId: '#window_console' });
         $('.console_message_text').val('');
         return false;
       }
     });
 
-    $('.console_send_message_form').hide(); // for now
-
     $('#window_console').css('width', '100vw');
-    $('#window_console').css('height', '40vh');
+    $('#window_console').css('height', '66vh');
     $('#window_console').css('bottom', 41);
     $('#window_console').css('left', '0vw');
     next();
@@ -288,6 +290,9 @@ desktop.app.console._allowCommands = {
     }
   }
 
+desktop.app.console.openWindow = function openWindow () {
+  $('.console_message_text').focus();
+}
 
 desktop.app.console.listBuddyScriptCommands = function listBuddyScriptCommands (params) {
   let commands = desktop.app.console._allowCommands;
@@ -360,11 +365,12 @@ desktop.app.console.evalCoode = function (coode, params) {
     if (typeof _command === 'function') {
       _command = _command(params);
     }
+    desktop.log('Running', _command);
     eval(_command);
     return true;
   } else {
     // not a valid /command, will send message to server since its just text
-    // desktop.log('Invalid BuddyScript', coode);
+    desktop.log('Invalid BuddyScript', coode);
     return false;
     //desktop.log('Invalid BuddyScript! Ask your Buddy about the BuddyScript they sent you?');
   }

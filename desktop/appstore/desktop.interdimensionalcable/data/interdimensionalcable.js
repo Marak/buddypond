@@ -1927,5 +1927,8 @@ desktop.app.interdimensionalcable.playlist = [
   'N8L1pkU3zrM',
   'kYfDRnrZT-8',
   'JbeRRAvaEOw',
-  'B55gpo3OgQk'
+  'B55gpo3OgQk',
+  'UrLwB7RuFdw',
+  '-Wtu33e-hfg',
+  'YbwQUV8W79I'
 ];
