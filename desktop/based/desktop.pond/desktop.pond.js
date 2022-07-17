@@ -193,6 +193,22 @@ desktop.app.pond.renderChatWindow = function (context) {
   $('#dock').append(dockStr);
   desktop.ui.renderDockElement('pond_message_' + context, context);
 
+  let localPondChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '/' + a });
+  let remotePondChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '\\' + a });
+  let allCommands = localPondChatCommands.concat(remotePondChatCommands);
+  $( ".pond_message_text", '#' + window_id ).autocomplete({
+   source: allCommands,
+   search: function( event, ui ) {
+    // only trigger autocomplete searches if user has started message with oper code ( / or \ )
+    let opers = ['/', '\\'];
+    let firstChar = event.target.value.substr(0, 1);
+    if (opers.indexOf(firstChar) === -1) {
+     return false;
+    }
+    return true;
+   }
+  });
+
 };
 
 desktop.app.pond.openWindow = function (params) {

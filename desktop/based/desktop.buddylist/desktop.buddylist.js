@@ -282,6 +282,23 @@ desktop.app.buddylist.renderChatWindow = function (context) {
   dockStr = '<li id="icon_dock_buddy_message_' + context +'">' + dockStr + '</li>';
   $('#dock').append(dockStr);
   desktop.ui.renderDockElement('buddy_message_' + context, context);
+
+  let localBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '/' + a });
+  let remoteBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '\\' + a });
+  let allCommands = localBuddyChatCommands.concat(remoteBuddyChatCommands);
+  $( ".buddy_message_text", '#' + window_id ).autocomplete({
+   source: allCommands,
+   search: function( event, ui ) {
+     // only trigger autocomplete searches if user has started message with oper code ( / or \ )
+     let opers = ['/', '\\'];
+     let firstChar = event.target.value.substr(0, 1);
+     if (opers.indexOf(firstChar) === -1) {
+       return false;
+     }
+     return true;
+   }
+  });
+
 };
 
 desktop.app.buddylist.sendMessage = function sendBuddyMessage (context) {
