@@ -118,13 +118,17 @@ desktop.app.videochat.startCall = function videoChatStartCall (isHost, buddyName
   setTimeout(function(){
     JQDX.window_flat();
     $('#window_videochat').addClass('window_stack').show();
+    $('#window_videochat .buddyName').html(buddyName);
   }, 333);
 
+  $('.webrtcStatus').html('Sending WebRTC Handshake Request...');
   buddypond.callBuddy(buddyName, 'HELLO', function (err, re) {
     // console.log('got back call buddy', err, re)
     // create local webrtc peer connection,
+    $('.webrtcStatus').html('Initiating Peer Connection...');
     desktop.app.videochat.peer(isHost, buddyName);
     desktop.app.videochat.pollSignal = true;
+    $('.webrtcStatus').html('Waiting for Peer to connect...');
     pollSignal();
   });
 
@@ -134,6 +138,7 @@ desktop.app.videochat.startCall = function videoChatStartCall (isHost, buddyName
     if (!desktop.app.videochat.pollSignal) {
       return;
     }
+    //$('.webrtcStatus').html('Waiting for Peer to connect.');
     buddypond.getBuddySignal(buddypond.me, function (err, data) {
       // console.log('buddy.getBuddySignal', err, data);
       if (data && desktop.app.videochat.webrtc) {
@@ -214,6 +219,7 @@ desktop.app.videochat.peer = function peerVideoChat (isHost, buddyName) {
 
   p.on('connect', () => {
     desktop.log('WebRTC peer connection established');
+    $('.webrtcStatus').html('WebRTC peer connection established!');
     desktop.app.videochat.enumerateDevices(function (err, devices) {
       console.log('got back dvices that are ready', err, devices);
       desktop.app.videochat.addLocalCamera();
@@ -321,9 +327,10 @@ desktop.app.videochat.openWindow = function closeWindow () {
   $('#window_videochat').css('left', '5vw');
 };
 
+// TODO: is JQDX.closeWindow() not catching this for certain errors or close window events?
 desktop.app.videochat.closeWindow = function closeWindow () {
   $('#window_videochat').hide();
   $('.startVideoCall').css('opacity', '1.0');
-  let buddyName = $(this).closest('.buddy_message').data('context');
+  let buddyName = $('#window_videochat .buddyName').html();
   desktop.app.videochat.endCall(buddyName);
 };
