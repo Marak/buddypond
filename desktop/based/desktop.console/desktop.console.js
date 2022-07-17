@@ -246,6 +246,10 @@ desktop.app.console._allowCommands = {
       description: 'Non-stop Music Videos',
       icon: 'mtv'
     },
+    mute: {
+      command: `desktop.set('audio_enabled', false);`,
+      description: 'Mute Desktop Audio'
+    },
     piano: {
       command: 'desktop.ui.openWindow("piano");',
       description: 'Tiny Piano Synth Keyboard for Jamming',
