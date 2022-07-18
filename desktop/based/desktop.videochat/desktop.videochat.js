@@ -51,8 +51,7 @@ desktop.app.videochat.load = function loadVideochat () {
 
     $('.selectAudio').on('change', function () {
       let newDeviceLabel = $(this).val();
-      alert('Changing audio is not available yet');
-      // desktop.app.videochat.replaceStream(newDeviceLabel);
+      desktop.app.videochat.replaceStream(newDeviceLabel);
     });
 
   });
@@ -276,48 +275,79 @@ desktop.app.videochat.endCall = function videoChatEndCall (buddyName, cb) {
 //
 // Replaces the current video or input device with a new device while streaming
 //
-desktop.app.videochat.replaceStream = function replaceStream (label) {
-  desktop.app.videochat.localStream.getTracks().forEach(function (track) {
 
-    // only replace video devices ( for now )
-    if (track.kind !== 'video') {
-      // console.log('ignoring', track.label)
-      return;
-    }
-    let newDevice = desktop.app.videochat.alldevices[label];
 
-    desktop.app.videochat.enumerateDevices(function (err, devices) {
-      navigator.mediaDevices.getUserMedia({
-        video: {
-          'deviceId': newDevice.deviceId
-        },
-        audio: false
-      }).then(function (stream) {
-        stream.getTracks().forEach(function (newTrack) {
-          if (newTrack.label === label) {
-            desktop.app.videochat.webrtc.replaceTrack(track, newTrack, desktop.app.videochat.localStream);
-            let video = document.querySelector('#chatVideoMe');
-            video.srcObject = stream;
-            // desktop.app.videochat.localStream = stream;
-            
-            // Error: Cannot replace track that was never added.
-            // TODO: allow multiple device switching during stream
-            // desktop.app.videochat.webrtc.addTrack(newTrack, desktop.app.videochat.localStream);
-            // desktop.app.videochat.webrtc.removeTrack(track);
-            
-            $('.selectCamera').val(newTrack.label);
-          }
-        });
-      }).catch((err) => {
-        console.log('error in calling navigator.mediaDevices.getUserMedia', err);
+function replaceVideoStream (label, track) {
+
+  let newDevice = desktop.app.videochat.alldevices[label];
+
+  desktop.app.videochat.enumerateDevices(function (err, devices) {
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        'deviceId': newDevice.deviceId
+      },
+      audio: false
+    }).then(function (stream) {
+      stream.getTracks().forEach(function (newTrack) {
+        if (newTrack.label === label) {
+          desktop.app.videochat.webrtc.replaceTrack(track, newTrack, desktop.app.videochat.localStream);
+          let video = document.querySelector('#chatVideoMe');
+          video.srcObject = stream;
+          // desktop.app.videochat.localStream = stream;
+          // Error: Cannot replace track that was never added.
+          // TODO: allow multiple device switching during stream
+          // desktop.app.videochat.webrtc.addTrack(newTrack, desktop.app.videochat.localStream);
+          // desktop.app.videochat.webrtc.removeTrack(track);
+          $('.selectCamera').val(newTrack.label);
+        }
       });
+    }).catch((err) => {
+      console.log('error in calling navigator.mediaDevices.getUserMedia', err);
     });
-
   });
 
 };
 
+function replaceAudioStream (label, track) {
+  let newDevice = desktop.app.videochat.alldevices[label];
+  desktop.app.videochat.enumerateDevices(function (err, devices) {
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        'deviceId': newDevice.deviceId
+      },
+      video: false
+    }).then(function (stream) {
+      stream.getTracks().forEach(function (newTrack) {
+        if (newTrack.label === label) {
+          desktop.app.videochat.webrtc.replaceTrack(track, newTrack, desktop.app.videochat.localStream);
+          let video = document.querySelector('#chatVideoMe');
+          video.srcObject = stream;
+          // desktop.app.videochat.localStream = stream;
+          // Error: Cannot replace track that was never added.
+          // TODO: allow multiple device switching during stream
+          // desktop.app.videochat.webrtc.addTrack(newTrack, desktop.app.videochat.localStream);
+          // desktop.app.videochat.webrtc.removeTrack(track);
+          $('.selectAudio').val(newTrack.label);
+        }
+      });
+    }).catch((err) => {
+      console.log('error in calling navigator.mediaDevices.getUserMedia', err);
+    });
+  });
+};
 
+desktop.app.videochat.replaceStream = function replaceStream (label) {
+  desktop.app.videochat.localStream.getTracks().forEach(function (track) {
+    // only replace video devices ( for now )
+    if (track.kind !== 'video') {
+      // console.log('ignoring', track.label)
+      replaceAudioStream(label, track);
+      return;
+    }
+    replaceVideoStream(label, track);
+  });
+
+};
 
 
 desktop.app.videochat.openWindow = function closeWindow () {
