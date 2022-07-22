@@ -545,6 +545,8 @@ desktop.app.buddylist.updateBuddyList = function updateBuddyList () {
       which will then be sent to the server and propipigate to your buddies
 
     */
+    // TODO: update to generatel getBuddyState / setBuddyState
+    desktop.app.buddylist.profileState.updates.desktop = desktop.state;
     buddypond.getBuddyProfile(desktop.app.buddylist.profileState, function (err, data) {
       if (err || typeof data !== 'object') {
         desktop.log(err);

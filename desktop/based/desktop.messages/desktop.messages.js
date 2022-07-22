@@ -37,12 +37,15 @@ desktop.messages.process = function processMessages (apps) {
     let subscribedPonds = [];
 
     if (desktop.app.buddylist) {
-      subscribedBuddies= desktop.app.buddylist.subscribedBuddies;
+      subscribedBuddies = desktop.app.buddylist.subscribedBuddies;
     }
 
     if (desktop.app.pond) {
       subscribedPonds = desktop.app.pond.subscribedPonds;
     }
+
+    desktop.state.subscribedBuddies = subscribedBuddies;
+    desktop.state.subscribedPonds = subscribedPonds;
 
     // TODO: Configure desktop.messages.process() to still check for agent and systems messages here
     if (subscribedBuddies.length === 0 && subscribedPonds.length === 0) {

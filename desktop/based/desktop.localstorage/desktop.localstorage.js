@@ -7,7 +7,8 @@ desktop.app.localstorage.prefix = '_buddypond_desktop_';
 desktop.app.localstorage.set = function setLocalStorage (key, val) {
   // in addition to updating the localstorage, update desktop.settings
   // Remark: desktop.settings is booted from localstorage on load
-  
+  desktop.state = desktop.state || {};
+
   if (typeof key === 'object') {
     // batch update with multple key / values
     let obj = key;
@@ -17,6 +18,7 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
       let val = JSON.stringify(obj[k]);
       localStorage.setItem(desktop.app.localstorage.prefix + k, val);
       desktop.emit('desktop.settings.' + k, desktop.settings[k]);
+      desktop.state[k] = desktop.settings[k];
     }
   } else {
     // single key / value update
@@ -24,6 +26,7 @@ desktop.app.localstorage.set = function setLocalStorage (key, val) {
     val = JSON.stringify(val);
     localStorage.setItem(desktop.app.localstorage.prefix + key, val);
     desktop.emit('desktop.settings.' + key, desktop.settings[key]);
+    desktop.state[key] = desktop.settings[key];
   }
 
   desktop.emit('desktop.settings', desktop.settings);
