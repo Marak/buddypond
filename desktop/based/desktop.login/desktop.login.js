@@ -272,6 +272,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   // announce all new buddies when they join
   // if params.freshAccount, this indicates a new account
   if (params.freshAccount) {
+    return;
     let randomMessages = [
       'Hello. First time here...this place is awesome!',
       'what is this',
