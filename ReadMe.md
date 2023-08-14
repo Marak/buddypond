@@ -139,9 +139,14 @@ desktop.boo.load = function (params, next) {
 
 You may now open `App.Boo` by calling `desktop.ui.openWindow('boo', { foo: 'bar' })`
 
+## Buddy Pond `Based` Distribution
+
+See: https://github.com/Marak/buddypond/tree/master/desktop/based
+
+
 ## Buddy Pond `AppStore`
 
-See: https://github.com/Marak/buddypond-appstore
+See: https://github.com/Marak/buddypond/tree/master/desktop/appstore
 
 #### Linting / `eslint`
 
