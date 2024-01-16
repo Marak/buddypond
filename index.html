@@ -92,7 +92,7 @@ window.top.location = 'ie.html';
             </li>
             <li class="emptyMenuCell">&nbsp;</li>
             <li>
-              <a class="editProfileLink" title="Login to Edit Profile"href="#">Edit Profile</a>
+              <a class="editProfileLink" title="Login to Edit Profile" href="#">Edit Profile</a>
             </li>
             <li class="emptyMenuCell">&nbsp;</li>
             <li>
@@ -253,6 +253,7 @@ window.top.location = 'ie.html';
       .use('pond')
       .use('streamsquad')
       .use('spellbook')
+      .use('mantra')
       .use('profile')
       .use('login', { defer: true })
       .use('videochat', { defer: true })
@@ -266,6 +267,7 @@ window.top.location = 'ie.html';
         desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
         // Desktop is ready, start refreshing it's state immediately
         desktop.refresh();
+        desktop.ui.openWindow('mantra')
         let now = new Date();
 
         // For Buddy Experience we'll add some fades and delays
@@ -286,6 +288,7 @@ window.top.location = 'ie.html';
             });
           }
         });
+
 
         // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
         // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)

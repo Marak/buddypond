@@ -22,6 +22,10 @@ desktop.app.appstore.apps = {
     label: 'Buddy List',
     version: '4.20.69'
   },
+  'mantra': {
+    label: 'Mantra',
+    version: '1.1.1'
+  },
   'paint': {
     label: 'Paint',
     version: '4.20.69'
