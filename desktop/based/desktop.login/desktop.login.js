@@ -70,7 +70,9 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
 
         // server is online and operational, but returned an error message to client state
         if (data.error) {
-          alert(data.message);
+          // open video app with link to https://www.youtube.com/watch?v=AcvLcHQ0SLU
+          desktop.ui.openWindow('interdimensionalcable', { videoId: 'AcvLcHQ0SLU' });
+          // alert(data.message);
           return next(null);
         }
 
@@ -143,7 +145,9 @@ desktop.app.login.auth = function authDesktop (buddyname, password, params) {
   buddypond.authBuddy(buddyname, password, function (err, data) {
     if (err) {
       console.log('err', err, data);
-      alert('Welcome Buddy! The Pond is currently at capacity.\n\nPlease feel free to try again shortly.\n\nClick Around. All Apps and Files will continue to work offline.');
+      desktop.ui.openWindow('interdimensionalcable', { videoId: 'AcvLcHQ0SLU' });
+      alert('Buddy Pond is down. Please see proceeding video...');
+      // alert('Welcome Buddy! The Pond is currently at capacity.\n\nPlease feel free to try again shortly.\n\nClick Around. All Apps and Files will continue to work offline.');
       return;
     }
 
