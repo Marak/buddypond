@@ -3,3 +3,4 @@ sdk/nodejs-sdk/node_modules
 snaps/
 ./audio/
 .vscode
+v2/node_modules

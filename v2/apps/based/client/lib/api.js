@@ -1,3 +1,6 @@
+// TODO: convert this to API class which can communicate either via REST
+// or via websockets messages with simple RPC format ( JSON )
+
 let buddypond = {}
 
 buddypond.mode = 'dev';
@@ -12,7 +15,7 @@ if (document.location.protocol === 'https:') {
 
 if (buddypond.mode === 'dev') {
   // buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
-  buddypond.endpoint = 'https://192.168.200.59/api/v3'
+  buddypond.endpoint = 'https://192.168.200.59/api/v3';
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
@@ -20,7 +23,12 @@ buddypond.authBuddy = function authBuddy (me, password, cb) {
     buddyname: me,
     buddypassword: password
   }, function(err, data){
-    buddypond.me = me;
+    if (data && data.success) {
+      buddypond.me = me;
+      buddypond.qtokenid = data.qtokenid;
+      localStorage.setItem('qtokenid', data.qtokenid);
+      localStorage.setItem('me', buddypond.me);
+    }
     cb(err, data);
   })
 }
@@ -319,47 +327,62 @@ buddypond.lastResponseTime = function averageResponseTime () {
 // end methods for tracking API request performance
 //
 
-function apiRequest (uri, method, data, cb) {
+
+function apiRequest(uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
+
+  console.log("making apiRequest", url, method, data);
   let headers = {
-     "accept": "application/json"
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=utf-8"
   };
+
   if (buddypond.qtokenid) {
-    data = data || {};
-    data.qtokenid = buddypond.qtokenid;
+      data = data || {};
+      data.qtokenid = buddypond.qtokenid;
   }
-  if (method === "POST") {
-    data = JSON.stringify(data);
-  }
+
+  let body = method === "POST" ? JSON.stringify(data) : undefined;
+
+  // Prepare fetch options
+  const options = {
+      method: method,
+      headers: headers,
+      body: body
+  };
+
+  // Handling fetch timeout manually
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 7000); // 7000 milliseconds for timeout
+
+  buddypond.incrementPackets('packetsSent');
   let perf = {};
   perf.start = new Date();
-  buddypond.incrementPackets('packetsSent');
-  $.ajax({
-    "headers": {
-       "accept": "application/json"
-    },
-    crossDomain: true,
-    url: url,
-    data: data,
-    method: method,
-    contentType: "application/json; charset=utf-8",
-    dataType: 'json',
-    timeout: 7,
-    error: function (err, data, res){
-      let msg = 'ajax connection error. retrying request shortly.'
-      if (res === 'Payload Too Large') {
-        msg = 'File upload was too large for server. Try a smaller file.';
-      }
-      cb(new Error(msg), data, res);
-    },
-    timeout: function(err, res){
-      cb(new Error('AJAX timeout'), res);
-    },
-    success: function (data){
-      buddypond.incrementPackets('packetsReceived');
-      perf.end = new Date();
-      buddypond.addPerfTime(perf);
-      cb(null, data)
-    }
-  });
+
+  fetch(url, { ...options, signal: controller.signal })
+      .then(response => {
+          clearTimeout(timeoutId);
+          if (!response.ok) {
+              throw new Error(response.statusText);
+          }
+          return response.json();
+      })
+      .then(data => {
+          buddypond.incrementPackets('packetsReceived');
+          perf.end = new Date();
+          buddypond.addPerfTime(perf);
+          cb(null, data);
+      })
+      .catch(error => {
+          let msg = 'Fetch connection error. Retrying request shortly.';
+          if (error.name === "AbortError") {
+              msg = 'Fetch request timeout';
+          } else if (error.message === 'Payload Too Large') {
+              msg = 'File upload was too large for server. Try a smaller file.';
+          }
+          cb(new Error(msg), null);
+      });
 }
+
+
+export default buddypond;

@@ -1,0 +1,46 @@
+<div class="abs window_content app-buddylist">
+  <div class="window_main">
+    <div class="buddy_list_not_connected loggedOut">
+      <span class="loginMessage">You'll need to login in order to access your Buddy List.</span>
+      <form class="loginForm" method="POST" action="#">
+        <input type="text" name="username" placeholder="Username" />
+        <input type="password" name="password" class="password" placeholder="Password" />
+        <button type="submit">Login</button>
+        <p class="error"></p>
+      </form>
+    </div>
+    <div class="loggedIn">
+      <div class="positiveAffirmation">Hello. You look nice today!</div>
+      <div class="buddyListHolder">
+        <h2>Buddies</h2>
+        <div class="you_have_no_buddies">
+          <p>It's time to add buddies.
+          Why not invite a friend?
+        </p>
+          <a href="#/addbuddy/Marak" class="sendBuddyRequest">Marak wants to be buddies!</a><br />
+          <a href="#/addbuddy/Marak" class="sendBuddyRequest">Click To Add</a><br />
+        </div>
+        <div class="pendingIncomingBuddyRequestsHolder">
+          <h3>New Buddy Requests</h3>
+          <div class="pendingIncomingBuddyRequests"></div>
+        </div>
+        <ul class="buddylist"></ul>
+        <div class="pendingOutgoingBuddyRequestsHolder">
+          <h3>Pending Buddy Requests</h3>
+          <div class="pendingOutgoingBuddyRequests"></div>
+        </div>
+      </div>
+      <div class="addBuddyForm">
+        <form method="POST" action="#">
+          <label for="buddy_request_name">Send Buddy Request:</label><br />
+          <input id="buddy_request_name" placeholder="Enter buddy name..." class="rainbow-border buddy_request_name desktopInput" name="buddy_request_name" type="text" size="16" /><br />
+          <button class="sendBuddyRequest desktopButton" type="submit">Send Buddy Request</button>
+        </form>
+        <div class="inviteBuddyHolder">
+          <span>Don't know any Buddy Names?</span><br />
+          <span><a class="inviteBuddy" href="#invite-buddy">Invite a Buddy!</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
