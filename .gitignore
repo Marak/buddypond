@@ -4,3 +4,4 @@ snaps/
 ./audio/
 .vscode
 v2/node_modules
+v2/dist

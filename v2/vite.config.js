@@ -29,4 +29,24 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(version),
   },
+  build: {
+    // Specify build options
+    lib: {
+      entry: path.resolve(__dirname, 'bp.js'), // Ensure this is the path to your entry file
+      name: 'BP',
+      formats: ['umd'], // Output format as IIFE
+    },
+    rollupOptions: {
+      // further Rollup options can go here
+      output: {
+        // set custom output dir
+        dir: 'dist',
+        // Additional output options
+        extend: true, // Extend global variable
+        globals: {
+          BP: 'BP'
+        }
+      }
+    }
+  }
 });

@@ -1,5 +1,5 @@
 // EntityBuilder.js - Marak Squires 2024
-import ensureColorInt from '../plugins/entity/lib/util/ensureColorInt.js';
+import ensureColorInt from './lib/util/ensureColorInt.js';
 export default class EntityBuilder {
   constructor(game) {
     this.game = game;
