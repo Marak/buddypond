@@ -1,7 +1,8 @@
 export default function renderBuddyRequests (buddyrequests) {
     console.log("renderBuddyRequests", buddyrequests);
     $('.you_have_no_buddies').hide();
-  
+    let api = this.bp.apps.client.api;
+
     if (buddyrequests) {
   
       $('.pendingIncomingBuddyRequests').html('');
@@ -54,7 +55,7 @@ export default function renderBuddyRequests (buddyrequests) {
       //  '.pendingIncomingBuddyRequests'
       $('.denyBuddyRequest').on('click', function () {
         $(this).parent().hide();
-        buddypond.denyBuddy($(this).attr('data-buddyname'), function (err, data) {
+        api.denyBuddy($(this).attr('data-buddyname'), function (err, data) {
           $('.apiResult').val(JSON.stringify(data, true, 2));
         });
         return false;
@@ -63,7 +64,7 @@ export default function renderBuddyRequests (buddyrequests) {
       $('.approveBuddyRequest', '.pendingIncomingBuddyRequests').on('click', function () {
         $(this).parent().hide();
         let buddyName = $(this).attr('data-buddyname');
-        buddypond.approveBuddy(buddyName, function (err, data) {
+        api.approveBuddy(buddyName, function (err, data) {
           $('.apiResult').val(JSON.stringify(data, true, 2));
         });
         return false;

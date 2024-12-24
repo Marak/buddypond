@@ -6,6 +6,8 @@ export default class UI {
 
         options.parent = options.parent || document.body;
 
+        this.options = options;
+
         this.parent = options.parent;
         return this;
     }
@@ -13,8 +15,10 @@ export default class UI {
     async init() {
 
         // base CSS for ui, this can be themed in the future
-        this.bp.appendCSS('/v2/apps/based/ui/ui.css'); // no need to wait for CSS to load?
-        this.bp.appendCSS('/v2/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
+        if (!this.options.noCSS) {
+            this.bp.appendCSS('/v2/apps/based/ui/ui.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v2/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
+        }
 
  
         await this.bp.appendScript('/vendor/zepto.min.js');

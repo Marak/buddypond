@@ -10,15 +10,21 @@ bp.data = {};
 
 bp.start = async function start(apps = []) {
     for (let app of apps) {
-        bp.log('loading async import app', app);
-        await bp.importModule(app);
+        if (typeof app === 'string') {
+            bp.log('loading async import app', app);
+            await bp.importModule(app, {}, true);
+        }
+        if (typeof app === 'object') {
+            bp.log('loading async import app', app.name);
+            await bp.importModule(app.name, app, true);
+        }
     }
 }
 
 let bpHost = 'http://192.168.200.59:5174';
 
 
-bp.importModule = async function importModule(app, buddypond = true) {
+bp.importModule = async function importModule(app, config, buddypond = true) {
     let modulePath = bpHost + `/apps/based/${app}/${app}.js`;
 
     if (!buddypond) {
@@ -28,7 +34,7 @@ bp.importModule = async function importModule(app, buddypond = true) {
         console.log('modulePath', modulePath)
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
-            bp.apps[app] = new module.default(bp);
+            bp.apps[app] = new module.default(bp, config);
             await bp.apps[app].init();
             bp.log('init complete', app);
     
@@ -111,6 +117,9 @@ bp.emit = function emit(event, ...args) {
 }
 
 bp.on = function on(event, label, callback) {
+    if (!event || !label || !callback) {
+        throw new Error('Missing required parameters for on()');
+    }
     // Listen for events with a label
     if (!bp._emitters[event]) {
         bp._emitters[event] = [];

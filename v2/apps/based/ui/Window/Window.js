@@ -45,6 +45,7 @@ class Window {
         this.onOpen = onOpen;
 
         this.createWindow();
+        this.open();
 
         return this;
     }

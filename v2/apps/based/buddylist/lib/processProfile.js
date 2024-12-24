@@ -52,9 +52,6 @@ function _processBuddylistData(buddylist, buddylistData) {
           });
         }
 
-
-
-
       }
 
 
@@ -63,7 +60,7 @@ function _processBuddylistData(buddylist, buddylistData) {
       // the process of opening a new chat window will connect websocket ( if not already connected )
       // then messages will flow through the websocket
       if (buddy.newMessages) {
-        this.bp.emit('profile::buddy::newmessage', {
+        buddylist.bp.emit('profile::buddy::newmessage', {
           name: buddyName
         });
       }

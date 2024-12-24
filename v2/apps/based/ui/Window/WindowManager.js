@@ -28,5 +28,10 @@ export default class WindowsManager {
         this.windows = [];
     }
 
+    findWindow(id) {
+        return this.windows.find(w => w.id === id);
+    }
+
+
     // Additional future methods for advanced window management can be added here
 }

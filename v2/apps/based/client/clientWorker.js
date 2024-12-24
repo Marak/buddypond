@@ -1,45 +1,57 @@
-// import { decode } from "/node_modules/@msgpack/msgpack";
 importScripts('http://192.168.200.59:5174/vendor/msgpack.min.js');
 
-self.addEventListener('error', event => {
-    console.error(`Unhandled error in worker: ${event.message}`, event);
-});
-
-self.addEventListener('unhandledrejection', event => {
-    console.error('Unhandled promise rejection in worker', event.reason);
-});
+let ws;  // WebSocket connection
 
 self.addEventListener('message', function(event) {
     const { type, data } = event.data;
     switch (type) {
-        case 'init':
-            self.buddyList = {};  // Initialize buddy list
+        case 'connectWebSocket':
+            // Initialize WebSocket connection
+            connectWebSocket();
             break;
         case 'updateSSE':
-            const parsedData = JSON.parse(data);  // Parse SSE data in the worker
-            // TODO: Decode the data using MessagePack
-            // console.log(MessagePack.decode)
-            handleSSEUpdate(parsedData);
+            handleSSEUpdate(JSON.parse(data));
             break;
-        case 'wsMessage':
-            handleWSMessage(data);  // Process WebSocket messages
+        case 'sendMessage':
+            console.log('clientWorker Sending message:', data);
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(data));
+            }
+            break;
+        case 'disconnectWebSocket':
+            if (ws) {
+                ws.close();
+            }
             break;
         default:
-            console.log('Unknown message type');
+            console.log('Unknown message type:', type);
     }
 });
 
-function handleSSEUpdate(data) {
-    console.log("handleSSEUpdate update", data);
-    if (data.event) {
-        postMessage({ type: 'emit', event: data.event, data });
-    }
+function connectWebSocket() {
+    ws = new WebSocket('ws://192.168.200.59');
+    ws.onmessage = event => {
+        // Handle incoming WebSocket messages
+        const parsedData = JSON.parse(event.data);
+        console.log('clientWorker ws sending wsMessage:', parsedData);
+        postMessage({ type: 'wsMessage', data: parsedData });
+    };
+    ws.onopen = () => {
+        console.log('WebSocket connected in worker.');
+        postMessage({ type: 'wsConnected' });
+    };
+    ws.onerror = event => {
+        console.error('WebSocket error in worker:', event);
+        postMessage({ type: 'wsError', error: event.message });
+    };
+    ws.onclose = event => {
+        console.log('WebSocket closed in worker.');
+        postMessage({ type: 'wsClosed' });
+    };
 }
 
-function handleWSMessage(data) {
-    // Now using msgpack to decode the data
-    const parsedData = decode(new Uint8Array(data));
-    // TODO: Decode the data using MessagePack
-    // console.log(MessagePack.decode)
-    console.log("WebSocket Message Received:", parsedData);
+function handleSSEUpdate(data) {
+    // Process SSE update data
+    console.log("SSE Update:", data);
+    postMessage({ type: 'sseUpdate', data });
 }

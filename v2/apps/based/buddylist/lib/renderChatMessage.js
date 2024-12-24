@@ -1,11 +1,29 @@
 
-export default function renderChatMessage (message, windowId){
+export default function renderChatMessage (message, chatWindow){
 
-    console.log('renderChatMessage', message, windowId)
+    console.log('blist data', this.data)
+
+    console.log("incoming uuid", message, message.uuid)  
+    console.log('this.data.processedMessages', this.data.processedMessages)
+
+
+    // first check to see if this.data.processedMessages array contains message.uuid
+    // if it does, return and don't process it
+    if (this.data.processedMessages.includes(message.uuid)) {
+      return;
+    }
+
+    // ensure that the size of this.data.processedMessages array is less than limit
+    // we could probably safely remove this check, is better to keep to prevent memory leaks
+    if (this.data.processedMessages.length > 5000) {
+      this.data.processedMessages.shift();
+    }
+
+    // console.log('renderChatMessage', message, windowId)
     message.ctime = new Date(message.ctime).toString();
     message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
   
-    windowId = 'chatWindow-' + message.from.replace(/[^a-zA-Z0-9]/g, '-');
+    // windowId = 'buddy_message_-' + message.from.replace(/[^a-zA-Z0-9]/g, '-');
 
 
     // get the base html template for the chat window
@@ -18,29 +36,8 @@ export default function renderChatMessage (message, windowId){
     //console.log("CLONED: ", cloned);
 
     
-    // check to see if the window exists, if not create it with api.ui.createWindow
-    let messageWindow = null;
-    let found = this.bp.apps.ui.windowManager.windows.find(w => w.id === windowId);
-    if (!found) {
-      messageWindow = this.bp.apps.ui.windowManager.createWindow({
-        parent: this.bp.apps.ui.parent,
-        title: message.from,
-        id: windowId,
-        width: 600,
-        height: 500,
-        x: 100,
-        y: 100
-      });
-      messageWindow.content.appendChild(cloned);
 
-      messageWindow.open();
-
-      console.log("MADE NEW WINDOW: ", messageWindow);
-    } else {
-      messageWindow = this.bp.apps.ui.windowManager.windows.find(w => w.id === windowId);
-    }
-
-    console.log("MESSAGE WINDOW: ", messageWindow);
+    //console.log("MESSAGE WINDOW: ", messageWindow);
 
 
     let str = '';
@@ -92,14 +89,19 @@ export default function renderChatMessage (message, windowId){
 
 
     */
-    console.log('windowId', windowId, message.text);
-    $('.chat_messages', '#' + windowId).append(`<div class="chatMessage">${str}</div>`);
-    $('.message', '#' + windowId).last().text(message.text);
+    //console.log('windowId', windowId, message.text);
+    $('.chat_messages', chatWindow.content).append(`<div class="chatMessage">${str}</div>`);
+    $('.message', chatWindow.content).last().text(message.text);
 
     
+    // push the message.uuid to this.data.processedMessages array
+    this.data.processedMessages.push(message.uuid);
+
+
+
     // get the last .message element with id = windowId
-    console.log("WINDOW ID: ", windowId);
-    let lastElement = document.querySelector(`#${windowId} .message:last-child`);
+    //console.log("WINDOW ID: ", windowId);
+    //let lastElement = document.querySelector(`#${windowId} .message:last-child`);
     // set the text of the last element
     // lastElement.textContent = message.text;
     //$('.message', windowId).last().text(message.text);
