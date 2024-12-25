@@ -8,7 +8,7 @@
     flex-direction: column;
     resize: both;
     overflow: hidden;
-    z-index: 999999;
+    z-index: 99;
     border-radius: 8px; /* Rounded corners for a modern feel */
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;

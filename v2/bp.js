@@ -3,6 +3,7 @@ const bp = {};
 window.bp = bp;
 
 bp.log = console.log;
+bp.log = function noop() { }
 bp.error = console.error;
 
 bp.apps = {};
@@ -25,13 +26,15 @@ let bpHost = 'http://192.168.200.59:5174';
 
 
 bp.importModule = async function importModule(app, config, buddypond = true) {
-    let modulePath = bpHost + `/apps/based/${app}/${app}.js`;
+
+    
+    let modulePath = bpHost + `/v2/apps/based/${app}/${app}.js`;
 
     if (!buddypond) {
         modulePath = app;
     }
     try {
-        console.log('modulePath', modulePath)
+        bp.log('modulePath', modulePath)
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
             bp.apps[app] = new module.default(bp, config);
@@ -66,7 +69,10 @@ bp.appendCSS = function appendCSS(url) {
 }
 
 bp.appendScript = async function appendScript(url) {
-    let fullUrl = `${bpHost}${url}`;
+    let fullUrl = url;
+    if (!url.includes('http') && !url.includes('blob')) {
+        fullUrl = `${bpHost}${url}`;
+    }
 
     // fetching JS should immediately apply to the document
     // Remark: We could check for duplicates here based on the URL
@@ -83,14 +89,16 @@ bp.appendScript = async function appendScript(url) {
 }
 
 bp.createWorker = async function createWorker(url, config = {}) {
-    let fullUrl = `${bpHost}${url}`;
+    let fullUrl = `${bpHost}/v2${url}`;
+    
+    bp.log('createWorker', fullUrl);
     try {
         const response = await fetch(fullUrl);
         const blob = await response.blob();
         const workerScriptUrl = URL.createObjectURL(blob);
         let workerConfig = config || {};
         const worker = new Worker(workerScriptUrl, workerConfig);
-        console.log('Worker injected:', url);
+        bp.log('Local Worker created from:', url);
         return worker;
     } catch (error) {
         console.error('Failed to load worker script:', url, error);

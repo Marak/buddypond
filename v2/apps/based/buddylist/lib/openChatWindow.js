@@ -1,60 +1,94 @@
-import { v4 as uuid } from 'uuid';
+//import uuid from 'https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm'
+import AutoComplete from '../../ui/AutoComplete/AutoComplete.js';
+import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
 
-export default function openChatWindow (data) {
-    console.log('tttt', this.bp)
+function uuid () {
+    return new Date().getTime();
+}
+export default function openChatWindow(data) {
     this.bp.emit('client::requestWebsocketConnection', 'buddylist');
 
-    let chatWindow = this.bp.apps.ui.windowManager.findWindow('buddy_message_-' + data.name);
-
-
+    let windowType = data.pondname ? 'pond' : 'buddy';
+    let contextName = data.pondname || data.name;
+    let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
+    let subscribedList = windowType === 'pond' ? this.subscribedPonds : this.subscribedBuddies;
+    let windowTitle = windowType === 'pond' ? 'Group Chat with ' : 'Chat with ';
+    let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowIdPrefix + contextName);
     if (!chatWindow) {
-
-        // get the base html template for the chat window
-        let chatWindowTemplate = this.messageTemplateString;
-        // create new element from HTML string
-        let cloned = document.createElement('div');
+        const chatWindowTemplate = this.messageTemplateString;
+        const cloned = document.createElement('div');
         cloned.innerHTML = chatWindowTemplate;
 
-        // create a new UI window to hold the buddy list
+        // No group video calls ( for now )
+        if (windowType === 'pond') {
+            $('.startVideoCall', cloned).remove();
+        }
+
         chatWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'buddy_message_-' + data.name,
-            title: 'Chat with ' + data.name,
+            id: windowIdPrefix + contextName,
+            title: windowTitle + contextName,
+            type: windowType,
             parent: this.bp.apps.ui.parent,
+            className: 'chatWindow',
             width: 600,
             height: 500,
             onOpen: () => {
-                console.log('chatWindow onOpen');
-                this.subscribedBuddies.push(data.name);
-                console.log('subscribedBuddies', this.subscribedBuddies);
-                let _data = { buddyname: this.subscribedBuddies.join(','), me: this.bp.me };
-                //this.bp.apps.client.ws.send(JSON.stringify({ id: new Date().getTime(), method: 'getMessages', data: _data }));
+                if (!subscribedList.includes(contextName)) {
+                    subscribedList.push(contextName);
+                }
+                // console.log('subscribedList', subscribedList);
+                const _data = { me: this.bp.me };
+                if (windowType === 'pond') {
+                    _data.pondname = contextName;
+                } else {
+                    _data.buddyname = contextName;
+                }
                 this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: _data });
-
             },
             onClose: () => {
-                console.log('buddyListWindow onClose');
+                subscribedList = subscribedList.filter(name => name !== contextName);
             }
         });
 
-        chatWindow.content.appendChild(cloned);
+        chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 
+        new AutoComplete('.aim-input', chatWindow.content, this.options.autocomplete);
+        const chatWindowButtonBar = new ChatWindowButtonBar(this.bp, {
+            context: contextName,
+            type: windowType,
+            buttons: this.options.chatWindowButtons
+        });
 
-        $('.message_form .buddy_message_to').val(data.name);
+        $('.aim-message-controls', chatWindow.content).prepend(chatWindowButtonBar.container);
+
+        $('.message_form .aim-to', chatWindow.content).val(contextName);
 
         $('.message_form', chatWindow.content).submit((e) => {
             e.preventDefault();
-            let message = $('.message_form .buddy_message_text').val();
-            let to = $('.message_form .buddy_message_to').val();
-            let from = bp.me;
-            let ctime = Date.now();
-            let text = message;
-            let data = { to, from, message, ctime, text };
-            console.log('buddy_send_message_form', data);
-            this.bp.emit('chat::sendMessage', data);
+            const message = $('.aim-input', chatWindow.content).val();
+            const _data = {
+                to: $('.aim-to', chatWindow.content).val(),
+                type: windowType,
+                from: this.bp.me,
+                message,
+                ctime: Date.now(),
+                text: message
+            };
+            // console.log('message_form submit', _data);
+            if (windowType === 'pond') {
+                this.bp.emit('pond::sendMessage', _data);
+            } else {
+                this.bp.emit('buddy::sendMessage', _data);
+            }
+            $('.aim-input', chatWindow.content).val('');
             return false;
         });
-         return chatWindow; 
 
-        // chatWindow.open();
+        $('.aim-input', chatWindow.content).keydown((e) => {
+            if (e.which === 13) {
+                $('.message_form', chatWindow.content).submit();
+            }
+        });
     }
+    return chatWindow;
 }

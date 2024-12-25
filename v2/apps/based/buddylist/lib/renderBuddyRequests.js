@@ -1,5 +1,6 @@
 export default function renderBuddyRequests (buddyrequests) {
-    console.log("renderBuddyRequests", buddyrequests);
+    //console.log("renderBuddyRequests", buddyrequests);
+
     $('.you_have_no_buddies').hide();
     let api = this.bp.apps.client.api;
 
@@ -12,8 +13,6 @@ export default function renderBuddyRequests (buddyrequests) {
       for (let buddy in buddyrequests) {
         let buddyrequest = buddyrequests[buddy];
         buddyrequest = JSON.parse(buddyrequest);
-        console.log("buddyrequest", buddyrequest, this.bp.me);
-        // TODO: top list is buddies, button list is requests ( with buttons )
         if (buddyrequest.to === this.bp.me) {
           $('.pendingIncomingBuddyRequests').append('<li>' + buddyrequest.from + ' - <a href="#" class="approveBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Approve</a> / <a href="#" class="denyBuddyRequest pointer" data-buddyname="' + buddyrequest.from +'">Remove</a> </li>');
         } else {

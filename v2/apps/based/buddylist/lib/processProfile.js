@@ -1,8 +1,7 @@
 
 
 export default async function processProfile(profileState) {
-  console.log('processBuddylist', profileState);
-
+  // console.log('processBuddylist', profileState);
 
   // if the client hasn't seen the buddylist yet, we start from empty state
   if (!this.data.buddylist) {
@@ -15,15 +14,31 @@ export default async function processProfile(profileState) {
   // profileState is a JSON document representing entire user profile
   // we will process the profileState as if it was a differential state update
   let buddylist = profileState.buddylist;
-  _processBuddylistData(this, buddylist);
+  let profileNeedsUpdate = _processBuddylistData(this, buddylist);
 
   let buddyrequests = profileState.buddyrequests;
   _processBuddyRequestsData(this, buddyrequests);
-  
+
+  // once we have completed processing all the buddylist profile data
+  // we will want to send back the updated document to awk that we have processed the profile
+  // and set newMessages flags to false
+  let api = this.bp.apps.client.api;
+  // console.log('getBuddyProfile', api, profileState);
+  profileState.updates = profileState.updates || {};
+
+  if (profileNeedsUpdate) {
+    // console.log("SENDING TO SERVER", this.data.profileState);
+    api.getBuddyProfile(this.data.profileState, function (err, data) {
+      if (err) {
+        console.log(err);
+      }
+      // console.log(err, data)
+    });
+  }
+
 }
 
 function _processBuddyRequestsData(buddylist, buddyrequests) {
-  console.log('_processBuddyRequestsData', buddyrequests);
   if (buddyrequests) {
     buddylist.renderBuddyRequests(buddyrequests);
   }
@@ -31,11 +46,11 @@ function _processBuddyRequestsData(buddylist, buddyrequests) {
 
 function _processBuddylistData(buddylist, buddylistData) {
 
+  let profileNeedsUpdate = false;
   if (buddylist) {
     for (let b in buddylistData) {
       let buddy = buddylistData[b];
       let buddyName = b.replace('buddies/', '');
-      console.log('buddy', buddy);
       // check to see if the buddy is already in the local buddylist
       // if not, render the buddy in the buddylist
       if (!buddylist.data.buddylist[b]) {
@@ -54,7 +69,6 @@ function _processBuddylistData(buddylist, buddylistData) {
 
       }
 
-
       // check if this buddy has sent newMessages
       // if so, open a new window
       // the process of opening a new chat window will connect websocket ( if not already connected )
@@ -63,9 +77,11 @@ function _processBuddylistData(buddylist, buddylistData) {
         buddylist.bp.emit('profile::buddy::newmessage', {
           name: buddyName
         });
+        profileNeedsUpdate = true;
       }
     }
   }
+  return profileNeedsUpdate;
 }
 
 

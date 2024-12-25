@@ -1,5 +1,5 @@
 export default function renderOrUpdateBuddyInBuddyList (data) {
-  console.log('dddd', data)
+    // console.log('renderOrUpdateBuddyInBuddyList', data)
     let buddyname = data.name;
     let buddydata = data.buddydata;
   
@@ -27,7 +27,6 @@ export default function renderOrUpdateBuddyInBuddyList (data) {
     let buddyListItems = document.querySelectorAll('.buddylist li');
 
     buddyListItems.forEach((el, i) => {
-      console.log('e', el, i)
       if (el.dataset.buddy === buddyname) {
         exists = el;
       }
@@ -37,7 +36,7 @@ export default function renderOrUpdateBuddyInBuddyList (data) {
       exists.remove();
     }
   
-    let buddyListItem = `<li data-buddy="${buddyname}"><span>${newMessages}${connectedStatusIcon}${isCalling}</span> <a class="messageBuddy" href="#">${buddyname}</a></li>`;
+    let buddyListItem = `<li data-buddy="${buddyname}"><span>${newMessages}${connectedStatusIcon}${isCalling}</span> <a data-buddy="${buddyname}" class="message-buddy" href="#">${buddyname}</a></li>`;
     let buddyListItemEl = document.createElement('div');
     buddyListItemEl.innerHTML = buddyListItem;
     if (buddydata.isConnected) {

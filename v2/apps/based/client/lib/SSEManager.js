@@ -1,23 +1,26 @@
 export default class SSEManager {
     constructor(client) {
         this.client = client;
+        this.log = client.bp.log;
         this.sse = null;
         this.sseConnected = false;
     }
 
     connectSSE() {
+        this.hardDisconnect = false;
+
         const bpHost = 'http://192.168.200.59';
         const eventSourceUrl = bpHost + '/profile?qtokenid=' + this.client.qtokenid;
         const restUrl = bpHost + '/api/v3/buddies?eventSource=true&qtokenid=' + this.client.qtokenid;
     
-        console.log('eventSourceUrl', eventSourceUrl);
-        console.log('restUrl', restUrl);
+        this.log('eventSourceUrl', eventSourceUrl);
+        this.log('restUrl', restUrl);
     
         // Fetch the initial state before starting the SSE connection
         fetch(restUrl)
             .then(response => response.text())
             .then(data => {
-                console.log('Initial State:', data);
+                this.log('Initial State:', data);
                 this.client.worker.postMessage({ type: 'updateSSE', data: data });
                 this.initiateSSE(eventSourceUrl);
             })
@@ -29,7 +32,8 @@ export default class SSEManager {
     initiateSSE(url) {
         this.sse = new EventSource(url);
         this.sse.onmessage = (event) => {
-            console.log('SSE Message:', event.data);
+            this.log('SSE Message:', event.data);
+            this.client.worker.postMessage({ type: 'updateSSE', data: event.data });
         };
     
         this.sse.onerror = (event) => {
@@ -40,17 +44,29 @@ export default class SSEManager {
         };
     
         this.sseConnected = true;
-        console.log("Connected to SSE");
+        this.log("Connected to SSE");
     }
     
     reconnectSSE() {
+        if (this.hardDisconnect) {
+            this.log("SSE connection was manually closed. Not attempting to reconnect.");
+            return;
+        }
         // Attempt to reconnect after 5 seconds
         setTimeout(() => {
-            console.log("Reconnecting SSE...");
+            this.log("Reconnecting SSE...");
             if (!this.sse || this.sse.readyState === EventSource.CLOSED) {
                 this.connectSSE();
             }
         }, 5000);
+    }
+
+    disconnectSSE () {
+        this.hardDisconnect = true;
+        if (this.sse) {
+            this.sse.close();
+            this.sseConnected = false;
+        }
     }
     
 }

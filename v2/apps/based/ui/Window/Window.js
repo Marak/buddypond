@@ -12,6 +12,7 @@ class Window {
             title = "Window", // Title of the window
             width = '400px', // Default width
             height = '300px', // Default height
+            type = 'singleton', // Default type ( intended to not have siblings )
             x = 50, // Default x position
             y = 50, // Default y position
             parent = null, // Parent element to append to
@@ -26,6 +27,7 @@ class Window {
         this.title = title;
         this.width = width;
         this.height = height;
+        this.type = type;
         this.x = x;
         this.y = y;
         this.parent = parent;
@@ -135,7 +137,7 @@ class Window {
         this.container.style.top = `${this.y}px`;
         this.container.style.left = `${this.x}px`;
 
-        this.container.style.zIndex = 11000;
+        this.container.style.zIndex = 99;
 
 
         // add a mousedown handler to container itself to set 'window-active' status
@@ -389,7 +391,7 @@ class Window {
 
         // check to see if no more windows
         // if window count is 0 get the menubar-set-window-as-background element and add disabled class
-        let windowCount = api.ui.windowManager.windows.length;
+        let windowCount = this.windowManager.windows.length;
         if (windowCount === 0) {
             let el = document.getElementById('menubar-set-window-as-background');
             if (el) {

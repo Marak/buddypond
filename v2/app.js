@@ -7,10 +7,15 @@ async function go() {
 }
 
 async function startBuddylist() {
-    await bp.start(['ui', 'client', 'buddylist']);
-    console.log(bp.apps)
-    console.log('api available', bp.apps.client.api);
+    await bp.start(['ui', 'client', 'buddylist', 'menubar']);
+    console.log('apps availble:', bp.apps)
+    console.log('api available:', bp.apps.client.api);
     let api = bp.apps.client.api;
+
+     const menuBar = bp.apps.menubar.createMenu();
+     console.log(menuBar);
+     document.body.appendChild(menuBar);
+
 }
 
 async function startGame() {

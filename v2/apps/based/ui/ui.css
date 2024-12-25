@@ -6,3 +6,43 @@ body {
 .error {
     color: red;
 }
+
+.autocomplete-results {
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    bottom: 0px;
+    width: 100%;
+    max-height: 120px; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scroll */
+    z-index: 8888;
+  }
+  
+  .autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  
+  .autocomplete-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  
+  h1, h2, h3, h4, h5, h6, ul {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0;
+  }
+
+  .desktopInput {
+    padding: 6px;
+    width: 9vw;
+    text-decoration: none;
+    font-size: clamp(12px, 0.8vw, 24px);
+    margin: 4px 2px;
+    border-radius: 4px;
+  }
+  

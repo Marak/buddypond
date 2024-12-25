@@ -1,37 +1,26 @@
-
-
-
-
-
-
-
-<div id="window_buddy_message_0" class="window_content">
-    <div class="chat_area">
-        <div class="window_main buddy_message_main message_main">
-            <div class="chatMessagesHolder">
-                <div class="no_chat_messages">
-                    Your conversation has just started. You can send a message using the form below.
-                </div>
-                <div class="chat_messages">
-                </div>
-                <!-- <hr /> -->
+<div id="window_buddy_message_0" class="aim-window window_content">
+    <div class="aim-chat-controls">
+        <img src="desktop/assets/images/icons/icon_phone.png" class="startVideoCall" />
+    </div>
+    <div class="aim-chat-area">
+        <div class="aim-messages-container">
+            <div class="aim-no-messages">
+                Your conversation has just started. You can send a message using the form below.
             </div>
-        </div>
-        <div class="window_bottom_chat">
-            <div class="buddy_send_message_chatcontrols_form send_message_chatcontrols_form">
-                <!-- Chat control icons -->
-            </div>
-            <div class="buddy_send_message_form">
-                <!-- Message sending form -->
-                <form method="POST" action="" align="right" class="message_form">
-                    <textarea name="buddy_message_text" class="buddy_message_text buddy_message_text_0"
-                        placeholder=""></textarea>
-                    <button name="buddy_message_submit" class="sendBuddyMessage">SEND</button>
-                    <input name="buddy_message_from" class="buddy_message_from" type="hidden" />
-                    <input name="buddy_message_to" class="buddy_message_to" type="hidden" />
-                </form>
-
+            <div class="aim-messages">
+                <!-- Messages will be appended here -->
             </div>
         </div>
     </div>
+    <div class="aim-message-controls">
+        <form method="POST" action="#" class="aim-message-form message_form">
+            <textarea name="message_text" class="aim-input" placeholder="Type your message here..."></textarea>
+            <button type="submit" class="aim-send-btn">SEND</button>
+            <input type="hidden" name="message_from" class="aim-from" />
+            <input type="hidden" name="message_to" class="aim-to" />
+        </form>
+    </div>
 </div>
+
+
+

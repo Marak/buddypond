@@ -1,6 +1,8 @@
 export default function buddylistUIEvents () {
     let api = this.bp.apps.client.api;
-     // bind events
+    let affirmations = this.bp.apps.affirmations.affirmations;
+     
+    // bind events
      $('.loginForm').submit((e) => {
         e.preventDefault();
         let username = $('.loginForm input[name="username"]').val();
@@ -18,7 +20,8 @@ export default function buddylistUIEvents () {
             if (result.success) {
                 // attempt to connect for events after getting auth token
                 //console.log('connecting with valid qtokenid', api.qtokenid);
-                bp.emit('auth::qtoken', result.qtokenid);
+                result.me = username;
+                bp.emit('auth::qtoken', result);
                 $('.loggedIn').show();
             } else {
                 if (username === password) {
@@ -38,6 +41,62 @@ export default function buddylistUIEvents () {
         console.log('status', status);
         bp.emit('profile::status', status);
     });
+
+    $('.buddylist').click((e) => {
+
+      // target must be .messageBuddy class
+        if (!$(e.target).hasClass('message-buddy')) {
+            return;
+        }
+
+        let buddyname = $(e.target).data('buddy');
+        console.log('message-buddy', buddyname);
+        this.openChatWindow({ name: buddyname });
+        // bp.emit('chat::openChatWindow', { name: buddyname });
+    });
+
+    $('.inviteBuddy').on('click',  () =>{
+        let randomInviteMessages = [
+            `Find me as "${this.bp.me}" on https://buddypond.com and let's start a conversation that could last a lifetime.`,
+            `I've taken my conversations to the cloud! Reach me at "${this.bp.me}" on https://buddypond.com where the future of messaging unfolds.`,
+            `Wave goodbye to the old and hello to the old! I'm waiting at "${this.bp.me}" on https://buddypond.com. Let's catch up!`,
+            `Missing chat sessions? They're back and better than ever at "${this.bp.me}" on https://buddypond.com. Join me and let's reconnect!`,
+            `Taking conversations to the next level. Find me at "${this.bp.me}" on https://buddypond.com and let's dive into new topics together!`,
+            `Remember the ease of old-school messaging? Experience it again with a twist! I'm "${this.bp.me}" at https://buddypond.com. Chat soon?`,
+            `I'm charting new territories in the world of digital communication. Join me as "${this.bp.me}" on https://buddypond.com and let's explore together!`,
+            `Just like the good old days but better! Find me on "${this.bp.me}" at https://buddypond.com and let's keep the conversations flowing.`,
+        ];
+                let inviteMessage = randomInviteMessages[Math.floor(Math.random() * randomInviteMessages.length)];
+        window.open(`https://twitter.com/intent/tweet?url=${inviteMessage}`);
+        return false;
+      });
+
+
+
+    function updatePositiveAffirmation() {
+        let key = affirmations[Math.floor(Math.random() * affirmations.length)];
+        $('.positiveAffirmation').html(key);
+      }
+  
+      // update the positive affirmation on an interval
+      setInterval(function () {
+        $('.positiveAffirmation').fadeOut({
+          duration: 4444,
+          complete: function () {
+            updatePositiveAffirmation();
+            $('.positiveAffirmation').fadeIn({
+              duration: 4444,
+              complete: function () { }
+            });
+          }
+        });
+      }, 199800); // 3 minutes, 33 seconds
+  
+      updatePositiveAffirmation();
+
+      $('.positiveAffirmation').on('click', function () {
+        updatePositiveAffirmation();
+      });
 
 
 }

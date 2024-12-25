@@ -4,6 +4,7 @@
 }
 
 .window_content {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 500px;
@@ -59,13 +60,21 @@
     font-size: 18px;
 }
 
-.sendBuddyRequest {
+.buddyListButton {
     background-color: #48d1cc; /* Mimic old AIM button color */
     border: none;
     padding: 5px 10px;
     margin-top: 5px;
     cursor: pointer;
     border-radius: 3px;
+    
+}
+
+.addBuddyForm {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .sendBuddyRequest:hover {
@@ -76,10 +85,156 @@
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
+    width: 100%;
 }
 
 .positiveAffirmation {
-    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    text-decoration: italic;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.onlineStatus {
+    width: 100%;
+}
+.onlineStatusSelect {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.buddylist {
+    list-style: none;
+}
+
+.aim-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    border: 2px solid #0000ff; /* Classic blue border */
+    background-color: #ffffff; /* White background for the chat area */
+    font-family: Arial, sans-serif; /* Typical font for that era */
+}
+
+.aim-chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.aim-messages-container {
+}
+
+.aim-no-messages {
+    color: #808080; /* Grey text indicating no messages yet */
+}
+
+.aim-messages {
+    margin-top: 4px;
+}
+
+.aim-message-controls {
+    width: calc(100% - 16px); /* Subtract padding from total width */
+    padding: 8px;
+    background: #f0f0f0; /* Light grey background for the control area */
+    border-top: 1px solid #d3d3d3; /* Separator */
+    box-sizing: border-box;
+}
+
+.aim-message-form {
+    display: flex;
+    align-items: center;
+}
+
+.aim-input {
+    flex-grow: 1;
+    margin-right: 8px;
+    padding: 4px;
+    border: 1px solid #c0c0c0; /* Light grey border for input */
+    border-radius: 3px; /* Slightly rounded corners for the input box */
+}
+
+.aim-send-btn {
+    padding: 6px 12px;
+    background-color: #0084ff; /* Bright blue background for the send button */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 40px;
+
+
+
+}
+
+.aim-send-btn:hover {
+    background-color: #0056b3; /* Darker blue when hovering */
+}
+
+.aim-from, .aim-to {
+    display: none; /* Hide these fields */
+}
+
+
+.login-frog {
+    font-size: 64px;
+    text-align: center;
+}
+
+.loginMessage {
+    text-align: center;
+}
+
+.loginButton {
+    background-color: #48d1cc; /* Mimic old AIM button color */
+    border: none;
+    padding: 5px 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.purple {
+    color: purple;
+}
+
+
+.datetime {
+    font-style: italic;
+    opacity: 0.77;
+    font-size: clamp(8px, 1vw, 18px);
+    text-decoration: italic;
+}
+
+
+
+.buddylistContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 0 20px 0 20px;
+}
+
+.inviteBuddyHolder {
+    text-align: center;
+}
+
+.aim-chat-controls {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    gap: 10px;
+}
+
+.loginStatus {
+    text-align: center
 }

@@ -30,9 +30,9 @@ export default class Client {
         // onmessage and onerror are bound inside createWorker
         this.worker = await this.bp.createWorker('/apps/based/client/clientWorker.js', config);
 
-        this.worker.onmessage = function(event) {
+        this.worker.onmessage = (event) => {
             // Handle messages from the worker here
-            console.log('Message from worker:', event.data);
+            this.bp.log('Message from worker:', event.data);
             if (config.onmessage) {
                 config.onmessage(event.data);
             }
@@ -68,7 +68,7 @@ export default class Client {
 
     requestWebsocketConnection(source) {
         if (!this.connectionSources[source]) {
-            console.log(`WebSocket connection requested by ${source}.`);
+            this.bp.log(`WebSocket connection requested by ${source}.`);
             this.connectionSources[source] = true;
             if (Object.keys(this.connectionSources).length === 1) {
                 this.worker.postMessage({ type: 'connectWebSocket' });  // Tell worker to connect WebSocket
@@ -79,7 +79,7 @@ export default class Client {
 
     releaseWebsocketConnection(source) {
         if (this.connectionSources[source]) {
-            console.log(`WebSocket connection released by ${source}.`);
+            this.bp.log(`WebSocket connection released by ${source}.`);
             delete this.connectionSources[source];
             if (Object.keys(this.connectionSources).length === 0) {
                 this.disconnectTimer = setTimeout(() => {
@@ -100,30 +100,30 @@ export default class Client {
     }
 
     handleWorkerMessage(event) {
-        console.log('handleWorkerMessage', event)
+        this.bp.log('handleWorkerMessage', event)
         const { type, data } = event;
         switch (type) {
             case 'wsMessage':
-                console.log('WebSocket message received from worker:', data);
+                this.bp.log('WebSocket message received from worker:', data);
                 this.bp.emit(event.data.event, event.data);
                 break;
             case 'sseUpdate':
-                console.log('SSE update from worker:', type, data);
+                this.bp.log('SSE update from worker:', type, data);
                 this.bp.emit(data.event, data);
 
                 break;
             case 'wsConnected':
-                console.log('WebSocket connection established in worker.');
+                this.bp.log('WebSocket connection established in worker.');
                 this.onWebSocketConnected();
                 break;
             case 'wsClosed':
-                console.log('WebSocket connection closed in worker.');
+                this.bp.log('WebSocket connection closed in worker.');
                 break;
             case 'wsError':
                 console.error('WebSocket error in worker:', data);
                 break;
             default:
-                console.log('Unhandled message type from worker:', type);
+                this.bp.log('Unhandled message type from worker:', type);
         }
     }
 
@@ -132,7 +132,7 @@ export default class Client {
     }
 
     sendMessage(message) {
-        console.log('sendMessage', message, this.connectionSources)
+        this.bp.log('sendMessage', message, this.connectionSources)
         if (Object.keys(this.connectionSources).length > 0) {  // Check if there are active sources
             this.worker.postMessage({ type: 'sendMessage', data: message });
         } else {
@@ -149,6 +149,12 @@ export default class Client {
 
     disconnectWebSocket() {
         this.worker.postMessage({ type: 'disconnectWebSocket' });
+    }
+
+    disconnect () {
+        // immediately disconnects all connections
+        this.worker.postMessage({ type: 'disconnectWebSocket' });
+        this.sseManager.disconnectSSE();
     }
 
 }

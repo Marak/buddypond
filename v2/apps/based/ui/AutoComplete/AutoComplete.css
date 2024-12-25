@@ -1,0 +1,17 @@
+.autocomplete-results {
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+  }
+  
+  .autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  
+  .autocomplete-item:hover {
+    background-color: #f0f0f0;
+  }
+  

@@ -15,7 +15,7 @@ if (document.location.protocol === 'https:') {
 
 if (buddypond.mode === 'dev') {
   // buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
-  buddypond.endpoint = 'https://192.168.200.59/api/v3';
+  buddypond.endpoint = 'http://192.168.200.59/api/v3';
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {
@@ -331,7 +331,7 @@ buddypond.lastResponseTime = function averageResponseTime () {
 function apiRequest(uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
 
-  console.log("making apiRequest", url, method, data);
+  // console.log("making apiRequest", url, method, data);
   let headers = {
       "Accept": "application/json",
       "Content-Type": "application/json; charset=utf-8"
