@@ -45,6 +45,9 @@ export default class ChatWindowButtonBar {
             if (button.image) {
                 let imgElement = document.createElement('img');
                 imgElement.src = button.image;
+                imgElement.title = button.text;
+                imgElement.dataset.context = this.options.context || button.text;
+                imgElement.dataset.type = this.options.type || 'buddy';
                 imgElement.alt = button.text;
                 imgElement.classList.add('button-bar-button');
                 if (button.className) {

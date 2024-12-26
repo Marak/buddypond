@@ -221,6 +221,8 @@ window.top.location = 'ie.html';
       </div>
     </div>
 
+    <!--    -->
+
     <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
     <link rel="stylesheet" href="desktop/assets/css/mobile.css" />
     <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
@@ -257,7 +259,7 @@ window.top.location = 'ie.html';
           .use('tts')
           .use('notifications')
           .use('messages')
-          .use('buddylist')
+          // .use('buddylist')
           .use('pond')
           .use('streamsquad')
           .use('spellbook')
@@ -265,7 +267,7 @@ window.top.location = 'ie.html';
           .use('profile')
           .use('login', { defer: true })
           .use('videochat', { defer: true })
-          .ready(function (err, apps) {
+          .ready(async function (err, apps) {
             // desktop.log("Loaded", desktop.apps.loaded);
             try {
               desktop.ui.windowResizeEventHandler(null, true);
@@ -371,7 +373,7 @@ window.top.location = 'ie.html';
             });
             // TODO: map the new API to the old API
             // chatWindowButtons should emit events
-            bp.start(['ui', 'client', {
+            await bp.start(['ui', 'client', 'emoji-picker', {
               name: 'buddylist',
               autocomplete: allCommands,
               // wil probably need the autocomplete fn handler
@@ -439,12 +441,19 @@ window.top.location = 'ie.html';
                 text: 'BuddyHelp',
                 image: 'desktop/assets/images/icons/svg/1f9ae.svg',
                 align: 'right',
-                onclick: () => console.log('Close button clicked')
+                onclick: (ev) => {
+                  let win = $(ev.target).closest('.aim-window');
+                  let windowId = '#' + win.attr('id');
+                  //alert(windowId)
+                  desktop.commands.chat.help({ windowId: windowId });
+
+                }
               }
 
 
               ]
             }]);
+            bp.open('buddylist');
 
           });
       });

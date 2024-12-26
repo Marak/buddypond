@@ -12,9 +12,12 @@ class Window {
             title = "Window", // Title of the window
             width = '400px', // Default width
             height = '300px', // Default height
+            app = 'ui', // default app
             type = 'singleton', // Default type ( intended to not have siblings )
+            context = 'default', // Default context
             x = 50, // Default x position
             y = 50, // Default y position
+            z = 99, // Default z-index
             parent = null, // Parent element to append to
             id = `window-${idCounter}`, // Unique ID for the panel
             onClose = () => { }, // Callback when the window is closed
@@ -24,12 +27,26 @@ class Window {
             canBeBackground = false // Can be set as background
         } = options;
 
+        this.windowManager = windowManager;
+
+        // ensure that no other window has the same id
+        // we could check the windowManger.windows array for this
+        // we will check the document ( in case another system has created a window )
+        let existingWindow = document.getElementById(id);
+        if (existingWindow) {
+            console.log('Window with id already exists', id);
+            return existingWindow;
+        }
+
         this.title = title;
         this.width = width;
         this.height = height;
+        this.app = app;
         this.type = type;
         this.x = x;
         this.y = y;
+        this.z = 99;
+        this.context = context;
         this.parent = parent;
         this.id = id;
         this.isMaximized = false;
@@ -41,7 +58,10 @@ class Window {
         this.resizeable = resizeable;
         this.canBeBackground = canBeBackground;
 
-        this.windowManager = windowManager;
+        windowManager = windowManager || { 
+            windows: [],
+            saveWindowsState: () => {},
+        };
 
         this.onClose = onClose;
         this.onOpen = onOpen;
@@ -192,7 +212,7 @@ class Window {
 
         // Create content area
         this.content = document.createElement("div");
-        this.content.classList.add("window-content");
+        this.content.classList.add("bp-window-content");
         // this.content.innerHTML = this.content;
 
         // Append components
@@ -218,6 +238,68 @@ class Window {
 
 
         return this.container;
+    }
+
+    serialize() {
+
+        // we need an xpath selector for this.parent
+        let parentXpath = getXPathForElement(this.parent);
+        // console.log('parentXpath', parentXpath);
+        return {
+            title: this.title,
+            width: this.width,
+            height: this.height,
+            type: this.type,
+            app: this.app,
+            x: this.x,
+            y: this.y,
+            z: this.z,
+            context: this.context,
+            parent: parentXpath,
+            id: this.id,
+            onClose: this.onClose,
+            onOpen: this.onOpen,
+            className: this.className,
+            resizeable: this.resizeable,
+            canBeBackground: this.canBeBackground
+        };
+    }
+
+    hydrate(data) {
+        console.log('hydrate', data);
+        this.title = data.title;
+        this.width = data.width;
+        this.height = data.height;
+        this.app = data.app;
+        this.type = data.type;
+        this.x = data.x;
+        this.y = data.y;
+        this.z = Number(data.z);
+        this.context = data.context;
+        // TODO: some of these are constructor...maybe all?
+        // this.parent = document.querySelector(data.parent);
+        this.id = data.id;
+        this.onClose = data.onClose;
+        this.onOpen = data.onOpen;
+        this.className = data.className;
+        this.resizeable = data.resizeable;
+        this.canBeBackground = data.canBeBackground;
+
+        this.updateWindow();
+    }
+
+    updateWindow() {
+        this.container.style.width = `${this.width}px`;
+        this.container.style.height = `${this.height}px`;
+        this.container.style.top = `${this.y}px`;
+        this.container.style.left = `${this.x}px`;
+        this.container.style.zIndex = this.z;
+        console.log('updateWindow', this);
+    }
+
+    setDepth (depth) {
+        this.container.style.zIndex = depth;
+        this.windowManager.saveWindowsState();
     }
 
     setAsBackground() {
@@ -297,6 +379,16 @@ class Window {
         // Remove the mousemove and mouseup event listeners from the document
         document.removeEventListener('mousemove', this.drag.bind(this));
         document.removeEventListener('mouseup', this.stopDrag.bind(this));
+
+        this.x = this.container.offsetLeft;
+        this.y = this.container.offsetTop;
+        this.z = Number(this.container.style.zIndex);
+        // TODO: save the window state
+        // needs a reference to windowsmanager??? cannot save locally??/
+        this.windowManager.saveWindowsState();
+
+
+
     }
     minimize() {
         if (this.isMinimized) {
@@ -325,6 +417,8 @@ class Window {
             this.taskbarPlaceholder.style.display = "block";
             this.taskbarPlaceholder.style.left = `${this.x}px`;  // Keep the x position
         }
+        // TODO: save the window state
+
     }
 
     // Create a taskbar placeholder element
@@ -352,6 +446,8 @@ class Window {
 
         // Mark as not minimized
         this.isMinimized = false;
+        // TODO: save the window state
+
     }
 
     maximize() {
@@ -368,10 +464,14 @@ class Window {
             this.container.style.left = "0";
             this.isMaximized = true;
         }
+        // TODO: save the window state
+
     }
 
     open() {
         this.onOpen();
+        // TODO: save the window state ???
+
         // this.parent.appendChild(this.container);
     }
     close() {
@@ -400,6 +500,8 @@ class Window {
         }
 
         this.windowManager.removeWindow(this.id);
+        // TODO: save the window state ??? removeWindow could do it..?
+
 
     }
 
@@ -432,7 +534,34 @@ class Window {
 
     stopResize() {
         this.isResizing = false;
+        // TODO: save the window state
+
     }
 }
 
 export default Window;
+
+
+function getXPathForElement(element) {
+    const fullPath = (el) => {
+        let names = [];
+        while (el.parentNode) {
+            if (el.id) { // If the element has an ID, use it as a unique identifier
+                names.unshift('#' + el.id);
+                break;
+            } else {
+                let e = el, sibling, count = 1;
+                while (sibling = e.previousSibling) {
+                    if (sibling.nodeType === 1 && sibling.tagName === e.tagName) { count++; }
+                    e = sibling;
+                }
+                const tagName = el.tagName.toLowerCase();
+                const nth = count > 1 ? `:nth-of-type(${count})` : '';
+                names.unshift(`${tagName}${nth}`);
+                el = el.parentNode;
+            }
+        }
+        return names.length ? names.join(' > ') : null;
+    };
+    return fullPath(element);
+}

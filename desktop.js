@@ -340,6 +340,7 @@ window.addEventListener('hashchange', function() {
 
 
 desktop.refresh = function refreshDesktop () {
+  return;
   if (desktop.app.buddylist) {
     desktop.app.buddylist.updateBuddyList();
     // TODO: move messages to separate app and use EE

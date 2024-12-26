@@ -2,7 +2,13 @@ import WindowManager from "./Window/WindowManager.js";
 export default class UI {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.windowManager = new WindowManager();
+        this.windowManager = new WindowManager({
+            openWindow: this.bp.open.bind(this.bp)
+        });
+
+        // will re-load any previous stored metadata about windows
+        // storage provider is defaulted to localStorage
+        this.windowManager.loadWindows();
 
         options.parent = options.parent || document.body;
 

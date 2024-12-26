@@ -3,7 +3,7 @@
     margin: 0px;
 }
 
-.window_content {
+.bp-window-content {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -18,7 +18,7 @@
     color: #333;
 }
 
-.window_main {
+.window-main {
     flex-grow: 1;
     overflow-y: auto;
     background-color: #FFF;

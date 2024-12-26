@@ -82,7 +82,7 @@
 
 
 /* Window Content */
-.window-content {
+.bp-window-content {
     /* padding: 16px; */
     overflow: auto;
     flex-grow: 1;

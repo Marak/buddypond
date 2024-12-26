@@ -7,14 +7,43 @@ async function go() {
 }
 
 async function startBuddylist() {
-    await bp.start(['ui', 'client', 'buddylist', 'menubar']);
+    let buddylistOptions = {
+        name: 'buddylist',
+        // autocomplete: allCommands,
+        // wil probably need the autocomplete fn handler
+        // autocompleteOnSuggestion: fn, etc, will see
+        chatWindowButtons: [{
+            text: '😊',
+            className: 'emojiPicker',
+            onclick: (ev) => {
+
+                // focus on the .emojiPicker input
+                $('.emojiPicker').focus();
+
+                // we need to add class activeTextArea to the active textarea
+                // so we can append the emoji to the correct textarea
+                // remove the activeTextArea from all other textareas
+                $('.activeTextArea').removeClass('activeTextArea');
+
+                let messageControls = $(ev.target).closest('.aim-message-controls');
+                // find the closest textarea to the ev.target
+                $('.aim-input', messageControls).addClass('activeTextArea');
+
+
+
+            }
+        }]
+
+    }
+    await bp.start(['ui', 'client', buddylistOptions, 'menubar', 'emoji-picker']);
     console.log('apps availble:', bp.apps)
     console.log('api available:', bp.apps.client.api);
     let api = bp.apps.client.api;
 
-     const menuBar = bp.apps.menubar.createMenu();
-     console.log(menuBar);
-     document.body.appendChild(menuBar);
+    const menuBar = bp.apps.menubar.createMenu();
+    console.log(menuBar);
+    document.body.appendChild(menuBar);
+    bp.open('buddylist');
 
 }
 

@@ -7,12 +7,12 @@ function uuid () {
 }
 export default function openChatWindow(data) {
     this.bp.emit('client::requestWebsocketConnection', 'buddylist');
-
+    console.log("openChatWindow", data);
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
     let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
     let subscribedList = windowType === 'pond' ? this.subscribedPonds : this.subscribedBuddies;
-    let windowTitle = windowType === 'pond' ? 'Group Chat with ' : 'Chat with ';
+    let windowTitle = windowType === 'pond' ? 'Pond' : '';
     let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowIdPrefix + contextName);
     if (!chatWindow) {
         const chatWindowTemplate = this.messageTemplateString;
@@ -25,8 +25,9 @@ export default function openChatWindow(data) {
         }
 
         chatWindow = this.bp.apps.ui.windowManager.createWindow({
+            app: 'buddylist',
             id: windowIdPrefix + contextName,
-            title: windowTitle + contextName,
+            title: contextName + ' ' + windowTitle,
             type: windowType,
             parent: this.bp.apps.ui.parent,
             className: 'chatWindow',

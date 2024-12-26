@@ -1,3 +1,6 @@
+let bpHost = 'http://192.168.200.59:5174';
+
+
 // very thin wrapper to establish bp namespace and ability to load apps dynamically
 const bp = {};
 window.bp = bp;
@@ -8,43 +11,71 @@ bp.error = console.error;
 
 bp.apps = {};
 bp.data = {};
+bp._modules = {};
 
 bp.start = async function start(apps = []) {
     for (let app of apps) {
-        if (typeof app === 'string') {
-            bp.log('loading async import app', app);
-            await bp.importModule(app, {}, true);
-        }
-        if (typeof app === 'object') {
-            bp.log('loading async import app', app.name);
-            await bp.importModule(app.name, app, true);
-        }
+        await bp.importModule(app);
     }
 }
 
-let bpHost = 'http://192.168.200.59:5174';
-
+// example usage: bp.open(['buddylist', { name: 'clock' }, 'entity']);
+bp.open = async function open(app, config = { context: 'default' }) {
+    console.log('bp.open', app, config)
+    let appName = app;
+    if (typeof app === 'string') {
+        console.log('string loading async import app', appName);
+        await bp.importModule(appName, {}, true);
+        
+    }
+    if (typeof app === 'object') {
+        appName = app.name;
+        config = app;
+        console.log('object loading async import app', appName, config);
+        await bp.importModule(appName, config, true);
+    }
+    console.log('aaa', appName, bp.apps)
+    if (typeof bp.apps[appName].open === 'function') {
+        console.log('open', appName, config)
+        console.log('open', appName, config)
+        bp.apps[appName].open(config);
+    }
+}
 
 bp.importModule = async function importModule(app, config, buddypond = true) {
 
-    
+    console.log('importModule', app, config, buddypond);
     let modulePath = bpHost + `/v2/apps/based/${app}/${app}.js`;
+    let appName = app;
+
+    if (typeof app === 'object') {
+        modulePath = bpHost + `/v2/apps/based/${app.name}/${app.name}.js`;
+        config = app;
+        appName = app.name;
+    }
 
     if (!buddypond) {
         modulePath = app;
+    }
+
+    // Check if the module has already been loaded
+    if (bp._modules[modulePath]) {
+        console.log('module already loaded', app);
+        return;
     }
     try {
         bp.log('modulePath', modulePath)
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
-            bp.apps[app] = new module.default(bp, config);
-            await bp.apps[app].init();
-            bp.log('init complete', app);
+            bp.apps[appName] = new module.default(bp, config);
+            await bp.apps[appName].init();
+            bp.log('init complete', appName);
     
         }
+        bp._modules[modulePath] = module;
     } catch (error) {
-        bp.error('Failed to load module:', app, error);
-        delete bp.apps[app]; // just in case
+        bp.error('Failed to load module:', appName, error);
+        delete bp.apps[appName]; // just in case
     }
 
 }

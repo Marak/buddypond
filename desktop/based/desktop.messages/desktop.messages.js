@@ -570,10 +570,17 @@ desktop.commands.chat.help = function helpCommands (params) {
     <div>
   `;
 
-  $('.chat_messages', windowId).append(`<div class="message">${helpText}</div>`);
+  // check to see if we already have help-text inside the chat window
+  // if so, remove it
+  if ($('.help', windowId).length) {
+    $('.help', windowId).remove();
+    return;
+  }
+
+  $('.aim-messages', windowId).append(`<div class="chatMessage">${helpText}</div>`);
   $('.no_chat_messages', windowId).hide();
-  let el = $('.message_main', windowId);
-  $(el).scrollTop(999999);
+  //let el = $('.message_main', windowId);
+  //$(el).scrollTop(999999);
   // desktop.play('WOOFWOOF-J.wav');
 }
 
