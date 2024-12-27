@@ -1,0 +1,150 @@
+// base icon class definition
+// -------------------------
+
+.#{$fa-css-prefix} {
+  font-family: var(--#{$fa-css-prefix}-style-family, '#{$fa-style-family}');
+  font-weight: var(--#{$fa-css-prefix}-style, #{$fa-style});
+}
+
+.fas,
+.fass,
+.far,
+.fasr,
+.fal,
+.fasl,
+.fat,
+.fast,
+.fad,
+.fadr,
+.fadl,
+.fadt,
+.fasds,
+.fasdr,
+.fasdl,
+.fasdt,
+.fab,
+.#{$fa-css-prefix}-solid,
+.#{$fa-css-prefix}-regular,
+.#{$fa-css-prefix}-light,
+.#{$fa-css-prefix}-thin,
+.#{$fa-css-prefix}-brands,
+.#{$fa-css-prefix}-classic,
+.#{$fa-css-prefix}-duotone,
+.#{$fa-css-prefix}-sharp,
+.#{$fa-css-prefix}-sharp-duotone,
+.#{$fa-css-prefix} {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: var(--#{$fa-css-prefix}-display, #{$fa-display});
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.fas::before,
+.fass::before,
+.far::before,
+.fasr::before,
+.fal::before,
+.fasl::before,
+.fat::before,
+.fast::before,
+.fad::before,
+.fadr::before,
+.fadl::before,
+.fadt::before,
+.fasds::before,
+.fasdr::before,
+.fasdl::before,
+.fasdt::before,
+.fab::before,
+.#{$fa-css-prefix}-solid::before,
+.#{$fa-css-prefix}-regular::before,
+.#{$fa-css-prefix}-light::before,
+.#{$fa-css-prefix}-thin::before,
+.#{$fa-css-prefix}-brands::before,
+.#{$fa-css-prefix}-classic::before,
+.#{$fa-css-prefix}-duotone::before,
+.#{$fa-css-prefix}-sharp::before,
+.#{$fa-css-prefix}-sharp-duotone::before,
+.#{$fa-css-prefix}::before {
+  content: var(#{$fa-icon-property});
+}.fad::after,
+.#{$fa-css-prefix}-duotone.#{$fa-css-prefix}-solid::after,
+.#{$fa-css-prefix}-duotone::after,
+.fadr::after,
+.#{$fa-css-prefix}-duotone.#{$fa-css-prefix}-regular::after,
+.fadl::after,
+.#{$fa-css-prefix}-duotone.#{$fa-css-prefix}-light::after,
+.fadt::after,
+.#{$fa-css-prefix}-duotone.#{$fa-css-prefix}-thin::after,
+.fasds::after,
+.#{$fa-css-prefix}-sharp-duotone.#{$fa-css-prefix}-solid::after,
+.#{$fa-css-prefix}-sharp-duotone::after,
+.fasdr::after,
+.#{$fa-css-prefix}-sharp-duotone.#{$fa-css-prefix}-regular::after,
+.fasdl::after,
+.#{$fa-css-prefix}-sharp-duotone.#{$fa-css-prefix}-light::after,
+.fasdt::after,
+.#{$fa-css-prefix}-sharp-duotone.#{$fa-css-prefix}-thin::after {
+  content: var(#{$fa-duotone-icon-property});
+}
+
+.#{$fa-css-prefix}-classic.#{$fa-css-prefix}-duotone {
+  font-family: 'Font Awesome 6 Duotone';
+}
+
+.fass,
+.#{$fa-css-prefix}-sharp {
+  font-weight: 900;
+}
+.fad,
+.#{$fa-css-prefix}-duotone {
+  font-weight: 900;
+}
+.fasds,
+.#{$fa-css-prefix}-sharp-duotone {
+  font-weight: 900;
+}
+
+.#{$fa-css-prefix}-classic,
+.fas,
+.#{$fa-css-prefix}-solid,
+.far,
+.#{$fa-css-prefix}-regular,
+.fal,
+.#{$fa-css-prefix}-light,
+.fat,
+.#{$fa-css-prefix}-thin {
+  font-family: 'Font Awesome 6 Pro';
+}
+.#{$fa-css-prefix}-duotone,
+.fad,
+.fadr,
+.fadl,
+.fadt {
+  font-family: 'Font Awesome 6 Duotone';
+}
+.#{$fa-css-prefix}-brands,
+.fab {
+  font-family: 'Font Awesome 6 Brands';
+}
+.#{$fa-css-prefix}-sharp,
+.fass,
+.fasr,
+.fasl,
+.fast {
+  font-family: 'Font Awesome 6 Sharp';
+}
+.#{$fa-css-prefix}-sharp-duotone,
+.fasds,
+.fasdr,
+.fasdl,
+.fasdt {
+  font-family: 'Font Awesome 6 Sharp Duotone';
+}
+
+%fa-icon {
+  @include fa-icon;
+}

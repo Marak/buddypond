@@ -1,6 +1,10 @@
 import bp from './bp.js';
+import config from './config/config.js';
+
+bp.setConfig(config.env);
 
 async function go() {
+    // await startPartyBox();
     await startBuddylist();
     //await startGame();
     //await stripeCheckout();
@@ -35,15 +39,38 @@ async function startBuddylist() {
         }]
 
     }
-    await bp.start(['ui', 'client', buddylistOptions, 'menubar', 'emoji-picker']);
+    await bp.start([
+        'ui',
+        'client',
+        'buddyscript', buddylistOptions,
+        'menubar',
+        'toastr',
+        'emoji-picker']);
     console.log('apps availble:', bp.apps)
     console.log('api available:', bp.apps.client.api);
     let api = bp.apps.client.api;
 
+    /*
     const menuBar = bp.apps.menubar.createMenu();
     console.log(menuBar);
     document.body.appendChild(menuBar);
+    */
     bp.open('buddylist');
+
+    bp.apps.buddyscript.addCommand('help', (context) => {
+        console.log('show help')
+        return `Echo: ${context}`;
+    });
+
+   
+    bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
+        console.log('buddy-message-gotfiltered', message);
+        toastr.error('Your message was partially filtered due to you being at Power Level 1.');
+
+        // desktop.ui.openWindow('buddy_message', { context: message });
+      });
+
+
 
 }
 
@@ -66,6 +93,33 @@ async function stripeCheckout() {
 
     let sessionId = '1234';
     //bp.apps.stripe.startCheckout(sessionId)
+}
+
+async function startPartyBox() {
+    await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);
+
+    // create the track
+    let t = bp.apps['audio-track'].createAudioTrack({
+        fileName: './v2/apps/based/audio-track/assets/dang-son.mp3',
+        url: './v2/apps/based/audio-track/assets/dang-son.mp3'
+    });
+    console.log('created audio track', t);
+
+    // render the track
+    let trackElement = t.render();
+    console.log('rendered audio track', trackElement);
+
+    // append the track to the body
+    document.body.appendChild(trackElement);
+
+    // load the track
+    await t.load();
+    console.log("loaded audio track", t);
+
+    // await t.play();
+
+
+
 }
 
 go();
