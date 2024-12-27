@@ -36,7 +36,7 @@ self.addEventListener('message', function(event) {
 
 function connectWebSocket(data) {
     console.log('Connecting WebSocket in worker:', data.host);
-    ws = new WebSocket('ws://' + data.host);
+    ws = new WebSocket(data.wsHost);
     ws.onmessage = event => {
         // Handle incoming WebSocket messages
         const parsedData = JSON.parse(event.data);

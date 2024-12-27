@@ -6,7 +6,8 @@ export default class Client {
         // this.sse = null;
         this.sseManager = new SSEManager(this);
         this.config = options.config || {
-            host: ""
+            host: "",
+            wsHost: ""
         };
         this.ws = null;
         this.api = api;

@@ -245,7 +245,9 @@ window.top.location = 'ie.html';
 
 
       let _host = 'https://137.184.116.145';
+      let _wsHost = 'wss://137.184.116.145';
       // _host = 'http://192.168.200.59';
+      _wsHost = 'wss://137.184.116.145';
 
       buddypond.endpoint = _host + '/api/v3';
 
@@ -391,7 +393,8 @@ window.top.location = 'ie.html';
             await bp.start(['ui', {
               name: 'client',
               config: {
-                host: _host
+                host: _host,
+                wsHost: _wsHost
             }
 
             }, 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
