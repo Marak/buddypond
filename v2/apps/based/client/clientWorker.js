@@ -13,7 +13,7 @@ self.addEventListener('message', function(event) {
     switch (type) {
         case 'connectWebSocket':
             // Initialize WebSocket connection
-            connectWebSocket(JSON.parse(data));
+            connectWebSocket(data);
             break;
         case 'updateSSE':
             handleSSEUpdate(JSON.parse(data));
