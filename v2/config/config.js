@@ -7,11 +7,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 config.development = {
-    bpHost: 'http://192.168.200.59'
+    host: 'http://192.168.200.59'
 }
 
 config.production = {
-    bpHost: 'https://137.184.116.145' // TODO: buddypond.com
+    host: 'https://137.184.116.145' // TODO: buddypond.com
 }
 
 config.env = config.development;

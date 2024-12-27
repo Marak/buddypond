@@ -1,5 +1,3 @@
-let bpHost = 'http://192.168.200.59:5174';
-
 // very thin wrapper to establish bp namespace and ability to load apps dynamically
 const bp = {};
 window.bp = bp;
@@ -9,7 +7,9 @@ bp.log = function noop() { }
 bp.error = console.error;
 
 
-bp.config = {};
+bp.config = {
+    host: ""
+};
 
 bp.apps = {};
 bp.data = {};
@@ -80,11 +80,11 @@ bp.load = async function load(resource) {
 bp.importModule = async function importModule(app, config, buddypond = true) {
 
     console.log('importModule', app, config, buddypond);
-    let modulePath = bpHost + `/v2/apps/based/${app}/${app}.js`;
+    let modulePath = bp.config.host + `/v2/apps/based/${app}/${app}.js`;
     let appName = app;
 
     if (typeof app === 'object') {
-        modulePath = bpHost + `/v2/apps/based/${app.name}/${app.name}.js`;
+        modulePath = bp.config.host + `/v2/apps/based/${app.name}/${app.name}.js`;
         config = app;
         appName = app.name;
     }
@@ -99,7 +99,7 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
         return;
     }
     try {
-        bp.log('modulePath', modulePath)
+        console.log('modulePath', modulePath)
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
             bp.apps[appName] = new module.default(bp, config);
@@ -117,7 +117,7 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
 
 bp.fetchHTMLFragment = function fetchHTMLFragment(url) {
-    let fullUrl = `${bpHost}${url}`;
+    let fullUrl = `${bp.config.host}${url}`;
     return fetch(fullUrl).then(response => response.text());
 }
 
@@ -126,7 +126,7 @@ bp.appendCSS = function appendCSS(url) {
 
     // check if there is no protocol in the URL
     if (!url.includes('http') && !url.includes('blob')) {
-        fullUrl = `${bpHost}${url}`;
+        fullUrl = `${bp.config.host}${url}`;
     }
 
     // fetching CSS should immediately apply to the document
@@ -142,7 +142,7 @@ bp.appendCSS = function appendCSS(url) {
 bp.appendScript = async function appendScript(url) {
     let fullUrl = url;
     if (!url.includes('http') && !url.includes('blob')) {
-        fullUrl = `${bpHost}${url}`;
+        fullUrl = `${bp.config.host}${url}`;
     }
 
     // fetching JS should immediately apply to the document
@@ -160,7 +160,7 @@ bp.appendScript = async function appendScript(url) {
 }
 
 bp.createWorker = async function createWorker(url, config = {}) {
-    let fullUrl = `${bpHost}/v2${url}`;
+    let fullUrl = `${bp.config.host}/v2${url}`;
 
     bp.log('createWorker', fullUrl);
     try {

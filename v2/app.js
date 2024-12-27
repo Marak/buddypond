@@ -41,7 +41,12 @@ async function startBuddylist() {
     }
     await bp.start([
         'ui',
-        'client',
+        {
+            name: 'client',
+            config: {
+                host: 'http://192.168.200.59'
+            }
+        },
         'buddyscript', buddylistOptions,
         'menubar',
         'toastr',

@@ -1,14 +1,16 @@
 import api from './lib/api.js';
 import SSEManager from './lib/SSEManager.js';
 export default class Client {
-    constructor(bp) {
+    constructor(bp, options = {}) {
         this.bp = bp;
         // this.sse = null;
         this.sseManager = new SSEManager(this);
-
+        this.config = options.config || {
+            host: ""
+        };
         this.ws = null;
         this.api = api;
-        let bpHost = 'http://192.168.200.59:5174';
+        this.api.endpoint = this.config.host + '/api/v3';
         this.connectionSources = {};  // Tracks WebSocket connection requests by source
         this.disconnectTimer = null;
         this.disconnectDelay = 300000;  // 5 minutes

@@ -242,7 +242,13 @@ window.top.location = 'ie.html';
     <script src="desktop.ui.events.js"></script>
 
     <script>
-      buddypond.endpoint = 'https://137.184.116.145/';
+
+
+      let _host = 'https://137.184.116.145/';
+      // _host = 'http://192.168.200.59';
+
+      buddypond.endpoint = _host;
+
       // see: ReadMe.md for documentation on `desktop.use`
       $(document).ready(function () {
         let documentReadyTime = new Date();
@@ -369,13 +375,26 @@ window.top.location = 'ie.html';
             // Remark: BuddyPond v5 runs alongside the old buddy pond until all
             // code is migrated to the new API. This is a temporary solution.
             // Everything in BuddyPond v5 is *much* more modular and easier to use.
+            bp.setConfig({
+              host: _host
+            });
+
+
+
+
             bp.on('auth::qtoken', 'old-bp-login', function () {
               $('.loggedIn').show();
               $('.loggedOut').hide();
             });
             // TODO: map the new API to the old API
             // chatWindowButtons should emit events
-            await bp.start(['ui', 'client', 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
+            await bp.start(['ui', {
+              name: 'client',
+              config: {
+                host: _host
+            }
+
+            }, 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
               name: 'buddylist',
               autocomplete: allCommands,
               // wil probably need the autocomplete fn handler
