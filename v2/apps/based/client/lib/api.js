@@ -3,14 +3,16 @@
 
 let buddypond = {}
 
-buddypond.mode = 'dev';
+buddypond.mode = 'prod';
 
 let desktop = { settings: {}};
 
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://api.buddypond.com/api/v3';
+  buddypond.endpoint = 'https://137.184.116.145/api/v3';
+
 } else {
-  buddypond.endpoint = 'https://api.buddypond.com/api/v3';
+  buddypond.endpoint = 'http://137.184.116.145/api/v3';
 }
 
 if (buddypond.mode === 'dev') {
@@ -282,6 +284,17 @@ buddypond.sendAudio = function pondSendMessage (type, name, text, audioJSON, cb)
   }
 }
 
+
+buddypond.setPowerLevel = function setPowerLevel (buddyName, level) {
+  apiRequest('/buddies/' + buddyName + '/powerlevel', 'POST', {
+    level: level
+  }, function(err, data){
+    console.log('setPowerLevel', err, data);
+  })
+  
+}
+
+
 //
 // "Packet" tracking here is just used for aestic purposes and not for any real calculations
 //              ( they just for decoration )
@@ -323,6 +336,8 @@ buddypond.lastResponseTime = function averageResponseTime () {
   let elapsed = perf.end.getTime() - perf.start.getTime();
   return elapsed + 'ms';
 }
+
+
 //
 // end methods for tracking API request performance
 //
@@ -375,10 +390,13 @@ function apiRequest(uri, method, data, cb) {
       })
       .catch(error => {
           let msg = 'Fetch connection error. Retrying request shortly.';
+          console.log(error)
           if (error.name === "AbortError") {
               msg = 'Fetch request timeout';
           } else if (error.message === 'Payload Too Large') {
               msg = 'File upload was too large for server. Try a smaller file.';
+          } else {
+            msg = error.message;
           }
           cb(new Error(msg), null);
       });
