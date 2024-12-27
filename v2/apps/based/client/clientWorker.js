@@ -35,7 +35,7 @@ self.addEventListener('message', function(event) {
 });
 
 function connectWebSocket() {
-    ws = new WebSocket('ws://192.168.200.59');
+    ws = new WebSocket('ws://' + bp.config.host);
     ws.onmessage = event => {
         // Handle incoming WebSocket messages
         const parsedData = JSON.parse(event.data);

@@ -9,9 +9,8 @@ export default class SSEManager {
     connectSSE() {
         this.hardDisconnect = false;
 
-        const bpHost = 'http://192.168.200.59';
-        const eventSourceUrl = bpHost + '/profile?qtokenid=' + this.client.qtokenid;
-        const restUrl = bpHost + '/api/v3/buddies?eventSource=true&qtokenid=' + this.client.qtokenid;
+        const eventSourceUrl = this.client.config.host + '/profile?qtokenid=' + this.client.qtokenid;
+        const restUrl = this.client.config.host + '/api/v3/buddies?eventSource=true&qtokenid=' + this.client.qtokenid;
     
         this.log('eventSourceUrl', eventSourceUrl);
         this.log('restUrl', restUrl);
