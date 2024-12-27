@@ -30,12 +30,18 @@ desktop.app.videochat.load = function loadVideochat () {
         return;
       }
       let buddyName = $(this).closest('.buddy_message').data('context');
+      /*
       // TODO: do not attempt to call buddies who are currently offline
+      // Remark: Removed for v5.0.0
       if (desktop.buddyListData.buddylist['buddies/' + buddyName] && desktop.buddyListData.buddylist['buddies/' + buddyName].isConnected) {
         desktop.app.videochat.startCall(true, buddyName);
       } else {
         alert('Cant call offline buddy. Try again later.');
       }
+      */
+      // delegate decision to API
+      desktop.app.videochat.startCall(true, buddyName);
+
     });
 
     d.on('mousedown', '.endVideoCall', function () {

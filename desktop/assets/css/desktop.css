@@ -272,7 +272,7 @@ div.ui-resizable-handle {
 }
 
 .window_inner {
-  padding: 1px;
+  padding: 0px;
   top: 0;
   left: 0;
   right: 0;
@@ -281,19 +281,15 @@ div.ui-resizable-handle {
 }
 
 .window_content {
-  /*
-  background: #000;
-  color: #00FF41;
-  */
   line-height: 1.5;
   overflow: auto;
   float: left;
   left: 0px;
   right: 0px;
   bottom: 17vh;
-  /* Accounting for the fixed tops and bottoms of windows:  */
   height: calc(100% - 63px);
 }
+  
 
 .window_aside {
   /*
@@ -382,6 +378,7 @@ th.shrink {
 
 #bar_top,
 #bar_bottom {
+  display: none;
   font-weight: bold;
   padding: 0 10px;
   left: 0;
@@ -677,9 +674,6 @@ a:hover {
   color: #008F11;
 }
 
-.sendBuddyRequest {
-}
-
 .loginForm .desktopButton {
   width: 100%;
 }
@@ -687,7 +681,6 @@ a:hover {
 .desktopLink {
   cursor: pointer; 
 }
-
 
 .desktopButton {
   width: 10vw;
@@ -1433,4 +1426,18 @@ iframe {
   width: 100%;
   z-index: 421;
   display: none;
+}
+
+img.button-bar-button {
+  width: 18pt;
+  height: 18pt;
+  cursor: pointer;
+}
+
+img.button-bar-button:hover {
+  opacity: 0.44;
+}
+
+.button-bar img {
+  padding: 5px;
 }

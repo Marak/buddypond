@@ -1,6 +1,5 @@
 let bpHost = 'http://192.168.200.59:5174';
 
-
 // very thin wrapper to establish bp namespace and ability to load apps dynamically
 const bp = {};
 window.bp = bp;
@@ -9,9 +8,21 @@ bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
 
+
+bp.config = {};
+
 bp.apps = {};
 bp.data = {};
 bp._modules = {};
+
+bp.setConfig = function setConfig(config, softApply = false) {
+    console.log('setConfig', config, softApply);
+    if (softApply) {
+        bp.config = { ...bp.config, ...config };
+    } else {
+        bp.config = config;
+    }
+}
 
 bp.start = async function start(apps = []) {
     for (let app of apps) {
@@ -26,7 +37,7 @@ bp.open = async function open(app, config = { context: 'default' }) {
     if (typeof app === 'string') {
         console.log('string loading async import app', appName);
         await bp.importModule(appName, {}, true);
-        
+
     }
     if (typeof app === 'object') {
         appName = app.name;
@@ -40,6 +51,30 @@ bp.open = async function open(app, config = { context: 'default' }) {
         console.log('open', appName, config)
         bp.apps[appName].open(config);
     }
+}
+
+// bp.load will delegate to correct provider based on resource type
+// in most cases this will be by file extension or object shape
+bp.load = async function load(resource) {
+
+    // check to see if resource is a string
+    if (typeof resource === 'string') {
+        // check to see if file extension ends in .css
+        if (resource.endsWith('.css')) {
+            return bp.appendCSS(resource);
+        }
+        // check to see if file ends in .js
+        if (resource.endsWith('.js')) {
+            return bp.appendScript(resource);
+        }
+        // check to see if there is no file extension
+        if (!resource.includes('.')) {
+            return bp.importModule(resource);
+        }
+    }
+
+    console.log('Cannot load unknown resource type', resource);
+
 }
 
 bp.importModule = async function importModule(app, config, buddypond = true) {
@@ -70,7 +105,7 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
             bp.apps[appName] = new module.default(bp, config);
             await bp.apps[appName].init();
             bp.log('init complete', appName);
-    
+
         }
         bp._modules[modulePath] = module;
     } catch (error) {
@@ -87,7 +122,12 @@ bp.fetchHTMLFragment = function fetchHTMLFragment(url) {
 }
 
 bp.appendCSS = function appendCSS(url) {
-    let fullUrl = `${bpHost}${url}`;
+    let fullUrl = url;
+
+    // check if there is no protocol in the URL
+    if (!url.includes('http') && !url.includes('blob')) {
+        fullUrl = `${bpHost}${url}`;
+    }
 
     // fetching CSS should immediately apply to the document
     // Remark: We could check for duplicates here based on the URL
@@ -121,7 +161,7 @@ bp.appendScript = async function appendScript(url) {
 
 bp.createWorker = async function createWorker(url, config = {}) {
     let fullUrl = `${bpHost}/v2${url}`;
-    
+
     bp.log('createWorker', fullUrl);
     try {
         const response = await fetch(fullUrl);

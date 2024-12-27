@@ -263,7 +263,7 @@ desktop.ui.windowResizeEventHandler = function windowResizeEventHandler (e, forc
     if (desktop.ui.view === 'Normal') {
       $('.window_top').css('height', 30);
       $('.window_top').css('padding-top', 0);
-      $('.window_content').css('top', 33);
+      $('.window_content').css('top', 30);
       $('.window_top img').css('width', 16);
       $('.window_top img').css('height', 16);
 
@@ -516,11 +516,49 @@ JQDX.showWindow = function showWindow (appName, params) {
   if (params.noDockIcon) {
     
   } else {
+    /*
     // Show the taskbar button.
     if ($(iconDock).is(':hidden')) {
       $(iconDock).remove().appendTo('#dock');
       $(iconDock).show('fast');
     }
+      */
+
+
+    // before creating a new dock icon, check to see if it already exists
+    let dockIconExists =  bp.apps.ui.windowManager.taskBar.getItem(appName)
+
+    if (!dockIconExists) {
+      bp.apps.ui.windowManager.taskBar.addItem(appName, appName, (ev, el) => {
+
+
+
+        console.log("open window", appName);
+
+        if (appName === 'download_buddypond') {
+          window.open('https://github.com/marak/buddypond', '_blank');
+          return;
+        }
+        if (appName === 'logout') {
+          desktop.app.login.logoutDesktop();
+          return;
+        }
+
+        // check to see if visible, if so, minimize
+        if ($(appWindow).is(':visible')) {
+          JQDX.minWindow(appWindow);
+
+        } else {
+          JQDX.openWindow(appName);
+
+        }
+
+
+     });
+    }
+    
+    
+
   }
 
   JQDX.clear_active();
@@ -569,6 +607,8 @@ JQDX.showWindow = function showWindow (appName, params) {
 // attempts to open a window based on name and parameters
 // will attempt to JQDX.loadWindow() if no window is found
 JQDX.openWindow = function openWindow (appName, params, cb) {
+  console.log('JQDX.openWindow', appName, params, cb)
+  //alert('replace')
   // console.log('JQDX.openWindow', appName, params)
   params = params || {};
   cb = cb || function noop () {};

@@ -21,7 +21,14 @@ desktop.app.pond.load = function loadPond (params, next) {
     $('.openPond').on('click', function () {
       let chan = $(this).attr('href');
       chan = chan.substr(1, chan.length - 1);
-      desktop.ui.openWindow('pond', { context: chan });
+      //desktop.ui.openWindow('pond', { context: chan });
+
+      //let pondName = $('.customPondName').val();
+      // desktop.ui.openWindow('pond', { context: pondName });
+      bp.apps.buddylist.openChatWindow({ type: 'pond', pondname: chan });
+
+
+
     });
 
     // cancel form submit for joining a pond by name
@@ -36,7 +43,8 @@ desktop.app.pond.load = function loadPond (params, next) {
       } else {
         $('.customPondName').removeClass('error');
         let pondName = $('.customPondName').val();
-        desktop.ui.openWindow('pond', { context: pondName });
+        // desktop.ui.openWindow('pond', { context: pondName });
+        bp.apps.buddylist.openChatWindow({ type: 'pond', pondname: pondName });
       }
     });
 

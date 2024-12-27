@@ -17,7 +17,7 @@ export default class BuddyList {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.data = {
-            processedMessages: [],
+            processedMessages: {},
             profileState: {
                 me: null,
                 updates: {}
@@ -121,6 +121,7 @@ export default class BuddyList {
             pondname: this.subscribedPonds.join(','),
             me: this.bp.me
         };
+        console.log("getLatestMessages", data);
         this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: data });
     }
 
@@ -179,7 +180,7 @@ export default class BuddyList {
         const me = localStorage.getItem('me');
 
         if (!localToken) return;
-
+        console.log('localToken', localToken, me);
         api.verifyToken(me, localToken, (err, data) => {
             if (err) {
                 console.error('Failed to verify token:', err);

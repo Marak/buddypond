@@ -10,8 +10,7 @@
     height: 500px;
     max-height: 600px;
     background: #E0E0E0;
-    border: 2px solid #000;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     overflow: hidden;
     font-family: 'Arial', sans-serif;
@@ -116,7 +115,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    border: 2px solid #0000ff; /* Classic blue border */
+    border: 2px solid #ffffff; /* Classic blue border */
     background-color: #ffffff; /* White background for the chat area */
     font-family: Arial, sans-serif; /* Typical font for that era */
 }

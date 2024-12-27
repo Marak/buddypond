@@ -1,9 +1,6 @@
-// TODO: replace usage of api.windows scope with a WindowsManager class
-// WindowsManager will be a small class that will hold references to all the windows
-// In the future we can use this class for more advanced window management features
-// such as window stacking, window grouping, etc.
-// lets keep the user api such they developers will create new Window() and *not* have to call anything like WindowsManager.createWindow()
-
+// Buddy Pond - Window.js - Marak Squires 2023
+// A simple window class for creating draggable, resizable windows
+// Remark: WindowManager interface is optional and will be stubbed out if not provided
 let idCounter = 0;
 
 class Window {
@@ -61,6 +58,8 @@ class Window {
         windowManager = windowManager || { 
             windows: [],
             saveWindowsState: () => {},
+            removeWindow: () => {},
+
         };
 
         this.onClose = onClose;
@@ -203,12 +202,12 @@ class Window {
         this.closeButton.title = "Close";
         this.closeButton.onclick = () => this.close();
 
-        controls.appendChild(this.closeButton);
         controls.appendChild(this.minimizeButton);
         controls.appendChild(this.maximizeButton);
+        controls.appendChild(this.closeButton);
 
-        this.titleBar.appendChild(controls);
         this.titleBar.appendChild(titleBarSpan);
+        this.titleBar.appendChild(controls);
 
         // Create content area
         this.content = document.createElement("div");
@@ -382,6 +381,7 @@ class Window {
 
         this.x = this.container.offsetLeft;
         this.y = this.container.offsetTop;
+        console.log('saving window state', this.x, this.y);
         this.z = Number(this.container.style.zIndex);
         // TODO: save the window state
         // needs a reference to windowsmanager??? cannot save locally??/
@@ -390,59 +390,31 @@ class Window {
 
 
     }
-    minimize() {
-        if (this.isMinimized) {
-            // Restore window to its original size
-            this.content.style.display = "block";  // Show content again
-            this.container.style.height = `${this.height}px`;  // Restore height
-            this.container.style.top = `${this.y}px`;  // Restore position
-            this.isMinimized = false;
 
-            // Restore the taskbar placeholder
-            this.taskbarPlaceholder.style.display = "none";
+
+    minimize() {
+        console.log('minimize', this.isMinimized);
+        if (this.isMinimized) {
+            this.restore();
         } else {
             // Minimize the window
-            this.content.style.display = "none";  // Hide content area
-            this.container.style.height = "30px";  // Set height to just the title bar
-            this.container.style.bottom = "10px";  // Remove top position (let taskbar handle it)
-            this.container.style.top = "auto";  // Remove top position (let taskbar handle it)
+            this.container.style.display = "none";  // Hide content area
             this.isMinimized = true;
-
-            // Create taskbar placeholder if not already created
-            if (!this.taskbarPlaceholder) {
-                this.createTaskbarPlaceholder();
-            }
-
-            // Show taskbar placeholder and position it at the bottom
-            this.taskbarPlaceholder.style.display = "block";
-            this.taskbarPlaceholder.style.left = `${this.x}px`;  // Keep the x position
         }
+
         // TODO: save the window state
 
     }
 
-    // Create a taskbar placeholder element
-    createTaskbarPlaceholder() {
-        this.taskbarPlaceholder = document.createElement("div");
-        this.taskbarPlaceholder.classList.add("taskbar-placeholder");
-        this.taskbarPlaceholder.textContent = this.title;
 
-        // Add click event to restore the window
-        this.taskbarPlaceholder.addEventListener("click", () => this.restoreWindow());
-
-        // Append to the body (taskbar at the bottom)
-        document.body.appendChild(this.taskbarPlaceholder);
-    }
-
-    // Restore the window from the taskbar placeholder
-    restoreWindow() {
-        // Hide the taskbar placeholder
-        this.taskbarPlaceholder.style.display = "none";
-
+    // Restore the window
+    restore() {
+        console.log('restore', this)
         // Restore the window's content and original size
-        this.content.style.display = "block";
-        this.container.style.height = `${this.height}px`;
-        this.container.style.top = `${this.y}px`;
+        this.container.style.display = "flex";
+
+        //this.container.style.top = this.y + 'px';
+        //this.container.style.left = this.x + 'px';
 
         // Mark as not minimized
         this.isMinimized = false;
@@ -469,10 +441,15 @@ class Window {
     }
 
     open() {
-        this.onOpen();
-        // TODO: save the window state ???
+        try {
+            this.onOpen(this);
+        } catch (err) {
+            console.error(err);
 
-        // this.parent.appendChild(this.container);
+
+        }
+        // TODO: save the window state ???
+        // ???? this.parent.appendChild(this.container);
     }
     close() {
         this.onClose();
@@ -498,7 +475,7 @@ class Window {
                 el.classList.add('disabled');
             }
         }
-
+        console.log('removeWindow', this.id);
         this.windowManager.removeWindow(this.id);
         // TODO: save the window state ??? removeWindow could do it..?
 

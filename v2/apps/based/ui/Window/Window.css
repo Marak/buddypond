@@ -1,7 +1,7 @@
 /* Enhanced Dark Theme Window Styles */
 
 .window-container {
-    border: 1px solid #333; /* Darker border for subtle contrast */
+    /* border: 1px solid #FFF; */
     background-color: #1e1e1e; /* Deep dark background for the main container */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
     display: flex;
@@ -19,20 +19,24 @@
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6); /* More prominent shadow */
 }
 /* Window Title Bar */
+/* TODO: the linear gradient should go from top to bottom, not diagonally */
 .window-title-bar {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(135deg, #2c2c2c, #1e1e1e); /* Mac-like gradient */
+    background: linear-gradient(180deg, #666666, #353535); /* Mac-like gradient */
     color: #e0e0e0;
     padding: 8px 16px;
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 0.5px;
+    text-shadow: #000 0 1px 1px;
     border-bottom: 1px solid #444;
     border-radius: 8px 8px 0 0; /* Match window container corners */
     user-select: none;
     cursor: grab;
+
+    
 }
 
 /* Window Controls - Traffic Light Buttons */
@@ -40,6 +44,8 @@
     display: flex;
     gap: 6px; /* Space between buttons */
     padding-right: 18px;
+    right: 0px;
+    position: absolute;
 }
 
 .window-controls button {

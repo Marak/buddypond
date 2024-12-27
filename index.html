@@ -242,6 +242,7 @@ window.top.location = 'ie.html';
     <script src="desktop.ui.events.js"></script>
 
     <script>
+      buddypond.endpoint = 'https://137.184.116.145/';
       // see: ReadMe.md for documentation on `desktop.use`
       $(document).ready(function () {
         let documentReadyTime = new Date();
@@ -361,6 +362,7 @@ window.top.location = 'ie.html';
             let allCommands = localBuddyChatCommands.concat(remoteBuddyChatCommands);
             console.log('allCommands', allCommands);
 
+            // TODO: move all bp code to app.js file
             //
             // Legacy bindings for BuddyPond v3 API
             //

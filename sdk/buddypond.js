@@ -1,6 +1,6 @@
 let buddypond = {}
 
-buddypond.mode = 'dev';
+buddypond.mode = 'production';
 
 let desktop = { settings: {}};
 
@@ -12,7 +12,7 @@ if (document.location.protocol === 'https:') {
 
 if (buddypond.mode === 'dev') {
   // buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
-  buddypond.endpoint = 'https://192.168.200.59/api/v3'
+  buddypond.endpoint = 'http://192.168.200.59/api/v3'
 }
 
 buddypond.authBuddy = function authBuddy (me, password, cb) {

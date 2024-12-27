@@ -1,26 +1,68 @@
-export default function renderChatMessage(message) {
+export default function renderChatMessage(message, _chatWindow) {
   //console.log('buddy list local this.data', this.data);
-  //console.log("renderChatMessage", message, message.uuid);
+  // console.log("renderChatMessage", message, message.uuid);
   //console.log('this.data.processedMessages', this.data.processedMessages);
+
+  let context = 'default';
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
   if (message.to === this.bp.me) {
     windowId = `buddy_message_-${message.from}`;
+    context = message.from;
   } else if (message.type === 'pond') {
+    context = message.to;
     windowId = `pond_message_-${message.to}`;
   }
 
+  this.data.processedMessages[context] = this.data.processedMessages[context] || [];
+  // console.log("windowId", windowId);
+  
+  
+  
+
+
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
 
-  // Check if message has been processed to avoid duplication
-  if (this.data.processedMessages.includes(message.uuid)) {
-    return;
+  if (_chatWindow) {
+    chatWindow = _chatWindow;
   }
+  
+  // Check if message has been processed to avoid duplication
+  for (let i = 0; i < this.data.processedMessages[context].length; i++) {
+    if (this.data.processedMessages[context][i].uuid === message.uuid) {
+      // we have a special case here we wish to re-render the client message
+      // this indicates the server filtered parts of the message and it should be removed and re-rendered
+      if (this.data.processedMessages[context][i].from === this.bp.me && this.data.processedMessages[context][i].text !== message.text) {
+        // find the chatMessage by uuid
+        $(`.chatMessage[data-uuid="${message.uuid}"]`, chatWindow.content).remove();
+        this.bp.emit('buddy::message::gotfiltered', message);
+      } else {
+        // else there is no special filtering case from server
+        // and the messaged is a duplicate, return and do not render
+        return;
+      }
+    }
+  }
+  //if (this.data.processedMessages[context].includes(message.uuid)) {
+  //  return;
+  //}
 
   // Manage size of processedMessages to prevent memory leaks
-  if (this.data.processedMessages.length > 5000) {
-    this.data.processedMessages.shift();
+  if (this.data.processedMessages[context].length > 5000) {
+    this.data.processedMessages[context].shift();
+  }
+
+  // check if this is an Agent message which gets processed first
+  if (message.type === 'agent') {
+
+    // Legacy BP API
+    if (desktop && desktop.app && desktop.app.spellbook && desktop.app.spellbook[message.text]) {
+      desktop.app.spellbook[message.text]();
+      return;
+    } else {
+      console.log('unknown agent message', message);
+    }
   }
 
   // Format message time
@@ -35,16 +77,25 @@ export default function renderChatMessage(message) {
 
   str += `<span class="${messageClass}">${geoFlag}${messageSender}</span><span class="message ${messageClass}"></span><br/>`;
 
+  //console.log('chatWindowchatWindowchatWindow', chatWindow, message)
+  //console.log('content', chatWindow.content)
   // Append message to the chat window
-  $('.aim-messages', chatWindow.content).append(`<div class="chatMessage">${str}</div>`);
+  $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
   $('.message', chatWindow.content).last().text(message.text);
+  // console.log('content', chatWindow.content)
+  // chatWindow.content.innerHTML = 'FFFFF';
 
   // Scroll to the last message
   let lastElement = $('.message', chatWindow.content).last()[0];
-  lastElement.scrollIntoView({ behavior: 'smooth' });
+  if (lastElement) {
+    lastElement.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  let result = this.bp.apps.buddyscript.parseCommand(message.text);
+  // console.log('parseChatMessage result', result);
 
   // Add the processed message UUID to prevent reprocessing
-  this.data.processedMessages.push(message.uuid);
+  this.data.processedMessages[context].push(message);
 }
 
 

@@ -28,6 +28,7 @@ export default class UI {
         if (!this.options.noCSS) {
             this.bp.appendCSS('/v2/apps/based/ui/ui.css'); // no need to wait for CSS to load?
             this.bp.appendCSS('/v2/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v2/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
         }
 
         if (this.options.fontAwesome) {
@@ -35,10 +36,15 @@ export default class UI {
             this.bp.appendCSS('/v2/vendor/font-awesome/css/all.min.css');
         }
 
- 
-        await this.bp.appendScript('/v2/vendor/zepto.min.js');
+        if (!this.options.noZepto) {
+            // If you need jQuery or another version of $
+            // we have the ability to not load Zepto as $
+            await this.bp.appendScript('/v2/vendor/zepto.min.js');
+        }
+
         await this.bp.appendScript('/v2/vendor/DateFormat.js');
 
+        
         return 'loaded ui';
     }
 

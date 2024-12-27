@@ -114,6 +114,7 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
   $('#loaderHolder').show();
   $('#mainOverlay').hide();
   $('#wallpaper').show();
+  $('.window-container').hide();
 
   if (desktop.app.merlin.agent) {
     desktop.app.merlin.agent.show();
@@ -144,6 +145,7 @@ desktop.app.spellbook.ebublio = function lightingBolt () {
               duration: 777,
               complete: function () {
                 $('#wallpaper').fadeOut();
+                $('.window-container').fadeIn();
               }
             });
           });

@@ -1,3 +1,5 @@
+/* Buddy Pond - WindowManager.js - Marak Squires 2023 */
+import TaskBar from './TaskBar.js';
 import Window from "./Window.js";
 
 export default class WindowManager {
@@ -15,6 +17,16 @@ export default class WindowManager {
                 window.hydrate(config);
             }
         }
+
+        this.taskBar = new TaskBar({
+            homeCallback: () => {
+
+                // close all windows
+                this.minimizeAllWindows();
+                // this.windowsClosed = true;
+
+            }
+        });
 
     }
 
@@ -37,6 +49,19 @@ export default class WindowManager {
         });
         this.addWindow(window);
         this.focusWindow(window); // Focus the newly created window
+
+
+        //this.taskBar.addItem('item1', 'Application 1', () => alert('Clicked Application 1!'));
+        //this.taskBar.addItem('item2', 'Application 2', () => alert('Clicked Application 2!'));
+        this.taskBar.addItem(window.id, window.title, () => {
+
+            // toggle window minimize / restore state
+            window.minimize();
+
+        });
+    
+
+
         return window;
     }
 
@@ -47,13 +72,15 @@ export default class WindowManager {
     }
 
     removeWindow(window) {
-        this.windows = this.windows.filter(w => w !== window);
+        //console.log("Removing window", window);
+        this.windows = this.windows.filter(w => w.id !== window);
+        //console.log("Remaining windows", this.windows);
         this.saveWindowsState(); // Save state when a window is removed
         this.updateFocus();
     }
 
     focusWindow(window) {
-        console.log("Focusing window", window.id);
+        // console.log("Focusing window", window.id);
         const index = this.windows.indexOf(window);
         if (index !== -1) {
             this.windows.splice(index, 1);
@@ -76,13 +103,30 @@ export default class WindowManager {
         this.storage.removeItem(this.storageKey); // Clear storage when all windows are closed
     }
 
+    minimizeAllWindows() {
+        if (!this.windowsHiding) {
+            this.windowsHiding = true;
+        } else {
+            this.windowsHiding = false;
+        }
+        this.windows.forEach(window => {
+
+            if (!this.windowsHiding) {
+                window.minimize();
+            } else {
+                window.restore();
+            }
+        });
+    }
+
     findWindow(id) {
+        // console.log('searching for', id, 'in', this.windows)
         return this.windows.find(w => w.id === id);
     }
 
     saveWindowsState() {
         const state = JSON.stringify(this.windows.map(window => window.serialize()));
-        console.log("Saving windows state", JSON.parse(state));
+        // console.log("Saving windows state", JSON.parse(state));
         this.storage.setItem(this.storageKey, state);
     }
 
