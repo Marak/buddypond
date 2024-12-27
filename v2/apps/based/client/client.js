@@ -73,7 +73,7 @@ export default class Client {
             this.bp.log(`WebSocket connection requested by ${source}.`);
             this.connectionSources[source] = true;
             if (Object.keys(this.connectionSources).length === 1) {
-                this.worker.postMessage({ type: 'connectWebSocket' });  // Tell worker to connect WebSocket
+                this.worker.postMessage({ type: 'connectWebSocket', data: this.config });  // Tell worker to connect WebSocket
             }
             clearTimeout(this.disconnectTimer);
         }

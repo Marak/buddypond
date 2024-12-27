@@ -13,7 +13,7 @@ self.addEventListener('message', function(event) {
     switch (type) {
         case 'connectWebSocket':
             // Initialize WebSocket connection
-            connectWebSocket();
+            connectWebSocket(JSON.parse(data));
             break;
         case 'updateSSE':
             handleSSEUpdate(JSON.parse(data));
@@ -34,8 +34,9 @@ self.addEventListener('message', function(event) {
     }
 });
 
-function connectWebSocket() {
-    ws = new WebSocket('ws://' + bp.config.host);
+function connectWebSocket(data) {
+    console.log('Connecting WebSocket in worker:', data.host);
+    ws = new WebSocket('ws://' + data.host);
     ws.onmessage = event => {
         // Handle incoming WebSocket messages
         const parsedData = JSON.parse(event.data);
