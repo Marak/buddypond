@@ -373,7 +373,7 @@ window.top.location = 'ie.html';
             });
             // TODO: map the new API to the old API
             // chatWindowButtons should emit events
-            await bp.start(['ui', 'client', 'emoji-picker', {
+            await bp.start(['ui', 'client', 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
               name: 'buddylist',
               autocomplete: allCommands,
               // wil probably need the autocomplete fn handler
@@ -454,6 +454,21 @@ window.top.location = 'ie.html';
               ]
             }]);
             bp.open('buddylist');
+
+            // map all the legacy desktop.commands to the new API
+            for (let command in desktop.commands.chat) {
+              console.log('ADDING COMMAND to buddyScript', command, desktop.commands.chat[command]);
+              bp.apps.buddyscript.addCommand(command, desktop.commands.chat[command]);
+            }
+
+
+            bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
+              console.log('buddy-message-gotfiltered', message);
+              toastr.info('You message was filtered due to being at Power Level 1.');
+
+              // desktop.ui.openWindow('buddy_message', { context: message });
+            });
+            // bp.apps.buddyscript.addCommand()
 
           });
       });
