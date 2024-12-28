@@ -214,9 +214,9 @@ export default class BuddyList {
 
 
             if (data.type === 'pond') {
-                this.sendPondMessageToServer(data);
+                this.sendPondMessageToServer(data, false);
             } else {
-                this.sendMessageToServer(data);
+                this.sendMessageToServer(data, false);
             }
             // this.bp.apps.client.sendMessage({ id: uuid(), method: 'sendMessage', data: data });
 
@@ -309,26 +309,29 @@ export default class BuddyList {
         }
     }
 
-    sendMessageToServer(data) {
+    sendMessageToServer(data, emitLocal = true) {
         this.bp.log('buddy::sendMessage', data);
         data.uuid = uuid();
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         data.name = data.to;
-        const chatWindow = this.openChatWindow(data);
-        //this.bp.log("LOCALRENDER", data, chatWindow);
-        this.renderChatMessage(data, chatWindow);
+        if (emitLocal) {
+            const chatWindow = this.openChatWindow(data);
+            this.renderChatMessage(data, chatWindow);
+        }
     }
 
-    sendPondMessageToServer(data) {
+    sendPondMessageToServer(data, emitLocal = true) {
         data.type = 'pond';
         this.bp.log('pond::sendMessage', data);
         data.uuid = uuid();
         data.pondname = data.to;
         // console.log('sendPondMessageToServer', data);
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
-        const chatWindow = this.openChatWindow(data);
-        this.renderChatMessage(data, chatWindow);
+        if (emitLocal) {
+            const chatWindow = this.openChatWindow(data);
+            this.renderChatMessage(data, chatWindow);
+        }
     }
 
     handleAuthentication() {
