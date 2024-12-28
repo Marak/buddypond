@@ -65,12 +65,19 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
   }
 
+  // TODO: allow buddylist to register message processors
+  // Is most likely best handled using SystemsManager from ECS code
+  // this way all app can register an update method
+  // we can give each app an onMessage method and have the ECS S delegate the message to the app
+  // bp.apps.buddylist.addMessageProcessor('buddyscript', function (message) {});
+  // bp.apps.buddylist.addMessageProcessor('card', function (message) {});
+  // etc
+  // this way we don't have to pollute the buddylist with all the message processing logic
   // Legacy BP API
   // TODO: Migrate TTS app to v5 API
   if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
     console.log("TTS MESSAGE processMessage", message);
     desktop.app.tts.processMessage(message);
-
   }
 
 
@@ -119,19 +126,26 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   } else {
     $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
-
+    $('.message', chatWindow.content).last().text(message.text);
+  
   }
 
 
-  $('.message', chatWindow.content).last().text(message.text);
   // console.log('content', chatWindow.content)
   // chatWindow.content.innerHTML = 'FFFFF';
 
   // Scroll to the last message
-  let lastElement = $('.message', chatWindow.content).last()[0];
-  if (lastElement) {
-    lastElement.scrollIntoView({ behavior: 'smooth' });
-  }
+    // Remark: this seems to have an issue with images? height not being calculated in time?
+    let lastElement = $('.message', chatWindow.content).last()[0];
+    if (lastElement) {
+      console.log('scrolling to last message', lastElement);
+      setTimeout(function(){
+
+      lastElement.scrollIntoView({ behavior: 'smooth' });
+    }, 400);
+
+    }
+  
 
   // console.log('parseChatMessage result', result);
 

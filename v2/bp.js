@@ -15,6 +15,11 @@ bp.apps = {};
 bp.data = {};
 bp._modules = {};
 
+bp._cache = {};
+bp._cache.css = {};
+bp._cache.html = {};
+bp._cache.js = {};
+
 bp.setConfig = function setConfig(config, softApply = false) {
     console.log('setConfig', config, softApply);
     if (softApply) {
@@ -121,13 +126,18 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 }
 
 
-bp.fetchHTMLFragment = function fetchHTMLFragment(url) {
+bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     // TODO: cache request, do not reload unless forced
     let fullUrl = `${bp.config.host}${url}`;
-    return fetch(fullUrl).then(response => response.text());
+    console.log('fetchHTMLFragment', fullUrl);
+    if (bp._cache.html[fullUrl]) {
+        return bp._cache.html[fullUrl];
+    }
+    bp._cache.html[fullUrl] = await fetch(fullUrl).then(response => response.text());
+    return bp._cache.html[fullUrl];
 }
 
-bp.appendCSS = function appendCSS(url) {
+bp.appendCSS = function appendCSS(url, forceReload = false) {
     // TODO: cache request, do not reload unless forced
     let fullUrl = url;
 
@@ -136,6 +146,13 @@ bp.appendCSS = function appendCSS(url) {
         fullUrl = `${bp.config.host}${url}`;
     }
 
+    if (bp._cache.css[fullUrl]) {
+        if (!forceReload) {
+            return 'cached';
+        }
+    }
+
+    bp._cache.css[fullUrl] = new Date().getTime();
     // fetching CSS should immediately apply to the document
     // Remark: We could check for duplicates here based on the URL
     // Better in dev mode to always fetch the CSS and write it to the document

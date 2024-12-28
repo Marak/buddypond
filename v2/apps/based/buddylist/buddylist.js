@@ -103,16 +103,70 @@ export default class BuddyList {
         this.bp.on('profile::buddy::newmessage', 'mark-messages-as-read', data => this.buddyReadNewMessages(data));
 
         this.bp.on('profile::status', 'update-profile-status', status => status === 'signout' && this.logout());
+        // TODO: this handler could instead bind to bp.apps.system.messages
+        // a System allows for sending and receiving messages to a sequence of handlers
+        /*
+        */
+        // the buddylist registers with the "messages" system
+        // in order to receive messages from other systems
+        /*
+        // this will get or create a system called "messages"
+        // the send and recieve handlers should get ordered in the order they are registered
+        // unless the order is specified, which should put the system in the correct order by number values and then undefined last
+        bp.apps.system.registerSystem('messages', {
+            registrant: 'buddylist',
+            send: {
+                // since send is missing name and handler, it will be ignored
+            },
+            receive: {
+                name: 'buddylist-processes-messages',
+                order: 2, // we can stack multiple systems in order
+                handler: (message) => {
+                    console.log('buddylist-processes-messages', message);
+                }
+            }
+        });
+        // this event can be anywhere, doesn't have to be in the buddylist
+        // prob should be though :-D
+        // by sending the events to the messages system, they will 
+        // go through the processing chain ( if any exists for that system )
+        // and then we recieved via the receive handler
+        this.bp.on(
+            'buddy::messages',
+            'send-messages-to-messages-system',
+            data => this.bp.apps.systems.messages.send({
+                name: 'buddylist-processes-messages',
+                data: data
+        }));
+       // example of another app which filters messages
+
+        bp.apps.system.registerSystem('messages', {
+            registrant: 'shorten-text',
+            send: {
+                // since send is missing name and handler, it will be ignored
+            },
+            receive: {
+                name: 'shorten-text',
+                order: 1, // we can stack multiple systems in order
+                handler: (message) => {
+                    console.log('shorten text', message);
+                    return message.text.substr(0, 1);
+                }
+            }
+        });
+        */
+
+
+
+
         this.bp.on('buddy::messages', 'render-chat-message', data => this.handleChatMessages(data));
         this.bp.on('buddy::sendMessage', 'send-buddy-message-to-server', data => this.sendMessageToServer(data));
         this.bp.on('pond::sendMessage', 'send-pond-message-to-server', data => this.sendPondMessageToServer(data));
 
-
         this.bp.on('buddy::sendMessage', 'process-buddymessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
-        this.bp.on('pond::sendMessage', 'process-pondmessage-bs', data =>  this.bp.apps.buddyscript.parseCommand(data.text));
+        this.bp.on('pond::sendMessage', 'process-pondmessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
 
 
-        
     }
 
     createHTMLContent(htmlStr) {
@@ -140,25 +194,12 @@ export default class BuddyList {
         };
     }
 
-    handleChatMessages(data) {
-
-        /*
-        if (data.name.includes(',')) {
-            let subscribedBuddies = data.name.split(',');
-            subscribedBuddies.forEach(buddy => {
-                const chatWindow = this.openChatWindow({ name: buddy });
-                data.result.messages.forEach(message => this.renderChatMessage(message, chatWindow));
-            });
-        } else {
-            const chatWindow = this.openChatWindow(data);
-            this.bp.log('buddy::messages', data, chatWindow);
-            data.result.messages.forEach(message => this.renderChatMessage(message, chatWindow));
-        }*/
-        data.result.messages.forEach(message => this.renderChatMessage(message));
-
-
+    async handleChatMessages(data) {
+        for (const message of data.result.messages) {
+            await this.renderChatMessage(message);
+        }
     }
-
+    
     sendMessageToServer(data) {
         this.bp.log('buddy::sendMessage', data);
         data.uuid = uuid();
