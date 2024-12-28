@@ -8,6 +8,7 @@ export default class WindowManager {
         this.storageKey = options.storageKey || 'windowsState'; // Key for storing data
         this.windows = [];
         this._windows = [];
+        this.options = options;
 
         if (typeof options.openWindow === "function") {
             this._openWindow = options.openWindow;
@@ -36,6 +37,8 @@ export default class WindowManager {
         // check by id, if found, hydrate the window
         // This is a temporary solution until full app hydration is back online
         // This solution will allow for position and size to be saved and restored
+        options = { ...options, ...this.options.window };
+        console.log('createWindow', options);
         let previousWindowData = this._windows.find(w => w.id === options.id);
         if (previousWindowData) {
             // just merge the previous window data with the new options
@@ -87,6 +90,7 @@ export default class WindowManager {
             this.windows.unshift(window);
         }
         this.updateFocus();
+        window.focus();
         this.saveWindowsState(); // Save state when focus changes
     }
 

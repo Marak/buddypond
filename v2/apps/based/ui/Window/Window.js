@@ -17,6 +17,7 @@ class Window {
             z = 99, // Default z-index
             parent = null, // Parent element to append to
             id = `window-${idCounter}`, // Unique ID for the panel
+            onFocus = () => { }, // Callback when the window is focused
             onClose = () => { }, // Callback when the window is closed
             onOpen = () => { }, // Callback when the window is opened
             className = '', // Custom classes for styling
@@ -62,8 +63,10 @@ class Window {
 
         };
 
+        this.onFocus = onFocus;
         this.onClose = onClose;
         this.onOpen = onOpen;
+        
 
         this.createWindow();
         this.open();
@@ -297,6 +300,7 @@ class Window {
     }
 
     setDepth (depth) {
+        this.z = depth;
         this.container.style.zIndex = depth;
         this.windowManager.saveWindowsState();
     }
@@ -381,7 +385,7 @@ class Window {
 
         this.x = this.container.offsetLeft;
         this.y = this.container.offsetTop;
-        console.log('saving window state', this.x, this.y);
+        // console.log('saving window state', this.x, this.y);
         this.z = Number(this.container.style.zIndex);
         // TODO: save the window state
         // needs a reference to windowsmanager??? cannot save locally??/
@@ -438,6 +442,12 @@ class Window {
         }
         // TODO: save the window state
 
+    }
+
+    focus () {
+        this.onFocus(this);
+        // handled the other way around
+        // this.windowManager.focusWindow(this);
     }
 
     open() {

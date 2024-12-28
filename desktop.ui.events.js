@@ -416,6 +416,9 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       cancel: 'a',
       containment: 'parent',
       handle: 'div.window_top',
+      start: function () {
+        desktop.emit('window::dragstart', { windowId: '#' + $(this).attr('id') });
+      },
       stop: function (ev) {
         // desktop.ui.getDesktopIconPositions();
         let win = $(this);
@@ -432,6 +435,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
           left: win.css('left')
         }
         desktop.set('windows_open', desktop.ui.openWindows);
+        desktop.emit('window::dragged', { windowId, appName, context });
       }
     }).resizable({
       containment: 'parent',

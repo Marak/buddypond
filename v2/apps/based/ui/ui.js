@@ -2,9 +2,11 @@ import WindowManager from "./Window/WindowManager.js";
 export default class UI {
     constructor(bp, options = {}) {
         this.bp = bp;
-        this.windowManager = new WindowManager({
-            openWindow: this.bp.open.bind(this.bp)
-        });
+
+        let windowManagerOptions = {};
+        windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
+        windowManagerOptions.window = options.window || {};
+        this.windowManager = new WindowManager(windowManagerOptions);
 
         // will re-load any previous stored metadata about windows
         // storage provider is defaulted to localStorage
@@ -40,6 +42,9 @@ export default class UI {
             // If you need jQuery or another version of $
             // we have the ability to not load Zepto as $
             await this.bp.appendScript('/v2/vendor/zepto.min.js');
+        } else {
+            await this.bp.appendScript('/v2/vendor/jquery.min.js');
+
         }
 
         await this.bp.appendScript('/v2/vendor/DateFormat.js');

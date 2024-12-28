@@ -23,6 +23,8 @@ window.top.location = 'ie.html';
 </script>
 <![endif]-->
 
+  <script type="text/javascript" src="/v4-to-v5-bridge.js"></script>
+
   <script type="text/javascript">
 
     // certain websites are currently not supported as referrer
@@ -246,8 +248,8 @@ window.top.location = 'ie.html';
 
       let _host = 'https://137.184.116.145';
       let _wsHost = 'wss://137.184.116.145';
-      // _host = 'http://192.168.200.59';
-      _wsHost = 'wss://137.184.116.145';
+      _host = 'http://192.168.200.59';
+      _wsHost = 'wss://192.168.200.59';
 
       buddypond.endpoint = _host + '/api/v3';
 
@@ -274,7 +276,7 @@ window.top.location = 'ie.html';
           .use('spellbook')
           .use('mantra')
           .use('profile')
-          .use('login', { defer: true })
+          // .use('login', { defer: true })
           .use('videochat', { defer: true })
           .ready(async function (err, apps) {
             // desktop.log("Loaded", desktop.apps.loaded);
@@ -364,134 +366,8 @@ window.top.location = 'ie.html';
             // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
             // desktop.ui.openWindow('console');
 
-
-            let localBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '/' + a });
-            let remoteBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '\\' + a });
-            let allCommands = localBuddyChatCommands.concat(remoteBuddyChatCommands);
-            console.log('allCommands', allCommands);
-
-            // TODO: move all bp code to app.js file
-            //
-            // Legacy bindings for BuddyPond v3 API
-            //
-            // Remark: BuddyPond v5 runs alongside the old buddy pond until all
-            // code is migrated to the new API. This is a temporary solution.
-            // Everything in BuddyPond v5 is *much* more modular and easier to use.
-            bp.setConfig({
-              host: _host
-            });
-
-
-
-
-            bp.on('auth::qtoken', 'old-bp-login', function () {
-              $('.loggedIn').show();
-              $('.loggedOut').hide();
-            });
-            // TODO: map the new API to the old API
-            // chatWindowButtons should emit events
-            await bp.start(['ui', {
-              name: 'client',
-              config: {
-                host: _host,
-                wsHost: _wsHost
-            }
-
-            }, 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
-              name: 'buddylist',
-              autocomplete: allCommands,
-              // wil probably need the autocomplete fn handler
-              // autocompleteOnSuggestion: fn, etc, will see
-              chatWindowButtons: [{
-                text: 'BuddySound',
-                image: 'desktop/assets/images/icons/icon_soundrecorder_64.png',
-                onclick: (ev) => {
-                  console.log('BuddySound button clicked', ev);
-                  let context = ev.target.dataset.context;
-                  let type = ev.target.dataset.type;
-                  JQDX.openWindow('soundrecorder', { type: type || 'buddy', context: context });
-                }
-              },
-              {
-                text: 'BuddyGif',
-                image: 'desktop/assets/images/icons/icon_gifstudio_64.png',
-                onclick: (ev) => {
-                  let context = ev.target.dataset.context;
-                  let type = ev.target.dataset.type;
-                  JQDX.openWindow('gifstudio', { type: type || 'buddy', context: context, output: type || 'buddy' });
-                }
-              },
-              {
-                text: 'BuddyPaint',
-                image: 'desktop/assets/images/icons/icon_paint_64.png',
-                onclick: (ev) => {
-                  let context = ev.target.dataset.context;
-                  let type = ev.target.dataset.type;
-                  JQDX.openWindow('paint', { type: type || 'buddy', output: type || 'buddy', context: context });
-                }
-              },
-              {
-                text: 'BuddySnap',
-                image: 'desktop/assets/images/icons/svg/1f4f7.svg',
-                onclick: (ev) => {
-                  let context = ev.target.dataset.context;
-                  let type = ev.target.dataset.type;
-                  desktop.ui.openWindow('mirror', { type: type || 'buddy', context: context, output: type || 'buddy' });
-                }
-              },
-              {
-                text: 'BuddyEmoji',
-                image: 'desktop/assets/images/icons/svg/1f600.svg',
-                className: 'emojiPicker',
-                onclick: (ev) => {
-
-                  // focus on the .emojiPicker input
-                  $('.emojiPicker').focus();
-
-                  // we need to add class activeTextArea to the active textarea
-                  // so we can append the emoji to the correct textarea
-                  // remove the activeTextArea from all other textareas
-                  $('.activeTextArea').removeClass('activeTextArea');
-
-                  let messageControls = $(ev.target).closest('.aim-message-controls');
-                  // find the closest textarea to the ev.target
-                  $('.aim-input', messageControls).addClass('activeTextArea');
-
-
-                  
-                }
-              },
-              {
-                text: 'BuddyHelp',
-                image: 'desktop/assets/images/icons/svg/1f9ae.svg',
-                align: 'right',
-                onclick: (ev) => {
-                  let win = $(ev.target).closest('.aim-window');
-                  let windowId = '#' + win.attr('id');
-                  //alert(windowId)
-                  desktop.commands.chat.help({ windowId: windowId });
-
-                }
-              }
-
-
-              ]
-            }]);
-            bp.open('buddylist');
-
-            // map all the legacy desktop.commands to the new API
-            for (let command in desktop.commands.chat) {
-              console.log('ADDING COMMAND to buddyScript', command, desktop.commands.chat[command]);
-              bp.apps.buddyscript.addCommand(command, desktop.commands.chat[command]);
-            }
-
-
-            bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
-              console.log('buddy-message-gotfiltered', message);
-              toastr.info('You message was filtered due to being at Power Level 1.');
-
-              // desktop.ui.openWindow('buddy_message', { context: message });
-            });
+            // bridge to v5 ( all previous code in this file will be replaced with v5 code )
+            bp_v_5();
             // bp.apps.buddyscript.addCommand()
 
           });
@@ -501,6 +377,9 @@ window.top.location = 'ie.html';
     <div id="shadowRender">
     </div>
     <script src="/v2/public/buddypond.umd.cjs"></script>
+
+    
+
     <script>
 
     </script>
