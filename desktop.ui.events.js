@@ -1,3 +1,7 @@
+/* desktop.ui.events.js - Legacy BP Desktop UI Event Handlers */
+/* Being phased out in favor of bp.js v5 */
+/* This entire file will be removed in v6 */
+
 jQuery(document).ready(function () {
   // binds the event handlers as soon as the document is ready according to jQuery
   JQDX.bindDocumentEventHandlers();
@@ -252,10 +256,20 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   // TODO: move event handlers to appropiate apps ( messages.js )
   // Click remix paint icon to remix images in Paint App
   d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
+
+    
     let form = $(this).parent();
     let url = $('.image', form).attr('src');
     let output = $(this).data('output');
     let context = $(this).data('context');
+
+
+    let cardContainer =  $(this).parent().parent();
+    console.log('cardContainer', cardContainer);
+    url = $('.snap-image', cardContainer).attr('src');
+    url = buddypond.host + url;
+    console.log('remixPaint', url, output, context);
+
     JQDX.openWindow('paint', {
       src: url,
       output: output,
@@ -277,6 +291,17 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.set('paint_active_context', 'making-a-gif');
     
     desktop.app.gifstudio = desktop.app.gifstudio || {};
+
+
+
+    let cardContainer =  $(this).parent().parent();
+    console.log('cardContainer', cardContainer);
+    url = $('.snap-image', cardContainer).attr('src');
+    url = buddypond.host + url;
+    console.log('remixGif', url, output, context);
+
+
+
     // -1 or undefined as frame index indicates create new gif
     desktop.ui.openWindow('gifstudio', {
       src: url,
@@ -290,7 +315,8 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   });
 
   // App icons are double click on to open on desktop
-  let eventName = 'dblclick';
+  // Remark: Switched to single click by default
+  let eventName = 'click';
 
   if (desktop.ui.view === 'Mobile') {
     // Single click to open Apps icons on mobile
@@ -309,6 +335,11 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       desktop.app.login.logoutDesktop();
       return;
     }
+    // New v5 API
+    if (appName === 'buddylist') {
+      bp.open('buddylist');
+      return;
+    }
     JQDX.openWindow(appName);
   });
 
@@ -321,17 +352,14 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     return false;
   });
 
-  // Make icons draggable.
-  d.on('mouseenter', 'div.icon', function () {
-    $(this).off('mouseenter').draggable({
-      revert: false,
-      containment: 'none',
-      stop: function () {
-        // desktop.ui.getDesktopIconPositions();
-      }
-    });
-  });
 
+  // Apply the draggable functionality to icons
+  d.on('mouseenter', 'div.icon', function () {
+    //var $this = $(this);
+    //$this.off('mouseenter'); // Ensure this only runs once per element
+    //makeSimpleDraggable($this);
+  });
+  
   // to build a contextmenu like this add this to your html (styles are applied globally):
   // <div id="your context menu id" class="context-menu" style="display: none">
   //   <ul id="your context list id" class="context-list"></ul>
@@ -410,6 +438,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
 
   // Make windows draggable.
   d.on('mouseenter', 'div.window', function () {
+
     $(this).off('mouseenter').draggable({
       // Confine to desktop.
       // Movable via top bar only.

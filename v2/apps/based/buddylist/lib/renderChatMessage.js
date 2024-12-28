@@ -1,10 +1,12 @@
-// Remark: Not actually async ( yet ) so cards may render out of order ( for now )
+
 export default async function renderChatMessage(message, _chatWindow) {
   //console.log('buddy list local this.data', this.data);
   // console.log("renderChatMessage", message, message.uuid);
   //console.log('this.data.processedMessages', this.data.processedMessages);
 
   let context = 'default';
+  this.showingIsTyping = this.showingIsTyping || {};
+
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
@@ -17,13 +19,13 @@ export default async function renderChatMessage(message, _chatWindow) {
   }
 
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
-  
+
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
 
   if (_chatWindow) {
     chatWindow = _chatWindow;
   }
-  
+
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
@@ -44,14 +46,18 @@ export default async function renderChatMessage(message, _chatWindow) {
       }
     }
   }
-  //if (this.data.processedMessages[context].includes(message.uuid)) {
-  //  return;
-  //}
+  /* May need to add this back?
+  if (this.data.processedMessages[context].includes(message.uuid)) {
+    return;
+  }
+  */
 
   // Manage size of processedMessages to prevent memory leaks
   if (this.data.processedMessages[context].length > 5000) {
     this.data.processedMessages[context].shift();
   }
+  console.log(message)
+
 
   // check if this is an Agent message which gets processed first
   if (message.type === 'agent') {
@@ -95,6 +101,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
 
     let cardData = message.card;
+    cardData.message = message;
     let cardManager = this.bp.apps.card.cardManager;
 
     const _card = await cardManager.loadCard(cardData.type, cardData);
@@ -122,12 +129,12 @@ export default async function renderChatMessage(message, _chatWindow) {
     chatMessage.classList.add('chatMessage');
     chatMessage.appendChild(container);
     $('.aim-messages', chatWindow.content).append(chatMessage);
-    
+
 
   } else {
     $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
     $('.message', chatWindow.content).last().text(message.text);
-  
+
   }
 
 
@@ -135,17 +142,17 @@ export default async function renderChatMessage(message, _chatWindow) {
   // chatWindow.content.innerHTML = 'FFFFF';
 
   // Scroll to the last message
-    // Remark: this seems to have an issue with images? height not being calculated in time?
-    let lastElement = $('.message', chatWindow.content).last()[0];
-    if (lastElement) {
-      console.log('scrolling to last message', lastElement);
-      setTimeout(function(){
-
+  // Remark: this seems to have an issue with images? height not being calculated in time?
+  let lastElement = $('.message', chatWindow.content).last()[0];
+  if (lastElement) {
+    console.log('scrolling to last message', lastElement);
+    setTimeout(function () {
+      // still not working all the way? hrmmmm
       lastElement.scrollIntoView({ behavior: 'smooth' });
     }, 400);
 
-    }
-  
+  }
+
 
   // console.log('parseChatMessage result', result);
 

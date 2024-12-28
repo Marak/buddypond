@@ -2,7 +2,7 @@
 import AutoComplete from '../../ui/AutoComplete/AutoComplete.js';
 import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
 
-function uuid () {
+function uuid() {
     return new Date().getTime();
 }
 export default function openChatWindow(data) {
@@ -13,7 +13,7 @@ export default function openChatWindow(data) {
     let contextName = data.pondname || data.name;
     let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
     let windowTitle = windowType === 'pond' ? 'Pond' : '';
-    
+
     // Reference directly to the specific list depending on windowType
     let subscribedList = windowType === 'pond' ? this.subscribedPonds : this.subscribedBuddies;
 
@@ -38,11 +38,12 @@ export default function openChatWindow(data) {
         id: windowIdPrefix + contextName,
         title: contextName + ' ' + windowTitle,
         type: windowType,
+        context: contextName,
         parent: this.bp.apps.ui.parent,
         className: 'chatWindow',
         width: 600,
         height: 500,
-        onOpen: (_window) => {
+        onOpen: async (_window) => {
             if (!subscribedList.includes(contextName)) {
                 subscribedList.push(contextName);
             }
@@ -56,17 +57,24 @@ export default function openChatWindow(data) {
             console.log('getMessages', _data);
             this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
             // reprocess any local messages ( window was closed and then opened again )
-            this.data.processedMessages[contextName].forEach(message => {
-                console.log('rendering message', message);
+
+            // lazy load the emoji-picker ( its 225 kb )
+            // it is safe to call multiple times since bp.load will cache the module
+            await this.bp.load('emoji-picker');
+
+            for (const message of this.data.processedMessages[contextName]) {
+                // console.log('rendering message', message);
                 try {
-                    this.renderChatMessage(message, _window);
+                    // TODO: this may need to become async / await
+                    // in order to load remote cards, etc
+                    await this.renderChatMessage(message, _window);
 
                 } catch (err) {
                     console.error('Error rendering message', err);
 
                 }
-            });
-            
+            }
+
 
             this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: _data });
         },
@@ -87,6 +95,7 @@ export default function openChatWindow(data) {
             console.log('this.data.processedMessages', this.data.processedMessages);
 
             console.log(this.data);
+
         }
     });
 
@@ -128,11 +137,31 @@ export default function openChatWindow(data) {
         return false;
     });
 
+    // Hitting enter key will send the message
     $('.aim-input', chatWindow.content).keydown((e) => {
         if (e.which === 13) {
             $('.message_form', chatWindow.content).submit();
         }
     });
+
+
+
+
+    // Buddy "is typing" event on message_text input
+    $('.aim-input').on('keypress', () => {
+        let buddyName = this.bp.me;
+        let context = contextName;
+        console.log('typing', buddyName, context);
+        this.bp.emit('buddy::typing', {
+            from: buddyName,
+            to: context,
+            type: windowType,
+            isTyping: true,
+            ctime: Date.now()
+        });
+    });
+
+
 
     return chatWindow;
 }

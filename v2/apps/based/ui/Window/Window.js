@@ -11,11 +11,12 @@ class Window {
             height = '300px', // Default height
             app = 'ui', // default app
             type = 'singleton', // Default type ( intended to not have siblings )
-            context = 'default', // Default context
+            context = '<default>', // Default context
+            content = '', // Default content
             x = 50, // Default x position
             y = 50, // Default y position
             z = 99, // Default z-index
-            parent = null, // Parent element to append to
+            parent = window.document.body, // Parent element to append to
             id = `window-${idCounter}`, // Unique ID for the panel
             onFocus = () => { }, // Callback when the window is focused
             onClose = () => { }, // Callback when the window is closed
@@ -51,6 +52,7 @@ class Window {
         this.isMinimized = false;
         this.container = null;
         this.content = null;
+        this.contentValue = content;
         this.isActive = false;
         this.className = className;
         this.resizeable = resizeable;
@@ -78,6 +80,11 @@ class Window {
         // Create the main window container
         this.container = document.createElement("div");
         this.container.classList.add("window-container");
+
+        // add dataset for app, type, context
+        this.container.dataset.app = this.app;
+        this.container.dataset.type = this.type;
+        this.container.dataset.context = this.context;
 
         if (this.className) {
             this.container.classList.add(this.className);
@@ -215,7 +222,14 @@ class Window {
         // Create content area
         this.content = document.createElement("div");
         this.content.classList.add("bp-window-content");
-        // this.content.innerHTML = this.content;
+        // check that this.content is HTMLElement
+        if (typeof this.contentValue === 'string') {
+            this.content.innerHTML = this.contentValue;
+        } else {
+            // alert(this.content)
+            this.content.appendChild(this.contentValue);
+        }
+
 
         // Append components
         this.container.appendChild(this.titleBar);
@@ -487,6 +501,14 @@ class Window {
         }
         console.log('removeWindow', this.id);
         this.windowManager.removeWindow(this.id);
+
+
+        if (this.windowManager.taskBar) {
+        // remove the chat window from the taskbar
+        this.windowManager.taskBar.removeItem(this.id);
+
+        }
+
         // TODO: save the window state ??? removeWindow could do it..?
 
 

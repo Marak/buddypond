@@ -595,6 +595,8 @@ JQDX.showWindow = function showWindow (appName, params) {
     left: win.css('left')
   }
 
+
+
   desktop.set('windows_open', desktop.ui.openWindows);
   // win.focus();
   /* Remark: Does this function need a callback? Does App.openWindow() require callback?
@@ -743,6 +745,13 @@ JQDX.closeWindow = function closeWindow (el) {
   }
 
   $('#icon_dock_' + windowId).hide('fast');
+
+  let dockIconExists =  bp.apps.ui.windowManager.taskBar.getItem(appName)
+  if (dockIconExists) {
+    bp.apps.ui.windowManager.taskBar.removeItem(appName)
+  }
+
+  
 
 };
 
@@ -942,7 +951,7 @@ desktop.ui.renderDesktopShortCut = function renderDesktopShortCut (appName, app)
     $('.desktop-shortcuts-container').append(`
       <div class="icon shortcut ${app.class}">
         <a href="${href}">
-          <img class="emojiIcon" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
+          <img loading="lazy" class="emojiIcon" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
           <span class="title">
             ${app.label || appName}
           </span>

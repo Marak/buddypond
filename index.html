@@ -63,9 +63,10 @@ window.top.location = 'ie.html';
     </div>
   </div>
 -->
-
+  <!-- src="desktop/assets/images/gui/rainbow-hexagon-lattice.gif" -->
+   <!-- TODO: remove? -->
   <div id="mainOverlay">
-    <img class="mobileLoadingOverlay" src="desktop/assets/images/gui/rainbow-hexagon-lattice.gif" />
+    <img class="mobileLoadingOverlay" />
     <div class="abs" id="wrapper">
       <div class="abs" id="desktop">
         <!-- default desktop icons are currently rendered in `app.settings.load()` -->
@@ -197,29 +198,7 @@ window.top.location = 'ie.html';
         -->
           </select>
         </div>
-        <div class="abs" id="bar_bottom">
-          <a class="float_left" href="#" id="show_desktop" title="Show Desktop">
-            <img src="desktop/assets/images/icons/home-icon.png" />
-          </a>
-          <ul id="dock">
-            <li id="icon_dock_buddy_message_0">
-              <a href="#window_buddy_message_0">
-                <img class="emojiIcon" src="desktop/assets/images/icons/icon_buddylist_64.png" />
-                <div class="dock_title">
-                  Chat with X
-                </div>
-              </a>
-            </li>
-            <li id="icon_dock_pond_message_0">
-              <a href="#window_pond_message_0">
-                <img class="emojiIcon" width="16" height="16" src="desktop/assets/images/icons/icon_pond_64.png" />
-                <div class="dock_title">
-                  Chat with X
-                </div>
-              </a>
-            </li>
-          </ul>
-        </div>
+
       </div>
     </div>
 
@@ -227,11 +206,11 @@ window.top.location = 'ie.html';
 
     <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
     <link rel="stylesheet" href="desktop/assets/css/mobile.css" />
-    <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
+    <!-- <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css"> -->
 
     <script src="desktop/assets/js/jquery.js"></script>
     <!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
-    <script src="desktop/assets/js/jquery.ui.js"></script>
+    <script src="desktop/assets/js/jquery.ui.js"></script><!--  -->
     <script src="desktop/assets/js/jquery.dateformat.js"></script>
 
     <script src="desktop/assets/js/forbidden.notes.js"></script>
@@ -251,6 +230,7 @@ window.top.location = 'ie.html';
       _host = 'https://192.168.200.59';
       _wsHost = 'wss://192.168.200.59';
 
+      buddypond.host = _host;
       buddypond.endpoint = _host + '/api/v3';
 
       // see: ReadMe.md for documentation on `desktop.use`
@@ -270,14 +250,14 @@ window.top.location = 'ie.html';
           .use('tts')
           .use('notifications')
           .use('messages')
-          // .use('buddylist')
+          //.use('buddylist')
           .use('pond')
-          .use('streamsquad')
+          //.use('streamsquad')
           .use('spellbook')
-          .use('mantra')
+          //.use('mantra')
           .use('profile')
           // .use('login', { defer: true })
-          .use('videochat', { defer: true })
+          // .use('videochat', { defer: true })
           .ready(async function (err, apps) {
             // desktop.log("Loaded", desktop.apps.loaded);
             try {

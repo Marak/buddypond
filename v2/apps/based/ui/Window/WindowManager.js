@@ -45,7 +45,16 @@ export default class WindowManager {
             options = { ...previousWindowData, ...options };
         }
 
-        const window = new Window(options, this);
+        // check to see if window already exists with id
+        const existingWindow = this.findWindow(options.id);
+        let window;
+
+        if (existingWindow) {
+            window = existingWindow;
+            this.focusWindow(window); // Focus the newly created window
+            return window;
+        } 
+        window = new Window(options, this);
 
         window.container.addEventListener("mousedown", () => {
             this.focusWindow(window);

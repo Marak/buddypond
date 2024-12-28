@@ -555,9 +555,6 @@ th.shrink {
   grid-template-columns: auto auto auto;
   row-gap: 33px;
   column-gap: 10px;
-  /*
-  background-color: #2196F3;
-  */
   padding: 10px;
   top: 5vh;
   position: absolute;
@@ -570,6 +567,10 @@ th.shrink {
   /*background-color: rgba(255, 255, 255, 0.8);*/
   text-align: center;
   font-size: 30px;
+}
+
+.desktop-shortcuts-container .icon {
+  position: relative
 }
 
 .desktop-shortcuts-container-folder {

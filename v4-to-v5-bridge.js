@@ -84,7 +84,7 @@ window.bp_v_5 = async function bp_v_5() {
         wsHost: _wsHost
     }
     
-    }, 'buddyscript', 'emoji-picker', 'toastr', 'powerlevel', {
+    }, 'buddyscript', 'toastr', 'powerlevel', {
       name: 'buddylist',
       autocomplete: allCommands,
       // wil probably need the autocomplete fn handler
@@ -167,6 +167,7 @@ window.bp_v_5 = async function bp_v_5() {
       'card'
     
     ]);
+    bp.load('motd');
     bp.open('buddylist');
     
     // map all the legacy desktop.commands to the new API
@@ -222,11 +223,14 @@ window.bp_v_5 = async function bp_v_5() {
           return a.z - b.z;
         });
     
+        if (newWindowsSorted.length ) {
         // set the z-index of windowId to the highest z-index + 1
         let highestZ = newWindowsSorted[newWindowsSorted.length - 1].z;
         console.log('highestZ', highestZ);
         $(`${windowId}`).css('z-index', highestZ + 1);
         console.log('focus windowId', windowId);
+
+        }
     
     
     });

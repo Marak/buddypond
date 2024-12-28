@@ -167,8 +167,9 @@ desktop.app.profile.load = function loadProfile (params, next) {
     desktop.on('desktop.settings.apps_installed', 'render-profile-apps-list', function(){
       renderAppList();
     })
+    // TODO: v5
+    // $('#profileTabs' ).tabs();
 
-    $('#profileTabs' ).tabs();
     next();
   });
 };
@@ -226,10 +227,11 @@ desktop.app.profile.openWindow = function openWindow (params) {
   $('#window_profile').css('height', '66vh');
   $('#window_profile').css('top', '6vh');
   $('#window_profile').css('left', '2vw');
-
+  new bp.apps.ui.Tabs('#profileTabs');
   // TODO: add other tabs and context
   if (params.context === 'themes') {
-    $('#profileTabs').tabs({ active: 1});
+    //new bp.apps.ui.Tabs('#profileTabs');
+    // $('#profileTabs').tabs({ active: 1});
   }
 
 };

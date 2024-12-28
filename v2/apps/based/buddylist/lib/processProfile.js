@@ -91,6 +91,17 @@ function _processBuddylistData(buddylist, buddylistData) {
         });
         profileNeedsUpdate = true;
       }
+
+
+      if (buddy.isCalling) {
+        buddylist.bp.emit('profile::buddy::calling', {
+          name: buddyName
+        });
+      }
+
+
+
+
     }
   }
   return profileNeedsUpdate;

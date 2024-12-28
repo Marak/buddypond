@@ -46,3 +46,31 @@ body {
     border-radius: 4px;
   }
   
+  .tabs-container .tab-list {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .tabs-container .tab-list li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .tabs-container .tab-list li.active {
+    font-weight: bold;
+  }
+  
+  .tabs-container .tab-content {
+    display: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: -1px;
+  }
+  
+  .tabs-container .tab-content:target {
+    display: block;
+  }
+  

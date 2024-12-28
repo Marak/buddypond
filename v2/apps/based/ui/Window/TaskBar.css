@@ -3,11 +3,23 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
-    display: flex;
+
+    display: flex
+;
+    background: linear-gradient(180deg, #666666, #353535);
+    color: #e0e0e0;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-shadow: #000 0 1px 1px;
+    border-bottom: 1px solid #444;
+    border-radius: 8px 8px 0 0;
+    user-select: none;
+    cursor: grab;
+
+
     justify-content: start;
-    padding: 10px;
-    box-shadow: 0 -1px 10px rgba(0,0,0,0.5);
     z-index: 99999;
 }
 
@@ -30,5 +42,5 @@
 }
 
 @keyframes blinker {
-    50% { background-color: red; }
+    50% { background-color: orange; }
 }

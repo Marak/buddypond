@@ -47,6 +47,12 @@ export default class UI {
 
         }
 
+        if (!this.options.noTabs) {
+            let SimpleTabs = await this.bp.importModule('/v2/apps/based/ui/SimpleTabs.js', {}, false)
+            this.Tabs = SimpleTabs.default;
+
+        }
+
         await this.bp.appendScript('/v2/vendor/DateFormat.js');
 
         
