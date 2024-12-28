@@ -35,8 +35,12 @@ export default function renderChatMessage(message, _chatWindow) {
       // this indicates the server filtered parts of the message and it should be removed and re-rendered
       if (this.data.processedMessages[context][i].from === this.bp.me && this.data.processedMessages[context][i].text !== message.text) {
         // find the chatMessage by uuid
-        $(`.chatMessage[data-uuid="${message.uuid}"]`, chatWindow.content).remove();
-        this.bp.emit('buddy::message::gotfiltered', message);
+        let filteredMessageEl = $(`.chatMessage[data-uuid="${message.uuid}"]`, chatWindow.content);
+        if (filteredMessageEl.length > 0) {
+          // remove the filtered message
+          filteredMessageEl.remove();
+          this.bp.emit('buddy::message::gotfiltered', message);
+        }
       } else {
         // else there is no special filtering case from server
         // and the messaged is a duplicate, return and do not render
@@ -91,7 +95,6 @@ export default function renderChatMessage(message, _chatWindow) {
     lastElement.scrollIntoView({ behavior: 'smooth' });
   }
 
-  let result = this.bp.apps.buddyscript.parseCommand(message.text);
   // console.log('parseChatMessage result', result);
 
   // Add the processed message UUID to prevent reprocessing

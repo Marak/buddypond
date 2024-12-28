@@ -11,6 +11,18 @@ export default async function processProfile(profileState) {
     this.data.buddyrequests = {};
   }
 
+  if (this.data.lastProfileState && Number(profileState.powerlevel) > Number(this.data.lastProfileState.powerlevel)) {
+
+    // Assuming there's a container with ID 'powerLevelContainer' in your HTML
+    const powerLevel = bp.apps.powerlevel.popup;
+
+    // Example of increasing to level 4
+    powerLevel.show(profileState.powerlevel, {
+        duration: 7777
+    });
+  }
+
+  this.data.lastProfileState = profileState;
   // profileState is a JSON document representing entire user profile
   // we will process the profileState as if it was a differential state update
   let buddylist = profileState.buddylist;

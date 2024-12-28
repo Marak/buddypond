@@ -1,3 +1,4 @@
+import PowerlevelPopup from './PowerlevelPopup.js';
 export default class PowerLevels {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -9,14 +10,19 @@ export default class PowerLevels {
         this.bp.on('powerlevel', 'powerlevel', (powerlevel) => {
             this.bp.log('powerlevel', powerlevel);
         });
+        e
         */
-       this.bp.apps.buddyscript.addCommand('powerlevel', (args) => {
-        console.log('powerlevel args', args);
-        let context = args[0];
-        let _powerlevel = Number(args[1]); // TODO: check is number not nan
-        this.bp.apps.client.api.setPowerLevel(context, _powerlevel);
+        await this.bp.load('/v2/apps/based/powerlevel/powerlevel.css');
+        this.bp.apps.buddyscript.addCommand('powerlevel', (args) => {
+            console.log('powerlevel args', args);
+            let context = args[0];
+            let _powerlevel = Number(args[1]); // TODO: check is number not nan
+            this.bp.apps.client.api.setPowerLevel(context, _powerlevel);
 
-       });
+        });
+
+        this.popup = new PowerlevelPopup();
+
     }
 
     setPower(context, powerlevel) {

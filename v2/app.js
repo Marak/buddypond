@@ -1,11 +1,31 @@
 import bp from './bp.js';
 import config from './config/config.js';
 
-bp.setConfig(config.env);
+bp.setConfig({
+    host: 'http://192.168.200.59:5174',
+    wsHost: 'ws://192.168.200.59'
+});
 
 async function go() {
     // await startPartyBox();
+
+
+
+
     await startBuddylist();
+
+
+    await bp.load('powerlevel');
+
+    // Assuming there's a container with ID 'powerLevelContainer' in your HTML
+    const powerLevel = bp.apps.powerlevel.popup;
+    /*
+    // Example of increasing to level 4
+    powerLevel.show(4, {
+        duration: 7777
+    });
+    */
+
     //await startGame();
     //await stripeCheckout();
 }
@@ -40,11 +60,15 @@ async function startBuddylist() {
 
     }
     await bp.start([
-        'ui',
+        {
+            name: 'ui',
+            noZepto: true
+        },
         {
             name: 'client',
             config: {
-                host: 'http://192.168.200.59'
+                host: 'http://192.168.200.59',
+                wsHost: 'wss://192.168.200.59'
             }
         },
         'buddyscript', buddylistOptions,

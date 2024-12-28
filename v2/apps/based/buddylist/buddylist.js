@@ -106,6 +106,13 @@ export default class BuddyList {
         this.bp.on('buddy::messages', 'render-chat-message', data => this.handleChatMessages(data));
         this.bp.on('buddy::sendMessage', 'send-buddy-message-to-server', data => this.sendMessageToServer(data));
         this.bp.on('pond::sendMessage', 'send-pond-message-to-server', data => this.sendPondMessageToServer(data));
+
+
+        this.bp.on('buddy::sendMessage', 'process-buddymessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
+        this.bp.on('pond::sendMessage', 'process-pondmessage-bs', data =>  this.bp.apps.buddyscript.parseCommand(data.text));
+
+
+        
     }
 
     createHTMLContent(htmlStr) {
