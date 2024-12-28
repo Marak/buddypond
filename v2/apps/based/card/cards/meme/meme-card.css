@@ -1,0 +1,32 @@
+.meme-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .meme-title {
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .meme-details {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .meme-controls img {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .meme-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+  

@@ -103,9 +103,12 @@ desktop.app.paint.send = function sendPaint (params) {
           // TODO: buddylist renamed to buddy
           output = 'buddylist'
         }
+        /*
         JQDX.openWindow(output, {
           context: context
         });
+        */
+        // TODO: show the window using new API?
         $('.sendPaint').attr('disabled', false);
       });
     }

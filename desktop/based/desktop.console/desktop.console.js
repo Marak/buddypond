@@ -193,6 +193,11 @@ desktop.app.console._allowCommands = {
       description: 'Manage and Catalog your Memes.',
       icon: 'memepool'
     },
+    meme: {
+      command: function(params) {
+        // handled by server via sendMessage code path
+      }
+    },
     memes: {
       command: 'desktop.ui.openWindow("memepool");',
       description: 'Mnemosyne - A.I. Powered Meme Oracle',
@@ -268,6 +273,14 @@ desktop.app.console._allowCommands = {
       description: 'Sound Recorder App. Record and Edit Audio',
       icon: 'soundrecorder'
     },
+    /*
+    say: {
+      command: function(params) {
+        console.log('say params', params);
+        desktop.say(params);
+      }
+    },
+    */
     streamsquad: {
       command: 'desktop.ui.openWindow("streamsquad");',
       description: 'Watch Live Streamers with your Buddies',

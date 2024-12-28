@@ -64,6 +64,7 @@ async function startBuddylist() {
             name: 'ui',
             noZepto: true
         },
+        'card',
         {
             name: 'client',
             config: {
@@ -91,13 +92,64 @@ async function startBuddylist() {
         return `Echo: ${context}`;
     });
 
-   
+
     bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
         console.log('buddy-message-gotfiltered', message);
         toastr.error('Your message was partially filtered due to you being at Power Level 1.');
 
         // desktop.ui.openWindow('buddy_message', { context: message });
-      });
+    });
+
+    const cardManager = bp.apps.card.cardManager;
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const cardData = {
+        title: "New Hit Single",
+        soundURL: "path/to/song.mp3"
+    };
+    const card = await cardManager.loadCard('audio', cardData);
+    console.log('ffff', card)
+    card.render(container);
+
+    const pointsCard = await cardManager.loadCard('points', {
+        to: '_Marak',
+        from: '_Marak',
+        action: 'got', points: 100, balance: 1000, amount: 1000, buddyname: '_Marak'
+    });
+    pointsCard.render(container);
+
+
+
+
+// Example data for a snap card
+const snapData = {
+    snapURL: 'path/to/image.gif',
+    type: 'buddy',
+    from: 'JohnDoe',
+    to: 'JaneDoe'
+  };
+
+  const snapCard = await cardManager.loadCard('snap', snapData);
+    snapCard.render(container);
+
+  
+
+  // Example data for a meme card
+const memeData = {
+    title: "Funny Cat",
+    levenshtein: "High",
+    winkler: "Medium",
+    filename: "cat_meme.jpg",
+    type: "buddy",
+    to: "JohnDoe"
+  };
+
+    const memeCard = await cardManager.loadCard('meme', memeData);
+    memeCard.render(container);
+
+
+
 
 
 

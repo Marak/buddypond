@@ -337,6 +337,13 @@ buddypond.lastResponseTime = function averageResponseTime () {
   return elapsed + 'ms';
 }
 
+buddypond.logout = function logout () {
+  localStorage.removeItem('qtokenid');
+  localStorage.removeItem('me');
+  buddypond.me = null;
+  buddypond.qtokenid = null;
+}
+
 
 //
 // end methods for tracking API request performance

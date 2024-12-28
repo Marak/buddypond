@@ -1,0 +1,26 @@
+.points-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+  }
+  
+  .points-card-title {
+    color: #2a2a2a;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .points-card-detail {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .points-card-value {
+    margin-top: 5px;
+    font-style: italic;
+    color: #666;
+  }
+  

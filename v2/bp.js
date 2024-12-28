@@ -63,6 +63,9 @@ bp.load = async function load(resource) {
         if (resource.endsWith('.css')) {
             return bp.appendCSS(resource);
         }
+        if (resource.endsWith('.html')) {
+            return bp.fetchHTMLFragment(resource);
+        }
         // check to see if file ends in .js
         if (resource.endsWith('.js')) {
             return bp.appendScript(resource);
@@ -96,10 +99,10 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
         console.log('module already loaded', app);
-        return;
+        return bp._modules[modulePath];
     }
     try {
-        console.log('modulePath', modulePath)
+        console.log('attempting to load module', modulePath);
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
             bp.apps[appName] = new module.default(bp, config);
@@ -108,6 +111,8 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
         }
         bp._modules[modulePath] = module;
+        console.log('module loaded', module);
+        return module;
     } catch (error) {
         bp.error('Failed to load module:', appName, error);
         delete bp.apps[appName]; // just in case
@@ -117,11 +122,13 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
 
 bp.fetchHTMLFragment = function fetchHTMLFragment(url) {
+    // TODO: cache request, do not reload unless forced
     let fullUrl = `${bp.config.host}${url}`;
     return fetch(fullUrl).then(response => response.text());
 }
 
 bp.appendCSS = function appendCSS(url) {
+    // TODO: cache request, do not reload unless forced
     let fullUrl = url;
 
     // check if there is no protocol in the URL

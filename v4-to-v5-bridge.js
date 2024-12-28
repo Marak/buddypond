@@ -15,10 +15,31 @@ window.bp_v_5 = async function bp_v_5() {
       host: _host
     });
     
+    $('.logoutLink').on('click', function () {
+      bp.apps.client.logout();
+    });
+
+    $('.loginLink').on('click', function () {
+      bp.open('buddylist');
+    });
+
+    bp.on('auth::logout', 'old-bp-logout', function () {
+      $('.loggedIn').hide();
+      $('.loggedOut').show();
+      bp.apps.client.api.logout(function (err, data) {
+        console.log('logout', err, data);
+      });
+    });
     
-    bp.on('auth::qtoken', 'old-bp-login', function () {
+    bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {
+      buddypond.qtokenid = qtoken.qtokenid;
+      bp.me = qtoken.me;
       $('.loggedIn').show();
       $('.loggedOut').hide();
+
+      $('#me_title').html('Welcome - ' + bp.me);
+
+
     });
     // TODO: map the new API to the old API
     // chatWindowButtons should emit events
@@ -33,16 +54,25 @@ window.bp_v_5 = async function bp_v_5() {
           // our window is +1 of the highest z-index
           let legacyWindows = $('.window');
           let highestZ = 0;
+          let anyVisible = false;
           legacyWindows.each((i, el) => {
             let z = parseInt($(el).css('z-index'));
             if (z > highestZ) {
               highestZ = z;
             }
+            if ($(el).is(':visible')) {
+              anyVisible = true;
+            }
           });
+          console.log('legacyWindows', legacyWindows);
           console.log('highestZ', highestZ);
-          console.log('setting window depth to', highestZ + 1);
           // set the z-index of the current window to highestZ + 1
-          window.setDepth(highestZ + 1);
+          if (legacyWindows.length > 0 && anyVisible) {
+            console.log('setting window depth to', highestZ + 1);
+
+            window.setDepth(highestZ + 1);
+
+          }
     
     
         },
@@ -133,7 +163,10 @@ window.bp_v_5 = async function bp_v_5() {
     
     
       ]
-    }]);
+    },
+      'card'
+    
+    ]);
     bp.open('buddylist');
     
     // map all the legacy desktop.commands to the new API
@@ -141,6 +174,29 @@ window.bp_v_5 = async function bp_v_5() {
       console.log('ADDING COMMAND to buddyScript', command, desktop.commands.chat[command]);
       bp.apps.buddyscript.addCommand(command, desktop.commands.chat[command]);
     }
+
+    // extract commands from legacy desktop.v5_bridge.commandSet
+    let legacyCommandSet = desktop.app.console._allowCommands;
+    // legacyCommandSet.forEach((command) => {
+      for (let commandName in legacyCommandSet) {
+        let legacyCommand = legacyCommandSet[commandName];
+        if (typeof legacyCommand.command === 'function') {
+          bp.apps.buddyscript.addCommand(commandName, legacyCommand.command);
+        }
+        if (typeof legacyCommand.command === 'string') {
+          bp.apps.buddyscript.addCommand(commandName, function(context) {
+            console.log('eval cccccommand', commandName, legacyCommand.command);
+            eval(legacyCommand.command);
+          });
+        }
+
+      }
+    //for (let command in desktop.v5_bridge.commandSet) {
+      //console.log('ADDING COMMAND to buddyScript', command, desktop.v5_bridge.commandSet[command]);
+      //bp.apps.buddyscript.addCommand(command.command, desktop.v5_bridge.commandSet[command]);
+    //} 
+
+
     
     
     bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
@@ -198,5 +254,9 @@ window.bp_v_5 = async function bp_v_5() {
         $(`#${windowId}`).css('z-index', highestZ + 1);
         console.log('focus windowId', windowId);
       }
+      // the event must bubble up to the document
+      // so we can capture the window click event
+      
+      return true;
     });
 }

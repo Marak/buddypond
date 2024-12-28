@@ -160,4 +160,16 @@ export default class Client {
         this.sseManager.disconnectSSE();
     }
 
+    logout () {
+        this.disconnect();
+        // clear the qtoken from the client and local storage
+        this.qtokenid = null;
+        this.api.qtokenid = null;
+        this.api.me = null;
+        this.me = null;
+        this.bp.me = 'Guest';
+        this.bp.emit('auth::logout');
+        this.api.logout();
+    }
+
 }

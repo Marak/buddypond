@@ -59,10 +59,13 @@ desktop.app.tts.processMessage = function processTTSMessage (message) {
   let localizedRemoteMessageDate = new Date(localizedRemoteMessageDateString);
   let diff = (localDate.getTime() - localizedRemoteMessageDate.getTime()) / 1000;
 
+  // console.log("1 TTS MESSAGE processMessage", message);
   // do not /say messages older than 10 seconds  ( prevents message replay spam on join )
   if (diff > 10) {
     return;
   } 
+
+  // console.log('2 TTS MESSAGE processMessage', message);
 
   let text = '';
   text = message.text.split(' ');

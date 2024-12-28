@@ -1,4 +1,5 @@
-export default function renderChatMessage(message, _chatWindow) {
+// Remark: Not actually async ( yet ) so cards may render out of order ( for now )
+export default async function renderChatMessage(message, _chatWindow) {
   //console.log('buddy list local this.data', this.data);
   // console.log("renderChatMessage", message, message.uuid);
   //console.log('this.data.processedMessages', this.data.processedMessages);
@@ -16,12 +17,7 @@ export default function renderChatMessage(message, _chatWindow) {
   }
 
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
-  // console.log("windowId", windowId);
   
-  
-  
-
-
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
 
   if (_chatWindow) {
@@ -69,9 +65,38 @@ export default function renderChatMessage(message, _chatWindow) {
     }
   }
 
+  // Legacy BP API
+  // TODO: Migrate TTS app to v5 API
+  if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
+    console.log("TTS MESSAGE processMessage", message);
+    desktop.app.tts.processMessage(message);
+
+  }
+
+
   // Format message time
   message.ctime = new Date(message.ctime).toString();
   message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
+
+  //console.log('message', message)
+  // Check to see if message is type card
+
+  let container;
+  if (message.card && this.bp && this.bp.apps && this.bp.apps.card) {
+    console.log('message is', message);
+    console.log('message is card', message.card);
+
+
+    let cardData = message.card;
+    let cardManager = this.bp.apps.card.cardManager;
+
+    const _card = await cardManager.loadCard(cardData.type, cardData);
+    container = document.createElement('div');
+    container.classList.add('cardContainer');
+    _card.render(container);
+
+
+  }
 
   // Prepare message HTML
   let geoFlag = renderGeoFlag(message);
@@ -84,7 +109,20 @@ export default function renderChatMessage(message, _chatWindow) {
   //console.log('chatWindowchatWindowchatWindow', chatWindow, message)
   //console.log('content', chatWindow.content)
   // Append message to the chat window
-  $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
+
+  if (container) {
+    let chatMessage = document.createElement('div');
+    chatMessage.classList.add('chatMessage');
+    chatMessage.appendChild(container);
+    $('.aim-messages', chatWindow.content).append(chatMessage);
+    
+
+  } else {
+    $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
+
+  }
+
+
   $('.message', chatWindow.content).last().text(message.text);
   // console.log('content', chatWindow.content)
   // chatWindow.content.innerHTML = 'FFFFF';
