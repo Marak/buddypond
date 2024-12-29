@@ -29,6 +29,7 @@ export default class UI {
         // base CSS for ui, this can be themed in the future
         if (!this.options.noCSS) {
             this.bp.appendCSS('/v2/apps/based/ui/ui.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v2/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
             this.bp.appendCSS('/v2/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
             this.bp.appendCSS('/v2/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
         }
@@ -75,6 +76,10 @@ export default class UI {
         //document.body.innerHTML = html;
         return 'hello ui';
 
+    }
+
+    async isMobile () {
+        return window.innerWidth < 1000;
     }
 
 }

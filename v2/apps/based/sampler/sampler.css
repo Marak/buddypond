@@ -1,0 +1,297 @@
+/* SAMPLER */
+
+/* Container for all pads */
+.sampler-pad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    /*
+      gap: 10px;
+      margin: 20px;
+      border-radius: 10px;
+      */
+    width: 100%;
+  }
+  
+  /* Individual Pad */
+  .sampler-pad {
+    position: relative;
+    background-color: black;
+    margin-left: 3px;
+    margin-top: 3px;
+    gap: 6px;
+  }
+  
+  /* Pad Button */
+  .sampler-pad-button {
+    width: 196px;
+    height: 96px;
+    font-size: 16px;
+    color: #fff;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .sampler-pad-button:hover {
+    background: #777;
+  }
+  
+  .sampler-pad-button:active {
+    background: #999;
+  }
+  
+  /* File Input */
+  .sampler-file-input {
+    font-size: 12px;
+    color: #ccc;
+    opacity: 0.8;
+    cursor: pointer;
+    max-width: 50px;
+    width: 50px;
+  }
+  
+  .sampler-file-input:hover {
+    opacity: 1;
+  }
+  
+  /* Controls below each pad */
+  .sampler-pad-controls {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5px;
+    z-index: 8888 !important;
+    gap: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+  
+  }
+  
+  .sampler-record-button {
+    font-size: 12px;
+    padding: 5px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 8000;
+  }
+  
+  .sampler-record-button:hover {
+    background-color: #666;
+  }
+  
+  
+  .sampler-pad-button {
+    position: relative;
+    z-index: 1;
+    /* Ensures the button is clickable */
+  }
+  
+  .sampler-slice-record-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+    height: 280px;
+    padding-right: 5px;
+    width: 75px;
+  }
+  
+  .sampler-slice-record-container .sampler-record-button {
+    font-size: 20px;
+    width: 75px;
+    border-radius: 5px;
+  }
+  
+  .recording-overlay {
+  
+    /* border: 2px solid rgba(0, 255, 0, 0.5); */
+    border-radius: 5px;
+    z-index: 2 !important;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    bottom: 100px;
+  }
+  
+  
+  
+  .piano-roll {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-right: 20px;
+  
+    user-select: none;
+    width: 700px;
+    /* background-color: #aeafaf; */
+  
+  }
+  
+  .piano-controls {
+    display: flex;
+    width: 100px;
+    text-align: center;
+    flex-direction: row;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .piano-key {
+    flex: 1;
+    height: 80px;
+    margin: 2px;
+    text-align: center;
+    line-height: 80px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #222;
+    transition: background 0.2s;
+  }
+  
+  .piano-white-key {
+    background: #f9f9f9;
+    color: #333;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .piano-black-key {
+    background: #333;
+    color: #f9f9f9;
+    margin-left: -12px;
+    margin-right: -12px;
+    z-index: 1;
+    flex: 0.8;
+    height: 50px;
+    line-height: 50px;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  .piano-key:hover {
+    background: #77dd77;
+    color: white;
+  }
+  
+  .octave-indicator {
+    display: none;
+  }
+  
+  
+  .piano-octave-btn {
+    background-color: #666;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .piano-octave-btn:hover {
+    background-color: #555;
+  }
+  
+  .streaming-waveform {
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    display: block;
+    z-index: 9999;
+  }
+  
+  .sampler-file-icon-button {
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    flex: 1;
+  }
+  
+  .sampler-stop-all-button {
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 128px;
+  }
+  
+  .sampler-controls-container {
+    display: none;
+    flex-direction: row;
+  }
+  
+  .sampler-waveform-container {
+    z-index: 2;
+  }
+  
+  
+  .sampler-pad-label {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    /* good color to contrast black and green ( white is no good ) */
+    color: white;
+    outline-color: white;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: black;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  /* drop down selector */
+  .sample-bank-select {
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  
+  
+  .mod-wheel-container {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .mod-wheel {
+    width: 80%;
+  }
+  
+  .mod-wheel-label {
+    display: none;
+  }
+  
+  .sampler-top-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  
+  .sampler-volume-container {
+    position: relative;
+    padding-left: 20px;
+    padding-right: 25px;
+  }
+  
+  .sampler-pad-playback-selector {
+    font-size: 14px;
+    max-width: 20px;
+  }
