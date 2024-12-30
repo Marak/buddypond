@@ -1,6 +1,6 @@
 .DS_Store
 sdk/nodejs-sdk/node_modules
-snaps/
+/snaps/
 ./audio/
 .vscode
 v2/node_modules

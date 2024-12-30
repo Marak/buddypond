@@ -1,0 +1,21 @@
+.snap-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .snap-card-controls img {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .snap-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+  
