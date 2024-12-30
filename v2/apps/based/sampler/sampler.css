@@ -1,5 +1,8 @@
 /* SAMPLER */
-
+.sampler-window > .bp-window-content {
+    background-color: black;
+  }
+  
 /* Container for all pads */
 .sampler-pad-container {
     display: flex;

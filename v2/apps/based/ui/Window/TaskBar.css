@@ -17,6 +17,7 @@
     border-radius: 8px 8px 0 0;
     user-select: none;
     cursor: grab;
+    flex-wrap: wrap;
 
 
     justify-content: start;
@@ -43,4 +44,25 @@
 
 @keyframes blinker {
     50% { background-color: orange; }
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 1000px) {
+    .taskbar-container {
+        padding: 12px 20px !important; /* Larger padding for better touch interaction */
+        font-size: 16px !important; /* Larger font size for readability */
+        border-radius: 12px 12px 0 0 !important; /* Slightly larger radius for aesthetic adjustment */
+    }
+
+    .taskbar-item {
+        padding: 15px 25px !important; /* Larger padding for easier touch */
+        margin-right: 15px !important; /* Increase spacing between buttons */
+        font-size: 28px !important; /* Increase font size for readability */
+        transition: background-color 0.3s ease !important; /* Ensure smooth color transition */
+    }
+
+    .taskbar-item:hover {
+        background-color: #666 !important; /* Slightly darker for hover effect, considering touch devices don't use hover, this is for consistency */
+    }
 }

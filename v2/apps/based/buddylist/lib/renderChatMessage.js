@@ -89,8 +89,17 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   // Format message time
   message.ctime = new Date(message.ctime).toString();
-  message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
 
+  // check if mobile, is so shorten the time
+  // legacy API
+  if (this.bp.apps.ui.isMobile()) {
+    message.ctime = DateFormat.format.date(message.ctime, 'hh:mm:ss a');
+
+  } else {
+    message.ctime = DateFormat.format.date(message.ctime, 'E MMMM dd, hh:mm:ss a');
+
+  }
+  
   //console.log('message', message)
   // Check to see if message is type card
 

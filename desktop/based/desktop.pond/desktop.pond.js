@@ -204,6 +204,7 @@ desktop.app.pond.renderChatWindow = function (context) {
   let localPondChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '/' + a });
   let remotePondChatCommands = Object.keys(desktop.app.console._allowCommands).map(function(a){ return '\\' + a });
   let allCommands = localPondChatCommands.concat(remotePondChatCommands);
+  /* TODO: v5
   $( ".pond_message_text", '#' + window_id ).autocomplete({
    source: allCommands,
    search: function( event, ui ) {
@@ -216,6 +217,7 @@ desktop.app.pond.renderChatWindow = function (context) {
     return true;
    }
   });
+  */
 
 };
 

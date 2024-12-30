@@ -391,9 +391,8 @@ th.shrink {
   color: #999;
   text-shadow: #fff 0 1px 1px;
   top: 0;
-  height: 2.33vh;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
+  padding-top: 5px;
+  padding-bottom: 0px;
   position: absolute;
 }
 
@@ -412,7 +411,9 @@ th.shrink {
 
 /* `Bar >> Links
 ----------------------------------------------------------------------------------------------------*/
-
+#bar_top {
+  margin-top: 40px
+}
 #bar_top li,
 #bar_bottom li {
   float: left;
@@ -869,7 +870,6 @@ video {
 }
 
 .totalConnected {
-  display: none;
 }
 
 #login_desktop_icon {

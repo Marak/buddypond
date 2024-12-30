@@ -33,14 +33,21 @@ export default function openChatWindow(data) {
         $('.startVideoCall', cloned).remove();
     }
 
+    let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
+
+    if (windowType === 'buddy') {
+        iconImagePath = '';
+    }
     chatWindow = this.bp.apps.ui.windowManager.createWindow({
         app: 'buddylist',
         id: windowIdPrefix + contextName,
         title: contextName + ' ' + windowTitle,
+        icon: iconImagePath,
         type: windowType,
         context: contextName,
         parent: this.bp.apps.ui.parent,
         className: 'chatWindow',
+        y: 50,
         width: 600,
         height: 500,
         onOpen: async (_window) => {
@@ -96,13 +103,60 @@ export default function openChatWindow(data) {
 
             console.log(this.data);
 
+            // check to see if this was the last open chat window ( for buddy or pond )
+            // if so, we need to create a timer to close the websocket connection
+            // this timer should be cleared if another chat window is opened
+
+            let noOpenChatWindows = false;
+
+            if (this.subscribedPonds.length === 0 && this.subscribedBuddies.length === 0) {
+                noOpenChatWindows = true;
+            }
+
+            if (noOpenChatWindows) {
+
+                if (this.closingWebsocketTimer) {
+                    clearTimeout(this.closingWebsocketTimer);
+                }
+                console.log("no remaining chat windows, closing websocket connection in 10 seconds");
+                this.closingWebsocketTimer = setTimeout(() => {
+                    //console.log('closing websocket connection');
+
+                    // emitting this messsage will tell the client to close the websocket connection
+                    // the SSE connection will remain open with profile updates, such as newMessages flag,
+                    // which will open the a chat window and re-establish the websocket connection
+                    // the goal here is to only use the websocket connection when needed ( open active chats )
+                    // we still get chat alerts from SSE updates on eventsource
+
+
+                    this.bp.apps.client.releaseWebsocketConnection('buddylist');
+                }, 5000); // TODO: 10 seconds
+            }
+
+
+
         }
     });
 
     chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 
     if (this.options.autocomplete) {
-        new AutoComplete('.aim-input', chatWindow.content, this.options.autocomplete);
+        // new AutoComplete('.aim-input', chatWindow.content, this.options.autocomplete);
+        // alert(JSON.stringify(this.options.autocomplete));
+        $('.aim-input', chatWindow.content).autocomplete({
+            source: this.options.autocomplete,
+            search: function (event, ui) {
+              // only trigger autocomplete searches if user has started message with oper code ( / or \ )
+              let opers = ['/', '\\'];
+              let firstChar = event.target.value.substr(0, 1);
+              if (opers.indexOf(firstChar) === -1) {
+                return false;
+              }
+              return true;
+            }
+          });
+
+
     }
     if (this.options.chatWindowButtons) {
         const chatWindowButtonBar = new ChatWindowButtonBar(this.bp, {

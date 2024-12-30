@@ -64,16 +64,17 @@ bp.load = async function load(resource) {
 
     // check to see if resource is a string
     if (typeof resource === 'string') {
-        // check to see if file extension ends in .css
         if (resource.endsWith('.css')) {
             return bp.appendCSS(resource);
         }
         if (resource.endsWith('.html')) {
             return bp.fetchHTMLFragment(resource);
         }
-        // check to see if file ends in .js
         if (resource.endsWith('.js')) {
             return bp.appendScript(resource);
+        }
+        if (resource.endsWith('.json')) {
+            return bp.fetchJSON(resource);
         }
         // check to see if there is no file extension
         if (!resource.includes('.')) {
@@ -127,6 +128,8 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
 
 bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
+    // TOOD: only use absolute urls here, host should not be needed at this stage
+    // TODO: might be best to default to host if no protocol is present
     // TODO: cache request, do not reload unless forced
     let fullUrl = `${bp.config.host}${url}`;
     console.log('fetchHTMLFragment', fullUrl);
@@ -135,6 +138,12 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     }
     bp._cache.html[fullUrl] = await fetch(fullUrl).then(response => response.text());
     return bp._cache.html[fullUrl];
+}
+
+bp.fetchJSON = async function fetchJSON(url) {
+    // no caching for JSON ( by default )
+    // absolute url by default
+    return fetch(url).then(response => response.json());
 }
 
 bp.appendCSS = function appendCSS(url, forceReload = false) {

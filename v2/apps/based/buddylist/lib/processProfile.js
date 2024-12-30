@@ -24,6 +24,13 @@ export default async function processProfile(profileState) {
 
   this.data.lastProfileState = profileState;
   // profileState is a JSON document representing entire user profile
+  console.log('profileState', profileState);
+  if (profileState.system) {
+    $('.totalConnectedCount').html(profileState.system.totalIsConnected);
+    $('.totalOnlineCount').html(profileState.system.totalIsOnline);
+  }
+
+
   // we will process the profileState as if it was a differential state update
   let buddylist = profileState.buddylist;
   let profileNeedsUpdate = _processBuddylistData(this, buddylist);
@@ -98,9 +105,6 @@ function _processBuddylistData(buddylist, buddylistData) {
           name: buddyName
         });
       }
-
-
-
 
     }
   }

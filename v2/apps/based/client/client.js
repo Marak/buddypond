@@ -14,7 +14,7 @@ export default class Client {
         this.api.endpoint = this.config.host + '/api/v3';
         this.connectionSources = {};  // Tracks WebSocket connection requests by source
         this.disconnectTimer = null;
-        this.disconnectDelay = 300000;  // 5 minutes
+        this.disconnectDelay = 10000;  // 10 seconds
         this.sseConnected = false;
         this.queuedMessages = [];
     }
@@ -57,6 +57,7 @@ export default class Client {
         });
 
         this.bp.on('client::requestWebsocketConnection', 'request-websocket-connection', (source) => {
+            console.log("request-websocket-connection", source);
             this.requestWebsocketConnection(source);
         });
 
@@ -71,21 +72,26 @@ export default class Client {
 
     requestWebsocketConnection(source) {
         if (!this.connectionSources[source]) {
-            this.bp.log(`WebSocket connection requested by ${source}.`);
+            console.log(`WebSocket connection requested by ${source}.`);
             this.connectionSources[source] = true;
             if (Object.keys(this.connectionSources).length === 1) {
                 this.worker.postMessage({ type: 'connectWebSocket', data: this.config });  // Tell worker to connect WebSocket
             }
+            console.log('clearing disconnect timer', this.disconnectTimer)
+            clearTimeout(this.disconnectTimer);
+        } else {
+            console.log(`WebSocket connection already requested by ${source}.`);
             clearTimeout(this.disconnectTimer);
         }
     }
 
     releaseWebsocketConnection(source) {
         if (this.connectionSources[source]) {
-            this.bp.log(`WebSocket connection released by ${source}.`);
+            console.log(`WebSocket connection releaseWebsocketConnection requested ${source}.`);
             delete this.connectionSources[source];
             if (Object.keys(this.connectionSources).length === 0) {
                 this.disconnectTimer = setTimeout(() => {
+                    console.log('calling disconnectWebSocket')
                     this.worker.postMessage({ type: 'disconnectWebSocket' });  // Tell worker to disconnect WebSocket
                 }, this.disconnectDelay);
             }

@@ -4,21 +4,17 @@
     top: 0px;
     display: flex;
     /*background-color: #2a2a2a;*/
+    background: linear-gradient(180deg, #666666, #353535);
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
     padding-right: 5px;
     font-family: Arial, sans-serif;
     color: #ddd;
     user-select: none;
     z-index: 10000;
-    background: black;
-    border-left: 5px solid #333;
-    border-right: 5px solid #333;
-    border-top: 5px solid #333;
-    border-bottom: 5px solid #333;
     width: 100%;
     z-index: 13000;
-    align-items: baseline;
+    align-items: flex-start;
   
   }
   

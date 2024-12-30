@@ -6,7 +6,7 @@ export default class MenuBar {
     }
 
     async init() {
-        this.bp.appendCSS('/apps/based/menubar/menubar.css');
+        await this.bp.appendCSS('/v2/apps/based/menubar/menubar.css');
     }
 
     createMenu(menuData = [
@@ -38,13 +38,16 @@ class MenuBarClass {
     createMenuItem(menuItem) {
         const menuButton = document.createElement("div");
         menuButton.classList.add("menu-item");
+        if (menuItem.flex) {
+            menuButton.style.flex = menuItem.flex;
+        }
 
         if (menuItem.label instanceof HTMLElement) {
             menuButton.appendChild(menuItem.label);
         } else if (typeof menuItem.label === 'object') {
             menuButton.textContent = menuItem.label.label;
         } else {
-            menuButton.textContent = menuItem.label;
+            menuButton.innerHTML = menuItem.label;
         }
 
         if (menuItem.className) {
@@ -55,7 +58,7 @@ class MenuBarClass {
             if (menuItem.label.click) {
                 menuItem.label.click();
             }
-            this.closeAllSubmenus();
+            // this.closeAllSubmenus();
         };
 
         if (menuItem.submenu) {
@@ -78,7 +81,7 @@ class MenuBarClass {
     createSubmenuItem(subItem, submenuContainer, depth) {
         const subMenuItem = document.createElement("div");
         subMenuItem.classList.add("submenu-item");
-        subMenuItem.textContent = subItem.label;
+        subMenuItem.innerHTML = subItem.label;
 
         if (subItem.disabled) {
             subMenuItem.classList.add("disabled");
@@ -127,7 +130,7 @@ class MenuBarClass {
 
     addSubMenuEventListeners(submenuContainer, parentItem, depth) {
         
-        parentItem.addEventListener("mouseover", () => {
+        parentItem.addEventListener("mousedown", () => {
             clearTimeout(this.menuTimer);
             // TODO: we can't close all submenus since we need to keep the parent submenu open
             if (depth === 0) {
@@ -138,12 +141,7 @@ class MenuBarClass {
         });
 
         parentItem.addEventListener("mouseout", () => {
-            console.log("MOUSE OUT", depth);
-            //submenuContainer.style.display = "none";
-            
-                this.menuTimer = setTimeout(() => {
-                }, 3000);
-
+           
         });
     }
 

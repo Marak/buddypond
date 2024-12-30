@@ -10,6 +10,12 @@ export default class WindowManager {
         this._windows = [];
         this.options = options;
 
+        this.useKeyboardControls = true;
+
+        if (typeof options.useKeyboardControls === "boolean") {
+            this.useKeyboardControls = options.useKeyboardControls;
+        }
+
         if (typeof options.openWindow === "function") {
             this._openWindow = options.openWindow;
         } else {
@@ -28,6 +34,20 @@ export default class WindowManager {
 
             }
         });
+
+
+        if (this.useKeyboardControls) {
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    // find the window with the highest depth and close it
+                    const window = this.windows[0]; // no sort needed, windows are already sorted by depth
+                    if (window) {
+                        window.close();
+                    }
+                }
+            });
+        }
+
 
     }
 
@@ -62,19 +82,25 @@ export default class WindowManager {
         this.addWindow(window);
         this.focusWindow(window); // Focus the newly created window
 
-
-        //this.taskBar.addItem('item1', 'Application 1', () => alert('Clicked Application 1!'));
-        //this.taskBar.addItem('item2', 'Application 2', () => alert('Clicked Application 2!'));
         this.taskBar.addItem(window.id, window.title, () => {
 
             // toggle window minimize / restore state
+            if (this.isMobile()) {
+                this.minimizeAllWindows(true);
+                // we could minimize all other windows here
+                // minimizeAllWindows();
+            }
+
             window.minimize();
 
         });
-    
-
 
         return window;
+    }
+
+
+    isMobile () {
+        return window.innerWidth < 1000;
     }
 
     addWindow(window) {
@@ -84,7 +110,7 @@ export default class WindowManager {
     }
 
     removeWindow(window) {
-        //console.log("Removing window", window);
+        console.log("Removing window", window);
         this.windows = this.windows.filter(w => w.id !== window);
         //console.log("Remaining windows", this.windows);
         this.saveWindowsState(); // Save state when a window is removed
@@ -92,20 +118,23 @@ export default class WindowManager {
     }
 
     focusWindow(window) {
-        // console.log("Focusing window", window.id);
+        console.log("Focusing window", window.id);
         const index = this.windows.indexOf(window);
         if (index !== -1) {
             this.windows.splice(index, 1);
             this.windows.unshift(window);
         }
         this.updateFocus();
-        window.focus();
+        window.focus(false);
+
         this.saveWindowsState(); // Save state when focus changes
     }
 
     updateFocus() {
+        console.log("Updating focus");
         this.windows.forEach((window, index) => {
             // console.log("Setting depth for window", window.id, "to", 1000 - index);
+            console.log("setting depth for window", window.id, "to", 1000 - index);
             window.setDepth(1000 - index); // Higher index, higher depth
         });
     }
@@ -116,7 +145,7 @@ export default class WindowManager {
         this.storage.removeItem(this.storageKey); // Clear storage when all windows are closed
     }
 
-    minimizeAllWindows() {
+    minimizeAllWindows(force = false) {
         if (!this.windowsHiding) {
             this.windowsHiding = true;
         } else {
@@ -124,8 +153,8 @@ export default class WindowManager {
         }
         this.windows.forEach(window => {
 
-            if (!this.windowsHiding) {
-                window.minimize();
+            if (!this.windowsHiding || force) {
+                window.minimize(force);
             } else {
                 window.restore();
             }

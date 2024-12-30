@@ -15,7 +15,6 @@
 }
 
 .window-container:hover {
-    transform: translateY(-2px); /* Slight lift effect on hover */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6); /* More prominent shadow */
 }
 /* Window Title Bar */
@@ -26,7 +25,9 @@
     align-items: center;
     background: linear-gradient(180deg, #666666, #353535); /* Mac-like gradient */
     color: #e0e0e0;
-    padding: 8px 16px;
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-bottom: 4px;
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 0.5px;
@@ -39,11 +40,17 @@
     
 }
 
+.window-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
+
 /* Window Controls - Traffic Light Buttons */
 .window-controls {
     display: flex;
     gap: 6px; /* Space between buttons */
-    padding-right: 18px;
+    padding-right: 8px;
     right: 0px;
     position: absolute;
 }
@@ -65,13 +72,6 @@
     margin: 1px;
 }
 
-.window-controls button:hover {
-    transform: scale(1.1); /* Slight grow effect on hover */
-}
-
-.window-controls button:active {
-    transform: scale(0.95); /* Press effect */
-}
 
 /* Individual Button Colors */
 .window-controls button:nth-child(1) {

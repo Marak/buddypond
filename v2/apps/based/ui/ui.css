@@ -7,6 +7,13 @@ body {
     color: red;
 }
 
+  
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+
 .autocomplete-results {
     border: 1px solid #ccc;
     position: absolute;
@@ -73,4 +80,3 @@ body {
   .tabs-container .tab-content:target {
     display: block;
   }
-  

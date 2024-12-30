@@ -32,6 +32,7 @@ export default class Sampler {
             height: 330,
             minWidth: 600,
             minHeight: 500,
+            className: 'sampler-window',
             parent: $('#desktop')[0],
             resizable: true,
             minimizable: true,

@@ -13,6 +13,8 @@ class Window {
             type = 'singleton', // Default type ( intended to not have siblings )
             context = '<default>', // Default context
             content = '', // Default content
+            iframeContent = false,
+            icon = '', // Default icon
             x = 50, // Default x position
             y = 50, // Default y position
             z = 99, // Default z-index
@@ -21,6 +23,8 @@ class Window {
             onFocus = () => { }, // Callback when the window is focused
             onClose = () => { }, // Callback when the window is closed
             onOpen = () => { }, // Callback when the window is opened
+            onMessage = () => { }, // Callback when the window receives a message
+            onLoad = () => { }, // Callback when the window is loaded ( remote content )
             className = '', // Custom classes for styling
             resizeable = true, // Enable resizable feature
             canBeBackground = false // Can be set as background
@@ -38,6 +42,7 @@ class Window {
         }
 
         this.title = title;
+        this.icon = icon;
         this.width = width;
         this.height = height;
         this.app = app;
@@ -52,23 +57,26 @@ class Window {
         this.isMinimized = false;
         this.container = null;
         this.content = null;
+        this.iframeContent = iframeContent;
         this.contentValue = content;
         this.isActive = false;
         this.className = className;
         this.resizeable = resizeable;
         this.canBeBackground = canBeBackground;
 
-        windowManager = windowManager || { 
+        windowManager = windowManager || {
             windows: [],
-            saveWindowsState: () => {},
-            removeWindow: () => {},
+            saveWindowsState: () => { },
+            removeWindow: () => { },
 
         };
 
         this.onFocus = onFocus;
         this.onClose = onClose;
         this.onOpen = onOpen;
-        
+        this.onLoad = onLoad;
+        this.onMessage = onMessage;
+
 
         this.createWindow();
         this.open();
@@ -168,7 +176,6 @@ class Window {
 
         this.container.style.zIndex = 99;
 
-
         // add a mousedown handler to container itself to set 'window-active' status
         this.container.addEventListener('mousedown', () => {
             // set all windows to inactive
@@ -185,6 +192,13 @@ class Window {
         this.titleBar = document.createElement("div");
         this.titleBar.classList.add("window-title-bar");
 
+        if (this.icon) {
+            let iconTitleBar = document.createElement("img");
+            iconTitleBar.src = this.icon;
+            iconTitleBar.classList.add("window-icon");
+            this.titleBar.appendChild(iconTitleBar);
+        }
+
         let titleBarSpan = document.createElement("span");
         titleBarSpan.textContent = this.title;
 
@@ -199,16 +213,19 @@ class Window {
 
         this.minimizeButton = document.createElement("button");
         this.minimizeButton.innerHTML = "&#x1F7E1;"; // Yellow circle
+        this.minimizeButton.classList.add("minimize-button");
         this.minimizeButton.title = "Minimize";
         this.minimizeButton.onclick = () => this.minimize();
 
         this.maximizeButton = document.createElement("button");
         this.maximizeButton.innerHTML = "&#x1F7E2;"; // Green circle
+        this.maximizeButton.classList.add("maximize-button");
         this.maximizeButton.title = "Maximize";
         this.maximizeButton.onclick = () => this.maximize();
 
         this.closeButton = document.createElement("button");
         this.closeButton.innerHTML = "&#x1F534;"; // Red circle
+        this.closeButton.classList.add("close-button");
         this.closeButton.title = "Close";
         this.closeButton.onclick = () => this.close();
 
@@ -219,17 +236,7 @@ class Window {
         this.titleBar.appendChild(titleBarSpan);
         this.titleBar.appendChild(controls);
 
-        // Create content area
-        this.content = document.createElement("div");
-        this.content.classList.add("bp-window-content");
-        // check that this.content is HTMLElement
-        if (typeof this.contentValue === 'string') {
-            this.content.innerHTML = this.contentValue;
-        } else {
-            // alert(this.content)
-            this.content.appendChild(this.contentValue);
-        }
-
+        this.initContentArea();
 
         // Append components
         this.container.appendChild(this.titleBar);
@@ -255,6 +262,68 @@ class Window {
 
         return this.container;
     }
+
+
+    initContentArea() {
+        if (typeof this.iframeContent === 'boolean' && this.iframeContent) {
+            this.content = document.createElement("iframe");
+            this.content.classList.add("bp-window-content");
+            document.body.appendChild(this.content);
+            this.content.src = 'about:blank';
+            this.content.onload = () => {
+                let iframeDoc = this.content.contentDocument || this.content.contentWindow.document;
+                iframeDoc.open();
+                iframeDoc.write(this.contentValue);
+                iframeDoc.close();
+                this.setupMessageHandling();
+            };
+        } else if (typeof this.iframeContent === 'string' && this.iframeContent.length) {
+            this.content = document.createElement("iframe");
+            this.content.classList.add("bp-window-content");
+            this.content.src = this.iframeContent;
+            this.content.onload = () => this.setupMessageHandling();
+        } else {
+            this.content = document.createElement("div");
+            this.content.classList.add("bp-window-content");
+            if (typeof this.contentValue === 'string') {
+                this.content.innerHTML = this.contentValue;
+            } else {
+                this.content.appendChild(this.contentValue);
+            }
+        }
+    }
+
+    setupMessageHandling() {
+        // iframe is loaded by now
+        this.onLoad(this);
+        // Set the message event listener directly on the iframe's window
+        this.content.contentWindow.addEventListener('message', this.receiveMessage.bind(this), false);
+    }
+
+
+    sendMessage(message) {
+        if (this.content && this.content.contentWindow) {
+            this.content.contentWindow.postMessage(message, '*'); // Consider specifying an origin here instead of '*'
+        }
+    }
+
+    receiveMessage(event) {
+        console.log('Received message: ' + JSON.stringify(event.data));
+        // Implement security checks here, e.g., event.origin
+        if (typeof event.data === 'object' && event.data.event) {
+            console.log('Received:', event.data);
+            // Handle the message based on event.data.event and event.data.data
+            this.handleReceivedMessage(event.data);
+        }
+    }
+
+    handleReceivedMessage(data) {
+        console.log('Handled Received message:', data, this.onMessage);
+        if (this.onMessage) {
+            this.onMessage(data);
+        }
+    }
+
 
     serialize() {
 
@@ -297,6 +366,7 @@ class Window {
         this.id = data.id;
         this.onClose = data.onClose;
         this.onOpen = data.onOpen;
+        this.onMessage = data.onMessage;
         this.className = data.className;
         this.resizeable = data.resizeable;
         this.canBeBackground = data.canBeBackground;
@@ -313,9 +383,10 @@ class Window {
         console.log('updateWindow', this);
     }
 
-    setDepth (depth) {
+    setDepth(depth) {
         this.z = depth;
         this.container.style.zIndex = depth;
+        console.log('container depth was set to', this.id, depth);
         this.windowManager.saveWindowsState();
     }
 
@@ -374,7 +445,6 @@ class Window {
         this.offsetX = e.clientX - this.container.offsetLeft;
         this.offsetY = e.clientY - this.container.offsetTop;
         this.container.style.cursor = "grabbing";
-
         // Prevent default behavior to avoid browser actions interfering with drag
         e.preventDefault();
 
@@ -410,9 +480,9 @@ class Window {
     }
 
 
-    minimize() {
+    minimize(force = false) {
         console.log('minimize', this.isMinimized);
-        if (this.isMinimized) {
+        if (this.isMinimized && !force) {
             this.restore();
         } else {
             // Minimize the window
@@ -458,10 +528,9 @@ class Window {
 
     }
 
-    focus () {
+    focus(propigate = true) {
+        console.log('on focus called from Window.js')
         this.onFocus(this);
-        // handled the other way around
-        // this.windowManager.focusWindow(this);
     }
 
     open() {
@@ -476,7 +545,6 @@ class Window {
         // ???? this.parent.appendChild(this.container);
     }
     close() {
-        this.onClose();
 
         if (this.parent) {
             // check first to see if child is in parent
@@ -490,7 +558,22 @@ class Window {
 
         }
 
+
+        // check to see if this is an iframe and remove event listener
+        if (this.content && this.content.contentWindow) {
+            this.content.contentWindow.removeEventListener('message', this.receiveMessage.bind(this), false);
+        }
+        if (this.content) {
+            if (this.content.parentNode) {
+                this.content.parentNode.removeChild(this.content);
+            }
+            this.content = null;
+        }
+
+
+
         // check to see if no more windows
+        // TODO: remove this code from Window.js class ( it should not know about menubar )
         // if window count is 0 get the menubar-set-window-as-background element and add disabled class
         let windowCount = this.windowManager.windows.length;
         if (windowCount === 0) {
@@ -504,13 +587,13 @@ class Window {
 
 
         if (this.windowManager.taskBar) {
-        // remove the chat window from the taskbar
-        this.windowManager.taskBar.removeItem(this.id);
-
+            // remove the chat window from the taskbar
+            this.windowManager.taskBar.removeItem(this.id);
         }
 
         // TODO: save the window state ??? removeWindow could do it..?
 
+        this.onClose();
 
     }
 

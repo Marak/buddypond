@@ -425,10 +425,17 @@ desktop.commands.chat.buddyscript = function chatConsole (message, windowId, com
   $(el).scrollTop(999999);
 };
 
-desktop.commands.chat.give = function givePoints (message, windowId) {
-  let to = message.text.split(' ')[1];
-  let amount = message.text.split(' ')[2];
-  let text = message.text.split(' ')[3] || '';
+desktop.commands.chat.give = function givePoints (args) {
+  console.log('desktop.commands.chat.give', args);
+  let to = args[0];
+  let amount = args[1];
+  let text = args[2] || '';
+  let message = {
+    to: to,
+    from: buddypond.me,
+    text: text,
+    type: 'buddy'
+  };
   let yorn = confirm(`Give ${amount} to ${to}?\nPlease double check name and amount`);
   if (!yorn) {
     return true;
@@ -492,64 +499,70 @@ desktop.commands.chat.welcome = function welcomeMessage (params) {
 
 }
 
+const commandSet = [
+  {
+    command: '/bs',
+    additional: '',
+    helpText: '- shows all available BuddyScript Commands'
+  },
+  {
+    command: '/meme',
+    helpText: '- sends Mnemosyne A.I. Powered meme'
+  },
+  {
+    command: '/meme',
+    additional: ' cool',
+    helpText: '- A.I. Powered meme search'
+  },
+  {
+    command: '/say',
+    additional: ' hello world',
+    helpText: '- speaks "hello world" to the chat'
+  },
+  {
+    command: '/say',
+    additional: ' 😇',
+    helpText: '- speaks localized "smiling face with halo"'
+  },
+  {
+    command: '/points',
+    additional: '',
+    helpText: '- your current amount of Good Buddy Points'
+  },
+  {
+    command: '/points',
+    additional: ' Randolph',
+    helpText: '- shows how many Good Buddy Points Randolph has'
+  },
+  {
+    command: '/give',
+    additional: ' Randolph 10',
+    helpText: '- gives Randolph 10 Good Buddy Points'
+  },
+  {
+    command: '/roll',
+    additional: ' 20',
+    helpText: '- Rolls a d20 dice'
+  },
+  {
+    command: '/quit',
+    additional: ' message',
+    
+    helpText: '- logout of Buddy Pond Desktop'
+  },
+  {
+    command: '/help',
+    helpText: '- shows this help message'
+  },
+];
+
+desktop.v5_bridge = desktop.v5_bridge || {};
+desktop.v5_bridge.commandSet = commandSet;
+
+
 desktop.commands.chat.help = function helpCommands (params) {
   let windowId = params.windowId;
-  const commandSet = [
-    {
-      command: '/bs',
-      additional: '',
-      helpText: '- shows all available BuddyScript Commands'
-    },
-    {
-      command: '/meme',
-      helpText: '- sends Mnemosyne A.I. Powered meme'
-    },
-    {
-      command: '/meme',
-      additional: ' cool',
-      helpText: '- A.I. Powered meme search'
-    },
-    {
-      command: '/say',
-      additional: ' hello world',
-      helpText: '- speaks "hello world" to the chat'
-    },
-    {
-      command: '/say',
-      additional: ' 😇',
-      helpText: '- speaks localized "smiling face with halo"'
-    },
-    {
-      command: '/points',
-      additional: '',
-      helpText: '- your current amount of Good Buddy Points'
-    },
-    {
-      command: '/points',
-      additional: ' Randolph',
-      helpText: '- shows how many Good Buddy Points Randolph has'
-    },
-    {
-      command: '/give',
-      additional: ' Randolph 10',
-      helpText: '- gives Randolph 10 Good Buddy Points'
-    },
-    {
-      command: '/roll',
-      additional: ' 20',
-      helpText: '- Rolls a d20 dice'
-    },
-    {
-      command: '/quit',
-      additional: ' message',
-      
-      helpText: '- logout of Buddy Pond Desktop'
-    },
-    {
-      command: '/help',
-      helpText: '- shows this help message'
-    },
-  ];
+  
 
   const helpText = `
     <div class="help">

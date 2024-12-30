@@ -108,7 +108,7 @@ desktop.ui.getActiveWindow = function getActiveWindow () {
 
 
 desktop.ui.goMobile = function () {
-
+  return;
   $('.desktopOnly').hide();
   $('.maxWindow').hide();
   // $('.emojiPicker').hide();
@@ -556,6 +556,10 @@ JQDX.showWindow = function showWindow (appName, params) {
 
      });
     }
+
+
+    // manually click the window to trigger v5 bridge code to focus
+    desktop.emit('window::dragstart', { windowId: appWindow });
     
     
 
@@ -717,6 +721,11 @@ JQDX.maxWindow = function maxWindow (el, $el) {
 JQDX.closeWindow = function closeWindow (el) {
   // TODO: clean-up these selectors
   let closestWindow = $(el).closest('div.window');
+
+  if (!closestWindow.length) {
+    return;
+  }
+
   closestWindow.hide();
   $($(el).attr('href')).hide('fast');
 
@@ -979,9 +988,11 @@ desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
     icon: 'drive'
   });
 
+  /*
   desktop.ui.renderDesktopShortCut('appstore', {
     name: 'appstore', label: 'App Store'
   });
+  */
 
   desktop.ui.renderDesktopShortCut('login', {
     name: 'login', label: 'Login', icon: 'login', class: 'loginIcon loginShortcut'

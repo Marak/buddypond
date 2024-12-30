@@ -99,6 +99,7 @@ export default class BuddyList {
             app: 'buddylist',
             type: 'buddylist-profile',
             title: 'Buddy List',
+            icon: '/desktop/assets/images/icons/icon_profile_64.png',
             id: 'buddyListWindow',
             parent: this.bp.apps.ui.parent,
             width: 300,
