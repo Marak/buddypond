@@ -17,11 +17,13 @@ window.bp_v_5 = async function bp_v_5() {
     host: _host
   });
 
-  
+
 
   bp.on('auth::logout', 'old-bp-logout', function () {
     $('.loggedIn').hide();
+
     $('.loggedOut').show();
+    //$('.loggedOut').addClass('show');
     bp.apps.client.api.logout(function (err, data) {
       console.log('logout', err, data);
     });
@@ -31,9 +33,10 @@ window.bp_v_5 = async function bp_v_5() {
     buddypond.qtokenid = qtoken.qtokenid;
     bp.me = qtoken.me;
     $('.loggedIn').show();
+    //$('.loggedIn').addClass('show');
     $('.loggedOut').hide();
 
-    $('#me_title').html('Welcome' + bp.me);
+    $('#me_title').html('Welcome ' + bp.me);
 
 
   });
@@ -165,7 +168,26 @@ window.bp_v_5 = async function bp_v_5() {
 
   // TODO: better load order here, make sure all legacy stuff binds before we open buddylist, etc
   await bp.load('motd');
-  // bp.open('buddylist');
+  bp.open('buddylist');
+
+  await bp.importModule({
+    name: 'desktop',
+    parent: $('#desktop').get(0),
+  });
+
+  renderDesktopShortCuts();
+
+
+  /*
+  bp.apps.desktop.addShortCut({
+    name: 'pond',
+    icon: 'pond',
+    label: 'Pond',
+    class: 'pond'
+  });
+  */
+
+
   // bp.open('emulator');
   // bp.open('sampler');
 
@@ -191,14 +213,14 @@ window.bp_v_5 = async function bp_v_5() {
     }
 
   }
-    //for (let command in desktop.v5_bridge.commandSet) {
-      //console.log('ADDING COMMAND to buddyScript', command, desktop.v5_bridge.commandSet[command]);
-      //bp.apps.buddyscript.addCommand(command.command, desktop.v5_bridge.commandSet[command]);
-    //} 
+  //for (let command in desktop.v5_bridge.commandSet) {
+  //console.log('ADDING COMMAND to buddyScript', command, desktop.v5_bridge.commandSet[command]);
+  //bp.apps.buddyscript.addCommand(command.command, desktop.v5_bridge.commandSet[command]);
+  //} 
 
 
-    let selectMusicPlaylist = `
-    <select name="selectPlaylist" class="desktopSelect selectPlaylist float_right">
+  let selectMusicPlaylist = `
+    <select name="selectPlaylist" class="selectPlaylist float_right">
     <option>Select music playlist...</option>
     <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
     <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
@@ -211,7 +233,7 @@ window.bp_v_5 = async function bp_v_5() {
   `;
 
   let selectTheme = `
-  <select name="selectTheme" class="desktopSelect selectTheme float_right">
+  <select name="selectTheme" class="selectTheme float_right">
     <option value="Light">Light Theme</option>
     <option value="Dark">Dark Theme</option>
     <option value="Nyan">Nyan Theme</option>
@@ -228,9 +250,9 @@ window.bp_v_5 = async function bp_v_5() {
 
   let networkStatsStr = `
       <span class="totalConnected">
-        <span class="totalConnectedCount">0</span> Buddies Connected</span>
-        <span class="totalOnlineCount">0</span> Buddies Online</span>
-        <span class="desktopDisconnected">Disconnected</span>
+        <span class="loggedIn totalConnectedCount">0</span> Buddies Online</span>
+        <span class="loggedIn totalOnlineCount">0</span><!--Buddies Online--></span>
+        <span class="desktopDisconnected loggedOut">Disconnected</span>
             
   `;
 
@@ -249,19 +271,21 @@ window.bp_v_5 = async function bp_v_5() {
 
 
 
-    let menuTemplate = [
+  let menuTemplate = [
 
-      {
-        label: 'Welcome - You look nice today!<span id="me_title" class="me_title"></span>',
-        submenu: [
-          { label: 'We are stoked to be your Buddy', click: () => api.ui.toggleDeviceSettings() },
+    {
+      label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
+      submenu: [
+        { label: 'We are stoked to be your Buddy', click: () => api.ui.toggleDeviceSettings() },
 
-          { label: `
+        {
+          label: `
                 <a class="editProfileLink" title="Login to Edit Profile" href="#">Edit Profile</a>
 
-            `, click: () => api.ui.toggleDeviceSettings() },
-          {
-            label: `
+            `, click: () => api.ui.toggleDeviceSettings()
+        },
+        {
+          label: `
                   <li class="loggedOut">
                     <span class="loginLink">Login</span>
                   </li>
@@ -271,14 +295,15 @@ window.bp_v_5 = async function bp_v_5() {
 
                 
                 `, click: () => api.logout()
-          }
-        ]
-      },
-      {
-        label: 'Window',
-        submenu: [
-          { label: 'Full Screen', click: () => JQDX.openFullscreen($('body').get(0))}, // legacy API
-          { label: 'Hide All Windows', click: () => {
+        }
+      ]
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { label: 'Full Screen', click: () => JQDX.openFullscreen($('body').get(0)) }, // legacy API
+        {
+          label: 'Hide All Windows', click: () => {
 
             // Legacy API
             desktop.ui.displayMode = 'min';
@@ -288,8 +313,10 @@ window.bp_v_5 = async function bp_v_5() {
             // New API
             bp.apps.ui.windowManager.minimizeAllWindows();
 
-          } },
-          { label: 'Set Active Window to Wallpaper', disabled: true, click: () => {
+          }
+        },
+        {
+          label: 'Set Active Window to Wallpaper', disabled: true, click: () => {
 
             // legacy API
             if (!desktop.ui.wallpaperWindow) {
@@ -305,29 +332,30 @@ window.bp_v_5 = async function bp_v_5() {
             return false;
 
 
-          } }
-        ]
-      },
-      {
-        label: selectMusicPlaylist,
-        flex: 1
-      },
-      {
-        label: selectTheme
-      },
+          }
+        }
+      ]
+    },
+    {
+      label: selectMusicPlaylist,
+      flex: 1
+    },
+    {
+      label: selectTheme
+    },
 
-      {
-        label: networkStatsStr
-      },
-      {
-        label: volumeStr
-      },
+    {
+      label: networkStatsStr
+    },
+    {
+      label: volumeStr
+    },
 
-      {
-        label: clockStr
-      }
+    {
+      label: clockStr
+    }
 
-    ];
+  ];
 
   const menuBar = bp.apps.menubar.createMenu(menuTemplate);
   console.log(menuBar);
@@ -356,26 +384,26 @@ window.bp_v_5 = async function bp_v_5() {
     bp.open('buddylist');
   });
 
-    // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
-            // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)
-            $('.selectPlaylist').on('change', function () {
-              $('#soundcloudiframe').remove();
-              $('#soundcloudplayer').html('');
-              if (desktop.app.soundcloud) {
-                desktop.app.soundcloud.embeded = false;
-              }
-              desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
-            });
+  // TODO: move this to somewhere? its a UI widget scoped to the desktop itself ( nav bar )
+  // TODO: add a logic section for handling navbar widgets ( click, conneciton status etc)
+  $('.selectPlaylist').on('change', function () {
+    $('#soundcloudiframe').remove();
+    $('#soundcloudplayer').html('');
+    if (desktop.app.soundcloud) {
+      desktop.app.soundcloud.embeded = false;
+    }
+    desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+  });
 
-            $('.selectTheme').on('change', function () {
-              let theme = $(this).val();
-              if (theme === 'Customize') {
-                desktop.ui.openWindow('profile', { context: 'themes' })
-              } else {
-                desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
-                desktop.set('active_theme', theme);
-              }
-            });
+  $('.selectTheme').on('change', function () {
+    let theme = $(this).val();
+    if (theme === 'Customize') {
+      desktop.ui.openWindow('profile', { context: 'themes' })
+    } else {
+      desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
+      desktop.set('active_theme', theme);
+    }
+  });
 
 
 
@@ -445,4 +473,95 @@ window.bp_v_5 = async function bp_v_5() {
 
     return true;
   });
+}
+
+
+
+function renderDesktopShortCuts() {
+
+  $('.desktop-shortcuts-container').html('');
+
+  for (let appName in desktop.settings.apps_installed) {
+    let app = desktop.app.appstore.apps[appName];
+    //desktop.ui.renderDesktopShortCut(appName, app);
+    console.log('renderDesktopShortCuts', appName, app);
+    bp.apps.desktop.addShortCut({
+      name: appName,
+      icon: `desktop/assets/images/icons/icon_${appName}_64.png`,
+      label: app.label || appName,
+    }, {
+      onClick: () => {
+        bp.open(appName);
+      }
+
+    });
+
+
+  }
+
+
+  bp.apps.desktop.addShortCut({
+    name: 'sampler',
+    icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
+    label: 'Sampler',
+  }, {
+    onClick: () => {
+      bp.open('sampler');
+    }
+
+  });
+
+
+
+  desktop.ui.renderDesktopShortCut('merlin', {
+    name: 'merlin', label: 'Merlin Automated Assistant'
+  });
+
+  desktop.ui.renderDesktopShortCut('download', {
+    name: 'download',
+    href: 'https://github.com/marak/buddypond',
+    label: 'Download Buddy Pond',
+    icon: 'drive'
+  });
+
+  /*
+  desktop.ui.renderDesktopShortCut('appstore', {
+    name: 'appstore', label: 'App Store'
+  });
+  */
+
+  desktop.ui.renderDesktopShortCut('login', {
+    name: 'login', label: 'Login', icon: 'login', class: 'loginIcon loginShortcut'
+  });
+
+  desktop.ui.renderDesktopShortCut('logout', {
+    name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn logoutShortcut'
+  });
+  
+  // TODO: Folders, make Desktop icons use Folder
+  // TODO: Refactor shortcuts into File.js class
+  // This way all Folders will have drag and drop and contain files
+  // "shortcuts" will be files of a type ( like a symlink ), possibly not needed at all
+  /*
+  bp.apps.desktop.addFolder({
+    name: 'Games',
+    items: [
+      'Mantra',
+      'MineSweeper',
+      'NES',
+      'Solitaire'
+    ]
+  })
+  */
+
+  
+  
+  bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
+
+
+
+  setTimeout(function () {
+    desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed
+  }, 333)
+
 }

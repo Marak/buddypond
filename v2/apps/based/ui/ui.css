@@ -6,11 +6,15 @@ body {
 .error {
     color: red;
 }
-
-  
 .disabled {
   pointer-events: none;
   opacity: 0.6;
+}
+.show {
+  display: flex !important;
+}
+.hide {
+  display: none;
 }
 
 

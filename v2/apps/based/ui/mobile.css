@@ -1,0 +1,99 @@
+/* Base styles for desktop are assumed to be defined elsewhere */
+
+/* Media query for mobile devices */
+@media (max-width: 1000px) {
+    /* General styles for mobile view */
+    .bp-window-content {
+        padding: 5px; /* Less padding for mobile */
+        font-size: 14px; /* Larger font for better readability */
+        max-height: 100% !important;
+    }
+
+    .window-controls button {
+        width: 64px !important; /* Larger touch targets */
+        height: 64px !important; /* Larger touch targets */
+        font-size: 64px !important; /* Larger icons */
+        margin-left: 32px !important;
+    }
+
+    .maximize-button {
+        display: none !important; /* Hide maximize button */
+    }
+
+    .window-container, .window {
+        left: 0 !important;
+        top: 5px !important;
+        width: calc(100% - 60px) !important; /* Full width for mobile */
+        height: calc(100vh - 160px) !important; /* Full height for mobile */
+    }
+
+    .window-content {
+        height: 100% !important;
+    }
+
+    /* Buddy list adjustments */
+    .app-buddylist .window-main {
+        display: block; /* Stack vertically on mobile */
+    }
+
+    .buddy_list_not_connected, .buddylistContainer {
+        width: auto; /* Full width for mobile */
+        margin: 0; /* Remove any margins */
+    }
+
+    .loginForm input[type="text"],
+    .loginForm input[type="password"],
+    .addBuddyForm input[type="text"] {
+        width: 100%; /* Full width inputs */
+        margin-bottom: 10px; /* Spacing between inputs */
+    }
+
+    .loginButton, .sendBuddyRequest {
+        width: 100%; /* Full width buttons */
+        padding: 10px; /* Larger touch targets */
+    }
+
+    /* Chat window adjustments */
+    #window_buddy_message_0 {
+        margin: 0; /* Remove margins */
+    }
+
+    .aim-chat-area {
+        height: calc(100vh - 180px); /* Adjust height based on viewport */
+        overflow-y: auto; /* Scrollable chat area */
+    }
+
+    .aim-messages-container {
+        padding: 5px; /* Reduced padding */
+        font-size: 14px; /* Larger font for better readability */
+    }
+
+    .chatMessage span{
+        font-size: 22px !important; /* Larger font for better readability */
+    }
+
+    .aim-input {
+        width: calc(100% - 90px); /* Adjust width for the send button */
+        height: 40px; /* Larger input for easy touch */
+        font-size: 22px; /* Larger font for better readability */
+    }
+
+    .aim-send-btn {
+        width: 80px; /* Static width for send button */
+        height: 40px; /* Matching input height */
+    }
+
+    /* Typing indicator styling */
+    .aim-typing {
+        padding: 5px; /* Sufficient padding */
+    }
+    
+    /* Buddy list UI tweaks */
+    .onlineStatusSelect, .buddyListHolder, .addBuddyForm {
+        width: 100%; /* Full-width elements */
+    }
+
+    .buddyListHolder {
+        padding: 0 5px; /* Padding adjustment */
+    }
+}

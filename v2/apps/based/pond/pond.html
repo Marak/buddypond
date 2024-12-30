@@ -1,0 +1,53 @@
+<!--
+
+    TODO: new layout to show dynamic pond list based on most popular ponds
+    There are two UI elements here:
+
+      1. the list of ponds with connected users count ( max 10 items )
+      2. a form to join / create a pond
+        - should be responsive
+
+     You may create a new CSS file for this layout
+
+
+
+-->
+
+<div class="window_main pond_main">
+    <div class="loggedOut">
+        You'll need to login in order to join Ponds.
+    </div>
+    <div class="loggedIn pondsContainer">
+
+        <div class="joinPonds">
+            <h2>Join Ponds &nbsp;<span>🐸🗿🧊🌊 </span></h2> 
+            <table class="joinPondTable data table">
+
+                <tr class="openPond" href="#Lily">
+                    <td>
+                        #Lily
+                    </td>
+                    <td>
+                        <em>General Buddy Chats</em>
+                    </td>
+                    <td>
+                        333
+                    </td>
+                </tr>
+
+                
+            </table>
+        </div>
+        <div class="welcomePonds">
+            <!-- <span>Click A Pond To Chat With Buddies</span> -->
+            <span><em>Wish to create your own Pond?</em></span>
+            <form class="joinPondForm">
+                <label for="customPondName">
+                    <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
+                        placeholder="Join or Create Pond by Name..." type="text" size="16" />
+                </label>
+                <button type="submit" class="joinPond desktopButton">Join Pond</button>
+            </form>
+        </div>
+    </div>
+</div>

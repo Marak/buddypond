@@ -18,7 +18,7 @@ export default async function processProfile(profileState) {
 
     // Example of increasing to level 4
     powerLevel.show(profileState.powerlevel, {
-        duration: 7777
+      duration: 7777
     });
   }
 
@@ -30,6 +30,17 @@ export default async function processProfile(profileState) {
     $('.totalOnlineCount').html(profileState.system.totalIsOnline);
   }
 
+  // metadata about ponds users is joined or ponds of interest ( such as viewing popular ponds list )
+  if (profileState.ponds && profileState.ponds.ponds) {
+    profileState.ponds.ponds.forEach(function (pond) {
+      // check to see if we have an open window with data-app="buddylist" data-type="pond" and data-context="${pondName}"
+      let win = $('#pond_message_-' + pond.name);
+      // update the window-title-text with the number of connected users
+      if (win) {
+        $('.window-title-text', win).html(pond.name + ' Pond (' + pond.connected + ')');
+      }
+    });
+  }
 
   // we will process the profileState as if it was a differential state update
   let buddylist = profileState.buddylist;
@@ -208,6 +219,7 @@ function fudge() {
 
     // since new data has been rendered ensure that buddy list is showing
     // TODO: can we remove these hide() / show() statements?
+    // $('.loggedIn').addClass('show');
     $('.loggedIn').show();
     $('.buddy_list_not_connected').hide();
     // TODO: move this to buddy pond scope

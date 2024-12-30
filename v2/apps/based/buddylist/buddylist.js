@@ -38,7 +38,7 @@ export default class BuddyList {
         // 'buddylist-profile' - the default buddylist window
         // 'buddylist-chat' - a chat window
 
-      
+
         if (typeof config.type !== 'string') {
             config.type = 'buddylist-profile';
         }
@@ -71,6 +71,8 @@ export default class BuddyList {
             this.buddylistUIEvents();
 
             $('.loggedIn').hide();
+            bp.load('pond');
+  
 
             return 'hello buddyList';
         }
@@ -352,7 +354,9 @@ export default class BuddyList {
             this.bp.log('verified token', data);
             if (data.success) {
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me });
+                //                $('.loggedIn').addClass('show');
                 $('.loggedIn').show();
+
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 console.error('Failed to authenticate buddy:');

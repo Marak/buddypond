@@ -970,6 +970,8 @@ desktop.ui.renderDesktopShortCut = function renderDesktopShortCut (appName, app)
   }
 }
 
+// TODO: remove and move to desktop.js app in v5
+// desktop.js will be responsible for managing the desktop state
 desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
   $('.desktop-shortcuts-container').html('');
   for (let appName in desktop.settings.apps_installed) {

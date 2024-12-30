@@ -200,6 +200,7 @@ class Window {
         }
 
         let titleBarSpan = document.createElement("span");
+        titleBarSpan.classList.add("window-title-text");
         titleBarSpan.textContent = this.title;
 
         // Drag functionality

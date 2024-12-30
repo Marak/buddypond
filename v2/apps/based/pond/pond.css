@@ -1,0 +1,137 @@
+/* General styles for the main container */
+
+.pondsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.window_main.pond_main {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+.loggedOut, .loggedIn {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+.joinPonds {
+    max-width: 500px;
+}
+
+/* Styling for the ponds table */
+.joinPondTable {
+    min-width: 400px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.joinPondTable td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.openPond:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+/* Styling for the form */
+.joinPondForm {
+    text-align: center;
+}
+
+.customPondName {
+    border: 2px solid #ddd;
+    padding: 8px;
+    width: calc(100% - 22px);
+    margin-bottom: 10px;
+}
+
+.rainbow-border:focus {
+    border-color: #8352fd; /* Example of a more vibrant focus color */
+}
+
+.desktopButton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.desktopButton:hover {
+    background-color: #45a049;
+}
+
+.welcomePonds {
+    text-align: center;
+}
+
+.welcomePonds span {
+    display: block; /* Makes each span behave like a paragraph */
+    margin-bottom: 5px; /* Reduced bottom margin */
+    color: #333;
+    font-size: 14px;
+}
+
+.welcomePonds em {
+    display: block; /* Ensures emphasis text is also block-level, helps with clarity */
+    font-style: italic;
+    color: #555;
+    margin-bottom: 5px; /* Provides a small gap before the form */
+}
+
+.joinPondForm {
+    margin-top: 5px; /* Reduced spacing above the form */
+}
+
+.customPondName {
+    margin-bottom: 10px; /* Adds a little space above the button */
+    width: 100%; /* Ensures the input takes full width of its container */
+    padding: 8px;
+    border: 2px solid #ccc;
+}
+
+.desktopButton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.desktopButton:hover {
+    background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .window_main.pond_main {
+        width: 100%;
+        max-width: none;
+        padding: 10px;
+    }
+
+    .customPondName, .desktopButton {
+        width: 100%; /* Ensures button and input field fit mobile screens properly */
+    }
+
+
+    .customPondName {
+        width: calc(100% - 20px); /* Adjust width on smaller screens */
+    }
+}
+
+

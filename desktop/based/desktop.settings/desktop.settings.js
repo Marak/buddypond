@@ -96,7 +96,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     desktop.set('apps_installed', defaultApps);
   }
 
-  desktop.ui.renderDesktopShortCuts();
+  // desktop.ui.renderDesktopShortCuts();
 
   next();
 

@@ -11,14 +11,14 @@ export default class Motd {
         let today = DateFormat.format.date(new Date(), 'MM/dd/yy');
         let motdWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'motd',
-            title: 'Message of the Day: ' + today,
-            left: 0,
-            top: 0,
+            title: 'Today: ' + today,
+            x: 50,
+            y: 100,
             width: 400,
             height: 300,
             minWidth: 200,
             minHeight: 200,
-            parent: window.document.body,
+            parent: $('#desktop')[0],
             content: '<h1>Message of the Day</h1><p>Under construction</p>',
             resizable: true,
             minimizable: true,
