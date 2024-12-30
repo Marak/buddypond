@@ -1,0 +1,34 @@
+.totalOnlineCount {
+    display: none !important;
+}
+
+.desktop-container {
+    /* this needs to be 100% */
+    width: 100%;
+}
+.desktop-shortcuts-container {
+    display: flex; /* Use flex display */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    align-items: flex-start; /* Align items to the start of the flex line */
+    justify-content: flex-start; /* Align items to the start of the main axis */
+    padding: 10px;
+    gap: 5px; /* Uniform gap between items */
+    position: absolute;
+    top: 5vh;
+    overflow: auto; /* Enables scrolling if content overflows */
+    width: 100%; /* Ensure the container takes up full width */
+    height: 90%; /* Adjust height to prevent overflow beyond the viewport */
+    margin-left: auto; /* Center the container horizontally */
+    margin-right: auto; /* Center the container horizontally */
+}
+
+.desktop-shortcuts-container > div {
+    text-align: center;
+    font-size: 12px; /* Adjusted for better readability */
+    width: 64px; /* Set a fixed width for each shortcut */
+    margin: 5px; /* Add margin around each shortcut */
+    display: flex; /* Use flexbox for internal alignment */
+    flex-direction: column; /* Stack items vertically within each shortcut */
+    justify-content: center; /* Center content vertically within each shortcut */
+    align-items: center; /* Center content horizontally within each shortcut */
+}

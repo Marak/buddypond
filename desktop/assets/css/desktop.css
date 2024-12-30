@@ -97,8 +97,8 @@ div.ui-resizable-handle {
 
 .icon:hover a,
 .icon.ui-draggable-dragging {
-  padding: 5px 0 5px;
   color: #00FF41;
+  scale: 1.2;
 }
 
 .icon.ui-draggable-dragging {
@@ -551,24 +551,7 @@ th.shrink {
   bottom: 0px;
 }
 
-.desktop-shortcuts-container {
-  display: inline-grid;
-  grid-template-columns: auto auto auto;
-  row-gap: 33px;
-  column-gap: 10px;
-  padding: 10px;
-  top: 5vh;
-  position: absolute;
-  overflow: none;
-  width: 12vw;
-  height: 74vh;
-}
 
-.desktop-shortcuts-container > div {
-  /*background-color: rgba(255, 255, 255, 0.8);*/
-  text-align: center;
-  font-size: 30px;
-}
 
 .desktop-shortcuts-container .icon {
   position: relative
