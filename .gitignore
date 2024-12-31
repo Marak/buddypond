@@ -1,4 +1,5 @@
 .DS_Store
+package-lock.json
 sdk/nodejs-sdk/node_modules
 /snaps/
 ./audio/

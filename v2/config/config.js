@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 config.development = {
-    host: 'http://192.168.200.59'
+    host: 'https://192.168.200.59'
 }
 
 config.production = {
