@@ -589,6 +589,7 @@ button {
 }
 */
 
+/*
 button:hover {
   cursor: pointer;
   color: purple;
@@ -599,6 +600,7 @@ a:hover {
   cursor: pointer;
   color: purple;
 }
+  */
 
 .purple {
   color: purple;

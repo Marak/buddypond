@@ -1,6 +1,7 @@
 export default class Pond {
     constructor(bp, options = {}) {
         this.bp = bp;
+        options.window = options.window || {};
         this.options = options;
         return this;
     }

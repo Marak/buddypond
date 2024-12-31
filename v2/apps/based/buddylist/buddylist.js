@@ -374,12 +374,13 @@ export default class BuddyList {
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').hide();
         this.openChatWindow({ pondname: 'Buddy' });
-
+        /*
         await bp.load('pond', {
             window: {
                 preventOverlap: false
             }
         });
+        */
 
     }
 }
