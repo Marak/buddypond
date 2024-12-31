@@ -37,23 +37,23 @@ bp.start = async function start(apps = []) {
 
 // example usage: bp.open(['buddylist', { name: 'clock' }, 'entity']);
 bp.open = async function open(app, config = { context: 'default' }) {
-    console.log('bp.open', app, config)
+    // console.log('bp.open', app, config)
     let appName = app;
     if (typeof app === 'string') {
-        console.log('string loading async import app', appName);
+        // console.log('string loading async import app', appName);
         await bp.importModule(appName, {}, true);
 
     }
     if (typeof app === 'object') {
         appName = app.name;
         config = app;
-        console.log('object loading async import app', appName, config);
+        // console.log('object loading async import app', appName, config);
         await bp.importModule(appName, config, true);
     }
-    console.log('aaa', appName, bp.apps)
+
     if (typeof bp.apps[appName].open === 'function') {
-        console.log('open', appName, config)
-        console.log('open', appName, config)
+        // console.log('open', appName, config)
+        // console.log('open', appName, config)
         bp.apps[appName].open(config);
     }
 }
@@ -88,7 +88,7 @@ bp.load = async function load(resource) {
 
 bp.importModule = async function importModule(app, config, buddypond = true) {
 
-    console.log('importModule', app, config, buddypond);
+    // console.log('importModule', app, config, buddypond);
     let modulePath = bp.config.host + `/v2/apps/based/${app}/${app}.js`;
     let appName = app;
 
@@ -104,11 +104,11 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
-        console.log('module already loaded', app);
+        // console.log('module already loaded', app);
         return bp._modules[modulePath];
     }
     try {
-        console.log('attempting to load module', modulePath);
+        // console.log('attempting to load module', modulePath);
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
             bp.apps[appName] = new module.default(bp, config);
@@ -117,7 +117,7 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
 
         }
         bp._modules[modulePath] = module;
-        console.log('module loaded', module);
+        // console.log('module loaded', module);
         return module;
     } catch (error) {
         bp.error('Failed to load module:', appName, error);
@@ -132,7 +132,7 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     // TODO: might be best to default to host if no protocol is present
     // TODO: cache request, do not reload unless forced
     let fullUrl = `${bp.config.host}${url}`;
-    console.log('fetchHTMLFragment', fullUrl);
+    // console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];
     }

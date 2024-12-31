@@ -9,11 +9,11 @@ let bp = {
 bp.log = function noop() { };
 
 self.addEventListener('message', function(event) {
-    const { type, data } = event.data;
+    const { type, data, qtokenid } = event.data;
     switch (type) {
         case 'connectWebSocket':
             // Initialize WebSocket connection
-            connectWebSocket(data);
+            connectWebSocket(qtokenid, data);
             break;
         case 'updateSSE':
             handleSSEUpdate(JSON.parse(data));
@@ -34,9 +34,15 @@ self.addEventListener('message', function(event) {
     }
 });
 
-function connectWebSocket(data) {
-    console.log('Connecting WebSocket in worker:', data.host);
-    ws = new WebSocket(data.wsHost);
+function connectWebSocket(qtoken, data) {
+
+    // append qtokenid to the url
+    let url = data.wsHost + '?qtokenid=' + qtoken.qtokenid + '&me=' + qtoken.me;
+
+    //console.log('Connecting WebSocket in worker:', data.host, qtoken);
+    //console.log('using url', url);
+    
+    ws = new WebSocket(url);
     ws.onmessage = event => {
         // Handle incoming WebSocket messages
         const parsedData = JSON.parse(event.data);

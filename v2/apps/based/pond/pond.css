@@ -7,6 +7,8 @@
     justify-content: center;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 10px;
+
 }
 
 .window_main.pond_main {
@@ -18,14 +20,9 @@
     overflow: auto;
 }
 
-.loggedOut, .loggedIn {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    text-align: center;
-}
-
 .joinPonds {
     max-width: 500px;
+    text-align: center;
 }
 
 /* Styling for the ponds table */
@@ -53,8 +50,9 @@
 .customPondName {
     border: 2px solid #ddd;
     padding: 8px;
-    width: calc(100% - 22px);
     margin-bottom: 10px;
+    padding: 8px;
+    border: 2px solid #ccc;
 }
 
 .rainbow-border:focus {
@@ -94,13 +92,6 @@
 
 .joinPondForm {
     margin-top: 5px; /* Reduced spacing above the form */
-}
-
-.customPondName {
-    margin-bottom: 10px; /* Adds a little space above the button */
-    width: 100%; /* Ensures the input takes full width of its container */
-    padding: 8px;
-    border: 2px solid #ccc;
 }
 
 .desktopButton {

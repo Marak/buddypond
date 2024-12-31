@@ -10,7 +10,8 @@ export default async function processProfile(profileState) {
   if (!this.data.buddyrequests) {
     this.data.buddyrequests = {};
   }
-
+  
+  // console.log('processProfile', profileState);
   if (this.data.lastProfileState && Number(profileState.powerlevel) > Number(this.data.lastProfileState.powerlevel)) {
 
     // Assuming there's a container with ID 'powerLevelContainer' in your HTML
@@ -24,7 +25,7 @@ export default async function processProfile(profileState) {
 
   this.data.lastProfileState = profileState;
   // profileState is a JSON document representing entire user profile
-  console.log('profileState', profileState);
+  // console.log('profileState', profileState);
   if (profileState.system) {
     $('.totalConnectedCount').html(profileState.system.totalIsConnected);
     $('.totalOnlineCount').html(profileState.system.totalIsOnline);

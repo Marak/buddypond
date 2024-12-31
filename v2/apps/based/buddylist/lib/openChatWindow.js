@@ -7,7 +7,7 @@ function uuid() {
 }
 export default function openChatWindow(data) {
     this.bp.emit('client::requestWebsocketConnection', 'buddylist');
-    console.log("openChatWindow", data);
+    // console.log("openChatWindow", data);
 
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
@@ -54,14 +54,12 @@ export default function openChatWindow(data) {
             if (!subscribedList.includes(contextName)) {
                 subscribedList.push(contextName);
             }
-            console.log('subscribedList', subscribedList);
             const _data = { me: this.bp.me };
             if (windowType === 'pond') {
                 _data.pondname = contextName;
             } else {
                 _data.buddyname = contextName;
             }
-            console.log('getMessages', _data);
             this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
             // reprocess any local messages ( window was closed and then opened again )
 
@@ -82,31 +80,28 @@ export default function openChatWindow(data) {
                 }
             }
 
-
+            // Remark: Is this not needed? Double getMessages was messing up the pondPopularity count?
+            // That shouldn't be possible, is due to two getMessages happening at same time?
             this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: _data });
         },
         onClose: () => {
-            console.log('removing from subscribedList', windowType, contextName, subscribedList);
+
             if (windowType === 'pond') {
                 this.subscribedPonds = this.subscribedPonds.filter(name => name !== contextName);
             } else {
                 this.subscribedBuddies = this.subscribedBuddies.filter(name => name !== contextName);
             }
-            console.log('subscribedList after removal', subscribedList);
-            console.log('this scope', this.subscribedBuddies);
-            console.log('this scope', this.subscribedPonds);
 
-            console.log('this.data.processedMessages', contextName, this.data.processedMessages);
-            // Clear out the processed messages for this chat context
-            // this.data.processedMessages[contextName] = [];
-            console.log('this.data.processedMessages', this.data.processedMessages);
-
-            console.log(this.data);
+            // needs to tell server we unsubscribed from this chat
+            // calling getLatestMessages() at this stage will send updated arrays for both buddies and ponds
+            // this tells the server we are no longer interested in messages for this chat
+            // if another chat window is open, we'll get a double getLatestMessages() call ( which should be okay )
+            // TODO: we could check to see if this was the last open window and then call getLatestMessages()
+            this.getLatestMessages();
 
             // check to see if this was the last open chat window ( for buddy or pond )
             // if so, we need to create a timer to close the websocket connection
             // this timer should be cleared if another chat window is opened
-
             let noOpenChatWindows = false;
 
             if (this.subscribedPonds.length === 0 && this.subscribedBuddies.length === 0) {
@@ -205,7 +200,7 @@ export default function openChatWindow(data) {
     $('.aim-input').on('keypress', () => {
         let buddyName = this.bp.me;
         let context = contextName;
-        console.log('typing', buddyName, context);
+        // console.log('typing', buddyName, context);
         this.bp.emit('buddy::typing', {
             from: buddyName,
             to: context,

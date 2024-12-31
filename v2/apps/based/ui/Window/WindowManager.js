@@ -58,7 +58,7 @@ export default class WindowManager {
         // This is a temporary solution until full app hydration is back online
         // This solution will allow for position and size to be saved and restored
         options = { ...options, ...this.options.window };
-        console.log('createWindow', options);
+        // console.log('createWindow', options);
         let previousWindowData = this._windows.find(w => w.id === options.id);
         if (previousWindowData) {
             // just merge the previous window data with the new options
@@ -110,7 +110,7 @@ export default class WindowManager {
     }
 
     removeWindow(window) {
-        console.log("Removing window", window);
+        // console.log("Removing window", window);
         this.windows = this.windows.filter(w => w.id !== window);
         //console.log("Remaining windows", this.windows);
         this.saveWindowsState(); // Save state when a window is removed
@@ -118,7 +118,7 @@ export default class WindowManager {
     }
 
     focusWindow(window) {
-        console.log("Focusing window", window.id);
+        // console.log("Focusing window", window.id);
         const index = this.windows.indexOf(window);
         if (index !== -1) {
             this.windows.splice(index, 1);
@@ -131,10 +131,10 @@ export default class WindowManager {
     }
 
     updateFocus() {
-        console.log("Updating focus");
+        // console.log("Updating focus");
         this.windows.forEach((window, index) => {
             // console.log("Setting depth for window", window.id, "to", 1000 - index);
-            console.log("setting depth for window", window.id, "to", 1000 - index);
+            // console.log("setting depth for window", window.id, "to", 1000 - index);
             window.setDepth(1000 - index); // Higher index, higher depth
         });
     }
@@ -190,7 +190,7 @@ export default class WindowManager {
     // Restore windows from serialized state
     restoreWindows(serializedWindows, inflate = false) {
         const windowsData = JSON.parse(serializedWindows);
-        console.log("Restoring windows", windowsData);
+        // console.log("Restoring windows", windowsData);
 
         this._windows = windowsData;
 
@@ -207,7 +207,7 @@ export default class WindowManager {
                 return;
             }
             data.parent = document.querySelector(data.parent);
-            console.log("hydrating window", data);
+            // console.log("hydrating window", data);
             this.openWindow(data.app, data);
             //const window = this.createWindow(data);
             //window.hydrate(data);

@@ -57,7 +57,7 @@ export default class Client {
         });
 
         this.bp.on('client::requestWebsocketConnection', 'request-websocket-connection', (source) => {
-            console.log("request-websocket-connection", source);
+            //console.log("request-websocket-connection", source);
             this.requestWebsocketConnection(source);
         });
 
@@ -72,22 +72,25 @@ export default class Client {
 
     requestWebsocketConnection(source) {
         if (!this.connectionSources[source]) {
-            console.log(`WebSocket connection requested by ${source}.`);
+            //console.log(`WebSocket connection requested by ${source}.`);
             this.connectionSources[source] = true;
             if (Object.keys(this.connectionSources).length === 1) {
-                this.worker.postMessage({ type: 'connectWebSocket', data: this.config });  // Tell worker to connect WebSocket
+                this.worker.postMessage({ type: 'connectWebSocket', data: this.config, qtokenid: {
+                    qtokenid: this.api.qtokenid,
+                    me: this.api.me
+                } });  // Tell worker to connect WebSocket
             }
-            console.log('clearing disconnect timer', this.disconnectTimer)
+            //console.log('clearing disconnect timer', this.disconnectTimer)
             clearTimeout(this.disconnectTimer);
         } else {
-            console.log(`WebSocket connection already requested by ${source}.`);
+            //console.log(`WebSocket connection already requested by ${source}.`);
             clearTimeout(this.disconnectTimer);
         }
     }
 
     releaseWebsocketConnection(source) {
         if (this.connectionSources[source]) {
-            console.log(`WebSocket connection releaseWebsocketConnection requested ${source}.`);
+            //console.log(`WebSocket connection releaseWebsocketConnection requested ${source}.`);
             delete this.connectionSources[source];
             if (Object.keys(this.connectionSources).length === 0) {
                 this.disconnectTimer = setTimeout(() => {
@@ -142,6 +145,7 @@ export default class Client {
 
     sendMessage(message) {
         this.bp.log('sendMessage', message, this.connectionSources)
+        message.me = this.api.me;
         if (Object.keys(this.connectionSources).length > 0) {  // Check if there are active sources
             this.worker.postMessage({ type: 'sendMessage', data: message });
         } else {

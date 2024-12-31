@@ -12,8 +12,8 @@ export default class Motd {
         let motdWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'motd',
             title: 'Today: ' + today,
-            x: 50,
-            y: 100,
+            x: 250,
+            y: 50,
             width: 400,
             height: 300,
             minWidth: 200,

@@ -336,9 +336,15 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       return;
     }
     // New v5 API
+    // TODO: remove this, use a unique class name for bp?
+    // anything to separate code paths
     if (appName === 'buddylist') {
       bp.open('buddylist');
       return;
+    }
+    if (appName === 'pond') {
+      bp.open('pond');
+      return;      
     }
     JQDX.openWindow(appName);
   });
@@ -434,6 +440,10 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     // Bring window to front.
     JQDX.window_flat();
     $(this).addClass('window_stack');
+    console.log( $(this).attr('id'))
+    // manually click the window to trigger v5 bridge code to focus
+    desktop.emit('window::dragstart', { windowId: '#' + $(this).attr('id') });
+
   });
 
   // Make windows draggable.
@@ -446,7 +456,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       containment: 'parent',
       handle: 'div.window_top',
       start: function () {
-        desktop.emit('window::dragstart', { windowId: '#' + $(this).attr('id') });
+       //  desktop.emit('window::dragstart', { windowId: '#' + $(this).attr('id') });
       },
       stop: function (ev) {
         // desktop.ui.getDesktopIconPositions();

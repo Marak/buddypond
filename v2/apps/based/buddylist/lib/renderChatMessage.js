@@ -5,7 +5,6 @@ export default async function renderChatMessage(message, _chatWindow) {
   //console.log('this.data.processedMessages', this.data.processedMessages);
 
   let context = 'default';
-  this.showingIsTyping = this.showingIsTyping || {};
 
 
   // Determine the window ID based on the message context
@@ -56,8 +55,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (this.data.processedMessages[context].length > 5000) {
     this.data.processedMessages[context].shift();
   }
-  console.log(message)
-
+  // console.log(message)
 
   // check if this is an Agent message which gets processed first
   if (message.type === 'agent') {
@@ -82,10 +80,8 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Legacy BP API
   // TODO: Migrate TTS app to v5 API
   if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
-    console.log("TTS MESSAGE processMessage", message);
     desktop.app.tts.processMessage(message);
   }
-
 
   // Format message time
   message.ctime = new Date(message.ctime).toString();
@@ -105,8 +101,8 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   let container;
   if (message.card && this.bp && this.bp.apps && this.bp.apps.card) {
-    console.log('message is', message);
-    console.log('message is card', message.card);
+    //console.log('message is', message);
+    //console.log('message is card', message.card);
 
 
     let cardData = message.card;
@@ -154,7 +150,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Remark: this seems to have an issue with images? height not being calculated in time?
   let lastElement = $('.message', chatWindow.content).last()[0];
   if (lastElement) {
-    console.log('scrolling to last message', lastElement);
+    // console.log('scrolling to last message', lastElement);
     setTimeout(function () {
       // still not working all the way? hrmmmm
       lastElement.scrollIntoView({ behavior: 'smooth' });
@@ -239,6 +235,10 @@ export default async function renderChatMessage(message, _chatWindow) {
 
 function renderGeoFlag(message) {
   let geoFlag = '';
+  if (message.location === 'outer space') {
+    // set antarctica to the default flag
+    message.location = 'AQ';
+  }
   if (message.location) {
     if (message.location !== 'outer space') {
       geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;

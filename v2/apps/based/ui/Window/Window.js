@@ -11,7 +11,7 @@ class Window {
             height = '300px', // Default height
             app = 'ui', // default app
             type = 'singleton', // Default type ( intended to not have siblings )
-            context = '<default>', // Default context
+            context = 'default', // Default context
             content = '', // Default content
             iframeContent = false,
             icon = '', // Default icon
@@ -126,7 +126,7 @@ class Window {
             // Check overlap with other windows
             windows.forEach((win) => {
                 if (checkOverlap(adjustedX, adjustedY, newWindow.width, newWindow.height, win.x, win.y, win.width, win.height, buffer)) {
-                    console.log('OVERLAP DETECTED');
+                    // console.log('OVERLAP DETECTED');
                     adjustedX += buffer; // Move slightly to the right
                     adjustedY += buffer; // Move slightly down
                 }
@@ -309,17 +309,17 @@ class Window {
     }
 
     receiveMessage(event) {
-        console.log('Received message: ' + JSON.stringify(event.data));
+        // console.log('Received message: ' + JSON.stringify(event.data));
         // Implement security checks here, e.g., event.origin
         if (typeof event.data === 'object' && event.data.event) {
-            console.log('Received:', event.data);
+            //console.log('Received:', event.data);
             // Handle the message based on event.data.event and event.data.data
             this.handleReceivedMessage(event.data);
         }
     }
 
     handleReceivedMessage(data) {
-        console.log('Handled Received message:', data, this.onMessage);
+        //console.log('Handled Received message:', data, this.onMessage);
         if (this.onMessage) {
             this.onMessage(data);
         }
@@ -381,13 +381,13 @@ class Window {
         this.container.style.top = `${this.y}px`;
         this.container.style.left = `${this.x}px`;
         this.container.style.zIndex = this.z;
-        console.log('updateWindow', this);
+        // console.log('updateWindow', this);
     }
 
     setDepth(depth) {
         this.z = depth;
         this.container.style.zIndex = depth;
-        console.log('container depth was set to', this.id, depth);
+        // console.log('container depth was set to', this.id, depth);
         this.windowManager.saveWindowsState();
     }
 
@@ -482,7 +482,7 @@ class Window {
 
 
     minimize(force = false) {
-        console.log('minimize', this.isMinimized);
+        // console.log('minimize', this.isMinimized);
         if (this.isMinimized && !force) {
             this.restore();
         } else {
@@ -498,7 +498,7 @@ class Window {
 
     // Restore the window
     restore() {
-        console.log('restore', this)
+        // console.log('restore', this)
         // Restore the window's content and original size
         this.container.style.display = "flex";
 
@@ -530,7 +530,7 @@ class Window {
     }
 
     focus(propigate = true) {
-        console.log('on focus called from Window.js')
+        // console.log('on focus called from Window.js')
         this.onFocus(this);
     }
 
@@ -583,7 +583,7 @@ class Window {
                 el.classList.add('disabled');
             }
         }
-        console.log('removeWindow', this.id);
+        // console.log('removeWindow', this.id);
         this.windowManager.removeWindow(this.id);
 
 

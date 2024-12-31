@@ -15,11 +15,25 @@ async function go() {
     await startBuddylist();
 
 
-    await bp.load('powerlevel');
+    // await bp.load('powerlevel');
+    await bp.load('desktop');;
+
+    bp.apps.desktop.addShortCut({
+        name: 'pond',
+        icon: 'http://192.168.200.59/desktop/assets/images/icons/icon_pond_64.png',
+        label: 'Pond',
+    }, {
+        onClick: () => {
+            bp.open('pond');
+        }
+
+    });
+
 
     // Assuming there's a container with ID 'powerLevelContainer' in your HTML
-    const powerLevel = bp.apps.powerlevel.popup;
     /*
+        const powerLevel = bp.apps.powerlevel.popup;
+
     // Example of increasing to level 4
     powerLevel.show(4, {
         duration: 7777
@@ -100,54 +114,58 @@ async function startBuddylist() {
         // desktop.ui.openWindow('buddy_message', { context: message });
     });
 
-    const cardManager = bp.apps.card.cardManager;
 
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    const cardData = {
-        title: "New Hit Single",
-        soundURL: "path/to/song.mp3"
-    };
-    const card = await cardManager.loadCard('audio', cardData);
-    console.log('ffff', card)
-    card.render(container);
+    async function cardTest() {
+        const cardManager = bp.apps.card.cardManager;
 
-    const pointsCard = await cardManager.loadCard('points', {
-        to: '_Marak',
-        from: '_Marak',
-        action: 'got', points: 100, balance: 1000, amount: 1000, buddyname: '_Marak'
-    });
-    pointsCard.render(container);
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const cardData = {
+            title: "New Hit Single",
+            soundURL: "path/to/song.mp3"
+        };
+        const card = await cardManager.loadCard('audio', cardData);
+        console.log('ffff', card)
+        card.render(container);
+
+        const pointsCard = await cardManager.loadCard('points', {
+            to: '_Marak',
+            from: '_Marak',
+            action: 'got', points: 100, balance: 1000, amount: 1000, buddyname: '_Marak'
+        });
+        pointsCard.render(container);
 
 
 
+        // Example data for a snap card
+        const snapData = {
+            snapURL: 'path/to/image.gif',
+            type: 'buddy',
+            from: 'JohnDoe',
+            to: 'JaneDoe'
+        };
 
-// Example data for a snap card
-const snapData = {
-    snapURL: 'path/to/image.gif',
-    type: 'buddy',
-    from: 'JohnDoe',
-    to: 'JaneDoe'
-  };
+        const snapCard = await cardManager.loadCard('snap', snapData);
+        snapCard.render(container);
 
-  const snapCard = await cardManager.loadCard('snap', snapData);
-    snapCard.render(container);
 
-  
 
-  // Example data for a meme card
-const memeData = {
-    title: "Funny Cat",
-    levenshtein: "High",
-    winkler: "Medium",
-    filename: "cat_meme.jpg",
-    type: "buddy",
-    to: "JohnDoe"
-  };
+        // Example data for a meme card
+        const memeData = {
+            title: "Funny Cat",
+            levenshtein: "High",
+            winkler: "Medium",
+            filename: "cat_meme.jpg",
+            type: "buddy",
+            to: "JohnDoe"
+        };
 
-    const memeCard = await cardManager.loadCard('meme', memeData);
-    memeCard.render(container);
+        const memeCard = await cardManager.loadCard('meme', memeData);
+        memeCard.render(container);
 
+
+
+    }
 
 
 

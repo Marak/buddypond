@@ -53,13 +53,15 @@ export default class Pond {
     }
 
     updateHotPonds(data) {
-        console.log('updateHotPonds', data);
         let hotPonds = data.result;
         let html = '';
         const $joinPondTable = $('.joinPondTable');
 
         // Clear existing entries in the HTML representation (optional, based on whether you want to append or replace)
         $joinPondTable.empty();
+
+        // order hotPonds by score
+        hotPonds.sort((a, b) => b.score - a.score);
 
         // Iterate through the hot ponds data
         for (let i = 0; i < hotPonds.length; i++) {
@@ -90,6 +92,7 @@ export default class Pond {
 
         // we now need to indicate that the profile should subscribe to get updates about the most popular ponds
         // the easiest way seems to create timer on client that sends ws message "getHotPonds" every 5 seconds
+        this.bp.emit('client::requestWebsocketConnection', 'ponds');
 
         this.updatePondsTimer = setInterval(() => {
             this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
@@ -97,7 +100,6 @@ export default class Pond {
 
         // immediately get the hot ponds
         this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
-
 
         if (this.pondWindow) {
             console.log('pondWindow exists', this.pondWindow)
@@ -108,6 +110,7 @@ export default class Pond {
         this.pondWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'pond',
             title: 'Ponds',
+            app: 'pond',
             x: 50,
             y: 100,
             width: 400,
@@ -127,6 +130,9 @@ export default class Pond {
                 console.log('pond window closed');
                 this.pondWindow = null;
                 clearInterval(this.updatePondsTimer);
+
+                this.bp.apps.client.releaseWebsocketConnection('ponds');
+
             }
         });
 

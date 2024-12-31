@@ -4,7 +4,7 @@ window.bp_v_5 = async function bp_v_5() {
   let allCommands = localBuddyChatCommands.concat(remoteBuddyChatCommands);
 
   // TODO: load commands from buddyScript
-  console.log('allCommands', allCommands);
+  // console.log('allCommands', allCommands);
 
   // TODO: move all bp code to app.js file
   //
@@ -40,6 +40,8 @@ window.bp_v_5 = async function bp_v_5() {
 
 
   });
+
+
   // TODO: map the new API to the old API
   // chatWindowButtons should emit events
   await bp.start([{
@@ -47,7 +49,7 @@ window.bp_v_5 = async function bp_v_5() {
     parent: $('#desktop').get(0),
     window: {
       onFocus(window) {
-        console.log('custom onFocus window focused');
+        // console.log('custom onFocus window focused');
 
         // get all the legacy windows and check z-index to ensure
         // our window is +1 of the highest z-index
@@ -193,7 +195,6 @@ window.bp_v_5 = async function bp_v_5() {
 
   // map all the legacy desktop.commands to the new API
   for (let command in desktop.commands.chat) {
-    console.log('ADDING COMMAND to buddyScript', command, desktop.commands.chat[command]);
     bp.apps.buddyscript.addCommand(command, desktop.commands.chat[command]);
   }
 
@@ -294,7 +295,20 @@ window.bp_v_5 = async function bp_v_5() {
                   </li>
 
                 
-                `, click: () => api.logout()
+                `, click: () => {
+                  this.bp.apps.client.logout();
+                  // close all chat windows and ponds
+                  this.bp.apps.ui.windowManager.windows.forEach((window) => {
+                    //console.log("window", window);
+                    if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
+                      window.close();
+                    }
+                    if (window.app === 'pond') {
+                      window.close();
+                    }
+                  });
+
+                }
         }
       ]
     },
@@ -358,8 +372,11 @@ window.bp_v_5 = async function bp_v_5() {
   ];
 
   const menuBar = bp.apps.menubar.createMenu(menuTemplate);
-  console.log(menuBar);
+  // console.log(menuBar);
   document.body.appendChild(menuBar);
+
+
+  $('.loggedIn').hide();
 
   $('.volumeToggle').on('click', function () {
     if (desktop.settings.audio_enabled) {
@@ -409,7 +426,7 @@ window.bp_v_5 = async function bp_v_5() {
 
   desktop.setClock();
   bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
-    console.log('buddy-message-gotfiltered', message);
+    // console.log('buddy-message-gotfiltered', message);
 
     // make toastr that stays for 5 seconds
     toastr.options.timeOut = 5000;
@@ -424,9 +441,9 @@ window.bp_v_5 = async function bp_v_5() {
 
     let windowId = event.windowId;
     let window = $(windowId);
-    console.log('windowwindowwindow', window)
+    // console.log('windowwindowwindow', window)
     let newWindows = bp.apps.ui.windowManager.windows;
-    console.log('newWindows', newWindows);
+    // console.log('newWindows', newWindows);
     let newWindowsSorted = newWindows.sort((a, b) => {
       return a.z - b.z;
     });
@@ -434,9 +451,9 @@ window.bp_v_5 = async function bp_v_5() {
     if (newWindowsSorted.length) {
       // set the z-index of windowId to the highest z-index + 1
       let highestZ = newWindowsSorted[newWindowsSorted.length - 1].z;
-      console.log('highestZ', highestZ);
+      // console.log('highestZ', highestZ);
       $(`${windowId}`).css('z-index', highestZ + 1);
-      console.log('focus windowId', windowId);
+      // console.log('focus windowId', windowId);
 
     }
 
@@ -452,21 +469,21 @@ window.bp_v_5 = async function bp_v_5() {
 
       // we need to address the z-index / focus on this window
       let windowId = $(ev.target).closest('.window').attr('id');
-      console.log("current windowId", windowId);
-      console.log('current window zIndex', $(ev.target).css('z-index'));
+      //console.log("current windowId", windowId);
+      //console.log('current window zIndex', $(ev.target).css('z-index'));
       // we need to figure out the correct z-index to set this window
       // its not only the legacy BP windows now its also the new windows
       let newWindows = bp.apps.ui.windowManager.windows;
-      console.log('newWindows', newWindows);
+      // console.log('newWindows', newWindows);
       let newWindowsSorted = newWindows.sort((a, b) => {
         return a.z - b.z;
       });
 
       // set the z-index of windowId to the highest z-index + 1
       let highestZ = newWindowsSorted[newWindowsSorted.length - 1].z;
-      console.log('highestZ', highestZ);
+      //console.log('highestZ', highestZ);
       $(`#${windowId}`).css('z-index', highestZ + 1);
-      console.log('focus windowId', windowId);
+      //console.log('focus windowId', windowId);
     }
     // the event must bubble up to the document
     // so we can capture the window click event
@@ -484,7 +501,7 @@ function renderDesktopShortCuts() {
   for (let appName in desktop.settings.apps_installed) {
     let app = desktop.app.appstore.apps[appName];
     //desktop.ui.renderDesktopShortCut(appName, app);
-    console.log('renderDesktopShortCuts', appName, app);
+    //console.log('renderDesktopShortCuts', appName, app);
     bp.apps.desktop.addShortCut({
       name: appName,
       icon: `desktop/assets/images/icons/icon_${appName}_64.png`,

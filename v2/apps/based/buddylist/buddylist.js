@@ -26,6 +26,8 @@ export default class BuddyList {
         this.subscribedPonds = [];
         this.options = options;
         this.opened = false;
+        this.showingIsTyping = this.showingIsTyping || {};
+
     }
 
     async init() {
@@ -70,8 +72,9 @@ export default class BuddyList {
             this.handleAuthentication();
             this.buddylistUIEvents();
 
-            $('.loggedIn').hide();
-            bp.load('pond');
+            // needs to check if logged in again after lazy loading pond...
+            //$('.loggedIn').hide();
+            //$('.loggedOut').show();
   
 
             return 'hello buddyList';
@@ -92,7 +95,6 @@ export default class BuddyList {
             this.openChatWindow(config);
         }
 
-
     }
 
     createBuddyListWindow() {
@@ -106,7 +108,8 @@ export default class BuddyList {
             parent: this.bp.apps.ui.parent,
             width: 300,
             height: 500,
-            x: 800,
+            x: 700,
+            y: 50,
             onClose: () => this.bp.log('buddyListWindow onClose'),
         });
 
@@ -129,8 +132,6 @@ export default class BuddyList {
 
         });
 
-
-
         this.bp.on('profile::status', 'update-profile-status', status => status === 'signout' && this.logout());
 
         this.bp.on('buddy::messages', 'render-chat-message', data => this.handleChatMessages(data));
@@ -140,18 +141,16 @@ export default class BuddyList {
         this.bp.on('buddy::sendMessage', 'process-buddymessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
         this.bp.on('pond::sendMessage', 'process-pondmessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
 
-
         // remote isTyping event from server
+        // TODO: move to separate file
         this.bp.on("buddy::isTyping", "show-is-typing-message", data => {
 
-            console.log("isTyping", data);
             // TODO: move to separate file
             let message = data.message;
 
             // TODO: move this to a separate file / function
             // Handling typing message display
             if (message.isTyping === true) {
-                console.log('incoming isTyping message', message);
                 // check to see if message.from is the same as the current user
                 // if so, ignore the message
                 if (message.from === this.bp.me) {
@@ -206,13 +205,11 @@ export default class BuddyList {
         // local typing event TOOD: better name
         // when buddy is typing send a message to the ws server
         this.bp.on('buddy::typing', 'send-typing-message-to-server', data => {
-            console.log("typing", data);
             // we don't want to spam typing messages, so we will only send a message every 2 seconds
             this.lastTypingMessage = this.lastTypingMessage || 0;
             if (new Date().getTime() - this.lastTypingMessage < 2000) {
                 // return;
             }
-            console.log("send typing message", data);
             this.lastTypingMessage = new Date().getTime();
 
 
@@ -294,7 +291,6 @@ export default class BuddyList {
             pondname: this.subscribedPonds.join(','),
             me: this.bp.me
         };
-        console.log("getLatestMessages", data);
         this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: data });
     }
 
@@ -319,6 +315,9 @@ export default class BuddyList {
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         data.name = data.to;
         if (emitLocal) {
+            if (this.data.lastProfileState) {
+                data.location = this.data.lastProfileState.location || 'outer space';
+            }
             const chatWindow = this.openChatWindow(data);
             this.renderChatMessage(data, chatWindow);
         }
@@ -332,6 +331,9 @@ export default class BuddyList {
         // console.log('sendPondMessageToServer', data);
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         if (emitLocal) {
+            if (this.data.lastProfileState) {
+                data.location = this.data.lastProfileState.location || 'outer space';
+            }
             const chatWindow = this.openChatWindow(data);
             this.renderChatMessage(data, chatWindow);
         }
@@ -343,7 +345,7 @@ export default class BuddyList {
         const me = localStorage.getItem('me');
 
         if (!localToken) return;
-        console.log('localToken', localToken, me);
+        // console.log('localToken', localToken, me);
         api.verifyToken(me, localToken, (err, data) => {
             if (err) {
                 console.error('Failed to verify token:', err);
@@ -370,6 +372,9 @@ export default class BuddyList {
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').hide();
         this.openChatWindow({ pondname: 'Lily' });
+        bp.load('pond');
+
+
 
     }
 }
