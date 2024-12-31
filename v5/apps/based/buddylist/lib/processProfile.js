@@ -221,7 +221,7 @@ function fudge() {
     // since new data has been rendered ensure that buddy list is showing
     // TODO: can we remove these hide() / show() statements?
     // $('.loggedIn').addClass('show');
-    $('.loggedIn').show();
+    $('.loggedIn').flexShow();
     $('.buddy_list_not_connected').hide();
     // TODO: move this to buddy pond scope
     $('.buddy_pond_not_connected').hide();

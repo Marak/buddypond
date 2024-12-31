@@ -22,7 +22,7 @@ export default function buddylistUIEvents() {
         //console.log('connecting with valid qtokenid', api.qtokenid);
         result.me = username;
         bp.emit('auth::qtoken', result);
-        $('.loggedIn').show();
+        $('.loggedIn').flexShow();
       } else {
         if (username === password) {
           $('.password').show();

@@ -71,10 +71,12 @@ export default class BuddyList {
             this.registerEventHandlers();
             this.handleAuthentication();
             this.buddylistUIEvents();
+            $('.loggedIn', buddyListWindow.container).flexHide();
+
 
             // needs to check if logged in again after lazy loading pond...
-            //$('.loggedIn').hide();
-            //$('.loggedOut').show();
+            //$('.loggedIn').flexHide();
+            //$('.loggedOut').flexShow();
   
 
             return 'hello buddyList';
@@ -362,7 +364,7 @@ export default class BuddyList {
             if (data.success) {
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me });
                 //                $('.loggedIn').addClass('show');
-                $('.loggedIn').show();
+                $('.loggedIn').flexShow();
 
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
@@ -375,7 +377,7 @@ export default class BuddyList {
         this.bp.me = qtoken.me;
         this.data.profileState.me = this.bp.me;
         $('.onlineStatusSelect').val('online');
-        $('.loggedOut').hide();
+        $('.loggedOut').flexHide();
         this.openChatWindow({ pondname: 'Buddy' });
         /*
         await bp.load('pond', {
@@ -401,8 +403,8 @@ BuddyList.prototype.logout = function () {
     // disconnect the client
     this.bp.apps.client.disconnect();
     $('.password').val('');
-    $('.loggedIn').hide();
-    $('.loggedOut').show();
+    $('.loggedIn').flexHide();
+    $('.loggedOut').flexShow();
     localStorage.removeItem('qtokenid');
     localStorage.removeItem('me');
 }

@@ -96,7 +96,8 @@
     width: 100%;
     font-size: 14px;
     text-decoration: italic;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
+    padding-top: 5px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }

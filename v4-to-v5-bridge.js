@@ -1,3 +1,6 @@
+
+
+
 window.bp_v_5 = async function bp_v_5() {
   let localBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '/' + a });
   let remoteBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '\\' + a });
@@ -20,9 +23,9 @@ window.bp_v_5 = async function bp_v_5() {
 
 
   bp.on('auth::logout', 'old-bp-logout', function () {
-    $('.loggedIn').hide();
+    $('.loggedIn').flexHide();
 
-    $('.loggedOut').show();
+    $('.loggedOut').flexShow();
     //$('.loggedOut').addClass('show');
     bp.apps.client.api.logout(function (err, data) {
       console.log('logout', err, data);
@@ -32,9 +35,9 @@ window.bp_v_5 = async function bp_v_5() {
   bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {
     buddypond.qtokenid = qtoken.qtokenid;
     bp.me = qtoken.me;
-    $('.loggedIn').show();
+    $('.loggedIn').flexShow();
     //$('.loggedIn').addClass('show');
-    $('.loggedOut').hide();
+    $('.loggedOut').flexHide();
 
     $('#me_title').html('Welcome ' + bp.me);
 
@@ -170,7 +173,7 @@ window.bp_v_5 = async function bp_v_5() {
 
   // TODO: better load order here, make sure all legacy stuff binds before we open buddylist, etc
   await bp.load('motd');
-  bp.open('buddylist');
+  await bp.open('buddylist');
 
   await bp.importModule({
     name: 'desktop',
@@ -250,9 +253,9 @@ window.bp_v_5 = async function bp_v_5() {
   `;
 
   let networkStatsStr = `
-      <span class="totalConnected">
-        <span class="loggedIn totalConnectedCount">0</span> Buddies Online</span>
-        <span class="loggedIn totalOnlineCount">0</span><!--Buddies Online--></span>
+      <span class="totalConnected loggedIn">
+        <span class="totalConnectedCount">0</span> Buddies Online</span>
+        <span class="totalOnlineCount">0</span><!--Buddies Online--></span>
         <span class="desktopDisconnected loggedOut">Disconnected</span>
             
   `;
@@ -376,7 +379,6 @@ window.bp_v_5 = async function bp_v_5() {
   document.body.appendChild(menuBar);
 
 
-  $('.loggedIn').hide();
 
   $('.volumeToggle').on('click', function () {
     if (desktop.settings.audio_enabled) {
@@ -534,12 +536,14 @@ function renderDesktopShortCuts() {
     name: 'merlin', label: 'Merlin Automated Assistant'
   });
 
+  /*
   desktop.ui.renderDesktopShortCut('download', {
     name: 'download',
     href: 'https://github.com/marak/buddypond',
     label: 'Download Buddy Pond',
     icon: 'drive'
   });
+  */
 
   /*
   desktop.ui.renderDesktopShortCut('appstore', {
@@ -547,6 +551,7 @@ function renderDesktopShortCuts() {
   });
   */
 
+  /*
   desktop.ui.renderDesktopShortCut('login', {
     name: 'login', label: 'Login', icon: 'login', class: 'loginIcon loginShortcut'
   });
@@ -554,6 +559,7 @@ function renderDesktopShortCuts() {
   desktop.ui.renderDesktopShortCut('logout', {
     name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn logoutShortcut'
   });
+  */
   
   // TODO: Folders, make Desktop icons use Folder
   // TODO: Refactor shortcuts into File.js class
@@ -586,6 +592,8 @@ function renderDesktopShortCuts() {
   window.arrangeDesktop = arrangeDesktop;
 
   arrangeDesktop();
+  $('.loggedIn').flexHide();
+  
   // add window resize event to re-arraange shortcuts
   window.addEventListener('resize', function () {
     arrangeDesktop();

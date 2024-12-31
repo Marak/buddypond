@@ -865,9 +865,6 @@ video {
 #clock:hover {
   cursor: pointer;
 }
-.loggedIn {
-  display: none;
-}
 
 video {
   margin: 0px;

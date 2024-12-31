@@ -64,7 +64,7 @@ window.top.location = 'ie.html';
   </div>
 -->
   <!-- src="desktop/assets/images/gui/rainbow-hexagon-lattice.gif" -->
-   <!-- TODO: remove? -->
+  <!-- TODO: remove? -->
   <div id="mainOverlay">
     <img class="mobileLoadingOverlay" />
     <div class="abs" id="wrapper">
@@ -107,6 +107,29 @@ window.top.location = 'ie.html';
 
       // see: ReadMe.md for documentation on `desktop.use`
       $(document).ready(function () {
+        $.fn.flexShow = function () {
+          return this.each(function () {
+            var $this = $(this);
+            // Store the current display value only if it's not 'none' and no previous storage exists
+            if (!$this.data('original-display') && $this.css('display') !== 'none') {
+              $this.data('original-display', $this.css('display'));
+            }
+            // Use the stored display value or default to 'block' if nothing stored
+            $this.show().css('display', $this.data('original-display') || 'block');
+          });
+        };
+
+        $.fn.flexHide = function () {
+          return this.each(function () {
+            var $this = $(this);
+            // Ensure the original display is stored before hiding
+            if (!$this.data('original-display') && $this.css('display') !== 'none') {
+              $this.data('original-display', $this.css('display'));
+            }
+            $this.hide();
+          });
+        };
+
         let documentReadyTime = new Date();
         desktop.log('Buddy Pond Cloud OS Initialized');
         desktop.log('Now loading apps');
@@ -163,7 +186,7 @@ window.top.location = 'ie.html';
             });
 
 
-          
+
             desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function () {
               if (!desktop.settings.audio_enabled) {
                 $('.volumeFull').hide();
@@ -197,7 +220,7 @@ window.top.location = 'ie.html';
     </div>
     <script src="/v5/public/buddypond.umd.cjs"></script>
 
-    
+
 
     <script>
 

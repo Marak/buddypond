@@ -8,7 +8,7 @@ export default function arrangeShortcuts(cols = 4, options = {
     const actualCols = cols < maxCols ? cols : maxCols; // Choose the lesser to avoid overflow
 
     Array.from(this.shortCutsContainer.children).forEach((icon, index) => {
-        const x = (index % actualCols) * options.rowWidth; // Calculate x position
+        let x = (index % actualCols) * options.rowWidth; // Calculate x position
         let y = Math.floor(index / actualCols) * options.rowHeight; // Calculate y position
 
         let offSetY = 100;
@@ -16,6 +16,8 @@ export default function arrangeShortcuts(cols = 4, options = {
             y += offSetY; // Add an offset to the y position
 
         }
+        let offsetX = 15;
+        x += offsetX; // Add an offset to the x position
         // console.log('x:', x, 'y:', y);
         icon.style.position = 'absolute'; // Corrected typo here
         icon.style.left = `${x}px`; // Set left position
