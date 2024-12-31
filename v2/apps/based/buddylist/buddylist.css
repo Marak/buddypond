@@ -28,6 +28,10 @@
 .loggedIn, .buddy_list_not_connected {
 }
 
+.loginForm {
+    padding-bottom: 10px;
+}
+
 .loginForm input[type="text"],
 .loginForm input[type="password"] {
     margin: 5px 0;
@@ -241,6 +245,13 @@
 
 .loginStatus {
     text-align: center
+}
+
+.tos-checkbox {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 5px;
 }
 
 

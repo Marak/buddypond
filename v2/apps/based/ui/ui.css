@@ -17,6 +17,17 @@ body {
   display: none;
 }
 
+/* default styles */
+a {
+    text-decoration: none;
+    color: #000;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    color: #000;
+}
 
 .autocomplete-results {
     border: 1px solid #ccc;

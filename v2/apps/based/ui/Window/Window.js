@@ -27,6 +27,7 @@ class Window {
             onLoad = () => { }, // Callback when the window is loaded ( remote content )
             className = '', // Custom classes for styling
             resizeable = true, // Enable resizable feature
+            preventOverlap = true, // prevents direct overlap with other windows
             canBeBackground = false // Can be set as background
         } = options;
 
@@ -62,6 +63,7 @@ class Window {
         this.isActive = false;
         this.className = className;
         this.resizeable = resizeable;
+        this.preventOverlap = preventOverlap;
         this.canBeBackground = canBeBackground;
 
         windowManager = windowManager || {
@@ -160,13 +162,21 @@ class Window {
         const screenHeight = window.innerHeight;
 
         // Adjust position to prevent overlap
-        const adjustedPosition = adjustPosition(
-            { x: this.x, y: this.y, width: this.width, height: this.height },
-            this.windowManager.windows,
-            screenWidth,
-            screenHeight,
-            32
-        );
+        let adjustedPosition = {
+            x: this.x,
+            y: this.y,
+        };
+
+        if (this.preventOverlap) {
+            adjustedPosition = adjustPosition(
+                { x: this.x, y: this.y, width: this.width, height: this.height },
+                this.windowManager.windows,
+                screenWidth,
+                screenHeight,
+                32
+            );
+        }
+        
 
         // Apply adjusted position
         this.x = adjustedPosition.x;

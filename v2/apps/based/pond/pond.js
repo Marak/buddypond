@@ -1,15 +1,12 @@
 export default class Pond {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.options = options;
         return this;
     }
 
 
     async init() {
-        this.bp.log('Hello from Example');
-
-        // we can load modules or html fragments or css files here
-        // using this.bp.load() method
 
         // injects CSS link tag into the head of document
         await this.bp.load('/v2/apps/based/pond/pond.css');
@@ -102,7 +99,6 @@ export default class Pond {
         this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
 
         if (this.pondWindow) {
-            console.log('pondWindow exists', this.pondWindow)
             this.pondWindow.open();
             return;
         }
@@ -113,9 +109,9 @@ export default class Pond {
             title: 'Ponds',
             app: 'pond',
             icon: iconImagePath,
-            x: 50,
+            x: 100,
             y: 100,
-            width: 400,
+            width: 350,
             height: 400,
             minWidth: 200,
             minHeight: 200,
@@ -128,6 +124,7 @@ export default class Pond {
             focusable: true,
             maximized: false,
             minimized: false,
+            preventOverlap: this.options.window.preventOverlap,
             onClose: () => {
                 console.log('pond window closed');
                 this.pondWindow = null;

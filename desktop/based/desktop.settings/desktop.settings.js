@@ -78,7 +78,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     'pond': {},
     'paint': {},
     'interdimensionalcable': {},
-    'memepool': {},
+    // 'memepool': {},
     'games': {},
     'soundrecorder': {},
     'paint': {},

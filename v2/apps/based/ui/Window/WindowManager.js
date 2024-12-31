@@ -28,8 +28,55 @@ export default class WindowManager {
         this.taskBar = new TaskBar({
             homeCallback: () => {
 
+                // TODO: we could toggle through states here
+                // including: arrangeVerticalStacked()
+
+                if (!this.state) {
+                    // save current window positions
+                    this.lastPositionsBeforeArranged = this.windows.map(w => {
+                        return {
+                            x: w.x,
+                            y: w.y,
+                            height: w.height,
+                            width: w.width
+                        }
+                    });
+                    // console.log('lastPositionsBeforeArranged', this.lastPositionsBeforeArranged);
+                    this.state = 'maximized';
+                } 
+
+
+                if (this.state === 'minimized') {
+                    this.minimizeAllWindows();
+                    this.arrangeHorizontalStacked();
+                    this.state = 'stacked-horizontal';
+
+                } else if (this.state === 'stacked-vertical') {
+
+                    // restore all windows to their previous positions
+                    this.windows.forEach((w, i) => {
+                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
+                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
+                    });
+                    this.state = 'maximized';
+
+                } else if (this.state === 'stacked-horizontal') {
+                    this.arrangeVerticalStacked();
+                    this.state = 'stacked-vertical';
+                } else {
+                    this.minimizeAllWindows(true);
+                    this.windows.forEach((w, i) => {
+                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
+                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
+                    });
+
+                    this.state = 'minimized';
+
+                }
+
+
                 // close all windows
-                this.minimizeAllWindows();
+                // this.minimizeAllWindows();
                 // this.windowsClosed = true;
 
                 // hide all legacy BP windows ( TODO remove this )
@@ -201,14 +248,42 @@ export default class WindowManager {
     }
 
     arrangeVerticalStacked() {
-        const containerHeight = document.body.clientHeight; // Adjust to your specific container if not the body
+        let containerHeight = document.body.clientHeight; // Adjust to your specific container if not the body
+        containerHeight -= 100;
         const numWindows = this.windows.length;
-        const windowHeight = containerHeight / numWindows;
+        let windowHeight = containerHeight / numWindows;
+        windowHeight -= 10; // Adjust to your desired offset
+
 
         this.windows.forEach((window, index) => {
-            const yPos = windowHeight * index;
+            let yPos = windowHeight * index;
+            yPos += 30;
+            yPos += 10 * index; // Adjust to your desired offset
             window.setSize('100%', windowHeight + 'px'); // Assuming you have a resize method
             window.move(0, yPos); // Assuming you have a move method
+        });
+    }
+
+    arrangeHorizontalStacked() {
+        const containerWidth = document.body.clientWidth; // Adjust to your specific container if not the body
+        const numWindows = this.windows.length;
+        let windowWidth = containerWidth / numWindows;
+        windowWidth -= 10; // Adjust to your desired offset
+        this.windows.forEach((window, index) => {
+            let xPos = windowWidth * index;
+            xPos += 5;
+            xPos += 10 * index; // Adjust to your desired offset
+            window.setSize(windowWidth + 'px', 'calc(100% - 80px)'); // Assuming you have a resize method
+            window.move(xPos, 30); // Assuming you have a move method
+        });
+    }
+
+    arrangeCascadeFromTopLeft() {
+        const offset = 20; // Adjust to your desired offset
+        this.windows.forEach((window, index) => {
+            const xPos = offset * index;
+            const yPos = offset * index;
+            window.move(xPos, yPos); // Assuming you have a move method
         });
     }
 

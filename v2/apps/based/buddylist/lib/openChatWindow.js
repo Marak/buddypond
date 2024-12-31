@@ -47,7 +47,8 @@ export default function openChatWindow(data) {
         context: contextName,
         parent: this.bp.apps.ui.parent,
         className: 'chatWindow',
-        y: 50,
+        x: 175,
+        y: 75,
         width: 600,
         height: 500,
         onOpen: async (_window) => {

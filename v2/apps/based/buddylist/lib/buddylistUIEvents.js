@@ -75,6 +75,21 @@ export default function buddylistUIEvents() {
     });
   });
 
+  // Initially disable the login button
+  $('.loginButton').prop('disabled', true);
+  $('.loginButton').addClass('disabled');
+
+  // Toggle the login button based on the checkbox status
+  $('#tosAgree').change(function () {
+    if ($(this).is(':checked')) {
+      $('.loginButton').prop('disabled', false);
+      $('.loginButton').removeClass('disabled');
+    } else {
+      $('.loginButton').prop('disabled', true);
+      $('.loginButton').addClass('disabled');
+    }
+  });
+
   // Invite a buddy link ( opens twitter with a random message )
   $('.inviteBuddy').on('click', () => {
     let randomInviteMessages = [

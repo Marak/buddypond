@@ -99,6 +99,9 @@ export default class BuddyList {
 
     createBuddyListWindow() {
 
+        // calculate right side of screen
+        let x = window.innerWidth - 300;
+
         return this.bp.apps.ui.windowManager.createWindow({
             app: 'buddylist',
             type: 'buddylist-profile',
@@ -108,8 +111,8 @@ export default class BuddyList {
             parent: this.bp.apps.ui.parent,
             width: 300,
             height: 500,
-            x: 700,
-            y: 50,
+            x: x,
+            y: 75,
             onClose: () => this.bp.log('buddyListWindow onClose'),
         });
 
@@ -365,15 +368,18 @@ export default class BuddyList {
         });
     }
 
-    handleAuthSuccess(qtoken) {
+    async handleAuthSuccess(qtoken) {
         this.bp.me = qtoken.me;
         this.data.profileState.me = this.bp.me;
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').hide();
-        this.openChatWindow({ pondname: 'Lily' });
-        bp.load('pond');
+        this.openChatWindow({ pondname: 'Buddy' });
 
-
+        await bp.load('pond', {
+            window: {
+                preventOverlap: false
+            }
+        });
 
     }
 }

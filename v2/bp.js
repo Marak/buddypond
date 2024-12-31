@@ -60,7 +60,7 @@ bp.open = async function open(app, config = { context: 'default' }) {
 
 // bp.load will delegate to correct provider based on resource type
 // in most cases this will be by file extension or object shape
-bp.load = async function load(resource) {
+bp.load = async function load(resource, config = {}) {
 
     // check to see if resource is a string
     if (typeof resource === 'string') {
@@ -78,7 +78,7 @@ bp.load = async function load(resource) {
         }
         // check to see if there is no file extension
         if (!resource.includes('.')) {
-            return bp.importModule(resource);
+            return bp.importModule(resource, config);
         }
     }
 

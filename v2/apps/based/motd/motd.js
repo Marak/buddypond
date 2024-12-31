@@ -12,8 +12,9 @@ export default class Motd {
         let motdWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'motd',
             title: 'Today: ' + today,
+            icon: 'desktop/assets/images/icons/icon_console_64.png',
             x: 250,
-            y: 50,
+            y: 75,
             width: 400,
             height: 300,
             minWidth: 200,

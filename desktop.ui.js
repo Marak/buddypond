@@ -529,39 +529,54 @@ JQDX.showWindow = function showWindow (appName, params) {
     let dockIconExists =  bp.apps.ui.windowManager.taskBar.getItem(appName)
 
     if (!dockIconExists) {
-      bp.apps.ui.windowManager.taskBar.addItem(appName, appName, (ev, el) => {
 
+      bp.apps.ui.windowManager.taskBar.addItem({
 
-
-        console.log("open window", appName);
-
-        if (appName === 'download_buddypond') {
-          window.open('https://github.com/marak/buddypond', '_blank');
-          return;
+        id: appName,
+        title: appName,
+        icon: 'desktop/assets/images/icons/icon_' + appName + '_64.png',
+        onClick: () => {
+            // console.log("open window", appName);
+    
+            if (appName === 'download_buddypond') {
+              window.open('https://github.com/marak/buddypond', '_blank');
+              return;
+            }
+            if (appName === 'logout') {
+              desktop.app.login.logoutDesktop();
+              return;
+            }
+    
+            // check to see if visible, if so, minimize
+            if ($(appWindow).is(':visible')) {
+              JQDX.minWindow(appWindow);
+    
+            } else {
+              JQDX.openWindow(appName);
+    
+            }
+    
+    
+          
         }
-        if (appName === 'logout') {
-          desktop.app.login.logoutDesktop();
-          return;
-        }
-
-        // check to see if visible, if so, minimize
-        if ($(appWindow).is(':visible')) {
-          JQDX.minWindow(appWindow);
-
-        } else {
-          JQDX.openWindow(appName);
-
-        }
+    });
+    
 
 
-     });
+
+
+      
     }
 
 
     // manually click the window to trigger v5 bridge code to focus
     desktop.emit('window::dragstart', { windowId: appWindow });
-    
-    
+      $('.window_bottom', appWindow).html(''); // clear bottom bar
+    // v5 fix ( for now )
+    setTimeout(function(){
+      //window.arrangeDesktop();
+
+    }, 1300)
 
   }
 
@@ -613,7 +628,7 @@ JQDX.showWindow = function showWindow (appName, params) {
 // attempts to open a window based on name and parameters
 // will attempt to JQDX.loadWindow() if no window is found
 JQDX.openWindow = function openWindow (appName, params, cb) {
-  console.log('JQDX.openWindow', appName, params, cb)
+  // console.log('JQDX.openWindow', appName, params, cb)
   //alert('replace')
   // console.log('JQDX.openWindow', appName, params)
   params = params || {};
@@ -973,7 +988,9 @@ desktop.ui.renderDesktopShortCut = function renderDesktopShortCut (appName, app)
 // TODO: remove and move to desktop.js app in v5
 // desktop.js will be responsible for managing the desktop state
 desktop.ui.renderDesktopShortCuts = function renderDesktopShortCuts () {
+  
   $('.desktop-shortcuts-container').html('');
+
   for (let appName in desktop.settings.apps_installed) {
     let app = desktop.app.appstore.apps[appName];
     desktop.ui.renderDesktopShortCut(appName, app);

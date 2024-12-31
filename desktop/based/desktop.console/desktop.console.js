@@ -16,6 +16,8 @@ desktop.app.console.load = function loadDesktop (params, next) {
     d.on('submit', function(){
       return false;
     });
+    // TODO: v5
+    /*    */
 
     $( ".console_message_text" ).autocomplete({
      source: Object.keys(desktop.app.console._allowCommands)

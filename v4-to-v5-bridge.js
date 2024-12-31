@@ -169,7 +169,7 @@ window.bp_v_5 = async function bp_v_5() {
   ]);
 
   // TODO: better load order here, make sure all legacy stuff binds before we open buddylist, etc
-  //await bp.load('motd');
+  await bp.load('motd');
   bp.open('buddylist');
 
   await bp.importModule({
