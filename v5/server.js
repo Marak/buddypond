@@ -24,7 +24,7 @@ async function createServer() {
   // Correctly resolve the path to your static assets
   const staticPath = path.join(__dirname, 'apps', 'based');
   console.log("staticPath", staticPath)
-  app.use('/v2/apps/based', express.static(staticPath));
+  app.use('/v5/apps/based', express.static(staticPath));
 
   // mount a dummy /events route for EventSource testing
   app.get('/profile', (req, res) => {

@@ -32,7 +32,7 @@ export default class Game {
             //hzMS: 16.666,
             hzMS: 16.666,
             fpsReportFrequency: 60,
-            gameWorker: '/v2/apps/based/game/gameWorker.js', // worker file that runs all your game logic
+            gameWorker: '/v5/apps/based/game/gameWorker.js', // worker file that runs all your game logic
             // once data is processed by the gameWorker, it sends it back to the main thread
             // and then these methods are called
             // inflateSnapshot and graphicsRender are currently hard-coded in GameLoop , but could be customized

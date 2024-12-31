@@ -43,7 +43,7 @@ export default class Desktop {
     }
 
     async init() {
-        await this.bp.load('/v2/apps/based/desktop/desktop.css');
+        await this.bp.load('/v5/apps/based/desktop/desktop.css');
         // TODO: after launch, port legacy wallpaper app
         // this.setupWallpaper(); // Set initial wallpaper
         return 'loaded desktop';

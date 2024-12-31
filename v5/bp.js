@@ -89,11 +89,11 @@ bp.load = async function load(resource, config = {}) {
 bp.importModule = async function importModule(app, config, buddypond = true) {
 
     // console.log('importModule', app, config, buddypond);
-    let modulePath = bp.config.host + `/v2/apps/based/${app}/${app}.js`;
+    let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     let appName = app;
 
     if (typeof app === 'object') {
-        modulePath = bp.config.host + `/v2/apps/based/${app.name}/${app.name}.js`;
+        modulePath = bp.config.host + `/v5/apps/based/${app.name}/${app.name}.js`;
         config = app;
         appName = app.name;
     }

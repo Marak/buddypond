@@ -30,33 +30,33 @@ export default class UI {
 
         // base CSS for ui, this can be themed in the future
         if (!this.options.noCSS) {
-            this.bp.appendCSS('/v2/apps/based/ui/ui.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v2/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v2/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v2/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v5/apps/based/ui/ui.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v5/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v5/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
+            this.bp.appendCSS('/v5/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
         }
 
         if (this.options.fontAwesome) {
-            this.bp.appendCSS('/v2/vendor/font-awesome/css/fontawesome.css');
-            this.bp.appendCSS('/v2/vendor/font-awesome/css/all.min.css');
+            this.bp.appendCSS('/v5/vendor/font-awesome/css/fontawesome.css');
+            this.bp.appendCSS('/v5/vendor/font-awesome/css/all.min.css');
         }
 
         if (!this.options.noZepto) {
             // If you need jQuery or another version of $
             // we have the ability to not load Zepto as $
-            await this.bp.appendScript('/v2/vendor/zepto.min.js');
+            await this.bp.appendScript('/v5/vendor/zepto.min.js');
         } else {
-            await this.bp.appendScript('/v2/vendor/jquery.min.js');
+            await this.bp.appendScript('/v5/vendor/jquery.min.js');
 
         }
 
         if (!this.options.noTabs) {
-            let SimpleTabs = await this.bp.importModule('/v2/apps/based/ui/SimpleTabs.js', {}, false)
+            let SimpleTabs = await this.bp.importModule('/v5/apps/based/ui/SimpleTabs.js', {}, false)
             this.Tabs = SimpleTabs.default;
 
         }
 
-        await this.bp.appendScript('/v2/vendor/DateFormat.js');
+        await this.bp.appendScript('/v5/vendor/DateFormat.js');
 
         
         return 'loaded ui';
@@ -72,7 +72,7 @@ export default class UI {
 
     async loadDocumentBody () {
         console.log('loadDocumentBody', this);
-        let html = await this.bp.fetchHTMLFragment('/v2/apps/based/ui/ui.html'); // TODO: might need root
+        let html = await this.bp.fetchHTMLFragment('/v5/apps/based/ui/ui.html'); // TODO: might need root
         console.log(html);
         $('body').append(html);
         //document.body.innerHTML = html;

@@ -12,7 +12,7 @@ export default class PowerLevels {
         });
         e
         */
-        await this.bp.load('/v2/apps/based/powerlevel/powerlevel.css');
+        await this.bp.load('/v5/apps/based/powerlevel/powerlevel.css');
         this.bp.apps.buddyscript.addCommand('powerlevel', (args) => {
             console.log('powerlevel args', args);
             let context = args[0];

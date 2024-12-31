@@ -56,9 +56,9 @@ export default class BuddyList {
 
             this.opened = true;
 
-            const htmlStr = await this.bp.fetchHTMLFragment('/v2/apps/based/buddylist/buddylist.html');
-            this.messageTemplateString = await this.bp.fetchHTMLFragment('/v2/apps/based/buddylist/message.html');
-            this.bp.appendCSS('/v2/apps/based/buddylist/buddylist.css');
+            const htmlStr = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/buddylist.html');
+            this.messageTemplateString = await this.bp.fetchHTMLFragment('/v5/apps/based/buddylist/message.html');
+            this.bp.appendCSS('/v5/apps/based/buddylist/buddylist.css');
 
             // await this.bp.importModule('https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm', {}, false)
 

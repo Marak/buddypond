@@ -199,8 +199,8 @@ async function startPartyBox() {
 
     // create the track
     let t = bp.apps['audio-track'].createAudioTrack({
-        fileName: './v2/apps/based/audio-track/assets/dang-son.mp3',
-        url: './v2/apps/based/audio-track/assets/dang-son.mp3'
+        fileName: './v5/apps/based/audio-track/assets/dang-son.mp3',
+        url: './v5/apps/based/audio-track/assets/dang-son.mp3'
     });
     console.log('created audio track', t);
 

@@ -11,13 +11,13 @@ export default class Example {
         // using this.bp.load() method
 
         // injects CSS link tag into the head of document
-        await this.bp.load('/v2/apps/based/_example/_example.css');
+        await this.bp.load('/v5/apps/based/_example/_example.css');
 
         // fetches html from the fragment and returns it as a string
-        let html = await this.bp.load('/v2/apps/based/_example/_example.html');
+        let html = await this.bp.load('/v5/apps/based/_example/_example.html');
 
         // await imports the module and returns it
-        let module = await this.bp.load('/v2/apps/based/_example/_example.js');
+        let module = await this.bp.load('/v5/apps/based/_example/_example.js');
 
 
         let exampleWindow = this.bp.apps.ui.windowManager.createWindow({

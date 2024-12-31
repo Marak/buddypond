@@ -11,9 +11,9 @@ export default class Card {
     async load() {
 
       // bp loader will not re-load assets if they are already loaded
-      const htmlUrl = `/v2/apps/based/card/cards/${this.cardType}/${this.cardType}-card.html`;
-      const cssUrl = `/v2/apps/based/card/cards/${this.cardType}/${this.cardType}-card.css`;
-      const jsUrl = `/v2/apps/based/card/cards/${this.cardType}/${this.cardType}-card.js`;
+      const htmlUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.html`;
+      const cssUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.css`;
+      const jsUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.js`;
       this.htmlContent = await this.bp.load(htmlUrl);
       this.cssContent = await this.bp.load(cssUrl);
       // Load the JS module as a function and assign it to this.applyData

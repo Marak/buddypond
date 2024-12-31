@@ -6,7 +6,7 @@ export default class MenuBar {
     }
 
     async init() {
-        await this.bp.appendCSS('/v2/apps/based/menubar/menubar.css');
+        await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
     }
 
     createMenu(menuData = [

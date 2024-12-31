@@ -10,10 +10,10 @@ export default class Pond {
     async init() {
 
         // injects CSS link tag into the head of document
-        await this.bp.load('/v2/apps/based/pond/pond.css');
+        await this.bp.load('/v5/apps/based/pond/pond.css');
 
         // fetches html from the fragment and returns it as a string
-        this.html = await this.bp.load('/v2/apps/based/pond/pond.html');
+        this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
 
         // should be automatic? why didn't bp.load() pick up on this?
         this.open();
@@ -45,7 +45,7 @@ export default class Pond {
         });
 
         // await imports the module and returns it
-        // let module = await this.bp.load('/v2/apps/based/pond/pond.js');
+        // let module = await this.bp.load('/v5/apps/based/pond/pond.js');
 
         return 'loaded pond';
     }
