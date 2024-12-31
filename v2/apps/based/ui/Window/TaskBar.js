@@ -1,4 +1,3 @@
-// Buddy Pond - TaskBar.js - Marak Squires 2023
 export default class TaskBar {
     constructor({ homeCallback } = {}) {
         this.taskBarElement = document.createElement('div');
@@ -6,28 +5,48 @@ export default class TaskBar {
         document.body.appendChild(this.taskBarElement);
         this.items = new Map();
 
-        // Optional Home Button
+        // Create home button using addItem
         if (homeCallback) {
-            this.homeButton = document.createElement('div');
-            this.homeButton.className = 'taskbar-item taskbar-home';
-            this.homeButton.textContent = 'Home'; // You can customize the text or use an icon
-            this.homeButton.onclick = homeCallback;
-            this.taskBarElement.appendChild(this.homeButton);
+            this.addItem({
+                id: 'home',
+                title: 'Home',
+                onClick: homeCallback,
+                icon: 'desktop/assets/images/icons/icon_mantra_64.png'
+            });
         }
     }
 
-    addItem(itemId, displayName, onClickCallback) {
+    addItem(config) {
+        const { id, title = '', onClick, content, icon } = config;
         const itemElement = document.createElement('div');
-        itemElement.className = 'taskbar-item icon';
-        itemElement.textContent = displayName;
+        itemElement.className = 'taskbar-item';
+        const itemText = document.createElement('div');
+        itemText.className = 'taskbar-item-text';
+        itemText.textContent = title; // Tooltip text
+        itemElement.appendChild(itemText);
+
+        if (content) {
+            itemElement.innerHTML = content;
+        } else if (icon) {
+            const itemIcon = document.createElement('img');
+            itemIcon.src = icon;
+            itemIcon.height = 32;  // Standard icon size
+            itemIcon.width = 32;
+            itemIcon.alt = title;
+            itemElement.appendChild(itemIcon);
+        } else {
+            itemElement.textContent = title;
+        }
+
         itemElement.onclick = (ev) => {
-            if (onClickCallback) {
-                onClickCallback(ev, itemElement);
+            if (onClick) {
+                onClick(ev, itemElement);
             }
-            this.alertItem(itemId);
+            this.alertItem(id);
         };
+
         this.taskBarElement.appendChild(itemElement);
-        this.items.set(itemId, itemElement);
+        this.items.set(id, itemElement);
         return itemElement;
     }
 

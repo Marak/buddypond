@@ -106,11 +106,13 @@ export default class Pond {
             this.pondWindow.open();
             return;
         }
+        let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
 
         this.pondWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'pond',
             title: 'Ponds',
             app: 'pond',
+            icon: iconImagePath,
             x: 50,
             y: 100,
             width: 400,

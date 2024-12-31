@@ -1,13 +1,21 @@
-export default function arrangeShortcuts(cols = 4) {
+export default function arrangeShortcuts(cols = 4, options = {
+    rowWidth: 74,
+    rowHeight: 100
+}) {
     const containerWidth = this.shortCutsContainer.offsetWidth || 800; // Get the container's width
-    const iconWidth = 74; // Assuming width + margin of icons
-    const rowHeight = 100; // Assuming height + margin of icons
-    const maxCols = Math.floor(containerWidth / iconWidth); // Calculate the maximum number of columns
+    console.log('containerWidth:', containerWidth);
+    const maxCols = Math.floor(containerWidth / options.rowWidth); // Calculate the maximum number of columns
     const actualCols = cols < maxCols ? cols : maxCols; // Choose the lesser to avoid overflow
 
     Array.from(this.shortCutsContainer.children).forEach((icon, index) => {
-        const x = (index % actualCols) * iconWidth; // Calculate x position
-        const y = Math.floor(index / actualCols) * rowHeight; // Calculate y position
+        const x = (index % actualCols) * options.rowWidth; // Calculate x position
+        let y = Math.floor(index / actualCols) * options.rowHeight; // Calculate y position
+
+        let offSetY = 100;
+        if (this.bp.isMobile()) { // TODO: remove
+            y += offSetY; // Add an offset to the y position
+
+        }
         // console.log('x:', x, 'y:', y);
         icon.style.position = 'absolute'; // Corrected typo here
         icon.style.left = `${x}px`; // Set left position

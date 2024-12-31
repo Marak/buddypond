@@ -242,3 +242,27 @@
 .loginStatus {
     text-align: center
 }
+
+
+@media (max-width: 1000px) {
+    .app-buddylist > p,
+    .app-buddylist > input,
+    .app-buddylist > i,
+    .app-buddylist > button {
+        font-size: 64px !important;
+    }
+
+    .aim-input {
+        font-size: 48px;
+        height: 128px;
+    }
+
+    .button-bar-button {
+        width: 128px !important;
+        height: 128px !important;
+    }
+    .aim-send-btn {
+        height: 128px;
+
+    }
+}

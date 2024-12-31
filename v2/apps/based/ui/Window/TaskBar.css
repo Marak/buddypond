@@ -4,8 +4,12 @@
     left: 0;
     width: 100%;
 
-    display: flex
-;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 30px;
+
+    overflow: visible; /* Allow child elements to display outside the container */
     background: linear-gradient(180deg, #666666, #353535);
     color: #e0e0e0;
     padding: 8px 16px;
@@ -17,26 +21,53 @@
     border-radius: 8px 8px 0 0;
     user-select: none;
     cursor: grab;
-    flex-wrap: wrap;
 
 
-    justify-content: start;
     z-index: 99999;
 }
 
 .taskbar-item {
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #555;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    position: relative;
+    /* rounded corners for a modern feel */
+    border-radius: 8px;
+}
+
+.taskbar-item {
+    transition: transform 0.3s ease;
+    width: 48px; /* Adjust based on your icon size */
 }
 
 .taskbar-item:hover {
-    background-color: #777;
+    transform: scale(1.5); /* Icon enlargement factor */
 }
+
+.taskbar-item-text {
+    visibility: hidden;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap; /* Prevent text from wrapping */
+    z-index: 100000; /* Ensure it is above all */
+    padding: 5px 10px;
+    background-color: #ffffff;
+    color: #333333;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Optional: Adds a shadow for better visibility */
+}
+
+.taskbar-item:hover .taskbar-item-text {
+    visibility: visible;
+}
+
+
+
+
 
 .taskbar-item-alert {
     animation: blinker 1s linear infinite;
@@ -53,6 +84,7 @@
         padding: 12px 20px !important; /* Larger padding for better touch interaction */
         font-size: 16px !important; /* Larger font size for readability */
         border-radius: 12px 12px 0 0 !important; /* Slightly larger radius for aesthetic adjustment */
+        gap: 5px;
     }
 
     .taskbar-item {
@@ -64,5 +96,19 @@
 
     .taskbar-item:hover {
         background-color: #666 !important; /* Slightly darker for hover effect, considering touch devices don't use hover, this is for consistency */
+    }
+    /* make the items and text larger */
+    .taskbar-item-text {
+        font-size: 24px !important;
+        padding: 10px 20px !important;
+        border-radius: 8px !important;
+    }
+    .taskbar-item:hover .taskbar-item-text {
+        visibility: visible !important;
+    }
+    /* image size */
+    .taskbar-item img {
+        width: 48px !important;
+        height: 48px !important;
     }
 }

@@ -169,7 +169,7 @@ window.bp_v_5 = async function bp_v_5() {
   ]);
 
   // TODO: better load order here, make sure all legacy stuff binds before we open buddylist, etc
-  await bp.load('motd');
+  //await bp.load('motd');
   bp.open('buddylist');
 
   await bp.importModule({
@@ -571,9 +571,28 @@ function renderDesktopShortCuts() {
   })
   */
 
+  function arrangeDesktop() {
+    if (bp.isMobile()) {
+      bp.apps.desktop.arrangeShortcuts(4, {
+        rowWidth: 256,
+        rowHeight: 256
+      })
+    
+    } else {
+      bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
+    } 
+  
+  }
+  window.arrangeDesktop = arrangeDesktop;
+
+  arrangeDesktop();
+  // add window resize event to re-arraange shortcuts
+  window.addEventListener('resize', function () {
+    arrangeDesktop();
+  });
   
   
-  bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
+
 
 
 

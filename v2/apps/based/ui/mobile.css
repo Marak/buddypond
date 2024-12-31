@@ -21,9 +21,9 @@
     }
 
     .window-container, .window {
-        left: 0 !important;
-        top: 5px !important;
-        width: calc(100% - 60px) !important; /* Full width for mobile */
+        left: 5px !important;
+        top: 7px !important;
+        width: calc(100% - 10px) !important; /* Full width for mobile */
         height: calc(100vh - 160px) !important; /* Full height for mobile */
     }
 
@@ -95,5 +95,8 @@
 
     .buddyListHolder {
         padding: 0 5px; /* Padding adjustment */
+    }
+    .resize-handle {
+        display: none; /* Hide resize handle */
     }
 }

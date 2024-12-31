@@ -25,6 +25,15 @@
     text-align: center;
 }
 
+.joinPondButton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /* Styling for the ponds table */
 .joinPondTable {
     min-width: 400px;
@@ -108,7 +117,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .window_main.pond_main {
         width: 100%;
         max-width: none;
@@ -123,6 +132,26 @@
     .customPondName {
         width: calc(100% - 20px); /* Adjust width on smaller screens */
     }
+
+    .pondsContainer table {
+        font-size: 32px;
+    }
+    .joinPonds {
+        max-width: 100%;
+    }
+    .pondsContainer .desktopButton {
+        width: 100%;
+    }
+    .pondsContainer em {
+        font-size: 24px;
+    }
+    .pondsContainer input {
+        font-size: 32px;
+    }
+    .joinPonds h2 {
+        display: none;
+    }
+
 }
 
 

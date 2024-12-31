@@ -183,6 +183,7 @@ export default function openChatWindow(data) {
             this.bp.emit('buddy::sendMessage', _data);
         }
         $('.aim-input', chatWindow.content).val('');
+        e.preventDefault();
         return false;
     });
 
@@ -190,6 +191,8 @@ export default function openChatWindow(data) {
     $('.aim-input', chatWindow.content).keydown((e) => {
         if (e.which === 13) {
             $('.message_form', chatWindow.content).submit();
+            e.preventDefault();
+            return false;
         }
     });
 

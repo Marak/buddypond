@@ -326,6 +326,14 @@ class Window {
     }
 
 
+    move (x, y) {
+        this.x = x;
+        this.y = y;
+        this.container.style.top = `${this.y}px`;
+        this.container.style.left = `${this.x}px`;
+        this.windowManager.saveWindowsState();
+    }
+
     serialize() {
 
         // we need an xpath selector for this.parent
@@ -606,6 +614,15 @@ class Window {
         resizeHandle.onmousedown = (e) => this.startResize(e);
         document.onmouseup = () => this.stopResize();
         document.onmousemove = (e) => this.resize(e);
+    }
+
+    setSize (width, height) {
+        this.width = width;
+        this.height = height;
+        this.container.style.width = `${this.width}`;
+        this.container.style.height = `${this.height}`;
+        // save the window state
+        this.windowManager.saveWindowsState();
     }
 
     startResize(e) {

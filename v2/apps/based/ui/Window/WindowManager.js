@@ -32,6 +32,10 @@ export default class WindowManager {
                 this.minimizeAllWindows();
                 // this.windowsClosed = true;
 
+                // hide all legacy BP windows ( TODO remove this )
+                $('.window').hide();
+                $('.window').removeClass('window_stack');
+
             }
         });
 
@@ -73,7 +77,7 @@ export default class WindowManager {
             window = existingWindow;
             this.focusWindow(window); // Focus the newly created window
             return window;
-        } 
+        }
         window = new Window(options, this);
 
         window.container.addEventListener("mousedown", () => {
@@ -82,24 +86,34 @@ export default class WindowManager {
         this.addWindow(window);
         this.focusWindow(window); // Focus the newly created window
 
-        this.taskBar.addItem(window.id, window.title, () => {
+        this.taskBar.addItem({
+            id: window.id,
+            title: window.title,
+            icon: window.icon,
+            onClick: () => {
 
-            // toggle window minimize / restore state
-            if (this.isMobile()) {
-                this.minimizeAllWindows(true);
-                // we could minimize all other windows here
-                // minimizeAllWindows();
+
+                // toggle window minimize / restore state
+                if (this.isMobile()) {
+                    this.minimizeAllWindows(true);
+                    // we could minimize all other windows here
+                    // minimizeAllWindows();
+                    // hide all legacy BP windows ( TODO remove this )
+                    $('.window').hide();
+                    $('.window').removeClass('window_stack');
+                }
+
+                window.minimize();
+
+
             }
-
-            window.minimize();
-
         });
-
+        
         return window;
     }
 
 
-    isMobile () {
+    isMobile() {
         return window.innerWidth < 1000;
     }
 
@@ -184,6 +198,18 @@ export default class WindowManager {
         if (this._openWindow) {
             this._openWindow(name, config);
         }
+    }
+
+    arrangeVerticalStacked() {
+        const containerHeight = document.body.clientHeight; // Adjust to your specific container if not the body
+        const numWindows = this.windows.length;
+        const windowHeight = containerHeight / numWindows;
+
+        this.windows.forEach((window, index) => {
+            const yPos = windowHeight * index;
+            window.setSize('100%', windowHeight + 'px'); // Assuming you have a resize method
+            window.move(0, yPos); // Assuming you have a move method
+        });
     }
 
     // Remark: This should probably be mostly in settings app or a separate app

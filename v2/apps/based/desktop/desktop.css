@@ -22,6 +22,7 @@
     margin-right: auto; /* Center the container horizontally */
 }
 
+/* these are the shortcuts */
 .desktop-shortcuts-container > div {
     text-align: center;
     font-size: 12px; /* Adjusted for better readability */
@@ -31,4 +32,23 @@
     flex-direction: column; /* Stack items vertically within each shortcut */
     justify-content: center; /* Center content vertically within each shortcut */
     align-items: center; /* Center content horizontally within each shortcut */
+    user-select: none; /* Prevent text selection */
+}
+
+@media (max-width: 1000px) {
+    .desktop-shortcuts-container {
+        top: 0px;
+        height: calc(100vh - 128px);
+    }
+    .desktop-shortcuts-container img {
+        width: 128px !important; 
+        height: 128px !important;
+    }
+    .desktop-shortcuts-container .icon {
+        width: 128px !important; 
+        height: 128px !important;
+    }
+    .desktop-shortcuts-container .title {
+        font-size: 32px !important;
+    }
 }

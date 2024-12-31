@@ -1,6 +1,5 @@
 /* Desktop.js - Buddy Pond - Marak Squires - 2023 */
-
-import Folder from './lib/Folder.js';
+import addFolder from "./lib/addFolder.js";
 
 // shortcuts
 import addShortCut from "./lib/shortcuts/addShortCut.js";
@@ -17,7 +16,6 @@ export default class Desktop {
         this.options = options;
 
         this.folders = [];
-
 
         // Setup containers for the desktop and shortcuts
         this.container = document.createElement('div');
@@ -51,29 +49,7 @@ export default class Desktop {
         return 'loaded desktop';
     }
 
-    addFolder(metadata) {
-        //alert(metadata.name)
-        const folder = new Folder(metadata.name, {
-            onOpen: () => {
-                console.log('Folder opened:', metadata.name);
-                this.bp.apps.ui.windowManager.createWindow({
-                    title: metadata.name,
-                    width: 500,
-                    height: 500,
-                    content: `
-                        <h1>${metadata.name}</h1>
-                        <p>Folder content goes here</p>
-                        <p>${JSON.stringify(metadata)}</p>
-                    `
-                });
-
-            }
-        });
-        this.folders.push(folder);
-        console.log('fffff', folder.render())
-        //this.addShortCut(folder);
-        this.shortCutsContainer.appendChild(folder.render());
-    }
+  
    
 }
 
@@ -82,3 +58,4 @@ Desktop.prototype.removeShortCut = removeShortCut;
 Desktop.prototype.arrangeShortcuts = arrangeShortcuts;
 Desktop.prototype.setupContextMenu = setupContextMenu;
 Desktop.prototype.showContextMenu = showContextMenu;
+Desktop.prototype.addFolder = addFolder;

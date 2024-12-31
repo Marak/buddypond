@@ -156,15 +156,6 @@ div.ui-resizable-handle {
   height: 100%;
 }
 
-.window_full_mobile {
-  border: 0;
-  border-radius: 0;
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  -webkit-background-clip: padding-box;
-  width: 100%;
-  height: 100%;
-}
 
 
 .window_full .ui-resizable-se {
@@ -172,22 +163,22 @@ div.ui-resizable-handle {
 }
 
 .window_top {
-  background: #333 url(../images/gui/bar_bottom.png) repeat-x;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-topright: 5px;
-  -webkit-border-top-left-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -webkit-background-clip: padding-box;
-  color: #fff;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: linear-gradient(180deg, #666666, #353535); /* Mac-like gradient */
+  color: #e0e0e0;
+  padding-top: 8px;
+  padding-left: 8px;
+  padding-bottom: 4px;
+  font-size: 14px;
   font-weight: bold;
-  overflow: hidden;
-  line-height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
+  letter-spacing: 0.5px;
   text-shadow: #000 0 1px 1px;
-  height: 30px;
+  border-bottom: 1px solid #444;
+  border-radius: 8px 8px 0 0; /* Match window container corners */
+  user-select: none;
+  cursor: grab;
 }
 
 .window_top img {
@@ -286,8 +277,7 @@ div.ui-resizable-handle {
   float: left;
   left: 0px;
   right: 0px;
-  bottom: 17vh;
-  height: calc(100% - 63px);
+  height: calc(100% - 52px);
 }
   
 
@@ -319,6 +309,9 @@ div.ui-resizable-handle {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   -webkit-background-clip: padding-box;
+}
+.window_bottom {
+  color: linear-gradient(180deg, #666666, #353535);
 }
 
 .window_full .window_inner {
@@ -1342,9 +1335,36 @@ iframe {
   
 }
 
+.trafficLight {
+  position: absolute;
+    right: 10px;
+}
+
+.window_top .float_left {
+  display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+}
+
 .trafficLight a {
   margin-left: 2px;
 }
+
+
+@media (max-width: 1000px) {
+  .window_top {
+      height: 128px;
+      font-size: 48px;
+      padding-left: 32px;
+  }
+  .window_top img {
+      width: 64px;
+      height: 64px;
+      margin-right: 16px;
+  }
+}
+
 
 .openApp td {
   cursor: pointer;

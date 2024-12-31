@@ -3,6 +3,8 @@ export default class UI {
     constructor(bp, options = {}) {
         this.bp = bp;
 
+        this.bp.isMobile = this.isMobile;
+
         let windowManagerOptions = {};
         windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
         windowManagerOptions.window = options.window || {};
@@ -78,7 +80,7 @@ export default class UI {
 
     }
 
-    async isMobile () {
+    isMobile () {
         return window.innerWidth < 1000;
     }
 

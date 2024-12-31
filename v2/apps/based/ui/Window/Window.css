@@ -129,7 +129,8 @@
 
 /* Optional: Focused State */
 .window-container:focus-within {
-    box-shadow: 0 8px 16px rgba(255, 204, 0, 0.5); /* Gold glow to indicate focus */
+    /* box-shadow: 0 8px 16px rgba(255, 204, 0, 0.5);  */
+    /* Gold glow to indicate focus */
     /* animation: subtle-pulse 1.5s infinite; Optional subtle pulse */
 }
 
@@ -154,3 +155,16 @@
 .window-not-resizeable {
     resize: none !important;
 }
+
+@media (max-width: 1000px) {
+    .window-title-bar {
+        height: 128px;
+        font-size: 48px;
+        padding-left: 32px;
+    }
+    .window-title-bar img {
+        width: 64px;
+        height: 64px;
+        margin-right: 16px;
+    }
+  }

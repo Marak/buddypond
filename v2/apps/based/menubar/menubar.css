@@ -1,82 +1,88 @@
 /* Menu Bar Styles */
 .menu-bar {
-    position: fixed;
-    top: 0px;
-    display: flex;
-    /*background-color: #2a2a2a;*/
-    background: linear-gradient(180deg, #666666, #353535);
-    padding-top: 2px;
-    padding-bottom: 0px;
+  position: fixed;
+  top: 0px;
+  display: flex;
+  /*background-color: #2a2a2a;*/
+  background: linear-gradient(180deg, #666666, #353535);
+  padding-top: 2px;
+  padding-bottom: 0px;
 
-    padding-right: 10px;
-    padding-left: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 
-    font-family: Arial, sans-serif;
-    color: #ddd;
-    user-select: none;
-    z-index: 10000;
-    width: 100%;
-    z-index: 13000;
-    align-items: flex-start;
-    font-size: 14px;
-    gap: 20px;
-    box-sizing: border-box; /* Includes padding and border in the element's width and height */
+  font-family: Arial, sans-serif;
+  color: #ddd;
+  user-select: none;
+  z-index: 10000;
+  width: 100%;
+  z-index: 13000;
+  align-items: flex-start;
+  font-size: 14px;
+  gap: 20px;
+  box-sizing: border-box;
+  /* Includes padding and border in the element's width and height */
 
-  
-  }
-  
-  /* Top-Level Menu Items */
-  .menu-item {
-    position: relative;
-    /*padding: 8px 12px;*/
-    cursor: pointer;
-    z-index: 13000;
-    border-radius: 4px 4px 0 0;
-  }
 
-  .menu-item select {
-    position: relative;
-    /*padding: 8px 12px;*/
-    padding-right: 12px;
-    padding-left: 12px;
-    padding-top: 0px;
-    cursor: pointer;
-    margin-right: 15px;
-    z-index: 13000;
-    font-size: 14px;
-  }
-    
-  /* Submenu Container */
-  .submenu {
+}
+
+/* Top-Level Menu Items */
+.menu-item {
+  position: relative;
+  /*padding: 8px 12px;*/
+  cursor: pointer;
+  z-index: 13000;
+  border-radius: 4px 4px 0 0;
+}
+
+.menu-item select {
+  position: relative;
+  /*padding: 8px 12px;*/
+  padding-right: 12px;
+  padding-left: 12px;
+  padding-top: 0px;
+  cursor: pointer;
+  margin-right: 15px;
+  z-index: 13000;
+  font-size: 14px;
+}
+
+/* Submenu Container */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  padding-top: 10px;
+  left: 0;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 0 4px 4px 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 13000;
+}
+
+/* Submenu Items */
+.submenu-item {
+  position: relative !important;
+  padding: 8px 15px;
+  cursor: pointer;
+  width: 220px;
+}
+
+.submenu-item:hover {
+  background-color: #444;
+  /* color: #fff; */
+}
+
+/* Separator */
+.separator {
+  height: 1px;
+  background-color: #555;
+  margin: 5px 0;
+}
+
+@media (max-width: 1000px) {
+  .menu-bar {
     display: none;
-    position: absolute;
-    top: 100%;
-    padding-top: 10px;
-    left: 0;
-    background-color: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 0 4px 4px 4px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    z-index: 13000;
   }
-  
-  /* Submenu Items */
-  .submenu-item {
-    position: relative !important;
-    padding: 8px 15px;
-    cursor: pointer;
-    width: 220px;
-  }
-  
-  .submenu-item:hover {
-    background-color: #444;
-    /* color: #fff; */
-  }
-  
-  /* Separator */
-  .separator {
-    height: 1px;
-    background-color: #555;
-    margin: 5px 0;
-  }
-  
+}
