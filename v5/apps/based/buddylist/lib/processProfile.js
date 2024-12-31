@@ -23,7 +23,8 @@ export default async function processProfile(profileState) {
     });
   }
 
-  this.data.lastProfileState = profileState;
+  // merge the profile state, don't overwrite
+  this.data.profileState = { ...profileState };
   // profileState is a JSON document representing entire user profile
   // console.log('profileState', profileState);
   if (profileState.system) {
