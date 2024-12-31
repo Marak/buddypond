@@ -143,11 +143,9 @@ export default class BuddyList {
 
         // remote isTyping event from server
         // TODO: move to separate file
-        this.bp.on("buddy::isTyping", "show-is-typing-message", data => {
+        this.bp.on("buddy::isTyping", "show-is-typing-message", message => {
 
             // TODO: move to separate file
-            let message = data.message;
-
             // TODO: move this to a separate file / function
             // Handling typing message display
             if (message.isTyping === true) {
@@ -194,10 +192,11 @@ export default class BuddyList {
                 }
 
                 // console.log("CREATING NEW TIMER")
-                // Set a new timeout to remove the typing message after 3 seconds
+                // Set a new timeout to remove the typing message after very short pause
+                // since there already is a delay from the server
                 this.showingIsTyping[typingIndicatorId] = setTimeout(() => {
                     typingIndicator.remove();
-                }, 1500);
+                }, 500);
                 return;
             }
         })

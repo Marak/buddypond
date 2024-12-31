@@ -45,6 +45,10 @@ export default async function renderChatMessage(message, _chatWindow) {
       }
     }
   }
+
+
+  
+
   /* May need to add this back?
   if (this.data.processedMessages[context].includes(message.uuid)) {
     return;
@@ -55,7 +59,13 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (this.data.processedMessages[context].length > 5000) {
     this.data.processedMessages[context].shift();
   }
-  // console.log(message)
+
+  if (message.isTyping) {
+    // emit buddy::isTyping
+    console.log('buddy::isTyping', message);
+    this.bp.emit('buddy::isTyping', message);
+    return;
+  }
 
   // check if this is an Agent message which gets processed first
   if (message.type === 'agent') {
@@ -68,6 +78,7 @@ export default async function renderChatMessage(message, _chatWindow) {
       console.log('unknown agent message', message);
     }
   }
+
 
   // TODO: allow buddylist to register message processors
   // Is most likely best handled using SystemsManager from ECS code
