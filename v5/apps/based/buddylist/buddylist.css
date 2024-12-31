@@ -130,8 +130,13 @@
     padding: 8px;
 }
 
+.aim-typing {
+    padding-left: 5px;
+}
+
 .aim-messages-container {
 }
+
 
 .aim-no-messages {
     color: #808080; /* Grey text indicating no messages yet */

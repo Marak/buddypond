@@ -122,7 +122,10 @@ export default class BuddyList {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
         this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
+
         this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+
         this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => this.openChatWindow(data));
         this.bp.on('profile::buddy::newmessage', 'mark-messages-as-read', data => this.buddyReadNewMessages(data));
 

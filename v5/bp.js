@@ -193,7 +193,7 @@ bp.appendScript = async function appendScript(url) {
 }
 
 bp.createWorker = async function createWorker(url, config = {}) {
-    let fullUrl = `${bp.config.host}/v2${url}`;
+    let fullUrl = `${bp.config.host}/v5${url}`;
 
     bp.log('createWorker', fullUrl);
     try {

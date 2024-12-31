@@ -46,13 +46,13 @@ export default class Motd {
 
         // header image
         let imageGuyLeft = document.createElement('img');
-        imageGuyLeft.src = 'v2/assets/guy-left.gif';
+        imageGuyLeft.src = 'v5/assets/guy-left.gif';
         motdContent.appendChild(imageGuyLeft);
         let imageContruction = document.createElement('img');
-        imageContruction.src = 'v2/assets/construction.gif';
+        imageContruction.src = 'v5/assets/construction.gif';
         motdContent.appendChild(imageContruction);
         let imageGuyRight = document.createElement('img');
-        imageGuyRight.src = 'v2/assets/guy-right.gif';
+        imageGuyRight.src = 'v5/assets/guy-right.gif';
         motdContent.appendChild(imageGuyRight);
 
         motdWindow.content.appendChild(motdContent);
