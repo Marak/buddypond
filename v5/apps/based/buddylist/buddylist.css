@@ -177,8 +177,6 @@
     cursor: pointer;
     height: 40px;
 
-
-
 }
 
 .aim-send-btn:hover {
@@ -187,6 +185,10 @@
 
 .aim-from, .aim-to {
     display: none; /* Hide these fields */
+}
+
+.buddy-message-sender {
+    cursor: pointer;
 }
 
 

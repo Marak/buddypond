@@ -125,8 +125,8 @@ export default class BuddyList {
         this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
-        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
-        this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        //this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        //this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
 
 
         this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
@@ -423,4 +423,5 @@ BuddyList.prototype.logout = function () {
     $('.loggedOut').flexShow();
     localStorage.removeItem('qtokenid');
     localStorage.removeItem('me');
+    this.data.profileState = null;
 }

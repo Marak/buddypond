@@ -1,8 +1,5 @@
 
 export default async function renderChatMessage(message, _chatWindow) {
-  //console.log('buddy list local this.data', this.data);
-  // console.log("renderChatMessage", message, message.uuid);
-  //console.log('this.data.processedMessages', this.data.processedMessages);
 
   let context = 'default';
 
@@ -44,13 +41,6 @@ export default async function renderChatMessage(message, _chatWindow) {
       }
     }
   }
-  
-
-  /* May need to add this back?
-  if (this.data.processedMessages[context].includes(message.uuid)) {
-    return;
-  }
-  */
 
   // Manage size of processedMessages to prevent memory leaks
   if (this.data.processedMessages[context].length > 5000) {
@@ -88,6 +78,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Legacy BP API
   // TODO: Migrate TTS app to v5 API
   if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
+    // here it is, migrate to say app
     desktop.app.tts.processMessage(message);
   }
 
@@ -121,31 +112,67 @@ export default async function renderChatMessage(message, _chatWindow) {
     container.classList.add('cardContainer');
     _card.render(container);
 
-
   }
 
-  // Prepare message HTML
-  let geoFlag = renderGeoFlag(message);
-  let str = `<span class="datetime">${messageTime}</span> `;
-  let messageSender = message.from === 'anonymous' ? `${message.from} (${message.tripcode || 'tr1pc0d3'}): ` : `${message.from}: `;
-  let messageClass = message.from === this.bp.me ? '' : 'purple';
-
-  str += `<span class="${messageClass}">${geoFlag}${messageSender}</span><span class="message ${messageClass}"></span><br/>`;
-
-  //console.log('chatWindowchatWindowchatWindow', chatWindow, message)
-  //console.log('content', chatWindow.content)
-  // Append message to the chat window
-
-  if (container) {
+  let bp = this.bp;
+  function renderMessage(message, messageTime, chatWindow, container) {
+    // Create elements
     let chatMessage = document.createElement('div');
-    chatMessage.classList.add('chatMessage');
-    chatMessage.appendChild(container);
-    $('.aim-messages', chatWindow.content).append(chatMessage);
-  } else {
-    $('.aim-messages', chatWindow.content).append(`<div class="chatMessage" data-uuid="${message.uuid}">${str}</div>`);
-    $('.message', chatWindow.content).last().text(message.text);
+    chatMessage.className = 'chatMessage';
+    
+    // Prepare the date-time display
+    let dateTimeSpan = document.createElement('span');
+    dateTimeSpan.className = 'datetime';
+    dateTimeSpan.textContent = messageTime;
+  
+    // Determine message sender and apply styles
+    let senderText;
+    if (message.from === 'anonymous') {
+      // Include a tripcode for anonymous messages; use a default if none provided
+      let tripcode = message.tripcode || 'tr1pc0d3';
+      senderText = `${message.from} (${tripcode}): `;
+    } else {
+      // For non-anonymous users, just use the username followed by a colon
+      senderText = `${message.from}: `;
+    }
 
+    let messageSender = document.createElement('span');
+    messageSender.setAttribute('data-from', message.from);
+    let messageClass = message.from === bp.me ? '' : 'purple';
+    messageSender.className = messageClass;
+    messageSender.classList.add('buddy-message-sender');
+    messageSender.textContent = senderText;
+  
+    // Prepare geoFlag (assuming renderGeoFlag is a function returning an element)
+    let geoFlag = renderGeoFlag(message);
+  
+    // Combine elements for the sender
+    messageSender.prepend(geoFlag);  // Prepend geoFlag to the sender span
+  
+    // Prepare the message content span
+    let messageContent = document.createElement('span');
+    messageContent.className = `message ${messageClass}`;
+    messageContent.textContent = message.text; // Assuming 'message.text' contains the message text
+    
+    // Combine all parts into the chatMessage
+    chatMessage.appendChild(dateTimeSpan);
+    chatMessage.appendChild(messageSender);
+    chatMessage.appendChild(messageContent);
+    chatMessage.appendChild(document.createElement('br'));
+  
+    if (container) {
+      container.appendChild(chatMessage);
+    } else {
+      chatMessage.setAttribute('data-uuid', message.uuid);
+      const aimMessages = chatWindow.content.querySelector('.aim-messages');
+      aimMessages.appendChild(chatMessage);
+    }
   }
+
+  renderMessage(message, messageTime, chatWindow, container);
+  
+  // Example usage: renderMessage(messageObject, '12:00 PM', chatWindowObject);
+  
 
   // console.log('content', chatWindow.content)
   // chatWindow.content.innerHTML = 'FFFFF';
@@ -176,19 +203,19 @@ export default async function renderChatMessage(message, _chatWindow) {
 
 } 
 
-
 function renderGeoFlag(message) {
-  let geoFlag = '';
   if (message.location === 'outer space') {
-    // set antarctica to the default flag
+    // Set Antarctica to the default flag when the location is 'outer space'
     message.location = 'AQ';
   }
-  if (message.location) {
-    if (message.location !== 'outer space') {
-      geoFlag = `<img class="geoFlag" src="desktop/assets/geo-flags/flags/4x3/${message.location}.svg"/>`;
-    } else {
-      geoFlag = ``;
-    }
+
+  if (!message.location || message.location === 'outer space') {
+    return document.createElement('span');  // Return an empty span if no flag should be displayed
   }
-  return geoFlag;
+
+  // Create an image element for the flag
+  let img = document.createElement('img');
+  img.className = 'geoFlag';
+  img.src = `desktop/assets/geo-flags/flags/4x3/${message.location}.svg`;
+  return img;
 }

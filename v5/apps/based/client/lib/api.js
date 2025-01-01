@@ -84,10 +84,24 @@ buddypond.banBuddy = function banBuddy (buddyname, cb) {
   })
 }
 
+// Legacy REST method for getting / setting buddy profile in one call
 buddypond.getBuddyProfile = function getBuddyProfile (profileUpdates, cb) {
   apiRequest('/buddies', 'POST', profileUpdates, function(err, data){
     cb(err, data);
   })
+}
+
+// Newer v5 getProfile ( read only )
+buddypond.getProfile = async function getProfile(buddyname) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/buddies/' + buddyname, 'GET', {}, function(err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
 }
 
 buddypond.updateBuddyProfile = function updateBuddyProfile (profileUpdates, cb) {
@@ -362,6 +376,7 @@ function apiRequest(uri, method, data, cb) {
   if (buddypond.qtokenid) {
       data = data || {};
       data.qtokenid = buddypond.qtokenid;
+      headers['qtokenid'] = buddypond.qtokenid;
   }
 
   let body = method === "POST" ? JSON.stringify(data) : undefined;

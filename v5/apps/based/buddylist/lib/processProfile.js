@@ -109,6 +109,12 @@ function _processBuddylistData(buddylist, buddylistData) {
         }
       }
 
+      buddylist.renderOrUpdateBuddyInBuddyList({
+        name: buddyName,
+        buddydata: buddy,
+        wasOnline: false
+      });
+
       // check if this buddy has sent newMessages
       // if so, open a new window
       // the process of opening a new chat window will connect websocket ( if not already connected )

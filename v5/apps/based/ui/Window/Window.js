@@ -212,6 +212,7 @@ class Window {
         let titleBarSpan = document.createElement("span");
         titleBarSpan.classList.add("window-title-text");
         titleBarSpan.textContent = this.title;
+        this.titleBarSpan = titleBarSpan;
 
         // Drag functionality
         this.titleBar.onmousedown = (e) => this.startDrag(e);
@@ -656,6 +657,13 @@ class Window {
         this.isResizing = false;
         // TODO: save the window state
 
+    }
+
+    setTitle(title) {
+        this.title = title;
+        this.titleBarSpan.textContent = title;
+        // save the window state
+        this.windowManager.saveWindowsState();
     }
 }
 

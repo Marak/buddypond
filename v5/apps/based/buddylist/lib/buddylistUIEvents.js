@@ -90,6 +90,18 @@ export default function buddylistUIEvents() {
     }
   });
 
+
+  $(document).on('click', (e) => {
+    // delegate based on if e.target is a .buddy-message-sender
+    // if so, open profile for that buddy
+    //alert(e.target.classList)
+    if ($(e.target).hasClass('buddy-message-sender')) {
+      let buddyName = $(e.target).text();
+      // TODO: implement this
+      //      this.bp.open('profile', { context: buddyName });
+    }
+  });
+
   // Invite a buddy link ( opens twitter with a random message )
   $('.inviteBuddy').on('click', () => {
     let randomInviteMessages = [
