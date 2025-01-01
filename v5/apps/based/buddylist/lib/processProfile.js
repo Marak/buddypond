@@ -11,8 +11,13 @@ export default async function processProfile(profileState) {
     this.data.buddyrequests = {};
   }
   
-  // console.log('processProfile', profileState);
-  if (this.data.lastProfileState && Number(profileState.powerlevel) > Number(this.data.lastProfileState.powerlevel)) {
+  console.log('processProfile', profileState);
+  console.log('this.data.profileState', this.data.profileState);
+  if (this.data.profileState && 
+    (
+      Number(profileState.powerlevel) > Number(this.data.profileState.powerlevel)
+    )
+  ) {
 
     // Assuming there's a container with ID 'powerLevelContainer' in your HTML
     const powerLevel = bp.apps.powerlevel.popup;

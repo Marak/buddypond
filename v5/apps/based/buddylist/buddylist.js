@@ -322,8 +322,8 @@ export default class BuddyList {
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         data.name = data.to;
         if (emitLocal) {
-            if (this.data.lastProfileState) {
-                data.location = this.data.lastProfileState.location || 'outer space';
+            if (this.data.profileState) {
+                data.location = this.data.profileState.location || 'outer space';
             }
             const chatWindow = this.openChatWindow(data);
             this.renderChatMessage(data, chatWindow);
@@ -338,8 +338,8 @@ export default class BuddyList {
         // console.log('sendPondMessageToServer', data);
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         if (emitLocal) {
-            if (this.data.lastProfileState) {
-                data.location = this.data.lastProfileState.location || 'outer space';
+            if (this.data.profileState) {
+                data.location = this.data.profileState.location || 'outer space';
             }
             const chatWindow = this.openChatWindow(data);
             this.renderChatMessage(data, chatWindow);
