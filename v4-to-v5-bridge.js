@@ -526,7 +526,6 @@ function renderDesktopShortCuts() {
 
   }
 
-
   bp.apps.desktop.addShortCut({
     name: 'sampler',
     icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
@@ -534,6 +533,19 @@ function renderDesktopShortCuts() {
   }, {
     onClick: () => {
       bp.open('sampler');
+    }
+
+  });
+
+
+
+  bp.apps.desktop.addShortCut({
+    name: 'audio-visual',
+    icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+    label: 'Audio Visuals',
+  }, {
+    onClick: () => {
+      bp.open('audio-visual');
     }
 
   });
@@ -612,6 +624,8 @@ function renderDesktopShortCuts() {
 
   // all additional default apps
   bp.load('emulator');
+  bp.load('audio-visual');
+
 
 
   setTimeout(function () {

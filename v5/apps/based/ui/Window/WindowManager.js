@@ -242,6 +242,8 @@ export default class WindowManager {
     }
 
     openWindow(name, config) {
+        // TODO: remove JQDX reference ( legacy windows might triger this )
+        JQDX.hideLoadingProgressIndicator(); // for now
         if (this._openWindow) {
             this._openWindow(name, config);
         }

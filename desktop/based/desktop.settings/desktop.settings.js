@@ -84,7 +84,7 @@ desktop.app.settings.load = function loadsettings (params, next) {
     'paint': {},
     'piano': {},
     'mirror': {},
-    'visuals': {},
+    // 'visuals': {},
   }
 
   if (typeof desktop.settings.apps_installed === 'undefined') {

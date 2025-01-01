@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Buddy Pond Audio Visualizations</title>
+  <meta name="description" content="Butterchurn Demo Example">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- <script type="text/javascript" src="../dist/butterchurn.js"></script> -->
+  <script src='/desktop/assets/js/jquery.js' type='text/javascript'></script>
+
+  <style>
+    body{
+      background-color: black;
+      color: white;
+    }
+    div{
+      height: 100%;
+
+    }
+
+    #canvas {
+    display: none;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+    #canvas:-moz-full-screen {
+      width: 100%;
+      height: 100%;
+      
+    }
+    #canvas:-webkit-full-screen {
+      width: 100%;
+      height: 100%;
+      
+    }
+    #canvas:-ms-fullscreen {
+      width: 100%;
+      height: 100%;
+      
+    }
+    #canvas:fullscreen {
+      width: 100%;
+      height: 100%;
+      
+    }
+
+    #presetSelect {
+      max-width: 300px;
+    }
+
+    #presetCycleLength {
+      width: 50px;
+    }
+    #container {
+    position: relative;
+    
+    }
+    #container canvas, #overlay {
+      position: fixed;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      
+      
+    }
+    .animate{
+      animation: pulse 1s linear infinite;
+    }
+    @keyframes pulse {
+    0% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+    50% {
+      -webkit-transform: scale(0.8);
+      transform: scale(0.8);
+    }
+    100% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+  }
+
+  </style>
+
+  <script>
+    
+    let visualizer = {};
+
+    visualizer.stop = function stop () {
+      visualizer.paused = true;
+    }
+
+    visualizer.resume = function stop () {
+      visualizer.paused = false;
+    }
+
+    visualizer.load = function load () {
+
+    }
+
+    visualizer.start = function start () {
+      visualizer.paused = false;
+      var _visualizer = null;
+      var rendering = false;
+      var audioContext = null;
+      var sourceNode = null;
+      var delayedAudible = null;
+      var cycleInterval = null;
+      var presets = {};
+      var presetKeys = [];
+      var presetIndexHist = [];
+      var presetIndex = 0;
+      var presetCycle = true;
+      var presetCycleLength = 15000;
+      var presetRandom = true;
+      var canvas = document.getElementById('canvas');
+
+      function connectToAudioAnalyzer(sourceNode) {
+        if(delayedAudible) {
+          delayedAudible.disconnect();
+        }
+
+        delayedAudible = audioContext.createDelay();
+        delayedAudible.delayTime.value = 0.26;
+
+        sourceNode.connect(delayedAudible)
+        delayedAudible.connect(audioContext.destination);
+
+        _visualizer.connectAudio(delayedAudible);
+      }
+
+      function startRenderer() {
+        if (!visualizer.paused) {
+          requestAnimationFrame(() => startRenderer());
+          _visualizer.render();
+        } else {
+          // TODO: set timer to check for restart
+          setTimeout(function(){
+            startRenderer();
+          }, 200)
+        }
+      }
+
+      function playBufferSource(buffer) {
+        if (!rendering) {
+          rendering = true;
+          startRenderer();
+        }
+
+        if (sourceNode) {
+          sourceNode.disconnect();
+        }
+
+        sourceNode = audioContext.createBufferSource();
+        sourceNode.buffer = buffer;
+        connectToAudioAnalyzer(sourceNode);
+
+        sourceNode.start(0);
+      }
+
+
+      function connectMicAudio(sourceNode, audioContext) {
+        audioContext.resume();
+
+        var gainNode = audioContext.createGain();
+        gainNode.gain.value = 1.25;
+        sourceNode.connect(gainNode);
+
+        _visualizer.connectAudio(gainNode);
+        startRenderer();
+      }
+
+      function nextPreset(blendTime = 5.7) {
+        presetIndexHist.push(presetIndex);
+
+        var numPresets = presetKeys.length;
+        if (presetRandom) {
+          presetIndex = Math.floor(Math.random() * presetKeys.length);
+        } else {
+          presetIndex = (presetIndex + 1) % numPresets;
+        }
+
+        _visualizer.loadPreset(presets[presetKeys[presetIndex]], blendTime);
+        $('#presetSelect').val(presetIndex);
+      }
+
+      function prevPreset(blendTime = 5.7) {
+        var numPresets = presetKeys.length;
+        if (presetIndexHist.length > 0) {
+          presetIndex = presetIndexHist.pop();
+        } else {
+          presetIndex = ((presetIndex - 1) + numPresets) % numPresets;
+        }
+
+        _visualizer.loadPreset(presets[presetKeys[presetIndex]], blendTime);
+        $('#presetSelect').val(presetIndex);
+      }
+
+      function restartCycleInterval() {
+        if (cycleInterval) {
+          clearInterval(cycleInterval);
+          cycleInterval = null;
+        }
+
+        if (presetCycle) {
+          cycleInterval = setInterval(() => nextPreset(2.7), presetCycleLength);
+        }
+      }
+
+
+      $("#textControl").click(() => {
+        $("#textControl").css('display', 'none');
+        $("#canvas").css('display', 'inline');
+        $("#overlay").css('display', 'flex');
+        $("#overlay").css('position', 'fixed');
+      });
+
+      $(document).keydown((e) => {
+        if (e.which === 32 || e.which === 39) {
+          nextPreset();
+        } else if (e.which === 8 || e.which === 37) {
+          prevPreset();
+        } else if (e.which === 72) {
+          nextPreset(0);
+        }
+      });
+
+      $('#presetSelect').change((evt) => {
+        presetIndexHist.push(presetIndex);
+        presetIndex = parseInt($('#presetSelect').val());
+        _visualizer.loadPreset(presets[presetKeys[presetIndex]], 5.7);
+      });
+
+      $('#presetCycle').change(() => {
+        presetCycle = $('#presetCycle').is(':checked');
+        restartCycleInterval();
+      });
+
+      $('#presetCycleLength').change((evt) => {
+        presetCycleLength = parseInt($('#presetCycleLength').val() * 1000);
+        restartCycleInterval();
+      });
+
+      $('#presetRandom').change(() => {
+        presetRandom = $('#presetRandom').is(':checked');
+      });
+
+
+      $("#micSelect").click(() => {
+        $("#audioSelectWrapper").css('display', 'none');
+
+        navigator.getUserMedia({ audio: true }, (stream) => {
+          var micSourceNode = audioContext.createMediaStreamSource(stream);
+          connectMicAudio(micSourceNode, audioContext);
+        }, (err) => {
+          console.log('Error getting audio stream from getUserMedia');
+        });
+      });
+
+      function cycleContent() {
+        var content = ["butterchurn", "signal"];
+        const randomElement = content[Math.floor(Math.random() * content.length)];
+        console.log(randomElement);
+      }
+
+      function initPlayer() {
+        audioContext = new AudioContext();
+
+        presets = {};
+        if (window.butterchurnPresets) {
+          Object.assign(presets, butterchurnPresets.getPresets());
+        }
+        if (window.butterchurnPresetsExtra) {
+          Object.assign(presets, butterchurnPresetsExtra.getPresets());
+        }
+        //presets = _(presets).toPairs().sortBy(([k, v]) => k.toLowerCase()).fromPairs().value();
+
+        // console.log(presets)
+        let keys = Object.keys(presets);
+        presetKeys = keys;
+        presetIndex = Math.floor(Math.random() * presetKeys.length);
+
+        var presetSelect = document.getElementById('presetSelect');
+        for(var i = 0; i < presetKeys.length; i++) {
+            var opt = document.createElement('option');
+            opt.innerHTML = presetKeys[i].substring(0,60) + (presetKeys[i].length > 60 ? '...' : '');
+            opt.value = i;
+            presetSelect.appendChild(opt);
+        }
+
+        _visualizer = butterchurn.default.createVisualizer(audioContext, canvas , {
+          width: 1920,
+          height: 1080,
+          pixelRatio: window.devicePixelRatio || 1,
+          textureRatio: 1,
+        });
+        visualizer.butterchurn = _visualizer;
+        nextPreset(0);
+        cycleInterval = setInterval(() => nextPreset(2.7), presetCycleLength);
+      }
+
+      initPlayer();
+      navigator.getUserMedia({ audio: true }, (stream) => {
+          var micSourceNode = audioContext.createMediaStreamSource(stream);
+          connectMicAudio(micSourceNode, audioContext);
+        }, (err) => {
+          console.log('Error getting audio stream from getUserMedia');
+        });
+        $("#textControl").css('display', 'none');
+        $("#canvas").css('display', 'inline');
+        $("#overlay").css('display', 'flex');
+        $("#overlay").css('position', 'fixed');
+        cycleContent();
+
+    };
+
+    visualizer.openWindow = function openWindow () {
+      let count = 0;
+      let total = 0;
+      function injectTag (url, cb) {
+        total++;
+        var tag = document.createElement('script');
+        tag.onload = function() {
+          console.log('loaded script', url)
+          count++;
+          if (count >= total) {
+            visualizer.start();
+          }
+        };
+        tag.src = url;
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      }
+
+      injectTag('js/butterchurn.js')
+      injectTag('js/butterchurn-presets.js')
+      injectTag('js/butterchurnPresetsExtra.min.js')
+    };
+    
+    $(function() {
+      visualizer.openWindow();
+    });
+  </script>
+</head>
+<body>
+  <div id="textControl">
+    <div id="mainWrapper">
+      <div id="audioSelectWrapper">
+        <div id="localFileBut">
+          <span>Load local files</span>
+        </div>
+        <div id="micSelect">
+          <span>Use Mic</span>
+        </div>
+      </div>
+      <div id="presetControls">
+        <div>Preset: <select id="presetSelect"></select></div>
+        <div>Cycle: <input type="checkbox" id="presetCycle" checked></input>
+                    <input type="number" id="presetCycleLength"step="1" value="15" min="1"></input></div>
+        <div>Random: <input type="checkbox" id="presetRandom" checked></input></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <canvas id='canvas' width='1910' height='1070'></canvas>
+    <!--
+    <div id="overlay"><img height="66" width="66" src="logo.jpg" class='animate'></div>
+    -->
+</div>
+
+  </div>
+</body>
+</html>
