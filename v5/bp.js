@@ -112,8 +112,12 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
             bp.apps[appName] = new module.default(bp, config);
-            await bp.apps[appName].init();
-            bp.log('init complete', appName);
+            if (typeof bp.apps[appName].init === 'function') {
+                await bp.apps[appName].init();
+                bp.log('init complete', appName);
+            } else {
+                console.log('no init function found', appName);
+            }
 
         }
         bp._modules[modulePath] = module;

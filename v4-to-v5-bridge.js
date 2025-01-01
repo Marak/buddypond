@@ -610,6 +610,8 @@ function renderDesktopShortCuts() {
   
   bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
 
+  // all additional default apps
+  bp.load('emulator');
 
 
   setTimeout(function () {

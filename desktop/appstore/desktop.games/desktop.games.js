@@ -10,6 +10,10 @@ desktop.app.games.load = function loadDesktopGames (params, next) {
     $('#window_games').css('height', '35vh');
     $('#window_games').css('top', '9vh');
     $('#window_games').css('left', '3vw');
+
+    $('.openEmulator').on('click', function () {
+      bp.open('emulator');
+    });
     next();
   });
 };
