@@ -83,7 +83,7 @@ window.bp_v_5 = async function bp_v_5() {
   {
     name: 'client',
     config: {
-      host: _host,
+      host: buddypond.endpoint,
       wsHost: _wsHost
     }
 
