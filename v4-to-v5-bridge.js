@@ -82,7 +82,7 @@ window.bp_v_5 = async function bp_v_5() {
   {
     name: 'client',
     config: {
-      host: buddypond.endpoint,
+      host: _api,
       wsHost: _wsHost,
       api: _api
     }
@@ -173,6 +173,7 @@ window.bp_v_5 = async function bp_v_5() {
 
   // TODO: better load order here, make sure all legacy stuff binds before we open buddylist, etc
   await bp.load('motd');
+  // await bp.load('emoji-picker');
   await bp.open('buddylist');
 
   await bp.importModule({
@@ -625,8 +626,7 @@ function renderDesktopShortCuts() {
   // all additional default apps
   bp.load('emulator');
   bp.load('audio-visual');
-
-
+  bp.load('profile');
 
   setTimeout(function () {
     desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed
