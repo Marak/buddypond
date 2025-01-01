@@ -2,6 +2,7 @@ export default function applyData(el, data) {
     const $el = $(el);
     // let snapURL = `${desktop.filesEndpoint}/${data.snapURL}`;
     let snapURL = `${data.snapURL}`;
+    snapURL = 'https://api.buddypond.com' + snapURL;
     let arr = snapURL.split('.');
     let ext = arr[arr.length - 1];
     console.log('applyData', snapURL, data);
@@ -20,4 +21,3 @@ export default function applyData(el, data) {
       'title': 'Remix in Paint'
     });
   }
-  

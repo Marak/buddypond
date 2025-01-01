@@ -112,6 +112,21 @@ export default class Client {
         this.queuedMessages = [];
     }
 
+    onWebSocketClosed() {
+        this.wsConnected = false;
+        this.bp.emit('client::websocketClosed');
+
+        // attempt to reconnect after very short delay
+        setTimeout(() => {
+            if (Object.keys(this.connectionSources).length > 0) {
+                this.worker.postMessage({ type: 'connectWebSocket', data: this.config, qtokenid: {
+                    qtokenid: this.api.qtokenid,
+                    me: this.api.me
+                } });  // Tell worker to connect WebSocket
+            }
+        }, 200);
+    }
+
     handleWorkerMessage(event) {
         this.bp.log('handleWorkerMessage', event)
         const { type, data } = event;
@@ -131,6 +146,7 @@ export default class Client {
                 break;
             case 'wsClosed':
                 this.bp.log('WebSocket connection closed in worker.');
+                this.onWebSocketClosed();
                 break;
             case 'wsError':
                 console.error('WebSocket error in worker:', data);
