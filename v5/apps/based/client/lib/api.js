@@ -9,7 +9,7 @@ let desktop = { settings: {}};
 
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://api.buddypond.com/api/v3';
-  buddypond.endpoint = 'https://137.184.116.145/api/v3';
+  // buddypond.endpoint = 'https://137.184.116.145/api/v3';
 
 } else {
   buddypond.endpoint = 'http://137.184.116.145/api/v3';
