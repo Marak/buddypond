@@ -16,6 +16,12 @@ body {
 .hide {
   display: none;
 }
+.visible {
+  visibility: visible !important;
+}
+.hidden {
+  visibility: hidden !important;
+}
 
 /* default styles */
 a {
