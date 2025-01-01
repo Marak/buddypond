@@ -161,6 +161,6 @@ export default class Emulator {
     }
 }
 
-const cdnBase64 = 'aHR0cDovL2tyYW1lcmljYS1pbmR1c3RyaWVzLmItY2RuLm5ldA==';
+let cdnBase64 = 'aHR0cDovL2tyYW1lcmljYS1pbmR1c3RyaWVzLmItY2RuLm5ldA==';
+cdnBase64 = 'aHR0cHM6Ly9rcmFtZXJpY2EtaW5kdXN0cmllcy5iLWNkbi5uZXQvbmVzLmpzb24=';
 const cdnUrl = atob(cdnBase64);
-/* eslegal-enable no-unused-jry */
