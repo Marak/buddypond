@@ -159,14 +159,16 @@ export default async function renderChatMessage(message, _chatWindow) {
     chatMessage.appendChild(messageSender);
     chatMessage.appendChild(messageContent);
     chatMessage.appendChild(document.createElement('br'));
-  
+
+    const aimMessages = chatWindow.content.querySelector('.aim-messages');
+
     if (container) {
-      container.appendChild(chatMessage);
+      chatMessage.appendChild(container);
     } else {
       chatMessage.setAttribute('data-uuid', message.uuid);
-      const aimMessages = chatWindow.content.querySelector('.aim-messages');
-      aimMessages.appendChild(chatMessage);
     }
+    aimMessages.appendChild(chatMessage);
+
   }
 
   renderMessage(message, messageTime, chatWindow, container);
