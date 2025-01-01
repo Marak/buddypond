@@ -11,7 +11,7 @@ export default class Client {
         };
         this.ws = null;
         this.api = api;
-        this.api.endpoint = this.config.host + '/api/v3';
+        this.api.endpoint = this.config.host;
         this.connectionSources = {};  // Tracks WebSocket connection requests by source
         this.disconnectTimer = null;
         this.disconnectDelay = 10000;  // 10 seconds
