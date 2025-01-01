@@ -112,7 +112,7 @@ export default class Pond {
             icon: iconImagePath,
             x: 100,
             y: 100,
-            width: 350,
+            width: 400,
             height: 400,
             minWidth: 200,
             minHeight: 200,
