@@ -7,11 +7,12 @@ export default class Client {
         this.sseManager = new SSEManager(this);
         this.config = options.config || {
             host: "",
-            wsHost: ""
+            wsHost: "",
+            api: "",
         };
         this.ws = null;
         this.api = api;
-        // this.api.endpoint = 'https://api.buddypond.com/api/v3';
+        this.api.endpoint = 'https://api.buddypond.com/api/v3';
         this.config.api = 'https://api.buddypond.com/api/v3';
         this.connectionSources = {};  // Tracks WebSocket connection requests by source
         this.disconnectTimer = null;

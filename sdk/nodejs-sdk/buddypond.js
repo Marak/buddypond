@@ -9,7 +9,7 @@ bp.mode = 'dev';
 if (bp.mode === 'dev') {
   bp.endpoint = 'http://dev.buddypond.com/api/v3';
 } else {
-  bp.endpoint = 'https://buddypond.com/api/v3';
+  bp.endpoint = 'https://api.buddypond.com/api/v3';
 }
 
 bp.Client = function BuddyPondClient (config) {
