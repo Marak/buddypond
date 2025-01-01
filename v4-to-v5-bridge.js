@@ -17,11 +17,8 @@ window.bp_v_5 = async function bp_v_5() {
   // code is migrated to the new API. This is a temporary solution.
   // Everything in BuddyPond v5 is *much* more modular and easier to use.
   bp.setConfig({
-    host: _host,
-    api: _api,
+    host: _host
   });
-
-
 
   bp.on('auth::logout', 'old-bp-logout', function () {
     $('.loggedIn').flexHide();
@@ -85,7 +82,8 @@ window.bp_v_5 = async function bp_v_5() {
     name: 'client',
     config: {
       host: buddypond.endpoint,
-      wsHost: _wsHost
+      wsHost: _wsHost,
+      api: _api
     }
 
   }, 'buddyscript', 'toastr', 'powerlevel', {
