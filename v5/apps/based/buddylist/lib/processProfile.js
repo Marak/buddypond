@@ -96,14 +96,17 @@ function _processBuddylistData(buddylist, buddylistData) {
             name: buddyName,
             buddydata: buddy
           });
-        } else {
+        }
+        buddylist.data.buddylist[b] = buddy;
+      } else {
+        // check to see if buddy was connected and is no longer
+        if (!buddy.isConnected && buddylist.data.buddylist[b].isConnected) {
           buddylist.bp.emit('profile::buddy::out', {
             name: buddyName,
             buddydata: buddy,
             wasOnline: false
           });
         }
-
       }
 
       // check if this buddy has sent newMessages

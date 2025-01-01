@@ -77,6 +77,7 @@ window.bp_v_5 = async function bp_v_5() {
     },
   },
     'menubar',
+    'play',
 
   {
     name: 'client',
@@ -380,11 +381,19 @@ window.bp_v_5 = async function bp_v_5() {
 
 
   $('.volumeToggle').on('click', function () {
-    if (desktop.settings.audio_enabled) {
-      desktop.set('audio_enabled', false);
+    let audio_enabled = localStorage.getItem('audio_enabled');
+
+    if (audio_enabled === 'true') {
+      localStorage.setItem('audio_enabled', 'false');
+      $('.volumeFull').hide();
+      $('.volumeMuted').show();
     } else {
-      desktop.set('audio_enabled', true);
+      localStorage.setItem('audio_enabled', 'true');
+      $('.volumeFull').show();
+      $('.volumeMuted').hide();
+      bp.play('desktop/assets/audio/IM.wav', { tryHard: Infinity });
     }
+
   });
 
   if (!desktop.settings.audio_enabled) {
@@ -599,7 +608,7 @@ function renderDesktopShortCuts() {
   });
   
   
-
+  bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
 
 
 

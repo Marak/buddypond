@@ -98,9 +98,10 @@ window.top.location = 'ie.html';
 
 
       let _host = 'https://buddypond.com';
-      let _api = 'https://api.buddypond.com/api/v3';
+      let _api = 'https://api.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
       //_host = 'https://192.168.200.59';
+      //_api = 'https://192.168.200.59';
       //_wsHost = 'wss://192.168.200.59';
 
       buddypond.host = _host;
@@ -185,8 +186,6 @@ window.top.location = 'ie.html';
                 });
               }
             });
-
-
 
             desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function () {
               if (!desktop.settings.audio_enabled) {

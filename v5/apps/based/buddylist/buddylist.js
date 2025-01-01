@@ -128,6 +128,20 @@ export default class BuddyList {
         this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
         this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
 
+
+        this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
+        this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
+        this.bp.on('buddy::message::processed', 'play-im-sound', data => {
+            // only play sounds for recent messages
+            let messageTime = new Date(data.ctime);
+            let now = new Date().getTime();
+            console.log("messageTime", messageTime);
+            console.log("now", new Date());
+            if (now - messageTime.getTime() < 5000) {
+                bp.play('desktop/assets/audio/IM.wav');
+            }
+        });
+
         this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => this.openChatWindow(data));
         this.bp.on('profile::buddy::newmessage', 'mark-messages-as-read', data => this.buddyReadNewMessages(data));
 
@@ -304,7 +318,7 @@ export default class BuddyList {
     buddyReadNewMessages(data) {
         this.bp.log("BuddyReadNewMessages", data);
         const buddyName = data.name;
-        this.data.profileState.updates['buddies/' + buddyName] = {
+        this.data.profileState['buddies/' + buddyName] = {
             newMessages: false
         };
     }
@@ -322,6 +336,7 @@ export default class BuddyList {
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         data.name = data.to;
         if (emitLocal) {
+            data.ctime = new Date().getTime();
             if (this.data.profileState) {
                 data.location = this.data.profileState.location || 'outer space';
             }
@@ -338,6 +353,7 @@ export default class BuddyList {
         // console.log('sendPondMessageToServer', data);
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         if (emitLocal) {
+            data.ctime = new Date().getTime();
             if (this.data.profileState) {
                 data.location = this.data.profileState.location || 'outer space';
             }

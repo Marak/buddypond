@@ -4,16 +4,16 @@ export default class Client {
     constructor(bp, options = {}) {
         this.bp = bp;
         // this.sse = null;
-        this.sseManager = new SSEManager(this);
         this.config = options.config || {
             host: "",
             wsHost: "",
             api: "",
         };
+        this.sseManager = new SSEManager(this);
         this.ws = null;
         this.api = api;
-        this.api.endpoint = 'https://api.buddypond.com/api/v3';
-        this.config.api = 'https://api.buddypond.com';
+        this.api.endpoint = this.config.api + '/api/v3';
+        //this.config.api = 'https://api.buddypond.com';
         this.connectionSources = {};  // Tracks WebSocket connection requests by source
         this.disconnectTimer = null;
         this.disconnectDelay = 10000;  // 10 seconds
