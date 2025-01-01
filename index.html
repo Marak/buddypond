@@ -98,12 +98,13 @@ window.top.location = 'ie.html';
 
 
       let _host = 'https://buddypond.com';
+      let _api = 'https://api.buddypond.com/api/v3';
       let _wsHost = 'wss://api.buddypond.com';
       //_host = 'https://192.168.200.59';
       //_wsHost = 'wss://192.168.200.59';
 
       buddypond.host = _host;
-      buddypond.endpoint = 'https://api.buddypond.com/api/v3'
+      buddypond.endpoint = _api;
 
       // see: ReadMe.md for documentation on `desktop.use`
       $(document).ready(function () {
