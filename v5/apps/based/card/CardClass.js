@@ -19,8 +19,8 @@ export default class Card {
       // Load the JS module as a function and assign it to this.applyData
       const applyDataModule = await this.bp.importModule(jsUrl, {}, false); // Assumes this.bp.load can execute and return modules
       console.log(jsUrl, 'applyDataModule', applyDataModule);
-      this.applyData = applyDataModule.default;
-
+      this.applyData = applyDataModule.default.bind(this);
+      
       // now we will check eaach property we just set, if any are undefined or null
       // we will default them to render a basic card with JSON.stringify of card data
       if (!this.htmlContent) {

@@ -8,7 +8,9 @@ window.bp_v_5 = async function bp_v_5() {
   // code is migrated to the new API. This is a temporary solution.
   // Everything in BuddyPond v5 is *much* more modular and easier to use.
   bp.setConfig({
-    host: _host
+    host: _host,
+    wsHost: _wsHost,
+    api: _api
   });
 
   bp.on('auth::logout', 'old-bp-logout', function () {
