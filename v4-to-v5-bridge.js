@@ -184,7 +184,7 @@ window.bp_v_5 = async function bp_v_5() {
 
   renderDesktopShortCuts();
   await bp.load('say');
-  await bp.open('console');
+  // await bp.open('console');
 
 
   let selectMusicPlaylist = `
