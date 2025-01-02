@@ -114,19 +114,17 @@ export default function buddylistUIEvents() {
     }
 
     e.preventDefault(); // Prevent default context menu
-    console.log('tttt', this)
     let chatMessage = $(e.target).closest('.chatMessage'); // Get the chat message element
-    console.log('chatMessage', chatMessage)
 
     if (api.me !== 'Marak') { // could also allow users to remove their own messages
        // set the removeMessage to disabled class
       $('#customContextMenu').addClass('disabled');
     }
 
-    let from = $(this).data('from');
-    let to = $(this).data('to');
+    let from = $(e.target).data('from');
+    let to = $(e.target).data('to');
     let uuid = chatMessage.data('uuid');
-    let type = $(this).data('type');
+    let type = $(e.target).data('type');
 
     console.log('type', type, 'from', from, 'uuid', uuid);
 
