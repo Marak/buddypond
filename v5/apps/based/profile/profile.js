@@ -21,14 +21,14 @@ export default class Profile {
     }
 
     async open(options = {}) {
+
         let buddyname = options.context || this.bp.me;
         buddyname = buddyname.replace(":", ""); // remove any colons for now
         buddyname = buddyname.replace(" ", ""); // remove any spaces for now
-    
         let buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
         if (buddyname == this.bp.me) {
             buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
-        }
+        } 
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
         let tabList = document.createElement('ul');
@@ -56,11 +56,10 @@ export default class Profile {
             textarea.style.width = '100%'; // Ensure textarea takes full width
             textarea.style.height = '400px'; // Set a fixed height for each textarea
             textarea.value = JSON.stringify(buddyProfile[profileKey], null, 2);
-    
             tabContent.appendChild(textarea);
             tabContentContainer.appendChild(tabContent);
         });
-    
+
         contentDiv.appendChild(tabList);
         contentDiv.appendChild(tabContentContainer);
     
@@ -84,11 +83,16 @@ export default class Profile {
                 closable: true,
                 focusable: true,
                 maximized: false,
-                minimized: false
+                minimized: false,
+                onClose: () => {
+                    this.profileWindow = null;
+                }
             });
             new this.bp.apps.ui.Tabs('#' + this.profileWindow.id); // Initialize the tab functionality
         } else {
+            // this.profileWindow.content.innerHTML = '';
             // If the window exists and the context has changed, re-render the content
+            this.profileWindow.content = contentDiv;
             if (this.profileWindow.context !== buddyname) {
                 this.profileWindow.context = buddyname;
                 $(this.profileWindow.content).html(contentDiv.innerHTML);

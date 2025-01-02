@@ -107,7 +107,12 @@ export default function buddylistUIEvents() {
   $('body').append('<div id="customContextMenu" class="removeMessage" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #ccc; padding: 10px;">Remove Message</div>');
 
   // Right-click event on elements with class .buddy-message-sender
-  $(document).on('contextmenu', '.buddy-message-sender', function (e) {
+  $(document).on('contextmenu', function (e) {
+
+    if (!$(e.target).hasClass('buddy-message-sender')) {
+      return true;
+    }
+
     e.preventDefault(); // Prevent default context menu
     console.log('tttt', this)
     let chatMessage = $(e.target).closest('.chatMessage'); // Get the chat message element

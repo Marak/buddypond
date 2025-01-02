@@ -41,12 +41,13 @@ export default class UI {
             this.bp.appendCSS('/v5/vendor/font-awesome/css/all.min.css');
         }
 
+        // TODO: add these lines back after removing v4 completely ( as jQuery is already loaded in v4)
         if (!this.options.noZepto) {
             // If you need jQuery or another version of $
             // we have the ability to not load Zepto as $
-            await this.bp.appendScript('/v5/vendor/zepto.min.js');
+            //await this.bp.appendScript('/v5/vendor/zepto.min.js');
         } else {
-            await this.bp.appendScript('/v5/vendor/jquery.min.js');
+            //await this.bp.appendScript('/v5/vendor/jquery.min.js');
 
         }
 

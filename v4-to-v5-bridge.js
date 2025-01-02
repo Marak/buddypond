@@ -491,6 +491,17 @@ function renderDesktopShortCuts() {
   }
 
   bp.apps.desktop.addShortCut({
+    name: 'hex-editor',
+    icon: `desktop/assets/images/icons/icon_hex-editor_64.png`,
+    label: 'Hex Editor',
+  }, {
+    onClick: () => {
+      bp.open('hex-editor');
+    }
+  });
+
+
+  bp.apps.desktop.addShortCut({
     name: 'sampler',
     icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
     label: 'Sampler',
@@ -498,7 +509,6 @@ function renderDesktopShortCuts() {
     onClick: () => {
       bp.open('sampler');
     }
-
   });
 
 
