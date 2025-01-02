@@ -129,28 +129,33 @@ export default function openChatWindow(data) {
                 }, 5000); // TODO: 10 seconds
             }
 
-
-
         }
     });
 
     chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 
     if (this.options.autocomplete) {
+        let keys = Object.keys(this.options.autocomplete);
+
+        // add a "/" to each command for consistency
+        let sourceCommands = keys.map((command) => {
+            return '/' + command;
+        });
+
         // new AutoComplete('.aim-input', chatWindow.content, this.options.autocomplete);
         // alert(JSON.stringify(this.options.autocomplete));
         $('.aim-input', chatWindow.content).autocomplete({
-            source: this.options.autocomplete,
+            source: sourceCommands,
             search: function (event, ui) {
-              // only trigger autocomplete searches if user has started message with oper code ( / or \ )
-              let opers = ['/', '\\'];
-              let firstChar = event.target.value.substr(0, 1);
-              if (opers.indexOf(firstChar) === -1) {
-                return false;
-              }
-              return true;
+                // only trigger autocomplete searches if user has started message with oper code ( / or \ )
+                let opers = ['/', '\\'];
+                let firstChar = event.target.value.substr(0, 1);
+                if (opers.indexOf(firstChar) === -1) {
+                    return false;
+                }
+                return true;
             }
-          });
+        });
 
 
     }

@@ -1,6 +1,9 @@
+import Commands from './commands/defaultCommands.js';
+
 export default class BuddyScript {
-    constructor() {
-        this.validCommands = ['give', 'points']; // Initially recognized commands
+    constructor(bp, options = {}) {
+
+        this.bp = bp;
         this.commandActions = {
             give: (context) => {
                 console.log('Giving:', context);
@@ -11,21 +14,31 @@ export default class BuddyScript {
                 return true;
             }
         };
+
+        this.commands = this.commandActions;
+
+
     }
 
     init () {
+        let defaultCommands = new Commands(this.bp);
+        // merge defaultCommands onto this.commandActions
+        Object.assign(this.commands, defaultCommands.commands);
+        console.log("Merged commands", this.commands);
 
     }
 
     isValidBuddyScript(command) {
-        return this.validCommands.includes(command);
+        console.log("Checking if valid command", command, this.commands);
+        return this.commands[command];
     }
 
     parseCommand(input) {
+        // alert(input)
         let firstChar = input.substr(0, 1);
         let commands = input.split(' ');
         commands[0] = commands[0].substr(1); // Remove the first slash or backslash
-
+        console.log('Parsing command', input, firstChar, commands);
         if (firstChar === '\\') {
             if (this.isValidBuddyScript(commands[0])) {
                 return { command: commands.join(' '), type: 'execute' };
@@ -81,17 +94,10 @@ export default class BuddyScript {
     }
 
     addCommand(name, action) {
-        if (!this.validCommands.includes(name)) {
-            this.validCommands.push(name);
-        }
         this.commandActions[name] = action;
     }
 
     removeCommand(name) {
-        const index = this.validCommands.indexOf(name);
-        if (index !== -1) {
-            this.validCommands.splice(index, 1);
-        }
-        delete this.commandActions[name];
+        delete this.commands[name];
     }
 }

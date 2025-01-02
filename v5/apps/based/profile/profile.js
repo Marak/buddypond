@@ -23,10 +23,12 @@ export default class Profile {
     async open(options = {}) {
         let buddyname = options.context || this.bp.me;
         buddyname = buddyname.replace(":", ""); // remove any colons for now
+        buddyname = buddyname.replace(" ", ""); // remove any spaces for now
     
         let buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
-    
-        buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
+        if (buddyname == this.bp.me) {
+            buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
+        }
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
         let tabList = document.createElement('ul');
@@ -35,7 +37,8 @@ export default class Profile {
         let tabContentContainer = document.createElement('div');
     
         // Iterate over each profile field and create a tab and a corresponding textarea
-        ['buddyProfile', 'postgresBuddyProfile', 'redisBuddyProfile', 'localState'].forEach((profileKey, index) => {
+        let profileKeys = Object.keys(buddyProfile);
+        profileKeys.forEach((profileKey, index) => {
             let tab = document.createElement('li');
             let tabLink = document.createElement('a');
             tabLink.href = `#${profileKey}`;

@@ -135,8 +135,8 @@ export default class BuddyList {
             // only play sounds for recent messages
             let messageTime = new Date(data.ctime);
             let now = new Date().getTime();
-            console.log("messageTime", messageTime);
-            console.log("now", new Date());
+            //console.log("messageTime", messageTime);
+            //console.log("now", new Date());
             if (now - messageTime.getTime() < 5000) {
                 bp.play('desktop/assets/audio/IM.wav');
             }

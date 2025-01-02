@@ -1,14 +1,5 @@
-
-
-
 window.bp_v_5 = async function bp_v_5() {
-  let localBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '/' + a });
-  let remoteBuddyChatCommands = Object.keys(desktop.app.console._allowCommands).map(function (a) { return '\\' + a });
-  let allCommands = localBuddyChatCommands.concat(remoteBuddyChatCommands);
-
-  // TODO: load commands from buddyScript
-  // console.log('allCommands', allCommands);
-
+  
   // TODO: move all bp code to app.js file
   //
   // Legacy bindings for BuddyPond v3 API
@@ -43,6 +34,19 @@ window.bp_v_5 = async function bp_v_5() {
   });
 
 
+  await bp.importModule({
+    name: 'desktop',
+    parent: $('#desktop').get(0),
+  });
+
+
+
+  await bp.load('buddyscript');
+  await bp.load('console');
+
+  let allCommands = bp.apps.buddyscript.commands;
+  console.log("allCommands", allCommands);
+//alert(JSON.stringify(Object.keys(allCommands))); 
   // TODO: map the new API to the old API
   // chatWindowButtons should emit events
   await bp.start([{
@@ -87,7 +91,7 @@ window.bp_v_5 = async function bp_v_5() {
       api: _api
     }
 
-  }, 'buddyscript', 'toastr', 'powerlevel', {
+  }, 'toastr', 'powerlevel', {
     name: 'buddylist',
     autocomplete: allCommands,
     // wil probably need the autocomplete fn handler
@@ -175,53 +179,12 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.load('motd');
   // await bp.load('emoji-picker');
   await bp.open('buddylist');
+  
 
-  await bp.importModule({
-    name: 'desktop',
-    parent: $('#desktop').get(0),
-  });
 
   renderDesktopShortCuts();
-
-
-  /*
-  bp.apps.desktop.addShortCut({
-    name: 'pond',
-    icon: 'pond',
-    label: 'Pond',
-    class: 'pond'
-  });
-  */
-
-
-  // bp.open('emulator');
-  // bp.open('sampler');
-
-  // map all the legacy desktop.commands to the new API
-  for (let command in desktop.commands.chat) {
-    bp.apps.buddyscript.addCommand(command, desktop.commands.chat[command]);
-  }
-
-  // extract commands from legacy desktop.v5_bridge.commandSet
-  let legacyCommandSet = desktop.app.console._allowCommands;
-  // legacyCommandSet.forEach((command) => {
-  for (let commandName in legacyCommandSet) {
-    let legacyCommand = legacyCommandSet[commandName];
-    if (typeof legacyCommand.command === 'function') {
-      bp.apps.buddyscript.addCommand(commandName, legacyCommand.command);
-    }
-    if (typeof legacyCommand.command === 'string') {
-      bp.apps.buddyscript.addCommand(commandName, function (context) {
-        console.log('eval cccccommand', commandName, legacyCommand.command);
-        eval(legacyCommand.command);
-      });
-    }
-
-  }
-  //for (let command in desktop.v5_bridge.commandSet) {
-  //console.log('ADDING COMMAND to buddyScript', command, desktop.v5_bridge.commandSet[command]);
-  //bp.apps.buddyscript.addCommand(command.command, desktop.v5_bridge.commandSet[command]);
-  //} 
+  await bp.load('say');
+  await bp.open('console');
 
 
   let selectMusicPlaylist = `

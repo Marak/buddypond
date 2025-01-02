@@ -19,9 +19,9 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
       JQDX.closeWindow('#' + topWindow);
     }
     // "`" key
-    if (event.which == 192 /* todo: better console of key && event.ctrlKey */ ) {
-      desktop.ui.openWindow('console');
-      return false;
+    if (event.which == 192 ) {
+      //desktop.ui.openWindow('console');
+      //return false;
     }
     /*
     if (event.which == 77 && event.ctrlKey) {
