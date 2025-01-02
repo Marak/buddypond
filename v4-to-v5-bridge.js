@@ -482,7 +482,9 @@ function renderDesktopShortCuts() {
       label: app.label || appName,
     }, {
       onClick: () => {
-        bp.open(appName);
+        if (appName !== 'profile')  { // for now, remove after new profile settings page
+          bp.open(appName);
+        }
       }
 
     });
