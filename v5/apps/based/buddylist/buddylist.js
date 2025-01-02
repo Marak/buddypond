@@ -329,7 +329,7 @@ export default class BuddyList {
         }
     }
 
-    sendMessageToServer(data, emitLocal = true) {
+    sendMessageToServer(data, emitLocal = false) {
         this.bp.log('buddy::sendMessage', data);
         data.uuid = uuid();
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
@@ -345,7 +345,7 @@ export default class BuddyList {
         }
     }
 
-    sendPondMessageToServer(data, emitLocal = true) {
+    sendPondMessageToServer(data, emitLocal = false) {
         data.type = 'pond';
         this.bp.log('pond::sendMessage', data);
         data.uuid = uuid();

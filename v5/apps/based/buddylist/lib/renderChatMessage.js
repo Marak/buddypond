@@ -20,7 +20,10 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (_chatWindow) {
     chatWindow = _chatWindow;
   }
+  
+  //console.log('message', message);
 
+  
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
@@ -40,6 +43,16 @@ export default async function renderChatMessage(message, _chatWindow) {
         return;
       }
     }
+  }
+
+  if (message.removed) {
+    // find the chatMessage by uuid
+    let removedMessageEl = $(`.chatMessage[data-uuid="${message.removed}"]`); // could be document as well?
+    if (removedMessageEl.length > 0) {
+      // remove the removed message
+      removedMessageEl.remove();
+    }
+    return;
   }
 
   // Manage size of processedMessages to prevent memory leaks
@@ -138,6 +151,8 @@ export default async function renderChatMessage(message, _chatWindow) {
 
     let messageSender = document.createElement('span');
     messageSender.setAttribute('data-from', message.from);
+    messageSender.setAttribute('data-to', message.to);
+    messageSender.setAttribute('data-type', message.type);
     let messageClass = message.from === bp.me ? '' : 'purple';
     messageSender.className = messageClass;
     messageSender.classList.add('buddy-message-sender');

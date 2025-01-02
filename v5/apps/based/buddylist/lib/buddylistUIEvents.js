@@ -91,6 +91,7 @@ export default function buddylistUIEvents() {
   });
 
 
+  // TODO: create context meny for buddy-message-sender
   $(document).on('click', (e) => {
     // delegate based on if e.target is a .buddy-message-sender
     // if so, open profile for that buddy
@@ -99,6 +100,51 @@ export default function buddylistUIEvents() {
       let buddyName = $(e.target).text();
       // TODO: implement this
       this.bp.open('profile', { context: buddyName });
+    }
+  });
+
+  // Append a custom context menu to the body (hidden initially)
+  $('body').append('<div id="customContextMenu" class="removeMessage" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #ccc; padding: 10px;">Remove Message</div>');
+
+  // Right-click event on elements with class .buddy-message-sender
+  $(document).on('contextmenu', '.buddy-message-sender', function (e) {
+    e.preventDefault(); // Prevent default context menu
+    console.log('tttt', this)
+    let chatMessage = $(e.target).closest('.chatMessage'); // Get the chat message element
+    console.log('chatMessage', chatMessage)
+
+    if (api.me !== 'Marak') { // could also allow users to remove their own messages
+       // set the removeMessage to disabled class
+      $('#customContextMenu').addClass('disabled');
+    }
+
+    let from = $(this).data('from');
+    let to = $(this).data('to');
+    let uuid = chatMessage.data('uuid');
+    let type = $(this).data('type');
+
+    console.log('type', type, 'from', from, 'uuid', uuid);
+
+    // Position the custom context menu at the mouse coordinates
+    $('#customContextMenu').css({
+      top: e.pageY + 'px',
+      left: e.pageX + 'px',
+      display: 'block'
+    });
+
+    // When the custom context menu is clicked, open the buddy profile
+    $('#customContextMenu').off('click').on('click', async () => {
+      // Replace 'openProfile' with your actual function to open the profile
+      //openProfile(buddyName);
+      await api.removeMessage({type, from, to, uuid});
+      // $(this).hide(); // Hide the context menu after click
+    });
+  });
+
+  // Hide context menu when clicking anywhere else on the document
+  $(document).on('click', function (e) {
+    if (!$(e.target).hasClass('buddy-message-sender')) {
+      $('#customContextMenu').hide();
     }
   });
 

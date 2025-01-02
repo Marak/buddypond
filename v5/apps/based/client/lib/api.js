@@ -124,6 +124,24 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
   })
 }
 
+buddypond.removeMessage = async function removeMessage ({from, to, type, uuid}) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/messages/remove', 'POST', {
+      from: from,
+      to: to,
+      type: type,
+      uuid: uuid
+    }, function(err, data){
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+
+}
+
 // TODO: pass card values to pondSendMessage fn scope
 buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
   apiRequest('/messages/pond/' + pondname, 'POST', {
