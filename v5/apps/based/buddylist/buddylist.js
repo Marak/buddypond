@@ -318,9 +318,6 @@ export default class BuddyList {
     buddyReadNewMessages(data) {
         this.bp.log("BuddyReadNewMessages", data);
         const buddyName = data.name;
-        this.data.profileState['buddies/' + buddyName] = {
-            newMessages: false
-        };
     }
 
     async handleChatMessages(data) {

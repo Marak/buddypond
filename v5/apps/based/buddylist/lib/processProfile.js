@@ -10,10 +10,10 @@ export default async function processProfile(profileState) {
   if (!this.data.buddyrequests) {
     this.data.buddyrequests = {};
   }
-  
+
   console.log('processProfile', profileState);
   console.log('this.data.profileState', this.data.profileState);
-  if (this.data.profileState && 
+  if (this.data.profileState &&
     (
       Number(profileState.powerlevel) > Number(this.data.profileState.powerlevel)
     )
@@ -63,9 +63,12 @@ export default async function processProfile(profileState) {
   // console.log('getBuddyProfile', api, profileState);
   profileState.updates = profileState.updates || {};
 
+  // TODO: we can perform differential updates to the profileState here, we don't need to send entire buddylist
   if (profileNeedsUpdate) {
-    // console.log("SENDING TO SERVER", this.data.profileState);
-    api.getBuddyProfile(this.data.profileState, function (err, data) {
+    //console.log("SENDING TO SERVER", this.data.profileState.buddylist);
+    let updates = this.data.profileState.buddylist;
+    console.log('sending updates', updates);
+    api.getBuddyProfile({ updates }, function (err, data) {
       if (err) {
         console.log(err);
       }
@@ -123,6 +126,10 @@ function _processBuddylistData(buddylist, buddylistData) {
         buddylist.bp.emit('profile::buddy::newmessage', {
           name: buddyName
         });
+        console.log('updaitng local profile state', buddylist.data.profileState, buddyName)
+        buddylist.data.profileState.buddylist['buddies/' + buddyName] = {
+          newMessages: false
+        };
         profileNeedsUpdate = true;
       }
 
