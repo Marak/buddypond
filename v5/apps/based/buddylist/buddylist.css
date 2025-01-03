@@ -181,6 +181,12 @@
 
 }
 
+.aim-message-sender {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
 .aim-send-btn:hover {
     background-color: #0056b3; /* Darker blue when hovering */
 }

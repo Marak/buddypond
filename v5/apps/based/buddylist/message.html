@@ -21,8 +21,10 @@
 
     <div class="aim-message-controls">
         <form method="POST" action="#" class="aim-message-form message_form">
-            <textarea name="message_text" class="aim-input" placeholder="Type your message here..."></textarea>
-            <button type="submit" class="aim-send-btn">SEND</button>
+            <div class="aim-message-sender">
+                <textarea name="message_text" class="aim-input" placeholder="Type your message here..."></textarea>
+                <button type="submit" class="aim-send-btn">SEND</button>
+            </div>
             <input type="hidden" name="message_from" class="aim-from" />
             <input type="hidden" name="message_to" class="aim-to" />
         </form>

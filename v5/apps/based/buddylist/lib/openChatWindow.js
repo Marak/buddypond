@@ -265,6 +265,8 @@ export default function openChatWindow(data) {
                 $(container).remove();
             }
         });
+
+        $('.file-preview', chatWindow.content).remove();
     
         // Send the regular message
         if (windowType === 'pond') {

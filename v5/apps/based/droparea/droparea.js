@@ -127,14 +127,36 @@ export default class DropArea {
                 preview.innerHTML = 'File Preview';
                 preview.classList.add('file-preview');
                 preview.style.border = '1px solid #f0f';
-                preview.style.padding = '10px';
-                preview.style.margin = '10px';
+                //preview.style.padding = '10px';
+                //preview.style.margin = '10px';
                 preview.style.backgroundColor = '#f0f';
                 preview.style.color = '#fff';
                 preview.style.fontWeight = 'bold';
                 preview.style.textAlign = 'center';
 
-                let aimInput = $('.aim-input', this.dropTarget);
+                // add cancel / remove x button in top right
+                let closeButton = document.createElement('button');
+                closeButton.innerHTML = 'X';
+                closeButton.style.position = 'absolute';
+                closeButton.style.top = '25px';
+                closeButton.style.right = '22px';
+                closeButton.style.backgroundColor = '#f00';
+                closeButton.style.color = '#fff';
+                closeButton.style.border = 'none';
+                closeButton.style.padding = '5px';
+                closeButton.style.cursor = 'pointer';
+                // opacity: 0.5;
+                closeButton.style.opacity = '0.9';
+                // closeButton.style.borderRadius = '50%';
+                closeButton.style.fontSize = '1.5em';
+                closeButton.style.zIndex = '1000';
+                closeButton.onclick = () => {
+                    preview.remove();
+                };
+
+                preview.appendChild(closeButton);
+
+                let aimMessageControls = $('.aim-message-controls', this.dropTarget);
 
                 for (let i = 0; i < event.dataTransfer.files.length; i++) {
                     let file = event.dataTransfer.files[i];
@@ -149,7 +171,7 @@ export default class DropArea {
                     } else {
                         console.log('ffff', file)
                         let fileViewerPreview = this.bp.apps['file-viewer'].displaySingleFile(file, preview);
-                        aimInput.before(preview);
+                        aimMessageControls.prepend(preview);
 
                     }
 
