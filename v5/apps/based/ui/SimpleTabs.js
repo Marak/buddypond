@@ -1,6 +1,6 @@
 export default class SimpleTabs {
-    constructor(selector) {
-      this.container = $(selector);
+    constructor(selector, root = document) {
+      this.container = $(selector, root);
       this.container.addClass('tabs-container');
       this.init();
     }

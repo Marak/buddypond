@@ -187,28 +187,54 @@ desktop.app.appstore.load = function loadappstoreGames (params, next) {
 };
 
 desktop.app.appstore.addApp = function addApp (appName, params, cb) {
-  desktop.play('APP-ADD.wav');
+  bp.play('desktop/assets/audio/APP-ADD.wav');
   desktop.ui.showLoadingProgressIndicator();
   setTimeout(function(){
     let installedApps = desktop.settings.apps_installed;
     // TODO: lookup actual app object from appstore.apps
     installedApps[appName] = desktop.app.appstore.apps[appName];
     desktop.set('apps_installed', installedApps);
-    desktop.ui.renderDesktopShortCuts();
+    //desktop.ui.renderDesktopShortCuts();
+
+
+    let app = bp.apps.appstore.apps[appName];
+    //desktop.ui.renderDesktopShortCut(appName, app);
+    //console.log('renderDesktopShortCuts', appName, app);
+    bp.apps.desktop.addShortCut({
+      name: appName,
+      icon: `desktop/assets/images/icons/icon_${appName}_64.png`,
+      label: app.label || appName,
+    }, {
+      onClick: () => {
+        desktop.ui.openWindow(appName);
+
+      }
+    });
+
+
+
     desktop.ui.hideLoadingProgressIndicator();
+    arrangeDesktop(); // new bp v5 desktop
+
     cb();
   }, 1333)
 }
 
 desktop.app.appstore.removeApp = function removeApp (appName, params, cb) {
   desktop.ui.showLoadingProgressIndicator();
-  desktop.play('APP-REMOVE.wav');
+  bp.play('desktop/assets/audio/APP-REMOVE.wav');
+
   setTimeout(function(){
     let installedApps = desktop.settings.apps_installed;
     delete installedApps[appName];
     desktop.set('apps_installed', installedApps);
-    desktop.ui.renderDesktopShortCuts();
+    //desktop.ui.renderDesktopShortCuts();
+
+    alert('removing ' + appName);
+    bp.apps.desktop.removeShortCut(appName);
+
     desktop.ui.hideLoadingProgressIndicator();
+    arrangeDesktop(); // new bp v5 desktop
     cb();
   }, 1333)
 }

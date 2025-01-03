@@ -1,4 +1,4 @@
-import api from './lib/api.js';
+// import api from './lib/api.js';
 import SSEManager from './lib/SSEManager.js';
 export default class Client {
     constructor(bp, options = {}) {
@@ -11,7 +11,7 @@ export default class Client {
         };
         this.sseManager = new SSEManager(this);
         this.ws = null;
-        this.api = api;
+        this.api = buddypond; // for now
         this.api.endpoint = this.config.api + '/api/v3';
         //this.config.api = 'https://api.buddypond.com';
         this.connectionSources = {};  // Tracks WebSocket connection requests by source

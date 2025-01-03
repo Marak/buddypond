@@ -128,7 +128,7 @@ export default class Profile {
                     this.profileWindow = null;
                 }
             });
-            new this.bp.apps.ui.Tabs('#' + this.profileWindow.id); // Initialize the tab functionality
+            new this.bp.apps.ui.Tabs('.tabs-container', '#' + this.profileWindow.id); // Initialize the tab functionality
         } else {
             // this.profileWindow.content.innerHTML = '';
             // If the window exists and the context has changed, re-render the content

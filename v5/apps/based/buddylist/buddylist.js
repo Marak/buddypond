@@ -102,7 +102,7 @@ export default class BuddyList {
     createBuddyListWindow() {
 
         // calculate right side of screen
-        let x = window.innerWidth - 300;
+        let x = window.innerWidth - 350;
 
         return this.bp.apps.ui.windowManager.createWindow({
             app: 'buddylist',
@@ -111,7 +111,7 @@ export default class BuddyList {
             icon: '/desktop/assets/images/icons/icon_profile_64.png',
             id: 'buddyListWindow',
             parent: this.bp.apps.ui.parent,
-            width: 300,
+            width: 250,
             height: 500,
             x: x,
             y: 75,
@@ -421,4 +421,5 @@ BuddyList.prototype.logout = function () {
     localStorage.removeItem('qtokenid');
     localStorage.removeItem('me');
     this.data.profileState = null;
+    this.bp.play('desktop/assets/audio/GOODBYE.wav');
 }

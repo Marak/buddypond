@@ -10,37 +10,45 @@ export default class Pad {
         let html = await this.bp.load('/v5/apps/based/pad/pad.html');
         let css = await this.bp.load('/v5/apps/based/pad/pad.css');
 
-        let padWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'example',
-            title: 'Pads',
-            x: 50,
-            y: 100,
-            width: 800,
-            height: 500,
-            minWidth: 200,
-            minHeight: 200,
-            parent: $('#desktop')[0],
-            content: html,
-            resizable: true,
-            minimizable: true,
-            maximizable: true,
-            closable: true,
-            focusable: true,
-            maximized: false,
-            minimized: false
-        });
+        this.html = html;
 
-        this.padWindow = padWindow;
+        return 'loaded Pad';
+    }
+
+    async open() {
+
+        if (!this.padWindow) {
+            this.padWindow = this.bp.apps.ui.windowManager.createWindow({
+                id: 'example',
+                title: 'Pads',
+                x: 50,
+                y: 100,
+                width: 800,
+                height: 500,
+                minWidth: 200,
+                minHeight: 200,
+                parent: $('#desktop')[0],
+                content: this.html,
+                resizable: true,
+                minimizable: true,
+                maximizable: true,
+                closable: true,
+                focusable: true,
+                maximized: false,
+                minimized: false
+            });
+
+        }
 
         let myPads = await this.bp.apps.client.api.getPads();
 
         if (myPads && myPads.length > 0) {
             // .bp-pad-table , add the tr rows
-            let table = $('.bp-pad-table', padWindow.content);
+            let table = $('.bp-pad-table', this.padWindow.content);
             myPads.forEach((pad) => {
                 console.log('pad', pad);
                 let tr = document.createElement('tr');
-                
+
                 // set data-title attribute on tr
                 tr.setAttribute('data-title', pad.title);
 
@@ -59,11 +67,13 @@ export default class Pad {
                 let editButton = document.createElement('button');
                 editButton.classList.add('edit-button');
                 editButton.innerHTML = 'Edit';
+                editButton.disabled = true;
+                editButton.classList.add('disabled');
                 editButton.onclick = () => {
                     console.log('edit', pad);
                 }
                 td.appendChild(editButton);
-                
+
                 let deleteButton = document.createElement('button');
                 deleteButton.innerHTML = 'Delete';
                 deleteButton.classList.add('delete-button');
@@ -125,14 +135,32 @@ export default class Pad {
                 table.append(tr);
             });
 
-            new this.bp.apps.ui.Tabs('.tabs-container');
-   
+
+
+        } else {
+            // no pads yet
+            $('.bp-pad-container', this.padWindow.content).flexHide();
+        }
+
+        new this.bp.apps.ui.Tabs('.tabs-container', this.padWindow.content);
+
+
+        // show the first .tab-content
+        //$('.tab-content').show();
+        $('.tab-content:first', this.padWindow.content).show();
+
+        console.log(myPads);
+        if (this.bp.me && this.bp.me !== 'Guest') {
+            $('.loggedOut', this.padWindow.content).flexHide();
+            $('.loggedIn', this.padWindow.content).flexShow();
+
+
+        } else {
+            $('.loggedOut', this.padWindow.content).flexShow();
+            $('.loggedIn', this.padWindow.content).flexHide();
 
         }
-        console.log(myPads);
 
-
-        return 'loaded Pad';
     }
 
     editPad(pad) {

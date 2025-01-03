@@ -125,10 +125,10 @@ window.top.location = 'ie.html';
       // Example usage:
       const router = new SimpleRouter();
 
-      router.get('/Marak', async () => {
+      router.get('/:username', async (params) => {
         console.log('Home page');
         // default profile name is "myprofile"
-        let myPad = await buddypond.getPad('/Marak/myprofile');
+        let myPad = await buddypond.getPad('/' + params.username + '/myprofile');
         console.log(myPad);
 
         // empty the body
@@ -138,15 +138,24 @@ window.top.location = 'ie.html';
 
         renderBpApp = false;
       });
-
-      router.get('/Marak/myprofile', async () => {
+    
+      router.get('/:username/:padname', async (params) => {
         console.log('Home page');
-        let myPad = await buddypond.getPad('/Marak/myprofile');
+        let myPad;
+        try {
+          myPad = await buddypond.getPad('/' + params.username + '/' + params.padname);
+        } catch (err) {
+          // write a message to the body
+          $('body').html('404 Pad Not Found');
+          return;
+        }
         console.log(myPad);
-           // empty the body
-           $('body').empty();
+        // empty the body
+        $('body').empty();
         // write hello
+        // TODO: probably use iframe to help prevent unwanted XSS
         $('body').html(myPad.content);
+        // Remark: We can inject BP code here to bootstrap apps ( if we wish to )
         //bp.start(['ui', 'desktop', 'buddylist']);
         /*
         await bp.load('ui')
@@ -164,7 +173,7 @@ window.top.location = 'ie.html';
       });
 
       router.notFound(() => {
-        console.log('404 Not Found');
+        // do nothing, load bp app
       });
 
       router.onComplete(() => {

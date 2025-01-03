@@ -16,7 +16,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
     }
 
     let d = $(document);
-    
+    /*
     d.on('mousedown', '.editProfileLink', function () {
       $(this).closest('.menu').hide();
       desktop.ui.openWindow('profile');
@@ -26,6 +26,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
       }
       return false;
     });
+    */
 
     /*
     desktop.app.tts.voices.forEach(function (v) {

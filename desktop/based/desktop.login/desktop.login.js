@@ -40,10 +40,12 @@ desktop.app.login.load = function loadDesktopLogin (params, next) {
       $('#buddyname').focus();
     });
 
+    /*
     // if user clicks logout link on top left menu, logout the user
     d.on('mousedown', '.logoutLink', function (ev) {
       desktop.app.login.logoutDesktop();
     });
+    */
 
     $('.splashImage').on('click', function(){
       let roll = Math.floor(Math.random() * 2);

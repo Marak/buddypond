@@ -2,7 +2,7 @@
 let legacyApps = ['piano', 'lofi', 'ayyowars', 'interdimensionalcable', 'paint', 'mirror', 'games'];
 
 window.bp_v_5 = async function bp_v_5() {
-  
+
   // TODO: move all bp code to app.js file
   //
   // Legacy bindings for BuddyPond v3 API
@@ -49,7 +49,7 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.load('console');
   await bp.load('clock');
   await bp.load('localstorage');
-  
+
   let allCommands = bp.apps.buddyscript.commands;
   //console.log("allCommands", allCommands);
   // TODO: map the new API to the old API
@@ -256,7 +256,9 @@ window.bp_v_5 = async function bp_v_5() {
           label: `
                 <a class="editProfileLink" title="Login to Edit Profile" href="#">Edit Profile</a>
 
-            `, click: () => api.ui.toggleDeviceSettings()
+            `, click: () => {
+            bp.open('profile');
+          }
         },
         {
           label: `
@@ -269,19 +271,19 @@ window.bp_v_5 = async function bp_v_5() {
 
                 
                 `, click: () => {
-                  this.bp.apps.client.logout();
-                  // close all chat windows and ponds
-                  this.bp.apps.ui.windowManager.windows.forEach((window) => {
-                    //console.log("window", window);
-                    if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
-                      window.close();
-                    }
-                    if (window.app === 'pond') {
-                      window.close();
-                    }
-                  });
+            this.bp.apps.client.logout();
+            // close all chat windows and ponds
+            this.bp.apps.ui.windowManager.windows.forEach((window) => {
+              //console.log("window", window);
+              if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
+                window.close();
+              }
+              if (window.app === 'pond') {
+                window.close();
+              }
+            });
 
-                }
+          }
         }
       ]
     },
@@ -440,6 +442,11 @@ window.bp_v_5 = async function bp_v_5() {
 
   });
 
+  let d = $(document);
+  d.on('mousedown', '.logoutLink', function (ev) {
+    bp.apps.buddylist.logout();
+  });
+
   $(document).on('click', '.open-app', function (ev) {
     let appName = $(this).data('app');
     console.log('open-app ' + appName);
@@ -488,7 +495,7 @@ window.bp_v_5 = async function bp_v_5() {
 
 
 function renderDesktopShortCuts() {
-  
+
   $('.desktop-shortcuts-container').html('');
 
   for (let appName in bp.settings.apps_installed) {
@@ -501,18 +508,12 @@ function renderDesktopShortCuts() {
       label: app.label || appName,
     }, {
       onClick: () => {
-        //alert('openApp ' + appName);
-
         if (legacyApps.includes(appName)) {
           desktop.ui.openWindow(appName);
         } else {
           bp.open(appName);
         }
-    
-
-
       }
-
     });
 
 
@@ -529,6 +530,7 @@ function renderDesktopShortCuts() {
   });
 
 
+  /* todo: soon
   bp.apps.desktop.addShortCut({
     name: 'pad',
     icon: `desktop/assets/images/icons/icon_pond_64.png`,
@@ -538,7 +540,7 @@ function renderDesktopShortCuts() {
       bp.open('pad');
     }
   });
-
+  */
 
 
   bp.apps.desktop.addShortCut({
@@ -590,7 +592,7 @@ function renderDesktopShortCuts() {
     name: 'logout', label: 'Logout', icon: 'login', class: 'loggedIn logoutShortcut'
   });
   */
-  
+
   // TODO: Folders, make Desktop icons use Folder
   // TODO: Refactor shortcuts into File.js class
   // This way all Folders will have drag and drop and contain files
@@ -613,34 +615,34 @@ function renderDesktopShortCuts() {
         rowWidth: 256,
         rowHeight: 256
       })
-    
+
     } else {
       bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
-    } 
-  
+    }
+
   }
   window.arrangeDesktop = arrangeDesktop;
 
   arrangeDesktop();
   $('.loggedIn').flexHide();
-  
+
   // add window resize event to re-arraange shortcuts
   window.addEventListener('resize', function () {
     arrangeDesktop();
   });
-  
-  
+
+
   bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
   bp.load('droparea');
 
   // all additional default apps
   bp.load('emulator');
   bp.load('audio-visual');
-//  bp.load('profile');
-//  bp.open('profile');
-//  bp.open('profile-user');
-//bp.load('pad');
-bp.load('file-viewer');
+  //  bp.load('profile');
+  //bp.open('profile');
+  //  bp.open('profile-user');
+  //bp.load('pad');
+  bp.load('file-viewer');
 
 
   setTimeout(function () {

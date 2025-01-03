@@ -71,7 +71,7 @@ export default class DropArea {
 
     updateDropInfoBar(event, targetElement) {
         const files = Array.from(event.dataTransfer.files).map(f => f.name).join(', ');
-        console.log("Files during drag:", event.dataTransfer.files);
+        // console.log("Files during drag:", event.dataTransfer.files);
 
         // Gather data attributes from the target element
         let targetData = {
@@ -80,7 +80,7 @@ export default class DropArea {
             type: targetElement.dataset.type || 'None',
             context: targetElement.dataset.context || 'None'
         };
-        console.log('Target Data:', targetData);
+        // console.log('Target Data:', targetData);
 
         // Build a string to display optional data attributes
         let dataAttributes = `
