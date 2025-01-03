@@ -8,7 +8,6 @@ desktop.app.clock.load = function loadclock (params, next) {
 // TODO: move this into separate app with timezones and better clock / date format / calendar
 desktop.setClock = function setClock () {
   const clock = $('#clock');
-
   if (!clock.length) {
     return;
   }

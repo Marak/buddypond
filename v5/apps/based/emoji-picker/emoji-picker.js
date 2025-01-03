@@ -5,8 +5,8 @@ export default class EmojiPickerClass {
     }
 
     async init() {
-        await this.bp.appendScript('/v5/apps/based/emoji-picker/vendor/emojipicker.js');
 
+        await this.bp.appendScript('/v5/apps/based/emoji-picker/vendor/emojipicker.js');
         const emojiTriggers = [
             {
                 selector: '.emojiPicker',
@@ -19,7 +19,6 @@ export default class EmojiPickerClass {
             //specialButtons: green
         });
 
-
-    }
+   }
 
 }

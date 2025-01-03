@@ -220,7 +220,7 @@ desktop.app.login.success = function desktopLoginSuccess (params) {
   $('.editProfileLink').show();
   $('.editProfileLink').html('Edit Profile');
   $('.editProfileLink').removeClass('editProfileLinkDisabled');
-  $('.loggedIn').show();
+  $('.loggedIn').flexShow();
   $('.loginIcon .title').html('Logout');
 
   // start packets update interval timer

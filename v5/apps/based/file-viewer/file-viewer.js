@@ -40,6 +40,7 @@ export default class FileViewer {
         });
         this.updateDropTargets();
         this.initializeEventListeners();
+        $('.fileviewer-target', this.fileViewerWindow.content).flexHide(); // for now
         // this.initializeTabs();
         new this.bp.apps.ui.Tabs(this.fileViewerWindow.content);
     }

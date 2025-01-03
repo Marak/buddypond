@@ -14,21 +14,21 @@ desktop.app.wallpaper.wallpapers = {};
 desktop.app.wallpaper._wallpapers = {
   'solid':  {
     label: 'Solid',
-    src: ['desktop/based/desktop.wallpaper/wallpapers/solid.js']
+    src: ['/desktop/based/desktop.wallpaper/wallpapers/solid.js']
   },
   'matrix':  {
     label: 'Matrix',
-    src: ['desktop/based/desktop.wallpaper/wallpapers/matrix.js']
+    src: ['/desktop/based/desktop.wallpaper/wallpapers/matrix.js']
   },
   'nyancat':  {
     label: 'Nyan Cat',
-    src: ['desktop/based/desktop.wallpaper/wallpapers/nyancat.js']
+    src: ['/desktop/based/desktop.wallpaper/wallpapers/nyancat.js']
   },
   'ripples':  {
     label: 'Ripples',
     src: [
-      'desktop/based/desktop.wallpaper/wallpapers/ripples/vendor/jquery.ripples.js',
-      'desktop/based/desktop.wallpaper/wallpapers/ripples/ripples.js'
+      '/desktop/based/desktop.wallpaper/wallpapers/ripples/vendor/jquery.ripples.js',
+      '/desktop/based/desktop.wallpaper/wallpapers/ripples/ripples.js'
     ]
   }
 };
@@ -36,7 +36,7 @@ desktop.app.wallpaper._wallpapers = {
 desktop.app.wallpaper.paused = false;
 desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
   desktop.load.remoteAssets([
-    'desktop/assets/js/jquery.simple-color.js',
+    '/desktop/assets/js/jquery.simple-color.js',
     'wallpaper',
   ], function (err) {
 
@@ -102,14 +102,13 @@ desktop.app.wallpaper.load = function desktopLoadBuddyList (params, next) {
     function onCellEnter (context, hex) {
       desktop.set('wallpaper_color', '#' + hex);
     }
-
     $('.wallpaperOptionColor').simpleColor({
       boxHeight: 20,
       cellWidth: 16,
       cellHeight: 16,
       defaultColor: desktop.settings.wallpaper_color || '#008F11',
       inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
-      chooserCSS: { 'border': '1px solid #660033', 'right': '0px', 'top': '-150px' },
+      chooserCSS: { 'border': '1px solid #660033', 'left': '200px', 'top': '-200px' },
       displayCSS: {  },
       displayColorCode: true,
       livePreview: true,

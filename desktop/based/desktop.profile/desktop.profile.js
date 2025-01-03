@@ -27,6 +27,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
       return false;
     });
 
+    /*
     desktop.app.tts.voices.forEach(function (v) {
       $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`);
     });
@@ -41,6 +42,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
       desktop.set('tts_voice_index', $(this).prop('selectedIndex'));
       desktop.say('Hello Beautiful');
     });
+    */
 
     $('.setStatus').on('click', function () {
       let replaceThisWithBetterUXThankYou = prompt('( alert lol )\n\nType your custom status:');
@@ -155,6 +157,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
       }
     });
 
+    
     function renderAppList () {
       $('#window_profile .yourApps tbody').html('');
       desktop.app.profile.renderProfileApps();
@@ -162,7 +165,7 @@ desktop.app.profile.load = function loadProfile (params, next) {
       desktop.app.profile.renderProfileApp('appstore')
     }
 
-    renderAppList();
+    // renderAppList();
 
     desktop.on('desktop.settings.apps_installed', 'render-profile-apps-list', function(){
       renderAppList();
@@ -176,7 +179,8 @@ desktop.app.profile.load = function loadProfile (params, next) {
 
 desktop.app.profile.renderProfileApp = function renderProfileApp (appName, app) {
   if (!app) {
-    app = desktop.app.appstore.apps[appName]
+    //app = desktop.app.appstore.apps[appName]
+    app = bp.apps.appstore.apps[appName];
   }
   // don't show Profile App itself in Profile App List
   if (appName === 'profile') {
@@ -196,7 +200,8 @@ desktop.app.profile.renderProfileApp = function renderProfileApp (appName, app) 
 
 desktop.app.profile.renderProfileApps = function renderProfileApps () {
   for (let appName in desktop.settings.apps_installed) {
-    let app = desktop.app.appstore.apps[appName];
+    //let app = desktop.app.appstore.apps[appName];
+    let app = bp.apps.appstore.apps[appName];
     desktop.app.profile.renderProfileApp(appName, app);
   }
 }

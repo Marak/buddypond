@@ -6,3 +6,4 @@ sdk/nodejs-sdk/node_modules
 .vscode
 v5/node_modules
 v5/dist
+/files/
