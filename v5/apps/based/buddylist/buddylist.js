@@ -130,7 +130,9 @@ export default class BuddyList {
 
 
         this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
-        this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
+        // Remark: buddy-out sound disabled until new client connection logic with backend is fully tested 
+        //         ( was triggering too many sounds too often )
+        //this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
         this.bp.on('buddy::message::processed', 'play-im-sound', data => {
             // only play sounds for recent messages
             let messageTime = new Date(data.ctime);
