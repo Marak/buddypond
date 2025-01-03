@@ -5,6 +5,15 @@ let buddypond = {}
 
 buddypond.mode = 'prod';
 
+// check localStorage for qtokenid
+buddypond.qtokenid = localStorage.getItem('qtokenid');
+
+buddypond.supportedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
+buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+
+// legacy v4 API
 let desktop = { settings: {}};
 
 if (document.location.protocol === 'https:') {
@@ -103,6 +112,76 @@ buddypond.getProfile = async function getProfile(buddyname) {
     });
   });
 }
+
+
+
+// Create a new Pad
+buddypond.createPad = async function (padData) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/pads', 'POST', padData, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+// Retrieve a specific Pad by key
+buddypond.getPad = async function (key) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/pads' + key, 'GET', {}, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+buddypond.getPads = async function (params) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/pads', 'GET', params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+
+// Update a specific Pad by key
+buddypond.updatePad = async function (key, padUpdates) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/pads' + key, 'POST', padUpdates, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+// Delete a specific Pad by key
+buddypond.deletePad = async function (key) {
+  return new Promise((resolve, reject) => {
+    apiRequest('/pads' + key, 'DELETE', {}, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+
+
 
 buddypond.updateBuddyProfile = function updateBuddyProfile (profileUpdates, cb) {
   apiRequest('/buddies/' + buddypond.me + '/updateProfile', 'POST', profileUpdates, function(err, data){
@@ -252,9 +331,135 @@ buddypond.getGbpRecentTransactions = function recentGbpTransactions (params, cb)
   })
 }
 
+// Helper function to check file types
+buddypond.getFileCategory = function getFileCategory(fileType) {
+  if (buddypond.supportedImageTypes.includes(fileType)) {
+    return 'image';
+  }
+  if (buddypond.supportedAudioTypes.includes(fileType)) {
+    return 'audio';
+  }
+  if (buddypond.supportedVideoTypes.includes(fileType)) {
+    return 'video';
+  }
+  return 'binary';
+}
+
+buddypond.getFiles = async function getFiles (owner) {
+  return new Promise((resolve, reject) => {
+    apiRequest(`/files/${buddypond.me}`, 'GET', {}, function(err, data){
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+
+buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) {
+  return new Promise((resolve, reject) => {
+    const fileCategory = buddypond.getFileCategory(file.type);
+    
+    // Convert file to base64
+    const reader = new FileReader();
+    reader.onload = async function() {
+      try {
+        const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
+        
+        switch (fileCategory) {
+          case 'image': {
+            // Handle images as snaps
+            const snapsJSON = JSON.stringify(base64Data);
+            
+            buddypond.sendSnaps(type, name, text, snapsJSON, delay, (err, data) => {
+              if (err) reject(err);
+              else resolve(data);
+            });
+            break;
+          }
+          
+          case 'audio': {
+            // Handle audio files
+            const audioJSON = JSON.stringify({
+              data: base64Data,
+              type: file.type,
+              name: file.name
+            });
+            
+            buddypond.sendAudio(type, name, text, audioJSON, (err, data) => {
+              if (err) reject(err);
+              else resolve(data);
+            });
+            break;
+          }
+          
+          case 'video':
+          case 'binary': {
+            // Handle video and other binary files
+            const fileJSON = JSON.stringify({
+              data: base64Data,
+              type: file.type,
+              name: file.name,
+              size: file.size
+            });
+            
+            buddypond.sendBinaryFile(type, name, text, fileJSON, (err, data) => {
+              if (err) reject(err);
+              else resolve(data);
+            });
+            break;
+          }
+        }
+      } catch (err) {
+        reject(err);
+      }
+    };
+    
+    reader.onerror = () => {
+      reject(new Error('Error reading file'));
+    };
+    console.log('ffff', file);
+    // Start reading the file
+    // get the blob from the file
+    // let blob = ???;
+    // file.src is an object URL
+    // how to gert blob?
+    reader.readAsDataURL(file);
+  });
+}
+
+buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, cb) {
+  let x = (new TextEncoder().encode(fileJSON)).length;
+  console.log('File', `About to send a file: ${x} bytes -> ${type}/${name}`);
+  
+  const payload = {
+    type: type,
+    card: {
+      type: 'file',
+      file: fileJSON
+    }
+  };
+  
+  // Add type-specific fields
+  if (type === 'pond') {
+    payload.pondname = name;
+    payload.pondtext = text;
+  } else if (type === 'buddy') {
+    payload.buddyname = name;
+    payload.text = text;
+  }
+  
+  apiRequest(`/messages/${type}/${name}`, 'POST', payload, function(err, data) {
+    cb(err, data);
+  });
+}
+
+
 buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);
+  console.log('type', type, 'name', name, 'text', text, 'snapsJSON', snapsJSON, 'delay', delay);
   if (type === 'pond') {
     apiRequest('/messages/pond/' + name, 'POST', {
       pondname: name,
@@ -280,6 +485,7 @@ buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, del
         delay: delay
       }
     }, function(err, data){
+      console.log("callback from sendSnaps", err, data);
       cb(err, data);
     });
   }
@@ -443,4 +649,4 @@ function apiRequest(uri, method, data, cb) {
 }
 
 
-export default buddypond;
+//export default buddypond;

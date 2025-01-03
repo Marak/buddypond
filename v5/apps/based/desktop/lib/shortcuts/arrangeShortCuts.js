@@ -3,7 +3,6 @@ export default function arrangeShortcuts(cols = 4, options = {
     rowHeight: 100
 }) {
     const containerWidth = this.shortCutsContainer.offsetWidth || 800; // Get the container's width
-    console.log('containerWidth:', containerWidth);
     const maxCols = Math.floor(containerWidth / options.rowWidth); // Calculate the maximum number of columns
     const actualCols = cols < maxCols ? cols : maxCols; // Choose the lesser to avoid overflow
 

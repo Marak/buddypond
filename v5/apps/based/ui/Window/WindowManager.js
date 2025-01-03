@@ -3,17 +3,23 @@ import TaskBar from './TaskBar.js';
 import Window from "./Window.js";
 
 export default class WindowManager {
-    constructor(options = {}) {
+    constructor(ui, options = {}) {
         this.storage = options.storage || localStorage; // Use localStorage by default
         this.storageKey = options.storageKey || 'windowsState'; // Key for storing data
         this.windows = [];
         this._windows = [];
         this.options = options;
 
+        this.bp = ui.bp;
+
         this.useKeyboardControls = true;
 
         if (typeof options.useKeyboardControls === "boolean") {
             this.useKeyboardControls = options.useKeyboardControls;
+        }
+
+        if (typeof options.hideTaskBar === "boolean") {
+            this.hideTaskBar = options.hideTaskBar;
         }
 
         if (typeof options.openWindow === "function") {
@@ -87,6 +93,10 @@ export default class WindowManager {
         });
 
 
+        if (this.options.hideTaskBar) {
+            this.taskBar.taskBarElement.style.display = 'none';
+        }
+
         if (this.useKeyboardControls) {
             window.addEventListener("keydown", (e) => {
                 if (e.key === "Escape") {
@@ -125,6 +135,7 @@ export default class WindowManager {
             this.focusWindow(window); // Focus the newly created window
             return window;
         }
+        options.bp = this.bp;
         window = new Window(options, this);
 
         window.container.addEventListener("mousedown", () => {

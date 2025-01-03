@@ -99,7 +99,7 @@ export default function buddylistUIEvents() {
     if ($(e.target).hasClass('buddy-message-sender')) {
       let buddyName = $(e.target).text();
       // TODO: implement this
-      this.bp.open('profile', { context: buddyName });
+      this.bp.open('profile-user', { context: buddyName });
     }
   });
 

@@ -1,16 +1,30 @@
 import bp from './bp.js';
 import config from './config/config.js';
 
+let _host = 'http://192.168.200.59';
+let _wsHost = 'wss://192.168.200.59';
+let _api = 'http://192.168.200.59';
+
 bp.setConfig({
-    host: 'http://192.168.200.59:5174',
-    wsHost: 'ws://192.168.200.59'
+    host: _host,
+    wsHost: _wsHost,
+    api: _api
 });
+
 
 async function go() {
     // await startPartyBox();
 
 
-
+    await bp.load('client', {
+        name: 'client',
+        config: {
+          host: _api,
+          wsHost: _wsHost,
+          api: _api
+        }
+    });
+    
 
     await startBuddylist();
 

@@ -1,0 +1,30 @@
+<div class="file-viewer">
+    <div class="fileViewerContainer tabs-container">
+        <div class="header-bar">
+            <ul class="tab-list">
+                <li><a href="#fileviewer-view">View</a></li>
+                <li><a href="#fileviewer-meta">Metadata</a></li>
+            </ul>
+            <div class="fileviewer-target">
+                <select name="fileviewer-target-app" class="fileviewer-target-app">
+                    <option value="">Select target app...</option>
+                </select>
+                <button class="send-button">Send</button>
+            </div>
+        </div>
+        
+        <div id="fileviewer-view" class="tab-content">
+            <div class="fileviewer-file">
+                <div class="drop-instruction">
+                    <p>Drop files here to view them</p>
+                    <p class="supported-types">Supported types: Images, Audio, Video, Text files</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="fileviewer-meta" class="tab-content">
+            <h1>File Metadata</h1>
+            <p class="no-file">No file selected</p>
+        </div>
+    </div>
+</div>

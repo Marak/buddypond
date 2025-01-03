@@ -48,7 +48,7 @@ window.top.location = 'ie.html';
 </head>
 
 <body>
-  <img id="wallpaper" class="abs wallpaper" src="desktop/assets/images/misc/wallpaper.jpg" />
+  <img id="wallpaper" class="abs wallpaper" src="/desktop/assets/images/misc/wallpaper.jpg" />
   <div id="loaderHolder">
     <div id="loader"></div>
   </div>
@@ -65,7 +65,7 @@ window.top.location = 'ie.html';
 -->
   <!-- src="desktop/assets/images/gui/rainbow-hexagon-lattice.gif" -->
   <!-- TODO: remove? -->
-  <div id="mainOverlay">
+  <div id="mainOverlay" class="has-droparea">
     <img class="mobileLoadingOverlay" />
     <div class="abs" id="wrapper">
       <div class="abs" id="desktop">
@@ -78,147 +78,212 @@ window.top.location = 'ie.html';
 
     <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
     <!-- <link rel="stylesheet" href="desktop/assets/css/mobile.css" /> -->
-    <link rel="stylesheet" href="desktop/assets/css/jquery.ui.css">
 
-    <script src="desktop/assets/js/jquery.js"></script>
+    <script src="/desktop/assets/js/jquery.js"></script>
     <!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
-    <script src="desktop/assets/js/jquery.ui.js"></script><!--  -->
-    <script src="desktop/assets/js/jquery.dateformat.js"></script>
 
-    <script src="desktop/assets/js/forbidden.notes.js"></script>
+    <script src="/v5/router.js"></script>
+    <script src="/v5/flexHide.js"></script>
 
-    <script src="sdk/buddypond.js"></script>
-    <script src="desktop.js"></script>
+    <!-- jQuery UI can be replaced when legacy autocomplete and Windows are fully replaced -->
+    <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css">
+    <script src="/desktop/assets/js/jquery.ui.js"></script><!--  -->
+    <script src="/desktop/assets/js/jquery.dateformat.js"></script>
 
-    <script src="desktop.load.js"></script>
-    <script src="desktop.ui.js"></script>
-    <script src="desktop.ui.events.js"></script>
+
+    <!-- TODO: remove all the below files with replaced v5 code-->
+    <script src="/desktop/assets/js/forbidden.notes.js"></script>
+    <!-- SDK should be able to be removed -->
+    <script src="/v5/apps/based/client/lib/api.js"></script>
+    <!-- desktop and desktop load will be removed when all legacy apps are replaced-->
+    <script src="/desktop.js"></script>
+    <script src="/desktop.load.js"></script>
+    <!-- ui and ui events will be removed when all legacy Windows are replaced -->
+    <script src="/desktop.ui.js"></script>
+    <script src="/desktop.ui.events.js"></script>
+    <!-- ^^^ remove all the above files -->
 
     <script>
+
+
 
 
       let _host = 'https://buddypond.com';
       let _api = 'https://api.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
-      //_host = 'https://192.168.200.59';
-      //_api = 'https://192.168.200.59';
-      //_wsHost = 'wss://192.168.200.59';
+      _host = 'https://192.168.200.59';
+      _api = 'https://192.168.200.59';
+      _wsHost = 'wss://192.168.200.59';
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v3';
 
-      // see: ReadMe.md for documentation on `desktop.use`
-      $(document).ready(function () {
-        $.fn.flexShow = function () {
-          return this.each(function () {
-            var $this = $(this);
-            // Store the current display value only if it's not 'none' and no previous storage exists
-            if (!$this.data('original-display') && $this.css('display') !== 'none') {
-              $this.data('original-display', $this.css('display'));
-            }
-            // Use the stored display value or default to 'block' if nothing stored
-            $this.show().css('display', $this.data('original-display') || 'block');
-          });
-        };
+      let renderBpApp = true;
 
-        $.fn.flexHide = function () {
-          return this.each(function () {
-            var $this = $(this);
-            // Ensure the original display is stored before hiding
-            if (!$this.data('original-display') && $this.css('display') !== 'none') {
-              $this.data('original-display', $this.css('display'));
-            }
-            $this.hide();
-          });
-        };
 
-        let documentReadyTime = new Date();
-        desktop.log('Buddy Pond Cloud OS Initialized');
-        desktop.log('Now loading apps');
-        desktop
-          // .use('console')
-          .use('localstorage')
-          .use('settings')
-          .use('clock')
-          .use('wallpaper')
-          .use('themes')
-          .use('audioplayer')
-          .use('appstore')
-          .use('tts')
-          .use('notifications')
-          .use('messages')
-          //.use('buddylist')
-          // .use('pond')
-          //.use('streamsquad')
-          .use('spellbook')
-          //.use('mantra')
-          .use('profile')
-          // .use('login', { defer: true })
-          // .use('videochat', { defer: true })
-          .ready(async function (err, apps) {
-            // desktop.log("Loaded", desktop.apps.loaded);
-            try {
-              desktop.ui.windowResizeEventHandler(null, true);
-            } catch (err) {
-              // alert(err.message)
-            }
-            desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-            // Desktop is ready, start refreshing it's state immediately
-            desktop.refresh();
-            // desktop.ui.openWindow('mantra')
-            let now = new Date();
 
-            // For Buddy Experience we'll add some fades and delays
-            let fadeInDelay = 555;
+      // Example usage:
+      const router = new SimpleRouter();
 
-            // If the page has taken over 3.333 seconds to load...
-            // ...reduce the fade in delay ( since the Buddy has waited long enough )
-            if (now.getTime() - documentReadyTime.getTime() > 3333) {
-              fadeInDelay = 111;
-            }
-            $('#loaderHolder').fadeOut({
-              easing: 'linear',
-              duration: fadeInDelay,
-              complete: function () {
-                $('#mainOverlay').fadeIn({
-                  easing: 'linear',
-                  duration: 333
-                });
-              }
-            });
+      router.get('/Marak', async () => {
+        console.log('Home page');
+        // default profile name is "myprofile"
+        let myPad = await buddypond.getPad('/Marak/myprofile');
+        console.log(myPad);
 
-            desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function () {
-              if (!desktop.settings.audio_enabled) {
-                $('.volumeFull').hide();
-                $('.volumeMuted').show();
-              } else {
-                $('.volumeFull').show();
-                $('.volumeMuted').hide();
-                desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
-              }
-            });
+        // empty the body
+        $('body').empty();
+        // write hello
+        $('body').html(myPad.content);
 
-            //
-            // Remark: You can add JS code here to run after the desktop is ready
-            //
-            //
-            // `App.WebView` ? Perhaps not
-            // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
-            // never gonna work due to:
-            // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
-            // desktop.ui.openWindow('console');
-
-            // bridge to v5 ( all previous code in this file will be replaced with v5 code )
-            bp_v_5();
-            // bp.apps.buddyscript.addCommand()
-
-          });
+        renderBpApp = false;
       });
+
+      router.get('/Marak/myprofile', async () => {
+        console.log('Home page');
+        let myPad = await buddypond.getPad('/Marak/myprofile');
+        console.log(myPad);
+           // empty the body
+           $('body').empty();
+        // write hello
+        $('body').html(myPad.content);
+        //bp.start(['ui', 'desktop', 'buddylist']);
+        /*
+        await bp.load('ui')
+        await bp.load('desktop')
+        await bp.load('sampler')
+        await bp.open('sampler')
+        */
+
+        renderBpApp = false;
+      });
+
+      router.get('/about', () => {
+        console.log('About page');
+        alert("about");
+      });
+
+      router.notFound(() => {
+        console.log('404 Not Found');
+      });
+
+      router.onComplete(() => {
+        // This function will run after the route handling is complete
+        if (renderBpApp) {
+          // preoceed with jQuery.ready code
+          // bind jquery
+          bindJqueryReady();
+        } else {
+          // do nothing ( for now )
+        }
+      });
+
+      router.init();
+
+      function bindJqueryReady() {
+        // see: ReadMe.md for documentation on `desktop.use`
+        $(document).ready(function () {
+          // alert(renderBpApp)
+          if (!renderBpApp) {
+            // render the app
+            // renderApp();
+            // empty the body
+            // now we need to fetch the pad and render it
+            $('body').empty();
+            return;
+          }
+       
+
+          let documentReadyTime = new Date();
+          desktop.log('Buddy Pond Cloud OS Initialized');
+          desktop.log('Now loading apps');
+          desktop
+            // Remark: Almost all apps are replaced now with v5 apps
+            // .use('console')
+            .use('localstorage')
+            .use('settings')
+            // .use('clock')
+            .use('wallpaper')
+            // .use('themes')
+            //.use('audioplayer')
+            .use('appstore')
+            //.use('tts')
+            // .use('notifications')
+            // .use('messages')
+            //.use('buddylist')
+            // .use('pond')
+            //.use('streamsquad')
+            //.use('spellbook')
+            //.use('mantra')
+            //.use('profile')
+            // .use('login', { defer: true })
+            // .use('videochat', { defer: true })
+            .ready(async function (err, apps) {
+              // desktop.log("Loaded", desktop.apps.loaded);
+              try {
+                desktop.ui.windowResizeEventHandler(null, true);
+              } catch (err) {
+                // alert(err.message)
+              }
+              desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
+              // Desktop is ready, start refreshing it's state immediately
+              desktop.refresh();
+              // desktop.ui.openWindow('mantra')
+              let now = new Date();
+
+              // For Buddy Experience we'll add some fades and delays
+              let fadeInDelay = 555;
+
+              // If the page has taken over 3.333 seconds to load...
+              // ...reduce the fade in delay ( since the Buddy has waited long enough )
+              if (now.getTime() - documentReadyTime.getTime() > 3333) {
+                fadeInDelay = 111;
+              }
+              $('#loaderHolder').fadeOut({
+                easing: 'linear',
+                duration: fadeInDelay,
+                complete: function () {
+                  $('#mainOverlay').fadeIn({
+                    easing: 'linear',
+                    duration: 333
+                  });
+                }
+              });
+
+              desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function () {
+                if (!desktop.settings.audio_enabled) {
+                  $('.volumeFull').hide();
+                  $('.volumeMuted').show();
+                } else {
+                  $('.volumeFull').show();
+                  $('.volumeMuted').hide();
+                  desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
+                }
+              });
+
+              //
+              // Remark: You can add JS code here to run after the desktop is ready
+              //
+              //
+              // `App.WebView` ? Perhaps not
+              // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
+              // never gonna work due to:
+              // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
+              // desktop.ui.openWindow('console');
+
+              // bridge to v5 ( all previous code in this file will be replaced with v5 code )
+              bp_v_5();
+              // bp.apps.buddyscript.addCommand()
+
+            });
+        });
+      }
+
 
     </script>
     <div id="shadowRender">
     </div>
-    <script type="module"  src="/v5/public/buddypond.umd.js"></script>
+    <script type="module" src="/v5/public/buddypond.umd.js"></script>
 
 
 

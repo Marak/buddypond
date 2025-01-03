@@ -1,0 +1,25 @@
+.file-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.file-card .card-title {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.file-card .file-size {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.file-card .file-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+}

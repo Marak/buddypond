@@ -116,7 +116,7 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
                 await bp.apps[appName].init();
                 bp.log('init complete', appName);
             } else {
-                console.log('no init function found', appName);
+                bp.log('no init function found', appName);
             }
 
         }
@@ -251,6 +251,11 @@ bp.off = function off(event, label) {
         bp._emitters[event] = bp._emitters[event].filter(emitter => emitter.label !== label);
     }
 }
+
+
+// implemented in user-space
+bp.play = function noop () { };
+bp.focus = function noop () { };
 
 // Identify the current user
 bp.me = 'Guest'; // Guest user by default // TODO: auth / login

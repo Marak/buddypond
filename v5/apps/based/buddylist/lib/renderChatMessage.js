@@ -92,7 +92,12 @@ export default async function renderChatMessage(message, _chatWindow) {
   // TODO: Migrate TTS app to v5 API
   if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
     // here it is, migrate to say app
-    desktop.app.tts.processMessage(message);
+    // desktop.app.tts.processMessage(message);
+  }
+
+  if (this.bp.apps.say && message.text && message.text.startsWith('/say')) {
+    // this is a /say message
+    this.bp.apps.say.processMessages(message);
   }
 
   // Format message time

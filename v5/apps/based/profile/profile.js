@@ -1,3 +1,7 @@
+import wallpapers from './lib/wallpapers.js';
+import audioSettings from './lib/audio-settings.js';
+import userSettings from './lib/user-settings.js';
+
 export default class Profile {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -22,47 +26,83 @@ export default class Profile {
 
     async open(options = {}) {
 
-        let buddyname = options.context || this.bp.me;
+        let buddyname = this.bp.me || options.context;
         buddyname = buddyname.replace(":", ""); // remove any colons for now
         buddyname = buddyname.replace(" ", ""); // remove any spaces for now
+
         let buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
         if (buddyname == this.bp.me) {
             buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
-        } 
+        }
+
+        let profilePadKey = '/' + this.bp.me + '/myprofile';
+        // currently returns postgres document for the pad ( not redis )
+        // we will want to store the keys in redis for quick access ( loading pad pages )
+
+
+        let buddyProfilePad;
+
+        try {
+            console.log('buddyProfilePad', buddyProfilePad);
+
+            buddyProfilePad = await this.bp.apps.client.api.getPad(profilePadKey);
+
+            console.log('buddyProfilePad', buddyProfilePad);
+        } catch (err) {
+
+
+            try {
+                let newPad = await this.bp.apps.client.api.createPad({
+                    title: 'myprofile',
+                    content: 'This is profile. There are many like it, but this one is mine.'
+                });
+
+                buddyProfilePad = newPad;
+
+            } catch (err) {
+                buddyProfilePad = {
+                    content: 'This is profile. There are many like it, but this one is mine.'
+                };
+
+            }
+
+        }
+
+
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
-        let tabList = document.createElement('ul');
-        tabList.className = 'tab-list';
-    
-        let tabContentContainer = document.createElement('div');
-    
-        // Iterate over each profile field and create a tab and a corresponding textarea
-        let profileKeys = Object.keys(buddyProfile);
-        profileKeys.forEach((profileKey, index) => {
-            let tab = document.createElement('li');
-            let tabLink = document.createElement('a');
-            tabLink.href = `#${profileKey}`;
-            tabLink.textContent = profileKey;
-            tab.appendChild(tabLink);
-            tabList.appendChild(tab);
-    
-            let tabContent = document.createElement('div');
-            tabContent.id = profileKey;
-            tabContent.className = 'tab-content';
-            if (index === 0) { tab.classList.add('active'); } // Make the first tab active by default
-    
-            let textarea = document.createElement('textarea');
-            textarea.className = 'profileEditor';
-            textarea.style.width = '100%'; // Ensure textarea takes full width
-            textarea.style.height = '400px'; // Set a fixed height for each textarea
-            textarea.value = JSON.stringify(buddyProfile[profileKey], null, 2);
-            tabContent.appendChild(textarea);
-            tabContentContainer.appendChild(tabContent);
-        });
+        contentDiv.classList.add('customProfile');
 
-        contentDiv.appendChild(tabList);
-        contentDiv.appendChild(tabContentContainer);
-    
+        let isIFrameInitialized = false;
+
+        // Create an iframe and set necessary properties
+        let contentIFrame = document.createElement("iframe");
+        contentIFrame.classList.add("bp-window-content");
+        contentIFrame.classList.add("iframeProfile");
+        contentIFrame.src = 'about:blank';
+        contentIFrame.onload = () => {
+            if (!isIFrameInitialized) {
+
+                let iframeDoc = contentIFrame.contentDocument || contentIFrame.contentWindow.document;
+                iframeDoc.open();
+                iframeDoc.write(buddyProfilePad.content); // Write the HTML content passed to the constructor
+                iframeDoc.close();
+                isIFrameInitialized = true;
+            }
+            //this.setupMessageHandling(); // Setup message handling after loading content
+        };
+
+        // Append the iframe to the content div
+        contentDiv.appendChild(contentIFrame);
+
+        // create a new element from the html string
+        let profileContent = document.createElement('div');
+        profileContent.innerHTML = this.html;
+        //contentDiv.append($(buddyProfilePad.content).html());
+        //$(contentDiv).html(buddyProfilePad.content);
+        $('.myProfile', profileContent).html(contentDiv);
+        //profileContent.append(contentDiv);
+
         // Initialize tabs
         if (!this.profileWindow) {
             this.profileWindow = this.bp.apps.ui.windowManager.createWindow({
@@ -70,13 +110,13 @@ export default class Profile {
                 title: 'Profile - ' + buddyname,
                 x: 50,
                 y: 100,
-                width: 700,
-                height: 600,
+                width: 1000,
+                height: 500,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
                 context: buddyname || 'default',
-                content: contentDiv,
+                content: profileContent,
                 resizable: true,
                 minimizable: true,
                 maximizable: true,
@@ -100,13 +140,111 @@ export default class Profile {
                 new this.bp.apps.ui.Tabs('#' + this.profileWindow.id); // Re-initialize the tab functionality
                 // this.profileWindow.render(); Uncomment if there's a render method to refresh the window
             }
-        
+
         }
-    
+
+        $('.yourApps tbody', this.profileWindow.content).html('');
+        for (let appName in bp.settings.apps_installed) {
+            renderProfileApp(appName, $('.yourApps')[0]);
+        }
+
+        //$('.profileContent .ctime', this.profileWindow.content).html(buddyProfile.ctime);
+        console.log('buddyProfile', buddyProfile);
+        $('.buddyname', this.profileWindow.content).html(buddyProfile.buddyProfile.me);
+
+        // set the liveProfileLink
+        let liveLink = this.bp.config.host + '/' + this.bp.me
+        $('.liveProfileLink', this.profileWindow.content).attr('href', liveLink);
+        $('.liveProfileLink', this.profileWindow.content).html(liveLink);
+
+
+        $('.editProfileButton', this.profileWindow.content).on('click', () => {
+            // show the profile editor
+            $('.profileEditor', this.profileWindow.content).flexShow();
+            // hide the profile content
+            $('.customProfile', this.profileWindow.content).flexHide();
+            $('.updateProfileHtml', this.profileWindow.content).flexShow();
+            $('.cancelProfileEdit', this.profileWindow.content).flexShow();
+        });
+
+        //        $('.profileEditor', this.profileWindow.content).appendTo(this.profileWindow.content);
+
+        $('.profileHtml', this.profileWindow.content).val(buddyProfilePad.content);
+        $('.updateProfileHtml', this.profileWindow.content).on('click', async () => {
+            let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
+                content: $('.profileHtml', this.profileWindow.content).val()
+            });
+
+            // clear the iframe and write the new content
+            let iframeDoc = contentIFrame.contentDocument || contentIFrame.contentWindow.document;
+            iframeDoc.open();
+
+            // empty the ifram content
+            let newHTML = $('.profileHtml', this.profileWindow.content).val();
+            console.log('saving newHTML', newHTML);
+            // alert($('.profileHtml', this.profileWindow.content).val())
+            iframeDoc.write(newHTML);
+            iframeDoc.close();
+
+
+            // switch back to showing the profile content
+            $('.profileEditor', this.profileWindow.content).flexHide();
+            //$('.customProfile', this.profileWindow.content).html($('.profileHtml', this.profileWindow.content).val());
+            $('.customProfile', this.profileWindow.content).flexShow();
+            console.log('updated', updated);
+            $('.updateProfileHtml').flexHide();
+            $('.cancelProfileEdit').flexHide();
+
+        });
+
+        $('.cancelProfileEdit', this.profileWindow.content).on('click', () => {
+            // hide the profile editor
+            $('.profileEditor', this.profileWindow.content).flexHide();
+            // show the profile content
+            $('.customProfile', this.profileWindow.content).flexShow();
+            $('.updateProfileHtml', this.profileWindow.content).flexHide();
+            $('.cancelProfileEdit', this.profileWindow.content).flexHide();
+        });
+
+        $('.updateProfileHtml').flexHide();
+        $('.cancelProfileEdit').flexHide();
+
+        wallpapers.legacyWallpapers();
+        audioSettings();
+        userSettings(bp);
+
         // Focus on the newly created or updated window
         //this.bp.apps.ui.windowManager.openWindow(this.profileWindow);
         this.bp.apps.ui.windowManager.focusWindow(this.profileWindow);
     }
-    
 
+
+}
+
+
+function renderProfileApp(appName, container) {
+    //app = desktop.app.appstore.apps[appName]
+    let app = bp.apps.appstore.apps[appName];
+    //console.log('renderProfileApp', appName, app);
+
+    //console.log('renderProfileApp', appName, app);
+    // don't show Profile App itself in Profile App List
+    if (appName === 'profile') {
+        return;
+    }
+    let str = `
+      <tr class="open-app" data-app="${appName}">
+        <td>
+          <img class="appStoreIcon float-left" src="desktop/assets/images/icons/icon_${app.icon || appName}_64.png" />
+        </td>
+        <td>
+         ${app.description || app.label || appName}
+        </td>
+    </tr>`;
+    let el = document.createElement('tr');
+    el.classList.add('open-app');
+    el.setAttribute('data-app', appName);
+    el.innerHTML = str;
+    container.append(el);
+    return str;
 }

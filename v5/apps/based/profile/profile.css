@@ -3,3 +3,45 @@
     width: 100%;
     overflow: auto;
 }
+
+.updateProfileResponse {
+    font-size: 18px;
+    color: green;
+}
+
+.buddyGeoFlag {
+    width: 16px;
+    height: 16px;
+}
+
+/* .yourApps is a table and should look nice with alternating row colors */
+.yourApps {
+    width: 400px !important;
+}
+.yourApps tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+.yourApps tr:hover {
+    background-color: #ccc;
+}
+
+.appStoreIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.appsContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileEditor {
+    display: none;
+}
+
+.iframeProfile {
+    border: 3px solid #ccc;
+    background-color: white;
+}

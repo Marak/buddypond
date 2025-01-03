@@ -1,0 +1,15 @@
+.profileEditor {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.updateProfileResponse {
+    font-size: 18px;
+    color: green;
+}
+
+.buddyGeoFlag {
+    width: 16px;
+    height: 16px;
+}

@@ -68,7 +68,7 @@ export default class Say {
       const timeDiff = (now.getTime() - messageDate.getTime()) / 1000;
 
       if (timeDiff > 10) {
-          console.log('Message is too old to be processed for TTS.');
+          // console.log('Message is too old to be processed for TTS.');
           return;
       }
 

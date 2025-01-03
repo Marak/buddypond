@@ -27,7 +27,7 @@ class Window {
             onLoad = () => { }, // Callback when the window is loaded ( remote content )
             className = '', // Custom classes for styling
             resizeable = true, // Enable resizable feature
-            preventOverlap = true, // prevents direct overlap with other windows
+            preventOverlap = false, // prevents direct overlap with other windows
             canBeBackground = false // Can be set as background
         } = options;
 
@@ -72,6 +72,8 @@ class Window {
             removeWindow: () => { },
 
         };
+
+        this.bp = options.bp;
 
         this.onFocus = onFocus;
         this.onClose = onClose;
@@ -563,6 +565,7 @@ class Window {
         }
         // TODO: save the window state ???
         // ???? this.parent.appendChild(this.container);
+        this.bp.emit('window::open', this);
     }
     close() {
 
@@ -614,6 +617,7 @@ class Window {
         // TODO: save the window state ??? removeWindow could do it..?
 
         this.onClose();
+        this.bp.emit('window::close', this);
 
     }
 

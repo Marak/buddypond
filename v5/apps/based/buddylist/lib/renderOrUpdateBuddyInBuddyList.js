@@ -64,7 +64,7 @@ function showContextMenu(x, y, buddyName) {
   // Define these functions as per your application's functionality
   function openProfile(buddyName) {
     console.log('Opening profile for ' + buddyName);
-    bp.open('profile', { context: buddyName });
+    bp.open('profile-user', { context: buddyName });
   }
 
   function sendMessage(buddyName) {

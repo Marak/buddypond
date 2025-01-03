@@ -18,7 +18,7 @@ export default class Card {
       this.cssContent = await this.bp.load(cssUrl);
       // Load the JS module as a function and assign it to this.applyData
       const applyDataModule = await this.bp.importModule(jsUrl, {}, false); // Assumes this.bp.load can execute and return modules
-      console.log(jsUrl, 'applyDataModule', applyDataModule);
+      // console.log(jsUrl, 'applyDataModule', applyDataModule);
       this.applyData = applyDataModule.default.bind(this);
       
       // now we will check eaach property we just set, if any are undefined or null

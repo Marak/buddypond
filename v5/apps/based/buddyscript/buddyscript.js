@@ -24,7 +24,7 @@ export default class BuddyScript {
         let defaultCommands = new Commands(this.bp);
         // merge defaultCommands onto this.commandActions
         Object.assign(this.commands, defaultCommands.commands);
-        console.log("Merged commands", this.commands);
+        // console.log("Merged commands", this.commands);
 
     }
 

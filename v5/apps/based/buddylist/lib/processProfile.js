@@ -11,8 +11,8 @@ export default async function processProfile(profileState) {
     this.data.buddyrequests = {};
   }
 
-  console.log('processProfile', profileState);
-  console.log('this.data.profileState', this.data.profileState);
+  //console.log('processProfile', profileState);
+  //console.log('this.data.profileState', this.data.profileState);
   if (this.data.profileState &&
     (
       Number(profileState.powerlevel) > Number(this.data.profileState.powerlevel)
@@ -67,7 +67,7 @@ export default async function processProfile(profileState) {
   if (profileNeedsUpdate) {
     //console.log("SENDING TO SERVER", this.data.profileState.buddylist);
     let updates = this.data.profileState.buddylist;
-    console.log('sending updates', updates);
+    // console.log('sending updates', updates);
     api.getBuddyProfile({ updates }, function (err, data) {
       if (err) {
         console.log(err);
@@ -126,7 +126,7 @@ function _processBuddylistData(buddylist, buddylistData) {
         buddylist.bp.emit('profile::buddy::newmessage', {
           name: buddyName
         });
-        console.log('updaitng local profile state', buddylist.data.profileState, buddyName)
+        // console.log('updaitng local profile state', buddylist.data.profileState, buddyName)
         buddylist.data.profileState.buddylist['buddies/' + buddyName] = {
           newMessages: false
         };

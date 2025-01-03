@@ -77,7 +77,6 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let soundUrl = $(this).data('soundurl');
     desktop.ui.openWindow('soundrecorder', { soundUrl: soundUrl });
   });
-
   d.on('click', 'a.openApp', function (ev) {
     let appName = $(this).data('app');
     let context =  $(this).data('context');
@@ -88,6 +87,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     desktop.ui.openWindow(appName, params);
   });
 
+  
   d.on('click', 'button.openApp', function (ev) {
     let appName = $(this).data('app');
     let context =  $(this).data('context');
@@ -97,7 +97,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     }
     desktop.ui.openWindow(appName, params);
   });
-
+  
   d.on('click', 'button.addApp', function (ev) {
     let appName = $(this).data('app');
     let context =  $(this).data('context');
@@ -188,11 +188,13 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     return false;
   });
 
+  /*
   d.on('click', 'tr.openApp', function (ev) {
     let appName = $(this).data('app');
     desktop.ui.openWindow(appName);
   });
-
+  */
+ 
   // Relative or remote links?
   d.on('click', 'a', function (ev) {
     let url = $(this).attr('href');
@@ -267,7 +269,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let cardContainer =  $(this).parent().parent();
     console.log('cardContainer', cardContainer);
     url = $('.snap-image', cardContainer).attr('src');
-    url = buddypond.host + url;
+    // url = buddypond.host + url;
     console.log('remixPaint', url, output, context);
 
     JQDX.openWindow('paint', {
@@ -297,7 +299,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     let cardContainer =  $(this).parent().parent();
     console.log('cardContainer', cardContainer);
     url = $('.snap-image', cardContainer).attr('src');
-    url = buddypond.host + url;
+    // url = buddypond.host + url;
     console.log('remixGif', url, output, context);
 
 
@@ -324,6 +326,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
   }
 
   // clicking on an icon opens the window
+  /*
   d.on(eventName, '.icon a', function () {
     let iconDock = $(this).attr('href');
     let appName = iconDock.replace('#icon_dock_', '');
@@ -348,6 +351,7 @@ JQDX.bindDocumentEventHandlers = function bindDocumentEventHandlers () {
     }
     JQDX.openWindow(appName);
   });
+  */
 
   d.on('mousedown', '.startNewGif', function () {
     desktop.app.gifstudio.insertMode = 'insert';

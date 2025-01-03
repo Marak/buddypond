@@ -1,10 +1,12 @@
 export default function applyData(el, data) {
     const $el = $(el);
     let snapURL = `${data.snapURL}`;
-    snapURL = this.bp.config.api + snapURL;
+
+    snapURL = this.bp.config.api + '/user-files' + snapURL;
+
     let arr = snapURL.split('.');
     let ext = arr[arr.length - 1];
-    console.log('applyData', snapURL, data);
+    // console.log('applyData', snapURL, data);
     $el.find('.snap-image').attr('src', snapURL);
     //$el.find('.remixGif, .remixPaint').hide(); // Initially hide all controls
   

@@ -1,3 +1,6 @@
+// TODO: remove this
+let legacyApps = ['piano', 'lofi', 'ayyowars', 'interdimensionalcable', 'paint', 'mirror', 'games'];
+
 window.bp_v_5 = async function bp_v_5() {
   
   // TODO: move all bp code to app.js file
@@ -7,6 +10,7 @@ window.bp_v_5 = async function bp_v_5() {
   // Remark: BuddyPond v5 runs alongside the old buddy pond until all
   // code is migrated to the new API. This is a temporary solution.
   // Everything in BuddyPond v5 is *much* more modular and easier to use.
+
   bp.setConfig({
     host: _host,
     wsHost: _wsHost,
@@ -41,14 +45,13 @@ window.bp_v_5 = async function bp_v_5() {
     parent: $('#desktop').get(0),
   });
 
-
-
   await bp.load('buddyscript');
   await bp.load('console');
-
+  await bp.load('clock');
+  await bp.load('localstorage');
+  
   let allCommands = bp.apps.buddyscript.commands;
-  console.log("allCommands", allCommands);
-//alert(JSON.stringify(Object.keys(allCommands))); 
+  //console.log("allCommands", allCommands);
   // TODO: map the new API to the old API
   // chatWindowButtons should emit events
   await bp.start([{
@@ -181,7 +184,8 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.load('motd');
   // await bp.load('emoji-picker');
   await bp.open('buddylist');
-  
+  await bp.load('appstore');
+  await bp.load('themes');
 
 
   renderDesktopShortCuts();
@@ -209,7 +213,7 @@ window.bp_v_5 = async function bp_v_5() {
     <option value="Nyan">Nyan Theme</option>
     <option value="Hacker">Hacker Theme</option>
     <option value="Water">Water Theme</option>
-    <option value="Customize">Customize Theme</option>
+    <!-- <option value="Customize">Customize Theme</option> -->
     <!--
   <option value="Customize">EPIC MODE ( my poor browser ) </option>
   <option value="Customize">Comic Theme</option> 
@@ -393,14 +397,14 @@ window.bp_v_5 = async function bp_v_5() {
     if (theme === 'Customize') {
       desktop.ui.openWindow('profile', { context: 'themes' })
     } else {
+      /*
       desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
+      */
+      bp.apps.themes.applyTheme(theme);
       desktop.set('active_theme', theme);
     }
   });
 
-
-
-  desktop.setClock();
   bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
     // console.log('buddy-message-gotfiltered', message);
 
@@ -433,6 +437,19 @@ window.bp_v_5 = async function bp_v_5() {
 
     }
 
+
+  });
+
+  $(document).on('click', '.open-app', function (ev) {
+    let appName = $(this).data('app');
+    console.log('open-app ' + appName);
+    // check to see if legacy app ( for now)
+
+    if (legacyApps.includes(appName)) {
+      desktop.ui.openWindow(appName);
+    } else {
+      bp.open(appName);
+    }
 
   });
   // Legacy windows
@@ -471,11 +488,11 @@ window.bp_v_5 = async function bp_v_5() {
 
 
 function renderDesktopShortCuts() {
-
+  
   $('.desktop-shortcuts-container').html('');
 
-  for (let appName in desktop.settings.apps_installed) {
-    let app = desktop.app.appstore.apps[appName];
+  for (let appName in bp.settings.apps_installed) {
+    let app = bp.apps.appstore.apps[appName];
     //desktop.ui.renderDesktopShortCut(appName, app);
     //console.log('renderDesktopShortCuts', appName, app);
     bp.apps.desktop.addShortCut({
@@ -484,9 +501,16 @@ function renderDesktopShortCuts() {
       label: app.label || appName,
     }, {
       onClick: () => {
-        if (appName !== 'profile')  { // for now, remove after new profile settings page
+        //alert('openApp ' + appName);
+
+        if (legacyApps.includes(appName)) {
+          desktop.ui.openWindow(appName);
+        } else {
           bp.open(appName);
         }
+    
+
+
       }
 
     });
@@ -506,6 +530,18 @@ function renderDesktopShortCuts() {
 
 
   bp.apps.desktop.addShortCut({
+    name: 'pad',
+    icon: `desktop/assets/images/icons/icon_pond_64.png`,
+    label: 'Pads',
+  }, {
+    onClick: () => {
+      bp.open('pad');
+    }
+  });
+
+
+
+  bp.apps.desktop.addShortCut({
     name: 'sampler',
     icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
     label: 'Sampler',
@@ -514,8 +550,6 @@ function renderDesktopShortCuts() {
       bp.open('sampler');
     }
   });
-
-
 
   bp.apps.desktop.addShortCut({
     name: 'audio-visual',
@@ -527,8 +561,6 @@ function renderDesktopShortCuts() {
     }
 
   });
-
-
 
   desktop.ui.renderDesktopShortCut('merlin', {
     name: 'merlin', label: 'Merlin Automated Assistant'
@@ -599,11 +631,17 @@ function renderDesktopShortCuts() {
   
   
   bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
+  bp.load('droparea');
 
   // all additional default apps
   bp.load('emulator');
   bp.load('audio-visual');
-  bp.load('profile');
+//  bp.load('profile');
+//  bp.open('profile');
+//  bp.open('profile-user');
+//bp.load('pad');
+bp.load('file-viewer');
+
 
   setTimeout(function () {
     desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed

@@ -1,0 +1,80 @@
+<div class="tabs-container has-droparea" data-app="pad">
+
+    <ul class="tab-list">
+        <li><a href="#pads-home">Pads Home</a></li>
+        <li><a href="#pads-editor">Pads Editor</a></li>
+    </ul>
+
+    <div id="pads-home" class="tab-content">
+        <!-- Pads Management Table -->
+        <div class="bp-pad-container">
+            <table class="bp-pad-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Visibility</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Pads rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pads-intro">
+            <h2>Welcome to BuddyPond Pads</h2>
+            <p>Manage your interactive content easily with BuddyPond Pads. Here, you can create, edit, and share customizable pads consisting of HTML, JavaScript, and CSS.</p>
+            <h3>Create a new pad:</h3>
+            <p>Start by using our drag-and-drop interface below to upload files, or manually enter your code using the editor.</p>
+            <button class="bp-pad-button large">Create New Pad</button>
+        </div>
+    </div>
+
+    <div id="pads-editor" class="tab-content">
+        <!-- Pads Editing Section -->
+        <div class="bp-pad-editor">
+            <form class="bp-pad-form">
+                <label for="padTitle">Title:</label>
+                <input type="text" id="padTitle" name="padTitle" class="bp-pad-input">
+
+                <label for="padDescription">Description:</label>
+                <textarea id="padDescription" name="padDescription" class="bp-pad-textarea"></textarea>
+
+                <label for="padVisibility">Visibility:</label>
+                <select id="padVisibility" name="padVisibility" class="bp-pad-select">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+
+                <button type="submit" class="bp-pad-button">Save Pad</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="pad-code-editor tab-content">
+        <div class="editor-header">
+            <h2>Pad Code Editor</h2>
+            <button class="bp-pad-button">Save Pad</button>
+        </div>
+        <div class="editor-content">
+            <ul class="editor-tab-list">
+                <li><a href="#editor-html">HTML</a></li>
+                <li><a href="#editor-css">CSS</a></li>
+                <li><a href="#editor-js">JS</a></li>
+            </ul>
+            <div id="editor-html" class="editor-tab-content">
+                <textarea id="padHtml" name="padHtml" class="bp-pad-textarea"></textarea>
+            </div>
+            <div id="editor-css" class="editor-tab-content">
+                <textarea id="padCss" name="padCss" class="bp-pad-textarea"></textarea>
+            </div>
+            <div id="editor-js" class="editor-tab-content">
+                <textarea id="padJs" name="padJs" class="bp-pad-textarea"></textarea>
+            </div>
+            <div class="editor-preview">
+                <iframe id="padPreview" class="bp-pad-preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+</div>

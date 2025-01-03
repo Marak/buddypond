@@ -8,13 +8,16 @@ export default class UI {
         let windowManagerOptions = {};
         windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
         windowManagerOptions.window = options.window || {};
-        this.windowManager = new WindowManager(windowManagerOptions);
+        windowManagerOptions.hideTaskBar = options.hideTaskBar;
+        this.windowManager = new WindowManager(this, windowManagerOptions);
 
         // will re-load any previous stored metadata about windows
         // storage provider is defaulted to localStorage
         this.windowManager.loadWindows();
 
         options.parent = options.parent || document.body;
+
+        // options.parent.classList.add('droparea');
 
         this.options = options;
 

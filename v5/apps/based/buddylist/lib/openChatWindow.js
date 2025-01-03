@@ -132,6 +132,7 @@ export default function openChatWindow(data) {
         }
     });
 
+    chatWindow.container.classList.add('has-droparea');
     chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 
     if (this.options.autocomplete) {
@@ -172,7 +173,7 @@ export default function openChatWindow(data) {
 
     $('.message_form .aim-to', chatWindow.content).val(contextName);
 
-    $('.message_form', chatWindow.content).submit((e) => {
+    $('.message_form', chatWindow.content).submit(async (e) => {
         e.preventDefault();
         const message = $('.aim-input', chatWindow.content).val();
         const _data = {
@@ -181,18 +182,101 @@ export default function openChatWindow(data) {
             from: this.bp.me,
             message,
             ctime: Date.now(),
-            text: message
+            text: message,
+            files: [],
         };
+    
+        // Get file previews
+        const filePreviews = $('.file-preview', chatWindow.content);
+        const files = [];
+    
+        // Collect all files first
+        filePreviews.each((_, filePreview) => {
+            $('.file-content', filePreview).each((_, fileContent) => {
+                const file = this.bp.apps['file-viewer'].getFile(fileContent);
+                if (file) {
+                    files.push({
+                        file,
+                        element: fileContent
+                    });
+                }
+            });
+        });
+    
+        // Create status indicators for each file
+        files.forEach(({file, element}) => {
+            const statusDiv = $('<div>', {
+                class: 'upload-status',
+                css: {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }
+            }).text('Waiting...');
+            
+            $(element).css('position', 'relative').append(statusDiv);
+        });
+    
+        // Process files sequentially
+        try {
+            for (const {file, element} of files) {
+                const statusDiv = $(element).find('.upload-status');
+                statusDiv.text('Uploading...');
+                
+                try {
+                    await buddypond.sendFile({
+                        type: windowType,
+                        name: contextName,
+                        text: `Sent ${file.name}`,
+                        file: file,
+                        delay: 100
+                    });
+                    
+                    // Fade out and remove the uploaded file preview
+                    await $(element).fadeOut(300);
+                    $(element).remove();
+                    
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    statusDiv.text('Failed!')
+                        .css('background', 'rgba(255, 0, 0, 0.7)');
+                    
+                    // Keep failed uploads visible for 2 seconds then fade out
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await $(element).fadeOut(300);
+                    $(element).remove();
+                }
+            }
+        } catch (error) {
+            console.error('Error in file upload process:', error);
+        }
+    
+        // Remove empty file preview containers
+        filePreviews.each((_, container) => {
+            if ($(container).children().length === 0) {
+                $(container).remove();
+            }
+        });
+    
+        // Send the regular message
         if (windowType === 'pond') {
             this.bp.emit('pond::sendMessage', _data);
         } else {
             this.bp.emit('buddy::sendMessage', _data);
         }
+    
+        // Clear input
         $('.aim-input', chatWindow.content).val('');
-        e.preventDefault();
-        return false;
     });
-
+    
     // Hitting enter key will send the message
     $('.aim-input', chatWindow.content).keydown((e) => {
         if (e.which === 13) {

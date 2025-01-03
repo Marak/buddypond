@@ -1,0 +1,175 @@
+
+
+.file-viewer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    background: #f5f5f5;
+}
+
+.tabs-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tab-list li {
+    margin: 0;
+}
+
+.tab-list a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: #666;
+    text-decoration: none;
+    border-right: 1px solid #ddd;
+}
+
+.tab-list a.active {
+    background: #fff;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    margin-bottom: -1px;
+}
+
+.fileviewer-target {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.fileviewer-target-app {
+    width: 200px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.send-button {
+    padding: 0.5rem 1rem;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.send-button:hover {
+    background: #0056b3;
+}
+
+.send-button:active {
+    background: #004085;
+}
+
+.tab-content {
+    flex: 1;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.fileviewer-file {
+    min-height: 200px;
+    padding: 1rem;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.drop-instruction {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+}
+
+.supported-types {
+    font-size: 0.875rem;
+    color: #999;
+}
+
+.file-content {
+    margin-bottom: 1rem;
+}
+
+.file-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.file-content video,
+.file-content audio {
+    width: 100%;
+}
+
+.file-content pre {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+.binary-file {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f8f8;
+    border-radius: 4px;
+}
+
+.file-icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background: #ddd;
+    margin-bottom: 1rem;
+}
+
+.file-metadata {
+    margin-bottom: 1.5rem;
+}
+
+.file-metadata dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+    margin: 0;
+}
+
+.file-metadata dt {
+    font-weight: bold;
+    color: #666;
+}
+
+.file-metadata dd {
+    margin: 0;
+    color: #333;
+}
+
+.no-file {
+    color: #999;
+    text-align: center;
+    padding: 2rem;
+}
