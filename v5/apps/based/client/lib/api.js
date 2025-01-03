@@ -614,12 +614,13 @@ function apiRequest(uri, method, data, cb) {
 
   // Handling fetch timeout manually
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 7000); // 7000 milliseconds for timeout
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second for timeout
 
   buddypond.incrementPackets('packetsSent');
   let perf = {};
   perf.start = new Date();
 
+  // TODO: this should be fetch-in-worker
   fetch(url, { ...options, signal: controller.signal })
       .then(response => {
           clearTimeout(timeoutId);
