@@ -392,13 +392,12 @@ export default class BuddyList {
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').flexHide();
         this.openChatWindow({ pondname: 'Buddy' });
-        /*
-        await bp.load('pond', {
-            window: {
-                preventOverlap: false
-            }
+
+        // create a default pad profile if doesn't exist
+        this.bp.apps.client.api.createPad({
+            title: 'myprofile',
+            content: 'This is profile. There are many like it, but this one is mine.'
         });
-        */
 
     }
 }
