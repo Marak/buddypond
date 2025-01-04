@@ -30,6 +30,7 @@ export default class BrowserWindow {
             </div>
         `
         let el = document.createElement('div');
+        el.className = 'bp-browserwindow';
         el.innerHTML = html;
         this.container.append(el);
         

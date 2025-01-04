@@ -77,7 +77,7 @@ export default class BuddyList {
             // needs to check if logged in again after lazy loading pond...
             //$('.loggedIn').flexHide();
             //$('.loggedOut').flexShow();
-  
+
 
             return 'hello buddyList';
         }
@@ -399,7 +399,7 @@ export default class BuddyList {
         this.bp.apps.client.api.createPad({
             title: 'myprofile',
             description: 'This is your default Profile Pad',
-            content: 'This is profile. There are many like it, but this one is mine.'
+            content: defaultProfileFiles['/myprofile/index.html']
         });
 
     }
@@ -425,3 +425,28 @@ BuddyList.prototype.logout = function () {
     this.data.profileState = null;
     this.bp.play('desktop/assets/audio/GOODBYE.wav');
 }
+
+
+
+let defaultProfileFiles = {};
+
+
+defaultProfileFiles['/myprofile/index.html'] = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Profile</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to my profile</h1>
+        <script>
+          console.log('Hello from pad.js');
+        </script>
+    </body>
+    </html>
+`;

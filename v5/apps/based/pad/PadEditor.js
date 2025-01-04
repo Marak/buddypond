@@ -1,6 +1,5 @@
 import BrowserWindow from '../browser/BrowserWindow.js';
 
-
 export default class PadEditor {
     constructor(parentElement, options = {}) {
         if (!parentElement) {
@@ -92,6 +91,7 @@ export default class PadEditor {
     }
 
     async init() {
+        await this.bp.load('browser');
         await this.loadMonaco();
         await this.initializeEditor();
         await this.initializeFileTree(this.files);
@@ -208,7 +208,7 @@ export default class PadEditor {
         }
 
         // TODO: reload the preview from this.currentContent
-        // Needs to reset the iframe between about:blank type and iframe.src remote type
+        // Needs to reset the iframe between about:blank type and iframe.src remote type    
         //this.updatePreview();
 
     }

@@ -45,3 +45,38 @@
     border: 3px solid #ccc;
     background-color: white;
 }
+
+.editor-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+
+}
+
+.editor-container {
+}
+
+.file-tree {
+    padding-left: 10px;
+}
+
+.share-your-pad {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.editor-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 20px;
+    margin-top: 10px;
+}

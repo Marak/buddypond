@@ -15,6 +15,12 @@ export default class Browser {
         await this.bp.load('/v5/apps/based/browser/browser.css');
 
 
+
+        return 'loaded Example';
+    }
+
+    async open() {
+
         let exampleWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'browser-window',
             title: 'Hello World',
@@ -37,8 +43,5 @@ export default class Browser {
 
 
         this.browser = new BrowserWindow(exampleWindow.content, 'https://example.com');
-
-
-        return 'loaded Example';
     }
 }

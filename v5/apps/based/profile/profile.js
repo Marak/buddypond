@@ -1,6 +1,10 @@
 import wallpapers from './lib/wallpapers.js';
 import audioSettings from './lib/audio-settings.js';
 import userSettings from './lib/user-settings.js';
+import PadEditor from '../pad/PadEditor.js';
+import LoadingContainer from '../ui/LoadingContainer/LoadingContainer.js';
+let defaultFileContent = {};
+
 
 export default class Profile {
     constructor(bp, options = {}) {
@@ -16,6 +20,8 @@ export default class Profile {
 
         // injects CSS link tag into the head of document
         await this.bp.load('/v5/apps/based/profile/profile.css');
+        await this.bp.load('/v5/apps/based/ui/LoadingContainer/LoadingContainer.css');
+
 
         // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/profile/profile.html');
@@ -67,33 +73,13 @@ export default class Profile {
             }
 
         }
-
+        console.log('buddyProfilePad', buddyProfilePad);
+        defaultFileContent['/myprofile/index.html'] = buddyProfilePad.content;
 
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
         contentDiv.classList.add('customProfile');
 
-        let isIFrameInitialized = false;
-
-        // Create an iframe and set necessary properties
-        let contentIFrame = document.createElement("iframe");
-        contentIFrame.classList.add("bp-window-content");
-        contentIFrame.classList.add("iframeProfile");
-        contentIFrame.src = 'about:blank';
-        contentIFrame.onload = () => {
-            if (!isIFrameInitialized) {
-
-                let iframeDoc = contentIFrame.contentDocument || contentIFrame.contentWindow.document;
-                iframeDoc.open();
-                iframeDoc.write(buddyProfilePad.content); // Write the HTML content passed to the constructor
-                iframeDoc.close();
-                isIFrameInitialized = true;
-            }
-            //this.setupMessageHandling(); // Setup message handling after loading content
-        };
-
-        // Append the iframe to the content div
-        contentDiv.appendChild(contentIFrame);
 
         // create a new element from the html string
         let profileContent = document.createElement('div');
@@ -169,34 +155,8 @@ export default class Profile {
 
         //        $('.profileEditor', this.profileWindow.content).appendTo(this.profileWindow.content);
 
-        $('.profileHtml', this.profileWindow.content).val(buddyProfilePad.content);
-        $('.updateProfileHtml', this.profileWindow.content).on('click', async () => {
-            let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
-                content: $('.profileHtml', this.profileWindow.content).val()
-            });
-
-            // clear the iframe and write the new content
-            let iframeDoc = contentIFrame.contentDocument || contentIFrame.contentWindow.document;
-            iframeDoc.open();
-
-            // empty the ifram content
-            let newHTML = $('.profileHtml', this.profileWindow.content).val();
-            console.log('saving newHTML', newHTML);
-            // alert($('.profileHtml', this.profileWindow.content).val())
-            iframeDoc.write(newHTML);
-            iframeDoc.close();
-
-
-            // switch back to showing the profile content
-            $('.profileEditor', this.profileWindow.content).flexHide();
-            //$('.customProfile', this.profileWindow.content).html($('.profileHtml', this.profileWindow.content).val());
-            $('.customProfile', this.profileWindow.content).flexShow();
-            console.log('updated', updated);
-            $('.updateProfileHtml').flexHide();
-            $('.cancelProfileEdit').flexHide();
-
-        });
-
+        // $('.profileHtml', this.profileWindow.content).val(buddyProfilePad.content);
+       
         $('.cancelProfileEdit', this.profileWindow.content).on('click', () => {
             // hide the profile editor
             $('.profileEditor', this.profileWindow.content).flexHide();
@@ -213,14 +173,116 @@ export default class Profile {
         audioSettings();
         userSettings(bp);
 
+
+        let padEditorHolder = document.createElement('div');
+        padEditorHolder.className = 'pad-editor-holder';
+
+        profileContent.append(padEditorHolder);
+        let fileTreeComponent = this.bp.apps['file-tree'];
+        const editor = new PadEditor(padEditorHolder, {
+            bp: this.bp,
+            fileTree: fileTreeComponent, // Your file tree implementation
+            files: defaultFiles,
+            getFileContent: (filePath) => {
+                // Your logic to get file content
+                return defaultFileContent[filePath];
+            },
+            onEdit: (content) => {
+                // hide the preview and show the code editor
+                $('.editor-content').flexShow();
+                $('.myProfile').flexHide();
+
+                // show the Update and Cancel buttons
+                $('.pad-editor-button-update').show();
+                $('.pad-editor-button-cancel').show();
+
+            },
+            onUpdate: async (content) => {
+
+                let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
+                    content: content
+                });
+
+
+            },
+            onPreview: (content) => {
+                // hide the code editor and show the preview .myProfile
+                $('.editor-content').flexHide();
+                //editor.togglePreview(true);
+
+
+
+
+                // replace <script src="pad.js"></script> with the content of pad.js
+                //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
+                // do the same for the style.css
+                //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
+
+                //editor.updatePreview(almostApp);
+                //$('.myProfile').flexShow();
+            },
+            onCancel: () => {
+                console.log('Cancel clicked');
+                // hide the Update and Cancel buttons
+                $('.pad-editor-button-update').hide();
+                $('.pad-editor-button-cancel').hide();
+                // hide the code editor and show the preview
+                $('.pad-editor-button-preview').click();
+
+            }
+        });
+
+        this.editor = editor;
+
+        await editor.init();
+
+        // load the content of the first file
+        editor.loadFile('/myprofile/index.html');
+
+        // set the height of the editor
+        editor.editorContainer.style.height = '600px';
+        this.editor.previewFrame.setContent(buddyProfilePad.content);
+        $('.pad-editor-button-update', this.profileWindow.content).on('click', async () => {
+            console.log('setting content', this.editor.getContent());
+            this.editor.previewFrame.setContent(this.editor.getContent());
+            let padElement = document.querySelector('.bp-browserwindow');
+            const loadingContainer = new LoadingContainer(padElement, {
+                minimalLoadingTime: 600,
+            });
+            let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
+                content: this.editor.getContent()
+            });
+            buddyProfilePad = updated;
+
+            console.log('updated', updated);
+            $('.pad-editor-button-update').flexHide();
+            $('.pad-editor-button-cancel').flexHide();
+
+            loadingContainer.hide(function(){
+                $('.pad-editor-button-preview').click();
+
+            });
+        });
+
+        $('.pad-editor-button-preview', this.profileWindow.content).on('click', () => {
+            this.editor.previewFrame.setContent(buddyProfilePad.content);
+
+        })
+
+        $('.myProfile').flexHide();
+
+        // hide the editor content, show the preview
+        //$('.editor-content').flexHide();
+        //$('.preview-frame').flexShow();
+
+        // open the first folder of the fileTree
+        editor.fileTreeComponent.toggleFolder('/myprofile');
         // Focus on the newly created or updated window
         //this.bp.apps.ui.windowManager.openWindow(this.profileWindow);
         this.bp.apps.ui.windowManager.focusWindow(this.profileWindow);
+        $('.pad-editor-button-preview').click();
     }
-
-
 }
-
 
 function renderProfileApp(appName, container) {
     //app = desktop.app.appstore.apps[appName]
@@ -248,3 +310,34 @@ function renderProfileApp(appName, container) {
     container.append(el);
     return str;
 }
+
+// Example data structure
+const defaultFiles = [
+    {
+        type: 'folder',
+        name: 'myprofile',
+        path: '/myprofile',
+        children: [
+            {
+                type: 'file',
+                name: 'index.html',
+                path: '/myprofile/index.html'
+            },
+            /*
+            {
+                type: 'file',
+                name: 'pad.js',
+                path: '/myprofile/pad.js'
+            },
+            {
+                type: 'file',
+                name: 'style.css',
+                path: '/myprofile/style.css'
+            }
+            */
+
+        ]
+    }
+]
+
+

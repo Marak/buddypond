@@ -7,3 +7,4 @@ sdk/nodejs-sdk/node_modules
 v5/node_modules
 v5/dist
 /files/
+.tap

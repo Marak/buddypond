@@ -31,6 +31,14 @@
     background-color: #fff;
 }
 
+.pad-editor {
+    height: 600px !important;
+}
+
+.pad-editor-holder {
+    height: 500px !important;
+}
+
 .bp-pad-form {
     display: flex;
     flex-direction: column;
