@@ -1,6 +1,9 @@
 // very thin wrapper to establish bp namespace and ability to load apps dynamically
 const bp = {};
-window.bp = bp;
+
+if (typeof window !== 'undefined') {
+    window.bp = bp;
+}
 
 bp.log = console.log;
 bp.log = function noop() { }
@@ -251,6 +254,42 @@ bp.off = function off(event, label) {
         bp._emitters[event] = bp._emitters[event].filter(emitter => emitter.label !== label);
     }
 }
+
+bp.set = function set(key, value) {
+    const keys = key.split('.');
+    let current = bp.data;
+    let path = '';
+
+    keys.slice(0, -1).forEach((key, index) => {
+        path += (index > 0 ? '.' : '') + key;
+        if (!current[key]) {
+            current[key] = {}; // Initialize a new object if the key does not exist
+        }
+        current = current[key];
+        // Emit a change event for each part of the path being traversed
+        bp.emit(`data::${path}`, current);
+    });
+
+    const finalKey = keys[keys.length - 1];
+    path += '.' + finalKey;
+    current[finalKey] = value;
+
+    // Emit event for the final key change
+    bp.emit(`data::${path}`, value);
+};
+
+bp.get = function get(key) {
+    const keys = key.split('.');
+    let current = bp.data;
+    for (const k of keys) {
+        if (current[k] === undefined) {
+            return undefined; // If the key doesn't exist, return undefined
+        }
+        current = current[k];
+    }
+    return current;
+};
+
 
 
 // implemented in user-space
