@@ -76,7 +76,7 @@ export default class Profile {
                         iframeDoc.open();
                         iframeDoc.write(buddyPad.content); // Write the HTML content passed to the constructor
                         iframeDoc.close();
-                        isIFrameInitialized = true;
+                        // isIFrameInitialized = true;
                     //this.setupMessageHandling(); // Setup message handling after loading content
                 };
         
