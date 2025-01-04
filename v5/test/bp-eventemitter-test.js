@@ -6,7 +6,6 @@ function setup() {
     bp._emitters = {}; // Reset the events
 }
 
-
 tape('bp can load and has expected methods', (t) => {
     t.equal(typeof bp.emit, 'function');
     t.equal(typeof bp.on, 'function');
@@ -14,8 +13,6 @@ tape('bp can load and has expected methods', (t) => {
     t.equal(typeof bp._emitters, 'object');
     t.end();
 });
-
-
 
 tape('bp event emitter functionality', (t) => {
     setup();
