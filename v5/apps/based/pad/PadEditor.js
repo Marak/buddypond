@@ -91,10 +91,10 @@ export default class PadEditor {
     }
 
     async init() {
-        await this.bp.load('browser');
         await this.loadMonaco();
         await this.initializeEditor();
         await this.initializeFileTree(this.files);
+        await this.bp.load('browser');
 
         // hide the update and cancel buttons
         this.controls.children[2].style.display = 'none';
