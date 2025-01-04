@@ -35,7 +35,6 @@ export default class BuddyList {
     }
 
     async open(config = { type: 'buddylist-profile' }) {
-
         // buddylist supports (2) window types for bp.open('buddylist, { type: 'buddylist-profile' })
         // 'buddylist-profile' - the default buddylist window
         // 'buddylist-chat' - a chat window
@@ -148,7 +147,15 @@ export default class BuddyList {
             }
         });
 
-        this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => this.openChatWindow(data));
+        this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => {
+            // open the new chat window only if not already open
+            let windowId = `buddy_message_-` + data.name;
+            let win = this.bp.apps.ui.windowManager.findWindow(windowId);
+            if (!win) {
+                this.openChatWindow(data)
+            }
+        });
+
         this.bp.on('profile::buddy::newmessage', 'mark-messages-as-read', data => this.buddyReadNewMessages(data));
 
         this.bp.on('profile::buddy::calling', 'start-call', data => {
@@ -344,8 +351,7 @@ export default class BuddyList {
             if (this.data.profileState) {
                 data.location = this.data.profileState.location || 'outer space';
             }
-            const chatWindow = this.openChatWindow(data);
-            this.renderChatMessage(data, chatWindow);
+            this.renderChatMessage(data);
         }
     }
 
@@ -361,8 +367,7 @@ export default class BuddyList {
             if (this.data.profileState) {
                 data.location = this.data.profileState.location || 'outer space';
             }
-            const chatWindow = this.openChatWindow(data);
-            this.renderChatMessage(data, chatWindow);
+            this.renderChatMessage(data);
         }
     }
 
