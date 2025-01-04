@@ -1,3 +1,4 @@
+let scrollTimeout;
 
 export default async function renderChatMessage(message, _chatWindow) {
 
@@ -20,10 +21,10 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (_chatWindow) {
     chatWindow = _chatWindow;
   }
-  
+
   //console.log('message', message);
 
-  
+
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
@@ -112,7 +113,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     messageTime = DateFormat.format.date(messageTime, 'E MMMM dd, hh:mm:ss a');
 
   }
-  
+
   //console.log('message', message)
   // Check to see if message is type card
 
@@ -137,12 +138,12 @@ export default async function renderChatMessage(message, _chatWindow) {
     // Create elements
     let chatMessage = document.createElement('div');
     chatMessage.className = 'chatMessage';
-    
+
     // Prepare the date-time display
     let dateTimeSpan = document.createElement('span');
     dateTimeSpan.className = 'datetime';
     dateTimeSpan.textContent = messageTime;
-  
+
     // Determine message sender and apply styles
     let senderText;
     if (message.from === 'anonymous') {
@@ -162,18 +163,18 @@ export default async function renderChatMessage(message, _chatWindow) {
     messageSender.className = messageClass;
     messageSender.classList.add('buddy-message-sender');
     messageSender.textContent = senderText;
-  
+
     // Prepare geoFlag (assuming renderGeoFlag is a function returning an element)
     let geoFlag = renderGeoFlag(message);
-  
+
     // Combine elements for the sender
     messageSender.prepend(geoFlag);  // Prepend geoFlag to the sender span
-  
+
     // Prepare the message content span
     let messageContent = document.createElement('span');
     messageContent.className = `message ${messageClass}`;
     messageContent.textContent = message.text; // Assuming 'message.text' contains the message text
-    
+
     // Combine all parts into the chatMessage
     chatMessage.appendChild(dateTimeSpan);
     chatMessage.appendChild(messageSender);
@@ -187,29 +188,43 @@ export default async function renderChatMessage(message, _chatWindow) {
     } else {
       chatMessage.setAttribute('data-uuid', message.uuid);
     }
+
+    // Since images may be lazy loaded we won't know their height until they load
+    // After each image loads attempt to scroll to the bottom
+    // Without this code, the scroll to bottom functionality will not scroll all the way down
+    $(chatMessage).find('img').on('load', function () {
+      // Scroll again after each image loads
+      scrollToBottom();
+    });
+
     aimMessages.appendChild(chatMessage);
 
   }
 
   renderMessage(message, messageTime, chatWindow, container);
-  
+
   // Example usage: renderMessage(messageObject, '12:00 PM', chatWindowObject);
-  
+
 
   // console.log('content', chatWindow.content)
   // chatWindow.content.innerHTML = 'FFFFF';
 
   // Scroll to the last message
-  // Remark: this seems to have an issue with images? height not being calculated in time?
-  let lastElement = $('.message', chatWindow.content).last()[0];
-  if (lastElement) {
-    // console.log('scrolling to last message', lastElement);
-    setTimeout(function () {
-      // still not working all the way? hrmmmm
-      lastElement.scrollIntoView({ behavior: 'smooth' });
-    }, 400);
-
+  function scrollToBottom() {
+    const lastElement = $('.message', chatWindow.content).last()[0];
+    if (lastElement) {
+      clearInterval(scrollTimeout);
+      scrollTimeout = setTimeout(function () {
+        console.log('scrolling to bottom', lastElement);
+        lastElement.scrollIntoView({ behavior: 'smooth' });
+      }, 1);
+    }
   }
+
+  // Initially try to scroll to the bottom
+  scrollToBottom();
+
+
 
   // console.log('parseChatMessage result', result);
 
@@ -223,7 +238,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     this.bp.emit('buddy::message::processed', message);
   }
 
-} 
+}
 
 function renderGeoFlag(message) {
   if (message.location === 'outer space') {
