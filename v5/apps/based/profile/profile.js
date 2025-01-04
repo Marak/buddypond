@@ -149,8 +149,8 @@ export default class Profile {
         }
 
         //$('.profileContent .ctime', this.profileWindow.content).html(buddyProfile.ctime);
-        console.log('buddyProfile', buddyProfile);
-        $('.buddyname', this.profileWindow.content).html(buddyProfile.buddyProfile.me);
+        //console.log('buddyProfile', buddyProfile);
+        //$('.buddyname', this.profileWindow.content).html(buddyProfile.buddyProfile.me);
 
         // set the liveProfileLink
         let liveLink = this.bp.config.host + '/' + this.bp.me
