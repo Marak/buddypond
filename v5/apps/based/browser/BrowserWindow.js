@@ -54,8 +54,8 @@ export default class BrowserWindow {
             // clear out the iframe and reload it with about:blank
             // this could be due to previous page being remote url / cross-domain
             this.iframe.src = 'about:blank';
-            console.error('Error setting content:', e);
-            if (attempts < 2) {
+            // console.error('Error setting content:', e);
+            if (attempts < 9001) {
                 setTimeout(() => {
                     this.setContent(htmlContent, attempts + 1);
                 }, 100);
