@@ -68,21 +68,36 @@ export default function openChatWindow(data) {
             // it is safe to call multiple times since bp.load will cache the module
             await this.bp.load('emoji-picker');
 
+
+            // create a new object to store all the previously processed messages
+            let rerenderMessages = [];
+
             for (const message of this.data.processedMessages[contextName]) {
+                // console.log('reprocessing message', message);
+                rerenderMessages.push(message);
+            }
+
+            // clear the processedMessages array
+            this.data.processedMessages[contextName] = [];
+
+            // re-render all the messages
+            for (const message of rerenderMessages) {
+                // console.log('rendering message', message);
                 // console.log('rendering message', message);
                 try {
                     // TODO: this may need to become async / await
                     // in order to load remote cards, etc
-                    await this.renderChatMessage(message, _window);
-
+                    await this.renderChatMessage(message, _window, true);
                 } catch (err) {
-                    console.error('Error rendering message', err);
+                    // console.error('Error rendering message', err);
 
                 }
             }
 
             // Remark: Is this not needed? Double getMessages was messing up the pondPopularity count?
             // That shouldn't be possible, is due to two getMessages happening at same time?
+            //console.log('sending the getMessages request', _data);
+            // console.log('calling sendMessage getMessages', _data);
             this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: _data });
         },
         onClose: () => {
@@ -99,6 +114,9 @@ export default function openChatWindow(data) {
             // if another chat window is open, we'll get a double getLatestMessages() call ( which should be okay )
             // TODO: we could check to see if this was the last open window and then call getLatestMessages()
             this.getLatestMessages();
+
+            // clear the locally processed messages for this window
+            // this.data.processedMessages[contextName] = [];
 
             // check to see if this was the last open chat window ( for buddy or pond )
             // if so, we need to create a timer to close the websocket connection

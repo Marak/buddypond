@@ -14,16 +14,13 @@ export default async function renderChatMessage(message, _chatWindow) {
     windowId = `pond_message_-${message.to}`;
   }
 
+  // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
 
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
-
   if (_chatWindow) {
     chatWindow = _chatWindow;
   }
-
-  //console.log('message', message);
-
 
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
@@ -215,8 +212,8 @@ export default async function renderChatMessage(message, _chatWindow) {
     if (lastElement) {
       clearInterval(scrollTimeout);
       scrollTimeout = setTimeout(function () {
-        console.log('scrolling to bottom', lastElement);
-        lastElement.scrollIntoView({ behavior: 'smooth' });
+        // console.log('scrolling to bottom', lastElement);
+        lastElement.scrollIntoView({ behavior: 'instant' });
       }, 1);
     }
   }

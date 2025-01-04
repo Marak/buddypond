@@ -58,7 +58,6 @@ export default class Client {
         });
 
         this.bp.on('client::requestWebsocketConnection', 'request-websocket-connection', (source) => {
-            //console.log("request-websocket-connection", source);
             this.requestWebsocketConnection(source);
         });
 
@@ -80,6 +79,8 @@ export default class Client {
                     qtokenid: this.api.qtokenid,
                     me: this.api.me
                 } });  // Tell worker to connect WebSocket
+            } else {
+                // console.log('declining to ask worker to connectWebSocket')
             }
             //console.log('clearing disconnect timer', this.disconnectTimer)
             clearTimeout(this.disconnectTimer);
@@ -104,6 +105,7 @@ export default class Client {
 
     onWebSocketConnected() {
         this.wsConnected = true;
+        // console.log('WebSocket connection established.');
         this.bp.emit('client::websocketConnected', this.ws);
         // Send any queued messages
         this.queuedMessages.forEach(message => {

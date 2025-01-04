@@ -381,9 +381,7 @@ window.bp_v_5 = async function bp_v_5() {
     $('.volumeFull').show();
     $('.volumeMuted').hide();
   }
-  $('.logoutLink').on('click', function () {
-    bp.apps.client.logout();
-  });
+
 
   $('.loginLink').on('click', function () {
     bp.open('buddylist');

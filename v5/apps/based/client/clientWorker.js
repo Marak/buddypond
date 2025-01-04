@@ -1,11 +1,12 @@
-// importScripts('./vendor/msgpack.min.js');
-
 let ws;  // WebSocket connection
+let messageQueue = [];  // Queue to hold messages until the WebSocket is open
 
 let bp = {
     log: console.log,
     error: console.error,
 };
+
+// Override the default log function to do nothing
 bp.log = function noop() { };
 
 self.addEventListener('message', function(event) {
@@ -19,9 +20,12 @@ self.addEventListener('message', function(event) {
             handleSSEUpdate(JSON.parse(data));
             break;
         case 'sendMessage':
-            bp.log('clientWorker Sending message:', data);
             if (ws && ws.readyState === WebSocket.OPEN) {
+                //bp.log('Socket OPEN, sending message:', data);
                 ws.send(JSON.stringify(data));
+            } else {
+                // Queue the message until the socket is open
+                messageQueue.push(data);
             }
             break;
         case 'disconnectWebSocket':
@@ -35,16 +39,10 @@ self.addEventListener('message', function(event) {
 });
 
 function connectWebSocket(qtoken, data) {
-
-    // append qtokenid to the url
     let url = data.wsHost + '?qtokenid=' + qtoken.qtokenid + '&me=' + qtoken.me;
-
-    //console.log('Connecting WebSocket in worker:', data.host, qtoken);
-    //console.log('using url', url);
     
     ws = new WebSocket(url);
     ws.onmessage = event => {
-        // Handle incoming WebSocket messages
         const parsedData = JSON.parse(event.data);
         bp.log('clientWorker ws sending wsMessage:', parsedData);
         postMessage({ type: 'wsMessage', data: parsedData });
@@ -52,6 +50,12 @@ function connectWebSocket(qtoken, data) {
     ws.onopen = () => {
         bp.log('WebSocket connected in worker.');
         postMessage({ type: 'wsConnected' });
+        // Send all queued messages
+        while (messageQueue.length > 0) {
+            const messageData = messageQueue.shift();
+            ws.send(JSON.stringify(messageData));
+            bp.log('Sending queued message:', messageData);
+        }
     };
     ws.onerror = event => {
         console.error('WebSocket error in worker:', event);
@@ -64,7 +68,6 @@ function connectWebSocket(qtoken, data) {
 }
 
 function handleSSEUpdate(data) {
-    // Process SSE update data
     bp.log("SSE Update:", data);
     postMessage({ type: 'sseUpdate', data });
 }

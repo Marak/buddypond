@@ -122,7 +122,10 @@ export default class BuddyList {
 
     registerEventHandlers() {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
-        this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
+        // Remark: This has been removed in favor of letting windows manage their own state
+        // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
+        //this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
+
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
         //this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
@@ -185,7 +188,6 @@ export default class BuddyList {
                 // console.log("messageTime", messageTime.getTime());
                 let now = new Date().getTime();
                 let selector = `#${message.type}_message_-${message.from}`;
-                // alert(selector);
                 let chatWindow = $(selector);
                 // don't process isTyping messages over 3 seconds old
                 if (now - messageTime.getTime() > 3000) {
@@ -308,15 +310,6 @@ export default class BuddyList {
         return html;
     }
 
-    getLatestMessages() {
-        const data = {
-            buddyname: this.subscribedBuddies.join(','),
-            pondname: this.subscribedPonds.join(','),
-            me: this.bp.me
-        };
-        this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: data });
-    }
-
     buddyReadNewMessages(data) {
         this.bp.log("BuddyReadNewMessages", data);
         const buddyName = data.name;
@@ -424,10 +417,9 @@ BuddyList.prototype.logout = function () {
     localStorage.removeItem('qtokenid');
     localStorage.removeItem('me');
     this.data.profileState = null;
+    clearInterval(this.closingWebsocketTimer);
     this.bp.play('desktop/assets/audio/GOODBYE.wav');
 }
-
-
 
 let defaultProfileFiles = {};
 
