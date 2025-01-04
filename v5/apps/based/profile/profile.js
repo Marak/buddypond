@@ -265,7 +265,7 @@ export default class Profile {
         });
 
         $('.pad-editor-button-preview', this.profileWindow.content).on('click', () => {
-            this.editor.previewFrame.setContent(buddyProfilePad.content);
+            this.editor.previewFrame.setContent(this.editor.getContent());
 
         })
 

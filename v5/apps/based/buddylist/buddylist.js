@@ -390,6 +390,7 @@ export default class BuddyList {
 
     async handleAuthSuccess(qtoken) {
         this.bp.me = qtoken.me;
+        this.data.profileState = this.data.profileState || {};
         this.data.profileState.me = this.bp.me;
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').flexHide();
@@ -438,14 +439,16 @@ defaultProfileFiles['/myprofile/index.html'] = `
         <title>My Profile</title>
         <style>
           body {
-            font-family: Arial, sans-serif;
+            background-color: purple;
           }
+          p { color: white; }
         </style>
     </head>
     <body>
-        <h1>Welcome to my profile</h1>
+        <h1>Welcome to my Profile</h1>
+        <p>This is my profile. There are many like it, but this one is mine.</p>
         <script>
-          console.log('Hello from pad.js');
+          console.log('Hello from my profile pad');
         </script>
     </body>
     </html>

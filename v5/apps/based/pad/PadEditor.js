@@ -63,7 +63,7 @@ export default class PadEditor {
         this.container.appendChild(this.controls);
         this.container.appendChild(this.contentArea);
         this.previewFrame = new BrowserWindow(this.container, liveLink);
-        this.previewFrame.setContent('<h1>Preview</h1>');
+        this.previewFrame.setContent('loading...');
         this.contentArea.appendChild(this.fileTree);
         this.contentArea.appendChild(this.editorContainer);
         
