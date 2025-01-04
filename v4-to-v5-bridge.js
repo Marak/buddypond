@@ -49,7 +49,7 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.load('console');
   await bp.load('clock');
   await bp.load('localstorage');
-
+  
   let allCommands = bp.apps.buddyscript.commands;
   //console.log("allCommands", allCommands);
   // TODO: map the new API to the old API
@@ -191,6 +191,9 @@ window.bp_v_5 = async function bp_v_5() {
   renderDesktopShortCuts();
   await bp.load('say');
   // await bp.open('console');
+  // await bp.load('browser');
+
+  // bp.apps.browser.browser.setContent('fudge');
 
 
   let selectMusicPlaylist = `
@@ -349,6 +352,9 @@ window.bp_v_5 = async function bp_v_5() {
   const menuBar = bp.apps.menubar.createMenu(menuTemplate);
   // console.log(menuBar);
   document.body.appendChild(menuBar);
+
+  await bp.load('file-tree');
+
 
 
 
@@ -530,7 +536,8 @@ function renderDesktopShortCuts() {
   });
 
 
-  /* todo: soon
+  /* todo: soon  
+
   bp.apps.desktop.addShortCut({
     name: 'pad',
     icon: `desktop/assets/images/icons/icon_pond_64.png`,
@@ -540,8 +547,7 @@ function renderDesktopShortCuts() {
       bp.open('pad');
     }
   });
-  */
-
+*/
 
   bp.apps.desktop.addShortCut({
     name: 'sampler',
@@ -563,6 +569,20 @@ function renderDesktopShortCuts() {
     }
 
   });
+
+  /*
+    bp.on('data::hello.world.name', 'log-result-to-console', function (data) {
+      console.log('data::hello.world.name', data);
+      // same as:
+      console.log(bp.data.hello.world.name);
+    });
+     bp.on('data::hello.world', '2log-result-to-console', function (data) {
+      alert(JSON.stringify(data));
+     });
+    bp.set('hello.world.name', 'world');
+  */
+  //alert(bp.get('hello'));
+
 
   desktop.ui.renderDesktopShortCut('merlin', {
     name: 'merlin', label: 'Merlin Automated Assistant'
@@ -619,6 +639,7 @@ function renderDesktopShortCuts() {
     } else {
       bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
     }
+    
 
   }
   window.arrangeDesktop = arrangeDesktop;
@@ -641,9 +662,11 @@ function renderDesktopShortCuts() {
   //  bp.load('profile');
   //bp.open('profile');
   //  bp.open('profile-user');
-  //bp.load('pad');
+  //bp.open('pad');
   bp.load('file-viewer');
-
+  //bp.load('editor-monaco');
+  //bp.open('profile');
+  
 
   setTimeout(function () {
     desktop.ui.windowResizeEventHandler(null, true); // adjusts shortcut padding if needed
