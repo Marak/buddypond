@@ -122,6 +122,7 @@ export default class BuddyList {
 
     registerEventHandlers() {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
+
         // Remark: This has been removed in favor of letting windows manage their own state
         // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
         //this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
@@ -308,6 +309,17 @@ export default class BuddyList {
         html.innerHTML = htmlStr;
         $('.loginForm input[name="username"]').focus();
         return html;
+    }
+
+    getLatestMessages() {
+        // This can also be called when closing a chat window to let the server
+        // know we are no longer interested in messages from that buddy or pond
+        const data = {
+            buddyname: this.subscribedBuddies.join(','),
+            pondname: this.subscribedPonds.join(','),
+            me: this.bp.me
+        };
+        this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: data });
     }
 
     buddyReadNewMessages(data) {
