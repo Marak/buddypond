@@ -398,6 +398,7 @@ export default class BuddyList {
         // create a default pad profile if doesn't exist
         this.bp.apps.client.api.createPad({
             title: 'myprofile',
+            description: 'This is your default Profile Pad',
             content: 'This is profile. There are many like it, but this one is mine.'
         });
 

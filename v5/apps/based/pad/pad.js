@@ -57,9 +57,38 @@ export default class Pad {
                 td.innerHTML = pad.title;
                 tr.appendChild(td);
 
+                // description
+                td = document.createElement('td');
+                td.innerHTML = pad.description;
+                tr.appendChild(td);
+
                 // visibility
                 td = document.createElement('td');
-                td.innerHTML = pad.visibility;
+                // create a drop-down select
+                let select = document.createElement('select');
+                select.name = 'visibility';
+                // add options
+                let options = ['Public', 'Private' /* TODO: , 'Unlisted' */];
+                options.forEach((option) => {
+                    let optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.innerHTML = option;
+                    console.log("comparing", option, pad.visibility);
+                    if (option.toLowerCase() === pad.visibility) {
+                        optionElement.selected = true;
+                    }
+                    select.appendChild(optionElement);
+                });
+                select.onchange = async (e) => {
+                    console.log('visibility changed', e.target.value, pad);
+                    pad.visibility = e.target.value.toLowerCase();
+                    let profilePadKey = '/' + this.bp.me + '/' + pad.title;
+
+                    await this.bp.apps.client.api.updatePad(profilePadKey, pad);
+                };
+                td.appendChild(select);
+
+                //td.innerHTML = pad.visibility;
                 tr.appendChild(td);
 
                 // actions ( edit, delete, view )
@@ -120,6 +149,9 @@ export default class Pad {
                             console.log('delete pad', pad, title, padUrl);
                             await this.bp.apps.client.api.deletePad(padUrl);
                         }
+
+                        // we need to re-render the table
+                        this.open();
 
                     }
 
