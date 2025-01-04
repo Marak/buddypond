@@ -1,0 +1,110 @@
+/* Loading Spinner */
+.loading-spinner {
+    /* border: 32px solid rgba(0, 0, 0, 0.2); Light gray */
+    border: 32px solid rgba(51, 51, 51, 0.2);
+    border-top: 32px solid #8a2be2;
+    /* Purple */
+    border-radius: 50%;
+    width: 256px;
+    height: 256px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    /* Center within the parent */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    position: absolute;
+    top: calc(50% - 40px);
+    font-size: 32px;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+/* Loading Container */
+.loading-container {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vertical Columns Container */
+.loading-columns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* cool looking border*/
+    border: 1px solid #8a2be2;
+    background-color: #131213 !important;
+}
+
+/* Vertical Column Style */
+.loading-column {
+    position: absolute;
+    top: 0;
+    width: 36px;
+    height: 100%;
+    background-color: rgba(138, 43, 226, 0.8);
+    /* Translucent purple */
+    animation: column-motion 2s ease-in-out infinite;
+}
+
+/* Left Column Animation */
+.loading-column.left {
+    left: 0;
+    animation: left-column-motion 2s ease-in-out infinite;
+}
+
+/* Right Column Animation */
+.loading-column.right {
+    right: 0;
+    animation: right-column-motion 2s ease-in-out infinite;
+}
+
+/* Left Column Motion Animation */
+@keyframes left-column-motion {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        /* Start/End at edge */
+    }
+
+    50% {
+        transform: translateX(470px);
+        /* Move to the center */
+    }
+}
+
+/* Right Column Motion Animation */
+@keyframes right-column-motion {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        /* Start/End at edge */
+    }
+
+    50% {
+        transform: translateX(-470px);
+        /* Move to the center */
+    }
+}

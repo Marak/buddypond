@@ -1,0 +1,105 @@
+/* browserwindow.css */
+.bp-browserwindow-container {
+    width: 800px;
+    height: 600px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.bp-browserwindow-toolbar {
+    background: #3f384c;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #dadce0;
+    min-height: 36px;
+}
+
+.bp-browserwindow-navigation {
+    display: flex;
+    gap: 2px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.bp-browserwindow-nav-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #7e7787;
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    border-radius: 64px;
+
+}
+
+.bp-browserwindow-nav-btn:hover {
+    background: #534c5e;
+    border-radius: 64px;
+}
+
+.bp-browserwindow-nav-btn:active {
+    background: #dadce0;
+}
+
+.bp-browserwindow-addressbar {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    max-width: calc(100% - 120px); /* Prevent overflow */
+    background-color: #292335;
+    border-radius: 20px;
+    padding: 8px;
+    padding-right: 12px;
+
+}
+
+.bp-browserwindow-url-wrapper {
+    background: #ffffff;
+    padding: 0 8px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #dadce0;
+    transition: background-color 0.2s;
+}
+
+.bp-browserwindow-url-wrapper:hover {
+    background: #f8f9fa;
+}
+
+.bp-browserwindow-url-wrapper:focus-within {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    border-color: transparent;
+}
+
+.bp-browserwindow-url {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #e7e0e8;
+    outline: none;
+    padding: 0 4px;
+}
+
+.bp-browserwindow-content {
+    flex-grow: 1;
+    background: #ffffff;
+    overflow: auto;
+}
