@@ -35,14 +35,22 @@ export default class Profile {
         tabList.className = 'tab-list';
     
         let tabContentContainer = document.createElement('div');
-    
+        console.log('buddyProfile', buddyProfile)
         // Iterate over each profile field and create a tab and a corresponding textarea
         let profileKeys = Object.keys(buddyProfile);
         profileKeys.forEach((profileKey, index) => {
             let tab = document.createElement('li');
             let tabLink = document.createElement('a');
             tabLink.href = `#${profileKey}`;
-            tabLink.textContent = profileKey;
+
+            if (profileKey === 'buddyPad') {
+                tabLink.textContent = 'Buddy Profile Pad';
+
+            } else {
+                tabLink.textContent = profileKey;
+
+            }
+
             tab.appendChild(tabLink);
             tabList.appendChild(tab);
     
@@ -50,14 +58,42 @@ export default class Profile {
             tabContent.id = profileKey;
             tabContent.className = 'tab-content';
             if (index === 0) { tab.classList.add('active'); } // Make the first tab active by default
-    
-            let textarea = document.createElement('textarea');
-            textarea.className = 'profileEditor';
-            textarea.style.width = '100%'; // Ensure textarea takes full width
-            textarea.style.height = '400px'; // Set a fixed height for each textarea
-            textarea.value = JSON.stringify(buddyProfile[profileKey], null, 2);
-            tabContent.appendChild(textarea);
+
+            if (profileKey === 'buddyPad') {
+                // get the myprofile pad for this user and show it ( if not private )
+                console.log('special iframe render here');
+                let buddyPad = buddyProfile[profileKey];
+
+                // create iframe and write source from buddyPad.content
+                let iframe = document.createElement('iframe');
+                iframe.style.width = '100%'; // Ensure textarea takes full width
+                iframe.style.height = '400px'; // Set a fixed height for each textarea
+
+                iframe.src = 'about:blank';
+                iframe.onload = () => {
+        
+                        let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        iframeDoc.open();
+                        iframeDoc.write(buddyPad.content); // Write the HTML content passed to the constructor
+                        iframeDoc.close();
+                        isIFrameInitialized = true;
+                    //this.setupMessageHandling(); // Setup message handling after loading content
+                };
+        
+                tabContent.appendChild(iframe);
+
+            } else {
+                let textarea = document.createElement('textarea');
+                textarea.className = 'profileEditor';
+                textarea.style.width = '100%'; // Ensure textarea takes full width
+                textarea.style.height = '400px'; // Set a fixed height for each textarea
+                textarea.value = JSON.stringify(buddyProfile[profileKey], null, 2);
+                tabContent.appendChild(textarea);
+
+            }
+
             tabContentContainer.appendChild(tabContent);
+
         });
 
         contentDiv.appendChild(tabList);

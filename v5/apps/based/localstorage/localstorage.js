@@ -23,8 +23,9 @@ export default class LocalStorageManager {
             this.removeItem(key);
         }
 
-        this.bp.get = this.get.bind(this);
-        this.bp.set = this.set.bind(this);
+        // TODO: remove this for v5, define bp.set and bp.get with bp.data on bp itself
+        //this.bp.get = this.get.bind(this);
+        //this.bp.set = this.set.bind(this);
         this.bp.settings = this.settings;
         this.sync();
     }
