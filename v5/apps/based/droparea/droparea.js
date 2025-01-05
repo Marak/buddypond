@@ -114,10 +114,20 @@ export default class DropArea {
             let targetApp = targetElement.data('app');
             let targetType = targetElement.data('type');
             let targetContext = targetElement.data('context');
+            // check to see if targetApp is loaded ( should be )
+            // and if target app has a droparea handler
+            let app = this.bp.apps[targetApp];
+            if (!app) {
+                console.error('target app not found:', targetApp);
+                return;
+            }
 
+            if (app.handleDrop) {
+                console.log('target app has droparea handler:', targetApp, 'using it...');
+                app.handleDrop(event);
+            }
 
-
-
+            // TODO: invert control, have the buddylist handle the drop event
             if (targetApp === 'buddylist') {
 
 

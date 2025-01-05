@@ -533,7 +533,6 @@ function renderDesktopShortCuts() {
     }
   });
 
-
   /* todo: soon  
 
   bp.apps.desktop.addShortCut({
@@ -545,6 +544,8 @@ function renderDesktopShortCuts() {
       bp.open('pad');
     }
   });
+
+  
 */
 
   bp.apps.desktop.addShortCut({
@@ -653,6 +654,7 @@ function renderDesktopShortCuts() {
 
   bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
   bp.load('droparea');
+  // bp.load('file-explorer');
 
   // all additional default apps
   bp.load('emulator');

@@ -250,13 +250,22 @@ export default function openChatWindow(data) {
                 statusDiv.text('Uploading...');
                 
                 try {
-                    await buddypond.sendFile({
-                        type: windowType,
-                        name: contextName,
-                        text: `Sent ${file.name}`,
-                        file: file,
-                        delay: 100
+                    let fileUrl = await buddypond.uploadFile(file, (progress) => {
+                        statusDiv.text('Uploading: ' + progress + '%');
+                        
                     });
+
+                    // now that we have the url, just send a regular message with the url
+                    // the card type should automatically be detected by the server
+                    // the the body of the message will be the url with extension of image, video, etc
+                    let message = {
+                        to: _data.to,
+                        from: _data.from,
+                        type: _data.type,
+                        text: fileUrl
+                    };
+                    console.log("sending multimedia message", message);
+                    this.bp.emit('buddy::sendMessage', message);
                     
                     // Fade out and remove the uploaded file preview
                     await $(element).fadeOut(300);

@@ -14,7 +14,7 @@ buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 
 // legacy v4 API
-let desktop = { settings: {}};
+let desktop = { settings: {} };
 
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://api.buddypond.com/api/v3';
@@ -29,11 +29,11 @@ if (buddypond.mode === 'dev') {
   buddypond.endpoint = 'http://192.168.200.59/api/v3';
 }
 
-buddypond.authBuddy = function authBuddy (me, password, cb) {
+buddypond.authBuddy = function authBuddy(me, password, cb) {
   apiRequest('/auth', 'POST', {
     buddyname: me,
     buddypassword: password
-  }, function(err, data){
+  }, function (err, data) {
     if (data && data.success) {
       buddypond.me = me;
       buddypond.qtokenid = data.qtokenid;
@@ -44,58 +44,58 @@ buddypond.authBuddy = function authBuddy (me, password, cb) {
   })
 }
 
-buddypond.verifyToken = function verifyToken (me, qtokenid, cb) {
+buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
   apiRequest('/verifyToken', 'POST', {
     buddyname: me,
     qtokenid: qtokenid
-  }, function(err, data){
+  }, function (err, data) {
     buddypond.me = me;
     cb(err, data);
   })
 }
 
-buddypond.addBuddy = function addBuddy (buddyname, cb) {
+buddypond.addBuddy = function addBuddy(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/addbuddy', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.removeBuddy = function removeBuddy (buddyname, cb) {
+buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/remove', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.approveBuddy = function approveBuddy (buddyname, cb) {
+buddypond.approveBuddy = function approveBuddy(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/approve', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.denyBuddy = function denyBuddy (buddyname, cb) {
+buddypond.denyBuddy = function denyBuddy(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/deny', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.banBuddy = function banBuddy (buddyname, cb) {
+buddypond.banBuddy = function banBuddy(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/ban', 'POST', {
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
 // Legacy REST method for getting / setting buddy profile in one call
-buddypond.getBuddyProfile = function getBuddyProfile (profileUpdates, cb) {
-  apiRequest('/buddies', 'POST', profileUpdates, function(err, data){
+buddypond.getBuddyProfile = function getBuddyProfile(profileUpdates, cb) {
+  apiRequest('/buddies', 'POST', profileUpdates, function (err, data) {
     cb(err, data);
   })
 }
@@ -103,7 +103,7 @@ buddypond.getBuddyProfile = function getBuddyProfile (profileUpdates, cb) {
 // Newer v5 getProfile ( read only )
 buddypond.getProfile = async function getProfile(buddyname) {
   return new Promise((resolve, reject) => {
-    apiRequest('/buddies/' + buddyname, 'GET', {}, function(err, data) {
+    apiRequest('/buddies/' + buddyname, 'GET', {}, function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -183,14 +183,14 @@ buddypond.deletePad = async function (key) {
 
 
 
-buddypond.updateBuddyProfile = function updateBuddyProfile (profileUpdates, cb) {
-  apiRequest('/buddies/' + buddypond.me + '/updateProfile', 'POST', profileUpdates, function(err, data){
+buddypond.updateBuddyProfile = function updateBuddyProfile(profileUpdates, cb) {
+  apiRequest('/buddies/' + buddypond.me + '/updateProfile', 'POST', profileUpdates, function (err, data) {
     cb(err, data);
   })
 }
 
 // TODO: pass card values to sendMessage fn scope
-buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
+buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
     text: text,
@@ -198,19 +198,19 @@ buddypond.sendMessage = function sendMessage (buddyName, text, cb) {
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.removeMessage = async function removeMessage ({from, to, type, uuid}) {
+buddypond.removeMessage = async function removeMessage({ from, to, type, uuid }) {
   return new Promise((resolve, reject) => {
     apiRequest('/messages/remove', 'POST', {
       from: from,
       to: to,
       type: type,
       uuid: uuid
-    }, function(err, data){
+    }, function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -222,7 +222,7 @@ buddypond.removeMessage = async function removeMessage ({from, to, type, uuid}) 
 }
 
 // TODO: pass card values to pondSendMessage fn scope
-buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
+buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
   apiRequest('/messages/pond/' + pondname, 'POST', {
     pondname: pondname,
     pondtext: pondtext,
@@ -230,103 +230,103 @@ buddypond.pondSendMessage = function pondSendMessage (pondname, pondtext, cb) {
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.castSpell = function castSpell (buddyName, spellName, cb) {
-  cb = cb || function noop (err, re) {
+buddypond.castSpell = function castSpell(buddyName, spellName, cb) {
+  cb = cb || function noop(err, re) {
     console.log('buddyPond.castSpell completed noop', err, re);
   };
   apiRequest('/messages/buddy/' + buddyName, 'POST', {
     buddyname: buddyName,
     text: spellName,
     type: 'agent'
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.sendBuddySignal = function sendBuddySignal (buddyname, signal, cb) {
+buddypond.sendBuddySignal = function sendBuddySignal(buddyname, signal, cb) {
   apiRequest('/buddies/' + buddyname + '/signal', 'POST', {
     data: signal
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.getBuddySignal = function getBuddySignal (buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/signal', 'GET', {}, function(err, data){
+buddypond.getBuddySignal = function getBuddySignal(buddyname, cb) {
+  apiRequest('/buddies/' + buddyname + '/signal', 'GET', {}, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.callBuddy = function callBuddy (buddyName, text, cb) {
+buddypond.callBuddy = function callBuddy(buddyName, text, cb) {
   apiRequest('/buddies/' + buddyName + '/call', 'POST', {
     buddyname: buddyName,
     text: text
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.endBuddyCall = function endBuddyCall (buddyName, cb) {
+buddypond.endBuddyCall = function endBuddyCall(buddyName, cb) {
   apiRequest('/buddies/' + buddyName + '/endcall', 'POST', {
     buddyname: buddyName,
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.endCall = function endCall (buddyname, cb) {
+buddypond.endCall = function endCall(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/endcall', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.declineCall = function declineCall (buddyname, cb) {
+buddypond.declineCall = function declineCall(buddyname, cb) {
   apiRequest('/buddies/' + buddyname + '/declinecall', 'POST', {
     buddyname: buddyname
-  }, function(err, data){
+  }, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.getMessages = function getMessages (params, cb) {
-  apiRequest('/messages/getMessages', 'POST', params, function(err, data){
+buddypond.getMessages = function getMessages(params, cb) {
+  apiRequest('/messages/getMessages', 'POST', params, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.getGbpMarket = function getGbpMarket (cb) {
-  apiRequest('/gbp/market', 'GET', {}, function(err, data){
+buddypond.getGbpMarket = function getGbpMarket(cb) {
+  apiRequest('/gbp/market', 'GET', {}, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.purchaseGbp = function purchaseGbp (params, cb) {
-  apiRequest('/gbp/purchase', 'POST', params, function(err, data){
+buddypond.purchaseGbp = function purchaseGbp(params, cb) {
+  apiRequest('/gbp/purchase', 'POST', params, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.giveGbp = function giveGbp (params, cb) {
-  apiRequest('/gbp/send', 'POST', params, function(err, data){
+buddypond.giveGbp = function giveGbp(params, cb) {
+  apiRequest('/gbp/send', 'POST', params, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.getGbpBalance = function purchaseGbp (params, cb) {
-  apiRequest('/gbp/balance', 'GET', params, function(err, data){
+buddypond.getGbpBalance = function purchaseGbp(params, cb) {
+  apiRequest('/gbp/balance', 'GET', params, function (err, data) {
     cb(err, data);
   })
 }
 
-buddypond.getGbpRecentTransactions = function recentGbpTransactions (params, cb) {
-  apiRequest('/gbp/recent', 'GET', params, function(err, data){
+buddypond.getGbpRecentTransactions = function recentGbpTransactions(params, cb) {
+  apiRequest('/gbp/recent', 'GET', params, function (err, data) {
     cb(err, data);
   })
 }
@@ -345,9 +345,9 @@ buddypond.getFileCategory = function getFileCategory(fileType) {
   return 'binary';
 }
 
-buddypond.getFiles = async function getFiles (owner) {
+buddypond.getFiles = async function getFiles(owner) {
   return new Promise((resolve, reject) => {
-    apiRequest(`/files/${buddypond.me}`, 'GET', {}, function(err, data){
+    apiRequest(`/files/${buddypond.me}`, 'GET', {}, function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -360,25 +360,25 @@ buddypond.getFiles = async function getFiles (owner) {
 buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) {
   return new Promise((resolve, reject) => {
     const fileCategory = buddypond.getFileCategory(file.type);
-    
+
     // Convert file to base64
     const reader = new FileReader();
-    reader.onload = async function() {
+    reader.onload = async function () {
       try {
         const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
-        
+
         switch (fileCategory) {
           case 'image': {
             // Handle images as snaps
             const snapsJSON = JSON.stringify(base64Data);
-            
+
             buddypond.sendSnaps(type, name, text, snapsJSON, delay, (err, data) => {
               if (err) reject(err);
               else resolve(data);
             });
             break;
           }
-          
+
           case 'audio': {
             // Handle audio files
             const audioJSON = JSON.stringify({
@@ -386,14 +386,14 @@ buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) 
               type: file.type,
               name: file.name
             });
-            
+
             buddypond.sendAudio(type, name, text, audioJSON, (err, data) => {
               if (err) reject(err);
               else resolve(data);
             });
             break;
           }
-          
+
           case 'video':
           case 'binary': {
             // Handle video and other binary files
@@ -403,7 +403,7 @@ buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) 
               name: file.name,
               size: file.size
             });
-            
+
             buddypond.sendBinaryFile(type, name, text, fileJSON, (err, data) => {
               if (err) reject(err);
               else resolve(data);
@@ -415,7 +415,7 @@ buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) 
         reject(err);
       }
     };
-    
+
     reader.onerror = () => {
       reject(new Error('Error reading file'));
     };
@@ -432,7 +432,7 @@ buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) 
 buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, cb) {
   let x = (new TextEncoder().encode(fileJSON)).length;
   console.log('File', `About to send a file: ${x} bytes -> ${type}/${name}`);
-  
+
   const payload = {
     type: type,
     card: {
@@ -440,7 +440,7 @@ buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, c
       file: fileJSON
     }
   };
-  
+
   // Add type-specific fields
   if (type === 'pond') {
     payload.pondname = name;
@@ -449,17 +449,20 @@ buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, c
     payload.buddyname = name;
     payload.text = text;
   }
-  
-  apiRequest(`/messages/${type}/${name}`, 'POST', payload, function(err, data) {
+
+  apiRequest(`/messages/${type}/${name}`, 'POST', payload, function (err, data) {
     cb(err, data);
   });
 }
 
 
-buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, delay, cb) {
+buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, delay, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);
   console.log('type', type, 'name', name, 'text', text, 'snapsJSON', snapsJSON, 'delay', delay);
+
+  return;
+
   if (type === 'pond') {
     apiRequest('/messages/pond/' + name, 'POST', {
       pondname: name,
@@ -470,7 +473,7 @@ buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, del
         snaps: snapsJSON,
         delay: delay
       }
-    }, function(err, data){
+    }, function (err, data) {
       cb(err, data);
     });
   }
@@ -484,14 +487,14 @@ buddypond.sendSnaps = function pondSendMessage (type, name, text, snapsJSON, del
         snaps: snapsJSON,
         delay: delay
       }
-    }, function(err, data){
+    }, function (err, data) {
       console.log("callback from sendSnaps", err, data);
       cb(err, data);
     });
   }
 }
 
-buddypond.sendAudio = function pondSendMessage (type, name, text, audioJSON, cb) {
+buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) {
   let x = (new TextEncoder().encode(audioJSON)).length;
   console.log('Sounds', `About to send a Audio: ${x} bytes -> ${type}/${name}`);
   if (type === 'pond') {
@@ -503,7 +506,7 @@ buddypond.sendAudio = function pondSendMessage (type, name, text, audioJSON, cb)
         type: 'audio',
         audio: audioJSON
       }
-    }, function(err, data){
+    }, function (err, data) {
       cb(err, data);
     });
   }
@@ -516,20 +519,112 @@ buddypond.sendAudio = function pondSendMessage (type, name, text, audioJSON, cb)
         type: 'audio',
         audio: audioJSON
       }
-    }, function(err, data){
+    }, function (err, data) {
       cb(err, data);
     });
   }
 }
 
+buddypond.listFiles = async function listFiles() {
+  // https://bp-files.cloudflare1973.workers.dev/list-files
+  // use fetch
+  // return a promise
+  let url = `https://bp-files.cloudflare1973.workers.dev/list-files?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => resolve(data))
+      .catch(err => reject(err));
+  });
+}
 
-buddypond.setPowerLevel = function setPowerLevel (buddyName, level) {
+buddypond.uploadFile = async function uploadFile(file, onProgress) {
+
+  const workerBaseUrl = "https://bp-storage.cloudflare1973.workers.dev";
+
+  console.log("buddypond.uploadFile", file);
+  // Construct the URL for the Worker to generate the signed URL
+  let fileName = encodeURIComponent(file.webkitRelativePath || file.name);
+  const fileSize = file.size; // Get the size of the file
+  const userFolder = buddypond.me; // Define the user folder path appropriately
+  // TODO: we may need to add paths here if uploading directories / etc
+  //fileName = 'test/' + fileName;
+  const signedUrlRequest = `${workerBaseUrl}/generate-signed-url?fileName=${fileName}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
+
+  console.log('Requesting signed URL from Worker:', signedUrlRequest);
+
+  try {
+    const signedUrlResponse = await fetch(signedUrlRequest);
+    if (!signedUrlResponse.ok) {
+      throw new Error(`Failed to get signed URL: ${await signedUrlResponse.text()}`);
+    }
+
+    const { signedUrl } = await signedUrlResponse.json();
+    console.log('Received signed URL:', signedUrl);
+
+
+    const uploadResponse = await fetch(signedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': file.type || 'application/octet-stream'
+      },
+      body: file
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error(`HTTP error during file upload: ${await uploadResponse.text()}`);
+    }
+
+    // lets return the new file url for the file
+    // its not the signed url, its the constructed url on the CDN with userFolder and fileName
+    let fileUrl = `https://files.buddypond.com/${userFolder}/${fileName}`;
+    console.log('File uploaded successfully:', fileUrl);
+    console.log('Upload successful, server responded with:', await uploadResponse.text());
+    return fileUrl;
+  } catch (error) {
+    console.error('Error during file upload process:', error);
+  }
+
+
+}
+
+buddypond.uploadFiles = async function uploadFiles(files, onProgress) {
+  if (!files.length) {
+    alert('Please select a directory.');
+    return;
+  }
+  // Define the base URL of your Cloudflare Worker
+
+  // Loop through all files and upload them one by one
+  for (let file of files) {
+
+    await buddypond.uploadFile(file, onProgress);
+
+  }
+}
+
+buddypond.getFileMetadata = async function (fileName) {
+  const url = `https://bp-files.cloudflare1973.workers.dev/get-metadata?fileName=${encodeURIComponent(fileName)}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to get metadata: ${await response.text()}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error('Error getting file metadata:', err);
+    throw err; // Rethrow for external handling
+  }
+};
+
+
+buddypond.setPowerLevel = function setPowerLevel(buddyName, level) {
   apiRequest('/buddies/' + buddyName + '/powerlevel', 'POST', {
     level: level
-  }, function(err, data){
+  }, function (err, data) {
     console.log('setPowerLevel', err, data);
   })
-  
+
 }
 
 
@@ -540,7 +635,7 @@ buddypond.setPowerLevel = function setPowerLevel (buddyName, level) {
 buddypond.packetsSent = 0;
 buddypond.packetsReceived = 0;
 
-buddypond.incrementPackets = function incrementPackets (key) {
+buddypond.incrementPackets = function incrementPackets(key) {
   if (buddypond[key] > 999999) {
     buddypond[key] = 0;
   }
@@ -552,16 +647,16 @@ buddypond.incrementPackets = function incrementPackets (key) {
 //
 buddypond.recentResponseTimes = [];
 
-buddypond.addPerfTime = function addPerfTime (perf) {
+buddypond.addPerfTime = function addPerfTime(perf) {
   if (buddypond.recentResponseTimes.length > 55) {
     buddypond.recentResponseTimes.shift();
   }
   buddypond.recentResponseTimes.push(perf);
 }
 
-buddypond.averageResponseTime = function averageResponseTime () {
+buddypond.averageResponseTime = function averageResponseTime() {
   let mean = 0;
-  buddypond.recentResponseTimes.forEach(function(perf){
+  buddypond.recentResponseTimes.forEach(function (perf) {
     let elapsed = perf.end.getTime() - perf.start.getTime();
     mean += elapsed;
   });
@@ -569,13 +664,13 @@ buddypond.averageResponseTime = function averageResponseTime () {
   return Math.floor(average) + 'ms';
 }
 
-buddypond.lastResponseTime = function averageResponseTime () {
+buddypond.lastResponseTime = function averageResponseTime() {
   let perf = buddypond.recentResponseTimes[buddypond.recentResponseTimes.length - 1];
   let elapsed = perf.end.getTime() - perf.start.getTime();
   return elapsed + 'ms';
 }
 
-buddypond.logout = function logout () {
+buddypond.logout = function logout() {
   localStorage.removeItem('qtokenid');
   localStorage.removeItem('me');
   buddypond.me = null;
@@ -593,23 +688,23 @@ function apiRequest(uri, method, data, cb) {
 
   // console.log("making apiRequest", url, method, data);
   let headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json; charset=utf-8"
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=utf-8"
   };
 
   if (buddypond.qtokenid) {
-      data = data || {};
-      data.qtokenid = buddypond.qtokenid;
-      headers['qtokenid'] = buddypond.qtokenid;
+    data = data || {};
+    data.qtokenid = buddypond.qtokenid;
+    headers['qtokenid'] = buddypond.qtokenid;
   }
 
   let body = method === "POST" ? JSON.stringify(data) : undefined;
 
   // Prepare fetch options
   const options = {
-      method: method,
-      headers: headers,
-      body: body
+    method: method,
+    headers: headers,
+    body: body
   };
 
   // Handling fetch timeout manually
@@ -622,31 +717,31 @@ function apiRequest(uri, method, data, cb) {
 
   // TODO: this should be fetch-in-worker
   fetch(url, { ...options, signal: controller.signal })
-      .then(response => {
-          clearTimeout(timeoutId);
-          if (!response.ok) {
-              throw new Error(response.statusText);
-          }
-          return response.json();
-      })
-      .then(data => {
-          buddypond.incrementPackets('packetsReceived');
-          perf.end = new Date();
-          buddypond.addPerfTime(perf);
-          cb(null, data);
-      })
-      .catch(error => {
-          let msg = 'Fetch connection error. Retrying request shortly.';
-          console.log(error)
-          if (error.name === "AbortError") {
-              msg = 'Fetch request timeout';
-          } else if (error.message === 'Payload Too Large') {
-              msg = 'File upload was too large for server. Try a smaller file.';
-          } else {
-            msg = error.message;
-          }
-          cb(new Error(msg), null);
-      });
+    .then(response => {
+      clearTimeout(timeoutId);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then(data => {
+      buddypond.incrementPackets('packetsReceived');
+      perf.end = new Date();
+      buddypond.addPerfTime(perf);
+      cb(null, data);
+    })
+    .catch(error => {
+      let msg = 'Fetch connection error. Retrying request shortly.';
+      console.log(error)
+      if (error.name === "AbortError") {
+        msg = 'Fetch request timeout';
+      } else if (error.message === 'Payload Too Large') {
+        msg = 'File upload was too large for server. Try a smaller file.';
+      } else {
+        msg = error.message;
+      }
+      cb(new Error(msg), null);
+    });
 }
 
 
