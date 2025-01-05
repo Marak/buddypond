@@ -1,0 +1,58 @@
+/* styles.css */
+.bp-filetree-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: #333;
+    user-select: none;
+}
+
+.bp-filetree-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bp-filetree-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bp-filetree-icon {
+    margin-right: 6px;
+    font-size: 14px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.bp-filetree-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bp-filetree-children {
+    overflow: hidden;
+}
+
+.bp-filetree-item[data-type="folder"] .bp-filetree-icon::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 4px;
+    border-left: 4px solid #666;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: transform 0.15s ease;
+}
+
+.bp-filetree-item.bp-filetree-expanded[data-type="folder"] .bp-filetree-icon::after {
+    transform: rotate(90deg);
+}
+
+.bp-filetree-item.bp-filetree-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}

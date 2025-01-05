@@ -1,6 +1,5 @@
-import handleDrop from "./lib/handleDrop.js";
-import FileTree from "../file-tree/file-tree.js";
-import FileUploadOverlay from "./FileUploadOverlay.js";
+import FileExplorerClass from "./FileExplorer.js";
+
 export default class FileExplorer {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -8,32 +7,28 @@ export default class FileExplorer {
     }
 
     async init() {
-        this.bp.log('Hello from Example');
 
+        this.bp.log('Hello from File Explorer');
+  
+        let fileExplorerInstance = new FileExplorerClass(this.bp);
+        await fileExplorerInstance.init();
 
+        this.fileExplorer = fileExplorerInstance.create();
 
-        // we can load modules or html fragments or css files here
-        // using this.bp.load() method
+        console.log('created explorer', this.fileExplorer);
 
-        // injects CSS link tag into the head of document
-        await this.bp.load('/v5/apps/based/file-explorer/file-explorer.css');
-
-        // fetches html from the fragment and returns it as a string
-        let html = await this.bp.load('/v5/apps/based/file-explorer/file-explorer.html');
-
-
-        let exampleWindow = this.bp.apps.ui.windowManager.createWindow({
+        this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'file-explorer',
             title: 'File Explorer',
             app: 'file-explorer',
-            x: 50,
-            y: 100,
-            width: 400,
-            height: 300,
+            x: 100,
+            y: 50,
+            width: 800,
+            height: 600,
             minWidth: 200,
             minHeight: 200,
             parent: $('#desktop')[0],
-            content: html,
+            content:  this.fileExplorer.container,
             resizable: true,
             minimizable: true,
             maximizable: true,
@@ -43,71 +38,12 @@ export default class FileExplorer {
             minimized: false
         });
 
-        exampleWindow.container.classList.add('has-droparea');
+        this.fileExplorerWindow.container.classList.add('has-droparea');
 
-
-
-        let ft = new FileTree(this.bp, {});
-        await ft.init();
-        let fileTreeHolder = $('.bp-file-explorer-tree', exampleWindow.content);
-        fileTreeHolder.html('');
-        this.fileTree = ft.create(fileTreeHolder[0], {
-            onFileSelect: (filePath, target) => {
-                this.loadFile(filePath);
-            },
-            onFolderToggle: (folderPath, isExpanded) => {
-                console.log('Folder toggled:', folderPath, isExpanded);
-            }
-        });
-        
-        this.fileTree.render([
-            {
-                name: 'index.html',
-                type: 'file',
-            },
-            {
-                name: 'style.css',
-                type: 'file',
-            },
-            {
-                name: 'script.js',
-                type: 'file',
-            },
-            {
-                name: 'images',
-                type: 'folder',
-                children: [
-                    {
-                        name: 'logo.png',
-                        type: 'file',
-                    },
-                    {
-                        name: 'background.jpg',
-                        type: 'file',
-                    },
-                ]
-            }
-        ]);
-
-
-
-
-
-
-        // Usage:
-        this.uploadOverlay = new FileUploadOverlay(async (file, onProgress)=>{
-            // upload file here
-            console.log("uploading file", file);
-            await this.bp.apps.client.api.uploadFile(file, onProgress);
-        });
-        this.uploadOverlay.hide();
-
-
+        this.handleDrop = this.fileExplorer.handleDrop.bind(this.fileExplorer);
 
 
         return 'loaded File Explorer';
     }
 
 }
-
-FileExplorer.prototype.handleDrop = handleDrop;

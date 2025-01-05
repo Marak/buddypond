@@ -1,5 +1,6 @@
 export default class FileUploadOverlay {
-    constructor(uploadFn) {
+    constructor(parent, uploadFn) {
+      this.parent = parent;
       this.files = [];
       this.initializeElements();
       this.bindEvents();
@@ -7,16 +8,16 @@ export default class FileUploadOverlay {
     }
   
     initializeElements() {
-      this.overlay = document.querySelector('.bp-file-explorer-upload-overlay');
-      this.filesList = document.querySelector('.bp-file-explorer-upload-files-list');
-      this.totalSize = document.querySelector('.bp-file-explorer-total-size');
-      this.uploadButton = document.querySelector('.bp-file-explorer-upload-start');
-      this.cancelButton = document.querySelector('.bp-file-explorer-upload-cancel');
-      this.progressContainer = document.querySelector('.bp-file-explorer-upload-progress-container');
-      this.progressBar = document.querySelector('.bp-file-explorer-upload-progress-bar');
-      this.progressPercentage = document.querySelector('.bp-file-explorer-upload-progress-percentage');
-      this.currentFile = document.querySelector('.bp-file-explorer-current-file');
-      this.fileCount = document.querySelector('.bp-file-explorer-file-count');
+      this.overlay = this.parent.querySelector('.bp-file-explorer-upload-overlay');
+      this.filesList = this.parent.querySelector('.bp-file-explorer-upload-files-list');
+      this.totalSize = this.parent.querySelector('.bp-file-explorer-total-size');
+      this.uploadButton = this.parent.querySelector('.bp-file-explorer-upload-start');
+      this.cancelButton = this.parent.querySelector('.bp-file-explorer-upload-cancel');
+      this.progressContainer = this.parent.querySelector('.bp-file-explorer-upload-progress-container');
+      this.progressBar = this.parent.querySelector('.bp-file-explorer-upload-progress-bar');
+      this.progressPercentage = this.parent.querySelector('.bp-file-explorer-upload-progress-percentage');
+      this.currentFile = this.parent.querySelector('.bp-file-explorer-current-file');
+      this.fileCount = this.parent.querySelector('.bp-file-explorer-file-count');
     }
   
     bindEvents() {

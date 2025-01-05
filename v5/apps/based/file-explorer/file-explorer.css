@@ -1,3 +1,8 @@
+.bp-file-explorer {
+    width: 100%;
+    height: 100%;
+}
+
 .bp-file-explorer-container {
     display: flex;
     flex-direction: column;
