@@ -6,7 +6,7 @@ desktop.app.gifstudio.gifDelay = 200;
 
 // TODO: three view modes ( same as Mirror, Full, Normal, Half )
 // TODO: create perfect loop by duplicating set and reversing it <<<<<<||>>>>>>
-desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
+desktop.app.gifstudio.load = function loadDesktopGames(params, next) {
   desktop.load.remoteAssets([
     'desktop/assets/js/gif-frames.js',
     'desktop/assets/js/gif.js',
@@ -78,7 +78,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       }
 
       desktop.app.gifstudio.currentFrameIndex = frameIndex;
-      desktop.ui.openWindow('paint', { 
+      desktop.ui.openWindow('paint', {
         output: 'gifstudio',
         context: title
       });
@@ -90,18 +90,44 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $('.gifstudio_gifPreview').show();
       let output = desktop.app.gifstudio.output;
       let context = desktop.app.gifstudio.context;
-      buddypond.sendSnaps(output, context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, 'gif-studio', function (err, data) {
+      buddypond.sendSnaps(output, context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, 'gif-studio', function (err, uploadedUrl) {
         console.log('Sent GIF as snap completed');
+
+
+        // at this point with the new v5 API its expected that the client send a new messages
+        // broadcasting the file upload to the CDN
+
+        // now that we have the url, just send a regular message with the url
+        // the card type should automatically be detected by the server
+        // the the body of the message will be the url with extension of image, video, etc
+
+
+        // context is buddyname or pondname
+        // output is buddy or pond
+
+        let message = {
+          to: context,
+          from: bp.me,
+          type: output,
+          text: uploadedUrl
+        };
+        console.log("sending gif-studio message", message);
+        bp.emit('buddy::sendMessage', message);
+
+
       });
       JQDX.closeWindow('#window_gifstudio');
-      // open the window we just outputted to
-      if (output === 'buddy') {
-        // TODO: buddylist renamed to buddy
-        output = 'buddylist'
-      }
+
+
+
+
+
+
+      /*
       JQDX.openWindow(output, {
         context: context
       });
+      */
     });
 
     d.on('mousedown', '#window_gifstudio .saveGif', function (ev) {
@@ -114,7 +140,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       return false;
     });
 
-    $( '#gifStudioDelaySlider' ).slider({
+    $('#gifStudioDelaySlider').slider({
       value: 200,
       min: 100,
       max: 2222,
@@ -129,9 +155,9 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
   });
 };
 
-desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
+desktop.app.gifstudio.loadGifFrame = function loadGifFrame(img, index) {
   // Remark: strange issue with double encoding gif in JSPAINT adding a '"' symbol?
-  img = img.substring(1, img.length-1);
+  img = img.substring(1, img.length - 1);
   let action = 'replace';
   let currentFrames = $('#window_gifstudio .gifFrameHolder').length;
   // console.log('desktop.app.gifstudio.loadGifFrame', index, currentFrames)
@@ -143,8 +169,8 @@ desktop.app.gifstudio.loadGifFrame = function loadGifFrame (img, index) {
   });
 };
 
-desktop.app.gifstudio.createGif = function createGif (delay, cb) {
-  cb = cb || function noop () {};
+desktop.app.gifstudio.createGif = function createGif(delay, cb) {
+  cb = cb || function noop() { };
 
   let naturalWidth, naturalHeight;
   // get naturalWidth and naturalHeight of first frame ( to ensure correct resize )
@@ -192,13 +218,13 @@ desktop.app.gifstudio.createGif = function createGif (delay, cb) {
 
   // provide one tick of event loop to ensure that all frames render as base64 strings
   // Remark: Without this delay the last frame appears black on first render
-  setTimeout(function(){
+  setTimeout(function () {
     gif.render();
   }, 1)
-  
+
 };
 
-desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, action) {
+desktop.app.gifstudio.renderFrame = function renderFrame(frame, base64String, action) {
 
   let index = frame.frameIndex;
   let currentFrames = $('#window_gifstudio .gifFrameHolder').length;
@@ -279,7 +305,7 @@ desktop.app.gifstudio.renderFrame = function renderFrame (frame, base64String, a
   */
 };
 
-desktop.app.gifstudio.drawFrames = function drawFrames (options) {
+desktop.app.gifstudio.drawFrames = function drawFrames(options) {
   $('.gifFrameHolder', '#window_gifstudio').remove();
   gifFrames(options).then(function (frameData) {
     frameData.forEach(function (frame) {
@@ -304,7 +330,7 @@ const toDataURL = url => fetch(url)
     reader.readAsDataURL(blob);
   }));
 
-desktop.app.gifstudio.openWindow = function openWindow (params) {
+desktop.app.gifstudio.openWindow = function openWindow(params) {
 
   if (buddypond.me) {
     $('.sendGif', '#window_gifstudio').show();
@@ -346,7 +372,7 @@ desktop.app.gifstudio.openWindow = function openWindow (params) {
 };
 
 // TODO: move these functions to helper file
-function seralizeFileInput (fileInput) {
+function seralizeFileInput(fileInput) {
 
   // TODO: rainbow tv gif
   $('.gifstudio_gifPreview').hide();
@@ -363,11 +389,11 @@ function seralizeFileInput (fileInput) {
   };
 
   reader.onerror = function (error) {
-  	console.log('Error: ', error);
+    console.log('Error: ', error);
   };
 }
 
-function dropHandler (ev) {
+function dropHandler(ev) {
   console.log('File(s) dropped');
 
   // Prevent default behavior (Prevent file from being opened)
@@ -394,7 +420,7 @@ function dropHandler (ev) {
   }
 }
 
-function dragOverHandler (ev) {
+function dragOverHandler(ev) {
   console.log('File(s) in drop zone');
   $('#drop_zone').removeClass('drop_zone_inactive');
   $('#drop_zone').addClass('drop_zone_active');
@@ -403,7 +429,7 @@ function dragOverHandler (ev) {
   ev.preventDefault();
 }
 
-function dragLeaveHandler (ev) {
+function dragLeaveHandler(ev) {
   console.log('File(s) in drop zone');
   $('#drop_zone').removeClass('drop_zone_active');
   $('#drop_zone').addClass('drop_zone_inactive');

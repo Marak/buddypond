@@ -1,5 +1,5 @@
 // TODO: remove this
-let legacyApps = ['piano', 'lofi', 'ayyowars', 'interdimensionalcable', 'paint', 'mirror', 'games'];
+let legacyApps = ['piano', 'lofi', 'ayyowars', 'interdimensionalcable', 'paint', 'mirror', 'games', 'soundrecorder', 'merlin'];
 
 window.bp_v_5 = async function bp_v_5() {
 
@@ -186,6 +186,9 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.open('buddylist');
   await bp.load('appstore');
   await bp.load('themes');
+
+  await bp.load('file-explorer');
+  // bp.open('file-explorer');
 
 
   renderDesktopShortCuts();
@@ -457,6 +460,7 @@ window.bp_v_5 = async function bp_v_5() {
     // check to see if legacy app ( for now)
 
     if (legacyApps.includes(appName)) {
+      // alert(`Opening legacy app ${appName}`);
       desktop.ui.openWindow(appName);
     } else {
       bp.open(appName);
@@ -534,6 +538,18 @@ function renderDesktopShortCuts() {
   });
 
   /* todo: soon  
+*/
+
+
+bp.apps.desktop.addShortCut({
+  name: 'file-explorer',
+  icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
+  label: 'Cloud Files',
+}, {
+  onClick: () => {
+    bp.open('file-explorer');
+  }
+});
 
   bp.apps.desktop.addShortCut({
     name: 'pad',
@@ -546,7 +562,6 @@ function renderDesktopShortCuts() {
   });
 
   
-*/
 
   bp.apps.desktop.addShortCut({
     name: 'sampler',
@@ -583,9 +598,18 @@ function renderDesktopShortCuts() {
   //alert(bp.get('hello'));
 
 
-  desktop.ui.renderDesktopShortCut('merlin', {
-    name: 'merlin', label: 'Merlin Automated Assistant'
+
+  bp.apps.desktop.addShortCut({
+    name: 'Merlin',
+    icon: `desktop/assets/images/icons/icon_merlin_64.png`,
+    label: 'Merlin Automated Assistant',
+  }, {
+    onClick: () => {
+      desktop.ui.openWindow('merlin');
+    }
   });
+
+
 
   /*
   desktop.ui.renderDesktopShortCut('download', {
@@ -654,8 +678,7 @@ function renderDesktopShortCuts() {
 
   bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
   bp.load('droparea');
-  // bp.load('file-explorer');
-
+  
   // all additional default apps
   bp.load('emulator');
   bp.load('audio-visual');

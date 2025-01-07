@@ -16,13 +16,13 @@ desktop.app.mirror.devices = {
   audiooutput: {}
 };
 
-desktop.app.mirror.load = function loadDesktopMirror (params, next) {
-  const assets = [ 
+desktop.app.mirror.load = function loadDesktopMirror(params, next) {
+  const assets = [
     '/desktop/based/desktop.mirror/lib/CanvasVideo.js',
     '/desktop/based/desktop.mirror/lib/snaps.js',
     '/desktop/based/desktop.mirror/vendor/jsman.js',
     '/desktop/assets/js/gif.js',
-    'mirror' ];
+    'mirror'];
 
   desktop.load.remoteAssets(assets, function (err) {
     $('#window_mirror').css('width', 640);
@@ -36,7 +36,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       }
     });
 
-    $( '#snapDelaySlider' ).slider({
+    $('#snapDelaySlider').slider({
       value: 777,
       min: 1,
       max: 2222,
@@ -48,7 +48,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       }
     });
 
-    function toggleMirrorControls () {
+    function toggleMirrorControls() {
       if (desktop.app.mirror.showingControls) {
         desktop.app.mirror.showingControls = false;
         hideMirrorControls();
@@ -58,14 +58,14 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       }
     }
 
-    function hideMirrorControls () {
+    function hideMirrorControls() {
       $('.mirrorControl').hide();
       $('.cameraControls').hide();
       $('.snapControl').hide();
       $('.snapControls').hide();
     }
 
-    function showMirrorControls () {
+    function showMirrorControls() {
       if (desktop.app.mirror.makingSnap) {
         $('.cameraControls').show();
         $('.snapControl').show();
@@ -81,7 +81,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       }
     }
 
-    function toggleMirrorSize () {
+    function toggleMirrorSize() {
       // 3 view modes we can toggle, Normal, Half, Full
       if (desktop.app.mirror.viewMode === 'Normal') {
         $('#mirrorCanvasMe').css('width', 320);
@@ -182,7 +182,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       // close mirror ( fow now )
       JQDX.closeWindow('#window_mirror');
       let snapsGIF = $('#snapsPreview').attr('src');
-      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, 'camera', function (err, data) {
+      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, 'camera', function (err, uploadedUrl) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('.gifFrames', '#window_mirror').html('');
@@ -191,10 +191,33 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
         $('#snapDelaySlider').slider('value', 777);
         $('#snapDelaySlider').data('delay', 777);
         desktop.app.mirror.makingSnap = false;
+
+
+        // at this point with the new v5 API its expected that the client send a new messages
+        // broadcasting the file upload to the CDN
+
+        // now that we have the url, just send a regular message with the url
+        // the card type should automatically be detected by the server
+        // the the body of the message will be the url with extension of image, video, etc
+
+
+        // context is buddyname or pondname
+        // output is buddy or pond
+
+        let message = {
+          to: desktop.app.mirror.snapContext,
+          from: bp.me,
+          type: desktop.app.mirror.snapType,
+          text: uploadedUrl
+        };
+        console.log("sending multimedia message", message);
+        bp.emit('buddy::sendMessage', message);
+
+
       });
     });
 
-    desktop.app.mirror.cancelSnap = function cancelSnap () {
+    desktop.app.mirror.cancelSnap = function cancelSnap() {
       // TODO: show frame limit / timer
       desktop.app.mirror.snaps = [];
       currentFrame = 0;
@@ -248,7 +271,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
 };
 
 // get all camera and audio devices on local system
-desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
+desktop.app.mirror.enumerateDevices = function enumerateDevices(cb) {
   navigator.mediaDevices.enumerateDevices({
     video: true
   }).then(function (devices) {
@@ -284,7 +307,7 @@ desktop.app.mirror.enumerateDevices = function enumerateDevices (cb) {
 // opens local camera device and streams it to <video> tag
 // takes in optional device label
 // if no label is provided, will default to first camera found in array
-desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
+desktop.app.mirror.startCamera = function startCamera(deviceLabel) {
   // console.log('starting with device label: ', deviceLabel)
   desktop.app.mirror.enumerateDevices(function (err, devices) {
     let deviceId = desktop.app.mirror.devices.videoinput[deviceLabel].deviceId;
@@ -316,7 +339,7 @@ desktop.app.mirror.startCamera = function startCamera (deviceLabel) {
   });
 };
 
-desktop.app.mirror.resizeFullVideo = function resizeFullVideo () {
+desktop.app.mirror.resizeFullVideo = function resizeFullVideo() {
   $('#snapsPreview').css('width', $('#window_mirror').css('width'));
   $('#snapsPreview').css('height', $('#window_mirror').css('height'));
 
@@ -328,7 +351,7 @@ desktop.app.mirror.resizeFullVideo = function resizeFullVideo () {
   $('#mirrorCanvasMe').css('left', 0);
 };
 
-desktop.app.mirror.openWindow = function openWindow (params) {
+desktop.app.mirror.openWindow = function openWindow(params) {
   this.canvasVideo.bindPlayEvent();
   params = params || {};
   desktop.app.mirror.snapContext = params.context;
@@ -384,7 +407,7 @@ desktop.app.mirror.openWindow = function openWindow (params) {
   });
 };
 
-desktop.app.mirror.closeWindow = function closeMirrorWindow () {
+desktop.app.mirror.closeWindow = function closeMirrorWindow() {
   this.canvasVideo.unbindPlayEvent();
 
   if (desktop.app.mirror.makingSnap) {
