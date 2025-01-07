@@ -128,6 +128,11 @@ export default class BrowserWindow {
         this.iframe.src = this.currentUrl;
     }
 
+    setAddressBar(url) {
+        const urlInput = this.container.querySelector('.bp-browserwindow-url');
+        urlInput.value = url;
+    }
+
     updateAddressBar() {
         const urlInput = this.container.querySelector('.bp-browserwindow-url');
         urlInput.value = this.currentUrl;

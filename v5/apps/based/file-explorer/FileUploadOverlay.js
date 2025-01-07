@@ -1,6 +1,10 @@
 export default class FileUploadOverlay {
-    constructor(parent, uploadFn) {
+    constructor({
+      parent,
+      fileExplorer
+    }, uploadFn) {
       this.parent = parent;
+      this.fileExplorer = fileExplorer;
       this.files = [];
       this.initializeElements();
       this.bindEvents();
@@ -47,58 +51,96 @@ export default class FileUploadOverlay {
     }
   
     renderFiles() {
+      // TODO: clone this from HTML template instead of duplicating string
       this.filesList.innerHTML = this.files.map((file, index) => `
-        <div class="bp-file-explorer-upload-file-item">
-          <div class="bp-file-explorer-upload-column-name">${file.name}</div>
-          <div class="bp-file-explorer-upload-column-size">${this.formatSize(file.size)}</div>
+        <div class="bp-file-explorer-upload-file-item" data-file-id="${index}">
+          <div class="bp-file-explorer-upload-column-name">${file.path}</div>
+          <div class="bp-file-explorer-upload-column-size">${this.formatSize(file.file.size)}</div>
           <div class="bp-file-explorer-upload-column-status">Pending</div>
         </div>
       `).join('');
     }
   
     updateTotalSize() {
-      const totalBytes = this.files.reduce((acc, file) => acc + file.size, 0);
+      const totalBytes = this.files.reduce((acc, file) => acc + file.file.size, 0);
       this.totalSize.textContent = this.formatSize(totalBytes);
+
+      // TODO: better scope, us localstorage or another class
+      if (typeof this.fileExplorer.currentStorageRemaining === 'number') {
+        // console.log("comparing", totalBytes, this.fileExplorer.currentStorageRemaining);
+        if (totalBytes > this.fileExplorer.currentStorageRemaining) {
+          // this.totalSize.textContent = `${this.totalSize.textContent} (Not enough space)`;
+          $('.bp-file-explorer-storage-warning').show();
+          this.uploadButton.disabled = true;
+          this.uploadButton.classList.add('disabled');
+        }
+      }
+
     }
   
     async startUpload() {
       this.uploadButton.disabled = true;
       this.progressContainer.style.display = 'block';
-      
+      console.log('FileUploadOverlay.startUpload() called');
+
       let uploadedFiles = 0;
-      let totalProgress = 0;
-  
+      let uploadedAllFiles = true;
+      let errors = [];
       for (const file of this.files) {
         uploadedFiles++;
         this.currentFile.textContent = file.name;
         this.fileCount.textContent = `(File ${uploadedFiles} of ${this.files.length})`;
+        $(`.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-status`).text('Uploading...');
   
         try {
-          // Simulated upload progress
-          await this.uploadFile(file, (progress) => {
-            const fileProgress = progress / this.files.length;
-            totalProgress = ((uploadedFiles - 1) / this.files.length) + fileProgress;
-            this.updateProgress(totalProgress * 100);
+          await this.uploadFn(file, (progress) => {
+            const totalProgress = progress * 100;
+            this.updateProgress(totalProgress);
           });
+          $(`.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-status`).text('Completed');
         } catch (error) {
+          uploadedAllFiles = false;
+          errors.push(error);
           console.error('Upload failed:', error);
-          // Handle error appropriately
+          // console.log("trying to find element", `.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-error`);
+          //$(`.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-error`).text(error.message).show();
+          $('.bp-file-explorer-upload-errors').append(`<div class="bp-file-explorer-upload-error">${error.message}</div>`).show();
+          $(`.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-status`).text('Failed').addClass('error');
         }
       }
   
-      // Upload complete
-      setTimeout(() => {
-        this.hide();
-        // Trigger any necessary refresh of the file explorer
-      }, 1000);
+      if (uploadedAllFiles) {
+        setTimeout(() => {
+          this.hide();
+        }, 1000);
+      } else {
+        // throw new Error(`Failed to upload ${errors.length} files`);
+        console.error(`Failed to upload ${errors.length} files`, errors);
+      }
     }
   
     async uploadFile(file, onProgress) {
+      console.log("calling uploadFn", file, onProgress);
       // This is a placeholder for your actual upload implementation
       // Replace this with your actual upload logic
 
-      return this.uploadFn(file, onProgress);
+      alert('FileUploadOverlay.uploadFile() called');
+      try {
+        await this.uploadFn(file, onProgress);
+      } catch (error) {
+        // show the error in the UI, could be out of space, etc
+        console.error('Upload failed:', error);
+        alert(error.message)
+        //$('.bp-file-explorer-upload-column-status').textContent = 'Failed'; // should be more specific
+      }
 
+      setTimeout(()=>{
+        // takes a moment for durable objects to update
+        // probably want to poll this?
+        this.fileExplorer.getUsage();
+      }, 1000)
+
+      /*
       return new Promise((resolve) => {
         let progress = 0;
         const interval = setInterval(() => {
@@ -110,6 +152,7 @@ export default class FileUploadOverlay {
           }
         }, 100);
       });
+      */
     }
   
     updateProgress(percentage) {
@@ -118,14 +161,3 @@ export default class FileUploadOverlay {
       this.progressPercentage.textContent = `${roundedPercentage}%`;
     }
   }
-  
-  /*
-  // Usage:
-  const uploadOverlay = new FileUploadOverlay();
-  
-  // When files are dropped:
-  function handleFileDrop(event) {
-    const files = event.dataTransfer.files;
-    uploadOverlay.show(files);
-  }
-    */

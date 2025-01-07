@@ -77,7 +77,9 @@ export default class PadEditor {
             { text: 'Preview', action: () => this.onPreview() },
             { text: 'Edit', action: () => this.onEdit() },
             { text: 'Update', action: () => this.onUpdate() },
-            { text: 'Cancel', action: () => this.onCancel() }
+            { text: 'Delete', action: () => this.onDelete() },
+
+            // { text: 'Cancel', action: () => this.onCancel() }
         ];
 
         buttons.forEach(({ text, action }) => {
@@ -97,8 +99,8 @@ export default class PadEditor {
         await this.bp.load('browser');
 
         // hide the update and cancel buttons
-        this.controls.children[2].style.display = 'none';
-        this.controls.children[3].style.display = 'none';
+        // this.controls.children[2].style.display = 'none';
+        // this.controls.children[3].style.display = 'none';
 
         return this;
     }
@@ -151,6 +153,7 @@ export default class PadEditor {
 
     loadFile(filePath) {
         const content = this.options.getFileContent?.(filePath) || '';
+        // this.filePath = filePath;
         this.setContent(content);
     }
 
@@ -182,6 +185,7 @@ export default class PadEditor {
         if (!content) {
             content = this.getContent();
         }
+        console.log('setting preview content', content);
         this.previewFrame.setContent(content);
     }
 
@@ -194,10 +198,16 @@ export default class PadEditor {
 
     onUpdate() {
         if (this.options.onUpdate) {
-            this.options.onUpdate(this.getContent());
+            this.options.onUpdate(this.filePath, this.getContent());
         }
         if (this.previewMode) {
             this.updatePreview();
+        }
+    }
+
+    onDelete() {
+        if (this.options.onDelete) {
+            this.options.onDelete(this.filePath);
         }
     }
 
@@ -209,7 +219,7 @@ export default class PadEditor {
 
         // TODO: reload the preview from this.currentContent
         // Needs to reset the iframe between about:blank type and iframe.src remote type    
-        //this.updatePreview();
+        this.updatePreview();
 
     }
 

@@ -1,57 +1,69 @@
 <!-- Main container -->
 <div class="bp-file-explorer-container">
-    <!-- Top toolbar -->
-    <div class="bp-file-explorer-toolbar">
-      <div class="bp-file-explorer-toolbar-buttons">
-        <button class="bp-file-explorer-btn">Back</button>
-        <button class="bp-file-explorer-btn">Forward</button>
-        <button class="bp-file-explorer-btn">Up</button>
-      </div>
-      <div class="bp-file-explorer-address">
-        <span>Address:</span>
-        <input type="text" class="bp-file-explorer-address-input" value="/home/user/" />
+  <!-- Top toolbar -->
+  <div class="bp-file-explorer-toolbar">
+    <div class="bp-file-explorer-toolbar-buttons">
+      <button class="bp-file-explorer-btn">Back</button>
+      <button class="bp-file-explorer-btn">Forward</button>
+      <button class="bp-file-explorer-btn">Up</button>
+    </div>
+    <div class="bp-file-explorer-address">
+      <span>Address:</span>
+      <input type="text" class="bp-file-explorer-address-input" value="/home/user/" />
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="bp-file-explorer-content">
+    <!-- Left sidebar with file tree -->
+    <div class="bp-file-explorer-sidebar">
+      <!-- Placeholder for your FileTree component -->
+      <div class="bp-file-explorer-tree" id="jtree">
+        [FileTree Component Will Go Here]
       </div>
     </div>
-    
-    <!-- Main content area -->
-    <div class="bp-file-explorer-content">
-      <!-- Left sidebar with file tree -->
-      <div class="bp-file-explorer-sidebar">
-        <!-- Placeholder for your FileTree component -->
-        <div class="bp-file-explorer-tree">
-          [FileTree Component Will Go Here]
+
+    <!-- Right content area -->
+    <div class="bp-file-explorer-main">
+      <!-- Content header -->
+      <div class="bp-file-explorer-header">
+        <div class="bp-file-explorer-column">Name</div>
+        <div class="bp-file-explorer-column">Size</div>
+        <div class="bp-file-explorer-column">Type</div>
+        <div class="bp-file-explorer-column">Modified</div>
+      </div>
+
+      <!-- Content area -->
+        <!-- Drag to Upload Indicator (initially hidden) -->
+        <div class="bp-file-explorer-drag-upload">
+          <p>Drop files here to upload</p>
+          <br/>
+          <p>Storage Used: <span class="storageUsed">10kb</span></p>
+          <p>Remaining: <span class="storageRemaining">9.8mb</span></p>
+        </div>
+
+      <div class="bp-file-explorer-files">
+
+       
+
+        <!-- Example items (you can remove these) -->
+        <div class="bp-file-explorer-item">
+          <div class="bp-file-explorer-column">Documents</div>
+          <div class="bp-file-explorer-column">--</div>
+          <div class="bp-file-explorer-column">File Folder</div>
+          <div class="bp-file-explorer-column">2024-01-04</div>
         </div>
       </div>
-      
-      <!-- Right content area -->
-      <div class="bp-file-explorer-main">
-        <!-- Content header -->
-        <div class="bp-file-explorer-header">
-          <div class="bp-file-explorer-column">Name</div>
-          <div class="bp-file-explorer-column">Size</div>
-          <div class="bp-file-explorer-column">Type</div>
-          <div class="bp-file-explorer-column">Modified</div>
+      <div class="bp-file-explorer-file-viewer">
+        <div class="bp-file-explorer-file-viewer-header">
         </div>
-        
-        <!-- Content area -->
-        <div class="bp-file-explorer-files">
-          <!-- Example items (you can remove these) -->
-          <div class="bp-file-explorer-item">
-            <div class="bp-file-explorer-column">Documents</div>
-            <div class="bp-file-explorer-column">--</div>
-            <div class="bp-file-explorer-column">File Folder</div>
-            <div class="bp-file-explorer-column">2024-01-04</div>
-          </div>
-          <div class="bp-file-explorer-item">
-            <div class="bp-file-explorer-column">readme.txt</div>
-            <div class="bp-file-explorer-column">2 KB</div>
-            <div class="bp-file-explorer-column">Text Document</div>
-            <div class="bp-file-explorer-column">2024-01-04</div>
-          </div>
+        <div class="bp-file-explorer-file-viewer-content">
+          <iframe class="bp-file-explorer-file-viewer-iframe"></iframe>
+          <div class="bp-file-explorer-file-viewer-editor"></div>
         </div>
       </div>
     </div>
-    
+
     <!-- Status bar -->
     <div class="bp-file-explorer-statusbar">
       <span>2 items</span>
@@ -66,12 +78,18 @@
         <h2>Upload Files</h2>
         <div class="bp-file-explorer-upload-quota">
           <span>Storage Used: </span>
-          <span class="bp-file-explorer-quota-used">2.1 GB</span>
+          <span class="bp-file-explorer-quota-used storageUsed">2.1 GB</span>
           <span> of </span>
-          <span class="bp-file-explorer-quota-total">10 GB</span>
+          <span class="bp-file-explorer-quota-total storageRemaining">10 GB</span>
         </div>
       </div>
-  
+
+      <!-- Upload Errors -->
+      <div class="bp-file-explorer-upload-errors">
+      </div>
+
+    
+
       <!-- File List -->
       <div class="bp-file-explorer-upload-files">
         <div class="bp-file-explorer-upload-files-header">
@@ -83,18 +101,20 @@
           <!-- Files will be inserted here by JavaScript -->
         </div>
       </div>
-  
+
       <!-- Total Size -->
       <div class="bp-file-explorer-upload-total">
-        Total Size: <span class="bp-file-explorer-total-size">0 MB</span>
+        Total Size: <span class="bp-file-explorer-total-size">0 MB</span><br/>
+        Available Storage: <span class="bp-file-explorer-total-size storageRemaining">0 MB</span>
+        <div class="bp-file-explorer-storage-warning error">Warning: This upload will exceed your storage limit.</div>
       </div>
-  
+
       <!-- Controls -->
       <div class="bp-file-explorer-upload-controls">
         <button class="bp-file-explorer-btn bp-file-explorer-upload-cancel">Cancel</button>
         <button class="bp-file-explorer-btn bp-file-explorer-upload-start">Upload</button>
       </div>
-  
+
       <!-- Progress Bar (hidden initially) -->
       <div class="bp-file-explorer-upload-progress-container" style="display: none;">
         <div class="bp-file-explorer-upload-progress-info">

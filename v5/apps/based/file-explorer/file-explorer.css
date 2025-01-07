@@ -58,7 +58,8 @@
   }
   
   .bp-file-explorer-sidebar {
-    width: 200px;
+    width: 30%; /* TODO: calc() */
+    min-width: 100px;
     border-right: 1px solid #999;
     background: #fff;
     overflow: auto;
@@ -73,6 +74,8 @@
   }
   
   .bp-file-explorer-main {
+    /* min-width: 500px; */
+    position: relative;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -123,9 +126,6 @@
     background: #ece9d8;
     border-top: 1px solid #999;
   }
-
-
-
 
   .bp-file-explorer-upload-overlay {
     position: absolute;
@@ -258,3 +258,48 @@
     font-size: 12px;
     color: #666;
   }
+
+  .bp-file-explorer-file-viewer {
+    display: none;
+  }
+  
+  .bp-file-explorer-drag-upload {
+    position: absolute;
+    top: 50%;  /* Center vertically */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the element in both axes */
+    width: 50%;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    display: flex; /* Updated to be displayed on drag-over event */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 16px;
+    border: 2px dashed #007BFF;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Adds a slight shadow for a 'pop' effect */
+    border-radius: 20px; /* Adds rounded corners to mimic a postage stamp */
+}
+
+/* Display the drag upload indicator on file drag-over */
+.bp-file-explorer-files.drag-over .bp-file-explorer-drag-upload {
+    display: flex;
+}
+
+
+.bp-file-explorer-upload-errors {
+  color: red;
+  font-size: 1.4rem;
+  display: none; /* Hidden by default */
+}
+
+.bp-file-explorer-storage-warning {
+  display: none; /* Hidden by default */
+}
+
+/* TODO import jstree css class unminified and modify it */
+.jstree-contextmenu {
+  z-index: 9999 !important;
+}

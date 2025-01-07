@@ -7,6 +7,7 @@ buddypond.mode = 'prod';
 
 // check localStorage for qtokenid
 buddypond.qtokenid = localStorage.getItem('qtokenid');
+buddypond.me = localStorage.getItem('me');
 
 buddypond.supportedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
 buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
@@ -18,6 +19,7 @@ let desktop = { settings: {} };
 
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://api.buddypond.com/api/v3';
+  buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
   // buddypond.endpoint = 'https://137.184.116.145/api/v3';
 
 } else {
@@ -525,31 +527,82 @@ buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) 
   }
 }
 
-buddypond.listFiles = async function listFiles() {
-  // https://bp-files.cloudflare1973.workers.dev/list-files
-  // use fetch
-  // return a promise
-  let url = `https://bp-files.cloudflare1973.workers.dev/list-files?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => resolve(data))
-      .catch(err => reject(err));
-  });
+buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
+
+  let url = `${buddypond.uploadsEndpoint}/getFileList?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&prefix=${prefix}&depth=${depth}`;
+
+  console.log("fetching files from", url);
+  let response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to list files: ${await response.text()}`);
+  }
+
+  return await response.json();
+
 }
+
+buddypond.getFileUsage = async function getFileUsage() {
+
+  const url = `${buddypond.uploadsEndpoint}/getUsage?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`;
+
+  console.log('Requesting file usage from Worker:', url);
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to get file usage: ${await response.text()}`);
+    }
+    return await response.json();
+  }
+  catch (err) {
+    console.error('Error getting file usage:', err);
+    throw err; // Rethrow for external handling
+  }
+
+}
+
+buddypond.removeFile = async function removeFile(fileName) {
+
+  // instead of signed url to delete, we will simply call the worker to delete the file
+  const url = `${buddypond.uploadsEndpoint}/deleteFiles?prefix=${fileName}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&depth=6`;
+
+  console.log("fetching delete url", url);
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to delete file: ${await response.text()}`);
+    }
+    return fileName;
+  } catch (err) {
+    console.error('Error deleting file:', err);
+    throw err; // Rethrow for external handling
+  }
+
+};
+
+
+// Remark: We could ignore files and directories at the api client level
+// Currently this is handled in the application level with the UploadOverlayPanel
+let ignoredFiles = ['.DS_Store', '.git', '.gitignore', '.gitattributes', '.gitmodules', '.gitkeep', '.npmignore', '.npmrc', '.yarnignore', '.yarnrc', '.editorconfig', '.eslint'];
+let ignoredDirs = ['.git', 'node_modules'];
 
 buddypond.uploadFile = async function uploadFile(file, onProgress) {
 
-  const workerBaseUrl = "https://bp-storage.cloudflare1973.workers.dev";
+  onProgress = onProgress || function noop() { };
 
   console.log("buddypond.uploadFile", file);
   // Construct the URL for the Worker to generate the signed URL
   let fileName = encodeURIComponent(file.webkitRelativePath || file.name);
+  let filePath = file.filePath || '';
+  console.log("using filePath", filePath);  
   const fileSize = file.size; // Get the size of the file
   const userFolder = buddypond.me; // Define the user folder path appropriately
   // TODO: we may need to add paths here if uploading directories / etc
   //fileName = 'test/' + fileName;
-  const signedUrlRequest = `${workerBaseUrl}/generate-signed-url?fileName=${fileName}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
+  console.log('fileName', fileName, 'fileSize', fileSize, 'userFolder', userFolder, 'filePath', filePath);
+  
+  const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
 
   console.log('Requesting signed URL from Worker:', signedUrlRequest);
 
@@ -583,6 +636,8 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
     return fileUrl;
   } catch (error) {
     console.error('Error during file upload process:', error);
+    //return error;
+    throw error;
   }
 
 
@@ -604,7 +659,7 @@ buddypond.uploadFiles = async function uploadFiles(files, onProgress) {
 }
 
 buddypond.getFileMetadata = async function (fileName) {
-  const url = `https://bp-files.cloudflare1973.workers.dev/get-metadata?fileName=${encodeURIComponent(fileName)}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
+  const url = `${buddypond.uploadsEndpoint}/get-metadata?fileName=${encodeURIComponent(fileName)}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {

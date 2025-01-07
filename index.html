@@ -41,6 +41,7 @@ window.top.location = 'ie.html';
   <link rel="stylesheet" href="desktop/assets/css/reset.css">
   <link rel="stylesheet" href="desktop/assets/css/loader.css">
 
+
   <!--[if lt IE 9]>
 <link rel="stylesheet" href="desktop/assets/css/ie.css" />
 <![endif]-->
@@ -81,8 +82,12 @@ window.top.location = 'ie.html';
 
     <script src="/desktop/assets/js/jquery.js"></script>
     <!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
-    <script src="/v5/router.js"></script>
+    <!-- <script src="/v5/router.js"></script> -->
+
+
+
     <script src="/v5/flexHide.js"></script>
 
     <!-- jQuery UI can be replaced when legacy autocomplete and Windows are fully replaced -->
@@ -105,9 +110,6 @@ window.top.location = 'ie.html';
 
     <script>
 
-
-
-
       let _host = 'https://buddypond.com';
       let _api = 'https://api.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
@@ -120,75 +122,14 @@ window.top.location = 'ie.html';
 
       let renderBpApp = true;
 
-
-
-      // Example usage:
-      const router = new SimpleRouter();
-
-      router.get('/:username', async (params) => {
-        console.log('Home page');
-        // default profile name is "myprofile"
-        let myPad = await buddypond.getPad('/' + params.username + '/myprofile');
-        console.log(myPad);
-
-        // empty the body
-        $('body').empty();
-        // write hello
-        $('body').html(myPad.content);
-
+      let currentPath = window.location.pathname;
+      if (currentPath !== '/') {
         renderBpApp = false;
-      });
-    
-      router.get('/:username/:padname', async (params) => {
-        console.log('Home page');
-        let myPad;
-        try {
-          myPad = await buddypond.getPad('/' + params.username + '/' + params.padname);
-        } catch (err) {
-          // write a message to the body
-          $('body').html('404 Pad Not Found');
-          return;
-        }
-        console.log(myPad);
-        // empty the body
-        $('body').empty();
-        // write hello
-        // TODO: probably use iframe to help prevent unwanted XSS
-        $('body').html(myPad.content);
-        // Remark: We can inject BP code here to bootstrap apps ( if we wish to )
-        //bp.start(['ui', 'desktop', 'buddylist']);
-        /*
-        await bp.load('ui')
-        await bp.load('desktop')
-        await bp.load('sampler')
-        await bp.open('sampler')
-        */
 
-        renderBpApp = false;
-      });
+        console.log('currentPath', currentPath);
 
-      router.get('/about', () => {
-        console.log('About page');
-        alert("about");
-      });
-
-      router.notFound(() => {
-        // do nothing, load bp app
-      });
-
-      router.onComplete(() => {
-        // This function will run after the route handling is complete
-        if (renderBpApp) {
-          // preoceed with jQuery.ready code
-          // bind jquery
-          bindJqueryReady();
-        } else {
-          // do nothing ( for now )
-        }
-      });
-
-      router.init();
-
+      }
+      bindJqueryReady();
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`
         $(document).ready(function () {
@@ -199,9 +140,35 @@ window.top.location = 'ie.html';
             // empty the body
             // now we need to fetch the pad and render it
             $('body').empty();
+            // write the buddypad iframe
+            let buddypadIframe = document.createElement('iframe');
+            // set height and width
+            //buddypadIframe.style.width =  document.documentElement.clientWidth + 'px';
+            //buddypadIframe.style.height = document.documentElement.clientHeight + 'px';
+
+            buddypadIframe.style.width = '100%';
+            buddypadIframe.style.height = '800px';
+            // set the id
+            buddypadIframe.id = 'buddypad';
+            $('body').append(buddypadIframe);
+
+            // remove padding and margin from body
+            $('body').css('padding', '0');
+            $('body').css('margin', '0');
+            // remove border from iframe and body
+            $('#buddypad').css('border', 'none');
+            $('body').css('border', 'none');
+            
+            // set the src of the buddypad to the current path
+            let filesSrc = 'https://files.buddypond.com' + currentPath;
+            console.log('setting src to', filesSrc);
+            $('#buddypad').attr('src', filesSrc);
+
+
             return;
+
           }
-       
+
 
           let documentReadyTime = new Date();
           desktop.log('Buddy Pond Cloud OS Initialized');
@@ -292,13 +259,10 @@ window.top.location = 'ie.html';
     </script>
     <div id="shadowRender">
     </div>
+    <iframe id="buddypad"></iframe>
     <script type="module" src="/v5/public/buddypond.umd.js"></script>
 
 
-
-    <script>
-
-    </script>
 </body>
 
 </html>

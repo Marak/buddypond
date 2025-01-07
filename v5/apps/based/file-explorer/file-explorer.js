@@ -1,4 +1,6 @@
 import FileExplorerClass from "./FileExplorer.js";
+import getCloudFiles from "./lib/getCloudFiles.js";
+import PadEditor from "../pad/PadEditor.js";
 
 export default class FileExplorer {
     constructor(bp, options = {}) {
@@ -8,42 +10,428 @@ export default class FileExplorer {
 
     async init() {
 
+        // async import import mime from 'mime';
+        let mime = await this.bp.importModule('/v5/apps/based/file-explorer/lib/mime.js', {}, false);
+        this.mime = mime.default;
+
+
         this.bp.log('Hello from File Explorer');
-  
-        let fileExplorerInstance = new FileExplorerClass(this.bp);
-        await fileExplorerInstance.init();
+        //await this.bp.load('/v5/apps/based/file-explorer/FileTree/jsTree.css');
+        await this.bp.load('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css');
 
-        this.fileExplorer = fileExplorerInstance.create();
+        this.fileExplorerInstance = new FileExplorerClass(this.bp, {
+            fileTree: {
+                onFileSelect: (filePath, target) => {
+                    console.log('File selected:', filePath);
+                },
+                onFolderToggle: async (folderPath, isExpanded) => {
+                    // display the contents of the folder in the main window
+                    console.log("Folder toggled:", folderPath, isExpanded);
+                    return;
 
-        console.log('created explorer', this.fileExplorer);
+                },
+                onFolderSelect: async (folderPath, target) => {
+                    console.log('Folder selected:', folderPath);
 
-        this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'file-explorer',
-            title: 'File Explorer',
-            app: 'file-explorer',
-            x: 100,
-            y: 50,
-            width: 800,
-            height: 600,
-            minWidth: 200,
-            minHeight: 200,
-            parent: $('#desktop')[0],
-            content:  this.fileExplorer.container,
-            resizable: true,
-            minimizable: true,
-            maximizable: true,
-            closable: true,
-            focusable: true,
-            maximized: false,
-            minimized: false
+
+                }
+            }
         });
-
-        this.fileExplorerWindow.container.classList.add('has-droparea');
-
-        this.handleDrop = this.fileExplorer.handleDrop.bind(this.fileExplorer);
+        await this.fileExplorerInstance.init();
 
 
         return 'loaded File Explorer';
     }
 
+    async open() {
+
+        if (!this.fileExplorer) {
+            this.fileExplorer = this.fileExplorerInstance.create();
+
+            console.log('created explorer', this.fileExplorer);
+
+            this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
+                id: 'file-explorer',
+                title: 'File Explorer',
+                app: 'file-explorer',
+                x: 100,
+                y: 30,
+                width: 800,
+                height: 600,
+                minWidth: 200,
+                minHeight: 200,
+                parent: $('#desktop')[0],
+                content: this.fileExplorer.container,
+                resizable: true,
+                minimizable: true,
+                maximizable: true,
+                closable: true,
+                focusable: true,
+                maximized: false,
+                minimized: false,
+                onClose: () => {
+                    // delete the local reference to the file explorer
+                    this.fileExplorer = null;
+                }
+            });
+
+            this.fileExplorerWindow.container.classList.add('has-droparea');
+
+            // this window should have no selectable text
+            this.fileExplorerWindow.container.style.userSelect = 'none';
+
+            this.handleDrop = this.fileExplorer.handleDrop.bind(this.fileExplorer);
+
+            let defaultFileContent = {};
+
+            let padEditorHolder = document.createElement('div');
+            padEditorHolder.className = 'pad-editor-holder';
+            $('.bp-file-explorer-file-viewer-editor', this.fileExplorerInstance.content).append(padEditorHolder);
+
+            this.fileExplorer.getUsage();
+
+            const editor = new PadEditor(padEditorHolder, {
+                bp: this.bp,
+                // fileTree: fileTreeComponent, // Your file tree implementation
+                files: [],
+                getFileContent: (filePath) => {
+                    // Your logic to get file content
+                    return defaultFileContent[filePath];
+                },
+                onEdit: (content) => {
+                    // hide the preview and show the code editor
+                    $('.editor-content').flexShow();
+                    //$('.myProfile').flexHide();
+
+                    // show the Update and Cancel buttons
+                    $('.pad-editor-button-update').show();
+                    $('.pad-editor-button-cancel').show();
+
+                },
+
+                onDelete: async (filePath) => {
+                    let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
+                    console.log('relativePath', relativePath);
+                    try {
+                        await this.bp.apps.client.api.removeFile(relativePath);
+                        // at this point we have confirmd with server that file is being deleted
+                        // we should immediately remove the file from the file tree
+                        let tree = $('#jtree').jstree(true);
+                        // let localPath = filePath.replace('https://files.buddypond.com/', '');
+                        console.log('looking for node with path', relativePath);
+                        let node = tree.get_node(relativePath);
+                        console.log('found node', node);
+                        tree.delete_node(node);
+                    } catch (err) {
+                        console.error('Error deleting file:', err);
+                    }
+                },
+
+                onUpdate: async (filePath, content) => {
+                    console.log("onUpdate", filePath, content);
+
+                    let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
+                    console.log('relativePath', relativePath);
+                    console.log("MIMMMMME", this.mime);
+
+                    let mimeType = this.mime.getType(relativePath);
+                    console.log('using mimeType', mimeType);
+
+                    // Assuming 'content' is a string, we need to convert it to a Blob, then to a File
+                    const blob = new Blob([content], { type: mimeType });  // Adjust the MIME type as necessary
+
+                    // Creating a File object from the Blob
+                    const file = new File([blob], relativePath.split('/').pop(), {
+                        type: blob.type,
+                        lastModified: new Date()  // You might need to adjust this if you have specific requirements
+                    });
+                    file.filePath = relativePath;
+
+                    console.log('going to upload file', file);
+
+                    // Assuming uploadFile() expects a standard File type object
+                    try {
+                        await this.bp.apps.client.api.uploadFile(file);
+                    } catch (err) {
+                        alert('Error uploading file: ' + err.message);
+                    }
+
+                    this.fileExplorer.getUsage();
+                },
+
+                onPreview: (content) => {
+                    // hide the code editor and show the preview .myProfile
+                    //$('.editor-content').flexHide();
+                    //editor.togglePreview(true);
+
+
+
+                    console.log("onPreview", content);
+                    // replace <script src="pad.js"></script> with the content of pad.js
+                    //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
+                    // do the same for the style.css
+                    //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
+
+                    //editor.updatePreview(almostApp);
+                    //$('.myProfile').flexShow();
+                },
+                onCancel: () => {
+                    console.log('Cancel clicked');
+                    // hide the Update and Cancel buttons
+                    $('.pad-editor-button-update').hide();
+                    $('.pad-editor-button-cancel').hide();
+                    // hide the code editor and show the preview
+                    $('.pad-editor-button-preview').click();
+
+                }
+            });
+
+            this.editor = editor;
+
+            await editor.init();
+
+            // set the editor in the file explorer
+            this.fileExplorer.editor = editor;
+
+            // load the content of the first file
+            //editor.loadFile('/myprofile/index.html');
+
+            // set the height of the editor
+            editor.editorContainer.style.height = '600px';
+            // this.editor.previewFrame.setContent(buddyProfilePad.content);
+
+
+
+        }
+
+        // get the latest cloud files to populate the file explorer
+        let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 ( for now )
+
+        const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
+
+        // console.log("treeData", JSON.stringify(treeData, true, 2));
+        // TODO: connect tree to AJAX backend for granular loading ( not just loading the whole tree at once )
+        $('#jtree').jstree({
+            'core': {
+                'data': treeData,
+                // This option ensures that when a node is selected by clicking it won't be opened/closed
+                'multiple': true,  // This allows single selection of nodes
+                'check_callback': true  // This allows certain operations in the tree
+            },
+            'plugins': ['contextmenu'],  // Add 'contextmenu' to the list of plugins
+            'contextmenu': {
+                'items': function (node) {
+                    console.log(node)
+                    var tree = $('#jtree').jstree(true);
+
+                    return {
+                        /* TODO: create and delete
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Create",
+                            "action": function (obj) {
+                                tree.create_node(node);
+                            }
+                        },
+                        "Rename": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Rename",
+                            "action": function (obj) {
+                                tree.edit(node);
+                            }
+                        },
+                        */
+                        "Delete": {
+                            "separator_before": false,
+                            "separator_after": true,
+                            "label": "Delete",
+                            "action": function (obj) {
+                                tree.delete_node(node);
+                            }
+                        }
+                    }
+                }
+            }
+        }).on("select_node.jstree", (e, data) => {
+            // Get the reference to the jsTree instance
+            var instance = data.instance;
+            var node = data.node;
+
+            if (node.children.length > 0) {  // Check if the node has children, indicating it's a folder
+                // Prevent the default select action to toggle on first click
+                e.preventDefault();
+                // Toggle open/close on single click
+                this.fileExplorer.currentSelectedNode = node;
+                instance.toggle_node(node);
+            }
+        });
+
+        $('.bp-file-explorer-drag-upload').flexShow();
+        $('.bp-file-explorer-address-input').val('/');
+
+        // TODO: move as much of this logic to the FileExplorer class as possible
+
+        $('#jtree').on("delete_node.jstree", (e, data) => {
+            // delete the file or directory from CDN
+            console.log("delete_node.jstree", e, data);
+            let node = data.node;
+            let path = node.id;
+            console.log('jstree request to delete', path);
+
+            // delete the file from the CDN
+            // not needed?
+            //let relativePath = path.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
+            let relativePath = path;
+            console.log('relativePath', relativePath);
+
+            this.bp.apps.client.api.removeFile(relativePath).then(() => {
+                console.log('file removed from CDN');
+            });
+
+        });
+
+
+        $('#jtree').on("changed.jstree", (e, data) => {
+            console.log('changed.jstree', e, data.selected);
+
+            // determine if the selected node is a file or folder
+            let node = data.instance.get_node(data.selected[0]);
+
+            if (!node) return;
+
+            console.log('node', node);
+            //  let isFolder = node.icon === 'jstree-folder'; // is this the best way to determine if it's a folder?
+            let isFolder = node.children.length > 0; // is this the best way to determine if it's a folder?
+
+            if (isFolder) {
+                console.log('Folder selected:', node.id);
+                // display the contents of the folder in the bp-file-explorer-files div
+                let folderPath = node.id;
+                let adjustedPath = folderPath.replace(/^\//, '');
+                let contents = node.children;
+                console.log('111 showing contents of folder', folderPath, contents);
+
+                // go through each child and get their node data from jstree
+                contents = contents.map(child => {
+                    let childNode = data.instance.get_node(child);
+                    return {
+                        name: childNode.text,
+                        type: childNode.children.length > 0 ? 'folder' : 'file',
+                        path: childNode.id
+                    };
+                });
+                console.log('222 showing contents of folder', folderPath, contents);
+                // update the .bp-file-explorer-address-input with the folder path
+                $('.bp-file-explorer-address-input').val('/' + folderPath);
+
+                this.fileExplorer.renderFolderContents(contents);
+
+                $('.bp-file-explorer-file-viewer').hide();
+                $('.bp-file-explorer-files').show();
+                $('.bp-file-explorer-drag-upload').flexShow();
+
+            }
+
+            if (!isFolder) {
+
+                console.log('File selected:', node.id);
+
+                // since we know the file is on the CDN, we can simply load it in the iframe
+                console.log("what is node", node);
+                // update the .bp-file-explorer-address-input with the folder path
+                $('.bp-file-explorer-address-input').val('/'  + node.id);
+                // load the item in the this.fileExplorer.fileViewer
+                this.fileExplorer.showFile(this.bp.me, node.id);
+
+                this.editor.previewFrame.setAddressBar('https://buddypond.com/' + this.bp.me + '/' + node.id);
+
+                $('.bp-file-explorer-file-viewer').show();
+                $('.bp-file-explorer-files').hide();
+                $('.bp-file-explorer-drag-upload').hide();
+
+            }
+
+
+        });
+
+
+        console.log('got the cloud files', cloudFiles.files);
+        console.log('populating file tree');
+        //let tree = this.fileExplorer.fileTree.buildFileTree(cloudFiles.files);
+        //this.fileExplorer.fileTree.render(tree);
+        //console.log('populated file tree', tree);
+
+    }
+
+
+}
+
+FileExplorer.prototype.getCloudFiles = getCloudFiles;
+
+
+
+/* merge folders 
+
+
+         console.log('Folder toggled:', folderPath, isExpanded);
+                    let adjustedPath = folderPath.replace(/^\//, '');
+                    let cloudFiles = await this.getCloudFiles(adjustedPath, 2);
+                    console.log('got the cloud files', cloudFiles.files);
+                
+                    let newTree = this.fileExplorer.fileTree.buildFileTree(cloudFiles.files);
+                    console.log("newTree", newTree);
+                
+                    // Find the target node in the existing tree
+                    console.log('this.fileExplorer.fileTree.files', this.fileExplorer.fileTree.files);
+                    let targetNode = this.fileExplorer.fileTree.findNodeByPath(this.fileExplorer.fileTree.files, adjustedPath);
+                    console.log("targetNode", targetNode);
+                    if (targetNode) {
+                        this.fileExplorer.fileTree.mergeTrees(targetNode, newTree);
+                        console.log('Merged tree:', this.fileExplorer.fileTree.files);
+                        this.fileExplorer.fileTree.render( this.fileExplorer.fileTree.files);
+                    } else {
+                        console.log('Target folder not found in the existing tree.');
+                    }
+
+                    */
+
+
+function buildJsTreeData(id, paths) {
+    const root = { id: id, text: id, state: { opened: true }, children: [] };
+
+    paths.forEach(path => {
+        const parts = path.split('/').filter(part => part.length);
+        let current = root;
+
+        for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            const isFile = i === parts.length - 1 && part.includes('.');
+            const newPath = parts.slice(0, i + 1).join('/');
+
+            let node = current.children.find(child => child.text === part);
+            if (!node) {
+                node = {
+                    id: newPath, // Unique identifier based on the path
+                    text: part,  // Display text
+                    icon: isFile ? 'jstree-file' : 'jstree-folder', // Custom icon class if needed
+                    children: isFile ? [] : [],
+                    state: {
+                        opened: false, // Folders are closed by default unless specified
+                        selected: false,
+                        disabled: false
+                    }
+                };
+                current.children.push(node);
+            }
+
+            // Only navigate into non-file nodes
+            if (!isFile) {
+                current = node;
+            }
+        }
+    });
+
+    return [root]; // jsTree expects an array of nodes
 }
