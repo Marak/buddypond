@@ -4,10 +4,11 @@ import renderChatMessage from "./lib/renderChatMessage.js";
 import renderBuddyRequests from "./lib/renderBuddyRequests.js";
 import buddylistUIEvents from "./lib/buddylistUIEvents.js";
 import openChatWindow from "./lib/openChatWindow.js";
+import generateDefaultProfile from "./lib/generateDefaultProfile.js";
 
-// TODO: import { v4 as uuid } from 'uuid';
 // TODO: why does client care about making UUID at all?
-// this should be responsibility of the server
+// this is the responsibility of the server
+// TODO: remove uuid(), is most likely used for local render of message before server confirms ( which is removed atm )
 function uuid() {
     return new Date().getTime();
 }
@@ -22,6 +23,7 @@ export default class BuddyList {
                 updates: {}
             }
         };
+        this.defaultPond = 'Buddy';
         this.subscribedBuddies = [];
         this.subscribedPonds = [];
         this.options = options;
@@ -121,6 +123,7 @@ export default class BuddyList {
 
     registerEventHandlers() {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
+        this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => this.generateDefaultProfile(qtoken));
 
         // Remark: This has been removed in favor of letting windows manage their own state
         // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
@@ -404,7 +407,10 @@ export default class BuddyList {
         this.data.profileState.me = this.bp.me;
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').flexHide();
-        this.openChatWindow({ pondname: 'Buddy' });
+        if (this.defaultPond) {
+            this.openChatWindow({ pondname: this.defaultPond });
+
+        }
 
         // create a default pad profile if doesn't exist
         this.bp.apps.client.api.createPad({
@@ -422,6 +428,7 @@ BuddyList.prototype.renderBuddyRequests = renderBuddyRequests;
 BuddyList.prototype.processBuddylist = processBuddylist;
 BuddyList.prototype.buddylistUIEvents = buddylistUIEvents;
 BuddyList.prototype.openChatWindow = openChatWindow;
+BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
 
 BuddyList.prototype.logout = function () {
     // close any open chat windows

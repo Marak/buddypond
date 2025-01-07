@@ -35,6 +35,10 @@ export default class FileExplorer {
 
         this.fileTree = this.fileTreeInstance;
 
+        // async import import mime from 'mime';
+        // is most likely already loaded and cached at this point
+        let mime = await this.bp.importModule('/v5/apps/based/file-explorer/lib/mime.js', {}, false);
+        this.mime = mime.default;
 
         $(document).on('click', (e) => {
             // check to see if target was '.bp-file-explorer-item'
@@ -62,7 +66,7 @@ export default class FileExplorer {
                     //let node = this.fileTree.getNode(path);
                     let instance = $('#jtree').jstree(true);
                     let node = instance.get_node(path);
-                   
+
 
                     let contents = node.children;
                     console.log('111 showing contents of folder', node.id, contents);
@@ -144,7 +148,7 @@ export default class FileExplorer {
         ]);
         */
 
-        this.uploadOverlay = new FileUploadOverlay({parent: container, fileExplorer: this }, async (file, onProgress) => {
+        this.uploadOverlay = new FileUploadOverlay({ parent: container, fileExplorer: this }, async (file, onProgress) => {
             // upload file here
             console.log("uploading file", file);
             await this.bp.apps.client.api.uploadFile(file.file, onProgress);
@@ -174,6 +178,11 @@ export default class FileExplorer {
     }
 
     async showFile(root, file, showEditor = false) {
+
+        if (!file) {
+            console.error('no file specified');
+            return;
+        }
 
         $('.bp-file-explorer-file-viewer').show();
         $('.bp-file-explorer-files').hide();
@@ -217,15 +226,19 @@ export default class FileExplorer {
             // now we will write the contents to the editor
             // for now just JSON.stringify the contents to .bp-file-explorer-file-viewer
             let fileText = await fileContents.text();
-            console.log('setting file text', fileText);
+            // let fileExt = file.split('.').pop();
+            let fileMimeType = this.mime.getType(filePath);
+
             if (this.editor) {
-                console.log('setting editor value', this.editor);
+                if (fileMimeType) {
+                    this.editor.changeEditorLanguage(fileMimeType);
+                }
                 this.editor.editor.setValue(fileText);
                 this.editor.filePath = filePath;
             } else {
                 let fileViewerEditor = $('.bp-file-explorer-file-viewer-editor', this.container);
                 console.log("setting text content", fileText);
-    
+
             }
 
             //fileViewerEditor.html('');
@@ -236,13 +249,14 @@ export default class FileExplorer {
             // show the iframe, hide the editor
             $('.bp-file-explorer-file-viewer-iframe').hide();
             $('.bp-file-explorer-file-viewer-editor').show();
+            $('.bp-file-explorer-drag-upload').hide();
 
         }
 
 
     }
 
-    renderPathContents (path) {
+    renderPathContents(path) {
         path = path.replace('/', '');
         let instance = $('#jtree').jstree(true);
 
@@ -250,10 +264,10 @@ export default class FileExplorer {
             path = this.bp.me;
         }
         console.log('searching for path', path);
+        console.log('going to merge metadata from ', this.cloudFiles)
         let node = instance.get_node(path);
         if (node) {
             console.log('found node', node);
-            
 
             let type = node.children.length > 0 ? 'folder' : 'file';
 
@@ -268,13 +282,36 @@ export default class FileExplorer {
             let contents = node.children;
             console.log('444 showing contents of folder', node.id, contents);
 
+            // check this.cloudFiles.metadata[node.id] for the contents of the folder
+            // it *should* always exist, if not show error
+
+            if (!this.cloudFiles) {
+                alert('cloudFiles not loaded cannot show contents');
+                return;
+            }
+
+
             // go through each child and get their node data from jstree
             contents = contents.map(child => {
                 let childNode = instance.get_node(child);
+
+
+                let metadata = {};
+                console.log('this.cloudFiles', this.cloudFiles.metadata);
+                if (!this.cloudFiles.metadata[childNode.id]) {
+                    console.error(`No metadata found for ${childNode.id} cannot show metadata`);
+                    console.error(`This should *not* happen and indicates that the metadata and Object Store are out of sync`);
+                } else {
+                    // we found the metadata ( as expected )
+                    metadata = this.cloudFiles.metadata[childNode.id];
+                }
+
                 return {
                     name: childNode.text,
                     type: childNode.children.length > 0 ? 'folder' : 'file',
-                    path: childNode.id
+                    path: childNode.id,
+                    size: metadata.size,
+                    date: metadata.lastModified
                 };
             });
             console.log('5555 showing contents of folder', node.id, contents);
@@ -311,7 +348,19 @@ export default class FileExplorer {
             for (let column of columns) {
                 let columnDiv = document.createElement('div');
                 columnDiv.classList.add('bp-file-explorer-column');
-                columnDiv.textContent = file[column];
+                let val = file[column];
+                if (column === 'size') {
+                    val = this.bytes(file[column]);
+                }
+                if (column === 'date') {
+                    val = new Date(file[column]).toLocaleString();
+                    // check if val is valid date, if not revert to original value
+                    if (val === 'Invalid Date') {
+                        val = file[column];
+                    }
+                }
+
+                columnDiv.textContent = val;
                 item.appendChild(columnDiv);
             }
 
@@ -339,7 +388,7 @@ export default class FileExplorer {
 
         $('.storageUsed', this.content).text(this.bytes(currentUsage.usage));
         $('.storageRemaining', this.content).text(this.bytes(storageRemaining));
-}
+    }
 
 }
 

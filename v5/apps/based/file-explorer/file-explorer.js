@@ -208,6 +208,7 @@ export default class FileExplorer {
         let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 ( for now )
 
         const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
+        this.fileExplorer.cloudFiles = cloudFiles;
 
         // console.log("treeData", JSON.stringify(treeData, true, 2));
         // TODO: connect tree to AJAX backend for granular loading ( not just loading the whole tree at once )
@@ -296,12 +297,8 @@ export default class FileExplorer {
 
         });
 
-
-        $('#jtree').on("changed.jstree", (e, data) => {
-            console.log('changed.jstree', e, data.selected);
-
-            // determine if the selected node is a file or folder
-            let node = data.instance.get_node(data.selected[0]);
+        // TODO: we should be able to remove this and replace it with this.fileExplorer.renderPathContents ?
+        function renderNodeContents(data, node) {
 
             if (!node) return;
 
@@ -320,6 +317,7 @@ export default class FileExplorer {
                 // go through each child and get their node data from jstree
                 contents = contents.map(child => {
                     let childNode = data.instance.get_node(child);
+                    console.log('cloudFiles metadata', cloudFiles.metadata);
                     return {
                         name: childNode.text,
                         type: childNode.children.length > 0 ? 'folder' : 'file',
@@ -345,7 +343,7 @@ export default class FileExplorer {
                 // since we know the file is on the CDN, we can simply load it in the iframe
                 console.log("what is node", node);
                 // update the .bp-file-explorer-address-input with the folder path
-                $('.bp-file-explorer-address-input').val('/'  + node.id);
+                $('.bp-file-explorer-address-input').val('/' + node.id);
                 // load the item in the this.fileExplorer.fileViewer
                 this.fileExplorer.showFile(this.bp.me, node.id);
 
@@ -357,9 +355,17 @@ export default class FileExplorer {
 
             }
 
+        }
+
+        $('#jtree').on("changed.jstree", (e, data) => {
+            console.log('changed.jstree', e, data.selected);
+
+            // determine if the selected node is a file or folder
+            let node = data.instance.get_node(data.selected[0]);
+            // renderNodeContents(data, node);
+            this.fileExplorer.renderPathContents(node.id);
 
         });
-
 
         console.log('got the cloud files', cloudFiles.files);
         console.log('populating file tree');
@@ -369,39 +375,11 @@ export default class FileExplorer {
 
     }
 
-
 }
 
 FileExplorer.prototype.getCloudFiles = getCloudFiles;
 
-
-
-/* merge folders 
-
-
-         console.log('Folder toggled:', folderPath, isExpanded);
-                    let adjustedPath = folderPath.replace(/^\//, '');
-                    let cloudFiles = await this.getCloudFiles(adjustedPath, 2);
-                    console.log('got the cloud files', cloudFiles.files);
-                
-                    let newTree = this.fileExplorer.fileTree.buildFileTree(cloudFiles.files);
-                    console.log("newTree", newTree);
-                
-                    // Find the target node in the existing tree
-                    console.log('this.fileExplorer.fileTree.files', this.fileExplorer.fileTree.files);
-                    let targetNode = this.fileExplorer.fileTree.findNodeByPath(this.fileExplorer.fileTree.files, adjustedPath);
-                    console.log("targetNode", targetNode);
-                    if (targetNode) {
-                        this.fileExplorer.fileTree.mergeTrees(targetNode, newTree);
-                        console.log('Merged tree:', this.fileExplorer.fileTree.files);
-                        this.fileExplorer.fileTree.render( this.fileExplorer.fileTree.files);
-                    } else {
-                        console.log('Target folder not found in the existing tree.');
-                    }
-
-                    */
-
-
+// TODO: move to separate file
 function buildJsTreeData(id, paths) {
     const root = { id: id, text: id, state: { opened: true }, children: [] };
 

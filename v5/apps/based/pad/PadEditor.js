@@ -135,6 +135,11 @@ export default class PadEditor {
             minimap: { enabled: false }
         });
     }
+    
+    changeEditorLanguage(newLanguage) {
+        const model = this.editor.getModel();
+        monaco.editor.setModelLanguage(model, newLanguage);
+    }
 
     async initializeFileTree(files = []) {
         if (this.options.fileTree) {
