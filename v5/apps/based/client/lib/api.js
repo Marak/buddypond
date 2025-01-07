@@ -31,6 +31,9 @@ if (buddypond.mode === 'dev') {
   buddypond.endpoint = 'http://192.168.200.59/api/v3';
 }
 
+buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
+
+
 buddypond.authBuddy = function authBuddy(me, password, cb) {
   apiRequest('/auth', 'POST', {
     buddyname: me,

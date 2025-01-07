@@ -40,9 +40,13 @@ export default class FileViewer {
         });
         this.updateDropTargets();
         this.initializeEventListeners();
-        $('.fileviewer-target', this.fileViewerWindow.content).flexHide(); // for now
+        //$('.fileviewer-target', this.fileViewerWindow.content).flexHide(); // for now
         // this.initializeTabs();
         new this.bp.apps.ui.Tabs(this.fileViewerWindow.content);
+
+        // hide these features for now
+        $('.fileviewer-upload-cloud', this.fileViewerWindow.content).hide();
+        $('.fileviewer-target', this.fileViewerWindow.content).hide();
     }
 
     initializeEventListeners() {
@@ -63,6 +67,12 @@ export default class FileViewer {
             if (targetAppId) {
                 this.sendToApp(targetAppId);
             }
+        });
+
+        $('.fileviewer-upload', this.fileViewerWindow.content).on('click', () => {
+
+
+            this.uploadToCloud();
         });
     }
 
@@ -238,14 +248,34 @@ export default class FileViewer {
 
         // Add all droparea targets
         $('.has-droparea').each((i, el) => {
-            //            if (el.id !== 'mainOverlay'){
             const option = document.createElement('option');
             option.value = el.id;
             option.text = el.id;
             select.append(option);
 
-            //          }
         });
+    }
+
+    async uploadToCloud () {
+        // let files = this.fileViewerWindow.content.querySelectorAll('.file-content');
+
+        // TODO: implement this ability to upload files to the cloud from file viewer
+        const files = [];
+        const filePreviews = $('.fileviewer-file', this.fileViewerWindow.content);
+        // Collect all files first
+        filePreviews.each((_, filePreview) => {
+            $('.file-content', filePreview).each((_, fileContent) => {
+                const file = this.bp.apps['file-viewer'].getFile(fileContent);
+                if (file) {
+                    files.push(file);
+                }
+            });
+        });
+    
+
+
+
+        await buddypond.uploadFiles(files);
     }
 
     sendToApp(targetAppId) {
