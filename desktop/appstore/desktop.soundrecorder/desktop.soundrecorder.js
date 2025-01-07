@@ -30,6 +30,17 @@ desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) 
       if (data === 'app_soundrecorder_needs_close') {
         JQDX.closeWindow('#window_soundrecorder');
       }
+
+      try {
+        let message = JSON.parse(data);
+        console.log(`desktop.app.soundrecorder: message received:`, message);
+        console.log('emit buddy::sendMessage', message);
+        bp.emit('buddy::sendMessage', message);
+
+      } catch (err) {
+        console.error('desktop.app.soundrecorder: error parsing message:', err);        
+      }
+
     },false);
 
     next();
@@ -59,8 +70,8 @@ desktop.app.soundrecorder.openWindow = function openWindow (params) {
   }
 
   let qtokenidParam = '';
-  if (buddypond.qtokenid) {
-    qtokenidParam = '&qtokenid=' + buddypond.qtokenid;
+  if (bp.apps.client.api.qtokenid) {
+    qtokenidParam = '&_qtokenid=' + bp.apps.client.api.qtokenid  + `&_me=${bp.me}`;
   }
   if (params.soundUrl) {
     $('#soundrecorderIframe').attr('src', `desktop/appstore/desktop.soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${soundUrlQueryParam}${type}${context}`);

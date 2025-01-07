@@ -537,70 +537,48 @@ buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, dela
     });
   });
 
-
-  return;
-
-  if (type === 'pond') {
-    apiRequest('/messages/pond/' + name, 'POST', {
-      pondname: name,
-      pondtext: text,
-      type: 'pond',
-      card: {
-        type: 'snaps',
-        snaps: snapsJSON,
-        delay: delay
-      }
-    }, function (err, data) {
-      cb(err, data);
-    });
-  }
-  if (type === 'buddy') {
-    apiRequest('/messages/buddy/' + name, 'POST', {
-      buddyname: name,
-      text: text,
-      type: 'buddy',
-      card: {
-        type: 'snaps',
-        snaps: snapsJSON,
-        delay: delay
-      }
-    }, function (err, data) {
-      console.log("callback from sendSnaps", err, data);
-      cb(err, data);
-    });
-  }
 }
-
 buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) {
   let x = (new TextEncoder().encode(audioJSON)).length;
-  console.log('Sounds', `About to send a Audio: ${x} bytes -> ${type}/${name}`);
-  if (type === 'pond') {
-    apiRequest('/messages/pond/' + name, 'POST', {
-      pondname: name,
-      pondtext: text,
-      type: 'pond',
-      card: {
-        type: 'audio',
-        audio: audioJSON
-      }
-    }, function (err, data) {
-      cb(err, data);
-    });
+  console.log('Sounds', `About to send an Audio: ${x} bytes -> ${type}/${name}`);
+
+  // Assume audioJSON is a base64 string similar to the image data handling
+  const parts = audioJSON.split(',')[1];
+  const byteString = atob(parts);
+  const mimeString = 'audio/wav'; // Since we are only handling WAV files for now
+
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
   }
-  if (type === 'buddy') {
-    apiRequest('/messages/buddy/' + name, 'POST', {
-      buddyname: name,
-      text: text,
-      type: 'buddy',
-      card: {
-        type: 'audio',
-        audio: audioJSON
-      }
-    }, function (err, data) {
-      cb(err, data);
+  const blob = new Blob([ia], { type: mimeString });
+
+  // Generate a unique file name using the current timestamp
+  const dateTimeStamp = new Date().toISOString().replace(/[:.]/g, '-'); // ISO string is safe and sortable
+  const fileName = `${dateTimeStamp}.wav`;
+  const filePath = `audio/${fileName}`; // Store audio in an 'audio' folder
+
+  const file = new File([blob], fileName, { type: mimeString });
+  file.filePath = filePath;
+
+  console.log('Uploading audio file:', file);
+
+  // Wrap uploadFile in a promise and handle the callback
+  return new Promise((resolve, reject) => {
+    buddypond.uploadFile(file, (progress) => {
+      console.log('Upload progress:', progress);
+    }).then(fileUrl => {
+      console.log('Audio uploaded and available at:', fileUrl);
+      cb(null, fileUrl); // Use callback to return success
+      resolve(fileUrl); // Resolve the promise with the URL
+    }).catch(error => {
+      console.error('Failed to upload audio:', error);
+      cb(error); // Use callback to return error
+      reject(error); // Reject the promise with the error
     });
-  }
-}
+  });
+};
 
 buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
 
