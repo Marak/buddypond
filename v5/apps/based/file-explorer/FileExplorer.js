@@ -164,51 +164,7 @@ export default class FileExplorer {
             // if so, load the contents of that node
             // check on each keyup
             let path = $('.bp-file-explorer-address-input').val();
-            path = path.replace('/', '');
-            console.log('searching for path', path);
-            let instance = $('#jtree').jstree(true);
-
-            if (path === '') {
-                path = this.bp.me;
-            }
-
-            let node = instance.get_node(path);
-            if (node) {
-                console.log('found node', node);
-                
-
-                let type = node.children.length > 0 ? 'folder' : 'file';
-
-                if (type === 'file') {
-                    this.showFile(this.bp.me, path);
-                    return;
-
-                }
-
-                this.currentSelectedNode = node;
-
-                let contents = node.children;
-                console.log('444 showing contents of folder', node.id, contents);
-
-                // go through each child and get their node data from jstree
-                contents = contents.map(child => {
-                    let childNode = instance.get_node(child);
-                    return {
-                        name: childNode.text,
-                        type: childNode.children.length > 0 ? 'folder' : 'file',
-                        path: childNode.id
-                    };
-                });
-                console.log('5555 showing contents of folder', node.id, contents);
-                // update the .bp-file-explorer-address-input with the folder path
-                //$('.bp-file-explorer-address-input').val('/' + this.bp.me + '/' + node.id);
-
-
-
-                this.renderFolderContents(contents);
-
-
-            }
+            this.renderPathContents(path);
         });
 
 
@@ -284,7 +240,53 @@ export default class FileExplorer {
         }
 
 
+    }
 
+    renderPathContents (path) {
+        path = path.replace('/', '');
+        let instance = $('#jtree').jstree(true);
+
+        if (path === '') {
+            path = this.bp.me;
+        }
+        console.log('searching for path', path);
+        let node = instance.get_node(path);
+        if (node) {
+            console.log('found node', node);
+            
+
+            let type = node.children.length > 0 ? 'folder' : 'file';
+
+            if (type === 'file') {
+                this.showFile(this.bp.me, path);
+                return;
+
+            }
+
+            this.currentSelectedNode = node;
+
+            let contents = node.children;
+            console.log('444 showing contents of folder', node.id, contents);
+
+            // go through each child and get their node data from jstree
+            contents = contents.map(child => {
+                let childNode = instance.get_node(child);
+                return {
+                    name: childNode.text,
+                    type: childNode.children.length > 0 ? 'folder' : 'file',
+                    path: childNode.id
+                };
+            });
+            console.log('5555 showing contents of folder', node.id, contents);
+            // update the .bp-file-explorer-address-input with the folder path
+            //$('.bp-file-explorer-address-input').val('/' + this.bp.me + '/' + node.id);
+
+
+
+            this.renderFolderContents(contents);
+
+
+        }
 
     }
 

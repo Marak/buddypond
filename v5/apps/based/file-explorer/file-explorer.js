@@ -266,6 +266,10 @@ export default class FileExplorer {
                 this.fileExplorer.currentSelectedNode = node;
                 instance.toggle_node(node);
             }
+        }).on('ready.jstree', (e, data) => {
+            console.log('Tree is now ready');
+            // render the root folder contents
+            this.fileExplorer.renderPathContents('/');
         });
 
         $('.bp-file-explorer-drag-upload').flexShow();
