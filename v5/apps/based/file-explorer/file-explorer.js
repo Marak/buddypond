@@ -52,7 +52,7 @@ export default class FileExplorer {
 
             this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'file-explorer',
-                title: 'File Explorer',
+                title: 'Cloud Files',
                 app: 'file-explorer',
                 x: 100,
                 y: 30,

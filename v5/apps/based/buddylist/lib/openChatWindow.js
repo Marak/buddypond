@@ -250,7 +250,30 @@ export default function openChatWindow(data) {
                 statusDiv.text('Uploading...');
                 
                 try {
-                    let fileUrl = await buddypond.uploadFile(file, (progress) => {
+                    console.log('is there a filepath?', file.filePath);
+                    console.log('this is the file', file);
+                    file.filePath = file.filePath || file.name;
+
+                    // we are going to perform some basic file organization and routing here
+                    // when the user uploads files via the chat window, we are going to store them
+                    // in the user's directory on the CDN
+                    // to help out the user, will perform mime type / file ext detection here in order to upload
+                    // the file to the appropriate directory such as images, audio, videos, etc
+                    let supportedImageTypesExt = ['jpeg', 'png', 'gif', 'webp', 'svg']; // same as server ( for now )
+                    let supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'];
+
+                    // check to see if the file.name has an extension included in the supportedImageTypesExt array
+                    let fileExt = file.name.split('.').pop().toLowerCase();
+                    if (supportedImageTypesExt.includes(fileExt)) {
+                        file.filePath = 'images/' + file.filePath;
+                    }
+                    if (supportedAudioTypesExt.includes(fileExt)) {
+                        file.filePath = 'audio/' + file.filePath;
+                    }
+
+
+                    console.log('assigning file path', file.filePath);
+                    let fileUrl = await this.bp.apps.client.api.uploadFile(file, (progress) => {
                         statusDiv.text('Uploading: ' + progress + '%');
                         
                     });

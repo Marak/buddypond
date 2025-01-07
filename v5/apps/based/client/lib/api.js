@@ -638,7 +638,7 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
 
     // lets return the new file url for the file
     // its not the signed url, its the constructed url on the CDN with userFolder and fileName
-    let fileUrl = `https://files.buddypond.com/${userFolder}/${fileName}`;
+    let fileUrl = `https://files.buddypond.com/${userFolder}/${filePath}`; // Remark: This was fileName...filePath is probalby correct?
     console.log('File uploaded successfully:', fileUrl);
     console.log('Upload successful, server responded with:', await uploadResponse.text());
     return fileUrl;

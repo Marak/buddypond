@@ -38,9 +38,10 @@ export default class BuddyScript {
         let firstChar = input.substr(0, 1);
         let commands = input.split(' ');
         commands[0] = commands[0].substr(1); // Remove the first slash or backslash
-        console.log('Parsing command', input, firstChar, commands);
+        // console.log('Parsing command', input, firstChar, commands);
         if (firstChar === '\\') {
             if (this.isValidBuddyScript(commands[0])) {
+                console.log('running command', commands);
                 return { command: commands.join(' '), type: 'execute' };
             } else {
                 this.alertInvalidCommand();
