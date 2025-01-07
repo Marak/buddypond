@@ -56,7 +56,7 @@ export default class FileExplorer {
                 app: 'file-explorer',
                 x: 100,
                 y: 30,
-                width: 800,
+                width: 1000,
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
@@ -363,7 +363,11 @@ export default class FileExplorer {
             // determine if the selected node is a file or folder
             let node = data.instance.get_node(data.selected[0]);
             // renderNodeContents(data, node);
-            this.fileExplorer.renderPathContents(node.id);
+            if (node) {
+                this.fileExplorer.renderPathContents(node.id);
+            } else {
+                console.log('node not found', data.selected[0]);
+            }
 
         });
 

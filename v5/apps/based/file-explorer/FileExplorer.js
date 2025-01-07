@@ -250,6 +250,12 @@ export default class FileExplorer {
             $('.bp-file-explorer-file-viewer-iframe').hide();
             $('.bp-file-explorer-file-viewer-editor').show();
             $('.bp-file-explorer-drag-upload').hide();
+            // for now, ensure that editor state resets to editor showing code ( not preview or upload )
+            // this is in case the user has previous entered preview mode and then clicked new file on file tree
+            $('.pad-editor-button-edit').click();
+            
+
+
 
         }
 
@@ -257,6 +263,8 @@ export default class FileExplorer {
     }
 
     renderPathContents(path) {
+
+        $('.bp-file-explorer-address-input').val(path); // maybe no slash?
         path = path.replace('/', '');
         let instance = $('#jtree').jstree(true);
 

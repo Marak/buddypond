@@ -55,8 +55,9 @@ export default function dropareaEvent(e) {
         const item = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : items[i].getAsEntry();
         if (item) {
             if (!shouldIgnore(item.name, item.fullPath)) {
-
-                if (this.currentSelectedNode.id !== '') {
+                // check if this is the root node
+                // we could also check bp.me === node.id, checking for jsTree parent indicator seems safer
+                if (this.currentSelectedNode.parent !== '#') {
                     promises.push(processEntry(item, this.currentSelectedNode.id + '/'));
                 } else {
                     promises.push(processEntry(item));
