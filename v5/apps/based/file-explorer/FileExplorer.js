@@ -11,6 +11,11 @@ export default class FileExplorer {
         }
 
         this.options = options;
+
+        // root path
+        this.currentSelectedNode = {
+            id: ""
+        };
     }
 
 

@@ -56,8 +56,11 @@ export default function dropareaEvent(e) {
         if (item) {
             if (!shouldIgnore(item.name, item.fullPath)) {
 
-
-                promises.push(processEntry(item, this.currentSelectedNode.id + '/'));
+                if (this.currentSelectedNode.id !== '') {
+                    promises.push(processEntry(item, this.currentSelectedNode.id + '/'));
+                } else {
+                    promises.push(processEntry(item));
+                }
             }
         }
     }

@@ -596,6 +596,14 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   let fileName = encodeURIComponent(file.webkitRelativePath || file.name);
   let filePath = file.filePath || '';
   console.log("using filePath", filePath);  
+
+
+  // check to see if filePath starts with a /, if so, remove it
+  if (filePath.startsWith('/')) {
+    filePath = filePath.substring(1);
+    console.log("removed leading / from filePath", filePath);
+  }
+
   const fileSize = file.size; // Get the size of the file
   const userFolder = buddypond.me; // Define the user folder path appropriately
   // TODO: we may need to add paths here if uploading directories / etc
