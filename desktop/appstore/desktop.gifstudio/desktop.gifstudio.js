@@ -90,7 +90,7 @@ desktop.app.gifstudio.load = function loadDesktopGames (params, next) {
       $('.gifstudio_gifPreview').show();
       let output = desktop.app.gifstudio.output;
       let context = desktop.app.gifstudio.context;
-      buddypond.sendSnaps(output, context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, function (err, data) {
+      buddypond.sendSnaps(output, context, 'I sent an Animation!', src, desktop.app.gifstudio.gifDelay, 'gif-studio', function (err, data) {
         console.log('Sent GIF as snap completed');
       });
       JQDX.closeWindow('#window_gifstudio');

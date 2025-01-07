@@ -182,7 +182,7 @@ desktop.app.mirror.load = function loadDesktopMirror (params, next) {
       // close mirror ( fow now )
       JQDX.closeWindow('#window_mirror');
       let snapsGIF = $('#snapsPreview').attr('src');
-      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, function (err, data) {
+      buddypond.sendSnaps(desktop.app.mirror.snapType, desktop.app.mirror.snapContext, msg, snapsGIF, desktop.app.mirror.snapDelay, 'camera', function (err, data) {
         desktop.app.mirror.snaps = [];
         currentFrame = 0;
         $('.gifFrames', '#window_mirror').html('');

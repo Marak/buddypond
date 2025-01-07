@@ -374,7 +374,7 @@ buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) 
             // Handle images as snaps
             const snapsJSON = JSON.stringify(base64Data);
 
-            buddypond.sendSnaps(type, name, text, snapsJSON, delay, (err, data) => {
+            buddypond.sendSnaps(type, name, text, snapsJSON, delay, 'paint', (err, data) => {
               if (err) reject(err);
               else resolve(data);
             });
@@ -458,10 +458,85 @@ buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, c
 }
 
 
-buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, delay, cb) {
+// Remark: 1/6/2025 - buddypond.sendSnaps() is now considered legacy function
+//                    and should be replaced with buddypond.uploadFile()
+//                    This function is still used by legacy: desktop.paint, desktop.gifstudio, desktop.mirror
+//                    TODO: port all those apps to new v5 API     
+buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, delay, source, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);
   console.log('type', type, 'name', name, 'text', text, 'snapsJSON', snapsJSON, 'delay', delay);
+
+  // snapsJSON is a stringified JSON of a single base64 encoded png file or gif file
+  // we wish to use our new buddypond.uploadFile() API to send this file
+
+  // Convert the data URI to Blob
+  let parts = snapsJSON.split(',')[1];
+  console.log("FARTS", parts);
+  // bad fart from somewhere, remove the last char if its a "
+  if (parts[parts.length - 1] === '"') {
+    parts = parts.substring(0, parts.length - 1);
+  }
+  const byteString = atob(parts);
+  console.log('byteString', byteString)
+  const mimeString = snapsJSON.split(',')[0].split(':')[1].split(';')[0];
+  console.log('mimeString', mimeString)
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+
+
+  // we need to generate a unique file name here
+  // since we can't come up with any good options, just use date time
+  let fileName;
+  let filePath;
+  // alert(source)
+
+  // route based on the source of the file
+  if (source === 'paint') {
+    // Paints are stored in the paints folder
+    fileName = `${new Date()}.png`;
+    filePath = `paints/${fileName}`;
+  }
+
+  if (source === 'camera') {
+    // need to check if gif or png?
+    fileName = `${new Date()}.gif`;
+    // Camera shots are stored in the pictures folder
+    filePath = `pictures/${fileName}`;
+  }
+
+  if (source === 'gif-studio') {
+    // Gifs are stored in the gifs folder
+    fileName = `${new Date()}.gif`;
+    filePath = `animations/${fileName}`;
+  }
+  console.log(`constructed new file: ${fileName}`);
+  const file = new File([blob], fileName, { type: mimeString });
+  file.filePath = filePath;
+
+  // file.filePath = `paints/${fileName}`; // root snaps into paints folder ( also need pictures folder for camera shots)
+  console.log(`assigned filePath to file: ${file.filePath}`);
+  console.log('uploading file via legacy code path', file);
+
+  // Wrap uploadFile in a promise and handle the callback
+  return new Promise((resolve, reject) => {
+    buddypond.uploadFile(file, (progress) => {
+      console.log('Upload progress:', progress);
+    }).then(fileUrl => {
+      console.log('File uploaded and available at:', fileUrl);
+      cb(null, fileUrl); // Use callback to return success
+      resolve(fileUrl); // Resolve the promise with the URL
+    }).catch(error => {
+      console.error('Failed to upload file:', error);
+      cb(error); // Use callback to return error
+      reject(error); // Reject the promise with the error
+    });
+  });
+
 
   return;
 
@@ -595,7 +670,7 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   // Construct the URL for the Worker to generate the signed URL
   let fileName = encodeURIComponent(file.webkitRelativePath || file.name);
   let filePath = file.filePath || '';
-  console.log("using filePath", filePath);  
+  console.log("using filePath", filePath);
 
 
   // check to see if filePath starts with a /, if so, remove it
@@ -609,7 +684,7 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   // TODO: we may need to add paths here if uploading directories / etc
   //fileName = 'test/' + fileName;
   console.log('fileName', fileName, 'fileSize', fileSize, 'userFolder', userFolder, 'filePath', filePath);
-  
+
   const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
 
   console.log('Requesting signed URL from Worker:', signedUrlRequest);

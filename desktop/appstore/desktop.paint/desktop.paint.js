@@ -1,7 +1,7 @@
 desktop.app.paint = {};
 desktop.app.paint.label = 'Paint';
 
-desktop.app.paint.load = function loadpaintGames (params, next) {
+desktop.app.paint.load = function loadpaintGames(params, next) {
   desktop.load.remoteAssets([
     'paint' // this loads the sibling desktop.app.paint.html file into <div id="window_paint"></div>
   ], function (err) {
@@ -32,7 +32,7 @@ desktop.app.paint.load = function loadpaintGames (params, next) {
   });
 };
 
-desktop.app.paint.send = function sendPaint (params) {
+desktop.app.paint.send = function sendPaint(params) {
   $('.sendPaint').attr('disabled', true);
 
   params = params || {
@@ -84,7 +84,7 @@ desktop.app.paint.send = function sendPaint (params) {
     // send the paint to pond or buddy chat windows as a Snap
     if (output === 'pond' || output === 'buddy') {
       // TODO: switch sending location here based on context, type, and metadata like gif frameIndex
-      buddypond.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, function (err, data) {
+      bp.apps.client.api.sendSnaps(output, context, 'I sent a Paint', firstImg, 100, 'paint', function (err, uploadedUrl) {
         if (err) {
           alert('Issue sending Paint. Please try again or contact support.');
           desktop.log(err);
@@ -103,6 +103,27 @@ desktop.app.paint.send = function sendPaint (params) {
           // TODO: buddylist renamed to buddy
           output = 'buddylist'
         }
+
+        // at this point with the new v5 API its expected that the client send a new messages
+        // broadcasting the file upload to the CDN
+
+        // now that we have the url, just send a regular message with the url
+        // the card type should automatically be detected by the server
+        // the the body of the message will be the url with extension of image, video, etc
+
+
+        // context is buddyname or pondname
+        // output is buddy or pond
+
+        let message = {
+          to: context,
+          from: bp.me,
+          type: output,
+          text: uploadedUrl
+        };
+        console.log("sending multimedia message", message);
+        bp.emit('buddy::sendMessage', message);
+
         /*
         JQDX.openWindow(output, {
           context: context
@@ -116,7 +137,7 @@ desktop.app.paint.send = function sendPaint (params) {
 
 };
 
-desktop.app.paint.openWindow = function openWindow (params) {
+desktop.app.paint.openWindow = function openWindow(params) {
   // clear out localstorage images on window open
   // this will clear out all images on browser refresh
   // Remark: It's best to do this for now since we dont want to cache to grow
@@ -182,13 +203,13 @@ desktop.app.paint.openWindow = function openWindow (params) {
 
   // Remark: Frame message passing for paint currently only being used to support top left menu File->Exit command
   // Listen to message from child window
-  eventer(messageEvent,function (e) {
+  eventer(messageEvent, function (e) {
     let key = e.message ? 'message' : 'data';
     let data = e[key];
     if (data === 'app_paint_needs_close') {
       JQDX.closeWindow('#window_paint');
     }
-  },false);
+  }, false);
 
   if (params.src) {
     // send the base64 source as part of the frame
@@ -200,7 +221,7 @@ desktop.app.paint.openWindow = function openWindow (params) {
   return true;
 };
 
-desktop.app.paint.closeWindow = function closeWindow () {
+desktop.app.paint.closeWindow = function closeWindow() {
   // $('#paintIframe').attr('src', 'desktop/apps/desktop.paint/vendor/index.html');
   return true;
 };
