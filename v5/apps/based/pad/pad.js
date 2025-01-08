@@ -30,8 +30,8 @@ export default class Pad {
                 title: 'Pads',
                 x: 50,
                 y: 100,
-                width: 800,
-                height: 500,
+                width: 1000,
+                height: 600,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -140,6 +140,12 @@ export default class Pad {
         $('.bp-pad-form', this.padWindow.content).on('submit', async (e) => {
             e.preventDefault();
             console.log(`Save pad button clicked`);
+
+            // disable the save-pad-button to prevent double clicks
+            $('.save-pad-button', this.padWindow.content).prop('disabled', true);
+            // add disabled class to button
+            $('.save-pad-button', this.padWindow.content).addClass('disabled');
+
             let padSaved = false;
             let padError;
             let newPad;

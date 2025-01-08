@@ -108,10 +108,16 @@
       </div>
 
       <!-- Controls -->
-      <div class="bp-file-explorer-upload-controls">
-        <button class="bp-file-explorer-btn bp-file-explorer-upload-cancel">Cancel</button>
-        <button class="bp-file-explorer-btn bp-file-explorer-upload-start">Upload</button>
-      </div>
+   <!-- Controls -->
+<div class="bp-file-explorer-upload-controls">
+  <div class="bp-file-explorer-tos">
+      <label for="bp-tos-agreement" title="You clicked the checkbox during account registration.">I have previously agreed to and read BuddyPond's <a href="tos">Terms of Service</a>.</label>
+      <input type="checkbox" id="bp-tos-agreement" class="bp-tos-agreement" checked disabled>
+  </div>
+  <button class="bp-file-explorer-btn bp-file-explorer-upload-cancel">Cancel</button>
+  <button class="bp-file-explorer-btn bp-file-explorer-upload-start">Upload</button>
+</div>
+
 
       <!-- Progress Bar (hidden initially) -->
       <div class="bp-file-explorer-upload-progress-container" style="display: none;">
@@ -125,4 +131,7 @@
         <div class="bp-file-explorer-upload-progress-percentage">0%</div>
       </div>
     </div>
+
+
+
   </div>

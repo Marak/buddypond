@@ -16,11 +16,17 @@ export default function renderPadRows (myPads) {
             // title
             let td = document.createElement('td');
             td.innerHTML = pad.title;
+            td.style.fontWeight = 'bold';
+            td.style.minWidth = '100px';
             tr.appendChild(td);
 
             // description
             td = document.createElement('td');
-            td.innerHTML = pad.description;
+
+            let padUrl = '/' + pad.ownerId + '/pads/' + pad.title;
+            let padLink = `<a href="${padUrl}" target="_blank">${padUrl}</a>`;
+            td.innerHTML = padLink;
+
             tr.appendChild(td);
 
             // 
@@ -50,15 +56,15 @@ export default function renderPadRows (myPads) {
                 await this.bp.apps.client.api.updatePad(profilePadKey, pad);
             };
             td.appendChild(select);
+            tr.appendChild(td);
             */
 
-            //td.innerHTML = pad.visibility;
-            tr.appendChild(td);
 
             // actions ( edit, delete, view )
             td = document.createElement('td');
+            td.style.textAlign = 'right';
             let editButton = document.createElement('button');
-            editButton.classList.add('edit-button');
+            editButton.classList.add('edit-button', 'ui-button');
             editButton.innerHTML = 'Edit';
             editButton.onclick = () => {
                 console.log('edit', pad);
@@ -67,13 +73,13 @@ export default function renderPadRows (myPads) {
 
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = 'Delete';
-            deleteButton.classList.add('delete-button');
+            deleteButton.classList.add('delete-button', 'ui-button');
       
             td.appendChild(deleteButton);
 
             let viewButton = document.createElement('button');
             viewButton.innerHTML = 'View';
-            viewButton.classList.add('view-button');
+            viewButton.classList.add('view-button', 'ui-button');
        
             td.appendChild(viewButton);
             tr.appendChild(td);

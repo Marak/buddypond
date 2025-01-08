@@ -115,3 +115,35 @@ a:active {
     font-size: 24px;
     min-height: 70px;
   }
+
+  .ui-button {
+    width: 100px;
+    cursor: pointer;
+    border: solid;
+    border-width: 1px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 4px;
+  }
+
+  .ui-button:hover {
+    color: #008F11;
+    background-color: #FFF;
+    filter: drop-shadow(5px 5px 2px #4444dd);
+    /*
+    animation-name: rainbow;
+    animation-duration: 2.1111s;
+    */
+    opacity: 0.7;
+    animation-iteration-count: infinite;
+  }
+  
+
+  @keyframes ui-button {
+    from {background-color: blue;}
+    to {background-color: yellow;}
+  }
+  

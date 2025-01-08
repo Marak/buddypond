@@ -39,7 +39,7 @@
         <hr/>
 
         <div class="pads-faq">
-            <h2>Frequently Asked Questions</h2>
+            <h1>Frequently Asked Questions</h1>
             <hr/>
 
             <h4>What is required for a Pad?</h4>
@@ -80,14 +80,14 @@
         <div class="bp-pad-editor">
             <form class="bp-pad-form">
                 <label for="padTitle">Name:</label>
-                <input type="text" id="padTitle" name="padTitle" class="bp-pad-input padTitle" placeholder="Enter your Pad name...">
+                <input tabindex="1" type="text" id="padTitle" name="padTitle" class="bp-pad-input padTitle" placeholder="Enter your Pad name...">
                 <div id="statusIndicator" class="status-indicator"></div> <!-- Status indicator element -->
     
                 <label for="padUrl">Url:</label>
                 <input type="text" id="padUrl" name="padUrl" class="bp-pad-input padUrl" readonly="true" value="https://buddypond.com/">
     
                 <label for="padDescription">Description:</label>
-                <textarea id="padDescription" name="padDescription" class="bp-pad-textarea" placeholder="This is my Pad. There are many like it, but this one is mine."></textarea>
+                <textarea tabindex="2" id="padDescription" name="padDescription" class="bp-pad-textarea" placeholder="This is my Pad. There are many like it, but this one is mine."></textarea>
     
                 <button type="submit" class="bp-pad-button save-pad-button">Save Pad</button>
             </form>

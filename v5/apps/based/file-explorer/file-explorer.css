@@ -303,3 +303,30 @@
 .jstree-contextmenu {
   z-index: 9999 !important;
 }
+
+
+.bp-file-explorer-tos {
+  margin-bottom: 10px; /* Space between terms and buttons */
+  font-size: 14px; /* Font size for readability */
+  color: #333; /* Text color for readability */
+  width: 100%;
+}
+
+.bp-file-explorer-tos input[type="checkbox"] {
+  margin-right: 5px; /* Space between checkbox and text */
+  /* make larger for better clickability */
+  transform: scale(1.5);
+}
+
+.bp-file-explorer-tos label {
+  display: inline-block;
+}
+
+.bp-file-explorer-tos a {
+  color: #0066cc; /* BuddyPond brand color or any link color */
+  text-decoration: none; /* Optional: Removes underline */
+}
+
+.bp-file-explorer-tos a:hover {
+  text-decoration: underline; /* Adds underline on hover */
+}
