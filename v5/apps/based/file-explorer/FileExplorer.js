@@ -1,4 +1,5 @@
 import handleDrop from "./lib/handleDrop.js";
+import handleUpload from "./lib/handleUpload.js";
 import FileTree from "./FileTree/FileTree.js";
 import FileUploadOverlay from "./FileUploadOverlay.js";
 
@@ -90,6 +91,8 @@ export default class FileExplorer {
 
                     $('.bp-file-explorer-file-viewer').hide();
                     $('.bp-file-explorer-files').show();
+                    $('.bp-file-explorer-header').flexShow();
+
                     $('.bp-file-explorer-drag-upload').flexShow();
 
 
@@ -194,6 +197,7 @@ export default class FileExplorer {
 
         $('.bp-file-explorer-file-viewer').show();
         $('.bp-file-explorer-files').hide();
+        $('.bp-file-explorer-header').flexHide();
 
 
         let supportedEditorTypes = ['js', 'json', 'html', 'css', 'txt'];
@@ -347,6 +351,9 @@ export default class FileExplorer {
 
     renderFolderContents(files) {
 
+        $('.bp-file-explorer-header').flexShow();
+
+
         // clear the bp-file-explorer-files div
         let filesContainer = $('.bp-file-explorer-files', this.container);
         filesContainer.html('');
@@ -412,3 +419,4 @@ export default class FileExplorer {
 
 
 FileExplorer.prototype.handleDrop = handleDrop;
+FileExplorer.prototype.handleUpload = handleUpload;
