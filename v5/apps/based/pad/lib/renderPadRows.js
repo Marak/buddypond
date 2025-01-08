@@ -84,6 +84,7 @@ export default function renderPadRows (myPads) {
             td.appendChild(viewButton);
             tr.appendChild(td);
 
+            // TODO: move event handler to separate function / file
             tr.addEventListener('click', async (e) => {
                 let action;
                 if (e.target.type === 'submit') {
@@ -111,6 +112,12 @@ export default function renderPadRows (myPads) {
 
                     if (yesOrNo) {
                         console.log('delete pad', pad, title, padKey);
+
+                        // disable all buttons
+                        $('.ui-button', closestTr).prop('disabled', true);
+                        // add disabled class to button
+                        $('.ui-button', closestTr).addClass('disabled');
+
                         await this.bp.apps.client.api.deletePad(padKey);
                         await this.bp.apps.client.api.removeFile(relativePath);
 
@@ -124,7 +131,9 @@ export default function renderPadRows (myPads) {
                 if (action === 'Edit') {
                     // open edit window with the pad data
                     console.log('edit pad', pad, title);
-                    this.bp.open('file-explorer', { context: padUrl + '/index.html'});
+                    this.bp.open('file-explorer', { context: '/' + relativePath + '/index.html'});
+                    // set focus
+                    this.bp.apps.ui.windowManager.focusWindow('file-explorer');
                 }
 
 

@@ -135,19 +135,9 @@ export default class FileExplorer {
 
             onPreview: (content) => {
                 // hide the code editor and show the preview .myProfile
-                //$('.editor-content').flexHide();
-                //editor.togglePreview(true);
-
-
-
+                // what is handling this now? directly calling into browser app?
+                // check and ensure that we don't need to move that logic here
                 console.log("onPreview", content);
-                // replace <script src="pad.js"></script> with the content of pad.js
-                //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
-                // do the same for the style.css
-                //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
-
-                //editor.updatePreview(almostApp);
-                //$('.myProfile').flexShow();
             },
             onCancel: () => {
                 console.log('Cancel clicked');
@@ -227,6 +217,22 @@ export default class FileExplorer {
                     }
                 }
             }
+        }).on('ready.jstree', (e, data) => {
+            console.log('Tree is now ready');
+            // render the root folder contents
+            //let jsTree = $('#jtree').jstree(true);
+
+
+
+
+            if (this.options.context) {
+                this.fileExplorer.renderPathContents(this.options.context);
+
+            } else {
+                this.fileExplorer.renderPathContents('/');
+
+            }
+
         }).on("select_node.jstree", (e, data) => {
             // Get the reference to the jsTree instance
             var instance = data.instance;
@@ -239,18 +245,6 @@ export default class FileExplorer {
                 this.fileExplorer.currentSelectedNode = node;
                 instance.toggle_node(node);
             }
-        }).on('ready.jstree', (e, data) => {
-            console.log('Tree is now ready');
-            // render the root folder contents
-
-            if (this.options.context) {
-                this.fileExplorer.renderPathContents(this.options.context);
-
-            } else {
-                this.fileExplorer.renderPathContents('/');
-
-            }
-
         });
 
         $('.bp-file-explorer-drag-upload').flexShow();
@@ -297,6 +291,38 @@ export default class FileExplorer {
 
     }
 
+    async remove() {
+        // Clean up the file explorer instance and its event handlers
+        if (this.fileExplorer) {
+            // Remove the drag/drop handler
+            if (this.handleDrop) {
+                // Assuming handleDrop was bound to some element, remove it
+                $('.bp-file-explorer-drag-upload').off('drop', this.handleDrop);
+            }
+
+            // Clean up the jstree events and instance
+            $('#jtree').off('ready.jstree changed.jstree delete_node.jstree');
+            $('#jtree').jstree('destroy');
+
+            // Clean up the editor if it exists
+            if (this.editor) {
+                // Remove the editor instance
+                this.editor.destroy?.();
+                this.editor = null;
+            }
+
+            // Remove DOM elements created by the component
+            $('.bp-file-explorer-file-viewer-editor .pad-editor-holder').remove();
+            $('.bp-file-explorer-drag-upload').remove();
+            $('.bp-file-explorer-address-input').remove();
+
+            // Clear the file explorer instance
+            this.fileExplorer.destroy?.();
+            this.fileExplorer = null;
+            this.handleDrop = null;
+        }
+    }
+
     async open({ context }) {
         console.log(`Opening file explorer with context ${context}`);
         this.options.context = context;
@@ -329,8 +355,11 @@ export default class FileExplorer {
                 focusable: true,
                 maximized: false,
                 minimized: false,
-                onClose: () => {
+                onClose: async () => {
                     // delete the local reference to the file explorer
+
+                    await this.remove();
+                    
                     this.fileExplorerWindow = null;
                 }
             });
@@ -339,12 +368,22 @@ export default class FileExplorer {
 
             // this window should have no selectable text
             this.fileExplorerWindow.container.style.userSelect = 'none';
+            this.create();
+
+        } else {
+            // jsTree should be ready at this point ( as file-explorer was already created )
+            // this could have race condition if spammed opened on first load
+            if (this.options.context) {
+                this.fileExplorer.renderPathContents(this.options.context);
+
+            } else {
+                this.fileExplorer.renderPathContents('/');
+
+            }
+
         }
 
 
-        this.create();
-
-   
     }
 
 }

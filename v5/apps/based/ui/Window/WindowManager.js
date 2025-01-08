@@ -190,16 +190,19 @@ export default class WindowManager {
     }
 
     focusWindow(window) {
+        // window can be the window instance or the window id
+        if (typeof window === 'string') {
+            window = this.findWindow(window);
+        }
         // console.log("Focusing window", window.id);
         const index = this.windows.indexOf(window);
         if (index !== -1) {
             this.windows.splice(index, 1);
             this.windows.unshift(window);
+            this.updateFocus();
+            window.focus(false);
+            this.saveWindowsState(); // Save state when focus changes
         }
-        this.updateFocus();
-        window.focus(false);
-
-        this.saveWindowsState(); // Save state when focus changes
     }
 
     updateFocus() {

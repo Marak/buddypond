@@ -29,7 +29,7 @@ export default class Motd {
             maximized: false,
             minimized: false,
             onclose: () => {
-                this.bp.ui.windowManager.destroyWindow('motd');
+                // this.bp.apps.ui.windowManager.destroyWindow('motd');
             }
         });
 
