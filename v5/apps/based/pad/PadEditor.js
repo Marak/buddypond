@@ -34,10 +34,6 @@ export default class PadEditor {
         this.contentArea.style.display = 'flex';
         this.contentArea.style.flex = '1';
         
-        // Create file tree container
-        this.fileTree = document.createElement('div');
-        this.fileTree.className = 'file-tree';
-        
         // Create editor container
         this.editorContainer = document.createElement('div');
         this.editorContainer.className = 'editor-container';
@@ -62,9 +58,8 @@ export default class PadEditor {
         // Assemble the DOM structure
         this.container.appendChild(this.controls);
         this.container.appendChild(this.contentArea);
-        this.previewFrame = new BrowserWindow(this.container, liveLink);
+        this.previewFrame = new BrowserWindow(this.bp, this.container, liveLink);
         this.previewFrame.setContent('loading...');
-        this.contentArea.appendChild(this.fileTree);
         this.contentArea.appendChild(this.editorContainer);
         
         this.setupControls();

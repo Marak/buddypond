@@ -42,7 +42,7 @@ export default class Browser {
         });
 
 
-        this.browser = new BrowserWindow(exampleWindow.content, 'https://example.com');
+        this.browser = new BrowserWindow(this.bp, exampleWindow.content, 'https://example.com');
     }
 }
 

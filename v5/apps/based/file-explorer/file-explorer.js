@@ -222,15 +222,16 @@ export default class FileExplorer {
             // render the root folder contents
             //let jsTree = $('#jtree').jstree(true);
 
-
-
-
             if (this.options.context) {
-                this.fileExplorer.renderPathContents(this.options.context);
+                if (this.options.context === 'default') { // TODO: why is default value here?
+                    this.fileExplorer.renderPathContents('/');
+
+                } else {
+                    this.fileExplorer.renderPathContents(this.options.context);
+                }
 
             } else {
                 this.fileExplorer.renderPathContents('/');
-
             }
 
         }).on("select_node.jstree", (e, data) => {
@@ -248,7 +249,9 @@ export default class FileExplorer {
         });
 
         $('.bp-file-explorer-drag-upload').flexShow();
-        $('.bp-file-explorer-address-input').val('/');
+
+        this.fileExplorer.setPreviewAddressBar('/');
+        // $('.bp-file-explorer-address-input').val('/');
 
         // TODO: move as much of this logic to the FileExplorer class as possible
 
@@ -276,9 +279,12 @@ export default class FileExplorer {
 
             // determine if the selected node is a file or folder
             let node = data.instance.get_node(data.selected[0]);
+            console.log('attempted to get node with id', data.selected[0]);
             // renderNodeContents(data, node);
             if (node) {
-                this.fileExplorer.renderPathContents(node.id);
+             
+                this.fileExplorer.renderPathContents('/' + node.id);
+
             } else {
                 console.log('node not found', data.selected[0]);
             }

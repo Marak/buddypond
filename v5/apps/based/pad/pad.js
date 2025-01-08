@@ -29,7 +29,7 @@ export default class Pad {
                 id: 'example',
                 title: 'Pads',
                 x: 50,
-                y: 100,
+                y: 60,
                 width: 1000,
                 height: 600,
                 minWidth: 200,
@@ -48,13 +48,14 @@ export default class Pad {
                 }
             });
 
+            this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', this.padWindow.content);
+
+
         }
 
         // TODO: refactor this to separate function
         let myPads = await this.bp.apps.client.api.getPads();
         this.renderPadRows(myPads);
-
-        this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', this.padWindow.content);
 
 
         // show the first .tab-content
@@ -74,7 +75,7 @@ export default class Pad {
         }
 
         let userFilesCDN = 'https://files.buddypond.com' + '/' + this.bp.me;
-        let userFilesHome = 'https://buddypond.com' + '/' + this.bp.me;
+        let userFilesHome = this.bp.config.host + '/' + this.bp.me;
 
         $('.userFilesHome', this.padWindow.content).html(userFilesHome);
         $('.userFilesHome', this.padWindow.content).attr('href', userFilesHome);
@@ -141,6 +142,14 @@ export default class Pad {
             e.preventDefault();
             console.log(`Save pad button clicked`);
 
+
+            // check that     let padTitle = $('#padTitle').val() is not empty
+            let padTitle = $('.padTitle', this.padWindow.content).val();
+            if (!padTitle) {
+                $('.padTitle', this.padWindow.content).addClass('error').attr('placeholder', 'Please enter a name...');
+                return;
+            }
+
             // disable the save-pad-button to prevent double clicks
             $('.save-pad-button', this.padWindow.content).prop('disabled', true);
             // add disabled class to button
@@ -176,6 +185,13 @@ export default class Pad {
                 $('#pads-upload-files', this.padWindow.content).flexShow();
                 $('#pads-editor', this.padWindow.content).flexHide();
 
+                // Reloads the My Pads list
+                console.log('getting the pads again');
+                let myPads = await this.bp.apps.client.api.getPads();
+                console.log('got the pads again', myPads);
+                this.renderPadRows(myPads);
+                // set the .bp-pad-container to visible
+                $('.bp-pad-container', this.padWindow.content).flexShow();
 
 
             } else {

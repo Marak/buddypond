@@ -1,5 +1,6 @@
 export default class BrowserWindow {
-    constructor(container, initialUrl = 'https://example.com') {
+    constructor(bp, container, initialUrl = 'https://example.com') {
+        this.bp = bp;
         this.container = container;
         this.currentUrl = initialUrl;
         this.iframe = null; // Reference to the iframe
@@ -41,6 +42,11 @@ export default class BrowserWindow {
         
         // Initialize with the first URL
         this.navigate(this.currentUrl);
+
+        this.bp.on('browser::setAddressBar', 'update-address-bar-value', (url) => {
+            this.setAddressBar(url);
+        })
+
     }
 
     setContent(htmlContent, attempts = 1) {

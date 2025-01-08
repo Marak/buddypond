@@ -56,7 +56,8 @@ export default class FileExplorer {
 
 
                 // update the .bp-file-explorer-address-input with the folder path
-                $('.bp-file-explorer-address-input').val('/' + path);
+                this.setPreviewAddressBar('/' + path);
+                // $('.bp-file-explorer-address-input').val('/' + path);
 
                 if (type === 'folder') {
                     // open folder
@@ -82,7 +83,8 @@ export default class FileExplorer {
                     });
                     console.log('222 showing contents of folder', node.id, contents);
                     // update the .bp-file-explorer-address-input with the folder path
-                    $('.bp-file-explorer-address-input').val('/' + node.id);
+                    // $('.bp-file-explorer-address-input').val('/' + node.id);
+                    this.setPreviewAddressBar('/' + node.id);
 
                     this.renderFolderContents(contents);
 
@@ -168,11 +170,19 @@ export default class FileExplorer {
             // check on each keyup
             let path = $('.bp-file-explorer-address-input').val();
             this.renderPathContents(path);
+            
         });
+
 
         return this;
 
 
+    }
+
+    setPreviewAddressBar(path) {
+        $('.bp-file-explorer-address-input').val(path);
+        let host = this.bp.config.host;
+        this.bp.emit('browser::setAddressBar', host + path);
     }
 
     async showFile(root, file, showEditor = false) {
@@ -261,15 +271,17 @@ export default class FileExplorer {
     }
 
     renderPathContents(path) {
+        // $('.bp-file-explorer-address-input').val(path); // maybe no slash?
 
-        $('.bp-file-explorer-address-input').val(path); // maybe no slash?
+        this.setPreviewAddressBar(path);
+
         path = path.replace('/', '');
         let instance = $('#jtree').jstree(true);
 
         if (path === '') {
             path = this.bp.me;
         }
-        console.log('searching for path', path);
+  
         console.log('going to merge metadata from ', this.cloudFiles)
         let node = instance.get_node(path);
         if (node) {

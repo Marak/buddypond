@@ -330,3 +330,9 @@
 .bp-file-explorer-tos a:hover {
   text-decoration: underline; /* Adds underline on hover */
 }
+
+.editorContainer {
+  width: 100%;      /* Responsive width */
+  height: 100vh;    /* Responsive height, adjust as necessary */
+  position: absolute; /* Helps fill the parent container */
+}
