@@ -60,8 +60,6 @@ export default function renderPadRows (myPads) {
             let editButton = document.createElement('button');
             editButton.classList.add('edit-button');
             editButton.innerHTML = 'Edit';
-            editButton.disabled = true;
-            editButton.classList.add('disabled');
             editButton.onclick = () => {
                 console.log('edit', pad);
             }
@@ -70,19 +68,13 @@ export default function renderPadRows (myPads) {
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = 'Delete';
             deleteButton.classList.add('delete-button');
-            deleteButton.onclick = () => {
-                console.log('delete', pad);
-            }
-
+      
             td.appendChild(deleteButton);
 
             let viewButton = document.createElement('button');
             viewButton.innerHTML = 'View';
             viewButton.classList.add('view-button');
-            viewButton.onclick = () => {
-                console.log('view', pad);
-            }
-
+       
             td.appendChild(viewButton);
             tr.appendChild(td);
 
@@ -95,7 +87,9 @@ export default function renderPadRows (myPads) {
 
                 let closestTr = $(e.target).closest('tr');
                 let title = closestTr.attr('data-title');
-                let padUrl = '/' + pad.ownerId + '/' + pad.title;
+                let padUrl = '/' + pad.ownerId + '/pads/' + pad.title;
+                let padKey = '/' + pad.ownerId + '/' + pad.title;
+                let relativePath = 'pads/' + pad.title;
 
                 if (action === 'View') {
                     console.log('open pad in new window', pad, title);
@@ -110,8 +104,10 @@ export default function renderPadRows (myPads) {
                     let yesOrNo = confirm('Are you sure you want to delete ' + title + '?');
 
                     if (yesOrNo) {
-                        console.log('delete pad', pad, title, padUrl);
-                        await this.bp.apps.client.api.deletePad(padUrl);
+                        console.log('delete pad', pad, title, padKey);
+                        await this.bp.apps.client.api.deletePad(padKey);
+                        await this.bp.apps.client.api.removeFile(relativePath);
+
                     }
 
                     // we need to re-render the table
@@ -122,7 +118,7 @@ export default function renderPadRows (myPads) {
                 if (action === 'Edit') {
                     // open edit window with the pad data
                     console.log('edit pad', pad, title);
-                    this.editPad(pad);
+                    this.bp.open('file-explorer', { context: padUrl + '/index.html'});
                 }
 
 

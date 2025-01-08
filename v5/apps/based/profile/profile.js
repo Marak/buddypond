@@ -35,45 +35,6 @@ export default class Profile {
             buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
         }
 
-        let profilePadKey = '/' + this.bp.me + '/myprofile';
-        // currently returns postgres document for the pad ( not redis )
-        // we will want to store the keys in redis for quick access ( loading pad pages )
-
-        // No longer creating default pad, instead of create default index.html on login
-
-        /*
-        let buddyProfilePad;
-
-        try {
-            console.log('buddyProfilePad', buddyProfilePad);
-
-            buddyProfilePad = await this.bp.apps.client.api.getPad(profilePadKey);
-
-            console.log('buddyProfilePad', buddyProfilePad);
-        } catch (err) {
-
-
-            try {
-                let newPad = await this.bp.apps.client.api.createPad({
-                    title: 'myprofile',
-                    content: 'This is profile. There are many like it, but this one is mine.'
-                });
-
-                buddyProfilePad = newPad;
-
-            } catch (err) {
-                buddyProfilePad = {
-                    content: 'This is profile. There are many like it, but this one is mine.'
-                };
-
-            }
-
-        }
-        console.log('buddyProfilePad', buddyProfilePad);
-        defaultFileContent['/myprofile/index.html'] = buddyProfilePad.content;
-        */
-
-
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
         contentDiv.classList.add('customProfile');
@@ -182,12 +143,19 @@ export default class Profile {
         profileContent.append(padEditorHolder);
         */
 
-        this.browser = new this.bp.apps.browser.BrowserWindow(padEditorHolder, 'https://buddypond.com/' + this.bp.me);
+        let profileUrl = this.bp.config.host + '/' + this.bp.me;
+        // check if this.bp.config.host contains buddypond.com, if not append /index.html
+        if (this.bp.config.host.indexOf('buddypond.com') === -1) {
+            profileUrl = profileUrl + '/index.html';
+        }
+
+        this.browser = new this.bp.apps.browser.BrowserWindow(padEditorHolder, profileUrl);
+
 
         this.bp.on('file-explorer::update', 'update-profile-preview-if-profile-index', (data) => {
             // check if data.path is /index.html
             // if so, we wish to reload the browser window
-            this.browser.navigate('https://buddypond.com/' + this.bp.me);
+            this.browser.navigate(profileUrl);
         });
 
         profileContent.append(padEditorHolder);
@@ -222,34 +190,3 @@ function renderProfileApp(appName, container) {
     container.append(el);
     return str;
 }
-
-// Example data structure
-const defaultFiles = [
-    {
-        type: 'folder',
-        name: 'myprofile',
-        path: '/myprofile',
-        children: [
-            {
-                type: 'file',
-                name: 'index.html',
-                path: '/myprofile/index.html'
-            },
-            /*
-            {
-                type: 'file',
-                name: 'pad.js',
-                path: '/myprofile/pad.js'
-            },
-            {
-                type: 'file',
-                name: 'style.css',
-                path: '/myprofile/style.css'
-            }
-            */
-
-        ]
-    }
-]
-
-

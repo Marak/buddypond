@@ -42,7 +42,10 @@ export default class Pad {
                 closable: true,
                 focusable: true,
                 maximized: false,
-                minimized: false
+                minimized: false,
+                onClose: () => {
+                    this.padWindow = null;
+                }
             });
 
         }
