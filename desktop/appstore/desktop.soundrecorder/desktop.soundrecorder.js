@@ -29,6 +29,7 @@ desktop.app.soundrecorder.load = function loadsoundrecorderGames (params, next) 
       let data = e[key];
       if (data === 'app_soundrecorder_needs_close') {
         JQDX.closeWindow('#window_soundrecorder');
+        return;
       }
 
       try {
