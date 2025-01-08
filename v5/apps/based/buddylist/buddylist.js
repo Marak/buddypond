@@ -412,13 +412,6 @@ export default class BuddyList {
 
         }
 
-        // create a default pad profile if doesn't exist
-        this.bp.apps.client.api.createPad({
-            title: 'myprofile',
-            description: 'This is your default Profile Pad',
-            content: defaultProfileFiles['/myprofile/index.html']
-        });
-
     }
 }
 
@@ -444,28 +437,3 @@ BuddyList.prototype.logout = function () {
     clearInterval(this.closingWebsocketTimer);
     this.bp.play('desktop/assets/audio/GOODBYE.wav');
 }
-
-let defaultProfileFiles = {};
-
-
-defaultProfileFiles['/myprofile/index.html'] = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>My Profile</title>
-        <style>
-          body {
-            background-color: purple;
-          }
-          p { color: white; }
-        </style>
-    </head>
-    <body>
-        <h1>Welcome to my Profile</h1>
-        <p>This is my profile. There are many like it, but this one is mine.</p>
-        <script>
-          console.log('Hello from my profile pad');
-        </script>
-    </body>
-    </html>
-`;

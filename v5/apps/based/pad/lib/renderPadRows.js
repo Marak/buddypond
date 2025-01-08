@@ -1,0 +1,140 @@
+export default function renderPadRows (myPads) {
+    if (myPads && myPads.length > 0) {
+        // .bp-pad-table , add the tr rows
+        let table = $('.bp-pad-table', this.padWindow.content);
+
+        // clear the table
+        table.empty();
+
+        myPads.forEach((pad) => {
+            console.log('pad', pad);
+            let tr = document.createElement('tr');
+
+            // set data-title attribute on tr
+            tr.setAttribute('data-title', pad.title);
+
+            // title
+            let td = document.createElement('td');
+            td.innerHTML = pad.title;
+            tr.appendChild(td);
+
+            // description
+            td = document.createElement('td');
+            td.innerHTML = pad.description;
+            tr.appendChild(td);
+
+            // 
+            /* Pad visibility is disabled until we implement role logic to bp-files-proxy
+            // The previous API utilized database for fetching pad content, now pad content is proxied through bp-files-proxy to CDN
+            td = document.createElement('td');
+            // create a drop-down select
+            let select = document.createElement('select');
+            select.name = 'visibility';
+            // add options
+            let options = ['Public', 'Private', 'Unlisted'];
+            options.forEach((option) => {
+                let optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.innerHTML = option;
+                console.log("comparing", option, pad.visibility);
+                if (option.toLowerCase() === pad.visibility) {
+                    optionElement.selected = true;
+                }
+                select.appendChild(optionElement);
+            });
+            select.onchange = async (e) => {
+                console.log('visibility changed', e.target.value, pad);
+                pad.visibility = e.target.value.toLowerCase();
+                let profilePadKey = '/' + this.bp.me + '/' + pad.title;
+
+                await this.bp.apps.client.api.updatePad(profilePadKey, pad);
+            };
+            td.appendChild(select);
+            */
+
+            //td.innerHTML = pad.visibility;
+            tr.appendChild(td);
+
+            // actions ( edit, delete, view )
+            td = document.createElement('td');
+            let editButton = document.createElement('button');
+            editButton.classList.add('edit-button');
+            editButton.innerHTML = 'Edit';
+            editButton.disabled = true;
+            editButton.classList.add('disabled');
+            editButton.onclick = () => {
+                console.log('edit', pad);
+            }
+            td.appendChild(editButton);
+
+            let deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Delete';
+            deleteButton.classList.add('delete-button');
+            deleteButton.onclick = () => {
+                console.log('delete', pad);
+            }
+
+            td.appendChild(deleteButton);
+
+            let viewButton = document.createElement('button');
+            viewButton.innerHTML = 'View';
+            viewButton.classList.add('view-button');
+            viewButton.onclick = () => {
+                console.log('view', pad);
+            }
+
+            td.appendChild(viewButton);
+            tr.appendChild(td);
+
+            tr.addEventListener('click', async (e) => {
+                let action;
+                if (e.target.type === 'submit') {
+                    action = e.target.innerHTML;
+                }
+                // alert('clicked ' + action);
+
+                let closestTr = $(e.target).closest('tr');
+                let title = closestTr.attr('data-title');
+                let padUrl = '/' + pad.ownerId + '/' + pad.title;
+
+                if (action === 'View') {
+                    console.log('open pad in new window', pad, title);
+                    // open a new window browser window
+                    // TODO: open a new browser window with options ( show url bar, but notinng else )
+                    let win = window.open(padUrl, '_blank');
+                }
+
+                if (action === 'Delete') {
+                    // confirm delete then call api
+
+                    let yesOrNo = confirm('Are you sure you want to delete ' + title + '?');
+
+                    if (yesOrNo) {
+                        console.log('delete pad', pad, title, padUrl);
+                        await this.bp.apps.client.api.deletePad(padUrl);
+                    }
+
+                    // we need to re-render the table
+                    this.open();
+
+                }
+
+                if (action === 'Edit') {
+                    // open edit window with the pad data
+                    console.log('edit pad', pad, title);
+                    this.editPad(pad);
+                }
+
+
+            });
+
+            table.append(tr);
+        });
+
+
+
+    } else {
+        // no pads yet
+        $('.bp-pad-container', this.padWindow.content).flexHide();
+    }
+};

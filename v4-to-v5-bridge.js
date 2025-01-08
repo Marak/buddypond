@@ -193,7 +193,8 @@ window.bp_v_5 = async function bp_v_5() {
 
   renderDesktopShortCuts();
   await bp.load('say');
-  // await bp.open('console');
+  await bp.open('pad');
+  //await bp.open('pad');
   // await bp.load('browser');
 
   // bp.apps.browser.browser.setContent('fudge');
@@ -454,19 +455,7 @@ window.bp_v_5 = async function bp_v_5() {
     bp.apps.buddylist.logout();
   });
 
-  $(document).on('click', '.open-app', function (ev) {
-    let appName = $(this).data('app');
-    console.log('open-app ' + appName);
-    // check to see if legacy app ( for now)
-
-    if (legacyApps.includes(appName)) {
-      // alert(`Opening legacy app ${appName}`);
-      desktop.ui.openWindow(appName);
-    } else {
-      bp.open(appName);
-    }
-
-  });
+  
   // Legacy windows
   // we need the same logic for drag start and drag stop on 
   $(document).on('click', function (ev) {

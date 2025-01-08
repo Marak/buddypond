@@ -36,6 +36,7 @@ export default async function generateDefaultProfile(qtoken) {
 
 const defaultProfileFiles = {
     'index.html': `
+        <!-- You can replace all of this with plain text if you wish --->
         <!DOCTYPE html>
         <html>
         <head>

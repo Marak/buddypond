@@ -5,12 +5,12 @@ import PadEditor from "../pad/PadEditor.js";
 export default class FileExplorer {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.options = options;
         return this;
     }
 
     async init() {
 
-        // async import import mime from 'mime';
         let mime = await this.bp.importModule('/v5/apps/based/file-explorer/lib/mime.js', {}, false);
         this.mime = mime.default;
 
@@ -43,175 +43,147 @@ export default class FileExplorer {
         return 'loaded File Explorer';
     }
 
-    async open() {
+    async create() {
 
         if (!this.fileExplorer) {
             this.fileExplorer = this.fileExplorerInstance.create();
-
-            console.log('created explorer', this.fileExplorer);
-
-            this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
-                id: 'file-explorer',
-                title: 'Cloud Files',
-                app: 'file-explorer',
-                x: 100,
-                y: 30,
-                width: 1000,
-                height: 600,
-                minWidth: 200,
-                minHeight: 200,
-                parent: $('#desktop')[0],
-                content: this.fileExplorer.container,
-                resizable: true,
-                minimizable: true,
-                maximizable: true,
-                closable: true,
-                focusable: true,
-                maximized: false,
-                minimized: false,
-                onClose: () => {
-                    // delete the local reference to the file explorer
-                    this.fileExplorer = null;
-                }
-            });
-
-            this.fileExplorerWindow.container.classList.add('has-droparea');
-
-            // this window should have no selectable text
-            this.fileExplorerWindow.container.style.userSelect = 'none';
-
             this.handleDrop = this.fileExplorer.handleDrop.bind(this.fileExplorer);
-
-            let defaultFileContent = {};
-
-            let padEditorHolder = document.createElement('div');
-            padEditorHolder.className = 'pad-editor-holder';
-            $('.bp-file-explorer-file-viewer-editor', this.fileExplorerInstance.content).append(padEditorHolder);
-
-            this.fileExplorer.getUsage();
-
-            const editor = new PadEditor(padEditorHolder, {
-                bp: this.bp,
-                // fileTree: fileTreeComponent, // Your file tree implementation
-                files: [],
-                getFileContent: (filePath) => {
-                    // Your logic to get file content
-                    return defaultFileContent[filePath];
-                },
-                onEdit: (content) => {
-                    // hide the preview and show the code editor
-                    $('.editor-content').flexShow();
-                    //$('.myProfile').flexHide();
-
-                    // show the Update and Cancel buttons
-                    $('.pad-editor-button-update').show();
-                    $('.pad-editor-button-cancel').show();
-
-                },
-
-                onDelete: async (filePath) => {
-                    let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
-                    console.log('relativePath', relativePath);
-                    try {
-                        await this.bp.apps.client.api.removeFile(relativePath);
-                        // at this point we have confirmd with server that file is being deleted
-                        // we should immediately remove the file from the file tree
-                        let tree = $('#jtree').jstree(true);
-                        // let localPath = filePath.replace('https://files.buddypond.com/', '');
-                        console.log('looking for node with path', relativePath);
-                        let node = tree.get_node(relativePath);
-                        console.log('found node', node);
-                        tree.delete_node(node);
-                    } catch (err) {
-                        console.error('Error deleting file:', err);
-                    }
-                },
-
-                onUpdate: async (filePath, content) => {
-                    console.log("onUpdate", filePath, content);
-
-                    let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
-                    console.log('relativePath', relativePath);
-                    console.log("MIMMMMME", this.mime);
-
-                    let mimeType = this.mime.getType(relativePath);
-                    console.log('using mimeType', mimeType);
-
-                    // Assuming 'content' is a string, we need to convert it to a Blob, then to a File
-                    const blob = new Blob([content], { type: mimeType });  // Adjust the MIME type as necessary
-
-                    // Creating a File object from the Blob
-                    const file = new File([blob], relativePath.split('/').pop(), {
-                        type: blob.type,
-                        lastModified: new Date()  // You might need to adjust this if you have specific requirements
-                    });
-                    file.filePath = relativePath;
-
-                    console.log('going to upload file', file);
-
-                    // Assuming uploadFile() expects a standard File type object
-                    try {
-                        await this.bp.apps.client.api.uploadFile(file);
-                    } catch (err) {
-                        alert('Error uploading file: ' + err.message);
-                    }
-
-                    this.fileExplorer.getUsage();
-                },
-
-                onPreview: (content) => {
-                    // hide the code editor and show the preview .myProfile
-                    //$('.editor-content').flexHide();
-                    //editor.togglePreview(true);
-
-
-
-                    console.log("onPreview", content);
-                    // replace <script src="pad.js"></script> with the content of pad.js
-                    //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
-                    // do the same for the style.css
-                    //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
-
-                    //editor.updatePreview(almostApp);
-                    //$('.myProfile').flexShow();
-                },
-                onCancel: () => {
-                    console.log('Cancel clicked');
-                    // hide the Update and Cancel buttons
-                    $('.pad-editor-button-update').hide();
-                    $('.pad-editor-button-cancel').hide();
-                    // hide the code editor and show the preview
-                    $('.pad-editor-button-preview').click();
-
-                }
-            });
-
-            this.editor = editor;
-
-            await editor.init();
-
-            // set the editor in the file explorer
-            this.fileExplorer.editor = editor;
-
-            // load the content of the first file
-            //editor.loadFile('/myprofile/index.html');
-
-            // set the height of the editor
-            editor.editorContainer.style.height = '600px';
-            // this.editor.previewFrame.setContent(buddyProfilePad.content);
-
-
-
         }
+        // TODO: move all this code to inside FileExplorer class
+        // keep file-explorer app very minimal and just wrapper to FileExplorer class + optional windowing
+
+        let defaultFileContent = {};
+
+        let padEditorHolder = document.createElement('div');
+        padEditorHolder.className = 'pad-editor-holder';
+        $('.bp-file-explorer-file-viewer-editor', this.fileExplorer.content).append(padEditorHolder);
+
+        this.fileExplorer.getUsage();
+        const editor = new PadEditor(padEditorHolder, {
+            bp: this.bp,
+            // fileTree: fileTreeComponent, // Your file tree implementation
+            files: [],
+            getFileContent: (filePath) => {
+                // Your logic to get file content
+                return defaultFileContent[filePath];
+            },
+            onEdit: (content) => {
+                // hide the preview and show the code editor
+                $('.editor-content').flexShow();
+                //$('.myProfile').flexHide();
+
+                // show the Update and Cancel buttons
+                $('.pad-editor-button-update').show();
+                $('.pad-editor-button-cancel').show();
+
+            },
+
+            onDelete: async (filePath) => {
+                let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
+                console.log('relativePath', relativePath);
+                try {
+                    await this.bp.apps.client.api.removeFile(relativePath);
+                    // at this point we have confirmd with server that file is being deleted
+                    // we should immediately remove the file from the file tree
+                    let tree = $('#jtree').jstree(true);
+                    // let localPath = filePath.replace('https://files.buddypond.com/', '');
+                    console.log('looking for node with path', relativePath);
+                    let node = tree.get_node(relativePath);
+                    console.log('found node', node);
+                    tree.delete_node(node);
+                } catch (err) {
+                    console.error('Error deleting file:', err);
+                }
+            },
+
+            onUpdate: async (filePath, content) => {
+                console.log("onUpdate", filePath, content);
+
+                let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
+                console.log('relativePath', relativePath);
+                console.log("MIMMMMME", this.mime);
+
+                let mimeType = this.mime.getType(relativePath);
+                console.log('using mimeType', mimeType);
+
+                // Assuming 'content' is a string, we need to convert it to a Blob, then to a File
+                const blob = new Blob([content], { type: mimeType });  // Adjust the MIME type as necessary
+
+                // Creating a File object from the Blob
+                const file = new File([blob], relativePath.split('/').pop(), {
+                    type: blob.type,
+                    lastModified: new Date()  // You might need to adjust this if you have specific requirements
+                });
+                file.filePath = relativePath;
+
+                console.log('going to upload file', file);
+
+                // Assuming uploadFile() expects a standard File type object
+                try {
+                    await this.bp.apps.client.api.uploadFile(file);
+                } catch (err) {
+                    alert('Error uploading file: ' + err.message);
+                }
+
+                this.fileExplorer.getUsage();
+
+                this.bp.emit('file-explorer::update', {
+                    path: relativePath,
+                });
+
+            },
+
+            onPreview: (content) => {
+                // hide the code editor and show the preview .myProfile
+                //$('.editor-content').flexHide();
+                //editor.togglePreview(true);
+
+
+
+                console.log("onPreview", content);
+                // replace <script src="pad.js"></script> with the content of pad.js
+                //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
+                // do the same for the style.css
+                //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
+
+                //editor.updatePreview(almostApp);
+                //$('.myProfile').flexShow();
+            },
+            onCancel: () => {
+                console.log('Cancel clicked');
+                // hide the Update and Cancel buttons
+                $('.pad-editor-button-update').hide();
+                $('.pad-editor-button-cancel').hide();
+                // hide the code editor and show the preview
+                $('.pad-editor-button-preview').click();
+
+            }
+        });
+
+        this.editor = editor;
+
+        await editor.init();
+
+        // set the editor in the file explorer
+        this.fileExplorer.editor = editor;
+
+        // load the content of the first file
+        //editor.loadFile('/myprofile/index.html');
+
+        // set the height of the editor
+        editor.editorContainer.style.height = '600px';
+        // this.editor.previewFrame.setContent(buddyProfilePad.content);
+
 
         // get the latest cloud files to populate the file explorer
         let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 ( for now )
 
         const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
         this.fileExplorer.cloudFiles = cloudFiles;
-
+        console.log("making tree with data", treeData);
         // console.log("treeData", JSON.stringify(treeData, true, 2));
         // TODO: connect tree to AJAX backend for granular loading ( not just loading the whole tree at once )
+
         $('#jtree').jstree({
             'core': {
                 'data': treeData,
@@ -270,7 +242,15 @@ export default class FileExplorer {
         }).on('ready.jstree', (e, data) => {
             console.log('Tree is now ready');
             // render the root folder contents
-            this.fileExplorer.renderPathContents('/');
+
+            if (this.options.context) {
+                this.fileExplorer.renderPathContents(this.options.context);
+
+            } else {
+                this.fileExplorer.renderPathContents('/');
+
+            }
+
         });
 
         $('.bp-file-explorer-drag-upload').flexShow();
@@ -297,66 +277,6 @@ export default class FileExplorer {
 
         });
 
-        // TODO: we should be able to remove this and replace it with this.fileExplorer.renderPathContents ?
-        function renderNodeContents(data, node) {
-
-            if (!node) return;
-
-            console.log('node', node);
-            //  let isFolder = node.icon === 'jstree-folder'; // is this the best way to determine if it's a folder?
-            let isFolder = node.children.length > 0; // is this the best way to determine if it's a folder?
-
-            if (isFolder) {
-                console.log('Folder selected:', node.id);
-                // display the contents of the folder in the bp-file-explorer-files div
-                let folderPath = node.id;
-                let adjustedPath = folderPath.replace(/^\//, '');
-                let contents = node.children;
-                console.log('111 showing contents of folder', folderPath, contents);
-
-                // go through each child and get their node data from jstree
-                contents = contents.map(child => {
-                    let childNode = data.instance.get_node(child);
-                    console.log('cloudFiles metadata', cloudFiles.metadata);
-                    return {
-                        name: childNode.text,
-                        type: childNode.children.length > 0 ? 'folder' : 'file',
-                        path: childNode.id
-                    };
-                });
-                console.log('222 showing contents of folder', folderPath, contents);
-                // update the .bp-file-explorer-address-input with the folder path
-                $('.bp-file-explorer-address-input').val('/' + folderPath);
-
-                this.fileExplorer.renderFolderContents(contents);
-
-                $('.bp-file-explorer-file-viewer').hide();
-                $('.bp-file-explorer-files').show();
-                $('.bp-file-explorer-drag-upload').flexShow();
-
-            }
-
-            if (!isFolder) {
-
-                console.log('File selected:', node.id);
-
-                // since we know the file is on the CDN, we can simply load it in the iframe
-                console.log("what is node", node);
-                // update the .bp-file-explorer-address-input with the folder path
-                $('.bp-file-explorer-address-input').val('/' + node.id);
-                // load the item in the this.fileExplorer.fileViewer
-                this.fileExplorer.showFile(this.bp.me, node.id);
-
-                this.editor.previewFrame.setAddressBar('https://buddypond.com/' + this.bp.me + '/' + node.id);
-
-                $('.bp-file-explorer-file-viewer').show();
-                $('.bp-file-explorer-files').hide();
-                $('.bp-file-explorer-drag-upload').hide();
-
-            }
-
-        }
-
         $('#jtree').on("changed.jstree", (e, data) => {
             console.log('changed.jstree', e, data.selected);
 
@@ -372,11 +292,59 @@ export default class FileExplorer {
         });
 
         console.log('got the cloud files', cloudFiles.files);
-        console.log('populating file tree');
-        //let tree = this.fileExplorer.fileTree.buildFileTree(cloudFiles.files);
-        //this.fileExplorer.fileTree.render(tree);
-        //console.log('populated file tree', tree);
+        return this;
 
+
+    }
+
+    async open({ context }) {
+        console.log(`Opening file explorer with context ${context}`);
+        this.options.context = context;
+        if (!this.fileExplorer) {
+            this.fileExplorer = this.fileExplorerInstance.create();
+            this.handleDrop = this.fileExplorer.handleDrop.bind(this.fileExplorer);
+
+        }
+
+        console.log('created explorer', this.fileExplorer);
+
+
+        if (!this.fileExplorerWindow) {
+            this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
+                id: 'file-explorer',
+                title: 'Cloud Files',
+                app: 'file-explorer',
+                x: 100,
+                y: 30,
+                width: 1000,
+                height: 600,
+                minWidth: 200,
+                minHeight: 200,
+                parent: $('#desktop')[0],
+                content: this.fileExplorer.container,
+                resizable: true,
+                minimizable: true,
+                maximizable: true,
+                closable: true,
+                focusable: true,
+                maximized: false,
+                minimized: false,
+                onClose: () => {
+                    // delete the local reference to the file explorer
+                    this.fileExplorerWindow = null;
+                }
+            });
+
+            this.fileExplorerWindow.container.classList.add('has-droparea');
+
+            // this window should have no selectable text
+            this.fileExplorerWindow.container.style.userSelect = 'none';
+        }
+
+
+        this.create();
+
+   
     }
 
 }

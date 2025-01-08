@@ -188,7 +188,6 @@ export default function openChatWindow(data) {
 
     }
 
-
     $('.message_form .aim-to', chatWindow.content).val(contextName);
 
     $('.message_form', chatWindow.content).submit(async (e) => {

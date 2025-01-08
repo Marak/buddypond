@@ -45,3 +45,5 @@ export default class Browser {
         this.browser = new BrowserWindow(exampleWindow.content, 'https://example.com');
     }
 }
+
+Browser.prototype.BrowserWindow = BrowserWindow;

@@ -1,4 +1,11 @@
 /* pads.css */
+
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
 .bp-pad-container {
     margin: 20px;
     padding: 10px;
@@ -42,6 +49,7 @@
 .bp-pad-form {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .bp-pad-input,
@@ -69,4 +77,63 @@
 
 .pad-code-editor {
     display: none;
+}
+
+.pads-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.status-indicator {
+    color: #0066cc;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    height: 20px;
+    position: absolute;
+    left: 50px;
+    top: -4px;
+}
+
+/* Adding animations for visual feedback */
+@keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.status-indicator {
+    animation: fade 1s ease-in-out;
+}
+
+/* Additional styling if you want to make it more noticeable when active */
+.status-indicator.active {
+    color: #0066cc;
+    font-weight: bold;
+}
+
+
+.padUrl {
+    min-width: 400px;
+}
+
+.coming-soon {
+    font-size: 250px;
+
+    font-weight: bold;
+    color: #2F855A;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+
+}
+
+#buddy-pads {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    gap: 50px;
+    padding: 50px;
+
 }

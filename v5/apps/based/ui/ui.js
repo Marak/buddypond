@@ -62,7 +62,28 @@ export default class UI {
 
         await this.bp.appendScript('/v5/vendor/DateFormat.js');
 
+        // bind common document events
+        // TODO: move UI events to separate file
+        let d = document;
+
+        $(d).on('click', '.open-app', function (e) {
+            let appName = $(this).data('app');
+            let context = $(e.target).data('context');
+
+            console.log('open-app ' + appName);
+            // check to see if legacy app ( for now)
         
+            if (legacyApps.includes(appName)) {
+              // alert(`Opening legacy app ${appName}`);
+              desktop.ui.openWindow(appName);
+            } else {
+              bp.open(appName, { context });
+            }
+        
+          });
+
+
+
         return 'loaded ui';
     }
 

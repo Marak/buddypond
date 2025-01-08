@@ -104,7 +104,6 @@ export default class FileExplorer {
                 }
             }
         });
-
         return 'loaded file explorer';
     }
 
@@ -170,7 +169,6 @@ export default class FileExplorer {
             let path = $('.bp-file-explorer-address-input').val();
             this.renderPathContents(path);
         });
-
 
         return this;
 

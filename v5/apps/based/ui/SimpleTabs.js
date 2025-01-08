@@ -25,4 +25,12 @@ export default class SimpleTabs {
         $(tabId).show();
       });
     }
+
+    navigateToTab(tabId) {
+      this.container.find('.tab-list li').removeClass('active');
+      this.container.find(`.tab-list li a[href="${tabId}"]`).parent().addClass('active');
+      this.container.find('.tab-content').hide();
+      $(tabId).show();
+    }
+
   }

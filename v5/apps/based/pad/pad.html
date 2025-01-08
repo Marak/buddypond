@@ -7,7 +7,8 @@
 
     <ul class="tab-list">
         <li><a href="#pads-home">My Pads</a></li>
-        <li><a href="#pads-editor">Buddy Pads</a></li>
+        <li><a href="#pads-editor">Create Pad</a></li>
+        <li><a href="#buddy-pads">Buddy Pads</a></li>
     </ul>
 
     <div id="pads-home" class="tab-content">
@@ -18,7 +19,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Visibility</th>
+                        <!-- <th>Visibility</th> -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -28,59 +29,86 @@
             </table>
         </div>
         <div class="pads-intro">
-            <h2>Welcome to BuddyPond Pads</h2>
-            <p>Manage your interactive content easily with BuddyPond Pads. Here, you can create, edit, and share customizable pads consisting of HTML, JavaScript, and CSS.</p>
-            <h3>Create a new pad:</h3>
-            <p>Start by using our drag-and-drop interface below to upload files, or manually enter your code using the editor.</p>
-            <button class="bp-pad-button large">Create New Pad</button>
+            <h1>Pads are Apps for BuddyPond.</h1>
+            <button class="bp-pad-button largest create-pad-button">Create Pad</button>
+            <h2>Simple to create. Easy to modify.</h2>
+            <h3>Pads can be shared with buddies, added to the Pad Store, or installed to the Desktop</h3>
+            <em>Click "Create Pad" to get started.</em>
+
         </div>
+        <hr/>
+
+        <div class="pads-faq">
+            <h2>Frequently Asked Questions</h2>
+            <hr/>
+
+            <h4>What is required for a Pad?</h4>
+            <p>At a minimum, Pads require an <strong>index.html file in the root of the Pad</strong>.<br/> This index.html will serve as the entry point for your application.</p>
+            <hr/>
+
+            <h4>Can I deploy TypeScript applications? React? Web Assembly? WebGL?</h4>
+            <p><strong>Yes.</strong> Anything that runs in the browser will work in a BuddyPond Pad. <br/>Pads are backed by a standard Content Delivery Network which serves all your files as expected.</p>
+            <hr/>
+
+            <h4>Where are my files hosted? How do I link to my files?</h4>
+            <p>
+                Your BuddyPond files are located at: <a class="userFilesCDN" href="https://files.buddypond.com/">https://files.buddypond.com/</a>
+                <br/>
+                <br/>Your home directory is your username: <a class="userFilesHome" href="https://buddypond.com/">https://buddypond.com/</a>
+                <br/><br/>In most cases, <strong>use relative links</strong> to link assets in your Pad code.</p>
+                <hr/>
+
+            <h4>How much storage is available?</h4>
+            <p>Currently each Buddy receives 10mb of free storage. Open the <button class="open-app" data-app="file-explorer" data-context="pads">Cloud Files Explorer</button> to see your current usage.</p>
+            <br/>
+            <br/>
+
+
+        </div>
+    </div>
+
+    <div id="buddy-pads" class="tab-content" align="center">
+        <div class="coming-soon">
+            <i class="fa-duotone fa-frog frog"></i>
+        </div>
+        <h2>Coming soon.<br/> Popular Pads on BuddyPond.</h2>
     </div>
 
     <div id="pads-editor" class="tab-content">
         <!-- Pads Editing Section -->
+        <h1  align="center">First give your Pad a name.</h1>
         <div class="bp-pad-editor">
             <form class="bp-pad-form">
-                <label for="padTitle">Title:</label>
-                <input type="text" id="padTitle" name="padTitle" class="bp-pad-input">
-
+                <label for="padTitle">Name:</label>
+                <input type="text" id="padTitle" name="padTitle" class="bp-pad-input padTitle" placeholder="Enter your Pad name...">
+                <div id="statusIndicator" class="status-indicator"></div> <!-- Status indicator element -->
+    
+                <label for="padUrl">Url:</label>
+                <input type="text" id="padUrl" name="padUrl" class="bp-pad-input padUrl" readonly="true" value="https://buddypond.com/">
+    
                 <label for="padDescription">Description:</label>
-                <textarea id="padDescription" name="padDescription" class="bp-pad-textarea"></textarea>
-
-                <label for="padVisibility">Visibility:</label>
-                <select id="padVisibility" name="padVisibility" class="bp-pad-select">
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                </select>
-
-                <button type="submit" class="bp-pad-button">Save Pad</button>
+                <textarea id="padDescription" name="padDescription" class="bp-pad-textarea" placeholder="This is my Pad. There are many like it, but this one is mine."></textarea>
+    
+                <button type="submit" class="bp-pad-button save-pad-button">Save Pad</button>
             </form>
         </div>
     </div>
 
-    <div class="pad-code-editor tab-content">
-        <div class="editor-header">
-            <h2>Pad Code Editor</h2>
-            <button class="bp-pad-button">Save Pad</button>
-        </div>
-        <div class="editor-content">
-            <ul class="editor-tab-list">
-                <li><a href="#editor-html">HTML</a></li>
-                <li><a href="#editor-css">CSS</a></li>
-                <li><a href="#editor-js">JS</a></li>
-            </ul>
-            <div id="editor-html" class="editor-tab-content">
-                <textarea id="padHtml" name="padHtml" class="bp-pad-textarea"></textarea>
-            </div>
-            <div id="editor-css" class="editor-tab-content">
-                <textarea id="padCss" name="padCss" class="bp-pad-textarea"></textarea>
-            </div>
-            <div id="editor-js" class="editor-tab-content">
-                <textarea id="padJs" name="padJs" class="bp-pad-textarea"></textarea>
-            </div>
-            <div class="editor-preview">
-                <iframe id="padPreview" class="bp-pad-preview"></iframe>
-            </div>
+    <div id="pads-upload-files" class="tab-content">
+        <!-- Pads File Upload Section -->
+        <!-- pad name and url -->
+         <div class="pads-upload-files-pad-info">
+            <label for="padUrl">Url:</label>
+            <input type="text" name="padUrl" class="bp-pad-input padUrl" readonly="true" value="https://buddypond.com/">
+
+         </div>
+      
+        <div class="bp-pad-manage">
+           <h2>Your Pad is now deployed and ready to be updated.</h2>
+           <h3>To Modify your Pad <button class="open-app" data-app="file-explorer" data-context="mypad/index.html">Click Here</button></h3>
         </div>
     </div>
+    
 
 </div>
+

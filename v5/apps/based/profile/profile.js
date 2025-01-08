@@ -13,19 +13,13 @@ export default class Profile {
     }
 
     async init() {
-        this.bp.log('Hello from Example');
-
-        // we can load modules or html fragments or css files here
-        // using this.bp.load() method
 
         // injects CSS link tag into the head of document
         await this.bp.load('/v5/apps/based/profile/profile.css');
         await this.bp.load('/v5/apps/based/ui/LoadingContainer/LoadingContainer.css');
-
-
+        await this.bp.load('browser');
         // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/profile/profile.html');
-
 
         return 'loaded Profile';
     }
@@ -45,7 +39,9 @@ export default class Profile {
         // currently returns postgres document for the pad ( not redis )
         // we will want to store the keys in redis for quick access ( loading pad pages )
 
+        // No longer creating default pad, instead of create default index.html on login
 
+        /*
         let buddyProfilePad;
 
         try {
@@ -75,6 +71,8 @@ export default class Profile {
         }
         console.log('buddyProfilePad', buddyProfilePad);
         defaultFileContent['/myprofile/index.html'] = buddyProfilePad.content;
+        */
+
 
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
@@ -177,110 +175,24 @@ export default class Profile {
         let padEditorHolder = document.createElement('div');
         padEditorHolder.className = 'pad-editor-holder';
 
+        /*
+        let fileExplorer = await this.bp.apps['file-explorer'].create();
+        console.log('fffff', fileExplorer.fileExplorer.container)
+        padEditorHolder.append(fileExplorer.fileExplorer.container);
         profileContent.append(padEditorHolder);
-        let fileTreeComponent = this.bp.apps['file-tree'];
-        const editor = new PadEditor(padEditorHolder, {
-            bp: this.bp,
-            fileTree: fileTreeComponent, // Your file tree implementation
-            files: defaultFiles,
-            getFileContent: (filePath) => {
-                // Your logic to get file content
-                return defaultFileContent[filePath];
-            },
-            onEdit: (content) => {
-                // hide the preview and show the code editor
-                $('.editor-content').flexShow();
-                $('.myProfile').flexHide();
+        */
 
-                // show the Update and Cancel buttons
-                $('.pad-editor-button-update').show();
-                $('.pad-editor-button-cancel').show();
+        this.browser = new this.bp.apps.browser.BrowserWindow(padEditorHolder, 'https://buddypond.com/' + this.bp.me);
 
-            },
-            onUpdate: async (content) => {
-
-                let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
-                    content: content
-                });
-
-
-            },
-            onPreview: (content) => {
-                // hide the code editor and show the preview .myProfile
-                $('.editor-content').flexHide();
-                //editor.togglePreview(true);
-
-
-
-
-                // replace <script src="pad.js"></script> with the content of pad.js
-                //let almostApp = content.replace('<script src="pad.js"></script>', '<script>' + defaultFileContent['/myprofile/pad.js'] + '</script>');
-                // do the same for the style.css
-                //almostApp = almostApp.replace('<link rel="stylesheet" href="style.css">', '<style>' + defaultFileContent['/myprofile/style.css'] + '</style>');
-
-                //editor.updatePreview(almostApp);
-                //$('.myProfile').flexShow();
-            },
-            onCancel: () => {
-                console.log('Cancel clicked');
-                // hide the Update and Cancel buttons
-                $('.pad-editor-button-update').hide();
-                $('.pad-editor-button-cancel').hide();
-                // hide the code editor and show the preview
-                $('.pad-editor-button-preview').click();
-
-            }
+        this.bp.on('file-explorer::update', 'update-profile-preview-if-profile-index', (data) => {
+            // check if data.path is /index.html
+            // if so, we wish to reload the browser window
+            this.browser.navigate('https://buddypond.com/' + this.bp.me);
         });
 
-        this.editor = editor;
+        profileContent.append(padEditorHolder);
 
-        await editor.init();
 
-        // load the content of the first file
-        editor.loadFile('/myprofile/index.html');
-
-        // set the height of the editor
-        editor.editorContainer.style.height = '600px';
-        this.editor.previewFrame.setContent(buddyProfilePad.content);
-        $('.pad-editor-button-update', this.profileWindow.content).on('click', async () => {
-            console.log('setting content', this.editor.getContent());
-            this.editor.previewFrame.setContent(this.editor.getContent());
-            let padElement = document.querySelector('.bp-browserwindow');
-            const loadingContainer = new LoadingContainer(padElement, {
-                minimalLoadingTime: 600,
-            });
-            let updated = await this.bp.apps.client.api.updatePad(profilePadKey, {
-                content: this.editor.getContent()
-            });
-            buddyProfilePad = updated;
-
-            console.log('updated', updated);
-            $('.pad-editor-button-update').flexHide();
-            $('.pad-editor-button-cancel').flexHide();
-
-            loadingContainer.hide(function(){
-                $('.pad-editor-button-preview').click();
-
-            });
-        });
-
-        $('.pad-editor-button-preview', this.profileWindow.content).on('click', () => {
-            this.editor.previewFrame.setContent(this.editor.getContent());
-
-        })
-
-        $('.myProfile').flexHide();
-
-        // hide the editor content, show the preview
-        //$('.editor-content').flexHide();
-        //$('.preview-frame').flexShow();
-
-        // open the first folder of the fileTree
-        editor.fileTreeComponent.toggleFolder('/myprofile');
-        // Focus on the newly created or updated window
-        //this.bp.apps.ui.windowManager.openWindow(this.profileWindow);
-        this.bp.apps.ui.windowManager.focusWindow(this.profileWindow);
-        $('.pad-editor-button-preview').click();
     }
 }
 
