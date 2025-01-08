@@ -149,7 +149,7 @@ export default class Profile {
             profileUrl = profileUrl + '/index.html';
         }
 
-        this.browser = new this.bp.apps.browser.BrowserWindow(padEditorHolder, profileUrl);
+        this.browser = new this.bp.apps.browser.BrowserWindow(this.bp, padEditorHolder, profileUrl);
 
 
         this.bp.on('file-explorer::update', 'update-profile-preview-if-profile-index', (data) => {

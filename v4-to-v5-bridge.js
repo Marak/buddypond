@@ -14,7 +14,8 @@ window.bp_v_5 = async function bp_v_5() {
   bp.setConfig({
     host: _host,
     wsHost: _wsHost,
-    api: _api
+    api: _api,
+    cdn: _cdn
   });
 
   bp.on('auth::logout', 'old-bp-logout', function () {

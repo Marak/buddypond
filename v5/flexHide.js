@@ -9,7 +9,7 @@ $(document).ready(function () {
                 $this.data('original-display', $this.css('display'));
             }
             // Use the stored display value or default to 'block' if nothing stored
-            $this.show().css('display', $this.data('original-display') || 'block');
+            $this.show().css('display', $this.data('original-display') || 'flex');
         });
     };
 

@@ -6,6 +6,7 @@ export default class BrowserWindow {
         this.iframe = null; // Reference to the iframe
         this.history = [initialUrl]; // Store visited URLs
         this.currentIndex = 0; // Current position in history
+        this.baseUrl = ''; // Base URL for relative links
         this.init();
         return this;
     }
@@ -49,11 +50,21 @@ export default class BrowserWindow {
 
     }
 
+    setBaseUrl(url) {
+        this.baseUrl = url;
+    }
+
     setContent(htmlContent, attempts = 1) {
         try {
             const doc = this.iframe.contentDocument || this.iframe.contentWindow.document;
             doc.open();
-            doc.write(htmlContent);
+            // Set the base URL before writing the content
+            const baseTag = `<base href="${this.baseUrl}" target="_blank">`;
+            // set the base of the current document
+            doc.write(baseTag);
+            // const contentWithBase = baseTag + htmlContent;
+            console.log('writing', contentWithBase)
+            doc.write(contentWithBase);
             doc.close();
     
         } catch (e) {

@@ -182,7 +182,7 @@ export default class Pad {
 
                 // now that the pad is created we will need to upload files
                 // show the #pads-upload-files div, which will move user to file-explorer
-                $('#pads-upload-files', this.padWindow.content).flexShow();
+                $('#pads-upload-files', this.padWindow.content).show();
                 $('#pads-editor', this.padWindow.content).flexHide();
 
                 // Reloads the My Pads list

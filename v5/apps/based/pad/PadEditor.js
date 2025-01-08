@@ -54,12 +54,14 @@ export default class PadEditor {
 
         // TODO: replace all this.previewFrame with this.browserPreview
         // we now have the BrowserWindow ( which has its own iframe )
-        console.log('this.previewFrame', this.previewFrame);
+        // console.log('this.previewFrame', this.previewFrame);
         // Assemble the DOM structure
         this.container.appendChild(this.controls);
         this.container.appendChild(this.contentArea);
         this.previewFrame = new BrowserWindow(this.bp, this.container, liveLink);
         this.previewFrame.setContent('loading...');
+        // set the base url to this.bp.config.host + '/' + this.bp.me
+        this.previewFrame.setBaseUrl(this.bp.config.cdn + '/' + this.bp.me + '/');
         this.contentArea.appendChild(this.editorContainer);
         
         this.setupControls();
@@ -143,7 +145,7 @@ export default class PadEditor {
                     this.loadFile(filePath);
                 },
                 onFolderToggle: (folderPath, isExpanded) => {
-                    console.log('Folder toggled:', folderPath, isExpanded);
+                    // console.log('Folder toggled:', folderPath, isExpanded);
                 }
             });
             
@@ -185,7 +187,7 @@ export default class PadEditor {
         if (!content) {
             content = this.getContent();
         }
-        console.log('setting preview content', content);
+        // console.log('setting preview content', content);
         this.previewFrame.setContent(content);
     }
 

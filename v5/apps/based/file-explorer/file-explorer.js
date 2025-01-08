@@ -83,16 +83,16 @@ export default class FileExplorer {
 
             onDelete: async (filePath) => {
                 let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
-                console.log('relativePath', relativePath);
+                // console.log('relativePath', relativePath);
                 try {
                     await this.bp.apps.client.api.removeFile(relativePath);
                     // at this point we have confirmd with server that file is being deleted
                     // we should immediately remove the file from the file tree
                     let tree = $('#jtree').jstree(true);
                     // let localPath = filePath.replace('https://files.buddypond.com/', '');
-                    console.log('looking for node with path', relativePath);
+                    // console.log('looking for node with path', relativePath);
                     let node = tree.get_node(relativePath);
-                    console.log('found node', node);
+                    // console.log('found node', node);
                     tree.delete_node(node);
 
                 } catch (err) {
@@ -105,14 +105,14 @@ export default class FileExplorer {
                 // show "updating" overlay
                 $('.bp-file-explorer-update-overlay').flexShow();
 
-                console.log("onUpdate", filePath, content);
+                // console.log("onUpdate", filePath, content);
 
                 let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
-                console.log('relativePath', relativePath);
-                console.log("MIMMMMME", this.mime);
+                // console.log('relativePath', relativePath);
+                // console.log("MIMMMMME", this.mime);
 
                 let mimeType = this.mime.getType(relativePath);
-                console.log('using mimeType', mimeType);
+                // console.log('using mimeType', mimeType);
 
                 // Assuming 'content' is a string, we need to convert it to a Blob, then to a File
                 const blob = new Blob([content], { type: mimeType });  // Adjust the MIME type as necessary
@@ -124,7 +124,7 @@ export default class FileExplorer {
                 });
                 file.filePath = relativePath;
 
-                console.log('going to upload file', file);
+                // console.log('going to upload file', file);
 
                 // Assuming uploadFile() expects a standard File type object
                 try {
@@ -149,10 +149,10 @@ export default class FileExplorer {
                 // hide the code editor and show the preview .myProfile
                 // what is handling this now? directly calling into browser app?
                 // check and ensure that we don't need to move that logic here
-                console.log("onPreview", content);
+                // console.log("onPreview", content);
             },
             onCancel: () => {
-                console.log('Cancel clicked');
+                // console.log('Cancel clicked');
                 // hide the Update and Cancel buttons
                 $('.pad-editor-button-update').hide();
                 $('.pad-editor-button-cancel').hide();
@@ -181,7 +181,7 @@ export default class FileExplorer {
         let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 ( for now )
         const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
         this.fileExplorer.cloudFiles = cloudFiles;
-        console.log("making tree with data", treeData);
+        // console.log("making tree with data", treeData);
         // console.log("treeData", JSON.stringify(treeData, true, 2));
         // TODO: connect tree to AJAX backend for granular loading ( not just loading the whole tree at once )
 
@@ -195,7 +195,7 @@ export default class FileExplorer {
             'plugins': ['contextmenu'],  // Add 'contextmenu' to the list of plugins
             'contextmenu': {
                 'items': function (node) {
-                    console.log(node)
+                    // console.log(node)
                     var tree = $('#jtree').jstree(true);
 
                     return {
@@ -229,7 +229,7 @@ export default class FileExplorer {
                 }
             }
         }).on('ready.jstree', (e, data) => {
-            console.log('Tree is now ready');
+            // console.log('Tree is now ready');
             // render the root folder contents
             //let jsTree = $('#jtree').jstree(true);
 
@@ -268,34 +268,34 @@ export default class FileExplorer {
 
         $('#jtree').on("delete_node.jstree", (e, data) => {
             // delete the file or directory from CDN
-            console.log("delete_node.jstree", e, data);
+            // console.log("delete_node.jstree", e, data);
             let node = data.node;
             let path = node.id;
-            console.log('jstree request to delete', path);
+            // console.log('jstree request to delete', path);
 
             // delete the file from the CDN
             // not needed?
             //let relativePath = path.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
             let relativePath = path;
-            console.log('relativePath', relativePath);
+            // console.log('relativePath', relativePath);
 
             this.bp.apps.client.api.removeFile(relativePath).then(() => {
-                console.log('file removed from CDN', relativePath);
-                console.log('this.fileExplorer.cloudFiles.files', this.fileExplorer.cloudFiles.files);
+                // console.log('file removed from CDN', relativePath);
+                // console.log('this.fileExplorer.cloudFiles.files', this.fileExplorer.cloudFiles.files);
 
                 this.fileExplorer.cloudFiles.files = this.fileExplorer.cloudFiles.files.filter(file => file !== relativePath);
-                console.log('this.fileExplorer.cloudFiles.files', this.fileExplorer.cloudFiles.files);
+                // console.log('this.fileExplorer.cloudFiles.files', this.fileExplorer.cloudFiles.files);
 
             });
 
         });
 
         $('#jtree').on("changed.jstree", (e, data) => {
-            console.log('changed.jstree', e, data.selected);
+            // console.log('changed.jstree', e, data.selected);
 
             // determine if the selected node is a file or folder
             let node = data.instance.get_node(data.selected[0]);
-            console.log('attempted to get node with id', data.selected[0]);
+            // console.log('attempted to get node with id', data.selected[0]);
             // renderNodeContents(data, node);
             if (node) {
 
@@ -310,7 +310,7 @@ export default class FileExplorer {
         // when click .upload-files, dynamically create input with directory support and click it
         // take the results and send them to handleDrop
         $('.upload-files').on('click', async (e) => {
-            console.log('upload files clicked');
+            // console.log('upload files clicked');
             let input = document.createElement('input');
             input.type = 'file';
             input.multiple = true;
@@ -319,14 +319,14 @@ export default class FileExplorer {
             input.click();
 
             input.onchange = async (e) => {
-                console.log('files selected', e.target.files);
+                // console.log('files selected', e.target.files);
                 let items = e.target.files;
                 await this.handleUpload(e);
             };
         });
 
         $('.upload-directory').on('click', async (e) => {
-            console.log('upload directory clicked');
+            // console.log('upload directory clicked');
             let input = document.createElement('input');
             input.type = 'file';
             input.multiple = true;
@@ -335,7 +335,7 @@ export default class FileExplorer {
             input.click();
 
             input.onchange = async (e) => {
-                console.log('files selected', e.target.files);
+                // console.log('files selected', e.target.files);
                 let items = e.target.files;
                 await this.handleUpload(e);
             };
@@ -348,13 +348,13 @@ export default class FileExplorer {
 
         });
 
-        console.log('got the cloud files', cloudFiles.files);
+        // console.log('got the cloud files', cloudFiles.files);
         return this;
 
     }
 
     async refreshFileTree() {
-        console.log('previous cloud files', this.fileExplorer.cloudFiles.files);
+        // console.log('previous cloud files', this.fileExplorer.cloudFiles.files);
         let attempts = 0;
         const maxAttempts = 10; // You can adjust the maximum number of polling attempts
     
@@ -363,7 +363,7 @@ export default class FileExplorer {
     
             // Compare current cloud files with previous ones
             if (!this.areFilesSame(this.fileExplorer.cloudFiles.files, cloudFiles.files)) {
-                console.log('Cloud files have changed, updating tree...');
+                // console.log('Cloud files have changed, updating tree...');
                 const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
                 this.fileExplorer.cloudFiles = cloudFiles;
     
@@ -375,7 +375,7 @@ export default class FileExplorer {
                 
                 this.fileExplorer.getUsage();
             } else if (attempts < maxAttempts) {
-                console.log('No changes detected, trying again...');
+                // console.log('No changes detected, trying again...');
                 attempts++;
                 setTimeout(pollForChanges, 750); // Try again in 500ms
             }
@@ -437,7 +437,7 @@ export default class FileExplorer {
     }
 
     async open({ context }) {
-        console.log(`Opening file explorer with context ${context}`);
+        // console.log(`Opening file explorer with context ${context}`);
         this.options.context = context;
         if (!this.fileExplorer) {
             this.fileExplorer = this.fileExplorerInstance.create();
@@ -447,7 +447,7 @@ export default class FileExplorer {
             this.handleUpload = this.fileExplorer.handleUpload.bind(this.fileExplorer);
         }
 
-        console.log('created explorer', this.fileExplorer);
+        // console.log('created explorer', this.fileExplorer);
 
 
         if (!this.fileExplorerWindow) {
@@ -456,7 +456,6 @@ export default class FileExplorer {
                 title: 'Cloud Files',
                 app: 'file-explorer',
                 icon: 'desktop/assets/images/icons/icon_file-explorer_64.png',
-
                 x: 100,
                 y: 30,
                 width: 1000,

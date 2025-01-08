@@ -42,6 +42,8 @@ window.top.location = 'ie.html';
   <link rel="stylesheet" href="desktop/assets/css/loader.css">
 
 
+
+
   <!--[if lt IE 9]>
 <link rel="stylesheet" href="desktop/assets/css/ie.css" />
 <![endif]-->
@@ -113,7 +115,8 @@ window.top.location = 'ie.html';
       let _host = 'https://buddypond.com';
       let _api = 'https://api.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
-      //_host = 'https://192.168.200.59';
+      let _cdn = 'https://files.buddypond.com';
+      // _host = 'https://192.168.200.59';
       //_api = 'https://192.168.200.59';
       //_wsHost = 'wss://192.168.200.59';
 
@@ -122,13 +125,19 @@ window.top.location = 'ie.html';
 
       let renderBpApp = true;
 
+      // route the SPA based on the current path
+      // any routes that land here outside of root will be proxied to files.buddypond.com ( user pads )
       let currentPath = window.location.pathname;
+      // document.write currentPath
+
+      // alert(`currentPath: ${currentPath}`);
       if (currentPath !== '/') {
         renderBpApp = false;
 
         console.log('currentPath', currentPath);
 
       }
+
       bindJqueryReady();
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`

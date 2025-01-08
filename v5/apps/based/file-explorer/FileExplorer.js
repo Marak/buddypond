@@ -53,7 +53,7 @@ export default class FileExplorer {
                 let size = parent.data('size');
                 let date = parent.data('date');
                 let path = parent.data('path');
-                console.log('clicked', type, path);
+                // console.log('clicked', type, path);
 
 
                 // update the .bp-file-explorer-address-input with the folder path
@@ -62,7 +62,7 @@ export default class FileExplorer {
 
                 if (type === 'folder') {
                     // open folder
-                    console.log('open folder', type, path);
+                    // console.log('open folder', type, path);
                     // TODO: path is the node.js from the jsTree
                     // we need to get that node reference and get its children
                     //let node = this.fileTree.getNode(path);
@@ -71,7 +71,7 @@ export default class FileExplorer {
 
 
                     let contents = node.children;
-                    console.log('111 showing contents of folder', node.id, contents);
+                    // console.log('111 showing contents of folder', node.id, contents);
 
                     // go through each child and get their node data from jstree
                     contents = contents.map(child => {
@@ -82,7 +82,7 @@ export default class FileExplorer {
                             path: childNode.id
                         };
                     });
-                    console.log('222 showing contents of folder', node.id, contents);
+                    // console.log('222 showing contents of folder', node.id, contents);
                     // update the .bp-file-explorer-address-input with the folder path
                     // $('.bp-file-explorer-address-input').val('/' + node.id);
                     this.setPreviewAddressBar('/' + node.id);
@@ -101,7 +101,7 @@ export default class FileExplorer {
 
                 } else {
                     // open file
-                    console.log('open file', type);
+                    // console.log('open file', type);
                     this.showFile(this.bp.me, path);
                     $('.bp-file-explorer-drag-upload').hide();
 
@@ -154,7 +154,7 @@ export default class FileExplorer {
 
         this.uploadOverlay = new FileUploadOverlay({ parent: container, fileExplorer: this }, async (file, onProgress) => {
             // upload file here
-            console.log("uploading file", file);
+            // console.log("uploading file", file);
             await this.bp.apps.client.api.uploadFile(file.file, onProgress);
         });
         this.uploadOverlay.hide();
@@ -185,7 +185,9 @@ export default class FileExplorer {
     setPreviewAddressBar(path) {
         $('.bp-file-explorer-address-input').val(path);
         let host = this.bp.config.host;
-        this.bp.emit('browser::setAddressBar', host + path);
+        // this.bp.emit('browser::setAddressBar', host + path);
+        this.bp.emit('browser::setAddressBar', host + '/' + this.bp.me + path);
+
     }
 
     async showFile(root, file, showEditor = false) {
@@ -232,7 +234,7 @@ export default class FileExplorer {
             let filePath = '/' + root + '/' + file;
             let fileCDN = 'https://files.buddypond.com';
             filePath = fileCDN + filePath;
-            console.log("fetching filePath", filePath);
+            // console.log("fetching filePath", filePath);
             let fileContents = await fetch(filePath);
 
             // now we will write the contents to the editor
@@ -249,7 +251,7 @@ export default class FileExplorer {
                 this.editor.filePath = filePath;
             } else {
                 let fileViewerEditor = $('.bp-file-explorer-file-viewer-editor', this.container);
-                console.log("setting text content", fileText);
+                // console.log("setting text content", fileText);
 
             }
 
@@ -286,10 +288,10 @@ export default class FileExplorer {
             path = this.bp.me;
         }
   
-        console.log('going to merge metadata from ', this.cloudFiles)
+        // console.log('going to merge metadata from ', this.cloudFiles)
         let node = instance.get_node(path);
         if (node) {
-            console.log('found node', node);
+            // console.log('found node', node);
 
             let type = node.children.length > 0 ? 'folder' : 'file';
 
@@ -302,7 +304,7 @@ export default class FileExplorer {
             this.currentSelectedNode = node;
 
             let contents = node.children;
-            console.log('444 showing contents of folder', node.id, contents);
+            // console.log('444 showing contents of folder', node.id, contents);
 
             // check this.cloudFiles.metadata[node.id] for the contents of the folder
             // it *should* always exist, if not show error
@@ -319,7 +321,7 @@ export default class FileExplorer {
 
 
                 let metadata = {};
-                console.log('this.cloudFiles', this.cloudFiles.metadata);
+                // console.log('this.cloudFiles', this.cloudFiles.metadata);
                 if (!this.cloudFiles.metadata[childNode.id]) {
                     console.error(`No metadata found for ${childNode.id} cannot show metadata`);
                     console.error(`This should *not* happen and indicates that the metadata and Object Store are out of sync`);
@@ -336,11 +338,9 @@ export default class FileExplorer {
                     date: metadata.lastModified
                 };
             });
-            console.log('5555 showing contents of folder', node.id, contents);
+            // console.log('5555 showing contents of folder', node.id, contents);
             // update the .bp-file-explorer-address-input with the folder path
             //$('.bp-file-explorer-address-input').val('/' + this.bp.me + '/' + node.id);
-
-
 
             this.renderFolderContents(contents);
 
@@ -368,7 +368,7 @@ export default class FileExplorer {
             item.dataset.size = file.size;
             item.dataset.date = file.date;
             item.dataset.path = file.path;
-            console.log('file', file);
+            // console.log('file', file);
             let columns = ['name', 'size', 'type', 'date'];
             for (let column of columns) {
                 let columnDiv = document.createElement('div');
@@ -405,7 +405,7 @@ export default class FileExplorer {
 
         // get initial file usage
         let currentUsage = await this.bp.apps.client.api.getFileUsage();
-        console.log('currentUsage', currentUsage);
+        // console.log('currentUsage', currentUsage);
         this.currentStorageUsage = currentUsage.usage;
         let storageLimit = 10000000; // 10mb
         let storageRemaining = storageLimit - currentUsage.usage;

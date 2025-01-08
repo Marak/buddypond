@@ -134,8 +134,11 @@ export default class BuddyList {
         //this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
         //this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
 
-
-        this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
+        // Remark: removing buddy-in sound because Marak account is friends without everyone is is constantly triggering the sound
+        // We'll have to be smarter about when to play sounds and limit the amount of BUDDY-IN a single buddy can trigger
+        // total amount of buddy-in sounds per time window ( in case of 100s of buddies, etc )
+        // this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
+        
         // Remark: buddy-out sound disabled until new client connection logic with backend is fully tested 
         //         ( was triggering too many sounds too often )
         //this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
