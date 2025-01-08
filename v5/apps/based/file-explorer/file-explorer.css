@@ -25,6 +25,10 @@
     display: flex;
     gap: 4px;
   }
+
+  .bp-file-explorer-toolbar-buttons i {
+    font-size: 22px;
+  }
   
   .bp-file-explorer-btn {
     padding: 2px 8px;
@@ -43,6 +47,7 @@
     align-items: center;
     gap: 4px;
     flex-grow: 1;
+    padding-left: 103px;
   }
   
   .bp-file-explorer-address-input {
@@ -333,4 +338,51 @@
   width: 100%;      /* Responsive width */
   height: 100vh;    /* Responsive height, adjust as necessary */
   position: absolute; /* Helps fill the parent container */
+}
+
+.bp-file-explorer-update-overlay {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: black;
+  z-index: 1000;
+  height: 100%;
+  opacity: 0.9;
+  font-size: 48px;
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 8px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  position: relative;
+  opacity: 0.7;
+}
+
+.spinner::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 8px solid transparent;
+  border-radius: 50%;
+  border-top-color: rgba(255, 255, 255, 0.3);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

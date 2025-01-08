@@ -2,5 +2,7 @@
 files-o:
   name: copy
   prefix: far
+refresh:
+  name: arrows-rotate
 sign-out:
   name: right-from-bracket

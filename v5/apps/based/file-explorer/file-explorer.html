@@ -3,8 +3,9 @@
   <!-- Top toolbar -->
   <div class="bp-file-explorer-toolbar">
     <div class="bp-file-explorer-toolbar-buttons">
-      <button class="bp-file-explorer-btn upload-files">Upload Files</button>
-      <button class="bp-file-explorer-btn refresh-files">Refresh</button>
+      <button title="Upload Files" class="bp-file-explorer-btn upload-files"><i class="fa-duotone fa-regular fa-upload"></i></button>
+      <button title="Upload Directory" class="bp-file-explorer-btn upload-directory"><i class="fa-duotone fa-regular fa-folder-arrow-up"></i></button>
+      <button title="Refresh File Tree" class="bp-file-explorer-btn refresh-files"><i class="fa-duotone fa-regular fa-arrows-rotate"></i></button>
 
       <!--
       <button class="bp-file-explorer-btn">Back</button>
@@ -38,7 +39,10 @@
         <div class="bp-file-explorer-column">Type</div>
         <div class="bp-file-explorer-column">Modified</div>
       </div>
-
+      <div class="bp-file-explorer-update-overlay">
+        <h1>Updating</h1>
+        <div class="spinner"></div>
+      </div>
       <!-- Content area -->
         <!-- Drag to Upload Indicator (initially hidden) -->
         <div class="bp-file-explorer-drag-upload">

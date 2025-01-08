@@ -101,6 +101,10 @@ export default class FileExplorer {
             },
 
             onUpdate: async (filePath, content) => {
+
+                // show "updating" overlay
+                $('.bp-file-explorer-update-overlay').flexShow();
+
                 console.log("onUpdate", filePath, content);
 
                 let relativePath = filePath.replace('https://files.buddypond.com/' + this.bp.me + '/', '');
@@ -136,6 +140,8 @@ export default class FileExplorer {
                 this.bp.emit('file-explorer::update', {
                     path: relativePath,
                 });
+
+                $('.bp-file-explorer-update-overlay').flexHide();
 
             },
 
@@ -301,11 +307,26 @@ export default class FileExplorer {
 
         });
 
-
         // when click .upload-files, dynamically create input with directory support and click it
         // take the results and send them to handleDrop
         $('.upload-files').on('click', async (e) => {
             console.log('upload files clicked');
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.webkitdirectory = false;
+            input.directory = false;
+            input.click();
+
+            input.onchange = async (e) => {
+                console.log('files selected', e.target.files);
+                let items = e.target.files;
+                await this.handleUpload(e);
+            };
+        });
+
+        $('.upload-directory').on('click', async (e) => {
+            console.log('upload directory clicked');
             let input = document.createElement('input');
             input.type = 'file';
             input.multiple = true;
@@ -434,6 +455,8 @@ export default class FileExplorer {
                 id: 'file-explorer',
                 title: 'Cloud Files',
                 app: 'file-explorer',
+                icon: 'desktop/assets/images/icons/icon_file-explorer_64.png',
+
                 x: 100,
                 y: 30,
                 width: 1000,

@@ -30,6 +30,85 @@ album-collection:
     - duotone
   unicode: f8a0
   voted: false
+arrows-rotate:
+  aliases:
+    names:
+      - refresh
+      - sync
+    unicodes:
+      composite:
+        - 1f5d8
+      secondary:
+        - 10f021
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.8.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Arrows Rotate
+  search:
+    terms:
+      - Clockwise Right and Left Semicircle Arrows
+      - clockwise
+      - exchange
+      - modify
+      - refresh
+      - reload
+      - renew
+      - retry
+      - rotate
+      - swap
+  styles:
+    - duotone
+  unicode: f021
+  voted: false
+book-sparkles:
+  aliases:
+    names:
+      - book-spells
+    unicodes:
+      secondary:
+        - 10f6b8
+  changes:
+    - 5.4.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Book Sparkles
+  search:
+    terms:
+      - Dungeons & Dragons
+      - d&d
+      - dark arts
+      - dnd
+      - documentation
+      - evil
+      - fantasy
+      - halloween
+      - holiday
+      - library
+      - mage
+      - magic
+      - read
+      - research
+      - sorcery
+      - voodoo
+      - witch
+      - wizard
+  styles:
+    - duotone
+  unicode: f6b8
+  voted: false
 border-center-v:
   aliases:
     unicodes:
@@ -116,6 +195,37 @@ copy:
   styles:
     - solid
   unicode: f0c5
+  voted: false
+folder-arrow-up:
+  aliases:
+    names:
+      - folder-upload
+    unicodes:
+      secondary:
+        - '10e054'
+  changes:
+    - 5.12.1
+    - 5.14.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Folder Arrow Up
+  search:
+    terms:
+      - archive
+      - directory
+      - document
+      - file
+      - save
+      - upgrade
+      - upload
+  styles:
+    - duotone
+  unicode: e054
   voted: false
 folder-music:
   changes:
@@ -231,6 +341,30 @@ head-side-gear:
   styles:
     - duotone
   unicode: e611
+  voted: false
+house-user:
+  aliases:
+    names:
+      - home-user
+  changes:
+    - 6.0.0-beta1
+    - 6.0.0-beta2
+    - 6.0.0-beta3
+    - 6.1.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: House User
+  search:
+    terms:
+      - house
+      - uer
+  styles:
+    - duotone
+  unicode: e1b0
   voted: false
 list-music:
   aliases:
@@ -537,4 +671,30 @@ stop:
   styles:
     - duotone
   unicode: f04d
+  voted: false
+upload:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f093
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Upload
+  search:
+    terms:
+      - hard drive
+      - import
+      - publish
+      - upgrade
+  styles:
+    - duotone
+  unicode: f093
   voted: false

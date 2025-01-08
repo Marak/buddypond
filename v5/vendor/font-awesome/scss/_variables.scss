@@ -52,14 +52,23 @@ $fa-font-display          : block !default;
 $fa-font-path             : "../webfonts" !default;
 
 $fa-var-album-collection: \f8a0;
+$fa-var-arrows-rotate: \f021;
+$fa-var-refresh: \f021;
+$fa-var-sync: \f021;
+$fa-var-book-sparkles: \f6b8;
+$fa-var-book-spells: \f6b8;
 $fa-var-border-center-v: \f89d;
 $fa-var-cassette-tape: \f8ab;
 $fa-var-copy: \f0c5;
+$fa-var-folder-arrow-up: \e054;
+$fa-var-folder-upload: \e054;
 $fa-var-folder-music: \e18d;
 $fa-var-frog: \f52e;
 $fa-var-gamepad-modern: \e5a2;
 $fa-var-gamepad-alt: \e5a2;
 $fa-var-head-side-gear: \e611;
+$fa-var-house-user: \e1b0;
+$fa-var-home-user: \e1b0;
 $fa-var-list-music: \f8c9;
 $fa-var-microphone-lines: \f3c9;
 $fa-var-microphone-alt: \f3c9;
@@ -72,18 +81,28 @@ $fa-var-record-vinyl: \f8d9;
 $fa-var-right-from-bracket: \f2f5;
 $fa-var-sign-out-alt: \f2f5;
 $fa-var-stop: \f04d;
+$fa-var-upload: \f093;
 
 
 $fa-icons: (
   "album-collection": $fa-var-album-collection,
+  "arrows-rotate": $fa-var-arrows-rotate,
+  "refresh": $fa-var-refresh,
+  "sync": $fa-var-sync,
+  "book-sparkles": $fa-var-book-sparkles,
+  "book-spells": $fa-var-book-spells,
   "border-center-v": $fa-var-border-center-v,
   "cassette-tape": $fa-var-cassette-tape,
   "copy": $fa-var-copy,
+  "folder-arrow-up": $fa-var-folder-arrow-up,
+  "folder-upload": $fa-var-folder-upload,
   "folder-music": $fa-var-folder-music,
   "frog": $fa-var-frog,
   "gamepad-modern": $fa-var-gamepad-modern,
   "gamepad-alt": $fa-var-gamepad-alt,
   "head-side-gear": $fa-var-head-side-gear,
+  "house-user": $fa-var-house-user,
+  "home-user": $fa-var-home-user,
   "list-music": $fa-var-list-music,
   "microphone-lines": $fa-var-microphone-lines,
   "microphone-alt": $fa-var-microphone-alt,
@@ -96,6 +115,7 @@ $fa-icons: (
   "right-from-bracket": $fa-var-right-from-bracket,
   "sign-out-alt": $fa-var-sign-out-alt,
   "stop": $fa-var-stop,
+  "upload": $fa-var-upload,
 );
 
 $fa-brand-icons: (

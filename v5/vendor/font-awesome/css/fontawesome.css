@@ -427,14 +427,21 @@
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
 readers do not read off random characters that represent icons */
 .fa-album-collection { --fa: "\f8a0"; --fa--fa: "\f8a0\f8a0"; }
+.fa-arrows-rotate { --fa: "\f021"; --fa--fa: "\f021\f021"; }
+.fa-book-sparkles { --fa: "\f6b8"; --fa--fa: "\f6b8\f6b8"; }
+.fa-book-spells { --fa: "\f6b8"; --fa--fa: "\f6b8\f6b8"; }
 .fa-border-center-v { --fa: "\f89d"; --fa--fa: "\f89d\f89d"; }
 .fa-cassette-tape { --fa: "\f8ab"; --fa--fa: "\f8ab\f8ab"; }
 .fa-copy { --fa: "\f0c5"; --fa--fa: "\f0c5\f0c5"; }
+.fa-folder-arrow-up { --fa: "\e054"; --fa--fa: "\e054\e054"; }
 .fa-folder-music { --fa: "\e18d"; --fa--fa: "\e18d\e18d"; }
+.fa-folder-upload { --fa: "\e054"; --fa--fa: "\e054\e054"; }
 .fa-frog { --fa: "\f52e"; --fa--fa: "\f52e\f52e"; }
 .fa-gamepad-alt { --fa: "\e5a2"; --fa--fa: "\e5a2\e5a2"; }
 .fa-gamepad-modern { --fa: "\e5a2"; --fa--fa: "\e5a2\e5a2"; }
 .fa-head-side-gear { --fa: "\e611"; --fa--fa: "\e611\e611"; }
+.fa-home-user { --fa: "\e1b0"; --fa--fa: "\e1b0\e1b0"; }
+.fa-house-user { --fa: "\e1b0"; --fa--fa: "\e1b0\e1b0"; }
 .fa-list-music { --fa: "\f8c9"; --fa--fa: "\f8c9\f8c9"; }
 .fa-microphone-alt { --fa: "\f3c9"; --fa--fa: "\f3c9\f3c9"; }
 .fa-microphone-lines { --fa: "\f3c9"; --fa--fa: "\f3c9\f3c9"; }
@@ -444,9 +451,12 @@ readers do not read off random characters that represent icons */
 .fa-play-pause { --fa: "\e22f"; --fa--fa: "\e22f\e22f"; }
 .fa-qrcode { --fa: "\f029"; --fa--fa: "\f029\f029"; }
 .fa-record-vinyl { --fa: "\f8d9"; --fa--fa: "\f8d9\f8d9"; }
+.fa-refresh { --fa: "\f021"; --fa--fa: "\f021\f021"; }
 .fa-right-from-bracket { --fa: "\f2f5"; --fa--fa: "\f2f5\f2f5"; }
 .fa-sign-out-alt { --fa: "\f2f5"; --fa--fa: "\f2f5\f2f5"; }
 .fa-stop { --fa: "\f04d"; --fa--fa: "\f04d\f04d"; }
+.fa-sync { --fa: "\f021"; --fa--fa: "\f021\f021"; }
+.fa-upload { --fa: "\f093"; --fa--fa: "\f093\f093"; }
 
 .sr-only,
 .fa-sr-only {

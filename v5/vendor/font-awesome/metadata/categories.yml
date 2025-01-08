@@ -5,11 +5,14 @@ animals:
   label: Animals
 arrows:
   icons:
+    - arrows-rotate
     - right-from-bracket
+    - upload
   label: Arrows
 business:
   icons:
     - copy
+    - folder-arrow-up
   label: Business
 camping:
   icons:
@@ -35,7 +38,12 @@ design:
 devices-hardware:
   icons:
     - gamepad-modern
+    - upload
   label: Devices + Hardware
+editing:
+  icons:
+    - arrows-rotate
+  label: Editing
 education:
   icons:
     - music
@@ -52,14 +60,24 @@ film-video:
   label: Film + Video
 gaming:
   icons:
+    - book-sparkles
     - gamepad-modern
   label: Gaming
+halloween:
+  icons:
+    - book-sparkles
+  label: Halloween
+household:
+  icons:
+    - house-user
+  label: Household
 maps:
   icons:
     - music
   label: Maps
 media-playback:
   icons:
+    - arrows-rotate
     - music
     - play
     - play-pause
@@ -82,6 +100,7 @@ nature:
   label: Nature
 science:
   icons:
+    - book-sparkles
     - frog
   label: Science
 science-fiction:
@@ -92,6 +111,10 @@ shapes:
   icons:
     - play
   label: Shapes
+spinners:
+  icons:
+    - arrows-rotate
+  label: Spinners
 text-formatting:
   icons:
     - border-center-v
@@ -99,4 +122,5 @@ text-formatting:
 users-people:
   icons:
     - head-side-gear
+    - house-user
   label: Users + People

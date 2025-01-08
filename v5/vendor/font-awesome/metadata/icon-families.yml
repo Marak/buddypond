@@ -33,6 +33,91 @@ album-collection:
       - vinyl
   unicode: f8a0
   voted: false
+arrows-rotate:
+  aliases:
+    names:
+      - refresh
+      - sync
+    unicodes:
+      composite:
+        - 1f5d8
+      secondary:
+        - 10f021
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.8.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Arrows Rotate
+  search:
+    terms:
+      - Clockwise Right and Left Semicircle Arrows
+      - clockwise
+      - exchange
+      - modify
+      - refresh
+      - reload
+      - renew
+      - retry
+      - rotate
+      - swap
+  unicode: f021
+  voted: false
+book-sparkles:
+  aliases:
+    names:
+      - book-spells
+    unicodes:
+      secondary:
+        - 10f6b8
+  changes:
+    - 5.4.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Book Sparkles
+  search:
+    terms:
+      - Dungeons & Dragons
+      - d&d
+      - dark arts
+      - dnd
+      - documentation
+      - evil
+      - fantasy
+      - halloween
+      - holiday
+      - library
+      - mage
+      - magic
+      - read
+      - research
+      - sorcery
+      - voodoo
+      - witch
+      - wizard
+  unicode: f6b8
+  voted: false
 border-center-v:
   aliases:
     unicodes:
@@ -130,6 +215,40 @@ copy:
       - paper
       - paste
   unicode: f0c5
+  voted: false
+folder-arrow-up:
+  aliases:
+    names:
+      - folder-upload
+    unicodes:
+      secondary:
+        - '10e054'
+  changes:
+    - 5.12.1
+    - 5.14.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Folder Arrow Up
+  search:
+    terms:
+      - archive
+      - directory
+      - document
+      - file
+      - save
+      - upgrade
+      - upload
+  unicode: e054
   voted: false
 folder-music:
   changes:
@@ -257,6 +376,33 @@ head-side-gear:
       - thought
       - user
   unicode: e611
+  voted: false
+house-user:
+  aliases:
+    names:
+      - home-user
+  changes:
+    - 6.0.0-beta1
+    - 6.0.0-beta2
+    - 6.0.0-beta3
+    - 6.1.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: House User
+  search:
+    terms:
+      - house
+      - uer
+  unicode: e1b0
   voted: false
 list-music:
   aliases:
@@ -600,4 +746,33 @@ stop:
       - stop
       - stop button
   unicode: f04d
+  voted: false
+upload:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f093
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Upload
+  search:
+    terms:
+      - hard drive
+      - import
+      - publish
+      - upgrade
+  unicode: f093
   voted: false
