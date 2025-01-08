@@ -61,13 +61,14 @@ export default class BrowserWindow {
             // Set the base URL before writing the content
             const baseTag = `<base href="${this.baseUrl}" target="_blank">`;
             // set the base of the current document
-            doc.write(baseTag);
-            // const contentWithBase = baseTag + htmlContent;
-            console.log('writing', contentWithBase)
+            // doc.write(baseTag);
+            const contentWithBase = baseTag + htmlContent;
+            //console.log('writing', contentWithBase)
             doc.write(contentWithBase);
             doc.close();
     
         } catch (e) {
+            console.log('Error setting content:', e);
             // clear out the iframe and reload it with about:blank
             // this could be due to previous page being remote url / cross-domain
             this.iframe.src = 'about:blank';
@@ -100,6 +101,8 @@ export default class BrowserWindow {
     }
 
     navigate(url) {
+
+        // console.log('navigating to', url);
 
         // lets' check url for http or https
         // if either are missing, add https
@@ -151,6 +154,7 @@ export default class BrowserWindow {
     }
 
     updateAddressBar() {
+        // console.log('updating address bar', this.currentUrl);
         const urlInput = this.container.querySelector('.bp-browserwindow-url');
         urlInput.value = this.currentUrl;
         // set the src of the iframe to the currentUrl

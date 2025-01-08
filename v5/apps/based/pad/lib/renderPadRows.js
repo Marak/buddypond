@@ -7,7 +7,7 @@ export default function renderPadRows (myPads) {
         table.empty();
 
         myPads.forEach((pad) => {
-            console.log('pad', pad);
+            // console.log('pad', pad);
             let tr = document.createElement('tr');
 
             // set data-title attribute on tr
@@ -67,7 +67,7 @@ export default function renderPadRows (myPads) {
             editButton.classList.add('edit-button', 'ui-button');
             editButton.innerHTML = 'Edit';
             editButton.onclick = () => {
-                console.log('edit', pad);
+                // console.log('edit', pad);
             }
             td.appendChild(editButton);
 
@@ -99,7 +99,7 @@ export default function renderPadRows (myPads) {
                 let relativePath = 'pads/' + pad.title;
 
                 if (action === 'View') {
-                    console.log('open pad in new window', pad, title);
+                    // console.log('open pad in new window', pad, title);
                     // open a new window browser window
                     // TODO: open a new browser window with options ( show url bar, but notinng else )
                     let win = window.open(padUrl, '_blank');
@@ -111,7 +111,7 @@ export default function renderPadRows (myPads) {
                     let yesOrNo = confirm('Are you sure you want to delete ' + title + '?');
 
                     if (yesOrNo) {
-                        console.log('delete pad', pad, title, padKey);
+                        // console.log('delete pad', pad, title, padKey);
 
                         // disable all buttons
                         $('.ui-button', closestTr).prop('disabled', true);
@@ -130,7 +130,7 @@ export default function renderPadRows (myPads) {
 
                 if (action === 'Edit') {
                     // open edit window with the pad data
-                    console.log('edit pad', pad, title);
+                    // console.log('edit pad', pad, title);
                     this.bp.open('file-explorer', { context: '/' + relativePath + '/index.html'});
                     // set focus
                     this.bp.apps.ui.windowManager.focusWindow('file-explorer');
