@@ -63,7 +63,7 @@ export default class Motd {
         message.style.fontSize = '1.5em';
         message.style.fontWeight = 'bold';
         message.style.padding = '20px';
-        message.innerHTML = 'We are in the process of upgrading to the new BuddyPond v5. <br/><br/> Level 2 users may join the chat.';
+        message.innerHTML = 'Construction in progress.<br/>New BuddyPond coming soon! <br/><br/>Level 2 users may join the chat.';
 
         motdWindow.content.appendChild(message);
 

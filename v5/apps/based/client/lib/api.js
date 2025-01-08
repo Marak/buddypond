@@ -7,7 +7,7 @@ buddypond.mode = 'prod';
 
 // check localStorage for qtokenid
 buddypond.qtokenid = localStorage.getItem('qtokenid');
-buddypond.me = localStorage.getItem('me');
+buddypond.me = localStorage.getItem('me') || 'Guest';
 
 buddypond.supportedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
 buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
@@ -792,7 +792,7 @@ buddypond.lastResponseTime = function averageResponseTime() {
 buddypond.logout = function logout() {
   localStorage.removeItem('qtokenid');
   localStorage.removeItem('me');
-  buddypond.me = null;
+  buddypond.me = 'Guest';
   buddypond.qtokenid = null;
 }
 

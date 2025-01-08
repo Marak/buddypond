@@ -194,8 +194,8 @@ export default class Client {
         // clear the qtoken from the client and local storage
         this.qtokenid = null;
         this.api.qtokenid = null;
-        this.api.me = null;
-        this.me = null;
+        this.api.me = 'Guest';
+        this.me = 'Guest';
         this.bp.me = 'Guest';
         this.bp.emit('auth::logout');
         this.api.logout();

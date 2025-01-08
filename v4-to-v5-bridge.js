@@ -193,7 +193,7 @@ window.bp_v_5 = async function bp_v_5() {
 
   renderDesktopShortCuts();
   await bp.load('say');
-  await bp.open('pad');
+  //await bp.open('pad');
   //await bp.open('pad');
   // await bp.load('browser');
 
