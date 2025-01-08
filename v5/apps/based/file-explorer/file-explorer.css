@@ -314,8 +314,6 @@
 
 .bp-file-explorer-tos input[type="checkbox"] {
   margin-right: 5px; /* Space between checkbox and text */
-  /* make larger for better clickability */
-  transform: scale(1.5);
 }
 
 .bp-file-explorer-tos label {

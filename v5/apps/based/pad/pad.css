@@ -138,7 +138,7 @@ hr {
 #buddy-pads {
     display: flex;
     flex-direction: row;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
     gap: 50px;
     padding: 50px;

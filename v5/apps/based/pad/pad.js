@@ -193,6 +193,11 @@ export default class Pad {
                 // set the .bp-pad-container to visible
                 $('.bp-pad-container', this.padWindow.content).flexShow();
 
+                let padTitle = $('#padTitle').val();
+
+                $('.openPadButton', this.padWindow.content).attr('data-context', `/pads/${padTitle}/index.html`);
+                //alert('set')
+
 
             } else {
                 console.log('Pad not saved', padError);
