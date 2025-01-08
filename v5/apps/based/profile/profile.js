@@ -151,14 +151,14 @@ export default class Profile {
 
         this.browser = new this.bp.apps.browser.BrowserWindow(this.bp, padEditorHolder, profileUrl);
 
-
+        let yourProfile = $('#your-profile', this.profileWindow.content);
         this.bp.on('file-explorer::update', 'update-profile-preview-if-profile-index', (data) => {
             // check if data.path is /index.html
             // if so, we wish to reload the browser window
             this.browser.navigate(profileUrl);
         });
 
-        profileContent.append(padEditorHolder);
+        yourProfile.append(padEditorHolder);
 
 
     }
