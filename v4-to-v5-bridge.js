@@ -10,7 +10,6 @@ window.bp_v_5 = async function bp_v_5() {
   // Remark: BuddyPond v5 runs alongside the old buddy pond until all
   // code is migrated to the new API. This is a temporary solution.
   // Everything in BuddyPond v5 is *much* more modular and easier to use.
-
   bp.setConfig({
     host: _host,
     wsHost: _wsHost,
@@ -50,7 +49,7 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.load('console');
   await bp.load('clock');
   await bp.load('localstorage');
-  
+
   let allCommands = bp.apps.buddyscript.commands;
   //console.log("allCommands", allCommands);
   // TODO: map the new API to the old API
@@ -187,7 +186,6 @@ window.bp_v_5 = async function bp_v_5() {
   await bp.open('buddylist');
   await bp.load('appstore');
   await bp.load('themes');
-
   await bp.load('file-explorer');
   // bp.open('file-explorer');
 
@@ -658,7 +656,7 @@ bp.apps.desktop.addShortCut({
   window.arrangeDesktop = arrangeDesktop;
 
   arrangeDesktop();
-  $('.loggedIn').flexHide();
+  //$('.loggedIn').flexHide();
 
   // add window resize event to re-arraange shortcuts
   window.addEventListener('resize', function () {
