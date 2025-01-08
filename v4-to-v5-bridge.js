@@ -30,12 +30,12 @@ window.bp_v_5 = async function bp_v_5() {
   bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {
     buddypond.qtokenid = qtoken.qtokenid;
     bp.me = qtoken.me;
+    console.log("Showing logged in", qtoken);
     $('.loggedIn').flexShow();
     //$('.loggedIn').addClass('show');
     $('.loggedOut').flexHide();
 
     $('#me_title').html('Welcome ' + bp.me);
-
 
   });
 

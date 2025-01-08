@@ -1,5 +1,5 @@
 export default function applyData(el, data) {
-    let soundUrl = this.bp.config.api + data.soundURL;
+    let soundUrl = data.url;
 
     // Assuming data has properties like `title` and `soundURL`
     $(el).find('.card-title').text(data.title);
