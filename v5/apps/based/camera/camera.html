@@ -1,0 +1,58 @@
+<div class="window_main">
+    <div class="mirrorControls">
+        <button class="showFullMirror">Normal View</button>
+        <button class="showMirrorControls">Controls</button>
+    </div>
+    <canvas id='snaps'></canvas>
+    <div id="mirrorPlaceHolder"></div>
+    <div class="mirrorVideoHolder">
+        <canvas id='mirrorCanvasMe'></canvas>
+        <video style='display: none' autoplay="true" id="mirrorVideoMe"></video>
+        <br />
+    </div>
+    <span class="takeSingleSnap recordSnap mirrorControl" title="Take Single Photo">📷</span>
+    <span class="takeSnap recordSnap mirrorControl" title="Take Silent Movie">📹</span>
+    <span class="snapCountDown">3...</span>
+    <img id='snapsPreview' />
+    <span class="approveSnap confirmSnap snapControl" title="Approve And Send">✅</span>
+    <span class="continueSnap confirmSnap snapControl" title="Add Another Photo to Animate">➕ </span>
+    <span class="cancelSnap confirmSnap snapControl" title="Try Again">❌</span>
+    <div class="snapDelaySliderControl snapControl" title="Delay Speed">
+        <div id="snapDelaySlider" title="Delay Speed"></div>
+    </div>
+    <div class="cameraControls">
+        <form class="">
+            <!--
+                Audio Source
+                <select name="selectAudio" class="selectAudio">
+                </select>
+              -->
+            <span class="cameraCountDownControl mirrorInput">
+                <label for="cameraCountdownEnabled">
+                    Countdown Timer:
+                    <input type="checkbox" class="cameraCountdownEnabled" name="cameraCountdownEnabled"
+                        id="cameraCountdownEnabled" />
+                </label>
+            </span>
+            &nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;
+            Filter
+            <select name="selectMirrorFilter" class="selectMirrorFilter desktopSelect">
+                <option>None</option>
+                <!--
+                <option value='greyscale'>Greyscale</option>
+                -->
+            </select>
+            &nbsp;&nbsp;&nbsp;
+            |
+            &nbsp;&nbsp;&nbsp;
+            Camera
+            <select name="selectMirrorCamera" class="selectMirrorCamera desktopSelect">
+            </select>
+            &nbsp;
+        </form>
+    </div>
+</div>
+<div class="gifFrames"></div>
+</div>
