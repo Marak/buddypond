@@ -3,6 +3,15 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   let buddyname = data.name;
   let buddydata = data.buddydata;
 
+  //console.log(buddydata.isConnected, buddyname, buddydata);
+
+
+  // 1/10/25 - Legacy guard for when isConnected was not a boolean
+  //           Can remove this after a few releases 
+  if (typeof buddydata.isConnected !== 'boolean') {
+    buddydata.isConnected = false;
+  }
+
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
