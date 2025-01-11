@@ -64,7 +64,13 @@ function showContextMenu(x, y, buddyName) {
   // Define these functions as per your application's functionality
   function openProfile(buddyName) {
     console.log('Opening profile for ' + buddyName);
-    bp.open('profile-user', { context: buddyName });
+    if (bp.admin) {
+      // roles are handled server-side, this is a simple UI route for the implied role access
+      // loading admin-profile from another user won't return admin data
+      bp.open('admin-profile', { context: buddyName });
+    } else {
+      bp.open('user-profile', { context: buddyName });
+    }
   }
 
   function sendMessage(buddyName) {

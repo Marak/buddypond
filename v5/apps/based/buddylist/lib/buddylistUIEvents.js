@@ -98,14 +98,12 @@ export default function buddylistUIEvents() {
     //alert(e.target.classList)
     if ($(e.target).hasClass('buddy-message-sender')) {
       let buddyName = $(e.target).text();
-      // TODO: implement this
       if (this.bp.admin) {
         // roles are handled server-side, this is a simple UI route for the implied role access
         // loading admin-profile from another user won't return admin data
         this.bp.open('admin-profile', { context: buddyName });
       } else {
         this.bp.open('user-profile', { context: buddyName });
-
       }
     }
   });
