@@ -99,7 +99,14 @@ export default function buddylistUIEvents() {
     if ($(e.target).hasClass('buddy-message-sender')) {
       let buddyName = $(e.target).text();
       // TODO: implement this
-      this.bp.open('profile-user', { context: buddyName });
+      if (this.bp.admin) {
+        // roles are handled server-side, this is a simple UI route for the implied role access
+        // loading admin-profile from another user won't return admin data
+        this.bp.open('admin-profile', { context: buddyName });
+      } else {
+        this.bp.open('user-profile', { context: buddyName });
+
+      }
     }
   });
 
@@ -135,10 +142,10 @@ export default function buddylistUIEvents() {
       display: 'block'
     });
 
-    // When the custom context menu is clicked, open the buddy profile
     $('#customContextMenu').off('click').on('click', async () => {
       // Replace 'openProfile' with your actual function to open the profile
       //openProfile(buddyName);
+      alert('removing message');
       await api.removeMessage({type, from, to, uuid});
       // $(this).hide(); // Hide the context menu after click
     });

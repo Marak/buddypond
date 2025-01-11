@@ -123,7 +123,17 @@ export default class BuddyList {
 
     registerEventHandlers() {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
-        this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => this.generateDefaultProfile(qtoken));
+        this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => {
+            // give the app a moment to load messages and open windows before generating default profile
+            setTimeout(() => {
+                try {
+                    this.generateDefaultProfile(qtoken)
+
+                } catch (err) {
+                    console.error('generate-default-profile-files', err);
+                }
+            }, 5000);
+        });
 
         // Remark: This has been removed in favor of letting windows manage their own state
         // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
