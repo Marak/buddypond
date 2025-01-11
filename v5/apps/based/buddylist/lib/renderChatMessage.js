@@ -7,7 +7,9 @@ export default async function renderChatMessage(message, _chatWindow) {
   let context = 'default';
 
   // profanity filter
-  message.text = forbiddenNotes.filter(message.text);
+  if (message.text && message.text.length > 0) {
+    message.text = forbiddenNotes.filter(message.text);
+  }
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
