@@ -1,4 +1,4 @@
-export default class Profile {
+class Profile {
     constructor(bp, options = {}) {
         this.bp = bp;
         return this;
@@ -35,7 +35,7 @@ export default class Profile {
         tabList.className = 'tab-list';
     
         let tabContentContainer = document.createElement('div');
-        console.log('buddyProfile', buddyProfile)
+        console.log('buddyProfile', buddyProfile);
         // Iterate over each profile field and create a tab and a corresponding textarea
         let profileKeys = Object.keys(buddyProfile);
         profileKeys.forEach((profileKey, index) => {
@@ -153,3 +153,5 @@ export default class Profile {
     
 
 }
+
+export { Profile as default };
