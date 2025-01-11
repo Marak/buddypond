@@ -15,6 +15,16 @@ export default async function generateDefaultProfile(qtoken) {
         try {
             const response = await fetch(`${basePath}/${fileName}`);
             if (!response.ok) throw new Error('File not found, needs creation');
+
+            // check if not 200 response
+            // if not, throw error
+            if (response.status !== 200) throw new Error('File not found, needs creation');
+
+            // check if new location is four-ohh-four, if so, throw error
+            if (response.url === 'https://buddypond.com/four-ohh-four') {
+                throw new Error('File not found, needs creation');
+            }
+
         } catch (error) {
             console.log(`Creating ${fileName}: ${error.message}`);
             const blob = new Blob([fileContent], { type: getFileType(fileName) });
