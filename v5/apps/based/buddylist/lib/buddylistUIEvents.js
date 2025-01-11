@@ -143,7 +143,6 @@ export default function buddylistUIEvents() {
     $('#customContextMenu').off('click').on('click', async () => {
       // Replace 'openProfile' with your actual function to open the profile
       //openProfile(buddyName);
-      alert('removing message');
       await api.removeMessage({type, from, to, uuid});
       // $(this).hide(); // Hide the context menu after click
     });

@@ -99,10 +99,6 @@ desktop.app.paint.send = function sendPaint(params) {
         });
         JQDX.closeWindow('#window_paint');
         // open the window we just outputted to
-        if (output === 'buddy') {
-          // TODO: buddylist renamed to buddy
-          output = 'buddylist'
-        }
 
         // at this point with the new v5 API its expected that the client send a new messages
         // broadcasting the file upload to the CDN

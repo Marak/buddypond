@@ -1,6 +1,5 @@
 export default function applyData(el, data) {
     const $el = $(el);
-    console.log("applyData", el, data)
     $el.find('.image-image').attr('src', data.url);
   
     $el.find('.remixGif').attr({
@@ -15,4 +14,3 @@ export default function applyData(el, data) {
       'title': 'Remix in Paint'
     });
   }
-  
