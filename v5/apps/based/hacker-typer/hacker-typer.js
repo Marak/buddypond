@@ -23,6 +23,7 @@ export default class FluidSimulation {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_hacker-typer_64.png',
                 iframeContent: '/v5/apps/based/hacker-typer/vendor/index.html',
                 resizable: true,
                 minimizable: true,

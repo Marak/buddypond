@@ -25,7 +25,6 @@ export default class LocalStorageManager {
 
         // Emit event for the final key change
         bp.on('settings', 'update-local-storage-settings', (key, value) => {
-            console.log('settings update', key, value);
             this.set(key, value);
         })
 

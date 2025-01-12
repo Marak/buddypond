@@ -35,6 +35,7 @@ export default class Example {
                 minHeight: 200,
                 parent: $('#desktop')[0],
                 iframeContent: 'https://yantra.gg/mantra/home',
+                icon: '/desktop/assets/images/icons/icon_mantra_64.png',
                 resizable: true,
                 minimizable: true,
                 maximizable: true,

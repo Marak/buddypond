@@ -23,6 +23,7 @@ export default class Solitaire {
                 minHeight: 200,
                 parent: $('#desktop')[0],
                 iframeContent: '/v5/apps/based/solitaire/vendor/solitaire.html',
+                icon: '/desktop/assets/images/icons/icon_solitaire_64.png',
                 resizable: true,
                 minimizable: true,
                 maximizable: true,

@@ -26,8 +26,7 @@ export default class WallpaperManager {
             'ripples': {
                 label: 'Ripples',
                 src: [
-                    '/v5/apps/based/wallpaper/wallpapers/ripples.js',
-                    '/v5/apps/based/wallpaper/wallpapers/vendor/jquery.ripples.js'
+                    '/v5/apps/based/wallpaper/wallpapers/ripples/ripples.js'
                 ]
             }
         };
@@ -60,16 +59,15 @@ export default class WallpaperManager {
         console.log(this.wallpapers, this.active)
         if (!this.wallpapers[this.active]) {
             let remoteScript = this._wallpapers[this.active].src;
-            console.log("needs to load remoteScript", remoteScript)
             let wp = await this.bp.importModule(remoteScript, {}, false);
-            console.log("loaded remoteScript", wp)
-            this.wallpapers[this.active] = new wp.default('c', { color: '#00FF00', trailOpacity: 0.04 });
-            this.wallpapers[this.active].start();
-
-
+            this.wallpapers[this.active] = new wp.default('c');
+            // check for load function, call if required
+            // Remark: This is a bit of a "sub-app" pattern,
+            // it might be better to have each wallpaper be it's own app
+            this.wallpapers[this.active].start(this.bp);
 
         } else {
-            this.wallpapers[this.active].start();
+            this.wallpapers[this.active].start(this.bp);
         }
     }
 

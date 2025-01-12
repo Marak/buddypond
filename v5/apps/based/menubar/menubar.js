@@ -12,7 +12,8 @@ export default class MenuBar {
         await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
     }
 
-    load (menuData = defaultMenuBar(), parent = document.body) {
+    load (menuData = {}, parent = document.body) {
+        menuData = defaultMenuBar(this.bp);
         let menuBar = new MenuBarClass(menuData);
         let menu = menuBar.createMenu();
         parent.appendChild(menu);

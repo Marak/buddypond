@@ -1,4 +1,4 @@
-export default function defaultMenuBar () {
+export default function defaultMenuBar (bp) {
 
     // Ported from Legacy bp v4
     let selectMusicPlaylist = `
@@ -79,9 +79,9 @@ export default function defaultMenuBar () {
     
                 
                 `, click: () => {
-            this.bp.apps.client.logout();
+            bp.apps.client.logout();
             // close all chat windows and ponds
-            this.bp.apps.ui.windowManager.windows.forEach((window) => {
+            bp.apps.ui.windowManager.windows.forEach((window) => {
               //console.log("window", window);
               if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
                 window.close();

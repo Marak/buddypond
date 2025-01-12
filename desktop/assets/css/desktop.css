@@ -1118,7 +1118,7 @@ iframe {
 
 .remixPaint {
   position: absolute;
-  left: 46px;
+  left: 0px;
   top: 6px;
   width: 32px;
   height: 32px;
@@ -1383,6 +1383,7 @@ iframe {
 
 .shortcut .title {
   width: 32px;
+  color: white;
 }
 
 .incomingBuddyScript {

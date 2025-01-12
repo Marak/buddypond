@@ -16,12 +16,10 @@ export default function addFolder(metadata) {
         }
 
         if (!item.icon) {
-            item.icon = `desktop/assets/images/icons/icon_${item.id}_64.png`;
+            item.icon = `/desktop/assets/images/icons/icon_${item.id}_64.png`;
         }
 
         item.options = item.options || {};
-
-        console.log("item", item)
 
         that.addShortCut({
             name: item.id,
@@ -42,7 +40,6 @@ export default function addFolder(metadata) {
         renderItem(item, folderHolder);
     });
 
-    console.log('tttt', this)
 
     const folder = new Folder(metadata, {
         desktop: this,
@@ -50,20 +47,20 @@ export default function addFolder(metadata) {
         depth: 0,
         onOpen: () => {
 
-
-
-        this.arrangeShortcuts(4, {
-            parent: folderHolder,
-            x: 0,
-            y: 20
-        })
+            this.arrangeShortcuts(4, {
+                parent: folderHolder,
+                x: 0,
+                y: 20
+            })
 
             console.log('Folder opened:', metadata.name);
             this.bp.apps.ui.windowManager.createWindow({
                 id: metadata.name,
                 title: metadata.name,
+                icon: '/desktop/assets/images/icons/icon_folder.png',
                 width: 400,
                 height: 150,
+                parent: $('#desktop').get(0),
                 content: folderHolder
             });
 

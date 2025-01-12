@@ -11,7 +11,6 @@ export default function addShortCut(app, options = {}, parent) {
     const anchor = document.createElement('a');
     anchor.href = app.href || `#icon_dock_${app.name}`;
 
-
     if (!app.textIcon) {
         const image = document.createElement('img');
         image.className = 'bp-desktop-icon';
@@ -54,7 +53,6 @@ export default function addShortCut(app, options = {}, parent) {
 
     p.appendChild(el);
 
-
     // Apply jQuery UI draggable if enabled
     if (this.enableShortcutDragging) {
         $(el).draggable({
@@ -62,13 +60,9 @@ export default function addShortCut(app, options = {}, parent) {
         });
     }
 
-
-
 }
 
-
 /*
-
 
 export default function addShortCut(container, app, options = {}) {
     if (typeof options.onClick !== 'function') {

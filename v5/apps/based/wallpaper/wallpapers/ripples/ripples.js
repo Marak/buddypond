@@ -1,5 +1,5 @@
 export default class RipplesWallpaper {
-  constructor(options) {
+  constructor(canvasId, options) {
       this.options = options || {
           imageUrl: null, // URL of the background image
           dropRadius: 20, // Size of the drop in pixels
@@ -8,10 +8,10 @@ export default class RipplesWallpaper {
           interactive: true, // Mouse interaction
           crossOrigin: '' // CrossOrigin attribute for the image
       };
-      this.init();
   }
 
-  init() {
+  async load(bp) {
+      await bp.appendScript('/desktop/assets/js/jquery.ripples.js');
       $('body').ripples(this.options);
       $('#wallpaper').hide();
       $('#c').hide();
@@ -42,8 +42,8 @@ export default class RipplesWallpaper {
       // This implementation assumes no changes are needed on resize
   }
 
-  start() {
-      this.init();
+  start(bp) {
+      this.load(bp);
   }
 
   stop() {
@@ -58,6 +58,7 @@ export default class RipplesWallpaper {
   }
 }
 
+/*
 // Usage example:
 const ripplesWallpaper = new RipplesWallpaper({
   imageUrl: 'path/to/image.jpg',
@@ -73,3 +74,4 @@ ripplesWallpaper.changeImage('path/to/another/image.jpg');
 
 // Stop the ripple effect
 ripplesWallpaper.stop();
+*/

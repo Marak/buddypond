@@ -12,6 +12,17 @@ see: https://github.com/nathansmith/jQuery-Desktop
 
 */
 
+if (typeof desktop !== 'object') {
+  let desktop = {
+    ui: {
+      view: {}
+    }
+  };
+  window.desktop = desktop;
+}
+desktop.ui = {};
+
+
 //
 // First thing desktop must do is calculate current viewport height and width to determine
 // which desktop.ui.view value will be used to initially render ( Mobile / Normal / MegaDesk )

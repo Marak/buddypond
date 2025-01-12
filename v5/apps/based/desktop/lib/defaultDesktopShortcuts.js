@@ -169,7 +169,7 @@ export default function defaultDesktopShortcuts() {
             },
             {
                 id: 'emulator',
-                label: 'Emulator',
+                label: 'NES',
                 icon: 'desktop/assets/images/icons/icon_nes_64.png'
             },
             {
