@@ -3,6 +3,8 @@ window.bp_v_5 = async function bp_v_5() {
     setConfig();
     bindUIEvents();
     await loadCoreApps();
+    arrangeDesktop();
+
     // desktop is loaded at this stage, continue with other apps
     // load what is required for buddylist and login
     await bp.load('buddyscript');
@@ -71,7 +73,6 @@ window.bp_v_5 = async function bp_v_5() {
     }
         */
 
-    arrangeDesktop();
 
 
 
