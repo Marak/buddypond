@@ -74,10 +74,9 @@ export default class SoundRecorder {
             if (params.soundUrl) {
               src = `v5/apps/based/soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${soundUrlQueryParam}${type}${context}`;
             } else {
-            src = `v5/apps/based/soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${type}${context}`;
+              src = `v5/apps/based/soundrecorder/vendor/programs/sound-recorder/index.html?AC=3${qtokenidParam}${type}${context}`;
             }
     
-
             this.soundRecorderWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'soundrecorder',
                 title: 'Sound Recorder',
@@ -88,6 +87,7 @@ export default class SoundRecorder {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_soundrecorder_64.png',
                 iframeContent: src,
                 resizable: true,
                 minimizable: true,

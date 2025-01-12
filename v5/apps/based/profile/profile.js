@@ -62,6 +62,7 @@ export default class Profile {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_profile_64.png',
                 context: buddyname || 'default',
                 content: profileContent,
                 resizable: true,

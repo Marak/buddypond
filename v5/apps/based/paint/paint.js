@@ -28,6 +28,7 @@ export default class Paint {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_paint_64.png',
                 content: this.html,
                 resizable: true,
                 minimizable: true,

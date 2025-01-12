@@ -28,7 +28,7 @@ export default class Emulator {
             minHeight: 500,
             parent: $('#desktop')[0],
             iframeContent: '/v5/apps/based/emulator/emulator-js/index.html',
-            icon: '/desktop/assets/images/icons/icon_emulator_64.png',
+            icon: '/desktop/assets/images/icons/icon_nes_64.png',
             resizable: true,
             minimizable: true,
             maximizable: true,

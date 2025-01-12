@@ -34,6 +34,7 @@ export default class Pad {
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
+                icon: '/desktop/assets/images/icons/icon_pad_64.png',
                 parent: $('#desktop')[0],
                 content: this.html,
                 resizable: true,

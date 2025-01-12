@@ -62,20 +62,12 @@ export default class Camera {
         await this.bp.appendScript('/v5/apps/based/camera/lib/CanvasVideo.js');
         await this.bp.appendScript('/desktop/assets/js/gif.js');
 
-
-
         // fetches html from the fragment and returns it as a string
         let html = await this.bp.load('/v5/apps/based/camera/camera.html');
         // await imports the module and returns it
         // let module = await this.bp.load('/v5/apps/based/_example/_example.js');
 
         this.html = html;
-
-
-
-
-
-
 
         return 'loaded Camera';
     }
@@ -93,6 +85,7 @@ export default class Camera {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_camera_64.png',
                 content: this.html,
                 resizable: true,
                 minimizable: true,
