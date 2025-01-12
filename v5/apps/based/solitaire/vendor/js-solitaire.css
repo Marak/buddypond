@@ -1,0 +1,292 @@
+/* https://github.com/rjanjic/js-solitaire/blob/6badc1bf/src/index.scss */
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+.game-solitaire {
+  width: 660px;
+  background-color: green;
+  height: 440px;
+  position: relative;
+  display: flex;
+  /* seven deck */
+}
+.game-solitaire .solitaire {
+  flex: 1;
+}
+.game-solitaire .card {
+  width: 71px;
+  height: 96px;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border: 1px solid #000;
+  border-radius: 4px;
+  user-select: none;
+  margin: -1px;
+  box-shadow: 1px -1px 0px #000;
+}
+.game-solitaire .card--h-1 {
+  background-position: -1px -1px;
+}
+.game-solitaire .card--h-2 {
+  background-position: -1px -97px;
+}
+.game-solitaire .card--h-3 {
+  background-position: -1px -193px;
+}
+.game-solitaire .card--h-4 {
+  background-position: -1px -289px;
+}
+.game-solitaire .card--h-5 {
+  background-position: -1px -385px;
+}
+.game-solitaire .card--h-6 {
+  background-position: -1px -481px;
+}
+.game-solitaire .card--h-7 {
+  background-position: -1px -577px;
+}
+.game-solitaire .card--h-8 {
+  background-position: -1px -673px;
+}
+.game-solitaire .card--h-9 {
+  background-position: -1px -769px;
+}
+.game-solitaire .card--h-10 {
+  background-position: -1px -865px;
+}
+.game-solitaire .card--h-11 {
+  background-position: -1px -961px;
+}
+.game-solitaire .card--h-12 {
+  background-position: -1px -1057px;
+}
+.game-solitaire .card--h-13 {
+  background-position: -1px -1153px;
+}
+.game-solitaire .card--c-1 {
+  background-position: -72px -1px;
+}
+.game-solitaire .card--c-2 {
+  background-position: -72px -97px;
+}
+.game-solitaire .card--c-3 {
+  background-position: -72px -193px;
+}
+.game-solitaire .card--c-4 {
+  background-position: -72px -289px;
+}
+.game-solitaire .card--c-5 {
+  background-position: -72px -385px;
+}
+.game-solitaire .card--c-6 {
+  background-position: -72px -481px;
+}
+.game-solitaire .card--c-7 {
+  background-position: -72px -577px;
+}
+.game-solitaire .card--c-8 {
+  background-position: -72px -673px;
+}
+.game-solitaire .card--c-9 {
+  background-position: -72px -769px;
+}
+.game-solitaire .card--c-10 {
+  background-position: -72px -865px;
+}
+.game-solitaire .card--c-11 {
+  background-position: -72px -961px;
+}
+.game-solitaire .card--c-12 {
+  background-position: -72px -1057px;
+}
+.game-solitaire .card--c-13 {
+  background-position: -72px -1153px;
+}
+.game-solitaire .card--d-1 {
+  background-position: -143px -1px;
+}
+.game-solitaire .card--d-2 {
+  background-position: -143px -97px;
+}
+.game-solitaire .card--d-3 {
+  background-position: -143px -193px;
+}
+.game-solitaire .card--d-4 {
+  background-position: -143px -289px;
+}
+.game-solitaire .card--d-5 {
+  background-position: -143px -385px;
+}
+.game-solitaire .card--d-6 {
+  background-position: -143px -481px;
+}
+.game-solitaire .card--d-7 {
+  background-position: -143px -577px;
+}
+.game-solitaire .card--d-8 {
+  background-position: -143px -673px;
+}
+.game-solitaire .card--d-9 {
+  background-position: -143px -769px;
+}
+.game-solitaire .card--d-10 {
+  background-position: -143px -865px;
+}
+.game-solitaire .card--d-11 {
+  background-position: -143px -961px;
+}
+.game-solitaire .card--d-12 {
+  background-position: -143px -1057px;
+}
+.game-solitaire .card--d-13 {
+  background-position: -143px -1153px;
+}
+.game-solitaire .card--s-1 {
+  background-position: -214px -1px;
+}
+.game-solitaire .card--s-2 {
+  background-position: -214px -97px;
+}
+.game-solitaire .card--s-3 {
+  background-position: -214px -193px;
+}
+.game-solitaire .card--s-4 {
+  background-position: -214px -289px;
+}
+.game-solitaire .card--s-5 {
+  background-position: -214px -385px;
+}
+.game-solitaire .card--s-6 {
+  background-position: -214px -481px;
+}
+.game-solitaire .card--s-7 {
+  background-position: -214px -577px;
+}
+.game-solitaire .card--s-8 {
+  background-position: -214px -673px;
+}
+.game-solitaire .card--s-9 {
+  background-position: -214px -769px;
+}
+.game-solitaire .card--s-10 {
+  background-position: -214px -865px;
+}
+.game-solitaire .card--s-11 {
+  background-position: -214px -961px;
+}
+.game-solitaire .card--s-12 {
+  background-position: -214px -1057px;
+}
+.game-solitaire .card--s-13 {
+  background-position: -214px -1153px;
+}
+.game-solitaire .card--back {
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-color: #02027f;
+  background-size: 4px 4px;
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 44.9%, white 45%, white 55%, rgba(255, 255, 255, 0) 55.1%, rgba(255, 255, 255, 0)), linear-gradient(-45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 44.9%, white 45%, white 55%, rgba(255, 255, 255, 0) 55.1%, rgba(255, 255, 255, 0));
+}
+.game-solitaire .card--front {
+  cursor: pointer;
+}
+.game-solitaire .card--moving {
+  position: fixed;
+  z-index: 1;
+}
+.game-solitaire .deck {
+  width: 250px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+.game-solitaire .deck__pile {
+  width: 71px;
+  height: 96px;
+  top: 0;
+  position: absolute;
+  border: 1px dotted;
+  border-radius: 4px;
+  cursor: pointer;
+  background-image: radial-gradient(green 30%, white 30.1%, white 40%, green 40.1%, green 100%);
+  background-size: 90px 90px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.game-solitaire .deck__pile .card + .card {
+  margin-top: 4px;
+  margin-left: 2px;
+}
+.game-solitaire .deck__pile .card + .card + .card {
+  margin-left: 4px;
+  margin-top: 8px;
+}
+.game-solitaire .deck__deal {
+  left: 95px;
+  top: 0;
+  position: absolute;
+}
+.game-solitaire .deck__deal .card:last-child {
+  left: 20px;
+}
+.game-solitaire .deck__deal .card:last-child {
+  left: 20px;
+}
+.game-solitaire .deck__deal .card:nth-last-child(2) {
+  left: 10px;
+}
+.game-solitaire .deck__deal .card:first-child {
+  left: 0;
+}
+.game-solitaire .deck__deal .card:first-child + .card:last-child {
+  left: 10px;
+}
+.game-solitaire .finish-deck {
+  position: absolute;
+  left: 274px;
+  top: 20px;
+}
+.game-solitaire .board-deck {
+  position: absolute;
+  top: 150px;
+}
+.game-solitaire .board-deck .card--front > .card--front {
+  top: 15px;
+}
+.game-solitaire .board-deck .card--back > .card--front,
+.game-solitaire .board-deck .card--back > .card--back {
+  top: 5px;
+}
+.game-solitaire .seven {
+  position: relative;
+  float: left;
+  width: 71px;
+  top: 0;
+  margin-left: 20px;
+  height: 96px;
+  border: 1px dotted;
+  border-radius: 4px;
+}
+.game-solitaire .aces {
+  width: 71px;
+  position: relative;
+  margin-left: 20px;
+  height: 96px;
+  border: 1px dotted;
+  border-radius: 4px;
+  float: left;
+  background-size: 4px 4px;
+  background-image: linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 44.9%, black 45%, black 55%, rgba(0, 0, 0, 0) 55.1%, rgba(0, 0, 0, 0)), linear-gradient(-45deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 44.9%, black 45%, black 55%, rgba(0, 0, 0, 0) 55.1%, rgba(0, 0, 0, 0));
+}
+
+.solitaireGameHolder {
+  background-color: green;
+  height: 100%;
+  width: 100%;
+}
