@@ -88,8 +88,7 @@ export default function defaultDesktopShortcuts() {
 
     bp.apps.desktop.addShortCut({
         name: 'camera',
-        icon: `desktop/assets/images/icons/icon_camera_64.svg`,
-        textIcon: '📷',
+        icon: `desktop/assets/images/icons/icon_camera_64.png`,
         label: 'Camera',
     }, {
         onClick: () => {

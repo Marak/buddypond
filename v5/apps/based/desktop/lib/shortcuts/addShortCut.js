@@ -25,11 +25,12 @@ export default function addShortCut(app, options = {}, parent) {
 
     } else {
         const image = document.createElement('div');
-        image.className = 'bp-desktop-icon';
+        // image.className = 'bp-desktop-icon';
         image.textContent = app.textIcon;
         image.style.fontSize = '32px';
-        image.style.paddingLeft = '20px';
-        image.style.marginBottom = '10px';
+        //image.style.paddingLeft = '20px';
+        image.style.position = 'relative';
+        image.style.bottom = '10px';
         if (options.imageStyle) {
             Object.keys(options.imageStyle).forEach(key => {
                 image.style[key] = options.imageStyle[key];
