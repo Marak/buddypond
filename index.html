@@ -23,7 +23,8 @@ window.top.location = 'ie.html';
 </script>
 <![endif]-->
 
-  <script type="text/javascript" src="/v4-to-v5-bridge.js"></script>
+  <!-- <script type="text/javascript" src="/v4-to-v5-bridge.js"></script> -->
+  <script type="text/javascript" src="/v5.js"></script>
 
   <script type="text/javascript">
 
@@ -88,9 +89,7 @@ window.top.location = 'ie.html';
 
     <!-- <script src="/v5/router.js"></script> -->
 
-
-
-    <script src="/v5/flexHide.js"></script>
+    <script src="/v5/vendor/flexHide.js"></script>
 
     <!-- jQuery UI can be replaced when legacy autocomplete and Windows are fully replaced -->
     <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css">
@@ -102,13 +101,6 @@ window.top.location = 'ie.html';
     <script src="/desktop/assets/js/forbidden.notes.js"></script>
     <!-- SDK should be able to be removed -->
     <script src="/v5/apps/based/client/lib/api.js"></script>
-    <!-- desktop and desktop load will be removed when all legacy apps are replaced-->
-    <script src="/desktop.js"></script>
-    <script src="/desktop.load.js"></script>
-    <!-- ui and ui events will be removed when all legacy Windows are replaced -->
-    <script src="/desktop.ui.js"></script>
-    <script src="/desktop.ui.events.js"></script>
-    <!-- ^^^ remove all the above files -->
 
     <script>
 
@@ -116,7 +108,7 @@ window.top.location = 'ie.html';
       let _api = 'https://api.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
       let _cdn = 'https://files.buddypond.com';
-      //_host = 'https://192.168.200.59';
+      // _host = 'https://192.168.200.59';
       //_api = 'https://192.168.200.59';
       //_wsHost = 'wss://192.168.200.59';
 
@@ -167,7 +159,7 @@ window.top.location = 'ie.html';
             // remove border from iframe and body
             $('#buddypad').css('border', 'none');
             $('body').css('border', 'none');
-            
+
             // set the src of the buddypad to the current path
             let filesSrc = 'https://files.buddypond.com' + currentPath;
             console.log('setting src to', filesSrc);
@@ -177,90 +169,35 @@ window.top.location = 'ie.html';
             return;
 
           }
+          bp_v_5();
 
 
           let documentReadyTime = new Date();
-          desktop.log('Buddy Pond Cloud OS Initialized');
-          desktop.log('Now loading apps');
-          desktop
-            // Remark: Almost all apps are replaced now with v5 apps
-            // .use('console')
-            .use('localstorage')
-            .use('settings')
-            // .use('clock')
-            .use('wallpaper')
-            // .use('themes')
-            //.use('audioplayer')
-            .use('appstore')
-            //.use('tts')
-            // .use('notifications')
-            // .use('messages')
-            //.use('buddylist')
-            // .use('pond')
-            //.use('streamsquad')
-            //.use('spellbook')
-            //.use('mantra')
-            //.use('profile')
-            // .use('login', { defer: true })
-            // .use('videochat', { defer: true })
-            .ready(async function (err, apps) {
-              // desktop.log("Loaded", desktop.apps.loaded);
-              try {
-                desktop.ui.windowResizeEventHandler(null, true);
-              } catch (err) {
-                // alert(err.message)
-              }
-              desktop.log('Ready:', 'Buddy Pond', 'v4.20.69')
-              // Desktop is ready, start refreshing it's state immediately
-              desktop.refresh();
-              // desktop.ui.openWindow('mantra')
-              let now = new Date();
+          // desktop.log('Buddy Pond Cloud OS Initialized');
+          // desktop.log('Now loading apps');
 
-              // For Buddy Experience we'll add some fades and delays
-              let fadeInDelay = 555;
+          let now = new Date();
 
-              // If the page has taken over 3.333 seconds to load...
-              // ...reduce the fade in delay ( since the Buddy has waited long enough )
-              if (now.getTime() - documentReadyTime.getTime() > 3333) {
-                fadeInDelay = 111;
-              }
-              $('#loaderHolder').fadeOut({
+          // For Buddy Experience we'll add some fades and delays
+          let fadeInDelay = 555;
+
+          // If the page has taken over 3.333 seconds to load...
+          // ...reduce the fade in delay ( since the Buddy has waited long enough )
+          if (now.getTime() - documentReadyTime.getTime() > 3333) {
+            fadeInDelay = 111;
+          }
+          $('#loaderHolder').fadeOut({
+            easing: 'linear',
+            duration: fadeInDelay,
+            complete: function () {
+              $('#mainOverlay').fadeIn({
                 easing: 'linear',
-                duration: fadeInDelay,
-                complete: function () {
-                  $('#mainOverlay').fadeIn({
-                    easing: 'linear',
-                    duration: 333
-                  });
-                }
+                duration: 333
               });
+            }
+          });
 
-              desktop.on('desktop.settings.audio_enabled', 'update-nav-volume', function () {
-                if (!desktop.settings.audio_enabled) {
-                  $('.volumeFull').hide();
-                  $('.volumeMuted').show();
-                } else {
-                  $('.volumeFull').show();
-                  $('.volumeMuted').hide();
-                  desktop.app.audioplayer.play('desktop/assets/audio/IM.wav');
-                }
-              });
-
-              //
-              // Remark: You can add JS code here to run after the desktop is ready
-              //
-              //
-              // `App.WebView` ? Perhaps not
-              // desktop.ui.openWindow('webview', { url: 'https://google.com', browser: 'chrome' });
-              // never gonna work due to:
-              // Refused to display 'https://www.google.com/' in a frame because it set 'X-Frame-Options' to 'SAMEORIGIN'.
-              // desktop.ui.openWindow('console');
-
-              // bridge to v5 ( all previous code in this file will be replaced with v5 code )
-              bp_v_5();
-              // bp.apps.buddyscript.addCommand()
-
-            });
+        
         });
       }
 
