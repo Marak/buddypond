@@ -1,0 +1,107 @@
+<style>
+    #paintIframe {
+      height: 100%;
+      width: 100%;
+    }
+    .paintGameHolder {
+      height: 100%;
+      width: 100%;
+    }
+    .sendPaintHolder {
+      display: none;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      position: absolute;
+      bottom: 19px;
+      left: 266px;
+    }
+  
+    #paint .paintOutput {
+      padding-left: 3px;
+    }
+  
+    #paint .sendPaint {
+      cursor: pointer;
+      border: solid;
+      border-width: 1px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 12px;
+      margin: 4px 2px;
+      border-radius: 4px;
+      width: 233px;
+    }
+  
+    #paint .sendPaint:hover {
+      color: #008F11;
+      background-color: #FFF;
+      animation-name: rainbow;
+      animation-duration: 2.1111s;
+      opacity: 0.7;
+      animation-iteration-count: infinite;
+    }
+  
+    #paint .sendGifStudio {
+      cursor: pointer;
+      border: solid;
+      border-width: 1px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 12px;
+      margin: 4px 2px;
+      border-radius: 4px;
+      width: 133px;
+      height: 33px;
+    }
+  
+    #paint .sendGifStudio:hover {
+      color: #008F11;
+      background-color: #FFF;
+      animation-name: rainbow;
+      animation-duration: 2.1111s;
+      opacity: 0.7;
+      animation-iteration-count: infinite;
+    }
+  
+    #paint .touchPaint {
+      position: absolute;
+      left: 200px;
+      bottom: 200px;
+      display: none;
+      cursor: pointer;
+      border: solid;
+      border-width: 1px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      margin: 4px 2px;
+      border-radius: 4px;
+      width: 200px;
+    }
+    /* todo: background rainbow gradient */
+  </style>
+  
+
+<div class="sendPaintHolder">
+    <button class="sendPaint">SEND PAINT</button>
+    <button class="sendGifStudio updateGif" data-action="replace">Update Frame</button>
+    <button class="sendGifStudio" data-action="insert">Add Frame</button>
+    <span class="paintOutput"><span class="paintOutputTarget">File-System</span></span>
+    <button class="touchPaint">JSPAINT DID NOT UPDATE CLICK AROUND CANVAS MORE AND TRY CLICKING SEND PAINT
+        AGAIN</button>
+    <!--
+    <br/>
+    Type:
+    <input name="sendPaintContextType" type="text" value="pond"/>
+    Name:
+    <input name="sendPaintContextName" type="text" value="Lily"/>
+    -->
+</div>
+<div class="paintGameHolder">
+    <iframe id="paintIframe" class="paintIframe" src="/v5/apps/based/paint/vendor/index.html" />
+</div>
