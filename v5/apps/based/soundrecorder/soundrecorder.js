@@ -95,7 +95,10 @@ export default class SoundRecorder {
                 closable: true,
                 focusable: true,
                 maximized: false,
-                minimized: false
+                minimized: false,
+                onClose: () => {
+                    this.soundRecorderWindow = null;
+                }
             });
         }
 

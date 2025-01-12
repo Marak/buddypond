@@ -5,6 +5,7 @@ import renderBuddyRequests from "./lib/renderBuddyRequests.js";
 import buddylistUIEvents from "./lib/buddylistUIEvents.js";
 import openChatWindow from "./lib/openChatWindow.js";
 import generateDefaultProfile from "./lib/generateDefaultProfile.js";
+import defaultChatWindowButtons from "./lib/defaultChatWindowButtons.js";
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -23,10 +24,14 @@ export default class BuddyList {
                 updates: {}
             }
         };
+
         this.defaultPond = 'Buddy';
         this.subscribedBuddies = [];
         this.subscribedPonds = [];
         this.options = options;
+
+        this.options.chatWindowButtons = this.options.chatWindowButtons || defaultChatWindowButtons(this.bp);
+
         this.opened = false;
         this.showingIsTyping = this.showingIsTyping || {};
 
@@ -127,6 +132,7 @@ export default class BuddyList {
             // give the app a moment to load messages and open windows before generating default profile
             setTimeout(() => {
                 try {
+                    // alert('Generating default profile files');
                     this.generateDefaultProfile(qtoken)
 
                 } catch (err) {
@@ -416,8 +422,12 @@ export default class BuddyList {
 
     async handleAuthSuccess(qtoken) {
         this.bp.me = qtoken.me;
+        this.bp.qtokenid = qtoken.qtokenid;
         this.data.profileState = this.data.profileState || {};
         this.data.profileState.me = this.bp.me;
+
+        this.bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
+
         $('.onlineStatusSelect').val('online');
         $('.loggedOut').flexHide();
         if (this.defaultPond) {

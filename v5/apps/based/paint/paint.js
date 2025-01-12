@@ -17,7 +17,6 @@ export default class Paint {
 
     async open(params = {}) {
         let that = this;
-
         if (!this.paintWindow) {
             this.paintWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'paint',
@@ -29,7 +28,6 @@ export default class Paint {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                // content: '<h1>Example Window </h1>',
                 content: this.html,
                 resizable: true,
                 minimizable: true,
@@ -42,6 +40,16 @@ export default class Paint {
                     this.paintWindow = null;
                 }
             });
+
+
+            console.log("checkings embed params", params);
+            if (params.src) {
+                // send the base64 source as part of the frame
+                $('#paintIframe', this.paintWindow.content).attr('src', '/v5/apps/based/paint/vendor/index.html#load:' + encodeURI(params.src));
+            } else {
+                $('#paintIframe', this.paintWindow.content).attr('src', '/v5/apps/based/paint/vendor/index.html');
+            }
+
 
             $('.sendPaint', this.paintWindow.content).on('click', function () {
                 if ($(this).hasClass('updateGif')) {
@@ -137,13 +145,7 @@ export default class Paint {
                 }
             }, false);
 
-            if (params.src) {
-                // send the base64 source as part of the frame
-                $('#paintIframe').attr('src', 'desktop/appstore/desktop.paint/vendor/index.html#load:' + encodeURI(params.src));
-            } else {
-                $('#paintIframe').attr('src', 'desktop/appstore/desktop.paint/vendor/index.html');
-            }
-
+         
             return true;
 
         }

@@ -72,13 +72,7 @@ export default class UI {
 
             console.log('open-app ' + appName);
             // check to see if legacy app ( for now)
-        
-            if (legacyApps.includes(appName)) {
-              // alert(`Opening legacy app ${appName}`);
-              desktop.ui.openWindow(appName);
-            } else {
-              bp.open(appName, { context });
-            }
+            bp.open(appName, { context });
         
           });
 

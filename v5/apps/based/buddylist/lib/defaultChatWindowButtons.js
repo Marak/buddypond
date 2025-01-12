@@ -1,0 +1,81 @@
+export default function chatWindowButtons(bp) {
+
+    return [{
+        text: 'BuddySound',
+        image: 'desktop/assets/images/icons/icon_soundrecorder_64.png',
+        onclick: (ev) => {
+            console.log('BuddySound button clicked', ev);
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            bp.open('soundrecorder', { type: type || 'buddy', output: type || 'buddy', context: context });
+
+        }
+    },
+    /* TOOD: add gifstudio back ( with better UX and features )
+    {
+        text: 'BuddyGif',
+        image: 'desktop/assets/images/icons/icon_gifstudio_64.png',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            JQDX.openWindow('gifstudio', { type: type || 'buddy', context: context, output: type || 'buddy' });
+        }
+    },
+    */
+    {
+        text: 'BuddyPaint',
+        image: 'desktop/assets/images/icons/icon_paint_64.png',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            bp.open('paint', { type: type || 'buddy', output: type || 'buddy', context: context });
+        }
+    },
+    {
+        text: 'BuddySnap',
+        image: 'desktop/assets/images/icons/svg/1f4f7.svg',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // desktop.ui.openWindow('mirror', { type: type || 'buddy', context: context, output: type || 'buddy' });
+            bp.open('camera', { type: type || 'buddy', output: type || 'buddy', context: context });
+        }
+    },
+    {
+        text: 'BuddyEmoji',
+        image: 'desktop/assets/images/icons/svg/1f600.svg',
+        className: 'emojiPicker',
+        onclick: (ev) => {
+
+            // focus on the .emojiPicker input
+            $('.emojiPicker').focus();
+
+            // we need to add class activeTextArea to the active textarea
+            // so we can append the emoji to the correct textarea
+            // remove the activeTextArea from all other textareas
+            $('.activeTextArea').removeClass('activeTextArea');
+
+            let messageControls = $(ev.target).closest('.aim-message-controls');
+            // find the closest textarea to the ev.target
+            $('.aim-input', messageControls).addClass('activeTextArea');
+
+
+
+        }
+    },
+    /*
+    {
+        text: 'BuddyHelp',
+        image: 'desktop/assets/images/icons/svg/1f9ae.svg',
+        align: 'right',
+        onclick: (ev) => {
+            let win = $(ev.target).closest('.aim-window');
+            let windowId = '#' + win.attr('id');
+            //alert(windowId)
+            help({ windowId: windowId });
+
+        }
+    }
+    */    
+    ]
+}

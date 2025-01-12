@@ -128,8 +128,8 @@ export default class Profile {
         $('.updateProfileHtml').flexHide();
         $('.cancelProfileEdit').flexHide();
 
-        wallpapers.legacyWallpapers();
-        audioSettings();
+        // wallpapers.legacyWallpapers();
+        audioSettings(bp);
         userSettings(bp);
 
 

@@ -15,7 +15,8 @@ bp.config = {
 };
 
 bp.apps = {};
-bp.data = {};
+bp.data = {};     // stores data specific to the bp instance itself ( not yet, stored per app )
+bp.settings = {}; // stores app settings for the user ( preferences, defaults, etc )
 bp._modules = {};
 
 bp._cache = {};
@@ -257,30 +258,35 @@ bp.off = function off(event, label) {
 
 bp.set = function set(key, value) {
     const keys = key.split('.');
-    let current = bp.data;
+    let current = bp.settings;
     let path = '';
 
+    // Process each key in the path except for the last one
     keys.slice(0, -1).forEach((key, index) => {
+        // Only add a dot if it's not the first iteration
         path += (index > 0 ? '.' : '') + key;
         if (!current[key]) {
             current[key] = {}; // Initialize a new object if the key does not exist
         }
         current = current[key];
         // Emit a change event for each part of the path being traversed
-        bp.emit(`data::${path}`, current);
+        bp.emit(`settings::${path}`, current);
     });
 
     const finalKey = keys[keys.length - 1];
-    path += '.' + finalKey;
+
+    // Only append a dot if path is not empty (meaning there are multiple keys)
+    path += (path ? '.' : '') + finalKey;
     current[finalKey] = value;
 
     // Emit event for the final key change
-    bp.emit(`data::${path}`, value);
+    bp.emit(`settings`, key, value);
+    bp.emit(`settings::${path}`, value);
 };
 
 bp.get = function get(key) {
     const keys = key.split('.');
-    let current = bp.data;
+    let current = bp.settings;
     for (const k of keys) {
         if (current[k] === undefined) {
             return undefined; // If the key doesn't exist, return undefined
@@ -289,7 +295,6 @@ bp.get = function get(key) {
     }
     return current;
 };
-
 
 
 // implemented in user-space

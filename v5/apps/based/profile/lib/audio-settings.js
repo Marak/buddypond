@@ -1,51 +1,46 @@
-export default function legacyAudioSettings() {
-    if (desktop.settings.notifications_audio_enabled) {
+export default function legacyAudioSettings(bp) {
+    if (bp.settings.notifications_audio_enabled) {
         $('.enableAudioNotifications').prop('checked', true);
     }
 
-    if (desktop.settings.audio_enabled) {
+    if (bp.settings.audio_enabled) {
         $('.audioEnabled').prop('checked', true);
     }
 
-    if (desktop.settings.audio_tts_enabled) {
+    if (bp.settings.audio_tts_enabled) {
         $('.audioTTSEnabled').prop('checked', true);
     }
-
-    $('.audioEnabled').on('change', function () {
+    $(document).on('change', '.audioEnabled', function () {
         let audioMuted = $(this).prop('checked');
         if (audioMuted) {
-            desktop.set('audio_enabled', true);
-            desktop.log('Desktop Audio has been muted.');
+            bp.set('audio_enabled', true);
+            bp.log('Desktop Audio has been muted.');
         } else {
-            desktop.set('audio_enabled', false);
-            desktop.log('Desktop Audio has is back on.');
+            bp.set('audio_enabled', false);
+            bp.log('Desktop Audio is back on.');
         }
     });
 
-    $('.audioTTSEnabled').on('change', function () {
+    $(document).on('change', '.audioTTSEnabled', function () {
         let audioMuted = $(this).prop('checked');
         if (audioMuted) {
-            desktop.set('audio_tts_enabled', true);
-            desktop.say('Text to speech enabled');
+            bp.set('audio_tts_enabled', true);
+            bp.say('Text to speech enabled');
         } else {
-            desktop.set('audio_tts_enabled', false);
+            bp.set('audio_tts_enabled', false);
         }
     });
 
-    $('.enableAudioNotifications').on('change', function () {
+    $(document).on('change', '.enableAudioNotifications', function () {
         let audioNotificationsEnabled = $(this).prop('checked');
         if (audioNotificationsEnabled) {
-          desktop.set('notifications_audio_enabled', true);
-          desktop.log('Audio Notifications have been enabled.');
-          $('.audioEnabled').prop('checked', true);
-          $('.audioEnabled').trigger('change');
+            bp.set('notifications_audio_enabled', true);
+            bp.log('Audio Notifications have been enabled.');
+            $('.audioEnabled').prop('checked', true);
+            $('.audioEnabled').trigger('change');
         } else {
-          desktop.set('notifications_audio_enabled', false);
-          desktop.log('Audio Notifications have been disabled.');
+            bp.set('notifications_audio_enabled', false);
+            bp.log('Audio Notifications have been disabled.');
         }
-      });
-  
-
-
+    });
 }
-

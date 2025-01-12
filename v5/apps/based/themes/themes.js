@@ -135,9 +135,9 @@ export default class Themes {
       }
   
       if (theme.wallpaper) {
-        desktop.set('wallpaper_name', theme.wallpaper.name);
+        bp.set('wallpaper_name', theme.wallpaper.name);
         if (theme.wallpaper.color) {
-          desktop.set('wallpaper_color', theme.wallpaper.color);
+          bp.set('wallpaper_color', theme.wallpaper.color);
         }
       }
     }

@@ -1,0 +1,186 @@
+export default function defaultDesktopShortcuts() {
+
+    bp.apps.desktop.addShortCut({
+        name: 'profile',
+        icon: `desktop/assets/images/icons/icon_profile_64.png`,
+        label: 'My Profile',
+    }, {
+        onClick: () => {
+            bp.open('profile');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
+        name: 'pad',
+        icon: `desktop/assets/images/icons/icon_pad_64.png`,
+        label: 'Pads',
+    }, {
+        onClick: () => {
+            bp.open('pad');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
+        name: 'pond',
+        icon: `desktop/assets/images/icons/icon_pond_64.png`,
+        label: 'Ponds',
+    }, {
+        onClick: () => {
+            bp.open('pond');
+        }
+    });
+
+    /*
+    bp.apps.desktop.addShortCut({
+        name: 'buddylist',
+        icon: `desktop/assets/images/icons/icon_buddylist_64.png`,
+        label: 'Buddylist',
+    }, {
+        onClick: () => {
+            bp.open('buddylist');
+        }
+    });
+    */
+
+    bp.apps.desktop.addShortCut({
+        name: 'file-explorer',
+        icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
+        label: 'Cloud Files',
+    }, {
+        onClick: () => {
+            bp.open('file-explorer');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
+        name: 'paint',
+        icon: `desktop/assets/images/icons/icon_paint_64.png`,
+        label: 'Paint',
+    }, {
+        onClick: () => {
+            bp.open('paint');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
+        name: 'sound-recorder',
+        icon: `desktop/assets/images/icons/icon_soundrecorder_64.png`,
+        label: 'Sound Recorder',
+    }, {
+        onClick: () => {
+            bp.open('soundrecorder');
+        }
+    });
+
+
+
+    bp.apps.desktop.addShortCut({
+        name: 'youtube',
+        icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
+        label: 'Youtube',
+    }, {
+        onClick: () => {
+            bp.open('youtube');
+        }
+    });
+
+   
+
+    bp.apps.desktop.addShortCut({
+        name: 'camera',
+        icon: `desktop/assets/images/icons/icon_camera_64.svg`,
+        textIcon: '📷',
+        label: 'Camera',
+    }, {
+        onClick: () => {
+            bp.open('camera');
+        },
+    
+
+    });
+
+
+    bp.apps.desktop.addShortCut({
+        name: 'piano',
+        icon: `desktop/assets/images/icons/icon_piano_64.png`,
+        label: 'Piano',
+    }, {
+        onClick: () => {
+            bp.open('piano');
+        }
+    });
+
+
+    bp.apps.desktop.addShortCut({
+        name: 'fluid-simulation',
+        icon: `desktop/assets/images/icons/icon_fluidsimulation_64.png`,
+        label: 'Fluid Simulation',
+    }, {
+        onClick: () => {
+            bp.open('fluid-simulation');
+        }
+    });
+
+
+
+   
+
+ 
+
+
+    bp.apps.desktop.addShortCut({
+        name: 'sampler',
+        icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
+        label: 'Sampler',
+    }, {
+        onClick: () => {
+            bp.open('sampler');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
+        name: 'audio-visual',
+        icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+        label: 'Audio Visuals',
+    }, {
+        onClick: () => {
+            bp.open('audio-visual');
+        }
+    });
+
+
+    /*
+    bp.apps.desktop.addShortCut({
+        name: 'Merlin',
+        icon: `desktop/assets/images/icons/icon_merlin_64.png`,
+        label: 'Merlin Automated Assistant',
+    }, {
+        onClick: () => {
+            desktop.ui.openWindow('merlin');
+        }
+    });
+    */
+
+
+    bp.apps.desktop.addFolder({
+        name: 'Games',
+        items: [
+            'mantra',
+            'minesweeper',
+            'emulator',
+            'solitaire'
+        ]
+    });
+
+    bp.apps.desktop.addFolder({
+        name: 'Hacking Tools',
+        items: [
+            'globe',
+            'hacker-typer',
+            'hex-editor',
+            'maps'
+        ]
+    })
+
+
+}

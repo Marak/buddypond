@@ -27,16 +27,20 @@ export default function legacyUserSettings(bp) {
         $('.buddy_email').val(bp.apps.buddylist.data.profileState.email);
     }
 
-    $('.updateProfileForm').on('submit', function () {
+    $('.updateProfileForm').on('submit', function (e) {
+        e.preventDefault();
         // clear out local profile cache, this will trigger a re-render from next server update
         desktop.app.profileCache = {};
         return false;
     });
 
-    let voices = bp.apps.say.voices;
-    voices.forEach(function (v) {
-        $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`);
-    });
+    if (bp.apps.say) {
+        let voices = bp.apps.say.voices;
+        voices.forEach(function (v) {
+            $('.ttsVoice').append(`<option value="${v.voiceURI}">${v.name} ${v.lang}</option>`);
+        });
+    
+    }
 
     if (desktop.settings.tts_voice_index) {
         $('.ttsVoice').prop('selectedIndex', desktop.settings.tts_voice_index);
