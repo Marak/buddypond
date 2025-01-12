@@ -28,7 +28,8 @@ export default class Themes {
               'color': '#181818'
             },
             'desktop_text': {
-              'color': '#181818'
+              'color': '#181818',
+              'text-shadow': 'none'
             }
           }
         },
@@ -80,7 +81,7 @@ export default class Themes {
           'wallpaper': {
             'name': 'ripples'
           },
-          'styles': this.createGradientStyles('ripples', '#134074')
+          'styles': this.createGradientStyles('ripples', 'white')
         }
       };
       this.themeMappings = {
@@ -135,8 +136,10 @@ export default class Themes {
       }
   
       if (theme.wallpaper) {
+        //alert(`wallpaper_name: ${theme.wallpaper.name}`);
         bp.set('wallpaper_name', theme.wallpaper.name);
         if (theme.wallpaper.color) {
+          //alert(`wallpaper_color: ${theme.wallpaper.color}`);
           bp.set('wallpaper_color', theme.wallpaper.color);
         }
       }

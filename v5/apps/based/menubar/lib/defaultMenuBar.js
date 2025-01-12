@@ -21,7 +21,7 @@ export default function defaultMenuBar (bp) {
     <option value="Nyan">Nyan Theme</option>
     <option value="Hacker">Hacker Theme</option>
     <option value="Water">Water Theme</option>
-    <!-- <option value="Customize">Customize Theme</option> -->
+    <option value="Customize">Customize Theme</option>
     <!--
     <option value="Customize">EPIC MODE ( my poor browser ) </option>
     <option value="Customize">Comic Theme</option> 

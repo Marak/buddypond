@@ -165,6 +165,10 @@ export default class Profile {
 
         yourProfile.append(padEditorHolder);
 
+        if (options.context && options.context === 'themes') {
+            $('.themesLink').click();
+        }
+
 
     }
 }

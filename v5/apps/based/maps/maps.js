@@ -34,6 +34,7 @@ export default class Maps {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_maps_64.png',
                 iframeContent: '/v5/apps/based/maps/vendor/index.html',
                 resizable: true,
                 minimizable: true,

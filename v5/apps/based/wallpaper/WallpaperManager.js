@@ -30,6 +30,13 @@ export default class WallpaperManager {
                 ]
             }
         };
+
+
+        bp.on('settings::wallpaper_color', 'update-wallpaper-bg-color', (color) => {
+            this.wallpapers[this.active].changeColor(color);
+        });
+
+
     }
 
     async load(params, next) {
@@ -56,7 +63,7 @@ export default class WallpaperManager {
     async start() {
         this.paused = false;
         this.resizeCanvasToWindow();
-        console.log(this.wallpapers, this.active)
+
         if (!this.wallpapers[this.active]) {
             let remoteScript = this._wallpapers[this.active].src;
             let wp = await this.bp.importModule(remoteScript, {}, false);

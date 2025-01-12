@@ -197,7 +197,7 @@ function bindUIEvents() {
     d.on('change', '.selectTheme', function () {
         let theme = $(this).val();
         if (theme === 'Customize') {
-            desktop.ui.openWindow('profile', { context: 'themes' });
+            bp.open('profile', { context: 'themes' });
         } else {
             /*
             desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
