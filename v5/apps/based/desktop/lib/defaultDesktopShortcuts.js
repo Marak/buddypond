@@ -122,12 +122,6 @@ export default function defaultDesktopShortcuts() {
     });
 
 
-
-   
-
- 
-
-
     bp.apps.desktop.addShortCut({
         name: 'sampler',
         icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
@@ -165,21 +159,54 @@ export default function defaultDesktopShortcuts() {
     bp.apps.desktop.addFolder({
         name: 'Games',
         items: [
-            'mantra',
-            'minesweeper',
-            'emulator',
-            'solitaire'
+            {
+                id: 'mantra',
+                label: 'Mantra'
+            },
+            {
+                id: 'minesweeper',
+                label: 'Minesweeper'
+            },
+            {
+                id: 'emulator',
+                label: 'Emulator',
+                icon: 'desktop/assets/images/icons/icon_nes_64.png'
+            },
+            {
+                id: 'solitaire',
+                label: 'Solitaire'
+            }
         ]
     });
 
     bp.apps.desktop.addFolder({
         name: 'Hacking Tools',
-        items: [
+        Olditems: [
             'globe',
             'hacker-typer',
             'hex-editor',
             'maps'
-        ]
+        ],
+        items: [
+            {
+                id: 'globe',
+                label: 'Globe'
+            },
+            {
+                id: 'hacker-typer',
+                label: 'Hacker Typer',
+            },
+            {
+                id: 'hex-editor',
+                label: 'Hex Editor'
+            },
+            {
+                id: 'maps',
+                label: 'Maps'
+            }
+
+
+        ],
     })
 
 

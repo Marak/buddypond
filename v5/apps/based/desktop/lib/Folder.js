@@ -1,36 +1,23 @@
 export default class Folder {
-    constructor(name, options = {}) {
-        this.name = name;
-        this.items = []; // This will store Folder and Shortcut instances
-
-        this.onOpen = options.onOpen || (() => console.log('Folder opened:', this.name));
-        this.onOpen.bind(this);
-
+    constructor(data, options = {}) {
+        this.data = data;
+        this.parentElement = options.parentElement;
+        this.desktop = options.desktop;
+        this.depth = options.depth;
+        this.options = options;
     }
 
-    addItem(item) {
-        this.items.push(item);
-    }
-
-    removeItem(item) {
-        const index = this.items.indexOf(item);
-        if (index > -1) {
-            this.items.splice(index, 1);
-        }
-    }
-
-    getItems() {
-        return this.items;
-    }
-
-    render() {
-
-        let app = this;
-
+    render(app = {}) {
+    
+        app = this.data;
         // Create the shortcut element
         const folderDiv = document.createElement('div');
         folderDiv.className = `folder ${app.class || ''}`;
 
+        if (this.depth > 1) {
+            folderDiv.classList.add(`hidden`);
+        }
+        folderDiv.classList.add('icon', 'shortcut');   
         const anchor = document.createElement('a');
         anchor.href = app.href || `#icon_dock_${app.name}`;
 
@@ -41,29 +28,26 @@ export default class Folder {
 
         const title = document.createElement('span');
         title.className = 'title';
-        title.textContent = app.label || app.name;
+        title.textContent = app.label || app.name || app.id;
 
         anchor.appendChild(image);
         anchor.appendChild(title);
         folderDiv.appendChild(anchor);
 
-
-        folderDiv.onclick = () => this.openFolder(); // Placeholder for folder opening logic
-
+        // folderDiv.onclick = () => this.openFolder(); // Placeholder for folder opening logic
 
         $(folderDiv).draggable({
             containment: 'parent' // Confine dragging within the parent container
         });
 
+        // folderDiv click handler
+        folderDiv.addEventListener('mousedown', (e) => {
+           this.options.onOpen();
+        });
 
+        this.parentElement.appendChild(folderDiv);
 
-        return folderDiv;
-    }
-
-    openFolder() {
-        console.log('Opening folder:', this.name);
-        this.onOpen();
-        // should just call this.onOpen() ( bound from the calling API )
-        // Future implementation: Show contents in a dedicated UI component
+        // Recursively render each child in this folder
+        // this.data.children.forEach(child => this.desktop.renderNode(child, folderDiv, this.depth + 1));
     }
 }

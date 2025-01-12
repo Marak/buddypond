@@ -1,10 +1,80 @@
-export default function addShortCut(app, options = {}) {
+export default function addShortCut(app, options = {}, parent) {
     // Default onClick behavior if not provided
     if (typeof options.onClick !== 'function') {
         options.onClick = () => console.log('desktop app - Missing options.onClick function', app.name);
     }
 
     // Create the shortcut element
+    const el = document.createElement('div');
+    el.className = `icon shortcut ${app.class || ''} bp-desktop-shortcut`;
+
+    const anchor = document.createElement('a');
+    anchor.href = app.href || `#icon_dock_${app.name}`;
+
+
+    if (!app.textIcon) {
+        const image = document.createElement('img');
+        image.className = 'bp-desktop-icon';
+        image.loading = 'lazy';
+        image.src = app.icon;
+        if (options.imageStyle) {
+            Object.keys(options.imageStyle).forEach(key => {
+                image.style[key] = options.imageStyle[key];
+            });
+        }
+        anchor.appendChild(image);
+
+    } else {
+        const image = document.createElement('div');
+        image.className = 'bp-desktop-icon';
+        image.textContent = app.textIcon;
+        image.style.fontSize = '32px';
+        image.style.paddingLeft = '20px';
+        image.style.marginBottom = '10px';
+        if (options.imageStyle) {
+            Object.keys(options.imageStyle).forEach(key => {
+                image.style[key] = options.imageStyle[key];
+            });
+        }    anchor.appendChild(image);
+
+    }
+
+    const title = document.createElement('span');
+    title.className = 'title';
+    title.textContent = app.label || app.name;
+
+    anchor.appendChild(title);
+    el.appendChild(anchor);
+
+    // Adding onClick event to the .icon container
+    el.addEventListener('click', options.onClick);
+
+    // Append the new shortcut to the container
+    let p = parent || this.shortCutsContainer;
+
+    p.appendChild(el);
+
+
+    // Apply jQuery UI draggable if enabled
+    if (this.enableShortcutDragging) {
+        $(el).draggable({
+            containment: 'parent' // Confine dragging within the parent container
+        });
+    }
+
+
+
+}
+
+
+/*
+
+
+export default function addShortCut(container, app, options = {}) {
+    if (typeof options.onClick !== 'function') {
+        options.onClick = () => console.log('desktop app - Missing options.onClick function', app.name);
+    }
+
     const el = document.createElement('div');
     el.className = `icon shortcut ${app.class || ''}`;
 
@@ -24,20 +94,15 @@ export default function addShortCut(app, options = {}) {
     anchor.appendChild(title);
     el.appendChild(anchor);
 
-    // Adding onClick event to the .icon container
     el.addEventListener('click', options.onClick);
 
-    // Append the new shortcut to the container
-    this.shortCutsContainer.appendChild(el);
+    container.appendChild(el);
 
-
-    // Apply jQuery UI draggable if enabled
     if (this.enableShortcutDragging) {
         $(el).draggable({
-            containment: 'parent' // Confine dragging within the parent container
+            containment: 'parent'
         });
     }
-
-
-
 }
+
+*/
