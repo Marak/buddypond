@@ -1,21 +1,30 @@
 const wallpapers = {};
 
-wallpapers.legacyWallpapers = function () {
+wallpapers.legacyWallpapers = function (bp) {
 
 
-  if (desktop.app.wallpaper) {
+  if (bp.apps.wallpaper) {
     renderWallpaperTypes($('.wallpaperTypes'));
-    desktop.on('desktop.settings.wallpaper_color', 'update-wallpaper-color-picker', function(color){
+    bp.on('settings::wallpaper_color', 'update-wallpaper-color-picker', function(color){
       $('.wallpaperOptionColor').setColor(color)
       $('.simpleColorDisplay').html(color)
+
+      // update the color of the active wallpaper
+      let activeName = bp.apps.wallpaper.wallpaperManager.active;
+      let active = bp.apps.wallpaper.wallpaperManager.wallpapers[activeName];
+      if (active) {
+        active.changeColor(color);
+      } else {
+        console.log('cannot change color, active wallpaper not found', activeName)
+      }
     });
 
     function onSelect (context, hex) {
-      desktop.set('wallpaper_color', '#' + hex);
+      bp.set('wallpaper_color', '#' + hex);
     }
 
     function onCellEnter (context, hex) {
-      desktop.set('wallpaper_color', '#' + hex);
+      bp.set('wallpaper_color', '#' + hex);
     }
 
     $('.wallpaperOptionColor').simpleColor({
@@ -30,10 +39,10 @@ wallpapers.legacyWallpapers = function () {
       livePreview: true,
       insert: 'before',
       onSelect: function (hex, element) {
-        onSelect(desktop.app.wallpaper.active, hex);
+        onSelect(bp.apps.wallpaper.active, hex);
       },
       onCellEnter: function (hex, element) {
-        onCellEnter(desktop.app.wallpaper.active, hex);
+        onCellEnter(bp.apps.wallpaper.active, hex);
       },
       onClose: function (element) {
       }
@@ -43,20 +52,19 @@ wallpapers.legacyWallpapers = function () {
     $('input[name=wallpaper_opt]').on('input', function () {
       let radioValue = $('input[name=wallpaper_opt]:checked').val();
       // update desktop.settings.wallpaper_name
-      desktop.set('wallpaper_name', radioValue);
+      bp.set('wallpaper_name', radioValue);
     });
 
 
   }
 
-
 }
 
 function renderWallpaperTypes (el) {
-    for (let w in desktop.app.wallpaper._wallpapers) {
-      let _wallpaper = desktop.app.wallpaper._wallpapers[w];
+    for (let w in bp.apps.wallpaper.wallpaperManager._wallpapers) {
+      let _wallpaper = bp.apps.wallpaper.wallpaperManager._wallpapers[w];
       let checked = '';
-      if (w === desktop.get('wallpaper_name')) {
+      if (w === desktop.settings.wallpaper_name) {
         checked = 'checked';
       }
       let str = `
@@ -67,6 +75,5 @@ function renderWallpaperTypes (el) {
       el.append(str);
     }
   }
-
 
   export default wallpapers;

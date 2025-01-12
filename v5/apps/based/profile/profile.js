@@ -18,6 +18,8 @@ export default class Profile {
         await this.bp.load('/v5/apps/based/profile/profile.css');
         await this.bp.load('/v5/apps/based/ui/LoadingContainer/LoadingContainer.css');
         await this.bp.load('browser');
+        await this.bp.appendScript('/desktop/assets/js/jquery.simple-color.js');
+
         // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/profile/profile.html');
 
@@ -74,6 +76,10 @@ export default class Profile {
                 }
             });
             new this.bp.apps.ui.Tabs('.tabs-container', '#' + this.profileWindow.id); // Initialize the tab functionality
+
+            wallpapers.legacyWallpapers(bp);
+
+
         } else {
             // this.profileWindow.content.innerHTML = '';
             // If the window exists and the context has changed, re-render the content
@@ -128,7 +134,6 @@ export default class Profile {
         $('.updateProfileHtml').flexHide();
         $('.cancelProfileEdit').flexHide();
 
-        // wallpapers.legacyWallpapers();
         audioSettings(bp);
         userSettings(bp);
 
