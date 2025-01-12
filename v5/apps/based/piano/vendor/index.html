@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://unpkg.com/@webcomponents/custom-elements"></script>
+<script src="https://g200kg.github.io/webaudio-controls/webaudio-controls.js" ></script>
+<script src="./webaudio-tinysynth.js"></script>
+<script>
+async function Init(){
+  synth=document.getElementById("tinysynth");
+  kb=document.getElementById("keyboard");
+  kb.addEventListener("change",KeyIn);
+
+  await synth.ready();
+
+  for(var i=0;i<128;++i){
+    var o=document.createElement("option");
+    o.innerHTML=(i+1)+" : "+synth.getTimbreName(0,i);
+    document.getElementById("prog").appendChild(o);
+  }
+}
+function Prog(pg){
+  synth.send([0xc0,pg]);
+}
+function KeyIn(e){
+  synth.send([0x90,e.note[1],e.note[0]?100:0]);
+}
+window.onload=function(){
+  window.addEventListener("message", (event) => {
+    // console.log('eventdata', event.data)
+    synth.send([event.data[0], event.data[1], event.data[2]])
+    //synth.send([0x90, 62, 1, 100])
+  }, false);
+  Init();
+}
+
+</script>
+<style>
+  body {
+    background-color: pink;
+  }
+  h2 {
+    color: pink;
+  }
+</style>
+</head>
+<body>
+<h1>Play with qwerty keyboard or mouse</h1>
+Bank : <select id="prog" onchange="Prog(this.selectedIndex)"></select>
+<br/>
+<!-- TODO: add width here, but it can't be a percentage?-->
+<webaudio-keyboard id="keyboard" min="48"></webaudio-keyboard>
+<br/>
+<webaudio-tinysynth id="tinysynth"></webaudio-tinysynth>
+<h2>TODO: Make Space Bar cycle through Banks</h2>
+
+</body>
+</html>
