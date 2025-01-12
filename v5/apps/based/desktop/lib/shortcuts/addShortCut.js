@@ -47,7 +47,13 @@ export default function addShortCut(app, options = {}, parent) {
     el.appendChild(anchor);
 
     // Adding onClick event to the .icon container
-    el.addEventListener('click', options.onClick);
+    el.addEventListener('click', (e) => {
+
+        e.preventDefault();
+        options.onClick(e, app);
+        return false;
+
+    });
 
     // Append the new shortcut to the container
     let p = parent || this.shortCutsContainer;
