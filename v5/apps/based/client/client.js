@@ -4,7 +4,7 @@ export default class Client {
     constructor(bp, options = {}) {
         this.bp = bp;
         // this.sse = null;
-        this.config = options.config || {
+        this.config = options.config || this.bp.config || {
             host: "",
             wsHost: "",
             api: "",
@@ -54,6 +54,7 @@ export default class Client {
             this.api.me = qtoken.me;
             this.me = qtoken.me;
             this.bp.me = this.me;
+            this.bp.qtokenid = this.qtokenid;
             this.connect();
         });
 

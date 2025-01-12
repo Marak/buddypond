@@ -55,8 +55,8 @@ export default class Desktop {
     async init() {
         await this.bp.load('/v5/apps/based/desktop/desktop.css');
 
-        let yaml = await this.bp.importModule('/v5/apps/based/ui/vendor/js-yaml.min.js', {}, false);
-        this.yaml = yaml.jsYamlDefault;
+        //let yaml = await this.bp.importModule('/v5/apps/based/ui/vendor/js-yaml.min.js', {}, false);
+        //this.yaml = yaml.jsYamlDefault;
 
 
         // Render the default shortcuts

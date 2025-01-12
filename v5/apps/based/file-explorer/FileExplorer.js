@@ -202,7 +202,7 @@ export default class FileExplorer {
         $('.bp-file-explorer-header').flexHide();
 
 
-        let supportedEditorTypes = ['js', 'json', 'html', 'css', 'txt'];
+        let supportedEditorTypes = ['js', 'json', 'html', 'css', 'txt', 'yml', 'md'];
 
         // check to see if the file is a supported editor type
         let ext = file.split('.').pop();
@@ -242,7 +242,6 @@ export default class FileExplorer {
             let fileText = await fileContents.text();
             // let fileExt = file.split('.').pop();
             let fileMimeType = this.mime.getType(filePath);
-
             if (this.editor) {
                 if (fileMimeType) {
                     this.editor.changeEditorLanguage(fileMimeType);

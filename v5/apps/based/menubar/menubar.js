@@ -1,4 +1,7 @@
 // MenuBar.js
+
+import defaultMenuBar from "./lib/defaultMenuBar.js";
+
 export default class MenuBar {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -7,6 +10,14 @@ export default class MenuBar {
 
     async init() {
         await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
+    }
+
+    load (menuData = defaultMenuBar(), parent = document.body) {
+        let menuBar = new MenuBarClass(menuData);
+        let menu = menuBar.createMenu();
+        parent.appendChild(menu);
+        return;
+
     }
 
     createMenu(menuData = [
