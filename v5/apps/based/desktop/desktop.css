@@ -35,6 +35,15 @@
     user-select: none; /* Prevent text selection */
 }
 
+.bp-desktop-icon {
+    width: 32px; /* Set a fixed width for the icon */
+    height: 32px; /* Set a fixed height for the icon */
+    color: white;
+}
+.bp-desktop-shortcut a {
+  
+}
+
 @media (max-width: 1000px) {
     .desktop-shortcuts-container {
         top: 0px;

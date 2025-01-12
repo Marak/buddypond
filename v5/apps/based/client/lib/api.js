@@ -475,7 +475,6 @@ buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, dela
 
   // Convert the data URI to Blob
   let parts = snapsJSON.split(',')[1];
-  console.log("FARTS", parts);
   // bad fart from somewhere, remove the last char if its a "
   if (parts[parts.length - 1] === '"') {
     parts = parts.substring(0, parts.length - 1);

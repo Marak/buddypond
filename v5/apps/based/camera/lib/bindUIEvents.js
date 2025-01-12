@@ -159,7 +159,7 @@ export default function bindUIEvents() {
         buddypond.sendSnaps(that.snapType, that.snapContext, msg, snapsGIF, that.snapDelay, 'camera', function (err, uploadedUrl) {
             that.snaps = [];
             that.currentFrame = 0;
-            $('.gifFrames', that.cameraWindow.content).html('');
+            $('.gifFrames').html('');
             //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
             $('#snapsPreview').data('stopped', true);
             $('#snapDelaySlider').slider('value', 777);
@@ -196,7 +196,7 @@ export default function bindUIEvents() {
         that.snaps = [];
         that.currentFrame = 0;
         $('.cameraControls').show();
-        $('.gifFrames', that.cameraWindow.content).html('');
+        $('.gifFrames').html('');
         //$('#snapsPreview').attr('src', 'desktop/assets/images/gui/rainbow-tv-loading.gif');
         $('#snapsPreview').data('stopped', true);
         $('.mirrorVideoHolder').show();

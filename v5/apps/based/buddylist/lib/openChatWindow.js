@@ -19,8 +19,6 @@ export default function openChatWindow(data) {
 
     let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowIdPrefix + contextName);
     if (chatWindow) {
-        // just show it
-        chatWindow.open();
         return chatWindow;
     }
 
@@ -78,6 +76,7 @@ export default function openChatWindow(data) {
             }
 
             // clear the processedMessages array
+            // TODO: both sides of the context need to be cleared?
             this.data.processedMessages[contextName] = [];
 
             // re-render all the messages

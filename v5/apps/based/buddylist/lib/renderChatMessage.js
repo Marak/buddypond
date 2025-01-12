@@ -13,10 +13,21 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
-  if (message.to === this.bp.me) {
-    windowId = `buddy_message_-${message.from}`;
-    context = message.from;
-  } else if (message.type === 'pond') {
+
+
+  if (message.type === 'buddy') {
+
+    if (message.to === this.bp.me) {
+      windowId = `buddy_message_-${message.from}`;
+      context = message.from;
+    } else {
+      windowId = `buddy_message_-${message.to}`;
+      context = message.to;
+    }
+
+  }
+
+  if (message.type === 'pond') {
     context = message.to;
     windowId = `pond_message_-${message.to}`;
   }
@@ -32,6 +43,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
+      return;
       // we have a special case here we wish to re-render the client message
       // this indicates the server filtered parts of the message and it should be removed and re-rendered
       if (this.data.processedMessages[context][i].from === this.bp.me && this.data.processedMessages[context][i].text !== message.text) {
@@ -40,7 +52,7 @@ export default async function renderChatMessage(message, _chatWindow) {
         if (filteredMessageEl.length > 0) {
           // remove the filtered message
           filteredMessageEl.remove();
-          this.bp.emit('buddy::message::gotfiltered', message);
+          //this.bp.emit('buddy::message::gotfiltered', message);
         }
       } else {
         // else there is no special filtering case from server
