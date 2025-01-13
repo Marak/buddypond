@@ -13,6 +13,7 @@ export default function buddylistUIEvents() {
     api.authBuddy(username, password, function (err, result) {
       if (err) {
         $('.loginForm .error').text('Failed to authenticate buddy');
+        $('.password').show();
         console.error('Failed to authenticate buddy:', err);
         return;
       }
@@ -30,6 +31,7 @@ export default function buddylistUIEvents() {
           return;
         }
         $('.loginForm .error').text('Failed to authenticate buddy');
+        $('.password').show();
         console.error('Failed to authenticate buddy:');
       }
     });

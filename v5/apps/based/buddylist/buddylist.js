@@ -403,6 +403,7 @@ export default class BuddyList {
         api.verifyToken(me, localToken, (err, data) => {
             if (err) {
                 console.error('Failed to verify token:', err);
+                $('.password').show();
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 return;
             }
@@ -415,6 +416,7 @@ export default class BuddyList {
 
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
+                $('.password').show();
                 console.error('Failed to authenticate buddy:');
             }
         });
