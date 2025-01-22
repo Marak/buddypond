@@ -22,6 +22,7 @@ window.bp_v_5 = async function bp_v_5() {
     // load apps related to chat / social
     await bp.load("card");
 
+    bp.load('droparea');
     // 'toastr', 'powerlevel',
 
     // load any other apps that are non-essential but still useful
@@ -104,7 +105,7 @@ function bindUIEvents() {
     bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {
         buddypond.qtokenid = qtoken.qtokenid;
         bp.me = qtoken.me;
-        console.log("Showing logged in", qtoken);
+        //console.log("Showing logged in", qtoken);
         $('.loggedIn').flexShow();
         //$('.loggedIn').addClass('show');
         $('.loggedOut').flexHide();
