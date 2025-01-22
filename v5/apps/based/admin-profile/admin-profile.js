@@ -11,10 +11,10 @@ class Profile {
         // using this.bp.load() method
 
         // injects CSS link tag into the head of document
-        await this.bp.load('/v5/apps/based/profile-user/profile-user.css');
+        await this.bp.load('/v5/apps/based/admin-profile/admin-profile.css');
 
         // fetches html from the fragment and returns it as a string
-        this.html = await this.bp.load('/v5/apps/based/profile-user/profile-user.html');
+        this.html = await this.bp.load('/v5/apps/based/admin-profile/admin-profile.html');
 
 
         return 'loaded Profile';
