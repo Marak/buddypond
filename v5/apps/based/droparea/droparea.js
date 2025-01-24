@@ -179,15 +179,10 @@ export default class DropArea {
                         console.error('uploading binary files not supported yet...');
 
                     } else {
-                        console.log('ffff', file)
                         let fileViewerPreview = this.bp.apps['file-viewer'].displaySingleFile(file, preview);
                         aimMessageControls.prepend(preview);
-
                     }
-
-
                 }
-
 
 
             }

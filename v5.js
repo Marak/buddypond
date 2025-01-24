@@ -22,7 +22,6 @@ window.bp_v_5 = async function bp_v_5() {
     // load apps related to chat / social
     await bp.load("card");
 
-    bp.load('droparea');
     // 'toastr', 'powerlevel',
 
     // load any other apps that are non-essential but still useful
@@ -33,7 +32,9 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('wallpaper');
      bp.load('motd');
      bp.load('say');
-
+     bp.load('droparea');
+     bp.load('file-viewer');
+    
      // bp.open('piano')
      // bp.open('hacker-typer');
      // bp.open('globe');
