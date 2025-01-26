@@ -49,7 +49,7 @@ export default class Play {
                     setTimeout(() => {
                         tryHard--;
                         attemptPlay();
-                    }, 333); // Retry after a delay
+                    }, 3333); // Retry after a delay
                 } else {
                     onError(error);
                 }
