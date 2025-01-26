@@ -10,6 +10,7 @@ export default function  showContextMenu(x, y) {
         <ul>
             <li onclick="bp.apps.desktop.setWallpaper()">Set Wallpaper to Url</li>
             <li onclick="bp.apps.desktop.removeWallpaper()">Remove Wallpaper</li>
+            <li onclick="bp.apps.desktop.viewSource()">View Source</li>
         </ul>
     `;
     // clear the body before appending the menu

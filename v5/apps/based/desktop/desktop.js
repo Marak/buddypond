@@ -18,6 +18,7 @@ import showContextMenu from "./lib/contextmenu/showContextMenu.js";
 import buildJsTreeData from "../file-explorer/lib/buildJsTreeData.js";
 import setWallpaper from "./lib/setWallpaper.js";
 import removeWallpaper from "./lib/removeWallpaper.js";
+import viewSource from "./lib/viewSource.js";
 
 // default data
 import defaultDesktopShortcuts from "./lib/defaultDesktopShortcuts.js";
@@ -176,8 +177,8 @@ Desktop.prototype.setupContextMenu = setupContextMenu;
 Desktop.prototype.showContextMenu = showContextMenu;
 // Desktop.prototype.buildJsTreeData = buildJsTreeData;
 Desktop.prototype.setWallpaper = setWallpaper;
-
 Desktop.prototype.removeWallpaper = removeWallpaper
+Desktop.prototype.viewSource = viewSource;
 
 
 class Shortcut {
