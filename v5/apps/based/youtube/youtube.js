@@ -5,12 +5,11 @@ export default class Youtube {
     }
 
     async init() {
-        this.bp.log('Hello from Youtube');
+        // this.bp.log('Hello from Youtube');
 
         let html = await this.bp.load('/v5/apps/based/youtube/youtube.html');
 
         let playlist = await this.bp.importModule('/v5/apps/based/youtube/data/playlist.js', {}, false);
-        console.log("pppp", playlist)
         this.playlist = playlist.default;
 
         // Append the YouTube IFrame API script to the document
@@ -37,6 +36,8 @@ export default class Youtube {
             minimized: false
         });
 
+        // get a random video from the playlist
+        let randomVideo = this.playlist[Math.floor(Math.random() * this.playlist.length)];
         // Create a new promise to await the readiness of the YouTube IFrame API
         let youtubeIframeApiReady = new Promise((resolve, reject) => {
             // Define the global event handler that YouTube IFrame API will call
@@ -45,7 +46,7 @@ export default class Youtube {
                 this.player = new YT.Player('youtube-player', {
                     height: '390',
                     width: '640',
-                    videoId: '6g9qORegPpU',
+                    videoId: randomVideo,
                     playerVars: { 'autoplay': 1, 'controls': 1 },
                     host: 'http://www.youtube.com',
                     events: {
