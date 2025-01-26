@@ -126,12 +126,11 @@ export default class SamplerPadComponent {
             */
             if (this.controlsContainer.style.display === "flex") {
                 this.controlsContainer.style.display = "none";
-                showPianoRoll.textContent = "Show Piano";
             } else {
                 this.controlsContainer.style.display = "flex";
-                showPianoRoll.textContent = "Hide Piano";
             }
         });
+        this.showPianoRoll = showPianoRoll;
 
         this.sliceRecordContainer.appendChild(showPianoRoll);
 

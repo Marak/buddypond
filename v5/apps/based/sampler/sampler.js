@@ -31,7 +31,7 @@ export default class Sampler {
                     x: 50,
                     y: 100,
                     width: 1000,
-                    height: 330,
+                    height: 460,
                     minWidth: 600,
                     minHeight: 500,
                     className: 'sampler-window',
@@ -69,6 +69,9 @@ export default class Sampler {
             });
             this.samplerHolder.appendChild(samplerPadComponent.container);
             samplerPadComponent.adjustVolume(0.5);
+            samplerPadComponent.showPianoRoll.click();
+
+
 
 
         }
