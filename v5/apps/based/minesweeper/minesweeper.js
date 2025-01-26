@@ -30,7 +30,7 @@ export default class Minesweeper {
                 x: 50,
                 y: 100,
                 width: 600,
-                height: 300,
+                height: 440,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
