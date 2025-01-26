@@ -36,6 +36,7 @@ export default class Sampler {
                     minHeight: 500,
                     className: 'sampler-window',
                     parent: $('#desktop')[0],
+                    icon: '/desktop/assets/images/icons/icon_midifighter_64.png',
                     resizable: true,
                     minimizable: true,
                     maximizable: true,
