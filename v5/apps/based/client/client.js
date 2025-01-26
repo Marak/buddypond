@@ -41,7 +41,7 @@ export default class Client {
                 config.onmessage(event.data);
             }
         };
-        this.worker.onerror = function(event) {
+        this.worker.onerror = function (event) {
             console.error('Worker error:', event);
             if (config.onerror) {
                 config.onerror(event);
@@ -76,10 +76,12 @@ export default class Client {
             //console.log(`WebSocket connection requested by ${source}.`);
             this.connectionSources[source] = true;
             if (Object.keys(this.connectionSources).length === 1) {
-                this.worker.postMessage({ type: 'connectWebSocket', data: this.config, qtokenid: {
-                    qtokenid: this.api.qtokenid,
-                    me: this.api.me
-                } });  // Tell worker to connect WebSocket
+                this.worker.postMessage({
+                    type: 'connectWebSocket', data: this.config, qtokenid: {
+                        qtokenid: this.api.qtokenid,
+                        me: this.api.me
+                    }
+                });  // Tell worker to connect WebSocket
             } else {
                 // console.log('declining to ask worker to connectWebSocket')
             }
@@ -114,20 +116,33 @@ export default class Client {
         });
         this.queuedMessages = [];
     }
-
     onWebSocketClosed() {
         this.wsConnected = false;
         this.bp.emit('client::websocketClosed');
 
-        // attempt to reconnect after very short delay
+        // Ensure disconnectDelay is initialized and has a max value
+        if (!this.disconnectDelay) {
+            this.disconnectDelay = 200; // Initial delay
+        }
+        const maxDelay = 16000; // Max delay, adjust as needed
+
+        // Attempt to reconnect after exponential backoff delay
         setTimeout(() => {
+            console.log('reconnecting WebSocket');
             if (Object.keys(this.connectionSources).length > 0) {
-                this.worker.postMessage({ type: 'connectWebSocket', data: this.config, qtokenid: {
-                    qtokenid: this.api.qtokenid,
-                    me: this.api.me
-                } });  // Tell worker to connect WebSocket
+                this.worker.postMessage({
+                    type: 'connectWebSocket',
+                    data: this.config,
+                    qtokenid: {
+                        qtokenid: this.api.qtokenid,
+                        me: this.api.me
+                    }
+                });  // Tell worker to connect WebSocket
             }
-        }, 200);
+
+            // Increase delay for the next attempt, capped at maxDelay
+            this.disconnectDelay = Math.min(this.disconnectDelay * 2, maxDelay);
+        }, this.disconnectDelay);
     }
 
     handleWorkerMessage(event) {
@@ -184,13 +199,13 @@ export default class Client {
         this.worker.postMessage({ type: 'disconnectWebSocket' });
     }
 
-    disconnect () {
+    disconnect() {
         // immediately disconnects all connections
         this.worker.postMessage({ type: 'disconnectWebSocket' });
         this.sseManager.disconnectSSE();
     }
 
-    logout () {
+    logout() {
         this.disconnect();
         // clear the qtoken from the client and local storage
         this.qtokenid = null;
