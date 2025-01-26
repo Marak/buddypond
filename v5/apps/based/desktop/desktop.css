@@ -67,3 +67,21 @@
         font-size: 32px !important;
     }
 }
+
+.desktop-context-menu {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    background-color: #f9f9f9;
+    border: 1px solid #a9a9a9;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.desktop-context-menu ul li {
+    list-style-type: none;
+    padding: 5px;
+    margin: 10px;
+    cursor: pointer;
+}
+

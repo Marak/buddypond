@@ -2,6 +2,8 @@ window.bp_v_5 = async function bp_v_5() {
 
     setConfig();
     bindUIEvents();
+    await bp.load('localstorage');
+
     await loadCoreApps();
     arrangeDesktop();
 
@@ -10,7 +12,6 @@ window.bp_v_5 = async function bp_v_5() {
     await bp.load('buddyscript');
     let allCommands = bp.apps.buddyscript.commands;
 
-    await bp.load('localstorage');
     await bp.load('play');
     await bp.open('client');
     await bp.open({
@@ -73,10 +74,7 @@ window.bp_v_5 = async function bp_v_5() {
         });
 
     }
-        */
-
-
-
+*/
 
 };
 
@@ -129,7 +127,6 @@ function bindUIEvents() {
 
     /*
     desktop.on('window::dragstart', 'legacy-correct-window-z-index', function (event) {
-
         let windowId = event.windowId;
         let window = $(windowId);
         // console.log('windowwindowwindow', window)
@@ -147,8 +144,6 @@ function bindUIEvents() {
             // console.log('focus windowId', windowId);
 
         }
-
-
     });
     */
 
@@ -243,9 +238,6 @@ function bindUIEvents() {
             $('.volumeMuted').hide();
         }
     });
-
-
-
 
     // Legacy windows
     // we need the same logic for drag start and drag stop on 

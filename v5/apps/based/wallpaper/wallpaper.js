@@ -10,7 +10,6 @@ export default class Wallpaper {
     async init() {
         this.bp.log('Hello from Wallpaper');
 
-
         // Usage:
         const wallpaperManager = new WallpaperManager(this.bp);
         wallpaperManager.load({}, () => console.log('Wallpapers loaded'));
@@ -26,7 +25,8 @@ export default class Wallpaper {
             // same as:
             //console.log(bp.data.hello.world.name);
         });
-        bp.set('hello.world.name', 'world');
+
+        
 
 
         return 'loaded Wallpaper';

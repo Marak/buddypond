@@ -28,6 +28,10 @@ export default class WallpaperManager {
                 src: [
                     '/v5/apps/based/wallpaper/wallpapers/ripples/ripples.js'
                 ]
+            },
+            'url': {
+                label: 'URL',
+                src: ['/v5/apps/based/wallpaper/wallpapers/url.js']
             }
         };
 
@@ -36,16 +40,23 @@ export default class WallpaperManager {
             this.wallpapers[this.active].changeColor(color);
         });
 
-
     }
 
     async load(params, next) {
         try {
  
             this.resizeCanvasToWindow();
-            this.active = this.settings.wallpaper_name || 'matrix';
-            this.start();
+
+            // check to see if this.settings.wallpaper_url is set
+            if (this.bp.settings.wallpaper_url) {
+                this.bp.apps.desktop.setWallpaper(this.bp.settings.wallpaper_url);
+            } else {
+                this.active = this.settings.wallpaper_name || 'matrix';
+                this.start();
+            }
+
             this.setupEventListeners();
+            // console.log("WP Settings loaded:", this.settings);
             next();
         } catch (error) {
             console.error('Error loading assets:', error);
@@ -84,7 +95,9 @@ export default class WallpaperManager {
     }
 
     stop() {
-        this.wallpapers[this.active].stop();
+        if (this.wallpapers[this.active] && this.wallpapers[this.active].stop) {
+            this.wallpapers[this.active].stop();
+        }
         this.clear();
     }
 

@@ -16,6 +16,8 @@ import showContextMenu from "./lib/contextmenu/showContextMenu.js";
 
 // utils
 import buildJsTreeData from "../file-explorer/lib/buildJsTreeData.js";
+import setWallpaper from "./lib/setWallpaper.js";
+import removeWallpaper from "./lib/removeWallpaper.js";
 
 // default data
 import defaultDesktopShortcuts from "./lib/defaultDesktopShortcuts.js";
@@ -47,9 +49,8 @@ export default class Desktop {
             this.enableShortcutDragging = options.enableShortcutDragging;
         }
 
-
         // Context menu for desktop
-        // this.setupContextMenu();
+        this.setupContextMenu();
     }
 
     async init() {
@@ -59,9 +60,13 @@ export default class Desktop {
         //let yaml = await this.bp.importModule('/v5/apps/based/ui/vendor/js-yaml.min.js', {}, false);
         //this.yaml = yaml.jsYamlDefault;
 
-
         // Render the default shortcuts
         defaultDesktopShortcuts();
+
+        // check if there is a wallpaper_url
+        if (this.bp.settings.wallpaper_url) {
+            this.setWallpaper(this.bp.settings.wallpaper_url);
+        }
 
         // TODO: after launch, port legacy wallpaper app
         // this.setupWallpaper(); // Set initial wallpaper
@@ -161,7 +166,6 @@ export default class Desktop {
 
 }
 
-
 Desktop.prototype.Folder = Folder;
 Desktop.prototype.File = File;
 Desktop.prototype.addShortCut = addShortCut;
@@ -170,6 +174,10 @@ Desktop.prototype.removeShortCut = removeShortCut;
 Desktop.prototype.arrangeShortcuts = arrangeShortcuts;
 Desktop.prototype.setupContextMenu = setupContextMenu;
 Desktop.prototype.showContextMenu = showContextMenu;
+// Desktop.prototype.buildJsTreeData = buildJsTreeData;
+Desktop.prototype.setWallpaper = setWallpaper;
+
+Desktop.prototype.removeWallpaper = removeWallpaper
 
 
 class Shortcut {
