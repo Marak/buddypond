@@ -16,6 +16,9 @@ export default class FileExplorer {
         let mime = await this.bp.importModule('/v5/apps/based/file-explorer/lib/mime.js', {}, false);
         this.mime = mime.default;
 
+        // load jstree from CDN ( for now )
+        // TODO: vendor
+        await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js');
 
         this.bp.log('Hello from File Explorer');
         //await this.bp.load('/v5/apps/based/file-explorer/FileTree/jsTree.css');
