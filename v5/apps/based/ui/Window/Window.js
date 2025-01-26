@@ -310,10 +310,26 @@ class Window {
     setupMessageHandling() {
         // iframe is loaded by now
         this.onLoad(this);
-        // Set the message event listener directly on the iframe's window
-        this.content.contentWindow.addEventListener('message', this.receiveMessage.bind(this), false);
+        const iframeWindow = this.content.contentWindow;
+    
+        // Inject a script into the iframe to listen for the ESC key
+        const iframeDoc = this.content.contentDocument || this.content.contentWindow.document;
+        const script = iframeDoc.createElement("script");
+        script.type = "text/javascript";
+        script.textContent = `
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    window.parent.postMessage({ event: 'ESC_KEY_PRESSED' }, '*');
+                }
+            });
+        `;
+        //alert(script.textContent)
+        iframeDoc.body.appendChild(script);
+    
+        // Set the message event listener on the iframe's window
+        window.addEventListener('message', this.receiveMessage.bind(this), false);
     }
-
+    
 
     sendMessage(message) {
         if (this.content && this.content.contentWindow) {
@@ -322,15 +338,17 @@ class Window {
     }
 
     receiveMessage(event) {
-        // console.log('Received message: ' + JSON.stringify(event.data));
-        // Implement security checks here, e.g., event.origin
+        // Ensure security by checking the event.origin, if possible
         if (typeof event.data === 'object' && event.data.event) {
-            //console.log('Received:', event.data);
-            // Handle the message based on event.data.event and event.data.data
-            this.handleReceivedMessage(event.data);
+            if (event.data.event === 'ESC_KEY_PRESSED') {
+                console.log('ESC key pressed inside iframe. Closing window...');
+                this.close();
+            } else {
+                this.handleReceivedMessage(event.data);
+            }
         }
     }
-
+    
     handleReceivedMessage(data) {
         //console.log('Handled Received message:', data, this.onMessage);
         if (this.onMessage) {

@@ -41,7 +41,6 @@ export default class Emulator {
                 console.log('Emulator Message:', message);
                 if (message.event === 'ready') {
                     console.log('Emulator is ready');
-                    alert('Emulator is ready');
                 }
             },
             onLoad: win => {
