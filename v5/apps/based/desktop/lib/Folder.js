@@ -19,7 +19,7 @@ export default class Folder {
         }
         folderDiv.classList.add('icon', 'shortcut');   
         const anchor = document.createElement('a');
-        anchor.href = app.href || `#icon_dock_${app.name}`;
+        // anchor.href = app.href || `#icon_dock_${app.name}`;
 
         const image = document.createElement('img');
         image.className = 'bp-desktop-icon';

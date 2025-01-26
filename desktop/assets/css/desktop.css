@@ -1379,6 +1379,7 @@ iframe {
 .shortcut {
   width: 64px;
   max-height: 64px;
+  cursor: pointer;
 }
 
 .shortcut .title {
