@@ -42,8 +42,8 @@ export default class Console {
             title: 'Console',
             x: 50,
             y: 100,
-            width: 400,
-            height: 300,
+            width: 800,
+            height: 400,
             minWidth: 200,
             minHeight: 200,
             parent: $('#desktop')[0],
@@ -54,8 +54,14 @@ export default class Console {
             closable: true,
             focusable: true,
             maximized: false,
-            minimized: false
+            minimized: false,
+            onOpen : () => {
+                // set focus to the input
+                $('.console_message_text', this.content).focus();
+            }
         });
+
+        this.consoleWindow = consoleWindow;
 
         // add a "/" to each command for consistency
         let sourceCommands = Object.keys(this.bp.apps.buddyscript.commands).map((command) => {

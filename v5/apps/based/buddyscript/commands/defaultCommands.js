@@ -10,16 +10,13 @@ export default function Commands (bp) {
         bp.say(context);
     };
 
+    /*
     commands.give = function (context) {
         console.log('Giving:', context);
         return false;
     };
-
-    commands.paint = function (params) {
-        alert(JSON.stringify(params));
-        desktop.ui.openWindow("paint", { output: params[0], context: params[1] });
-    }
-
+    */
+ 
 
     // for all the legacy commands, call the legacy command
     for (let command in legacyCommands) {
@@ -28,7 +25,14 @@ export default function Commands (bp) {
             let commandObj = legacyCommands[command];
             let commandStr = commandObj.command;
             console.log('Executing legacy command:', command, commandStr, context);
-            eval(commandStr)
+            if (typeof commandStr === 'function') {
+              commandStr(params);
+              //eval(commandStr)
+
+            } else {
+              eval(commandStr)
+
+            }
             
         };
     }
@@ -41,16 +45,21 @@ export default function Commands (bp) {
 
 // TODO: map all known apps
 let legacyCommands = {
+    /*
     appstore: {
       command: 'desktop.ui.openWindow("appstore");',
       description: 'View Buddy Pond App Store',
       icon: 'appstore'
     },
+    */
     av: {
-      command: 'desktop.ui.openWindow("visuals");',
+      command: function(params) {
+        bp.open('audio-visual');
+      },
       description: 'Use the Microphone Audio to create Cool Visuals',
       icon: 'visuals'
     },
+    /*
     bs: {
       command: function(params) {
         let str = `desktop.app.console.listBuddyScriptCommands({ windowId: '${params.windowId}'});`
@@ -59,11 +68,15 @@ let legacyCommands = {
       description: 'Lists all BuddyScript Commands',
       icon: 'folder'
     },
+    */
     console: {
-      command: 'desktop.ui.openWindow("console");',
+      command: function(params) {
+        bp.open('console');
+      },
       description: 'Buddy Pond Console Terminal ( For Hackers )',
       icon: 'lofi'
     },
+    /*
     faq: {
       command: 'desktop.ui.openWindow("faq");',
       description: 'Frequently Asked Questions',
@@ -74,26 +87,38 @@ let legacyCommands = {
       description: 'Chill Vibes Lofi Music Channel',
       icon: 'lofi'
     },
+    */
     logout: {
-      command: 'desktop.app.login.logoutDesktop();',
+      command: function(params) {
+        bp.logout();
+      },
       description: 'Logs you out of Buddy Pond Desktop',
       icon: 'login'
     },
     fluids: {
-      command: 'desktop.ui.openWindow("fluidsimulation");',
+      command: function(params) {
+        bp.open('fluid-simulation');
+      },
       description: 'Fluid Simulations ( Trippy )',
       icon: 'fluidsimulation'
     },
+    /*
     games: {
-      command: 'desktop.ui.openWindow("games");',
+      command: function(params) {
+        bp.open('games');
+      },
       description: 'Stay Entertained with Buddy Pond Games',
       icon: 'folder'
     },
+    */
+    /*
     gbp: {
       command: 'desktop.ui.openWindow("gbp");',
       description: 'Give and receive Good Buddy Points',
       icon: 'gbp'
     },
+    */
+    /*
     gifstudio: {
       command: function(params) {
         let str = `desktop.ui.openWindow("gifstudio", { output: '${params.output}', context: '${params.context}' });`
@@ -102,13 +127,18 @@ let legacyCommands = {
       description: 'Create, Edit, and Remix Animated GIFs',
       icon: 'gifstudio'
     },
+    */
     globe: {
-      command: 'desktop.ui.openWindow("globe");',
+      command: function(params) {
+        bp.open('globe');
+      },
       description: '3-D Geo Map of World.',
       icon: 'globe'
     },
     hack: {
-      command: 'desktop.ui.openWindow("hackertyper");',
+      command: function(params) {
+        bp.open('hacker-typer');
+      },
       description: 'A.I. Assisted Auto-Hacking Console',
       icon: 'hackertyper'
     },
@@ -121,8 +151,10 @@ let legacyCommands = {
       description: 'Shows basic Help commands',
       img: '/desktop/assets/images/icons/svg/1f9ae.svg'
     },
-    idc: {
-      command: 'desktop.ui.openWindow("interdimensionalcable");',
+    youtube: {
+      command: function(params) {
+        bp.open('youtube');
+      },
       description: 'Interdimensional Cable',
       icon: 'interdimensionalcable'
     },
@@ -131,41 +163,56 @@ let legacyCommands = {
       description: 'Opens Musical Instruments',
       icon: 'midifighter'
     },
+    /*
     midi: {
       command: 'desktop.ui.openWindow("midi");',
       description: 'Audio MIDI Setup',
       icon: 'midi'
     },
+    */
+    /*
     midifighter: {
       command: 'desktop.ui.openWindow("midifighter");',
       description: 'MIDI Fighter styled Music Pad.',
       icon: 'midifighter'
     },
+    */
     maps: {
-      command: 'desktop.ui.openWindow("maps");',
+      command: function(params) {
+        bp.open('maps');
+      },
       description: '2-D Geo Maps of world.',
       icon: 'maps'
     },
+    /*
     memepool: {
       command: 'desktop.ui.openWindow("memepool");',
       description: 'Manage and Catalog your Memes.',
       icon: 'memepool'
     },
+    */
+    /*
     meme: {
       command: function(params) {
         // handled by server via sendMessage code path
       }
     },
+    */
+    /*
     memes: {
       command: 'desktop.ui.openWindow("memepool");',
       description: 'Mnemosyne - A.I. Powered Meme Oracle',
       icon: 'memepool'
     },
+    */
+    /*
     merlin: {
-      command: 'desktop.ui.openWindow("merlin");',
-      description: 'Merlin Automated Assistant',
+      command: function(params) {
+        bp.open('merlin');
+      },      description: 'Merlin Automated Assistant',
       icon: 'merlin'
     },
+    */
     /*
     office: {
       command: 'desktop.ui.openWindow("libreoffice");',
@@ -174,63 +221,75 @@ let legacyCommands = {
     },
     */
     nes: {
-      command: 'desktop.ui.openWindow("nes");',
+      command: function(params) {
+        bp.open('emulator');
+        //let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
+        //return str;
+      },
       description: 'Nintendo Entertainment System',
       icon: 'nes'
     },
+    /*
     n64: {
       command: 'desktop.ui.openWindow("n64");',
       description: 'NINTENDO SIXTY FOOOOOOUUUUURRRR!!!!',
       icon: 'n64'
     },
-    /*
+    */
     paint: {
       command: function(params) {
-        alert(JSON.stringify(params));
-        let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
-        return str;
+        bp.open('paint');
+        //let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
+        //return str;
       },
       description: 'Paint Editor. Draw cool paintings for Buddies.',
       icon: 'paint'
     },
-    */
     profile: {
       command: 'desktop.ui.openWindow("profile");',
       description: 'Buddy Profile Settings',
       icon: 'profile'
     },
-    mirror: {
+    camera: {
       command: function(params) {
-        let str = `desktop.ui.openWindow("mirror", { output: '${params.output}', context: '${params.context}' });`
-        return str;
+        bp.open('camera');
       },
+
       description: 'Camera with Visual Effects',
       icon: 'mirror'
     },
+    /*
     mtv: {
       command: 'desktop.ui.openWindow("mtv");',
       description: 'Non-stop Music Videos',
       icon: 'mtv'
     },
+    */
     mute: {
       command: `desktop.set('audio_enabled', false);`,
       description: 'Mute Desktop Audio'
     },
     piano: {
-      command: 'desktop.ui.openWindow("piano");',
+      command: function(params) {
+        bp.open('piano');
+      },
       description: 'Tiny Piano Synth Keyboard for Jamming',
       icon: 'piano'
     },
     soundcloud: {
-      command: 'desktop.ui.openWindow("soundcloud");',
+      command: function(params) {
+        bp.open('soundcloud');
+      },
       description: 'Curated Music Playlists and Featured Buddies',
       icon: 'soundcloud'
     },
     record: {
       command: function(params) {
-        let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
-        return str;
+        bp.open('soundrecorder');
+        //         let str = `desktop.ui.openWindow("soundrecorder", { output: '${params.output}', context: '${params.context}' });`
+
       },
+
       description: 'Sound Recorder App. Record and Edit Audio',
       icon: 'soundrecorder'
     },
@@ -267,3 +326,7 @@ let legacyCommands = {
       icon: 'visuals'
     }
   }
+
+
+
+
