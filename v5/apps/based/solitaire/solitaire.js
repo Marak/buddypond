@@ -32,7 +32,7 @@ export default class Solitaire {
                 maximized: false,
                 minimized: false,
                 onClose: () => {
-                    this.pianoWindow = null;
+                    this.solitaireWindow = null;
                 }
             });
 
