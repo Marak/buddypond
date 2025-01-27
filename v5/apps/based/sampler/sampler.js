@@ -60,23 +60,19 @@ export default class Sampler {
             }, {
                 fetch: window.fetch.bind(window), // TODO: use the fetch from the bp
                 defaultSounds: [
-                    '/v5/apps/based/sampler/packs/default/dj-horn.mp3',
-                    '/v5/apps/based/sampler/packs/default/dang-son.mp3',
-                    `/v5/apps/based/sampler/packs/default/helicopter-helicopter.mp3`,
-                    `/v5/apps/based/sampler/packs/default/yooo.mp3`,
-                    '/v5/apps/based/sampler/packs/default/celebrate.mp3'
-
+                    'dj-horn.mp3',
+                    'dang-son.mp3',
+                    `helicopter-helicopter.mp3`,
+                    `yooo.mp3`,
+                    'celebrate.mp3',
+                    'flawless-victory.wav',
                 ]
             });
             this.samplerHolder.appendChild(samplerPadComponent.container);
             samplerPadComponent.adjustVolume(0.5);
             samplerPadComponent.showPianoRoll.click();
 
-
-
-
         }
-
 
     }
 }

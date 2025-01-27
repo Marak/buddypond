@@ -3,13 +3,14 @@ import PianoRoll from "../ui/PianoRoll.js";
 import StreamingWaveform from "../ui/StreamingWaveform.js";
 import sliderComponent from "../ui/Slider.js";
 
-
 import _createPad from "./SamplerPadComponent/_createPad.js";
 import _createFileInput from "./SamplerPadComponent/_createFileInput.js";
 import _createSlicedRecordButton from "./SamplerPadComponent/_createSlicedRecordButton.js";
 import _createLiveSlicedRecordButton from "./SamplerPadComponent/_createMicrophoneSlicedRecordButton.js";
 import _sliceAndLoadToPads from "./SamplerPadComponent/_sliceAndLoadToPads.js";
 import _sliceAudioBuffer from "./SamplerPadComponent/_sliceAudioBuffer.js";
+
+import tr808 from './packs/tr-808/tr-808.js';
 
 export default class SamplerPadComponent {
     constructor(audioContext, globalBus, options = {}) {
@@ -31,7 +32,6 @@ export default class SamplerPadComponent {
         // Container setup
         this.container = document.createElement("div");
         this.container.classList.add("sampler-pad-container", "track-active");
-
 
         // top container with main pad and volume
         this.topSection = document.createElement("div");
@@ -67,7 +67,7 @@ export default class SamplerPadComponent {
             sliderThumbStyles: {
                 left: '18px',
             },
-    
+
             showLabel: false,
             className: 'sampler-volume-slider',
             thumbClassName: 'volume-thumb',
@@ -115,7 +115,7 @@ export default class SamplerPadComponent {
 
         // use <i class="fa-duotone fa-solid fa-piano-keyboard"></i>
         showPianoRoll.innerHTML = '<i class="fa-duotone fa-solid fa-piano-keyboard"></i>';
-         showPianoRoll.style.fontSize = "32px";
+        showPianoRoll.style.fontSize = "32px";
         showPianoRoll.classList.add("sampler-record-button");
 
         showPianoRoll.addEventListener("click", () => {
@@ -135,19 +135,16 @@ export default class SamplerPadComponent {
         this.sliceRecordContainer.appendChild(showPianoRoll);
 
         // Bottom Pad Piano roll controls with global record
-
         this.controlsContainer = document.createElement("div");
         this.controlsContainer.classList.add("sampler-controls-container");
-
 
         // Initialize Pads
         this.pads = [];
         for (let i = 0; i < 8; i++) {
 
             if (this.defaultSounds[i]) {
-                this._loadDefaultSound(i, this.defaultSounds[i]);
+                this._loadDefaultSound('default', i, this.defaultSounds[i]);
             }
-
 
             const padContainer = this._createPad(i, this.defaultSounds[i]);
             this.buttonGrid.appendChild(padContainer);
@@ -175,34 +172,25 @@ export default class SamplerPadComponent {
                 id: 'default',
                 name: 'Pvrty Bvx v1',
                 samples: [
-                    "samples/lets-go.mp3",
-                    "samples/make-some-noise.mp3",
-                    "samples/drop-it.mp3",
-                    "samples/airhorn.mp3",
-                    null,
-                    null,
+                    'dj-horn.mp3',
+                    'dang-son.mp3',
+                    `helicopter-helicopter.mp3`,
+                    `yooo.mp3`,
+                    'celebrate.mp3',
+                    'flawless-victory.wav',
                     null,
                     null,
                 ]
             },
             {
-                id: 'roland-808',
-                name: 'Roland 808',
-                samples: [
-                    "samples/roland-808/kick.wav",
-                    "samples/roland-808/snare.wav",
-                    "samples/roland-808/hihat.wav",
-                    "samples/roland-808/clap.wav",
-                    "samples/roland-808/tom.wav",
-                    "samples/roland-808/cymbal.wav",
-                    "samples/roland-808/cowbell.wav",
-                    "samples/roland-808/rimshot.wav",
-                ]
+                id: 'tr-808',
+                name: 'TR-808',
+                samples: tr808
             },
             {
-                id: 'browser-storage',
-                name: 'Browser Storage',
-                disabled: true,
+                id: 'custom',
+                name: 'Custom',
+                disabled: false,
                 samples: [] // TODO: loaded via function call to get from indexedDB ( needs binaries )
             }
 
@@ -216,8 +204,6 @@ export default class SamplerPadComponent {
         // create a new select element
         let sampleBankSelect = document.createElement('select');
         sampleBankSelect.classList.add('sample-bank-select');
-
-
 
         // iterate through all sample banks
         // and create an option element for each
@@ -233,15 +219,16 @@ export default class SamplerPadComponent {
             sampleBankSelect.add(option);
         });
 
-
-
         // add event listener to select element
         sampleBankSelect.addEventListener('change', (e) => {
             // TODO: test this
-            return;
             // get the selected value
             let selectedValue = e.target.value;
             // get the pads by class
+
+            // find the sample bank by id
+            let sampleBank = sampleBanks.find((bank) => bank.id === selectedValue);
+            this.defaultSounds = sampleBank.samples;
             let pads = this.container.querySelectorAll('.sampler-pad');
             // loop through the pads
             pads.forEach((pad, index) => {
@@ -252,8 +239,10 @@ export default class SamplerPadComponent {
                 // if the selected value is default
                 if (selectedValue === 'default') {
                     // load the default sound
-                    this._loadDefaultSound(index, this.defaultSounds[index]);
                 }
+
+                this._loadDefaultSound(selectedValue, index, this.defaultSounds[index]);
+
             });
         });
 
@@ -269,12 +258,9 @@ export default class SamplerPadComponent {
         this.waveformContainer = waveformContainer;
         this.container.appendChild(waveformContainer);
 
-
         this.container.appendChild(this.controlsContainer);
 
-
         this.waveform = null;
-
 
         if (options.parent) {
             options.parent.appendChild(this.container);
@@ -296,8 +282,10 @@ export default class SamplerPadComponent {
         this.volumeSlider.setValue(value);
     }
 
-    async _loadDefaultSound(padIndex, url) {
-        console.log("Loading default sound:", url);
+    async _loadDefaultSound(packId, padIndex, url) {
+
+        url = '/v5/apps/based/sampler/packs/' + packId + '/' + url;
+        // console.log("Loading default sound:", url);
         const response = await this.fetch(url);
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
@@ -313,9 +301,14 @@ export default class SamplerPadComponent {
             height: 100,
         });
 
+        // get the sampler-pad-label by padIndex
+        let samplerPadLabel = this.pads[padIndex].querySelector('.sampler-pad-label');
+
+        // update the sampler-pad-label text
+        samplerPadLabel.textContent = url.split('/').pop();
+
     }
 }
-
 
 SamplerPadComponent.prototype._createPad = _createPad;
 SamplerPadComponent.prototype._createFileInput = _createFileInput;
