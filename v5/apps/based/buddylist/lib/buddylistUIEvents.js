@@ -58,7 +58,8 @@ export default function buddylistUIEvents() {
   });
 
   // Send a buddy request form
-  $('.sendBuddyRequest').on('click', () => {
+  $('.sendBuddyRequest').on('click', (ev) => {
+    ev.preventDefault();
     $('.you_have_no_buddies').html('Buddy Request Sent!');
     let buddyName = $('.buddy_request_name').val() || $(this).html();
     if (!buddyName) {
