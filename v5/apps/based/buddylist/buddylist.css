@@ -281,16 +281,20 @@
 
     .aim-input {
         font-size: 48px;
-        height: 128px;
+        height: 96px;
     }
 
     .button-bar-button {
-        width: 128px !important;
-        height: 128px !important;
+        width: 64px !important;
+        height: 64px !important;
     }
     .aim-send-btn {
         height: 128px;
+        width: 128px;
 
+    }
+    .emojiPicker {
+        display: none;
     }
 }
 

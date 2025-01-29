@@ -4,13 +4,9 @@ export default function defaultMenuBar (bp) {
     let selectMusicPlaylist = `
     <select name="selectPlaylist" class="selectPlaylist float_right">
     <option>Select music playlist...</option>
-    <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
-    <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
     <option value="1397230333">Buddy House 0 ( 33 Tracks )</option>
-    <option value="942151069">Andrew Potthast: Bangas</option>
-    <option value="938848927">Andrew Potthast: Burning Man Set</option>
-    <option value="839091662">Featured Buddy: Andrew Potthast</option>
-    <option value="1427279635">Featured Buddy: ioqpvs</option>
+    <option value="1397493787">Buddy House 1 ( 10 Tracks )</option>
+    <option value="1427128612">Buddy House 2 ( 10 Tracks )</option>
     </select>
     `;
     

@@ -11,6 +11,16 @@ export default function defaultDesktopShortcuts() {
     });
 
     bp.apps.desktop.addShortCut({
+        name: 'buddylist',
+        icon: `desktop/assets/images/icons/icon_profile_64.png`,
+        label: 'BuddyList',
+    }, {
+        onClick: () => {
+            bp.open('buddylist');
+        }
+    });
+
+    bp.apps.desktop.addShortCut({
         name: 'pad',
         icon: `desktop/assets/images/icons/icon_pad_64.png`,
         label: 'Pads',
@@ -120,7 +130,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-
     bp.apps.desktop.addShortCut({
         name: 'sampler',
         icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
@@ -130,6 +139,18 @@ export default function defaultDesktopShortcuts() {
             bp.open('sampler');
         }
     });
+
+    /*
+    bp.apps.desktop.addShortCut({
+        name: 'audio-player',
+        icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
+        label: 'Audio Player',
+    }, {
+        onClick: () => {
+            bp.open('audio-player');
+        }
+    });
+    */
 
     bp.apps.desktop.addShortCut({
         name: 'audio-visual',

@@ -121,7 +121,9 @@ export default class BuddyList {
             height: 500,
             x: x,
             y: 75,
-            onClose: () => this.bp.log('buddyListWindow onClose'),
+            onClose: () => {
+                this.opened = false;
+            }
         });
 
     }

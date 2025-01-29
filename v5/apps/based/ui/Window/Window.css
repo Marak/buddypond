@@ -158,8 +158,8 @@
 
 @media (max-width: 1000px) {
     .window-title-bar {
-        height: 128px;
-        font-size: 48px;
+        height: 64px;
+        font-size: 32px;
         padding-left: 32px;
     }
     .window-title-bar img {

@@ -24,7 +24,7 @@
         left: 5px !important;
         top: 7px !important;
         width: calc(100% - 10px) !important; /* Full width for mobile */
-        height: calc(100vh - 160px) !important; /* Full height for mobile */
+        height: calc(100vh - 120px) !important; /* Full height for mobile */
     }
 
     .window-content {
