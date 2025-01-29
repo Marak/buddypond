@@ -204,6 +204,9 @@ class Window {
         this.titleBar = document.createElement("div");
         this.titleBar.classList.add("window-title-bar");
 
+        // on double click maximize
+        this.titleBar.ondblclick = () => this.maximize();
+
         if (this.icon) {
             let iconTitleBar = document.createElement("img");
             iconTitleBar.src = this.icon;
@@ -559,8 +562,8 @@ class Window {
             this.isMaximized = false;
         } else {
             this.container.style.width = "100vw";
-            this.container.style.height = "100vh";
-            this.container.style.top = "0";
+            this.container.style.height = "calc(100vh - 75px)";
+            this.container.style.top = "23px";
             this.container.style.left = "0";
             this.isMaximized = true;
         }
