@@ -98,18 +98,10 @@ export default function defaultMenuBar (bp) {
     {
       label: 'Window',
       submenu: [
-        { label: 'Full Screen', click: () => JQDX.openFullscreen($('body').get(0)) }, // legacy API
+        { label: 'Full Screen', click: () => bp.apps.ui.toggleFullScreen() }, // legacy API
         {
           label: 'Hide All Windows', click: () => {
-    
-            // Legacy API
-            desktop.ui.displayMode = 'min';
-            // If any windows are visible, hide all.
-            $('div.window').hide();
-    
-            // New API
             bp.apps.ui.windowManager.minimizeAllWindows();
-    
           }
         },
         {
@@ -127,8 +119,6 @@ export default function defaultMenuBar (bp) {
               $('.setWindowAsWallpaper').html('Set Active Window to Wallpaper');
             }
             return false;
-    
-    
           }
         }
       ]

@@ -1,6 +1,8 @@
 import AudioPlayerClass from './AudioPlayer.js';
 import PlayerKeyboardBindings from './lib/PlayerKeyboardBindings.js';
 
+import menuBarConfig from './lib/menuBarConfig.js';
+
 export default class AudioPlayer {
   constructor(bp) {
     this.bp = bp;
@@ -24,6 +26,39 @@ export default class AudioPlayer {
     window.aubio = aubio.default;
     PlayerKeyboardBindings.bindKeys(this.bp);
 
+
+    // adds a document click handler that will revert the menuBar to default if clicked
+    // anywhere outside of the menuBar or any of the audioPlayer windows
+    $(document).on('click', (e) => {
+      let menuBar = this.bp.apps.menubar;
+      let audioPlayers = this.audioPlayers;
+      let clickedOnAudioPlayer = false;
+      let clickedOnMenuBar = false;
+      let clickedOnWindow = false;
+
+      // check if the click was on the menuBar
+      if ($(e.target).closest('#menuBar').length) {
+        clickedOnMenuBar = true;
+      }
+
+      // check if the click was on an audioPlayer window
+      audioPlayers.forEach((ap) => {
+        // check for data-type=audioPlayer
+        if ($(e.target).closest(`[data-type="audioPlayer"]`).length) {
+          clickedOnAudioPlayer = true;
+        }
+      });
+
+      // if the click was not on the menuBar or an audioPlayer window, revert to default menu
+      if (!clickedOnMenuBar && !clickedOnAudioPlayer) {
+        menuBar.setDefaultMenu();
+      }
+      
+      if (clickedOnAudioPlayer) {
+        menuBar.setMenu("customMenu", menuBarConfig);
+      }
+
+    });
     this.audioPlayers = [];
 
   }
@@ -36,6 +71,10 @@ export default class AudioPlayer {
     console.log("AudioPlayer open", config);
 
     let playerId = 'audio-player-' + this.audioPlayers.length;
+    let menuBar = this.bp.apps.menubar;
+
+    // TODO: this should trigger on open and unload on close / onfocus
+    menuBar.setMenu("customMenu", menuBarConfig);
 
     let audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
       id: playerId,
@@ -62,6 +101,9 @@ export default class AudioPlayer {
           return ap.id === playerId;
         });
         audioPlayer.close();
+        let menuBar = this.bp.apps.menubar;
+
+        menuBar.setDefaultMenu();
       }
     });
     console.log('new win', this.audioPlayerWindow)

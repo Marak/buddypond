@@ -1,32 +1,59 @@
-// MenuBar.js
-
+/* MenuBar.js - Marak Squires - BuddyPond - 2023 */
 import defaultMenuBar from "./lib/defaultMenuBar.js";
 
 export default class MenuBar {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.options = options;
+        this.menus = {}; // Store named menus
+        this.currentMenuData = []; // Active menu structure
+        this.menuBarElement = null; // Reference to menu DOM element
     }
 
     async init() {
         await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
     }
 
-    load (menuData = {}, parent = document.body) {
-        menuData = defaultMenuBar(this.bp);
-        let menuBar = new MenuBarClass(menuData);
-        let menu = menuBar.createMenu();
-        parent.appendChild(menu);
-        return;
-
+    load(menuData = {}, parent = document.body) {
+        this.currentMenuData = defaultMenuBar(this.bp);
+        this.renderMenu(parent);
     }
 
-    createMenu(menuData = [
-        { label: 'Item 1', submenu: [{ label: 'Sub Item 1', submenu: [{ label: 'Sub Sub Item 1' }] }] },
-        { label: 'Item 2' }
-    ]) {
-        const menuBar = new MenuBarClass(menuData);
-        return menuBar.createMenu();
+    setDefaultMenu() {
+        this.currentMenuData = defaultMenuBar(this.bp);
+        this.renderMenu();
+    }
+
+    setMenu(menuName, menuItems) {
+        if (menuName) {
+            if (menuItems) {
+                this.menus[menuName] = menuItems; // Add/update a named menu
+            } else {
+                delete this.menus[menuName]; // Remove a named menu
+            }
+        } else {
+            this.currentMenuData = menuItems || []; // Replace the entire menu
+        }
+
+        // Ensure that the most relevant menu data is used
+        const menuData = this.currentMenuData.length 
+            ? this.currentMenuData 
+            : Object.values(this.menus).flat();
+
+        console.log('new menuData', menuData);
+        this.renderMenu(undefined, menuItems);
+    }
+
+    renderMenu(parent = document.body, menuData = this.currentMenuData) {
+        if (this.menuBarElement) {
+            this.menuBarElement.remove();
+        }
+
+        console.log('Rendering menu with data:', menuData);
+
+        this.menuBarElement = new MenuBarClass(menuData).createMenu();
+        console.log('new menuBarElement', parent, this.menuBarElement);
+        parent.appendChild(this.menuBarElement);
     }
 }
 
@@ -34,7 +61,6 @@ class MenuBarClass {
     constructor(menuTemplate, options = {}) {
         this.menuTemplate = menuTemplate;
         this.menuBarElement = null;
-        this.menuTimer = null;
         this.id = options.id || "menu-bar";
     }
 
@@ -42,18 +68,23 @@ class MenuBarClass {
         this.menuBarElement = document.createElement("div");
         this.menuBarElement.classList.add("menu-bar");
         this.menuBarElement.id = this.id;
-        this.menuTemplate.forEach((menuItem) => this.createMenuItem(menuItem));
+
+        this.menuTemplate.forEach(menuItem => this.createMenuItem(menuItem));
         this.addGlobalEventListeners();
+
         return this.menuBarElement;
     }
 
     createMenuItem(menuItem) {
         const menuButton = document.createElement("div");
         menuButton.classList.add("menu-item");
+        menuButton.innerHTML = menuItem.label;
+
         if (menuItem.flex) {
             menuButton.style.flex = menuItem.flex;
         }
 
+        /*
         if (menuItem.label instanceof HTMLElement) {
             menuButton.appendChild(menuItem.label);
         } else if (typeof menuItem.label === 'object') {
@@ -61,118 +92,74 @@ class MenuBarClass {
         } else {
             menuButton.innerHTML = menuItem.label;
         }
+        */
+
 
         if (menuItem.className) {
             menuButton.classList.add(menuItem.className);
         }
 
-        menuButton.onclick = () => {
-            if (menuItem.label.click) {
-                menuItem.label.click();
+        menuButton.onclick = (event) => {
+            event.stopPropagation();
+            if (menuItem.click) {
+                menuItem.click();
             }
-            // this.closeAllSubmenus();
         };
 
         if (menuItem.submenu) {
-            this.createSubMenu(menuItem.submenu, menuButton, 0);
+            const submenuContainer = this.createSubMenu(menuItem.submenu);
+            menuButton.appendChild(submenuContainer);
+            menuButton.addEventListener("mouseover", () => submenuContainer.style.display = "block");
+            menuButton.addEventListener("mouseleave", () => submenuContainer.style.display = "none");
         }
 
         this.menuBarElement.appendChild(menuButton);
     }
 
-    createSubMenu(submenuItems, parentItem, depth) {
+    createSubMenu(submenuItems) {
         const submenuContainer = document.createElement("div");
         submenuContainer.classList.add("submenu");
-        submenuContainer.style.left = `${depth * 100}%`; // Position submenus to the right
-        submenuItems.forEach((subItem) => this.createSubmenuItem(subItem, submenuContainer, depth + 1));
-        parentItem.appendChild(submenuContainer);
-        this.addSubMenuEventListeners(submenuContainer, parentItem, depth);
+
+        submenuItems.forEach(subItem => {
+            const subMenuItem = document.createElement("div");
+            subMenuItem.classList.add("submenu-item");
+            subMenuItem.innerHTML = subItem.label;
+
+            if (subItem.click) {
+                subMenuItem.onclick = (event) => {
+                    event.stopPropagation();
+                    subItem.click();
+                };
+            }
+
+            if (subItem.submenu) {
+                const nestedSubMenu = this.createSubMenu(subItem.submenu);
+                subMenuItem.appendChild(nestedSubMenu);
+                subMenuItem.addEventListener("mouseover", () => nestedSubMenu.style.display = "block");
+                subMenuItem.addEventListener("mouseleave", () => nestedSubMenu.style.display = "none");
+            }
+
+            submenuContainer.appendChild(subMenuItem);
+        });
+
         return submenuContainer;
     }
 
-    createSubmenuItem(subItem, submenuContainer, depth) {
-        const subMenuItem = document.createElement("div");
-        subMenuItem.classList.add("submenu-item");
-        subMenuItem.innerHTML = subItem.label;
-
-        if (subItem.disabled) {
-            subMenuItem.classList.add("disabled");
-        }
-
-        if (subItem.submenu) {
-            let submenuContainer = this.createSubMenu(subItem.submenu, subMenuItem, depth);
-
-            subMenuItem.addEventListener("mouseover", (ev) => {
-                // TOOD: fix this, opens submenus
-                //alert($('.submenu').length)
-                //$('.submenu', submenuContainer).show();
-
-
-                    // clear the menu timer
-                    if (this.menuTimer) {
-                        clearTimeout(this.menuTimer);
-                    }
-                    // ensure all other submenus are hidden
-                    const submenus = subMenuItem.querySelectorAll(".submenu");
-                    submenus.forEach((submenu) => {
-                        console.log("SHOWING SUBMENU", submenu);
-                        // ensure the submenu is not child of current submenuContainer
-                        if (submenu !== submenuContainer && !submenuContainer.contains(submenu)) {
-                            //submenu.style.display = "none";
-                        }
-                        submenu.style.display = "block !important";
-                        subMenuItem.style.display = "block !important";
-                            // submenu.style.display = "none";
-                        //alert('yo')
-                    });
-                    //submenuContainer.style.display = "block";
-
-
-            });
-        }
-
-
-        subMenuItem.onclick = (ev) => {
-            ev.stopPropagation(); // Prevents the submenu from closing immediately after clicking
-            if (subItem.click) subItem.click();
-        };
-
-        submenuContainer.appendChild(subMenuItem);
-    }
-
-    addSubMenuEventListeners(submenuContainer, parentItem, depth) {
-        
-        parentItem.addEventListener("mousedown", () => {
-            clearTimeout(this.menuTimer);
-            // TODO: we can't close all submenus since we need to keep the parent submenu open
-            if (depth === 0) {
-                this.closeAllSubmenus(parentItem);
-            }
-            submenuContainer.style.display = "block";
-
-        });
-
-        parentItem.addEventListener("mouseout", () => {
-           
-        });
-    }
-
     addGlobalEventListeners() {
-        document.addEventListener("click", (ev) => {
-            if (!this.menuBarElement.contains(ev.target)) {
+        document.addEventListener("click", (event) => {
+            if (!this.menuBarElement.contains(event.target)) {
                 this.closeAllSubmenus();
             }
         });
 
-        document.addEventListener("keydown", (ev) => {
-            if (ev.key === "Escape") {
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
                 this.closeAllSubmenus();
             }
         });
     }
 
-    closeAllSubmenus(container) {
-        const submenus = document.querySelectorAll(".submenu");
-        submenus.forEach(submenu => submenu.style.display = "none");
+    closeAllSubmenus() {
+        document.querySelectorAll(".submenu").forEach(submenu => submenu.style.display = "none");
     }
 }

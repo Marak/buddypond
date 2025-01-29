@@ -55,7 +55,9 @@ export default class UI {
         }
 
         if (!this.options.noTabs) {
-            let SimpleTabs = await this.bp.importModule('/v5/apps/based/ui/SimpleTabs.js', {}, false)
+            // what happened here with config? we shouldn't need to reference host here,
+            // TODO: check implementation of importModule with options
+            let SimpleTabs = await this.bp.importModule(this.bp.config.host + '/v5/apps/based/ui/SimpleTabs.js', {}, false)
             this.Tabs = SimpleTabs.default;
 
         }
@@ -97,6 +99,14 @@ export default class UI {
         //document.body.innerHTML = html;
         return 'hello ui';
 
+    }
+
+    toggleFullScreen() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            document.documentElement.requestFullscreen();
+        }
     }
 
     isMobile () {
