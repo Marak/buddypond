@@ -1,10 +1,13 @@
 import defaultRender from './render/defaultRender.js';
 import load from './load.js';
 
+import setBPM from './lib/setBPM.js';
+
 export default class Track {
   constructor(options = {}) {
     this.id = options.id || `track-${Math.random().toString(36).substr(2, 9)}`;
     this.metadata = options || {};
+    this.metadata.cuePoints = this.metadata.cuePoints || [];
     this.provider = options.provider || null;
 
     // Audio properties
@@ -32,11 +35,7 @@ export default class Track {
     // Setup initial audio elements
     this._initializeAudioElements();
 
-
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-
-
 
     this.masterBus = this.audioContext.createGain(); // Create a gain node as the master bus
     this.distributionNode = this.audioContext.createGain(); // Node for distribution
@@ -76,9 +75,16 @@ export default class Track {
 
   }
 
-
-
   async unload() {
+
+    console.log('Unloading track:', this);
+
+    this.metadata = {};
+
+    // remove t.element from the DOM
+    if (this.waveform) {
+      this.waveform.destroy();
+    }
 
     if (!this.isLoaded) return;
     // Cleanup audio nodes
@@ -96,10 +102,15 @@ export default class Track {
       this.audioContext.close();
     }
 
+    // clean-up audioContext and audioBuffer
+    this.audioContext = null;
+    this.audioBuffer = null;
+
     this.isLoaded = false;
 
 
-
+    console.log('track should be fully unloaded now going to rebind with empty data', this);
+    this.databind();
 
 
   }
@@ -109,15 +120,23 @@ export default class Track {
     await this.unrender();
   }
 
-
-  play() {
-    // this.currentTime = time;
-  }
-
   // Rendering methods
   setRenderer(name, renderFunction) {
     // this.renderer = renderFunction; // set as active renderer, maybe can remove this
     this.renderers.set(name, renderFunction);
+    this.currentRenderer = name;
+  }
+
+  databind() {
+    const renderer = this.renderers.get(this.currentRenderer);
+    if (!renderer) {
+      throw new Error(`No renderer found for name: ${this.currentRenderer}`);
+    }
+    const databind = renderer.databind;
+    if (!databind) {
+      throw new Error(`No databind function found for renderer: ${this.currentRenderer}`);
+    }
+    return databind(this);
   }
 
   render() {
@@ -126,11 +145,14 @@ export default class Track {
     }
 
     const renderer = this.renderers.get(this.currentRenderer);
+    const render = renderer.render;
+    const databind = renderer.databind;
+    console.log("using renderer:", this.currentRenderer, renderer);
     if (!renderer) {
       throw new Error(`No renderer found for name: ${this.currentRenderer}`);
     }
 
-    this.element = renderer(this);
+    this.element = render(this);
     this.isRendered = true;
     return this.element;
   }
@@ -240,21 +262,67 @@ export default class Track {
       this.audioElement.pause();
     }
 
-
   }
 
   play() {
 
     // check to make sure is not already playing
     if (this.audioElement.paused) {
+      console.log("Playing audio track");
       this.audioElement.play();
     }
+  }
+
+  playPause() {
+    if (this.audioElement.paused) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  }
+
+  setTime(time) {
+    this.audioElement.currentTime = time;
+  }
+
+  cueTo(cueNumber) {
+
+    const cue = this.metadata.cuePoints[cueNumber - 1] ?? 0;
+    let cueTime = cue.time;
+    //cueTime -= 4;
+    console.log("CUE TO TIME", cueTime);
+
+    // Set the time first, then we can determine if phase lock of sync needs to be performed
+    // a phase lock true will mean that we don't start / play / cue the track until time is ready ( forward delay )
+    // This is like reverse direction of the current phaseLockPlayback which is a backward delay
+    // for cueing with a forward motion, we need to delay the play / cue until the time is ready
+
+    // will this "click?"? do we need to toggle volume or order?
+    this.setTime(cueTime); // Snap precisely to cueTime
+
+
+  }
+
+  setCuePoint(cueNumber, time) {
+    let cue = {
+      time: time,
+      name: `Cue ${cueNumber}`,
+      type: 'cue'
+    };
+    this.metadata.cuePoints[cueNumber - 1] = cue;
+
+    // update the cue point in the UI ??
+    //transport.renderCuePoint(cueNumber - 1, t.detailedWaveform, t, cue)
+    //transport.renderCuePoint(cueNumber - 1, t.overviewWaveform, t, cue)
+
+    // optionally save the track with new metadata
+    // library.updateTrackData(t);
+
   }
 
   isPlaying() {
     return !this.audioElement.paused;
   }
-
 
   emit(event, data) {
     // console.log("AudioTrack Emitting event:", event, data);
@@ -270,8 +338,72 @@ export default class Track {
     this.eventListeners[event].push(callback);
   }
 
+  toggleMute() {
+    this.audioElement.muted = !this.audioElement.muted;
+  }
+
+  toggleKeyLock() {
+    this.audioElement.preservesPitch = !this.audioElement.preservesPitch;
+  }
+
+  mute() {
+    this.audioElement.muted = true;
+    // set the style on the volumeSliderIcon if exists
+    if (this.transport.volumeSliderIcon) {
+      this.transport.volumeSliderIcon.classList.remove('headphones-active');
+      this.transport.volumeSliderIcon.classList.add('headphones-inactive');
+    }
+  }
+
+  unmute() {
+    this.audioElement.muted = false;
+    // set the style on the volumeSliderIcon if exists
+    if (this.transport.volumeSliderIcon) {
+      this.transport.volumeSliderIcon.classList.remove('headphones-inactive');
+      this.transport.volumeSliderIcon.classList.add('headphones-active');
+    }
+  }
+
+  setVolume(value) {
+    this.audioElement.volume = value;
+  }
+
+  getTitle() {
+
+    let metadata = this.metadata;
+    let trackTitle = metadata.fileName;
+
+    if (!trackTitle) {
+      return 'Load Track';
+    }
+
+    if (metadata.title) {
+      trackTitle = metadata.title;
+      if (metadata.artist) {
+        trackTitle = `${metadata.artist} - ${metadata.title}`;
+      }
+    } else if (metadata.artist) {
+      trackTitle = metadata.artist;
+    }
+    // clean up track title ( todo: rename files for real )
+    trackTitle = trackTitle.replace('_(mp3.pm)', '');
+    trackTitle = trackTitle.replace('.mp3', '');
+    // replaces all instances of _ with space
+    trackTitle = trackTitle.split('_').join(' ');
+
+    console.log("GOT TRACK TITLE", trackTitle);
+    return trackTitle;
+
+
+  }
+
 }
 
+Track.prototype.getAudioBuffer = async function () {
+  this.audioBuffer = await this.audioContext.decodeAudioData(audioData);
+}
+
+Track.prototype.setBPM = setBPM;
 
 
 

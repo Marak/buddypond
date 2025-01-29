@@ -1,0 +1,2836 @@
+body {
+    background-color: #131213;
+}
+
+/* By default, hide focus outlines */
+button:focus {
+    outline: none;
+}
+
+/* Show focus outline only when the class is applied */
+body.show-focus-outline button:focus {
+    outline: 2px solid #007BFF;
+    /* Example: Blue focus outline */
+}
+
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin: 0px;
+    padding: 0px;
+}
+
+/*
+
+.waveform {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+
+.waveform-container-details {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    */
+
+/*
+        */
+
+
+
+
+#party-container .btn-active {
+    margin: 5px;
+}
+
+.playButton {
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    width: 100px;
+    height: 80px;
+    margin: 1px;
+}
+
+.playButton:hover {
+    background-color: #333;
+    color: white;
+}
+
+
+
+.cueButton {
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    height: 80px;
+    width: 100px;
+}
+
+.cueButton:hover {
+    background-color: #333;
+    color: white !important;
+}
+
+.playPauseCueButtonsA {
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playPauseCueButtonsB {}
+
+
+/* Container for scrolling effect */
+.titleContainer {
+    position: absolute;
+    width: 385px;
+    /* Match max-width of titleElement */
+    overflow: hidden;
+    /* Ensure scrolling happens inside this area */
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    /* Match design style */
+    border-radius: 2px;
+    padding: 0px;
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050;
+    margin-bottom: 35px;
+    top: 4px;
+    left: 4px;
+}
+
+.titleElement {
+    position: relative;
+    color: #aeafaf;
+    font-size: 18px;
+    padding: 5px;
+    left: 10px;
+    max-height: 60px;
+    line-height: 0.8em;
+    width: 385px;
+    max-width: 385px;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    overflow: hidden;
+    /* Hide overflow content */
+    text-overflow: ellipsis;
+    /* Show "..." for truncated text */
+    display: flex;
+    align-items: center;
+}
+
+
+.tagsElement {
+    position: absolute;
+    color: #aeafaf;
+    font-size: 14px;
+    padding: 5px;
+    text-overflow: ellipsis;
+    top: 50px;
+    left: 140px;
+    max-height: 60px;
+    line-height: 1.5em;
+    width: 375px;
+}
+
+button,
+input[type="range"] {}
+
+#library-container {
+    z-index: 99999;
+    display: none;
+    height: calc(100% - 30px);
+    /* 80% of the viewport height */
+    overflow: hidden;
+    /* Prevent content overflow outside the container */
+    width: 100%;
+    background-color: #333;
+    /* Optional background */
+}
+
+#resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    /* Adjustable height of the handle */
+    cursor: ns-resize;
+    /* Vertical resize cursor */
+    background-color: #333;
+    /* Handle color */
+}
+
+
+.library-layout {
+    display: grid;
+    grid-template-columns: 250px auto;
+    /* Fixed width for playlists and flexible width for tracks */
+    gap: 5px;
+    /* Consistent spacing between the columns */
+    color: #fff;
+    height: 100%;
+    /* Ensure the layout spans the full height of the container */
+    margin: 0 auto;
+    /* Center the layout horizontally */
+}
+
+.playlist-column {
+    padding: 10px;
+    background-color: #222;
+    border-radius: 5px;
+    /* max-width: 300px; */
+    overflow-y: auto;
+    /* Scroll vertically if content overflows */
+}
+
+.playlist-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    /* Ensure the list doesn't add extra spacing */
+}
+
+.playlist-list li {
+    cursor: pointer;
+    padding: 5px;
+    color: #aeafaf;
+}
+
+.playlist-list li:hover {
+    color: #fff;
+    background-color: #333;
+}
+
+.track-column {
+    padding: 10px;
+    background-color: #222;
+    border-radius: 5px;
+    height: 100%;
+    overflow-y: hidden;
+    /* Enable scrolling if content exceeds the height */
+    box-sizing: border-box;
+
+}
+
+.track-search {
+    /* width: calc(100% - 20px); */
+    /* Responsive width with consistent padding */
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    /* Ensure padding doesn't affect width */
+    color: black;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    margin-top: 10px;
+    width: 220px;
+}
+
+.track-table {
+    /* width: 100%; */
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
+
+    /* Subtle shadow effect */
+}
+
+.track-table th,
+.track-table td {
+    padding: 12px 15px;
+    text-align: left;
+    color: #aeafaf;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    border-bottom: 1px solid #444;
+    overflow: hidden;
+    white-space: nowrap;
+
+    /* Smooth transition on hover */
+}
+
+
+.track-table td.song-cover {
+    width: 1%;
+}
+
+.track-table td.song-key {
+    width: 2%;
+}
+
+.track-table td.song-bpm {
+    width: 2%;
+}
+
+
+.track-table td.song-title {
+    width: 84%;
+    max-width: 100px;
+    overflow: hidden;
+}
+
+.track-table td.song-energy {
+    width: 10%;
+}
+
+
+.track-table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    /* Uppercase headers for emphasis */
+    letter-spacing: 1px;
+}
+
+
+.track-table tbody {
+    width: 100%;
+}
+
+
+/* Row hover effect - This will apply to the entire row */
+.track-table tr:hover {
+    background-color: #2b2b2b !important;
+    /* Lighter background for the entire row */
+}
+
+/* Even and odd row colors for better readability */
+.track-table tr:nth-child(even) {
+    background-color: #1f1f1f;
+}
+
+.track-table tr:nth-child(odd) {
+    background-color: #222;
+}
+
+/* Tally/summary section at the bottom of the table */
+.track-summary {
+    flex: 1;
+    text-align: end;
+    height: 35px;
+    display: flex;
+    /* flex this entire section right*/
+    justify-content: flex-start;
+    gap: 20px;
+    text-align: right;
+    font-size: 16px;
+    color: #ccc;
+    /* Add spacing above the summary */
+    z-index: 4000 !important;
+    line-height: 1.5em;
+    margin-right: 20px;
+}
+
+/* Set body to use Flexbox for layout */
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 10px;
+    overflow: hidden;
+    /* Prevents scrolling issues */
+}
+
+/* Global controls at the top */
+#globalControls {
+    height: 50px;
+    /* width: 100%; */
+    flex-shrink: 0;
+    z-index: 3000;
+    background-color: rgba(20, 20, 20, 0.9);
+    color: white;
+}
+
+.top-section {
+    display: flex;
+    margin-top: 25px;
+}
+
+/* Footer container at the bottom */
+#footer-container {
+    position: fixed;
+    bottom: 10px;
+    height: 50px;
+    width: 100%;
+    flex-shrink: 0;
+    z-index: 3000;
+    /* background-color: rgba(20, 20, 20, 0.9); */
+}
+
+.library-menu-button {
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 18px;
+    z-index: 3000;
+    height: 40px;
+    width: 200px;
+    border-radius: 0 8px 0 0;
+    text-align: center;
+}
+
+.library-menu-button:hover {
+    background-color: #444;
+}
+
+#importPlaylistCTA {
+    background-color: #333;
+    color: white;
+    padding: 0px;
+    cursor: pointer;
+    z-index: 20000;
+    height: 60px;
+    width: 175px;
+    text-align: center;
+    display: none;
+}
+
+#importPlaylistCTA:hover {
+    background-color: #444;
+}
+
+
+#hamburger2 {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    z-index: 3000;
+
+}
+
+.nudgeContainer {
+    position: absolute;
+    right: 260px;
+    top: 70px;
+    width: 128px;
+    z-index: 9001;
+    opacity: 0.8;
+}
+
+.nudgeContainer button {
+    width: 48px;
+    height: 32px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
+
+.syncButton {
+    background-color: none !important;
+    position: absolute;
+    left: -52px;
+    top: 70px;
+    font-size: 12px;
+    height: 32px;
+    width: 60px;
+    font-weight: bold;
+    /* color: rgb(0, 192, 227); */
+    background-color: #000;
+}
+
+.syncButton:hover {
+    cursor: pointer;
+}
+
+.sync-btn-active {
+    background-color: black;
+    color: rgb(0, 192, 227) !important;
+}
+
+.sync-btn-inactive {
+    color: white !important;
+}
+
+.transport-util-buttons-container {
+    position: absolute;
+    bottom: 5px;
+    right: 200px;
+}
+
+.transport-util-buttons-container button {
+    width: 48px;
+    height: 48px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
+
+.nextTrackButton {
+    color: #aeafaf;
+    font-size: 18px;
+    position: relative;
+}
+
+.nextTrackButton:hover {
+    color: white;
+}
+
+.nextTrackButton:active {
+    color: orange;
+}
+
+
+
+.closeButton {
+    color: #aeafaf;
+    font-size: 18px;
+}
+
+.closeButton:hover {
+    color: white;
+}
+
+.cloneButton {
+    color: #aeafaf;
+    font-size: 18px;
+}
+
+.cloneButton:active {
+    color: orange;
+}
+
+.cloneButton:hover {
+    color: white;
+}
+
+.openSuggestionsButton {
+    color: #aeafaf;
+    font-size: 18px;
+}
+
+.openSuggestionsButton:hover {
+    color: white;
+}
+
+.openSuggestionsButton:active {
+    color: orange;
+}
+
+.crossfader-slider {
+    position: relative;
+}
+
+.slot-label {
+    color: #aeafaf;
+    font-size: 32px;
+}
+
+.slot-labelA {
+    color: #aeafaf;
+}
+
+.slot-labelB {
+    color: #aeafaf;
+}
+
+.loop-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    font-family: monospace;
+    width: 55px;
+
+
+}
+
+
+.loop-controls {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    /* monospace font for consistent button width */
+}
+
+.loopControlsA {
+    position: relative;
+    top: 30px;
+    right: 0px;
+    border: 3px solid #333;
+}
+
+.loopControlsB {}
+
+.loop-buttons-wrapper {
+    overflow: hidden;
+    /* width: 120px; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.loop-buttons {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.loop-nav {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    height: 50px;
+}
+
+.loop-nav-left {
+    margin-right: 0px;
+}
+
+.loop-nav-right {
+    margin-left: 0px;
+}
+
+
+.cue-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 1px;
+    margin-bottom: 0px;
+}
+
+.cue-mapped {
+    color: rgb(0, 192, 227) !important;
+}
+
+.fancy-button {
+    border: none;
+
+    border-radius: 0px;
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050;
+    font-family: Arial, sans-serif;
+    color: white;
+    transition: all 0.2s ease-in-out;
+
+
+}
+
+.fancy-button:hover {
+    color: orange;
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    box-shadow: 1px 1px 2px #1a1a1a, -1px -1px 2px #404040;
+
+}
+
+.cue-button {
+    position: relative;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 75px;
+    height: 60px;
+    border-radius: 0px;
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050;
+    font-family: Arial, sans-serif;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.cue-button:hover {
+    color: orange;
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    box-shadow: 1px 1px 2px #1a1a1a, -1px -1px 2px #404040;
+
+}
+
+.cue-button:active {
+    box-shadow: inset 4px 4px 8px #1a1a1a, inset -4px -4px 8px #404040;
+    background: #2f2f2f;
+}
+
+.cue-button .cue-number {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    font-size: 14px;
+    color: white;
+    opacity: 0.8;
+}
+
+.cue-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 3px;
+}
+
+
+
+.btn-active {
+    background-color: #3a3a3a;
+    /*
+    background-color: rgb(0, 192, 227) !important;
+    box-shadow: inset 2px 2px 6px #rgb(0, 192, 227), inset -2px -2px 6px #cc7000;
+    */
+    /* color: #aeafaf !important; */
+    color: white !important;
+}
+
+.btn-inactive {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-inactive:hover {
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-selected {
+    background-color: rgb(0, 192, 227) !important;
+    color: white;
+    cursor: pointer;
+}
+
+/*
+
+.btn-active {
+    color: white !important;
+    background-color: orange !important;
+    cursor: pointer;
+}
+
+.btn-inactive {
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+
+}
+
+.bnt-selected {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+
+}
+
+
+*/
+
+.btn-shift-active {
+    color: green !important;
+    cursor: pointer;
+}
+
+.library-table {
+    position: fixed;
+    bottom: 50px;
+    background-color: black;
+    color: white;
+    display: none;
+    border: 1px solid #ddd;
+    max-height: 83vh;
+    overflow-y: auto;
+    z-index: 4000;
+}
+
+.library-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.library-table th,
+.library-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.library-table input[type="button"] {
+    width: 100%;
+    /*background-color: #f1f1f1;*/
+    border: none;
+    padding: 8px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.library-table input[type="button"]:hover {
+    background-color: #ddd;
+}
+
+.masterButton {
+    font-size: 16px;
+    padding: 5px;
+}
+
+
+
+#transport-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: auto;
+    /* padding-bottom: 20px; */
+    /* Smooth scrolling for better UX */
+    scroll-behavior: smooth;
+    /* height: 100%; */
+    /* top: 70px; */
+    color: white;
+}
+
+/* Style for the side element */
+.side-element {
+    position: absolute;
+    left: 0px;
+    /* Position outside the bounding box */
+    top: 0;
+    width: 40px;
+    height: 100%;
+    color: white;
+    background-color: #333;
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.side-element button {
+    margin: 5px 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: #ff5722;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.side-element button:hover {
+    background: #e64a19;
+    transform: scale(1.1);
+}
+
+
+/* Track Container - Individual track styling */
+.track-container {
+    /* Full width */
+    /* width: 980px; */
+    width: 100%;
+    /* min-width: 980px; */
+    /* changes for mobile */
+    /* min-height: 330px; */
+    /* Height for each track */
+    border: 2px solid #333 !important;
+    /* Border for visibility */
+    border-radius: 5px;
+    touch-action: none;
+    position: relative;
+    margin-bottom: 25px;
+    /* padding-bottom: 65px; */
+    /* Disable default touch actions */
+    background: black;
+    z-index: 2;
+    min-height: 330px;
+}
+
+/* Crossfader Column - Stack crossfaders vertically */
+#crossfader-column {
+    z-index: 3001;
+    /*width: 100%;*/
+    /* Center crossfaders horizontally */
+    overflow: visible;
+    width: 100px;
+    height: 100vh;
+    border: 5px solid #444;
+    background: #2b2b2b;
+    align-items: flex-start;
+    flex-direction: column;
+    display: none !important;
+}
+
+
+/* Crossfader Container */
+#crossfader-container {
+    /* position: relative;
+    top: 40px; */
+    /* Same height as the track containers */
+    background: #2b2b2b;
+    /* Dark background for visibility */
+    /* Optional border */
+    /* Center the slider vertically */
+}
+
+
+/*first track container */
+.track-container:first-child {
+    /*margin-top: 10px;*/
+}
+
+/* Common styles for control sections */
+.track-controls {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    color: #fff;
+}
+
+.track-active {
+    /* Main border */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+
+    /* Softer glowing effect */
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
+        /* Soft glow */
+        0 0 12px rgba(255, 255, 255, 0.3),
+        /* Medium glow */
+        0 0 18px rgba(255, 255, 255, 0.2),
+        /* Outer glow */
+        inset 0 0 3px rgba(255, 255, 255, 0.3);
+    /* Inner glow */
+
+    /* Subtle background shine */
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+
+/* Top controls - centered and with a fixed width */
+.top-controls {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    /* Adjust width as needed */
+    justify-content: flex-start;
+}
+
+/* Bottom controls - centered and with a fixed width */
+.bottom-controls {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    margin: 0px;
+    /*
+    transform: translateX(-50%);
+    width: 60%;
+    justify-content: space-around;
+    */
+}
+
+
+.left-controls {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* Stack rows vertically */
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+    /* Space between rows */
+}
+
+.slider-component {
+    border-radius: 10px;
+    margin: 10px auto;
+    transition: all 0.2s ease-in-out;
+
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    box-shadow: 1px 1px 2px #1a1a1a, -1px -1px 2px #404040;
+    cursor: pointer;
+
+}
+
+.slider-component:hover {
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050;
+}
+
+
+.slider-thumb {
+    border-radius: 8px;
+    cursor: pointer;
+    width: 24px;
+    height: 48px;
+    /* transition: all 0.2s ease-in-out; */
+    /* left: 6px; */
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    box-shadow: inset 1px 1px 3px #aaaaaa, inset -1px -1px 3px #ffffff;
+
+
+}
+
+.slider-thumb:hover {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    box-shadow: 2px 2px 4px #aaaaaa, -2px -2px 4px #ffffff;
+
+}
+
+.slider-thumb:active {
+    background: #cfcfcf;
+    box-shadow: inset 4px 4px 6px #aaaaaa, inset -4px -4px 6px #ffffff;
+}
+
+
+.slider-component .label {
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: white;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.filter-knob {
+    margin-right: 20px;
+    /*
+    position: absolute;
+    left: 160px;
+    top: 20px;
+    */
+    cursor: pointer;
+}
+
+.filter-knob label {
+    /* TODO: we need this text to be "inert" and not trigger selection */
+    /* make label text not highlightable */
+    user-select: none;
+}
+
+.metadata-text {
+    color: #aeafaf;
+}
+
+.data-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* Two columns */
+    grid-template-rows: 1fr 1fr 1fr;
+    /* Three rows */
+    justify-items: start;
+    gap: 8px;
+    /* Optional: space between items */
+    z-index: 100;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 5px;
+    position: absolute;
+    top: 5px;
+    left: 400px;
+    text-align: left;
+}
+
+.data-container div {
+    color: #aeafaf;
+    line-height: 1em;
+    font-size: 18px;
+    width: 60px;
+    justify-self: start;
+}
+
+.time-display,
+.time-duration {
+    text-align: right;
+}
+
+.bpm-percentage {
+    font-size: 14px !important;
+}
+
+.controls-row {
+    display: flex;
+    flex-direction: row;
+    /* Horizontal alignment for volume and filter */
+    gap: 10px;
+    /* Space between volume and filter knob */
+}
+
+
+/* Right controls - keep it as a column */
+
+/* Right controls - keep it as a column */
+.right-controls {
+    right: 5px;
+    top: 0;
+    height: 330px;
+    /* width: 350px; */
+}
+
+.left-container {
+    position: absolute;
+    top: 0px;
+    left: -15px;
+    width: 235px;
+}
+
+.right-container {}
+
+/* New container for the buttons and tempo slider (flex-row) */
+.controls-row {
+    display: flex;
+    align-items: center;
+    /* Center items vertically */
+    justify-content: space-between;
+    /* Ensure space between left and right sections */
+    width: 100%;
+    /* Take up full width of the parent */
+    gap: 10px;
+    /* Optional: space between sections */
+}
+
+.filter-slider {
+    background-color: red;
+    right: 100px;
+    top: 90px;
+    display: none;
+    position: absolute;
+    z-index: 9999;
+}
+
+
+
+/* Neon Glow Animation */
+@keyframes neonGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 40px rgba(255, 255, 0, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 40px rgba(255, 255, 0, 0.8), 0 0 50px rgba(255, 0, 255, 0.8);
+    }
+}
+
+@keyframes hotWhiteGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(0, 255, 0, 1);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 0, 1), 0 0 40px rgba(0, 0, 255, 1);
+    }
+
+    100% {
+        box-shadow: 0 0 40px rgba(0, 0, 255, 1), 0 0 50px rgba(255, 0, 0, 1);
+    }
+}
+
+
+/* Optional: Styling for tempo-buttons section */
+.tempo-buttons {
+    /*
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    */
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Optional: Styling for left section */
+.left-section {
+    padding: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Optional: Styling for right section (slider area) */
+.right-section {
+    position: relative;
+}
+
+.tempo-slider {
+    position: absolute;
+    top: 98px;
+    right: 250px;
+}
+
+.fxSwitch {
+    position: absolute;
+    font-size: 22px;
+    top: 0px;
+    left: 45px;
+    border: 3px solid #333;
+    height: 40px;
+    width: 115px;
+    background-color: black !important;
+    cursor: pointer;
+}
+
+.fxDropdown {
+    position: absolute;
+    font-size: 18px;
+    top: 35px;
+    left: 45px;
+    border: 3px solid #333;
+    height: 40px;
+    width: 115px;
+    background-color: black !important;
+    cursor: pointer;
+}
+
+
+
+.filterEqSwitch {
+    position: relative;
+    font-size: 22px;
+    top: 35px;
+    right: 115px;
+    border: 3px solid #333;
+    height: 40px;
+    width: 115px;
+    background-color: black !important;
+    cursor: pointer;
+}
+
+.volume-slider {
+    position: absolute;
+    margin-left: 20px;
+    margin-bottom: 60px;
+    top: 10px;
+    right: 125px;
+}
+
+.headphones {
+    color: rgba(0, 255, 0, 0.8);
+}
+
+.volumeSliderIcon {
+    position: absolute;
+    top: 10px;
+    left: 199px;
+    z-index: 9001;
+    margin-left: 3px;
+
+}
+
+.headphones:hover {
+    color: rgba(0, 255, 0, 1);
+    cursor: pointer;
+}
+
+.headphones-inactive {
+    color: red;
+    opacity: 0.8;
+}
+
+.headphones-inactive:hover {
+    color: red;
+    opacity: 1;
+}
+
+
+
+.tempo-slider .label {
+    font-size: 16px;
+}
+
+/* Waveform container */
+.waveform-container {
+    /* Remark: using flex causes wavesurfer instances to blink / browser freeze */
+    /* display: flex; */
+    /*
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    */
+    width: 55%;
+    margin-left: 0px;
+    margin-right: auto;
+    margin-top: 70px;
+    /* margin-bottom: 70px; */
+    /*
+    position: absolute;
+    left: '0px';
+    top: '0px';
+    */
+}
+
+/* Individual waveforms */
+.waveform {
+    width: 100%;
+    height: 40%;
+    /* Adjust as needed */
+    background-color: red;
+    margin: 5px 0;
+}
+
+.track {
+    width: 100%;
+    height: 50%;
+    background-color: white;
+}
+
+.waveform-container-detailed {
+    overflow: hidden;
+    min-height: 140px;
+    margin-top: 50px;
+    /* margin-bottom: 10px; */
+}
+
+.waveform-container-detailed .scroll {
+    overflow-x: hidden !important;
+}
+
+.waveform-container-overview {
+    min-height: 55px;
+
+    /*width: 640px;*/
+}
+
+
+
+.callToAction {
+    color: white;
+    font-size: 128px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* wavesurver region plugin */
+.region-label {
+    padding: 0.2em;
+    display: inline-block;
+    margin-top: 0px;
+    color: #aeafaf;
+    border: none !important;
+    line-height: 1em;
+}
+
+.region-label:hover {
+    background-color: #333;
+    color: red !important;
+    cursor: pointer;
+}
+
+.region-label:active {
+    background-color: orange;
+}
+
+.autoDJ-transition-decision {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    z-index: 3000;
+    background-color: rgba(0, 255, 255, 0.9);
+    /* Slight transparency */
+    border-radius: 12px;
+    /* Rounded corners */
+    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+    /* Soft glow effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #003d3d;
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Optional hover effect for an interactive feel */
+.autoDJ-transition-decision:hover {
+    box-shadow: 0px 0px 25px rgba(0, 255, 255, 0.7);
+}
+
+
+.zoom-container {
+    transform: scale(1);
+    /* Default scale */
+    transform-origin: 0 0;
+    /* Scale from top-left corner */
+    width: 100%;
+    /* Maintain full width after scaling */
+}
+
+
+/* Button */
+#users-online-btn {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    margin: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#users-online-btn i {
+    color: #00aaff;
+}
+
+#social-hub-button {
+    z-index: 4444;
+    position: absolute;
+    right: 100px;
+    top: 10px;
+    display: none;
+
+}
+
+/* Modal */
+#social-hub-modal {
+    position: fixed;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.hidden {
+    display: none;
+}
+
+#modal-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    /* width: 90%; */
+    max-height: 90%;
+    overflow-y: auto;
+    color: #fff;
+}
+
+#globe-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#globe-image {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Table */
+#user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#user-table th,
+#user-table td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: left;
+    overflow: hidden;
+    /* Hide content that exceeds cell width */
+    text-overflow: ellipsis;
+    /* Optionally add ellipsis for overflowing text */
+}
+
+#user-table th {
+    background-color: #444;
+    color: #fff;
+}
+
+#user-table td {
+    background-color: #222;
+    color: #aeafaf;
+    line-height: 1.5em;
+    white-space: nowrap;
+    /* You can keep or remove this depending on your needs */
+    overflow: hidden;
+    /* Hide overflowing content */
+    text-overflow: ellipsis;
+    /* Add ellipsis to clipped text */
+}
+
+
+.modal-btn {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 20px;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.modal-btn:hover {
+    background-color: #333;
+    /* slight zoom */
+    transform: scale(1.05);
+}
+
+#close-modal-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+
+
+.user-flag {
+    font-size: 24px !important;
+}
+
+
+.logo {
+    z-index: 20000;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 5px #000;
+    margin-bottom: 0px;
+}
+
+
+/* Container for all tags */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* Space between tags */
+    padding: 10px;
+
+    /*
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    border-radius: 12px; 
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050; 
+    */
+    width: 390px;
+    overflow: hidden;
+    height: 20px;
+    margin-top: 25px;
+    margin-right: 140px;
+    z-index: 44444;
+}
+
+/* Base tag styles */
+.tag {
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffffff;
+    /* White text for contrast */
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    /* Interactive cursor */
+    border: solid 1px #333;
+    /* Optional border */
+    /* box-shadow: inset 2px 2px 4px #1a1a1a, inset -2px -2px 4px #404040; */
+}
+
+/* Add hover effects for interactivity */
+.tag:hover {
+    transform: scale(1.08);
+    /* Slightly enlarge for interactivity */
+
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    /* Gradient matching buttons */
+    box-shadow: 2px 2px 4px #1a1a1a, -2px -2px 4px #505050;
+    /* Slight elevation */
+
+    color: orange;
+    /* Highlight text color */
+}
+
+/* Active state for tags */
+.tag:active {
+    background: #2f2f2f;
+    /* Darker background when pressed */
+    box-shadow: inset 4px 4px 8px #1a1a1a, inset -4px -4px 8px #505050;
+    /* Stronger inset effect */
+    transform: scale(0.95);
+    /* Slight compression to mimic pressing */
+}
+
+/* Specific tag styles
+    background-color: #4caf50; 
+}
+
+.bpm-tag {
+    background-color: #2196f3; 
+}
+
+.genre-tag {
+    background-color: #ff9800; 
+}
+
+.artist-tag {
+    background-color: #e91e63;
+}
+ */
+
+
+/* Modal base styling */
+.modal {
+    position: fixed;
+    overflow: auto;
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    flex-direction: column;
+
+}
+
+/* Modal content container 
+.modal-content {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    width: 100%;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    height: 80vh;   
+    
+}
+    */
+
+/* Modal header */
+.modal-content h2 {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 1.5em;
+}
+
+/* Tag grid - simplified flexbox */
+.modal-content .tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows the tags to wrap to the next line */
+    justify-content: center;
+    /* Aligns items to the start of the flex container */
+    align-items: center;
+    /* Aligns items to the center of the flex container */
+
+    gap: 15px;
+    /* Space between items */
+    margin: 0;
+}
+
+/* Tag item - pairs */
+.modal-content .tag {
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #444;
+    color: #fff;
+    width: 120px;
+    /* Set a fixed width for the tags */
+    margin-right: 5px;
+    display: inline-block;
+    /* Ensures they line up side-by-side */
+}
+
+/* Optional hover effect (if desired) */
+.modal-content .tag:hover {
+    background-color: #666;
+    /* Changes background on hover */
+}
+
+/* Tag hover effect */
+.modal-content .tag:hover {
+    transform: scale(1.05);
+    /* background-color: #555; */
+}
+
+/* top right */
+.modal-close-btn {
+    position: absolute;
+    background-color: #333;
+    bottom: 0px;
+    left: 0px;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.modal-close-btn:hover {
+    background-color: #555;
+}
+
+/* Selected tag */
+.tag.selected {
+    background-color: #4caf50 !important;
+    color: #fff;
+}
+
+
+/* Save button */
+.modal-save-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.modal-save-button:hover {
+    background-color: #45a049;
+}
+
+/* Close button */
+.modal-close-button {
+    background-color: purple;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.modal-close-button:hover {
+    background-color: #d32f2f;
+}
+
+
+/* Footer container styling */
+.import-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* margin-top: 20px; */
+    gap: 10px;
+    z-index: 3000;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+/* Service button styling */
+.import-service {
+    border: none;
+    background: none;
+    padding-right: 10px;
+    transition: transform 0.3s;
+}
+
+.import-service img {
+    width: 111px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.import-service:hover {
+    transform: scale(1.1);
+}
+
+/* Hover effect for icons */
+.import-service img:hover {
+    filter: brightness(1.2);
+}
+
+/* Zoom Reminder Styles */
+#zoom-reminder {
+    position: fixed;
+    bottom: 70px;
+    left: 85vw;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    display: none;
+    /* toggle to flex for testing */
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 5000;
+    width: auto;
+    min-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* On Hover */
+#zoom-reminder:hover {
+    transform: translateX(-50%) scale(1.05);
+    /* Slight scale on hover */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Darken background slightly */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    /* Increase shadow for depth */
+    /* subtle border */
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.zoom-reminder p {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.dismiss-btn {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    /* Smooth transition for scaling and color */
+}
+
+.dismiss-btn:hover {
+    transform: scale(1.2);
+    /* Slightly increase the size */
+    color: #ff4081;
+    /* Change color on hover for a more dynamic effect */
+}
+
+
+.eq-container {
+    margin-bottom: 60px;
+    margin-left: 10px;
+    position: absolute;
+    top: 70px;
+    right: 105px;
+}
+
+.eq-slider-hi {
+    /* color: red; */
+}
+
+.eq-slider-mid {
+    /* color: #00ff00; */
+}
+
+.eq-slider-lo {}
+
+
+#frequency-visualization {
+    display: none;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    width: 300px;
+    background: #000;
+    border: 1px solid #333;
+}
+
+#frequency-visualization .bar {
+    width: 30px;
+    /*background: linear-gradient(to top, red, orange, green);*/
+    background: linear-gradient(to top, green, orange, red);
+
+    transition: height 0.1s ease-out;
+}
+
+
+
+#track-scrolling-placeholder {
+    /*
+    overflow: auto;
+    height: 330px;
+    min-height: 330px;
+    max-height: 330px;
+    */
+}
+
+/* Container for playlist */
+.playlist-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    background: linear-gradient(145deg, #4a4a4a, #2f2f2f);
+    box-shadow: inset 2px 2px 6px #1a1a1a, inset -2px -2px 6px #505050;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Playlist table styling */
+.playlist-table {
+    /* margin-left: 44px; */
+    width: 100%;
+    border-collapse: collapse;
+    /* Remove space between table cells */
+    color: #eaeaea;
+    /* Light text for better contrast */
+    font-family: Arial, sans-serif;
+    background-color: black;
+    /* table-layout: fixed; */
+    overflow: auto;
+    height: 100px;
+    margin-top: 30px;
+
+}
+
+/* Header row styling */
+.playlist-table th {
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    color: orange;
+    /* Highlight headers */
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #444;
+    /* Subtle separator */
+}
+
+.playlist-table tbody {
+    width: 100%;
+}
+
+
+/* Row styling */
+.playlist-table td {
+    padding: 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #333;
+    /* Light row separator */
+    cursor: pointer;
+    color: #bdbdbd;
+    transition: background 0.3s ease, color 0.3s ease;
+
+}
+
+.playlist-table td.song-cover {
+    width: 5%;
+}
+
+.playlist-table td.song-key {
+    width: 2%;
+}
+
+.playlist-table td.song-bpm {
+    width: 2%;
+}
+
+
+.playlist-table td.song-title {
+    width: 59%;
+}
+
+.playlist-table td.song-energy {
+    width: 10%;
+}
+
+.playlist-table tr {
+    height: 50px;
+    /* Set a fixed height for table rows */
+    vertical-align: middle;
+    /* Align content at the top of the cells */
+}
+
+/* Hover effect for rows */
+.playlist-table tr:hover {
+    background: #444;
+    /* Highlight row */
+    color: orange;
+    /* Change text color */
+}
+
+/* Active row styling */
+.playlist-table .active-row {
+    background: #555;
+    color: orange;
+    font-weight: bold;
+}
+
+.playlist-table tr {
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Zebra striping for better UX */
+.playlist-table tr:nth-child(even) {
+    background: #2f2f2f;
+}
+
+#globalBPMDisplay {
+    display: none;
+}
+
+
+.autoDJButton {
+    position: absolute;
+    right: 26px;
+    bottom: 1px;
+    margin: 0px;
+    font-size: 18px;
+}
+
+.phaseLockButton {
+    position: absolute;
+    right: 80px;
+    font-size: 18px;
+    bottom: 1px;
+}
+
+.phaseContainer {
+    height: 100%;
+    background-color: none;
+    width: 100%;
+    z-index: 20000;
+    cursor: pointer;
+}
+
+.phaseDisplay {
+    width: 150px;
+    margin-left: 15px;
+    margin-top: -20px;
+    position: relative;
+    left: calc(50% - 75px);
+    display: none;
+}
+
+
+.deleteButton {
+    color: white;
+    position: absolute;
+    bottom: 1px;
+    left: -5px;
+    font-size: 16px;
+    width: 28px;
+    height: 48px;
+    display: none;
+}
+
+.refreshTrackButton {
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+    font-size: 36px;
+    display: none;
+}
+
+.deck-label {
+    font-size: 36px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.deck-label-active {
+    color: orange;
+}
+
+
+/* Modal container */
+#audioModal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Black overlay */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    /* Dark gradient */
+    border: 2px solid #444;
+    /* Subtle border */
+    border-radius: 8px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6);
+    /* Depth effect */
+    padding: 20px;
+    /* max-width: 500px; */
+    width: 90%;
+    text-align: center;
+    color: #eee;
+    font-family: 'Arial', sans-serif;
+    animation: fadeIn 0.3s ease;
+    height: 70vh;
+    position: relative;
+
+}
+
+/* Modal header */
+.modal-header {
+    font-size: 32px;
+    color: #fff;
+    border-bottom: 1px solid #555;
+    /* Divider */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Device list */
+.device-list {
+    display: grid;
+    grid-gap: 20px;
+    padding: 10px 0;
+}
+
+.device-group {
+    text-align: left;
+}
+
+.device-group label {
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.device-list select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #222;
+    border: 1px solid #555;
+    border-radius: 4px;
+    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.5);
+    /* Depth inside input */
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#audioModal button {
+    background: #333;
+    /* Dark button */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    /* Button depth */
+}
+
+#audioModal button:hover {}
+
+
+
+
+/* Modal Container */
+#camelotModal {
+    display: none !important;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    /* Black overlay */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content
+.modal-content {
+    background: #1e1e1e;
+  
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    color: #eee;
+    animation: fadeIn 0.3s ease-in-out;
+}
+*/
+
+/* Modal Header */
+.modal-header {
+    font-size: 28px;
+    color: #fff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+/* Transition Options Grid */
+.transition-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Transition Card */
+.transition-card {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: left;
+    color: #ddd;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.transition-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Transition Card Titles */
+.transition-card h3 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Transition Card Descriptions */
+.transition-card .description {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+/* Updated Key Change Style */
+.transition-card .key-changes {
+    font-size: 0.85rem;
+    /* Slightly smaller to match details */
+    font-weight: bold;
+    color: #f9f9f9;
+    /* Matches card text but still stands out */
+    background-color: #444;
+    /* Matches the card theme */
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-align: l;
+    margin-top: 5px;
+    /* Adds space between key changes and other details */
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+    /* Adds subtle depth */
+    border: 1px solid #666;
+    /* Matches card border for consistency */
+}
+
+/* Updated Details Flexbox */
+.transition-card .details {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    flex-direction: column;
+    /* Stacks details vertically */
+    align-items: flex-start;
+    /* Aligns content to the left */
+    gap: 5px;
+    /* Adds spacing between child elements */
+}
+
+
+/* Select Buttons */
+.select-btn {
+    background: #0af;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.select-btn:hover {
+    background: #08d;
+}
+
+/* Modal Footer */
+.modal-footer {
+    margin-top: 20px;
+}
+
+.close-btn {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.close-btn:hover {
+    background: #555;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#vibeSelect {
+    font-size: 18px;
+    background-color: #333;
+    color: white;
+    width: 100%;
+}
+
+.vibeSelectorLabel {
+    font-size: 24px;
+    color: white;
+}
+
+/* Scoped styles for the search bar container */
+#search-bar-container {
+    display: flex;
+    flex-direction: row;
+    /* Stack items vertically */
+    align-items: center;
+    /* Align all items to the left */
+    gap: 10px;
+    /* Reduced gap between sections */
+    color: #aeafaf;
+    padding: 10px;
+    border-radius: 5px;
+    /* Optional rounded corners */
+    position: absolute;
+    background-color: grey;
+    height: 40px;
+    width: 100%;
+    z-index: 2000;
+    margin-top: -60px;
+
+}
+
+#search-bar-container input,
+select {
+    background-color: #333;
+    color: white;
+}
+
+
+
+/* CUSTOM style for #search-bar-container input checkbox, custom checkbox color and style*/
+#search-bar-container input[type="checkbox"] {
+    /* change the default appearance of the checkbox */
+    accent-color: rgb(0, 192, 227);
+    background-color: black !important;
+}
+
+#search-bar-container .bpm-range-container,
+.key-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+#search-bar-container .key-input {
+    width: 40px;
+    margin-left: 5px;
+    /* Small spacing after the label */
+}
+
+#search-bar-container .bpm-input {
+    width: 60px;
+    margin-left: 5px;
+    /* Small spacing after the label */
+}
+
+
+#search-bar-container .energy-selector-holder {
+    /*
+    margin-left: 100px;
+    position: absolute;
+    right: 250px;
+    */
+    position: absolute;
+    left: 800px;
+    bottom: 8px;
+}
+
+.camelot-container {
+    display: flex;
+    flex-direction: row;
+    z-index: 2;
+}
+
+.camelot-label {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.camelot-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 260px;
+    /* needs to be 3 columns, 2 rows ( 6 items total ) */
+}
+
+.camelot-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.camelot-checkbox-wrapper label {
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.camelot-checkbox-wrapper input[type="checkbox"] {
+    cursor: pointer;
+}
+
+
+
+
+#search-bar-container .energy-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+#search-bar-container .energy-input {
+    width: 60px;
+    margin-left: 5px;
+    /* Small spacing after the label */
+}
+
+
+.star {
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+.key-lock-btn {
+    position: relative;
+    bottom: 21px;
+    left: 38px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+}
+
+.key-lock-btn-active {
+    /* use same blue as others*/
+    color: rgb(0, 192, 227);
+}
+
+.key-lock-btn-inactive {
+    color: white;
+}
+
+
+/* Loading Spinner */
+.loading-spinner {
+    /* border: 32px solid rgba(0, 0, 0, 0.2); Light gray */
+    border: 32px solid rgba(51, 51, 51, 0.2);
+    border-top: 32px solid #8a2be2;
+    /* Purple */
+    border-radius: 50%;
+    width: 256px;
+    height: 256px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    /* Center within the parent */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    position: absolute;
+    top: calc(50% - 40px);
+    font-size: 32px;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+/* Loading Container */
+.loading-container {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vertical Columns Container */
+.loading-columns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* cool looking border*/
+    border: 1px solid #8a2be2;
+    background-color: #131213 !important;
+}
+
+/* Vertical Column Style */
+.loading-column {
+    position: absolute;
+    top: 0;
+    width: 36px;
+    height: 100%;
+    background-color: rgba(138, 43, 226, 0.8);
+    /* Translucent purple */
+    animation: column-motion 2s ease-in-out infinite;
+}
+
+/* Left Column Animation */
+.loading-column.left {
+    left: 0;
+    animation: left-column-motion 2s ease-in-out infinite;
+}
+
+/* Right Column Animation */
+.loading-column.right {
+    right: 0;
+    animation: right-column-motion 2s ease-in-out infinite;
+}
+
+/* Left Column Motion Animation */
+@keyframes left-column-motion {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        /* Start/End at edge */
+    }
+
+    50% {
+        transform: translateX(470px);
+        /* Move to the center */
+    }
+}
+
+/* Right Column Motion Animation */
+@keyframes right-column-motion {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        /* Start/End at edge */
+    }
+
+    50% {
+        transform: translateX(-470px);
+        /* Move to the center */
+    }
+}
+
+
+.menu-item-selected {
+    background-color: #00aaff !important;
+    color: black !important;
+    border: rgb(0, 192, 227);
+}
+
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.disabled:hover {
+    background-color: #333;
+    cursor: not-allowed !important;
+}
+
+.qrCodeButton {
+    position: absolute;
+    top: 78px;
+    right: 0px;
+    z-index: 88888;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    width: 110px;
+
+    height: 100px;
+
+    /* Awesome Glow Effect */
+    border-radius: 8px 0 0 8px;
+    /* box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8); */
+
+    /* Smooth Transitions */
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.qrCodeButton:hover {
+    transform: scale(1.1);
+    /* Slightly enlarges */
+    background-color: #555;
+    animation: neonGlow 2s infinite alternate;
+    box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 40px rgba(0, 255, 255, 1);
+}
+
+.qrCodeButton:active {
+    transform: scale(1.2);
+    /* Slightly larger when clicked */
+    box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 50px rgba(0, 255, 0, 1);
+    /* text goes rainbow */
+    background: black;
+    /* switch animation to glowing hot white */
+    animation: hotWhiteGlow 0.4s infinite alternate;
+}
+
+
+#party-container {
+    color: white;
+    z-index: 2;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    margin-top: 0px;
+    gap: 20px;
+    position: absolute;
+    bottom: 80px;
+    right: 0px;
+    /*background-color: #333; */
+    /* border: 4px solid #333; */
+    background-color: none;
+}
+
+
+
+.partyButton {
+    z-index: 1 !important;
+    right: 0px;
+    bottom: 10px;
+    position: relative;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    width: 100px;
+
+    height: 100px;
+    margin: 1px;
+
+    /* Awesome Glow Effect */
+    border-radius: 8px 0 0 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+
+    /* Smooth Transitions */
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.partyButton:hover {
+    transform: scale(1.1);
+    /* Slightly enlarges */
+    background-color: #555;
+    animation: neonGlow 2s infinite alternate;
+    box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 40px rgba(0, 255, 255, 1);
+}
+
+.partyButton:active {
+    transform: scale(1.2);
+    /* Slightly larger when clicked */
+    box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 50px rgba(0, 255, 0, 1);
+    /* text goes rainbow */
+    background: black;
+    /* switch animation to glowing hot white */
+    animation: hotWhiteGlow 0.4s infinite alternate;
+}
+
+.toggleVibeSelectorButton {
+    display: none;
+    position: fixed;
+    right: 30px;
+    bottom: 240px;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    width: 100px;
+
+    height: 80px;
+    margin: 1px;
+    margin-top: 40px;
+
+    /* Awesome Glow Effect */
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+
+    /* Smooth Transitions */
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.toggleVibeSelectorButton:hover {
+    transform: scale(1.1);
+    /* Slightly enlarges */
+    background-color: #555;
+    animation: neonGlow 2s infinite alternate;
+    box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 40px rgba(0, 255, 255, 1);
+}
+
+.toggleVibeSelectorButton:active {
+    transform: scale(1.2);
+    /* Slightly larger when clicked */
+    box-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 50px rgba(0, 255, 0, 1);
+    /* text goes rainbow */
+    background: black;
+    /* switch animation to glowing hot white */
+    animation: hotWhiteGlow 0.4s infinite alternate;
+}
+
+
+
+.volume-slider-wrapper {
+    display: block;
+    position: absolute;
+    top: -30px;
+    right: 150px;
+    z-index: 13001;
+}
+
+.audioVuMeterCanvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.master-vumeter {
+    position: absolute !important;
+    top: 0px;
+    left: 40px;
+    z-index: 1;
+}
+
+.sampler-transport-track {
+    background-color: black !important;
+}
+
+.touchpad-control {
+    background-color: #ccc;
+    position: relative;
+    cursor: pointer;
+    left: 28px;
+    top: 80px;
+}
+
+.touchpad-thumb {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}

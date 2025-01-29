@@ -5,8 +5,8 @@ class HTTPAudioProvider {
     }
 
     async loadAudioData(url, options = {}, onProgress = () => { }) {
-        // Ensure HTTP protocol
-        url = url.replace('https', 'http');
+        // Ensure HTTP protocol ???
+        // url = url.replace('https', 'http');
         const response = await fetch(url, options);
         // make a copy of response so we can parse it twice
         const responseCopy = response.clone();
