@@ -54,8 +54,9 @@ function createCloneTrackButton(trackId) {
         // load the selected track into a new deck
         // await transport.loadInitialDecks([file]);
         // TODO: better api.track.load()
-        let track = transport.tracks[trackId];
-        await api.track.load(track.metadata);
+        //let track = transport.tracks[trackId];
+        //await api.track.load(track.metadata);
+        bp.open('audio-player');
     });
 
     return cloneBtn;

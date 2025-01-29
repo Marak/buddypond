@@ -1,12 +1,17 @@
+import FetchInWebWorker from '../fetch-in-webworker/fetch-in-webworker.js';
+
 // HTTP Provider implementation
 class HTTPAudioProvider {
     constructor(bp) {
         this.bp = bp;
+        this.fetchInWebWorker = new FetchInWebWorker();
+
     }
 
     async loadAudioData(url, options = {}, onProgress = () => { }) {
         // Ensure HTTP protocol ???
         // url = url.replace('https', 'http');
+                /* 
         const response = await fetch(url, options);
         // make a copy of response so we can parse it twice
         const responseCopy = response.clone();
@@ -16,8 +21,8 @@ class HTTPAudioProvider {
         console.log('arrayBuffer', arrayBuffer);
         console.log('blob', blob);
         return { arrayBuffer, blob };
-        /*
-        const response = await this.bp.apps['fetch-in-webworker'].fetchWithProgress.fetch(
+       */
+        const response = await this.fetchInWebWorker.fetchWithProgress(
             url,
             {},
             onProgress
@@ -27,11 +32,8 @@ class HTTPAudioProvider {
             arrayBuffer: response.arrayBufferResponse,
             blob: response.blobResponse
         };
-        */
     }
 }
-
-
 
 
 export default function bindPrototypeMethods(AudioTrack) {
@@ -39,6 +41,10 @@ export default function bindPrototypeMethods(AudioTrack) {
     AudioTrack.prototype.load = async function (options = {}) {
         if (this.options?.noFile) return this;
     
+        if (options.url) {
+            this.metadata.url = options.url;
+        }
+
         try {
     
             // Ensure we have a provider

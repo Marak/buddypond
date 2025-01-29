@@ -1275,6 +1275,7 @@ body {
     align-items: flex-end;
     justify-content: space-between;
     */
+    min-height: 220px;
     width: 55%;
     margin-left: 0px;
     margin-right: auto;
@@ -2833,4 +2834,9 @@ select {
     background-color: red;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+}
+
+.bottom-row {
+    position: absolute;
+    bottom: 10px;
 }

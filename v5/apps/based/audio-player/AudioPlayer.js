@@ -1,56 +1,72 @@
+import AudioTrack from '../audio-track/AudioTrack.js';
 import pvrtybvxRenderer from '../audio-track/render/pvrtybvx/render.js';
 import pvrtybvxDatabind from '../audio-track/render/pvrtybvx/databind.js';
+import DeckKeyboardBindings from './lib/DeckKeyboardBindings.js';
 
 export default class AudioPlayer {
   constructor(bp, config) {
     this.bp = bp;
     this.config = config;
     this.container = config.container;
+    this.audioTracks = [];
   }
 
   async init() {
     console.log("AudioPlayer init", this.config);
 
     // create a new track
-    let track = bp.apps['audio-track'].createAudioTrack({
-      fileName: this.config.url,
-      url: this.config.url
+    this.track = new AudioTrack({
     });
-    // TODO: transport tracks?, or is reference in AudioTrack.tracks enough? prob keep both
-    this.track = track;
-    console.log('created audio track', track);
 
     // set the renderer based on user preference
-    track.setRenderer('pvrtybvx', {
+    this.track.setRenderer('pvrtybvx', {
       render: pvrtybvxRenderer,
       databind: pvrtybvxDatabind
     });
-    console.log('set renderer', pvrtybvxRenderer);
 
     // render the track
-    let trackElement = await track.render();
+    let trackElement = await this.track.render();
     console.log('rendered audio track', trackElement);
-
-    // append the track to the body
-    //document.body.appendChild(trackElement);
+    this.track.element = trackElement;
+    // append the track to the container
     this.container.appendChild(trackElement);
 
+    // bind keyboard controls to the track
+    DeckKeyboardBindings.bindKeys(this.track);
+
+
+  }
+
+
+  // load a new track by URL, defaulting to this.config.url if no URL is provided
+  async load(url) {
+
+    console.log("AudioPlayer load", url);
+
+
     // load the track
-    await track.load();
-    console.log("loaded audio track", track);
+    await this.track.load({
+      url: url
+    });
 
-    // load the interface
-    //await loadInterface(track, trackElement);
-    await track.databind(trackElement);
+    console.log('created audio track', this.track);
 
-    console.log('playing first track', track, track.play);
-    await track.play();
+    // databind the track after rendering and loading
+    await this.track.databind(this.track.element);
 
   }
 
-  close () {
+  // unload the current track and unbind keyboard controls
+  async unload() {
+    console.log("AudioPlayer unload");
+    await this.track.unload();
+    KeyboardBindings.unbindKeys(this.track);
+  }
+
+  // close the AudioPlayer and unload all tracks
+  async close() {
     console.log("AudioPlayer close");
-    this.track.unload(); // TODO: all tracks in transport
+    await this.track.unload();
+    KeyboardBindings.unbindKeys(this.track);
   }
-
 }

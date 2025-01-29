@@ -1,4 +1,5 @@
 import AudioPlayerClass from './AudioPlayer.js';
+import PlayerKeyboardBindings from './lib/PlayerKeyboardBindings.js';
 
 export default class AudioPlayer {
   constructor(bp) {
@@ -6,7 +7,7 @@ export default class AudioPlayer {
     this.AudioPlayer = AudioPlayerClass;
   }
 
-  async init () {
+  async init() {
     console.log("AudioPlayer init");
     await this.bp.appendCSS('/v5/apps/based/audio-track/render/pvrtybvx/style.css');
 
@@ -21,60 +22,71 @@ export default class AudioPlayer {
     //window.webAudioBeatDetector = webAudioBeatDetector.default;
 
     window.aubio = aubio.default;
-  
+    PlayerKeyboardBindings.bindKeys(this.bp);
+
+    this.audioPlayers = [];
+
   }
 
   load(song) {
     alert(JSON.stringify(song));
   }
 
-  open (config) {
+  open(config) {
     console.log("AudioPlayer open", config);
 
+    let playerId = 'audio-player-' + this.audioPlayers.length;
 
-    if (!this.audioPlayerWindow) {
-
-        this.audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'audio-player',
-            title: 'Audio Player',
-            icon: 'desktop/assets/images/icons/icon_midifighter_64.png',
-            x: 250,
-            y: 75,
-            width: 980,
-            height: 360,
-            minWidth: 200,
-            minHeight: 200,
-            parent: $('#desktop')[0],
-            resizable: true,
-            minimizable: true,
-            maximizable: true,
-            closable: true,
-            focusable: true,
-            maximized: false,
-            minimized: false,
-            onClose: () => {
-                this.audioPlayerWindow = null;
-                this.audioPlayer.close();
-            }
+    let audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
+      id: playerId,
+      title: 'Audio Player',
+      icon: 'desktop/assets/images/icons/icon_midifighter_64.png',
+      x: 250,
+      y: 75,
+      width: 980,
+      height: 360,
+      minWidth: 200,
+      minHeight: 200,
+      parent: $('#desktop')[0],
+      type: 'audioPlayer',
+      resizable: true,
+      minimizable: true,
+      maximizable: true,
+      closable: true,
+      focusable: true,
+      maximized: false,
+      minimized: false,
+      onClose: () => {
+        // find the audio player and close it
+        let audioPlayer = this.audioPlayers.find((ap) => {
+          return ap.id === playerId;
         });
+        audioPlayer.close();
+      }
+    });
+    console.log('new win', this.audioPlayerWindow)
 
+    config.url = 'Maroon%205%20-%20One%20More%20Night%20[MetroGnome%20Remix].mp3';
 
-        config.url = 'Maroon%205%20-%20One%20More%20Night%20[MetroGnome%20Remix].mp3';
+    config.container = audioPlayerWindow.content;
+    // if this is the first time, create the audio player and load a file
+    let audioPlayer = new AudioPlayerClass(this.bp, config);
+    audioPlayer.id = playerId;
 
-        config.container = this.audioPlayerWindow.content;
-        // if this is the first time, create the audio player and load a file
-        this.audioPlayer = new AudioPlayerClass(this.bp, config);
-        
-        this.audioPlayer.init();
+    // TODO: audioPlayer.load()
+    // TODO: audioPlayer.unload()
+    audioPlayer.init();
+    audioPlayer.load(config.url);
 
-    }
+    this.audioPlayers.push(audioPlayer);
+
 
     // creates or opens a new window
     // if config.context has audio file, load it
 
   }
 
-  createAudioPlayer (config) {
+  createAudioPlayer(config) {
     let p = new this.AudioPlayer(config);
     // this.tracks.push(t);
     return p;
