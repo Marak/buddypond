@@ -1,5 +1,12 @@
 import FetchInWebWorker from '../fetch-in-webworker/fetch-in-webworker.js';
 
+//await this.bp.appendScript('/v5/apps/based/audio-track/vendor/ffmpeg/ffmpeg/package/dist/umd/ffmpeg.js');
+//await this.bp.appendScript('/v5/apps/based/audio-track/vendor/ffmpeg/util/package/dist/umd/index.js');
+
+
+//import { FFmpeg } from "/v5/apps/based/audio-track/vendor/ffmpeg/ffmpeg/package/dist/esm/index.js";
+//import { fetchFile } from "/v5/apps/based/audio-track/vendor/ffmpeg/util/package/dist/esm/index.js";
+
 // HTTP Provider implementation
 class HTTPAudioProvider {
     constructor(bp) {
@@ -133,14 +140,104 @@ export default function bindPrototypeMethods(AudioTrack) {
     AudioTrack.prototype._processAudioData = async function (arrayBuffer, blob) {
         this.audioData = arrayBuffer;
         this.blob = blob;
-        console.log('Audio data:', this.audioData);
-        // Decode audio
+        console.log('Audio data received:', this.audioData);
+    
+        // Decode using Web Worker
+        // this.audioBuffer = await this._decodeAudioWithFFmpeg(arrayBuffer);
+        // decode with audioContext
         this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
         this.metadata.fileSize = this.audioBuffer.length;
-
+    
         // Extract channel data
         const channelData = extractAudioBuffer(this.audioBuffer);
     };
+    AudioTrack.prototype._decodeAudioWithFFmpeg = async function (arrayBuffer) {
+
+        let ffmpeg = new FFmpeg();
+
+            await ffmpeg.load();
+            console.log("✅ FFmpeg WASM loaded successfully");
+    
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log("⏳ Decoding audio with FFmpeg...");
+    
+                // Write audio data into FFmpeg virtual filesystem
+                const inputFileName = 'input.mp3';
+                const outputFileName = 'output.raw';
+                await ffmpeg.writeFile(inputFileName, await fetchFile(arrayBuffer));
+    
+                // Convert input audio to raw PCM Float32
+                await ffmpeg.exec([
+                    '-i', inputFileName, 
+                    '-f', 'f32le', 
+                    '-acodec', 'pcm_f32le', 
+                    '-ar', '44100', // Force 44.1kHz sample rate
+                    '-ac', '2', // Stereo output
+                    outputFileName
+                ]);
+    
+                // Read decoded PCM data
+                const outputData = await ffmpeg.readFile(outputFileName);
+    
+                // Convert PCM data to Web Audio API's AudioBuffer
+                const sampleRate = 44100; // Match conversion settings
+                const numberOfChannels = 2; // Stereo
+                const frameCount = outputData.length / (numberOfChannels * 4); // 4 bytes per Float32 sample
+    
+                const audioContext = new AudioContext();
+                const audioBuffer = audioContext.createBuffer(numberOfChannels, frameCount, sampleRate);
+    
+                // De-interleave PCM data into separate channels
+                const interleaved = new Float32Array(outputData.buffer);
+                for (let i = 0; i < numberOfChannels; i++) {
+                    const channelData = new Float32Array(frameCount);
+                    for (let j = 0; j < frameCount; j++) {
+                        channelData[j] = interleaved[j * numberOfChannels + i];
+                    }
+                    audioBuffer.copyToChannel(channelData, i);
+                }
+    
+                console.log("✅ Audio decoded successfully");
+                resolve(audioBuffer);
+            } catch (err) {
+                console.log(err)
+                reject(new Error(`❌ FFmpeg decoding failed: ${err.message}`));
+            }
+        });
+    };
+    
+
+    /*
+    TODO: use the audioWOrker instead of the audioContext.decodeAudioData
+    const audioWorker = new Worker('audioWorker.js');
+
+function decodeAudioWithFFmpeg(arrayBuffer) {
+    return new Promise((resolve, reject) => {
+        audioWorker.onmessage = (e) => {
+            if (e.data.error) {
+                reject(new Error(e.data.error));
+            } else {
+                resolve(e.data);
+            }
+        };
+        audioWorker.postMessage(arrayBuffer, [arrayBuffer]); // Transfer data
+    });
+}
+
+// Example usage:
+fetch('your-audio-file.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => decodeAudioWithFFmpeg(arrayBuffer))
+    .then(decodedData => {
+        console.log('Decoded WAV received:', decodedData);
+        // Use AudioContext.decodeAudioData here if needed
+    })
+    .catch(err => console.error('FFmpeg decoding failed:', err));
+
+
+
+    */
 
     
     // Helper methods for tracking load progress

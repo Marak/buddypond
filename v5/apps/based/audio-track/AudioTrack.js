@@ -25,7 +25,6 @@ export default class Track {
 
     load(Track);
 
-
     // Event Listeners
     this.eventListeners = {};
 
@@ -111,8 +110,6 @@ export default class Track {
 
     console.log('track should be fully unloaded now going to rebind with empty data', this);
     this.databind();
-
-
   }
 
   async remove() {
@@ -371,10 +368,10 @@ export default class Track {
   getTitle() {
 
     let metadata = this.metadata;
-    let trackTitle = metadata.fileName;
-
+    let trackTitle = metadata.title || metadata.fileName;
+    console.log('attempting to get track title', metadata, trackTitle);
     if (!trackTitle) {
-      return 'Load Track';
+      return 'loading track...';
     }
 
     if (metadata.title) {

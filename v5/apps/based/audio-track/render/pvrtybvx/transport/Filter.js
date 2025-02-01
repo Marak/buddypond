@@ -40,6 +40,9 @@ export default function createFilterComponent(track) {
         if (filterSlider.sliderContainer.style.display === 'block') {
             filterSlider.sliderContainer.style.display = 'none';
             filterEqSwitch.textContent = 'FILTER';
+            eq3Container.style.display = 'block';
+            //filterEqSwitch.style.display = 'none';
+            filterSlider.style.display = 'none';
 
             eq3Container.querySelectorAll('div.label').forEach(label => {
                 label.style.display = 'block';
@@ -47,6 +50,8 @@ export default function createFilterComponent(track) {
         } else {
             filterSlider.sliderContainer.style.display = 'block';
             filterEqSwitch.textContent = 'EQ3';
+            eq3Container.style.display = 'none';
+            //filterEqSwitch.style.display = 'block';
 
             eq3Container.querySelectorAll('div.label').forEach(label => {
                 label.style.display = 'none';

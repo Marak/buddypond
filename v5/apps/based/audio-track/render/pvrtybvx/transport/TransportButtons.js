@@ -109,15 +109,17 @@ function createNextTrackButton(trackId) {
         // api.track.unload(trackId);
 
         // suggest a new track based on previous and load it
-        let nextTracks = transport.suggestNextTrack(prevTrack);
-        console.log('nextTracks', nextTracks)
+        //let nextTracks = transport.suggestNextTrack(prevTrack);
+        // TODO: implement brain API for track suggestions
+        //console.log('nextTracks', nextTracks)
         // load the next track
 
         // get random track from nextTrack array
-        let randomIndex = Math.floor(Math.random() * nextTracks.length);
-        api.track.load(nextTracks[randomIndex]);
+        //let randomIndex = Math.floor(Math.random() * nextTracks.length);
+        //api.track.load(nextTracks[randomIndex]);
 
-
+        // for now load a hard-coded track
+        
         // console.log('nextTrack', trackId)
     });
 

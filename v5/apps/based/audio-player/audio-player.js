@@ -23,6 +23,7 @@ export default class AudioPlayer {
     //let webAudioBeatDetector = await this.bp.importModule('/v5/apps/based/audio-stripe/vendor/web-audio-beat-detector.js', {}, false);
     //window.webAudioBeatDetector = webAudioBeatDetector.default;
 
+
     window.aubio = aubio.default;
     PlayerKeyboardBindings.bindKeys(this.bp);
 
@@ -51,16 +52,20 @@ export default class AudioPlayer {
 
       // if the click was not on the menuBar or an audioPlayer window, revert to default menu
       if (!clickedOnMenuBar && !clickedOnAudioPlayer) {
-        menuBar.setDefaultMenu();
+        // menuBar.setDefaultMenu();
       }
       
       if (clickedOnAudioPlayer) {
-        menuBar.setMenu("customMenu", menuBarConfig);
+        // menuBar.setMenu("customMenu", menuBarConfig);
       }
 
     });
     this.audioPlayers = [];
 
+  }
+
+  play() {
+    alert('play'); 
   }
 
   load(song) {

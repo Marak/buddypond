@@ -7,8 +7,16 @@ export default class AudioTrack {
     this.tracks = []
   }
 
-  init () {
+  async init () {
     console.log("AudioTrack init");
+
+    //   await this.bp.appendScript('/v5/apps/based/audio-track/vendor/ffmpeg/ffmpeg/package/dist/umd/ffmpeg.js');
+    //   await this.bp.appendScript('/v5/apps/based/audio-track/vendor/ffmpeg/util/package/dist/umd/index.js');
+    //await this.bp.appendScript('/v5/apps/based/audio-track/vendor/ffmpeg/util/package/dist/umd/index.js');
+
+    //<script src="/assets/ffmpeg/package/dist/umd/ffmpeg.js"></script>
+    //<script src="/assets/util/package/dist/umd/index.js"></script>
+
   }
 
   open (config) {

@@ -8,6 +8,8 @@ let forbiddenNotes = {
   
   forbiddenNotes.randowFunWord = function randowFunWord () {
     let words = ["daffodil", "chrysanthemum", "waffles", "puppies", "senpai", "kohai", "rainbow", "fluffy", "marklar"];
+    // TODO: use bp.random() in order to get seedable randomness
+    // this will provide consistent results across all client instances
     var item = words[Math.floor(Math.random()*words.length)];
     return item;
   }

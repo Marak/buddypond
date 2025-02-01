@@ -92,12 +92,11 @@
     /* padding: 16px; */
     overflow: auto;
     flex-grow: 1;
-    color: #dcdcdc; /* Light text for better readability */
     font-family: 'Arial', sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    background: #222; /* Slightly darker than the container for depth */
     border-radius: 0 0 8px 8px; /* Matches the overall rounded corners */
+    background: white;
 }
 
 /* Resize Handle */

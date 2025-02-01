@@ -37,6 +37,9 @@ export default class AudioPlayer {
 
   }
 
+  async play () {
+    await this.track.play();
+  }
 
   // load a new track by URL, defaulting to this.config.url if no URL is provided
   async load(url) {
