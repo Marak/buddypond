@@ -149,8 +149,44 @@ export default class BuddyList {
 
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
-        //this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
-        //this.bp.on('profile::buddy::out', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        this.bp.on('profile::buddy::out', 'remove-buddy-from-buddylist', data => {
+
+            console.log('profile::buddy::out', data);
+            const buddyName = data.name;
+            let buddyListItem = $(`li[data-buddy="${buddyName}"]`, '.buddylist');
+            console.log('buddyListItem', buddyListItem);
+            buddyListItem.remove();
+
+            if (buddyListItem) {
+            }
+
+
+        });
+
+
+        this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
+
+            console.log('profile::buddy::full_profile', data);
+            for (let b in data) {
+                let buddy = {
+                    name: b,
+                    profile: data[b]
+                }
+                this.data.profileState = this.data.profileState || {};
+                this.data.profileState.buddylist = this.data.profileState.buddylist || {};
+
+                this.data.profileState.buddylist[b] = buddy.profile;
+                console.log('renderOrUpdateBuddyInBuddyList', buddy);
+                this.renderOrUpdateBuddyInBuddyList(buddy);
+            }
+
+            // iterate through all buddies and call renderOrUpdateBuddyInBuddylist
+
+        });
+
+
+
 
         // Remark: removing buddy-in sound because Marak account is friends without everyone is is constantly triggering the sound
         // We'll have to be smarter about when to play sounds and limit the amount of BUDDY-IN a single buddy can trigger
@@ -191,7 +227,20 @@ export default class BuddyList {
 
         });
 
-        this.bp.on('profile::status', 'update-profile-status', status => status === 'signout' && this.logout());
+        this.bp.on('auth::logout', 'logout', () => this.logout());
+
+        this.bp.on('profile::status', 'update-profile-status', status => {
+
+            if (status === 'signout') {
+                this.logout()
+            }
+
+
+            buddypond.setStatus(this.bp.me, status, function(err, re){
+                console.log('errrrr', err, re);
+            });
+
+        });
 
         this.bp.on('buddy::messages', 'render-chat-message', data => this.handleChatMessages(data));
         this.bp.on('buddy::sendMessage', 'send-buddy-message-to-server', data => this.sendMessageToServer(data));
@@ -359,8 +408,23 @@ export default class BuddyList {
     }
 
     async handleChatMessages(data) {
+        console.log('handleChatMessages', data);
         for (const message of data.result.messages) {
-            await this.renderChatMessage(message);
+            try {
+                // check to see if we have newMessages in local profile for message.from
+                // if so, send buddypond.readMessages(message.from)
+                if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
+                    console.log("SENDING READ NEWMESSAGES ALERT");
+                    this.data.profileState.buddylist[message.from].newMessages = false;
+                    buddypond.readMessages(message.from, function(err, re){
+                        console.log('readMessagesreadMessages', err, re);
+                    });
+                }
+                await this.renderChatMessage(message);
+
+            } catch (err) {
+                console.log('error rendering chat message', message, err)
+            }
         }
     }
 
@@ -368,6 +432,23 @@ export default class BuddyList {
         this.bp.log('buddy::sendMessage', data);
         data.uuid = uuid();
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
+        if (data.type === 'pond') {
+            console.log('sendMessageToServer', data);
+            buddypond.pondSendMessage(data.to, data.text, function(err, result){ 
+                console.log('pondSendMessage', err, result)
+                console.log(err,result)
+            })
+    
+        }
+        if (data.type === 'buddy') {
+            console.log('sendMessageToServer', data);
+            buddypond.sendMessage(data.to, data.text, function(err, result){ 
+                console.log('pondSendMessage', err, result)
+                console.log(err,result)
+            })
+    
+        }
+        /*
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
         data.name = data.to;
         if (emitLocal) {
@@ -377,6 +458,7 @@ export default class BuddyList {
             }
             this.renderChatMessage(data);
         }
+        */
     }
 
     sendPondMessageToServer(data, emitLocal = false) {

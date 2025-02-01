@@ -21,15 +21,17 @@ export default class Pond {
         this.bp.on('ponds::hotPonds', 'update-hotponds-list', data => this.updateHotPonds(data));
 
 
-        $('.joinPond').on('click', () => {
+        $('.joinPond').on('click', (e) => {
+            e.preventDefault();
+
               // get value from #customPondName
               let pondName = $('#customPondName').val();
               this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
-                
+            return false;
         });
 
         $('.joinPondTable').on('click', (e) => {
-
+            e.preventDefault();
             // check if target is a button
 
             let pondName;
@@ -41,7 +43,7 @@ export default class Pond {
                 // this.bp.open('buddylist', { pondName: pond });
                 this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
             } 
-
+            return false;
         });
 
         // await imports the module and returns it

@@ -1,4 +1,4 @@
-export default function renderPadRows (myPads) {
+export default function renderPadRows(myPads) {
     if (myPads && myPads.length > 0) {
         // .bp-pad-table , add the tr rows
         let table = $('.bp-pad-table', this.padWindow.content);
@@ -23,7 +23,7 @@ export default function renderPadRows (myPads) {
             // description
             td = document.createElement('td');
 
-            let padUrl = '/' + pad.ownerId + '/pads/' + pad.title;
+            let padUrl = '/' + pad.owner + '/pads/' + pad.title;
             let padLink = `<a href="${padUrl}" target="_blank">${padUrl}</a>`;
             td.innerHTML = padLink;
 
@@ -74,13 +74,13 @@ export default function renderPadRows (myPads) {
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = 'Delete';
             deleteButton.classList.add('delete-button', 'ui-button');
-      
+
             td.appendChild(deleteButton);
 
             let viewButton = document.createElement('button');
             viewButton.innerHTML = 'View';
             viewButton.classList.add('view-button', 'ui-button');
-       
+
             td.appendChild(viewButton);
             tr.appendChild(td);
 
@@ -94,8 +94,8 @@ export default function renderPadRows (myPads) {
 
                 let closestTr = $(e.target).closest('tr');
                 let title = closestTr.attr('data-title');
-                let padUrl = '/' + pad.ownerId + '/pads/' + pad.title;
-                let padKey = '/' + pad.ownerId + '/' + pad.title;
+                let padUrl = '/' + pad.owner + '/pads/' + pad.title;
+                let padKey = '/' + pad.owner + '/' + pad.title;
                 let relativePath = 'pads/' + pad.title;
 
                 if (action === 'View') {
@@ -117,9 +117,23 @@ export default function renderPadRows (myPads) {
                         $('.ui-button', closestTr).prop('disabled', true);
                         // add disabled class to button
                         $('.ui-button', closestTr).addClass('disabled');
+                        try {
+                            await this.bp.apps.client.api.deletePad(padKey);
 
-                        await this.bp.apps.client.api.deletePad(padKey);
-                        await this.bp.apps.client.api.removeFile(relativePath);
+                        } catch (err) {
+                            console.log('error deleting pad', err);
+                        }
+
+                        try {
+
+                            await this.bp.apps.client.api.removeFile(relativePath);
+                        } catch (err) {
+                            console.log('error deleting pad file', err);
+
+                        }
+
+                        // remove the row from the table
+                        closestTr.remove();
 
                     }
 
@@ -131,7 +145,7 @@ export default function renderPadRows (myPads) {
                 if (action === 'Edit') {
                     // open edit window with the pad data
                     // console.log('edit pad', pad, title);
-                    this.bp.open('file-explorer', { context: '/' + relativePath + '/index.html'});
+                    this.bp.open('file-explorer', { context: '/' + relativePath + '/index.html' });
                     // set focus
                     this.bp.apps.ui.windowManager.focusWindow('file-explorer');
                 }

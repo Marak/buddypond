@@ -1,3 +1,5 @@
+/* pad.js - Marak Squires 2024 - BuddyPond Pads */
+// TODO: clean-up this file
 import renderPadRows from './lib/renderPadRows.js';
 import savePad from './lib/savePad.js';
 import buildPad from './lib/buildPad.js';
@@ -51,13 +53,27 @@ export default class Pad {
 
             this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', this.padWindow.content);
 
+            this.tabs.onTab((tabId) => {
+                // TODO: on tab if tabId = "pads-home", 
+                // we do need to re-run getPads();....
+                if (tabId === 'pads-home') {
+                }
+                updateMyPads.call(this);
+
+            });
 
         }
 
-        // TODO: refactor this to separate function
-        let myPads = await this.bp.apps.client.api.getPads();
-        this.renderPadRows(myPads);
+        async function updateMyPads() {
 
+            // TODO: refactor this to separate function
+            // will show myPads by default
+            let myPads = await this.bp.apps.client.api.getPads();
+            console.log('myPadsmyPads', myPads)
+            this.renderPadRows(myPads.results);
+        }
+
+        let myPads = await updateMyPads.call(this);
 
         // show the first .tab-content
         //$('.tab-content').show();
@@ -178,7 +194,7 @@ export default class Pad {
                     alert(`Error building pad: ${err.message}`);
                     return;
                 }
-                
+
                 // if not success, show the error
 
                 // now that the pad is created we will need to upload files
@@ -209,6 +225,14 @@ export default class Pad {
                 }
             }
 
+
+
+            // re-enable the save-pad-button to prevent double clicks
+            $('.save-pad-button', this.padWindow.content).prop('disabled', false);
+            // remove disabled class to button
+            $('.save-pad-button', this.padWindow.content).removeClass('disabled');
+
+
             return false;
 
         });
@@ -216,7 +240,7 @@ export default class Pad {
         $('.create-pad-button', this.padWindow.content).on('click', () => {
             this.tabs.navigateToTab('#pads-editor');
         });
-        
+
     }
 
     editPad(pad) {

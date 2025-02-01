@@ -5,7 +5,7 @@ export default class Motd {
     }
 
     async init() {
-        this.bp.log('Hello from Example');
+
         console.log('motd is: under construction');
 
         let today = DateFormat.format.date(new Date(), 'MM/dd/yy');
@@ -63,10 +63,9 @@ export default class Motd {
         message.style.fontSize = '1.5em';
         message.style.fontWeight = 'bold';
         message.style.padding = '20px';
-        message.innerHTML = 'New v5 almost ready!<br/>Buddy Pads are Online! <br/><br/>All users may join the chat.';
+        message.innerHTML = 'Cloud Edge v6 is Online!<br/>All chat features have been reset. <br/><br/More features coming.';
 
         motdWindow.content.appendChild(message);
-
 
         motdWindow.open();
 

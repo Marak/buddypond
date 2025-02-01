@@ -50,95 +50,74 @@ export default function defaultMenuBar (bp) {
     
     
     let menuTemplate = [
-    
-    {
-      label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
-      submenu: [
-        { label: 'We are stoked to be your Buddy', click: () => api.ui.toggleDeviceSettings() },
-    
-        {
-          label: `
-                <a class="editProfileLink" title="Login to Edit Profile" href="#">Edit Profile</a>
-    
-            `, click: () => {
-            bp.open('profile');
-          }
-        },
-        {
-          label: `
-                  <li class="loggedOut">
-                    <span class="loginLink">Login</span>
-                  </li>
-                  <li class="loggedIn">
-                    <span class="logoutLink">Logout</span>
-                  </li>
-    
-                
-                `, click: () => {
-            bp.apps.client.logout();
-            // close all chat windows and ponds
-            bp.apps.ui.windowManager.windows.forEach((window) => {
-              //console.log("window", window);
-              if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
-                window.close();
+      {
+          label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
+          submenu: [
+              { 
+                  label: 'We are stoked to be your Buddy', 
+                  click: () => api.ui.toggleDeviceSettings() 
+              },
+              {
+                  label: 'Edit Profile',
+                  click: () => bp.open('profile')
+              },
+              {
+                  label: '<span class="loggedOut">Login</span>',
+                  //visible: !bp.apps.client.isLoggedIn(), // Only show if logged out
+                  click: () => bp.open('buddylist')
+              },
+              {
+                label: '<span class="loggedIn">Logout</span>',
+                //visible: bp.apps.client.isLoggedIn(), // Only show if logged in
+                  click: () => {
+                      bp.apps.client.logout();
+                      // Close all chat windows and ponds
+                      bp.apps.ui.windowManager.windows.forEach((window) => {
+                          if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {
+                              window.close();
+                          }
+                          if (window.app === 'pond') {
+                              window.close();
+                          }
+                      });
+                  }
               }
-              if (window.app === 'pond') {
-                window.close();
+          ]
+      },
+      {
+          label: 'Window',
+          submenu: [
+              { label: 'Full Screen', click: () => bp.apps.ui.toggleFullScreen() }, 
+              {
+                  label: 'Hide All Windows', 
+                  click: () => bp.apps.ui.windowManager.minimizeAllWindows()
+              },
+              {
+                  label: 'Set Active Window to Wallpaper',
+                  disabled: true,
+                  click: () => {
+                      if (!desktop.ui.wallpaperWindow) {
+                          desktop.ui.wallpaperWindow = true;
+                          desktop.ui.removeWindowWallpaper();
+                          desktop.ui.setActiveWindowAsWallpaper();
+                          $('.setWindowAsWallpaper').html('Remove Window as Wallpaper');
+                      } else {
+                          desktop.ui.wallpaperWindow = false;
+                          desktop.ui.removeWindowWallpaper();
+                          $('.setWindowAsWallpaper').html('Set Active Window to Wallpaper');
+                      }
+                      return false;
+                  }
               }
-            });
-    
-          }
-        }
-      ]
-    },
-    {
-      label: 'Window',
-      submenu: [
-        { label: 'Full Screen', click: () => bp.apps.ui.toggleFullScreen() }, // legacy API
-        {
-          label: 'Hide All Windows', click: () => {
-            bp.apps.ui.windowManager.minimizeAllWindows();
-          }
-        },
-        {
-          label: 'Set Active Window to Wallpaper', disabled: true, click: () => {
-    
-            // legacy API
-            if (!desktop.ui.wallpaperWindow) {
-              desktop.ui.wallpaperWindow = true;
-              desktop.ui.removeWindowWallpaper()
-              desktop.ui.setActiveWindowAsWallpaper();
-              $('.setWindowAsWallpaper').html('Remove Window as Wallpaper');
-            } else {
-              desktop.ui.wallpaperWindow = false;
-              desktop.ui.removeWindowWallpaper();
-              $('.setWindowAsWallpaper').html('Set Active Window to Wallpaper');
-            }
-            return false;
-          }
-        }
-      ]
-    },
-    {
-      label: selectMusicPlaylist,
-      flex: 1
-    },
-    {
-      label: selectTheme
-    },
-    
-    {
-      label: networkStatsStr
-    },
-    {
-      label: volumeStr
-    },
-    
-    {
-      label: clockStr
-    }
-    
-    ];
+          ]
+      },
+      { label: selectMusicPlaylist, flex: 1 },
+      { label: selectTheme },
+      { label: networkStatsStr },
+      { label: volumeStr },
+      { label: clockStr }
+  ];
+  
 
     return menuTemplate;
 

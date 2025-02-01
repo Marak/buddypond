@@ -3,13 +3,58 @@ import forbiddenNotes from './forbiddenNotes.js';
 let scrollTimeout;
 
 export default async function renderChatMessage(message, _chatWindow) {
-
+  console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
+
+
+  console.log('current state', this.bp.apps.buddylist.data.profileState)
 
   // profanity filter
   if (message.text && message.text.length > 0) {
     message.text = forbiddenNotes.filter(message.text);
   }
+
+  function isValidUrl(messageText) {
+    if (!messageText) return false;
+
+    messageText = messageText.trim(); // Trim whitespace from both ends
+
+    try {
+      const url = new URL(messageText);
+      return true; // If successful, it's a valid URL
+    } catch (error) {
+      return false; // If error is thrown, it's not a valid URL
+    }
+  }
+
+  if (isValidUrl(message.text)) {
+    let contentUrl = message.text;
+    // This is a URL, process it as such
+    message.card = {
+      url: message.text
+    };
+    message.text = '';
+    // check to see if file extention is supportedImageTypes, if so it's data.card.type = 'image'
+    if (contentUrl) {
+      let ext = contentUrl.split('.').pop();
+      if (buddypond.supportedImageTypesExt.includes(ext)) {
+        message.card.type = 'image';
+      }
+      if (buddypond.supportedAudioTypesExt.includes(ext)) {
+        message.card.type = 'audio';
+      }
+      if (buddypond.supportedVideoTypes.includes(ext)) {
+        //data.card.type = 'video'; // soon TODO
+      }
+    }
+
+
+    // message.text = 'I sent a link outside of BuddyPond:';
+    // TODO: detect type based on URL extension, use supportedTypes array
+    // img, media, video, audio, etc
+    // use smartlinks if youtube open youtube player, etc audio player
+  }
+
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
@@ -31,13 +76,18 @@ export default async function renderChatMessage(message, _chatWindow) {
     context = message.to;
     windowId = `pond_message_-${message.to}`;
   }
-
+  console.log('windowIdwindowId', windowId)
   // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
-
+  //alert(windowId)
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
   if (_chatWindow) {
     chatWindow = _chatWindow;
+  }
+
+  // Check if message already exists in the DOM
+  if (document.querySelector(`.chatMessage[data-uuid="${message.uuid}"]`)) {
+    return; // Message is already rendered
   }
 
   // Check if message has been processed to avoid duplication
@@ -139,13 +189,19 @@ export default async function renderChatMessage(message, _chatWindow) {
     //console.log('message is card', message.card);
 
     let cardData = message.card;
-    cardData.message = message;
-    let cardManager = this.bp.apps.card.cardManager;
+    console.log("USING CARD", cardData);
+    // make sure card has props
+    if (Object.keys(cardData).length > 0) {
 
-    const _card = await cardManager.loadCard(cardData.type, cardData);
-    container = document.createElement('div');
-    container.classList.add('cardContainer');
-    _card.render(container);
+      cardData.message = message;
+      let cardManager = this.bp.apps.card.cardManager;
+
+      const _card = await cardManager.loadCard(cardData.type, cardData);
+      container = document.createElement('div');
+      container.classList.add('cardContainer');
+      _card.render(container);
+    }
+
 
   }
 
@@ -203,6 +259,8 @@ export default async function renderChatMessage(message, _chatWindow) {
       chatMessage.appendChild(container);
     } else {
       chatMessage.setAttribute('data-uuid', message.uuid);
+      chatMessage.setAttribute('data-id', message.id);
+
     }
 
     // Since images may be lazy loaded we won't know their height until they load
@@ -213,7 +271,24 @@ export default async function renderChatMessage(message, _chatWindow) {
       scrollToBottom();
     });
 
-    aimMessages.appendChild(chatMessage);
+    // Find all messages in chat ordered by data-id
+    let allMessages = Array.from(aimMessages.querySelectorAll('.chatMessage'));
+    let inserted = false;
+
+    // Iterate over existing messages to find the correct insertion point
+    for (let existingMessage of allMessages) {
+      let existingId = parseInt(existingMessage.getAttribute('data-id'), 10);
+      if (message.id < existingId) {
+        aimMessages.insertBefore(chatMessage, existingMessage); // Insert before the first larger ID
+        inserted = true;
+        break;
+      }
+    }
+
+    // If no larger ID was found, append it to the end
+    if (!inserted) {
+      aimMessages.appendChild(chatMessage);
+    }
 
   }
 
@@ -257,7 +332,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 }
 
 function renderGeoFlag(message) {
-  if (message.location === 'outer space') {
+  if (message.location === 'outer space' || !message.location) {
     // Set Antarctica to the default flag when the location is 'outer space'
     message.location = 'AQ';
   }

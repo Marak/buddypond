@@ -1,6 +1,9 @@
-// TODO: convert this to API class which can communicate either via REST
-// or via websockets messages with simple RPC format ( JSON )
-
+/* api.js - Marak.Squires buddypond api client - 2022 */
+// Update: 1/31/2025
+// TODO: we cam remove at least 50% of this code now
+// TODO: move files API / uploads code into separate file
+// TODO: move buddylist API code into separate file
+// TODO: move messages API code into separate file
 let buddypond = {}
 
 buddypond.mode = 'prod';
@@ -14,27 +17,35 @@ buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
 buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 
+buddypond.supportedImageTypesExt = ['jpeg', 'png', 'gif', 'webp', 'svg'];
+buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
+
 // legacy v4 API
 let desktop = { settings: {} };
 
 if (document.location.protocol === 'https:') {
-  buddypond.endpoint = 'https://api.buddypond.com/api/v3';
+  buddypond.endpoint = 'https://api.buddypond.com/api/v6';
   buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
   // buddypond.endpoint = 'https://137.184.116.145/api/v3';
 
 } else {
-  buddypond.endpoint = 'http://137.184.116.145/api/v3';
+  buddypond.endpoint = 'http://137.184.116.145/api/v6';
 }
 
 if (buddypond.mode === 'dev') {
   // buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
-  buddypond.endpoint = 'http://192.168.200.59/api/v3';
+  buddypond.endpoint = 'http://192.168.200.59/api/v6';
 }
+
+buddypond.endpoint = 'https://buddylist.buddypond.com/api/v6';
 
 buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
 
+//buddypond.uploadsEndpoint = 'https://uploads-dev.buddypond.com';
+//buddypond.uploadsEndpoint = 'https://bp-storage-dev.cloudflare1973.workers.dev';
 
 buddypond.authBuddy = function authBuddy(me, password, cb) {
+
   apiRequest('/auth', 'POST', {
     buddyname: me,
     buddypassword: password
@@ -60,7 +71,7 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
 }
 
 buddypond.addBuddy = function addBuddy(buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/addbuddy', 'POST', {
+  apiRequest('/buddylist/' + buddypond.me + '/addbuddy', 'POST', {
     buddyname: buddyname
   }, function (err, data) {
     cb(err, data);
@@ -68,7 +79,7 @@ buddypond.addBuddy = function addBuddy(buddyname, cb) {
 }
 
 buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/remove', 'POST', {
+  apiRequest('/buddylist/' + buddypond.me + '/removebuddy', 'POST', {
     buddyname: buddyname
   }, function (err, data) {
     cb(err, data);
@@ -108,7 +119,7 @@ buddypond.getBuddyProfile = function getBuddyProfile(profileUpdates, cb) {
 // Newer v5 getProfile ( read only )
 buddypond.getProfile = async function getProfile(buddyname) {
   return new Promise((resolve, reject) => {
-    apiRequest('/buddies/' + buddyname, 'GET', {}, function (err, data) {
+    apiRequest('/buddylist/' + buddyname + '/profile', 'GET', {}, function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -117,8 +128,6 @@ buddypond.getProfile = async function getProfile(buddyname) {
     });
   });
 }
-
-
 
 // Create a new Pad
 buddypond.createPad = async function (padData) {
@@ -194,20 +203,6 @@ buddypond.updateBuddyProfile = function updateBuddyProfile(profileUpdates, cb) {
   })
 }
 
-// TODO: pass card values to sendMessage fn scope
-buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
-  apiRequest('/messages/buddy/' + buddyName, 'POST', {
-    buddyname: buddyName,
-    text: text,
-    geoflag: desktop.settings.geo_flag_hidden,
-    card: {
-      voiceIndex: desktop.settings.tts_voice_index
-    }
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
 buddypond.removeMessage = async function removeMessage({ from, to, type, uuid }) {
   return new Promise((resolve, reject) => {
     apiRequest('/messages/remove', 'POST', {
@@ -226,16 +221,94 @@ buddypond.removeMessage = async function removeMessage({ from, to, type, uuid })
 
 }
 
-// TODO: pass card values to pondSendMessage fn scope
-buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
-  apiRequest('/messages/pond/' + pondname, 'POST', {
-    pondname: pondname,
-    pondtext: pondtext,
+
+buddypond.setStatus = function sendMessage(buddyName, status, cb) {
+  // apiRequest('/messages/buddy/' + buddyName, 'POST', {
+  apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
+    buddyname: buddyName,
+    status: status,
+  }, function (err, data) {
+    cb(err, data);
+  })
+}
+
+buddypond.readMessages = function readMessages(buddyName, cb) {
+  // apiRequest('/messages/buddy/' + buddyName, 'POST', {
+  apiRequest('/buddylist/' + buddypond.me + '/readMessages', 'POST', {
+    buddyname: buddyName,
+    newMessages: false,
+  }, function (err, data) {
+    cb(err, data);
+  })
+}
+
+
+function preprocessDeepSeek(data) {
+
+  function isDeepSeekCommand(data) { // TODO move
+    if (!data.text) return false;
+    if (data.from === 'DeepSeek') return false; // Prevent DeepSeek from responding to itself
+    return data.text.startsWith('/deep') || data.text.startsWith('/ds');
+  }
+
+  if (false && isDeepSeekCommand(data)) {
+    // append chatHistory to data
+    data.chatHistory = [];
+    if (bp.apps.buddylist.data.processedMessages && bp.apps.buddylist.data.processedMessages.Buddy) {
+      bp.apps.buddylist.data.processedMessages.Buddy.forEach((message) => {
+        if (message.to === data.to) {
+          if (data.chatHistory.length < 20) {
+            data.chatHistory.push(message);
+          }
+        }
+      });
+  
+    }
+  }
+
+  console.log('new data', data);  
+
+
+
+
+}
+
+
+
+
+// TODO: pass card values to sendMessage fn scope
+buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
+  let msg = {
+    from: buddypond.me,
+    to: buddyName,
+    text: text,
+    type: 'buddy',
     geoflag: desktop.settings.geo_flag_hidden,
     card: {
       voiceIndex: desktop.settings.tts_voice_index
     }
-  }, function (err, data) {
+  };
+  preprocessDeepSeek(msg);
+  apiRequest('/buddy/' + buddyName + '/send', 'POST', msg, function (err, data) {
+    cb(err, data);
+  })
+}
+
+// TODO: pass card values to pondSendMessage fn scope
+buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
+  let msg = {
+    from: buddypond.me,
+    to: pondname,
+    text: pondtext,
+    type: 'pond',
+    geoflag: desktop.settings.geo_flag_hidden,
+    card: {
+      voiceIndex: desktop.settings.tts_voice_index
+    }
+  };
+  preprocessDeepSeek(msg);
+
+  apiRequest('/pond/' + pondname + '/send', 'POST', msg, function (err, data) {
     cb(err, data);
   })
 }
@@ -584,7 +657,7 @@ buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) 
 
 buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
 
-  let url = `${buddypond.uploadsEndpoint}/getFileList?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&prefix=${prefix}&depth=${depth}`;
+  let url = `${buddypond.uploadsEndpoint}/getFileList?v=6&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&prefix=${prefix}&depth=${depth}`;
 
   console.log("fetching files from", url);
   let response = await fetch(url);
@@ -598,7 +671,7 @@ buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
 
 buddypond.getFileUsage = async function getFileUsage() {
 
-  const url = `${buddypond.uploadsEndpoint}/getUsage?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`;
+  const url = `${buddypond.uploadsEndpoint}/getUsage?v=6&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`;
 
   console.log('Requesting file usage from Worker:', url);
 
@@ -619,7 +692,7 @@ buddypond.getFileUsage = async function getFileUsage() {
 buddypond.removeFile = async function removeFile(fileName) {
 
   // instead of signed url to delete, we will simply call the worker to delete the file
-  const url = `${buddypond.uploadsEndpoint}/deleteFiles?prefix=${fileName}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&depth=6`;
+  const url = `${buddypond.uploadsEndpoint}/deleteFiles?v=6&prefix=${fileName}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&depth=6`;
 
   console.log("fetching delete url", url);
 
@@ -665,7 +738,7 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   //fileName = 'test/' + fileName;
   console.log('fileName', fileName, 'fileSize', fileSize, 'userFolder', userFolder, 'filePath', filePath);
 
-  const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
+  const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?v=6&fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
 
   console.log('Requesting signed URL from Worker:', signedUrlRequest);
 
@@ -722,7 +795,7 @@ buddypond.uploadFiles = async function uploadFiles(files, onProgress) {
 }
 
 buddypond.getFileMetadata = async function (fileName) {
-  const url = `${buddypond.uploadsEndpoint}/get-metadata?fileName=${encodeURIComponent(fileName)}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
+  const url = `${buddypond.uploadsEndpoint}/get-metadata?v=6&fileName=${encodeURIComponent(fileName)}&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -799,21 +872,17 @@ buddypond.logout = function logout() {
 //
 // end methods for tracking API request performance
 //
-
-
 function apiRequest(uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
+  console.log("making apiRequest", url, method, data);
 
-  // console.log("making apiRequest", url, method, data);
   let headers = {
     "Accept": "application/json",
     "Content-Type": "application/json; charset=utf-8"
   };
 
   if (buddypond.qtokenid) {
-    data = data || {};
-    data.qtokenid = buddypond.qtokenid;
-    headers['qtokenid'] = buddypond.qtokenid;
+    headers["Authorization"] = `Bearer ${buddypond.qtokenid}`; // ✅ Use Authorization header
   }
 
   let body = method === "POST" ? JSON.stringify(data) : undefined;
@@ -822,42 +891,41 @@ function apiRequest(uri, method, data, cb) {
   const options = {
     method: method,
     headers: headers,
-    body: body
+    body: body,
+    // credentials: "include",  // ✅ Allow CORS with cookies/auth headers
   };
 
   // Handling fetch timeout manually
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second for timeout
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 sec timeout
 
-  buddypond.incrementPackets('packetsSent');
-  let perf = {};
-  perf.start = new Date();
+  buddypond.incrementPackets("packetsSent");
+  let perf = { start: new Date() };
 
-  // TODO: this should be fetch-in-worker
   fetch(url, { ...options, signal: controller.signal })
     .then(response => {
       clearTimeout(timeoutId);
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       return response.json();
     })
     .then(data => {
-      buddypond.incrementPackets('packetsReceived');
+      buddypond.incrementPackets("packetsReceived");
       perf.end = new Date();
       buddypond.addPerfTime(perf);
       cb(null, data);
     })
     .catch(error => {
-      let msg = 'Fetch connection error. Retrying request shortly.';
-      console.log(error)
+      let msg = "Fetch connection error. Retrying shortly.";
       if (error.name === "AbortError") {
-        msg = 'Fetch request timeout';
-      } else if (error.message === 'Payload Too Large') {
-        msg = 'File upload was too large for server. Try a smaller file.';
+        msg = "Fetch request timeout";
+      } else if (error.message.includes("Payload Too Large")) {
+        msg = "File upload was too large. Try a smaller file.";
       } else {
         msg = error.message;
       }
+      console.error("❌ API Request Failed:", error);
       cb(new Error(msg), null);
     });
 }

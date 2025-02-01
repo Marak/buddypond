@@ -1,20 +1,40 @@
 export default function renderOrUpdateBuddyInBuddyList(data) {
+
+  console.log('renderOrUpdateBuddyInBuddyList', data);
   let bp = this.bp;
   let buddyname = data.name;
-  let buddydata = data.buddydata;
-
+  let buddydata = data.profile;
+  console.log('buddydata', buddydata)
   //console.log(buddydata.isConnected, buddyname, buddydata);
 
 
   // 1/10/25 - Legacy guard for when isConnected was not a boolean
   //           Can remove this after a few releases 
-  if (typeof buddydata.isConnected !== 'boolean') {
+  if (buddydata.ctime > buddydata.dtime) {
     buddydata.isConnected = false;
   }
 
+  if (buddydata.status === 'online') {
+    buddydata.isConnected = true;
+  }
+
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
+
+  if (buddydata.status === 'hidden') {
+    connectedStatusIcon = 'H}{H ';
+  }
+
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
+
+
+  if (buddydata.newMessages) {
+    // open the window
+    // bp.emit('chat::openChatWindow', { name: buddyname });
+    console.log('buddynamebuddynamebuddyname', buddyname)
+    //bp.open('buddylist', { context: buddyname, type: 'buddy' });
+    this.bp.apps.buddylist.openChatWindow({ context: buddyname, type: 'buddy' }); // legacy API
+  }
 
   let buddyListItems = document.querySelectorAll('.buddylist li');
   let exists = Array.from(buddyListItems).find(el => el.dataset.buddy === buddyname);

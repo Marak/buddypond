@@ -12,6 +12,10 @@ export default class MenuBar {
 
     async init() {
         await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
+
+
+        this.bp.on('auth::logout', 'reset-menu', () => $('.me_title').html('Sign In'));
+        
     }
 
     load(menuData = {}, parent = document.body) {

@@ -1,37 +1,22 @@
 export default class SSEManager {
-    constructor(client) {
+    constructor(client, options = {}) {
         this.client = client;
         this.log = client.bp.log;
         this.sse = null;
         this.sseConnected = false;
     }
 
-    connectSSE() {
+    connectSSE(eventSourceUrl) {
         this.hardDisconnect = false;
-
-        const eventSourceUrl = this.client.config.api + '/profile?qtokenid=' + this.client.qtokenid;
-        const restUrl = this.client.config.api + '/api/v3/buddies?eventSource=true&qtokenid=' + this.client.qtokenid;
-    
-        this.log('eventSourceUrl', eventSourceUrl);
-        this.log('restUrl', restUrl);
-    
-        // Fetch the initial state before starting the SSE connection
-        fetch(restUrl)
-            .then(response => response.text())
-            .then(data => {
-                this.log('Initial State:', data);
-                this.client.worker.postMessage({ type: 'updateSSE', data: data });
-                this.initiateSSE(eventSourceUrl);
-            })
-            .catch(error => {
-                console.error('Error fetching initial state:', error);
-            });
+        console.log('eventSourceUrl', eventSourceUrl);
+        this.initiateSSE(eventSourceUrl);
     }
     
     initiateSSE(url) {
         this.sse = new EventSource(url);
+        console.log('initiateSSE new SSE URL:', url);
         this.sse.onmessage = (event) => {
-            this.log('SSE Message:', event.data);
+            console.log('SSE Message:', event.data);
             this.client.worker.postMessage({ type: 'updateSSE', data: event.data });
         };
     
@@ -64,6 +49,7 @@ export default class SSEManager {
         this.hardDisconnect = true;
         if (this.sse) {
             this.sse.close();
+            console.log("CLOSED SSE")
             this.sseConnected = false;
         }
     }

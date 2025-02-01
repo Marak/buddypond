@@ -1,51 +1,42 @@
-// import api from './lib/api.js';
 import SSEManager from './lib/SSEManager.js';
+import handleWorkerMessage from './lib/handleWorkerMessage.js';
+
 export default class Client {
     constructor(bp, options = {}) {
         this.bp = bp;
-        // this.sse = null;
         this.config = options.config || this.bp.config || {
             host: "",
-            wsHost: "",
             api: "",
         };
-        this.sseManager = new SSEManager(this);
-        this.ws = null;
-        this.api = buddypond; // for now
-        this.api.endpoint = this.config.api + '/api/v3';
-        //this.config.api = 'https://api.buddypond.com';
-        this.connectionSources = {};  // Tracks WebSocket connection requests by source
-        this.disconnectTimer = null;
-        this.disconnectDelay = 10000;  // 10 seconds
+        
+        this.messageSSEManager = new SSEManager(this, {});
+        this.buddylistSSEManager = new SSEManager(this, {});
+        this.buddySSEManager = new SSEManager(this, {});
+        
+        this.api = buddypond;
+        this.api.endpoint = `${this.config.api}/api/v6`;
         this.sseConnected = false;
         this.queuedMessages = [];
+        
+        // Track active subscriptions
+        this.subscriptions = new Map();
     }
+
     async init() {
-
         let config = {
-            onmessage: (event) => {
-                this.handleWorkerMessage(event);
-            },
-            onerror: (event) => {
-                console.error("Worker Error:", event);
-            },
+            onmessage: (event) => this.handleWorkerMessage(event),
+            onerror: (event) => console.error("Worker Error:", event),
         };
 
-        // onmessage and onerror are bound inside createWorker
         this.worker = await this.bp.createWorker('/apps/based/client/clientWorker.js', config);
-
         this.worker.onmessage = (event) => {
-            // Handle messages from the worker here
             this.bp.log('Message from worker:', event.data);
-            if (config.onmessage) {
-                config.onmessage(event.data);
-            }
+            config.onmessage(event.data);
         };
-        this.worker.onerror = function (event) {
+        
+        this.worker.onerror = (event) => {
             console.error('Worker error:', event);
-            if (config.onerror) {
-                config.onerror(event);
-            }
+            config.onerror(event);
         };
 
         this.bp.on('auth::qtoken', 'connect-to-sse', (qtoken) => {
@@ -58,156 +49,63 @@ export default class Client {
             this.connect();
         });
 
-        this.bp.on('client::requestWebsocketConnection', 'request-websocket-connection', (source) => {
-            this.requestWebsocketConnection(source);
-        });
-
         return this;
+    }
+
+    addSubscription(type, context) {
+
+        if (!this.bp.qtokenid) {
+            // try again after 100ms
+            setTimeout(() => this.addSubscription(type, context), 100);
+            return;
+        }
+        const key = `${type}/${context}`;
+        if (!this.subscriptions.has(key)) {
+            const sseConnection = new SSEManager(this, {});
+            console.log('Making connection to', `${this.config.api}/api/v6/sse/message?type=${type}&context=${context}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
+            sseConnection.connectSSE(`${this.config.api}/api/v6/sse/message?type=${type}&context=${context}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
+            this.subscriptions.set(key, sseConnection);
+            this.bp.log(`Subscribed to ${key}`);
+        } else {
+            console.log(`Already subscribed to ${key}`);
+        }
+    }
+
+    removeSubscription(type, context) {
+        const key = `${type}/${context}`;
+        if (this.subscriptions.has(key)) {
+            this.subscriptions.get(key).disconnectSSE();
+            this.subscriptions.delete(key);
+            console.log(`Unsubscribed from ${key}`);
+        } else {
+            console.log(`Not subscribed to ${key}`);
+        }
     }
 
     connect() {
         if (!this.sseConnected) {
-            this.sseManager.connectSSE();
+            // always connect to buddylist SSE
+            this.buddylistSSEManager.connectSSE(`${this.config.api}/api/v6/sse/buddylist?buddyname=${this.bp.me}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
+            
+            this.sseConnected = true;
         }
-    }
-
-    requestWebsocketConnection(source) {
-        if (!this.connectionSources[source]) {
-            //console.log(`WebSocket connection requested by ${source}.`);
-            this.connectionSources[source] = true;
-            if (Object.keys(this.connectionSources).length === 1) {
-                this.worker.postMessage({
-                    type: 'connectWebSocket', data: this.config, qtokenid: {
-                        qtokenid: this.api.qtokenid,
-                        me: this.api.me
-                    }
-                });  // Tell worker to connect WebSocket
-            } else {
-                // console.log('declining to ask worker to connectWebSocket')
-            }
-            //console.log('clearing disconnect timer', this.disconnectTimer)
-            clearTimeout(this.disconnectTimer);
-        } else {
-            //console.log(`WebSocket connection already requested by ${source}.`);
-            clearTimeout(this.disconnectTimer);
-        }
-    }
-
-    releaseWebsocketConnection(source) {
-        if (this.connectionSources[source]) {
-            //console.log(`WebSocket connection releaseWebsocketConnection requested ${source}.`);
-            delete this.connectionSources[source];
-            if (Object.keys(this.connectionSources).length === 0) {
-                this.disconnectTimer = setTimeout(() => {
-                    console.log('calling disconnectWebSocket')
-                    this.worker.postMessage({ type: 'disconnectWebSocket' });  // Tell worker to disconnect WebSocket
-                }, this.disconnectDelay);
-            }
-        }
-    }
-
-    onWebSocketConnected() {
-        this.wsConnected = true;
-        // console.log('WebSocket connection established.');
-        this.bp.emit('client::websocketConnected', this.ws);
-        // Send any queued messages
-        this.queuedMessages.forEach(message => {
-            this.sendMessage(message);
-        });
-        this.queuedMessages = [];
-    }
-    onWebSocketClosed() {
-        this.wsConnected = false;
-        this.bp.emit('client::websocketClosed');
-
-        // Ensure disconnectDelay is initialized and has a max value
-        if (!this.disconnectDelay) {
-            this.disconnectDelay = 200; // Initial delay
-        }
-        const maxDelay = 16000; // Max delay, adjust as needed
-
-        // Attempt to reconnect after exponential backoff delay
-        setTimeout(() => {
-            console.log('reconnecting WebSocket');
-            if (Object.keys(this.connectionSources).length > 0) {
-                this.worker.postMessage({
-                    type: 'connectWebSocket',
-                    data: this.config,
-                    qtokenid: {
-                        qtokenid: this.api.qtokenid,
-                        me: this.api.me
-                    }
-                });  // Tell worker to connect WebSocket
-            }
-
-            // Increase delay for the next attempt, capped at maxDelay
-            this.disconnectDelay = Math.min(this.disconnectDelay * 2, maxDelay);
-        }, this.disconnectDelay);
-    }
-
-    handleWorkerMessage(event) {
-        this.bp.log('handleWorkerMessage', event)
-        const { type, data } = event;
-        switch (type) {
-            case 'wsMessage':
-                this.bp.log('WebSocket message received from worker:', data);
-                this.bp.emit(event.data.event, event.data);
-                break;
-            case 'sseUpdate':
-                this.bp.log('SSE update from worker:', type, data);
-                this.bp.emit(data.event, data);
-
-                break;
-            case 'wsConnected':
-                this.bp.log('WebSocket connection established in worker.');
-                this.onWebSocketConnected();
-                break;
-            case 'wsClosed':
-                this.bp.log('WebSocket connection closed in worker.');
-                this.onWebSocketClosed();
-                break;
-            case 'wsError':
-                console.error('WebSocket error in worker:', data);
-                break;
-            default:
-                this.bp.log('Unhandled message type from worker:', type);
-        }
-    }
-
-    handleWorkerError(event) {
-        console.error('Error in worker:', event.message);
     }
 
     sendMessage(message) {
-        this.bp.log('sendMessage', message, this.connectionSources)
+        this.bp.log('sendMessage', message);
+        console.log('client.sendMessage', message);
         message.me = this.api.me;
-        if (Object.keys(this.connectionSources).length > 0) {  // Check if there are active sources
-            this.worker.postMessage({ type: 'sendMessage', data: message });
-        } else {
-            this.queuedMessages.push(message);
-        }
-    }
-
-    flushMessageQueue() {
-        while (this.queuedMessages.length > 0) {
-            let message = this.queuedMessages.shift();
-            this.sendMessage(message);
-        }
-    }
-
-    disconnectWebSocket() {
-        this.worker.postMessage({ type: 'disconnectWebSocket' });
     }
 
     disconnect() {
-        // immediately disconnects all connections
-        this.worker.postMessage({ type: 'disconnectWebSocket' });
-        this.sseManager.disconnectSSE();
+        this.buddylistSSEManager.disconnectSSE();
+        this.subscriptions.forEach(sse => sse.disconnectSSE());
+        this.subscriptions.clear();
+        this.sseConnected = false;
     }
 
     logout() {
         this.disconnect();
-        // clear the qtoken from the client and local storage
         this.qtokenid = null;
         this.api.qtokenid = null;
         this.api.me = 'Guest';
@@ -216,5 +114,6 @@ export default class Client {
         this.bp.emit('auth::logout');
         this.api.logout();
     }
-
 }
+
+Client.prototype.handleWorkerMessage = handleWorkerMessage;

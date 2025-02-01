@@ -14,7 +14,11 @@ export default async function buildPad(padName, template = 'default') {
         file.filePath = 'pads/' +  padName + `/${fileName}`;
         console.log(`Uploading ${fileName}...`, file);
         try {
-            await this.bp.apps.client.api.uploadFile(file);
+            // don't wait for the default pad to generate each file
+            // just generate (3) at once and keep going
+            // TODO: we could track progress and show in UI, etc...
+            // await this.bp.apps.client.api.uploadFile(file);
+            this.bp.apps.client.api.uploadFile(file);
             console.log(`${fileName} uploaded successfully.`);
         } catch (uploadError) {
             console.error(`Error uploading ${fileName}: ${uploadError.message}`);

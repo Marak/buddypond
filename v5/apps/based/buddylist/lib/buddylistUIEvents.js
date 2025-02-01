@@ -60,19 +60,22 @@ export default function buddylistUIEvents() {
   // Send a buddy request form
   $('.sendBuddyRequest').on('click', (ev) => {
     ev.preventDefault();
-    $('.you_have_no_buddies').html('Buddy Request Sent!');
     let buddyName = $('.buddy_request_name').val() || $(this).html();
     if (!buddyName) {
       $('.buddy_request_name').addClass('error');
       return;
     }
+
+    $('.you_have_no_buddies').html('Buddy Request Sent!');
     $('.buddy_request_name').removeClass('error');
     $('.buddy_request_name').val('');
-    $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>');
+    // $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>');
     this.bp.log('buddypond.addBuddy ->', buddyName);
     buddypond.addBuddy(buddyName, (err, data) => {
       if (!data.success) {
-        alert(data.message);
+        $('.you_have_no_buddies').html(data.message)
+        console.error(data);
+        return;
       }
       this.bp.log('buddypond.addBuddy <-', data);
     });

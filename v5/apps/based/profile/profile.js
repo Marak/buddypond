@@ -135,8 +135,9 @@ export default class Profile {
         $('.updateProfileHtml').flexHide();
         $('.cancelProfileEdit').flexHide();
 
-        audioSettings(bp);
-        userSettings(bp);
+        // TODO: add these back
+        //audioSettings(bp);
+        //userSettings(bp);
 
 
         let padEditorHolder = document.createElement('div');

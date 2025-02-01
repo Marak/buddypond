@@ -1,41 +1,30 @@
-//import uuid from 'https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm'
-import AutoComplete from '../../ui/AutoComplete/AutoComplete.js';
+// import AutoComplete from '../../ui/AutoComplete/AutoComplete.js'; // using jquery autocomplete ( for now )
 import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
-
-function uuid() {
-    return new Date().getTime();
-}
 export default function openChatWindow(data) {
     this.bp.emit('client::requestWebsocketConnection', 'buddylist');
-    // console.log("openChatWindow", data);
 
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
-    let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
     let windowTitle = windowType === 'pond' ? 'Pond' : '';
 
-    // Reference directly to the specific list depending on windowType
-    let subscribedList = windowType === 'pond' ? this.subscribedPonds : this.subscribedBuddies;
+    if (data.context) {
+        contextName = data.context;
+    }
+
+    if (data.type) {
+        windowType = data.type;
+    }
+
+    let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
+    let client = this.bp.apps.client;
 
     let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowIdPrefix + contextName);
     if (chatWindow) {
         return chatWindow;
     }
 
-    const chatWindowTemplate = this.messageTemplateString;
-    const cloned = document.createElement('div');
-    cloned.innerHTML = chatWindowTemplate;
+    let iconImagePath = windowType === 'buddy' ? '' : 'desktop/assets/images/icons/icon_pond_64.png';
 
-    // No group video calls (for now)
-    if (windowType === 'pond') {
-        $('.startVideoCall', cloned).remove();
-    }
-
-    let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
-
-    if (windowType === 'buddy') {
-        iconImagePath = '';
-    }
     chatWindow = this.bp.apps.ui.windowManager.createWindow({
         app: 'buddylist',
         id: windowIdPrefix + contextName,
@@ -45,110 +34,55 @@ export default function openChatWindow(data) {
         context: contextName,
         parent: this.bp.apps.ui.parent,
         className: 'chatWindow',
-        x: 175,
+        x: data.x || 175,
         y: 75,
         width: 600,
         height: 500,
         onOpen: async (_window) => {
-            if (!subscribedList.includes(contextName)) {
-                subscribedList.push(contextName);
-            }
+            console.log('client', client);
+            console.log('client.subscriptions', client.subscriptions);
+            
+            client.addSubscription(windowType, contextName);
+            
             const _data = { me: this.bp.me };
             if (windowType === 'pond') {
                 _data.pondname = contextName;
             } else {
                 _data.buddyname = contextName;
             }
+            
             this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
-            // reprocess any local messages ( window was closed and then opened again )
-
-            // lazy load the emoji-picker ( its 225 kb )
-            // it is safe to call multiple times since bp.load will cache the module
             await this.bp.load('emoji-picker');
-
-
-            // create a new object to store all the previously processed messages
-            let rerenderMessages = [];
-
-            for (const message of this.data.processedMessages[contextName]) {
-                // console.log('reprocessing message', message);
-                rerenderMessages.push(message);
-            }
-
-            // clear the processedMessages array
-            // TODO: both sides of the context need to be cleared?
+            
+            let rerenderMessages = [...this.data.processedMessages[contextName]];
             this.data.processedMessages[contextName] = [];
-
-            // re-render all the messages
+            
             for (const message of rerenderMessages) {
-                // console.log('rendering message', message);
-                // console.log('rendering message', message);
                 try {
-                    // TODO: this may need to become async / await
-                    // in order to load remote cards, etc
                     await this.renderChatMessage(message, _window, true);
                 } catch (err) {
-                    // console.error('Error rendering message', err);
-
+                    console.error('Error rendering message', message, err, _window);
                 }
             }
-
-            // Remark: Is this not needed? Double getMessages was messing up the pondPopularity count?
-            // That shouldn't be possible, is due to two getMessages happening at same time?
-            //console.log('sending the getMessages request', _data);
-            // console.log('calling sendMessage getMessages', _data);
-            this.bp.apps.client.sendMessage({ id: uuid(), method: 'getMessages', data: _data });
         },
         onClose: () => {
-
-            if (windowType === 'pond') {
-                this.subscribedPonds = this.subscribedPonds.filter(name => name !== contextName);
-            } else {
-                this.subscribedBuddies = this.subscribedBuddies.filter(name => name !== contextName);
-            }
-
-            // needs to tell server we unsubscribed from this chat
-            // calling getLatestMessages() at this stage will send updated arrays for both buddies and ponds
-            // this tells the server we are no longer interested in messages for this chat
-            // if another chat window is open, we'll get a double getLatestMessages() call ( which should be okay )
-            // TODO: we could check to see if this was the last open window and then call getLatestMessages()
-            this.getLatestMessages();
-
-            // clear the locally processed messages for this window
-            // this.data.processedMessages[contextName] = [];
-
-            // check to see if this was the last open chat window ( for buddy or pond )
-            // if so, we need to create a timer to close the websocket connection
-            // this timer should be cleared if another chat window is opened
-            let noOpenChatWindows = false;
-
-            if (this.subscribedPonds.length === 0 && this.subscribedBuddies.length === 0) {
-                noOpenChatWindows = true;
-            }
-
-            if (noOpenChatWindows) {
-
-                if (this.closingWebsocketTimer) {
-                    clearTimeout(this.closingWebsocketTimer);
-                }
-                console.log("no remaining chat windows, closing websocket connection in 10 seconds");
-                this.closingWebsocketTimer = setTimeout(() => {
-                    //console.log('closing websocket connection');
-
-                    // emitting this messsage will tell the client to close the websocket connection
-                    // the SSE connection will remain open with profile updates, such as newMessages flag,
-                    // which will open the a chat window and re-establish the websocket connection
-                    // the goal here is to only use the websocket connection when needed ( open active chats )
-                    // we still get chat alerts from SSE updates on eventsource
-
-
-                    this.bp.apps.client.releaseWebsocketConnection('buddylist');
-                }, 5000); // TODO: 10 seconds
-            }
-
+            client.removeSubscription(windowType, contextName);
         }
     });
 
+    setupChatWindow.call(this, windowType, contextName, chatWindow);
+    return chatWindow;
+}
+
+
+function setupChatWindow (windowType, contextName, chatWindow) {
+
+    const chatWindowTemplate = this.messageTemplateString;
+
+    const cloned = document.createElement('div');
+    cloned.innerHTML = chatWindowTemplate;
+
+    console.log('setupChatWindow', chatWindow, this.options);
     chatWindow.container.classList.add('has-droparea');
     chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 
@@ -318,10 +252,13 @@ export default function openChatWindow(data) {
     
         // Send the regular message
         if (windowType === 'pond') {
-            this.bp.emit('pond::sendMessage', _data);
+            _data.type = 'pond';
         } else {
-            this.bp.emit('buddy::sendMessage', _data);
+            _data.type = 'buddy';
         }
+
+        this.bp.emit('buddy::sendMessage', _data);
+
     
         // Clear input
         $('.aim-input', chatWindow.content).val('');
@@ -341,6 +278,7 @@ export default function openChatWindow(data) {
 
     // Buddy "is typing" event on message_text input
     $('.aim-input').on('keypress', () => {
+        return;
         let buddyName = this.bp.me;
         let context = contextName;
         // console.log('typing', buddyName, context);
@@ -355,5 +293,5 @@ export default function openChatWindow(data) {
 
 
 
-    return chatWindow;
+
 }
