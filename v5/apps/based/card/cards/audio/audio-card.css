@@ -11,4 +11,9 @@
     font-size: 18px;
     margin-bottom: 10px;
   }
+
+  .audio-card .openAudioPlayer {
+    cursor: pointer;
+    color: #007bff;
+  }
   
