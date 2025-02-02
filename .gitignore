@@ -5,8 +5,8 @@ sdk/nodejs-sdk/node_modules
 ./audio/
 .vscode
 v5/node_modules
-v5/dist
 /files/
 .tap
 v5/example-pads
 .vite
+v5/dist

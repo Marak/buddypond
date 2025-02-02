@@ -18,7 +18,7 @@ export default directories.map(dir => {
         input: inputPath,
         output: {
             file: path.resolve(__dirname, 'dist', dir, `${dir}.js`),
-            format: 'umd',
+            format: 'esm',
             name: dir
         },
         plugins: [

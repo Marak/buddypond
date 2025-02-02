@@ -3,21 +3,30 @@ window.bp_v_5 = async function bp_v_5() {
     setConfig();
     bindUIEvents();
     await bp.load('localstorage');
+    await bp.load('buddyscript');
 
     await loadCoreApps();
     arrangeDesktop();
 
     // desktop is loaded at this stage, continue with other apps
     // load what is required for buddylist and login
-    await bp.load('buddyscript');
     let allCommands = bp.apps.buddyscript.commands;
 
     await bp.load('play');
     await bp.open('client');
-    await bp.open({
-        name: 'buddylist',
-        autocomplete: allCommands
-    });
+
+    // if not mobile, open buddylist
+
+    if (!bp.isMobile()) {
+        await bp.open({
+            name: 'buddylist',
+            autocomplete: allCommands
+        });
+    }
+
+    // if mobile and also session, open buddylist
+    // TODO: if (bp.isMobile() && bp.me) {
+        
 
     // buddy list is operational at this stage
     // load apps related to chat / social
@@ -35,6 +44,8 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('say');
      bp.load('droparea');
      bp.load('file-viewer');
+     //bp.open('file-explorer');
+
     
      // bp.open('piano')
      // bp.open('hacker-typer');
@@ -48,33 +59,8 @@ window.bp_v_5 = async function bp_v_5() {
     // await bp.load('youtube');
     // await bp.load('soundrecorder');
     // await bp.open('camera');
+    // bp.apps.buddylist.openChatWindow({ context: 'Buddy', type: 'pond', x: 500 });
 
-
-    // load the legacy apps ( for now )
-    // TODO: remove this
-    let legacyApps = ['piano', 'lofi', 'ayyowars', 'interdimensionalcable', 'paint', 'mirror', 'games', 'soundrecorder', 'merlin'];
-
-    /*
-    for (let appName in bp.settings.apps_installed) {
-        let app = bp.apps.appstore.apps[appName];
-        //desktop.ui.renderDesktopShortCut(appName, app);
-        //console.log('renderDesktopShortCuts', appName, app);
-        bp.apps.desktop.addShortCut({
-            name: appName,
-            icon: `desktop/assets/images/icons/icon_${appName}_64.png`,
-            label: app.label || appName,
-        }, {
-            onClick: () => {
-                if (legacyApps.includes(appName)) {
-                    desktop.ui.openWindow(appName);
-                } else {
-                    bp.open(appName);
-                }
-            }
-        });
-
-    }
-*/
 
 };
 
@@ -112,8 +98,6 @@ function bindUIEvents() {
         bp.apps.desktop.load();
     });
 
-
-
     bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
         // console.log('buddy-message-gotfiltered', message);
 
@@ -125,35 +109,8 @@ function bindUIEvents() {
         // desktop.ui.openWindow('buddy_message', { context: message });
     });
 
-    /*
-    desktop.on('window::dragstart', 'legacy-correct-window-z-index', function (event) {
-        let windowId = event.windowId;
-        let window = $(windowId);
-        // console.log('windowwindowwindow', window)
-        let newWindows = bp.apps.ui.windowManager.windows;
-        // console.log('newWindows', newWindows);
-        let newWindowsSorted = newWindows.sort((a, b) => {
-            return a.z - b.z;
-        });
-
-        if (newWindowsSorted.length) {
-            // set the z-index of windowId to the highest z-index + 1
-            let highestZ = newWindowsSorted[newWindowsSorted.length - 1].z;
-            // console.log('highestZ', highestZ);
-            $(`${windowId}`).css('z-index', highestZ + 1);
-            // console.log('focus windowId', windowId);
-
-        }
-    });
-    */
-
     let d = $(document);
 
-    // TODO: move these to appropriate apps
-    // Delegate mousedown event for .logoutLink
-    d.on('mousedown', '.logoutLink', function (ev) {
-        bp.apps.buddylist.logout();
-    });
 
     // Delegate click event for .volumeToggle
     d.on('click', '.volumeToggle', function () {
@@ -239,44 +196,10 @@ function bindUIEvents() {
         }
     });
 
-    // Legacy windows
-    // we need the same logic for drag start and drag stop on 
-    $(document).on('click', function (ev) {
-        //  console.log('click', ev.target);
-        // if target has class window or has parent with class window
-        if ($(ev.target).closest('.window').length) {
-
-
-            // we need to address the z-index / focus on this window
-            let windowId = $(ev.target).closest('.window').attr('id');
-            //console.log("current windowId", windowId);
-            //console.log('current window zIndex', $(ev.target).css('z-index'));
-            // we need to figure out the correct z-index to set this window
-            // its not only the legacy BP windows now its also the new windows
-            let newWindows = bp.apps.ui.windowManager.windows;
-            // console.log('newWindows', newWindows);
-            let newWindowsSorted = newWindows.sort((a, b) => {
-                return a.z - b.z;
-            });
-
-            // set the z-index of windowId to the highest z-index + 1
-            let highestZ = newWindowsSorted[newWindowsSorted.length - 1].z;
-            //console.log('highestZ', highestZ);
-            $(`#${windowId}`).css('z-index', highestZ + 1);
-            //console.log('focus windowId', windowId);
-        }
-        // the event must bubble up to the document
-        // so we can capture the window click event
-
-        return true;
-    });
-
-
 
 }
 
 async function loadCoreApps() {
-
 
     console.log("start ui import")
 
@@ -321,6 +244,13 @@ async function loadCoreApps() {
 
     await bp.load('menubar');
     bp.apps.menubar.load();
+
+
+
+
+    // await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);
+    //bp.open('audio-player')
+
 
 
 

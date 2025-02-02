@@ -43,7 +43,7 @@ export default function defaultDesktopShortcuts() {
     bp.apps.desktop.addShortCut({
         name: 'file-explorer',
         icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
-        label: 'Cloud Files',
+        label: 'Buddy Files',
     }, {
         onClick: () => {
             bp.open('file-explorer');

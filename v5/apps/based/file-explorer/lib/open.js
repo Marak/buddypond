@@ -15,7 +15,7 @@ export default async function open({ context }) {
         if (!this.fileExplorerWindow) {
             this.fileExplorerWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'file-explorer',
-                title: 'Cloud Files',
+                title: 'Buddy Files',
                 app: 'file-explorer',
                 icon: 'desktop/assets/images/icons/icon_file-explorer_64.png',
                 x: 100,

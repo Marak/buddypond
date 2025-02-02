@@ -4,6 +4,9 @@ import path from 'path';
 import { version } from './package.json';
 
 export default defineConfig({
+  optimizeDeps: {
+    include: ['mime']
+  },
   base: './',
   server: {
     configureServer: (server) => {
