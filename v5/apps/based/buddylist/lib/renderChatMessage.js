@@ -14,18 +14,8 @@ export default async function renderChatMessage(message, _chatWindow) {
     message.text = forbiddenNotes.filter(message.text);
   }
 
-  function isValidUrl(messageText) {
-    if (!messageText) return false;
+ 
 
-    messageText = messageText.trim(); // Trim whitespace from both ends
-
-    try {
-      const url = new URL(messageText);
-      return true; // If successful, it's a valid URL
-    } catch (error) {
-      return false; // If error is thrown, it's not a valid URL
-    }
-  }
 
   if (isValidUrl(message.text)) {
     let contentUrl = message.text;
@@ -353,4 +343,24 @@ function renderGeoFlag(message) {
   img.className = 'geoFlag';
   img.src = `desktop/assets/geo-flags/flags/4x3/${message.location}.svg`;
   return img;
+}
+
+function isValidUrl(messageText) {
+  if (!messageText) return false;
+
+  messageText = messageText.trim(); // Trim whitespace from both ends
+
+  try {
+    const url = new URL(messageText);
+
+    // Ensure the URL has http or https protocol
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      console.log('This is a valid URL:', url.href);
+      return true;
+    }
+
+    return false; // Invalid if protocol is not http or https
+  } catch (error) {
+    return false; // If an error is thrown, it's not a valid URL
+  }
 }
