@@ -28,8 +28,7 @@ export default function defaultMenuBar (bp) {
     
     let networkStatsStr = `
       <span class="totalConnected loggedIn">
-        <span class="totalConnectedCount">0</span> Buddies Online</span>
-        <span class="totalOnlineCount">0</span><!--Buddies Online--></span>
+        <!-- <span class="totalConnectedCount">0</span> Buddies Online</span> -->
         <span class="desktopDisconnected loggedOut">Disconnected</span>
             
     `;

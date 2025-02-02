@@ -240,16 +240,16 @@ buddypond.readMessages = function readMessages(buddyName, cb) {
   })
 }
 
-
 function preprocessDeepSeek(data) {
 
   function isDeepSeekCommand(data) { // TODO move
+    // console.log('isDeepSeekCommand', data);
     if (!data.text) return false;
     if (data.from === 'DeepSeek') return false; // Prevent DeepSeek from responding to itself
     return data.text.startsWith('/deep') || data.text.startsWith('/ds');
   }
 
-  if (false && isDeepSeekCommand(data)) {
+  if (isDeepSeekCommand(data)) {
     // append chatHistory to data
     data.chatHistory = [];
     if (bp.apps.buddylist.data.processedMessages && bp.apps.buddylist.data.processedMessages.Buddy) {
@@ -266,12 +266,7 @@ function preprocessDeepSeek(data) {
 
   console.log('new data', data);  
 
-
-
-
 }
-
-
 
 
 // TODO: pass card values to sendMessage fn scope
