@@ -21,7 +21,8 @@ export default async function renderChatMessage(message, _chatWindow) {
     let contentUrl = message.text;
     // This is a URL, process it as such
     message.card = {
-      url: message.text
+      url: message.text,
+      type: 'url',
     };
     message.text = 'I sent a link:';
     // check to see if file extention is supportedImageTypes, if so it's data.card.type = 'image'
@@ -181,7 +182,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     //console.log('message is card', message.card);
 
     let cardData = message.card;
-    console.log("USING CARD", cardData);
+    console.log("USING CARD", cardData, message);
     // make sure card has props
     if (Object.keys(cardData).length > 0) {
 
