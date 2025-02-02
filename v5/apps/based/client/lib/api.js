@@ -310,12 +310,15 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
     ...msg,
   };
 
-  nonCircularMsg.chatHistory = nonCircularMsg.chatHistory.map((message) => {
-    if (message.card) {
-      delete message.card.message;
-    }
-    return message;
-  });
+  if (nonCircularMsg.chatHistory && nonCircularMsg.chatHistory.length > 0) {
+    nonCircularMsg.chatHistory = nonCircularMsg.chatHistory.map((message) => {
+      if (message.card) {
+        delete message.card.message;
+      }
+      return message;
+    });
+  }
+
   // console.log('nonCircularMsg', nonCircularMsg);
 
   apiRequest('/pond/' + pondname + '/send', 'POST', nonCircularMsg, function (err, data) {
