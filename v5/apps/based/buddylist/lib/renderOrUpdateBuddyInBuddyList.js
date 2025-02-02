@@ -20,9 +20,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
 
-  if (buddydata.status === 'hidden') {
-    connectedStatusIcon = 'H}{H ';
-  }
+
 
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
@@ -47,6 +45,10 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   let buddyListItemEl = document.createElement('div');
   buddyListItemEl.innerHTML = buddyListItem;
   buddyListItemEl = buddyListItemEl.firstChild;
+
+  if (buddydata.status === 'hidden') {
+    buddyListItemEl.style.display = 'none';
+  }
 
   if (buddydata.isConnected) {
     $('.buddylist').prepend(buddyListItemEl);

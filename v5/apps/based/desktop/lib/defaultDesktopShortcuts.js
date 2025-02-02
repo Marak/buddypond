@@ -40,18 +40,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-    /*
-    bp.apps.desktop.addShortCut({
-        name: 'buddylist',
-        icon: `desktop/assets/images/icons/icon_buddylist_64.png`,
-        label: 'Buddylist',
-    }, {
-        onClick: () => {
-            bp.open('buddylist');
-        }
-    });
-    */
-
     bp.apps.desktop.addShortCut({
         name: 'file-explorer',
         icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
@@ -140,18 +128,7 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-    /*
-    bp.apps.desktop.addShortCut({
-        name: 'audio-player',
-        icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
-        label: 'Audio Player',
-    }, {
-        onClick: () => {
-            bp.open('audio-player');
-        }
-    });
-    */
-
+  
     bp.apps.desktop.addShortCut({
         name: 'audio-visual',
         icon: `desktop/assets/images/icons/icon_visuals_64.png`,
@@ -227,7 +204,19 @@ export default function defaultDesktopShortcuts() {
 
 
         ],
-    })
+    });
+    /*
+    bp.apps.desktop.addShortCut({
+        name: 'audio-player',
+        icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
+        label: 'Audio Player',
+    }, {
+        onClick: () => {
+            bp.open('audio-player');
+        }
+    });
+    */
+
 
 
 }

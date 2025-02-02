@@ -39,6 +39,17 @@ export default class BuddyList {
 
     async init() {
 
+        // add event when user closes browser window
+        window.addEventListener('beforeunload', (event) => {
+
+            // set status to online
+            buddypond.setStatus(this.bp.me, 'offline', function(err, re){
+                console.log('buddypond.setStatus', err, re);
+            });
+
+
+        });
+
     }
 
     async open(config = { type: 'buddylist-profile' }) {
@@ -521,6 +532,11 @@ export default class BuddyList {
 
         }
 
+        // set status to online
+        buddypond.setStatus(this.bp.me, 'online', function(err, re){
+            console.log('buddypond.setStatus', err, re);
+        });
+
     }
 }
 
@@ -533,6 +549,11 @@ BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
 
 BuddyList.prototype.logout = function () {
+
+     // set status to online
+     buddypond.setStatus(this.bp.me, 'offline', function(err, re){
+        console.log('buddypond.setStatus', err, re);
+    });
     // close any open chat windows
     $('.chatWindow').remove(); // maybe, they could stay open as well
     // disconnect the client

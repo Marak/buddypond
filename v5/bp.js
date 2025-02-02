@@ -91,7 +91,6 @@ bp.load = async function load(resource, config = {}) {
 }
 
 bp.importModule = async function importModule(app, config, buddypond = true) {
-
     // console.log('importModule', app, config, buddypond);
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     let appName = app;
@@ -115,10 +114,19 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
         // console.log('attempting to load module', modulePath);
         let module = await import(/* @vite-ignore */modulePath);
         if (buddypond) {
+            // console.log(JSON.stringify(config));
             bp.apps[appName] = new module.default(bp, config);
             if (typeof bp.apps[appName].init === 'function') {
-                await bp.apps[appName].init();
+                await bp.apps[appName].init(config);
                 bp.log('init complete', appName);
+                //console.log('addCommand', appName);
+                /* TODO: we could have default commands ( help etc ) for all apps
+                bp.apps.buddyscript.addCommand(appName, (context) => {
+                    console.log('show appName', appName);
+                    return `Echo: ${context}`;
+                });
+                */
+
             } else {
                 bp.log('no init function found', appName);
             }
