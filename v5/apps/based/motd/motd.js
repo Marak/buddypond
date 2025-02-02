@@ -63,7 +63,7 @@ export default class Motd {
         message.style.fontSize = '1.5em';
         message.style.fontWeight = 'bold';
         message.style.padding = '20px';
-        message.innerHTML = 'Cloud Edge v6 is Online!<br/>All chat features have been reset. <br/><br/More features coming.';
+        message.innerHTML = 'Cloud Edge v6 is Online!<br/>All chat features have been reset. <br/><br/><em>Expect some breaking changes.</em>';
 
         motdWindow.content.appendChild(message);
 
