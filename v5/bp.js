@@ -8,7 +8,7 @@ if (typeof window !== 'undefined') {
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
-
+bp.reportError = function noop() { }
 
 bp.config = {
     host: ""
