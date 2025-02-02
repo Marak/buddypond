@@ -1,5 +1,13 @@
 export default function applyData(el, data) {
     let soundUrl = data.url;
+    console.log("APplying data to audio card", data, soundUrl);
+    let audioCardEl = $(el).find('.audio-card');
+    audioCardEl.attr('data-url', soundUrl);
+    audioCardEl.attr('data-uuid', data.message.uuid);
+    audioCardEl.attr('data-to', data.message.to);
+    audioCardEl.attr('data-from', data.message.from);
+    audioCardEl.attr('data-context', data.message.context);
+
 
     // Assuming data has properties like `title` and `soundURL`
     $(el).find('.card-title').text(data.title);

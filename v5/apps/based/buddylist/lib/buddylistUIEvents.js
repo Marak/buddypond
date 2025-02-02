@@ -96,7 +96,6 @@ export default function buddylistUIEvents() {
     }
   });
 
-
   // TODO: create context meny for buddy-message-sender
   $(document).on('click', (e) => {
     // delegate based on if e.target is a .buddy-message-sender
@@ -126,16 +125,16 @@ export default function buddylistUIEvents() {
 
     e.preventDefault(); // Prevent default context menu
     let chatMessage = $(e.target).closest('.chatMessage'); // Get the chat message element
-
+    console.log('using chatMessage', chatMessage.html());
     if (api.me !== 'Marak') { // could also allow users to remove their own messages
        // set the removeMessage to disabled class
       $('#customContextMenu').addClass('disabled');
     }
 
-    let from = $(e.target).data('from');
-    let to = $(e.target).data('to');
-    let uuid = chatMessage.data('uuid');
-    let type = $(e.target).data('type');
+    let from = chatMessage.attr('data-form');
+    let to = chatMessage.attr('data-to');
+    let uuid = chatMessage.attr('data-uuid');
+    let type = chatMessage.attr('data-type');
 
     console.log('type', type, 'from', from, 'uuid', uuid);
 
@@ -149,6 +148,9 @@ export default function buddylistUIEvents() {
     $('#customContextMenu').off('click').on('click', async () => {
       // Replace 'openProfile' with your actual function to open the profile
       //openProfile(buddyName);
+
+      let context = to;
+
       await api.removeMessage({type, from, to, uuid});
       // $(this).hide(); // Hide the context menu after click
     });

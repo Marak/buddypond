@@ -79,7 +79,7 @@ buddypond.addBuddy = function addBuddy(buddyname, cb) {
 }
 
 buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
-  apiRequest('/buddylist/' + buddypond.me + '/removebuddy', 'POST', {
+  apiRequest('/buddylist/' + buddypond.me + '/removeBuddy', 'POST', {
     buddyname: buddyname
   }, function (err, data) {
     cb(err, data);
@@ -195,8 +195,6 @@ buddypond.deletePad = async function (key) {
 };
 
 
-
-
 buddypond.updateBuddyProfile = function updateBuddyProfile(profileUpdates, cb) {
   apiRequest('/buddies/' + buddypond.me + '/updateProfile', 'POST', profileUpdates, function (err, data) {
     cb(err, data);
@@ -205,7 +203,7 @@ buddypond.updateBuddyProfile = function updateBuddyProfile(profileUpdates, cb) {
 
 buddypond.removeMessage = async function removeMessage({ from, to, type, uuid }) {
   return new Promise((resolve, reject) => {
-    apiRequest('/messages/remove', 'POST', {
+    apiRequest('/' + type + '/' + to + '/removeInstantMessage', 'POST', {
       from: from,
       to: to,
       type: type,

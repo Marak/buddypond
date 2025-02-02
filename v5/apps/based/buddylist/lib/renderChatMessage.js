@@ -33,15 +33,17 @@ export default async function renderChatMessage(message, _chatWindow) {
     message.card = {
       url: message.text
     };
-    message.text = '';
+    message.text = 'I sent a link:';
     // check to see if file extention is supportedImageTypes, if so it's data.card.type = 'image'
     if (contentUrl) {
       let ext = contentUrl.split('.').pop();
       if (buddypond.supportedImageTypesExt.includes(ext)) {
         message.card.type = 'image';
+        message.text = 'I sent an image:';
       }
       if (buddypond.supportedAudioTypesExt.includes(ext)) {
         message.card.type = 'audio';
+        message.text = 'I sent audio:';
       }
       if (buddypond.supportedVideoTypes.includes(ext)) {
         //data.card.type = 'video'; // soon TODO
@@ -228,9 +230,11 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
 
     let messageSender = document.createElement('span');
+    // TODO: remove from messageSender, use parent element
     messageSender.setAttribute('data-from', message.from);
     messageSender.setAttribute('data-to', message.to);
     messageSender.setAttribute('data-type', message.type);
+
     let messageClass = message.from === bp.me ? '' : 'purple';
     messageSender.className = messageClass;
     messageSender.classList.add('buddy-message-sender');
@@ -258,10 +262,13 @@ export default async function renderChatMessage(message, _chatWindow) {
     if (container) {
       chatMessage.appendChild(container);
     } else {
-      chatMessage.setAttribute('data-uuid', message.uuid);
-      chatMessage.setAttribute('data-id', message.id);
 
     }
+    chatMessage.setAttribute('data-id', message.id);
+    chatMessage.setAttribute('data-from', message.from);
+    chatMessage.setAttribute('data-to', message.to);
+    chatMessage.setAttribute('data-type', message.type);
+    chatMessage.setAttribute('data-uuid', message.uuid);
 
     // Since images may be lazy loaded we won't know their height until they load
     // After each image loads attempt to scroll to the bottom
