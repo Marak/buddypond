@@ -299,9 +299,26 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
       voiceIndex: desktop.settings.tts_voice_index
     }
   };
+  console.log('preprocessDeepSeek', msg);
+
   preprocessDeepSeek(msg);
 
-  apiRequest('/pond/' + pondname + '/send', 'POST', msg, function (err, data) {
+  console.log('postprocessDeepSeek', msg);
+
+  // we need to remove any message reference on message.card ( circular reference )
+  let nonCircularMsg = {
+    ...msg,
+  };
+
+  nonCircularMsg.chatHistory = nonCircularMsg.chatHistory.map((message) => {
+    if (message.card) {
+      delete message.card.message;
+    }
+    return message;
+  });
+  // console.log('nonCircularMsg', nonCircularMsg);
+
+  apiRequest('/pond/' + pondname + '/send', 'POST', nonCircularMsg, function (err, data) {
     cb(err, data);
   })
 }
@@ -647,6 +664,26 @@ buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) 
     });
   });
 };
+
+// syncWithR2 - syncs the contents of the R2 bucket with the metadata on the durable object
+// In theory, we should *never* need to call this function, in practice and dev with any errors
+// It is very possible that the metadata / total usage will go out of sync with the actual files
+// It's important we are able to occasionally sync the metadata with the actual files
+buddypond.syncWithR2 = async function syncWithR2(prefix = '', depth = 6) {
+  let url = `${buddypond.uploadsEndpoint}/syncWithR2?v=6&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&prefix=${prefix}&depth=${depth}`;
+  console.log('Requesting sync with R2:', url);
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to sync with R2: ${await response.text()}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error('Error syncing with R2:', err);
+    throw err; // Rethrow for external handling
+  }
+}
 
 buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
 
