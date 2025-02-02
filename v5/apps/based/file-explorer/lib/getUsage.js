@@ -1,0 +1,13 @@
+    export default async function getUsage() {
+
+        // get initial file usage
+        let currentUsage = await this.bp.apps.client.api.getFileUsage();
+        // console.log('currentUsage', currentUsage);
+        this.currentStorageUsage = currentUsage.usage;
+        let storageLimit = 10000000; // 10mb
+        let storageRemaining = storageLimit - currentUsage.usage;
+        this.currentStorageRemaining = storageRemaining;
+
+        $('.storageUsed', this.content).text(this.bytes(currentUsage.usage));
+        $('.storageRemaining', this.content).text(this.bytes(storageRemaining));
+    }
