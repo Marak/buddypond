@@ -33,7 +33,7 @@ wallpapers.legacyWallpapers = function (bp) {
       cellHeight: 16,
       defaultColor: desktop.settings.wallpaper_color || '#008F11',
       inputCSS: { 'border-radius': '4px', 'font-size': '4px', 'width': '10px' },
-      chooserCSS: { 'border': '1px solid #660033', 'left': '200px', 'top': '-240px' },
+      chooserCSS: { 'border': '1px solid #660033', 'top': '20px' },
       displayCSS: {  },
       displayColorCode: true,
       livePreview: true,

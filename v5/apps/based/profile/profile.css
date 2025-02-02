@@ -68,6 +68,7 @@
     flex-direction: row;
     gap: 10px;
     font-size: 18px;
+    justify-content: center;
 }
 
 .editor-controls {
@@ -76,4 +77,11 @@
     gap: 10px;
     padding-left: 20px;
     margin-top: 10px;
+}
+
+.wallpaperSettings {
+    display: flex;
+    gap: 40px;
+    min-height: 500px;
+    justify-content: center;
 }

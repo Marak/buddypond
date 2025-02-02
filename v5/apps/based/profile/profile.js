@@ -41,7 +41,6 @@ export default class Profile {
         let contentDiv = document.createElement('div');
         contentDiv.classList.add('customProfile');
 
-
         // create a new element from the html string
         let profileContent = document.createElement('div');
         profileContent.innerHTML = this.html;
@@ -57,7 +56,7 @@ export default class Profile {
                 title: 'Profile - ' + buddyname,
                 x: 50,
                 y: 100,
-                width: 1000,
+                width: 800,
                 height: 500,
                 minWidth: 200,
                 minHeight: 200,

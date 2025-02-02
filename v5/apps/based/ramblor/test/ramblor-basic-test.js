@@ -20,7 +20,7 @@ tape('Ramblor rolling returns valid and expected results', (t) => {
     const roll = randblor.roll(1, 6);
 
     t.equal(typeof roll, 'object', 'roll returns an object');
-    t.equal(typeof roll.value, 'number', 'roll.value is a number');
+    t.equal(typeof roll.value, 'number', 'roll.value is a number'); // TODO: result?
     t.ok(roll.value >= 1 && roll.value <= 6, 'roll.value is within the specified range');
     t.end();
 });

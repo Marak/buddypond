@@ -326,7 +326,3 @@ let legacyCommands = {
       icon: 'visuals'
     }
   }
-
-
-
-
