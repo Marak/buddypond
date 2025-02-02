@@ -63,6 +63,19 @@ export default function chatWindowButtons(bp) {
 
         }
     },
+    /* // TODO: add Dictate with improved UX
+    {
+        text: 'Dictate',
+        image: 'desktop/assets/images/icons/icon_dictate_64.png',
+        onclick: async (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            let targetEl = $('.aim-input', $(ev.target).parent().parent());
+            await bp.open('dictate', { type: type || 'buddy', output: type || 'buddy', context: context, targetEl: targetEl });
+        }
+    },
+    */
+
     /*
     {
         text: 'BuddyHelp',
