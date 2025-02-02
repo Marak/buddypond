@@ -1,4 +1,8 @@
 window.bp_v_5 = async function bp_v_5() {
+    await bp.load('error-tracker', {
+        apiEndpoint: 'https://bp-error-tracker.cloudflare1973.workers.dev/',
+        // apiEndpoint: 'http://localhost:8787/error',
+    });
 
     setConfig();
     bindUIEvents();
@@ -244,8 +248,6 @@ async function loadCoreApps() {
 
     await bp.load('menubar');
     bp.apps.menubar.load();
-
-
 
 
     // await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);

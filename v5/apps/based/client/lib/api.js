@@ -905,9 +905,11 @@ buddypond.logout = function logout() {
 //
 // end methods for tracking API request performance
 //
+// TODO: refactor this and remove legacy
+// TODO: add back API data tracking with usage stats
 function apiRequest(uri, method, data, cb) {
   let url = buddypond.endpoint + uri;
-  console.log("making apiRequest", url, method, data);
+  // console.log("making apiRequest", url, method, data);
 
   let headers = {
     "Accept": "application/json",

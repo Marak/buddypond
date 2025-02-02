@@ -3,18 +3,16 @@ import forbiddenNotes from './forbiddenNotes.js';
 let scrollTimeout;
 
 export default async function renderChatMessage(message, _chatWindow) {
-  console.log('renderChatMessage', message, _chatWindow);
+  // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
 
 
-  console.log('current state', this.bp.apps.buddylist.data.profileState)
+  // console.log('current state', this.bp.apps.buddylist.data.profileState)
 
   // profanity filter
   if (message.text && message.text.length > 0) {
     message.text = forbiddenNotes.filter(message.text);
   }
-
- 
 
 
   if (isValidUrl(message.text)) {
@@ -69,7 +67,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     context = message.to;
     windowId = `pond_message_-${message.to}`;
   }
-  console.log('windowIdwindowId', windowId)
+  // console.log('windowIdwindowId', windowId)
   // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
   //alert(windowId)
@@ -182,7 +180,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     //console.log('message is card', message.card);
 
     let cardData = message.card;
-    console.log("USING CARD", cardData, message);
+    // console.log("USING CARD", cardData, message);
     // make sure card has props
     if (Object.keys(cardData).length > 0) {
 
@@ -356,7 +354,7 @@ function isValidUrl(messageText) {
 
     // Ensure the URL has http or https protocol
     if (url.protocol === "http:" || url.protocol === "https:") {
-      console.log('This is a valid URL:', url.href);
+      // console.log('This is a valid URL:', url.href);
       return true;
     }
 

@@ -1,12 +1,10 @@
 export default function renderOrUpdateBuddyInBuddyList(data) {
 
-  console.log('renderOrUpdateBuddyInBuddyList', data);
   let bp = this.bp;
   let buddyname = data.name;
   let buddydata = data.profile;
-  console.log('buddydata', buddydata)
-  //console.log(buddydata.isConnected, buddyname, buddydata);
 
+  //console.log(buddydata.isConnected, buddyname, buddydata);
 
   // 1/10/25 - Legacy guard for when isConnected was not a boolean
   //           Can remove this after a few releases 
@@ -20,8 +18,6 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
 
-
-
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
 
@@ -29,7 +25,6 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   if (buddydata.newMessages) {
     // open the window
     // bp.emit('chat::openChatWindow', { name: buddyname });
-    console.log('buddynamebuddynamebuddyname', buddyname)
     //bp.open('buddylist', { context: buddyname, type: 'buddy' });
     this.bp.apps.buddylist.openChatWindow({ context: buddyname, type: 'buddy' }); // legacy API
   }

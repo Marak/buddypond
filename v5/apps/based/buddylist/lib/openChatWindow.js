@@ -39,8 +39,8 @@ export default function openChatWindow(data) {
         width: 600,
         height: 500,
         onOpen: async (_window) => {
-            console.log('client', client);
-            console.log('client.subscriptions', client.subscriptions);
+            //console.log('client', client);
+            //console.log('client.subscriptions', client.subscriptions);
             
             client.addSubscription(windowType, contextName);
             
@@ -82,7 +82,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
     const cloned = document.createElement('div');
     cloned.innerHTML = chatWindowTemplate;
 
-    console.log('setupChatWindow', chatWindow, this.options);
+    // console.log('setupChatWindow', chatWindow, this.options);
     chatWindow.container.classList.add('has-droparea');
     chatWindow.content.appendChild($('.aim-window', cloned)[0]);
 

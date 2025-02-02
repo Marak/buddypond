@@ -53,10 +53,10 @@ export default class MenuBar {
             this.menuBarElement.remove();
         }
 
-        console.log('Rendering menu with data:', menuData);
+        //console.log('Rendering menu with data:', menuData);
 
         this.menuBarElement = new MenuBarClass(menuData).createMenu();
-        console.log('new menuBarElement', parent, this.menuBarElement);
+        //console.log('new menuBarElement', parent, this.menuBarElement);
         parent.appendChild(this.menuBarElement);
     }
 }

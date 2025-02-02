@@ -93,7 +93,7 @@ export default class Client {
 
     sendMessage(message) {
         this.bp.log('sendMessage', message);
-        console.log('client.sendMessage', message);
+        // console.log('client.sendMessage', message);
         message.me = this.api.me;
     }
 

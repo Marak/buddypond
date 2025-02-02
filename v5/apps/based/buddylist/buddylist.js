@@ -38,18 +38,17 @@ export default class BuddyList {
     }
 
     async init() {
-
-        // add event when user closes browser window
+        // Add event when user closes browser window or navigates away
         window.addEventListener('beforeunload', (event) => {
-
-            // set status to online
-            buddypond.setStatus(this.bp.me, 'offline', function(err, re){
+            // Show warning message
+            //event.preventDefault();
+            //event.returnValue = "Are you sure you want to leave? Your status will be set to offline.";
+            // Attempt to set status to offline (you may need a sync alternative)
+            buddypond.setStatus(this.bp.me, 'offline', function(err, re) {
                 console.log('buddypond.setStatus', err, re);
             });
-
-
+            //return event.returnValue;
         });
-
     }
 
     async open(config = { type: 'buddylist-profile' }) {
@@ -188,7 +187,7 @@ export default class BuddyList {
                 this.data.profileState.buddylist = this.data.profileState.buddylist || {};
 
                 this.data.profileState.buddylist[b] = buddy.profile;
-                console.log('renderOrUpdateBuddyInBuddyList', buddy);
+                // console.log('renderOrUpdateBuddyInBuddyList', buddy);
                 this.renderOrUpdateBuddyInBuddyList(buddy);
             }
 
@@ -231,7 +230,7 @@ export default class BuddyList {
 
         this.bp.on('profile::buddy::calling', 'start-call', data => {
             // legacy BP API
-            console.log("profile::buddy::calling", data);
+            // console.log("profile::buddy::calling", data);
             desktop.app.videochat.startCall(false, data.name, function (err, re) {
                 console.log('startCall callback', err, re);
             });
@@ -248,7 +247,7 @@ export default class BuddyList {
 
 
             buddypond.setStatus(this.bp.me, status, function(err, re){
-                console.log('errrrr', err, re);
+                // console.log('errrrr', err, re);
             });
 
         });
@@ -419,13 +418,13 @@ export default class BuddyList {
     }
 
     async handleChatMessages(data) {
-        console.log('handleChatMessages', data);
+        // console.log('handleChatMessages', data);
         for (const message of data.result.messages) {
             try {
                 // check to see if we have newMessages in local profile for message.from
                 // if so, send buddypond.readMessages(message.from)
                 if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
-                    console.log("SENDING READ NEWMESSAGES ALERT");
+                    // console.log("SENDING READ NEWMESSAGES ALERT");
                     this.data.profileState.buddylist[message.from].newMessages = false;
                     buddypond.readMessages(message.from, function(err, re){
                         console.log('readMessagesreadMessages', err, re);

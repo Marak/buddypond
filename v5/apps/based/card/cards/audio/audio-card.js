@@ -1,7 +1,7 @@
 export default function applyData(el, data) {
     let soundUrl = data.url;
-    console.log("APplying data to audio card", data, soundUrl);
-    let audioCardEl = $(el).find('.audio-card');
+    // console.log("APplying data to audio card", data, soundUrl);
+    let audioCardEl = $(el).find('.audio-card'); // TODO: remove data- attrs   here, not required?
     audioCardEl.attr('data-url', soundUrl);
     audioCardEl.attr('data-uuid', data.message.uuid);
     audioCardEl.attr('data-to', data.message.to);
@@ -15,7 +15,7 @@ export default function applyData(el, data) {
 
     // add click event to class=audioPlayer
     $(el).find('.openAudioPlayer').click(async (e) => {
-        console.log('audio-player clicked', soundUrl);
+        // console.log('audio-player clicked', soundUrl);
         // play audio
 
 

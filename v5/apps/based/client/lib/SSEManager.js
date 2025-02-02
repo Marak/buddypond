@@ -8,15 +8,14 @@ export default class SSEManager {
 
     connectSSE(eventSourceUrl) {
         this.hardDisconnect = false;
-        console.log('eventSourceUrl', eventSourceUrl);
         this.initiateSSE(eventSourceUrl);
     }
     
     initiateSSE(url) {
         this.sse = new EventSource(url);
-        console.log('initiateSSE new SSE URL:', url);
+        // console.log('initiateSSE new SSE URL:', url);
         this.sse.onmessage = (event) => {
-            console.log('SSE Message:', event.data);
+            // console.log('SSE Message:', event.data);
             this.client.worker.postMessage({ type: 'updateSSE', data: event.data });
         };
     
