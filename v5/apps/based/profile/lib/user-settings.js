@@ -1,4 +1,4 @@
-export default function legacyUserSettings(bp) {
+export default async function legacyUserSettings(bp) {
     $('.updateProfileButton').on('click', function () {
         let updates = {};
         updates.email = $('.buddy_email').val();
@@ -13,6 +13,19 @@ export default function legacyUserSettings(bp) {
             }
         }
         $('.updateProfileResponse').removeClass('error');
+        try {
+            let passwordChanged = buddypond.passwordChange({ buddyname: bp.me, password: updates.password });
+            // update successful
+            if (passwordChanged) {
+                $('.updateProfileResponse').html('Password changed');
+            }
+        } catch (e) {
+            $('.updateProfileResponse').addClass('error');
+            $('.updateProfileResponse').html('Failed to change password ' + e.message);
+            return;
+        }
+
+        /*
         buddypond.updateBuddyProfile({ updates: updates }, function (err, res) {
             if (res.error) {
                 alert(res.message);
@@ -20,6 +33,7 @@ export default function legacyUserSettings(bp) {
             }
             $('.updateProfileResponse').html('Updated!');
         });
+        */
     });
 
 
@@ -30,7 +44,7 @@ export default function legacyUserSettings(bp) {
     $('.updateProfileForm').on('submit', function (e) {
         e.preventDefault();
         // clear out local profile cache, this will trigger a re-render from next server update
-        desktop.app.profileCache = {};
+        // desktop.app.profileCache = {};
         return false;
     });
 

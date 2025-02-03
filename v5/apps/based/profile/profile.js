@@ -136,7 +136,7 @@ export default class Profile {
 
         // TODO: add these back
         //audioSettings(bp);
-        //userSettings(bp);
+        userSettings(bp);
 
 
         let padEditorHolder = document.createElement('div');
@@ -169,6 +169,8 @@ export default class Profile {
         if (options.context && options.context === 'themes') {
             $('.themesLink').click();
         }
+
+        $('.me').html(this.bp.me);
 
 
     }
