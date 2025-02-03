@@ -268,7 +268,9 @@ function arrangeDesktop() {
     } else {
         bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
     }
-    bp.apps.desktop.showDesktopIcons();
+    setTimeout(() => {
+        bp.apps.desktop.showDesktopIcons();
+    }, 300);
 
 }
 window.arrangeDesktop = arrangeDesktop;
