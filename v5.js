@@ -264,12 +264,11 @@ function arrangeDesktop() {
         bp.apps.desktop.arrangeShortcuts(4, {
             rowWidth: 256,
             rowHeight: 256
-        })
-
+        });
     } else {
         bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
     }
-
+    bp.apps.desktop.showDesktopIcons();
 
 }
 window.arrangeDesktop = arrangeDesktop;

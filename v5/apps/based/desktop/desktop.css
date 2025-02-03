@@ -7,7 +7,7 @@
     width: 100%;
 }
 .desktop-shortcuts-container {
-    display: flex; /* Use flex display */
+    display: none; /* Use flex display */
     flex-wrap: wrap; /* Allow items to wrap to the next line */
     align-items: flex-start; /* Align items to the start of the flex line */
     justify-content: flex-start; /* Align items to the start of the main axis */
@@ -40,7 +40,7 @@
     height: 32px; /* Set a fixed height for the icon */
     color: white;
 }
-.bp-desktop-shortcut a {
+.bp-desktop-shortcut {
   
 }
 

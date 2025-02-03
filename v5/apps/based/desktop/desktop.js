@@ -181,6 +181,10 @@ Desktop.prototype.removeWallpaper = removeWallpaper
 Desktop.prototype.viewSource = viewSource;
 
 
+Desktop.prototype.showDesktopIcons = function showDesktopIcons() {
+    this.shortCutsContainer.style.display = 'flex';
+}
+
 class Shortcut {
     constructor(data, parentElement) {
         this.data = data;
