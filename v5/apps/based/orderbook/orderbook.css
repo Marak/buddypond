@@ -1,0 +1,101 @@
+/* General Styles */
+
+.orderbook-container {
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.orderbook-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00d1b2;
+}
+
+/* Market Selector */
+.market-selector {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.market-selector select {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    font-size: 1rem;
+}
+
+/* Orderbook Table */
+.orderbook-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.orderbook-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+}
+
+.orderbook-table th, .orderbook-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.orderbook-table th {
+    background: #333;
+}
+
+/* Trade Form */
+.trade-form {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.trade-form h2 {
+    margin-bottom: 10px;
+    color: #00d1b2;
+}
+
+.trade-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.trade-form input, .trade-form select, .trade-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.trade-form input, .trade-form select {
+    background: #333;
+    color: #fff;
+}
+
+.trade-form button {
+    background: #00d1b2;
+    color: #121212;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.trade-form button:hover {
+    background: #008c7e;
+}
