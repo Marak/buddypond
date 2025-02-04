@@ -1,113 +1,101 @@
 export default class Youtube {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.youtubeWindow = null;
+        this.player = null;
         return this;
     }
 
     async init() {
-        // this.bp.log('Hello from Youtube');
+        this.html = await this.bp.load('/v5/apps/based/youtube/youtube.html');
+        let playlistModule = await this.bp.importModule('/v5/apps/based/youtube/data/playlist.js', {}, false);
+        this.playlist = playlistModule.default;
 
-        let html = await this.bp.load('/v5/apps/based/youtube/youtube.html');
+        if (!window.YT) {
+            await this.bp.appendScript('https://www.youtube.com/iframe_api');
+            window.onYouTubeIframeAPIReady = () => {
+                this.apiReady = true;
+            };
+        } else {
+            this.apiReady = true;
+        }
+    }
 
-        let playlist = await this.bp.importModule('/v5/apps/based/youtube/data/playlist.js', {}, false);
-        this.playlist = playlist.default;
+    async close() {
+        if (this.player) {
+            this.player.destroy();
+            this.player = null;
+        }
+        if (this.youtubeWindow) {
+            this.youtubeWindow = null;
+        }
+    }
 
-        // Append the YouTube IFrame API script to the document
-        await this.bp.appendScript('https://www.youtube.com/iframe_api');
+    async open(options = {}) {
+        if (this.youtubeWindow) {
+            if (this.player && options.videoId) {
+                this.player.loadVideoById(options.videoId);
+            }
+            return;
+        }
 
-        let youtubeWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'example',
-            title: 'Youtube',
+        this.youtubeWindow = this.bp.apps.ui.windowManager.createWindow({
+            id: 'youtube-window',
+            title: 'YouTube',
             x: 50,
             y: 100,
-            width: 400,
-            height: 300,
+            width: 600,
+            height: 480,
             minWidth: 200,
             minHeight: 200,
             parent: $('#desktop')[0],
             icon: '/desktop/assets/images/icons/icon_interdimensionalcable_64.png',
-            content: html,
+            content: this.html,
             resizable: true,
             minimizable: true,
             maximizable: true,
             closable: true,
             focusable: true,
             maximized: false,
-            minimized: false
+            minimized: false,
+            onClose: () => this.close()
         });
 
-        // get a random video from the playlist
-        let randomVideo = this.playlist[Math.floor(Math.random() * this.playlist.length)];
-        // Create a new promise to await the readiness of the YouTube IFrame API
-        let youtubeIframeApiReady = new Promise((resolve, reject) => {
-            // Define the global event handler that YouTube IFrame API will call
-            window.onYouTubeIframeAPIReady = () => {
-                // Create the player instance
-                this.player = new YT.Player('youtube-player', {
-                    height: '390',
-                    width: '640',
-                    videoId: randomVideo,
-                    playerVars: { 'autoplay': 1, 'controls': 1 },
-                    host: 'http://www.youtube.com',
-                    events: {
-                        'onReady': interDemonPlayerReady,
-                        'onStateChange': interDemonPlayerStateChange
-                    },
-                    origin: window.document.location.origin
-                });
-
-                // Resolve the promise once the player is successfully created
-                resolve();
-            };
-        });
-
-        // Await the promise that resolves when the YouTube IFrame API is ready
-        await youtubeIframeApiReady;
-
-        function interDemonPlayerReady(event) {
-            console.log(`interDemonPlayerReady`, event);
-            /*
-            if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
-              $('.orbHolder').hide();
-              $('#window_interdimensionalcable').css('height', 440);
-              desktop.app.interdimensionalcable.player.playVideo();
-            } else {
-              $('.orbHolder').show();
-              $('#window_interdimensionalcable').css('height', 590);
-              desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
-            }
-            next();
-            */
+        // Wait for YouTube API to be ready
+        while (!this.apiReady) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
         }
 
-        function interDemonPlayerStateChange(event) {
-            console.log(`interDemonPlayerStateChange`, event);
-            /*
-            if (event.data == 0) {
-              if (desktop.app.interdimensionalcable.mode === 'closeAfterPlayed') {
-                JQDX.closeWindow('#window_interdimensionalcable');
-              } else {
-                desktop.app.interdimensionalcable.playRandomVideo(desktop.app.interdimensionalcable.player, desktop.app.interdimensionalcable.playlist);
-              }
-            }
-              */
-        }
-
-
-
-        $('.orb-holder', youtubeWindow.content).on('click', () => {
+        $('.orb-holder', this.youtubeWindow.content).on('click', () => {
             this.playRandomVideo();
         });
 
+        let startingVideo = options.videoId || this.playlist[Math.floor(Math.random() * this.playlist.length)];
 
-        return 'loaded Example';
+        this.player = new YT.Player('youtube-player', {
+            height: '390',
+            width: '640',
+            videoId: startingVideo,
+            playerVars: { autoplay: 1, controls: 1 },
+            events: {
+                'onReady': this.onPlayerReady,
+                'onStateChange': this.onPlayerStateChange
+            },
+            origin: window.location.origin
+        });
+    }
+
+    onPlayerReady(event) {
+        console.log('YouTube Player Ready', event);
+    }
+
+    onPlayerStateChange(event) {
+        console.log('YouTube Player State Change', event);
     }
 
     playRandomVideo() {
-
+        if (!this.player || !this.playlist) return;
         let randomVideo = this.playlist[Math.floor(Math.random() * this.playlist.length)];
         this.player.loadVideoById(randomVideo);
-
     }
-
 }

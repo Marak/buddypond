@@ -1,4 +1,11 @@
-import forbiddenNotes from './forbiddenNotes.js';
+// TODO: we need to formalize this file by separating concerns and making separate functions
+// best to start small with a first sweep of organizing code into functions with proper scope
+// and removing any potential dead code ( while being very careful to not remove anythign that is needed )
+
+import forbiddenNotes from '../forbiddenNotes.js';
+import renderGeoFlag from './renderGeoFlag.js';
+import isValidUrl from './isValidUrl.js';
+import isValidYoutubeLink from './isValidYoutubeLink.js';
 
 let scrollTimeout;
 
@@ -6,13 +13,15 @@ export default async function renderChatMessage(message, _chatWindow) {
   // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
 
-
   // console.log('current state', this.bp.apps.buddylist.data.profileState)
 
   // profanity filter
   if (message.text && message.text.length > 0) {
     message.text = forbiddenNotes.filter(message.text);
   }
+
+  // TODO: check if there is a .roll and if so, show a small link to expand the roll
+  // TODO: add back meme bot
 
 
   if (isValidUrl(message.text)) {
@@ -38,6 +47,17 @@ export default async function renderChatMessage(message, _chatWindow) {
         //data.card.type = 'video'; // soon TODO
       }
     }
+
+    if (isValidYoutubeLink(contentUrl)) {
+      message.card.type = 'youtube';
+      message.card.thumbnail = `https://img.youtube.com/vi/${contentUrl.split('v=')[1]}/0.jpg`;
+      message.card.videoId = contentUrl.split('v=')[1];
+      message.text = 'I sent a youtube link:';
+    }
+
+    // TODO: we know is URL now, we can check to see if its a youtube link
+    // or another type of link
+    // and render that using the card system
 
 
     // message.text = 'I sent a link outside of BuddyPond:';
@@ -137,7 +157,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
   }
 
-
   // TODO: allow buddylist to register message processors
   // Is most likely best handled using SystemsManager from ECS code
   // this way all app can register an update method
@@ -146,12 +165,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   // bp.apps.buddylist.addMessageProcessor('card', function (message) {});
   // etc
   // this way we don't have to pollute the buddylist with all the message processing logic
-  // Legacy BP API
   // TODO: Migrate TTS app to v5 API
-  if (desktop && desktop.app && desktop.app.tts && desktop.app.tts.processMessage) {
-    // here it is, migrate to say app
-    // desktop.app.tts.processMessage(message);
-  }
 
   if (this.bp.apps.say && message.text && message.text.startsWith('/say')) {
     // this is a /say message
@@ -172,6 +186,25 @@ export default async function renderChatMessage(message, _chatWindow) {
   }
 
   //console.log('message', message)
+  /* TODO: keep this code, just keep it commented out for now
+  if (message.roll) {
+    // message represents a random roll from Ramblor
+    // show special cards with stats
+    message.card = {
+      type: 'roll',
+      roll: message.roll,
+      text: message.text,
+      from: message.from,
+      to: message.to,
+      uuid: message.uuid,
+      id: message.id,
+      ctime: message.ctime,
+      message: message,
+    };
+  }
+  */
+
+
   // Check to see if message is type card
 
   let container;
@@ -193,10 +226,11 @@ export default async function renderChatMessage(message, _chatWindow) {
       _card.render(container);
     }
 
-
   }
 
   let bp = this.bp;
+
+  // TODO: move this to separate file first
   function renderMessage(message, messageTime, chatWindow, container) {
     // Create elements
     let chatMessage = document.createElement('div');
@@ -311,8 +345,6 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Initially try to scroll to the bottom
   scrollToBottom();
 
-
-
   // console.log('parseChatMessage result', result);
 
   // Add the processed message UUID to prevent reprocessing
@@ -325,41 +357,4 @@ export default async function renderChatMessage(message, _chatWindow) {
     this.bp.emit('buddy::message::processed', message);
   }
 
-}
-
-function renderGeoFlag(message) {
-  if (message.location === 'outer space' || !message.location) {
-    // Set Antarctica to the default flag when the location is 'outer space'
-    message.location = 'AQ';
-  }
-
-  if (!message.location || message.location === 'outer space') {
-    return document.createElement('span');  // Return an empty span if no flag should be displayed
-  }
-
-  // Create an image element for the flag
-  let img = document.createElement('img');
-  img.className = 'geoFlag';
-  img.src = `desktop/assets/geo-flags/flags/4x3/${message.location}.svg`;
-  return img;
-}
-
-function isValidUrl(messageText) {
-  if (!messageText) return false;
-
-  messageText = messageText.trim(); // Trim whitespace from both ends
-
-  try {
-    const url = new URL(messageText);
-
-    // Ensure the URL has http or https protocol
-    if (url.protocol === "http:" || url.protocol === "https:") {
-      // console.log('This is a valid URL:', url.href);
-      return true;
-    }
-
-    return false; // Invalid if protocol is not http or https
-  } catch (error) {
-    return false; // If an error is thrown, it's not a valid URL
-  }
 }

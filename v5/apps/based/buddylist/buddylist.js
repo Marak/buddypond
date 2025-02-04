@@ -1,6 +1,6 @@
 import processBuddylist from "./lib/processProfile.js";
 import renderOrUpdateBuddyInBuddyList from "./lib/renderOrUpdateBuddyInBuddyList.js";
-import renderChatMessage from "./lib/renderChatMessage.js";
+import renderChatMessage from "./lib/message/renderChatMessage.js";
 import renderBuddyRequests from "./lib/renderBuddyRequests.js";
 import buddylistUIEvents from "./lib/buddylistUIEvents.js";
 import openChatWindow from "./lib/openChatWindow.js";
