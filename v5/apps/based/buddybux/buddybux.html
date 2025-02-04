@@ -1,0 +1,17 @@
+    <div class="buddybux-container">
+        <h1 class="buddybux-title">Buy BuddyBux</h1>
+
+        <div class="buddybux-selector">
+            <label for="buddybux-amount">Select Amount:</label>
+            <input type="number" id="buddybux-amount" min="1" max="5000" value="100" step="100">
+            <p class="price-info">Total: <span id="total-price">$1.00</span></p>
+        </div>
+
+        <div class="payment-options">
+            <h2>Choose Payment Method</h2>
+            <button id="stripe-checkout" class="payment-button">Pay with Stripe</button>
+            <button id="crypto-checkout" class="payment-button">Pay with MetaMask</button>
+        </div>
+    </div>
+
+ 

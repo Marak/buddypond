@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.buddybux-container {
+    max-width: 400px;
+    margin: auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.buddybux-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.buddybux-selector {
+    margin-bottom: 20px;
+}
+
+.buddybux-selector input {
+    width: 80%;
+    padding: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+
+.price-info {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.payment-options h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.payment-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1.2rem;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.payment-button:hover {
+    background-color: #cc5500;
+}
