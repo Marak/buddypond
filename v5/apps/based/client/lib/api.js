@@ -17,7 +17,7 @@ buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
 buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 
-buddypond.supportedImageTypesExt = ['jpeg', 'png', 'gif', 'webp', 'svg'];
+buddypond.supportedImageTypesExt = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico' ];
 buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
 
 // legacy v4 API
