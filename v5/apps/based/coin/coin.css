@@ -1,0 +1,88 @@
+.coin-container {
+    max-width: 800px;
+    margin: auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.coin-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #00d1b2;
+}
+
+/* Coin Minting Form */
+.coin-mint-form {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.coin-mint-form h2 {
+    color: #ffcc00;
+}
+
+.coin-mint-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.coin-mint-form input, .coin-mint-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.coin-mint-form input {
+    background: #333;
+    color: #fff;
+}
+
+.coin-mint-form button {
+    background: #00d1b2;
+    color: #121212;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.coin-mint-form button:hover {
+    background: #008c7e;
+}
+
+/* Coin Tables */
+.user-coins, .all-coins {
+    margin-top: 20px;
+}
+
+.user-coins h2, .all-coins h2 {
+    color: #ffcc00;
+}
+
+.user-coins table, .all-coins table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+}
+
+.user-coins th, .all-coins th, .user-coins td, .all-coins td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.user-coins th, .all-coins th {
+    background: #333;
+}
