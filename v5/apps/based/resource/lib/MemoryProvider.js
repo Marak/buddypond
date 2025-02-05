@@ -51,6 +51,9 @@ export default class MemoryProvider {
     list(owner) {
         return Object.values(memoryStore[this.resourceName]).filter(item => item.owner === owner);
     }
+    all () {
+        return Object.values(memoryStore[this.resourceName]);
+    }
 }
 
 

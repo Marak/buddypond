@@ -1,5 +1,6 @@
 import MemoryProvider from './MemoryProvider.js';
 import RestProvider from './RestProvider.js';
+import IndexedDBProvider from './IndexedDbProvider.js';
 
 const schemaRegistry = {};
 
@@ -9,13 +10,27 @@ export default class Resource {
         this.schema = options.schema || {};
         this.providerType = options.provider || 'memory';
 
-        if (!this.schema || Object.keys(this.schema).length === 0) {
+        if (Object.keys(this.schema).length === 0) {
             throw new Error(`Schema definition is required for resource: ${name}`);
         }
-        console.log('sending options to provider', options);
+        
+        console.log('Initializing provider with options:', options);
         schemaRegistry[this.name] = this.schema; // Register the resource schema
-        this.provider = this.providerType === 'rest' ? new RestProvider(this.name, options) : new MemoryProvider(this.name);
+
+        this.provider = this._createProvider(this.providerType, options);
         this.provider.bp = options.bp;
+    }
+
+    _createProvider(providerType, options) {
+        switch (providerType) {
+            case 'rest':
+                return new RestProvider(this.name, options);
+            case 'indexeddb':
+                return new IndexedDBProvider(this.name, options);
+            case 'memory':
+            default:
+                return new MemoryProvider(this.name);
+        }
     }
 
     create(owner, data) {
@@ -36,5 +51,9 @@ export default class Resource {
 
     list(owner) {
         return this.provider.list(owner);
+    }
+    
+    all() {
+        return this.provider.all();
     }
 }
