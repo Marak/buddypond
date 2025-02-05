@@ -8,18 +8,31 @@ export default class Emulator {
         return this;
     }
 
-    async open() {
-        const emulatorWindow = this.createEmulatorWindow();
-        const games = await this.bp.load(`${cdnUrl}/nes.json`);
-        this.setupGameSelector(emulatorWindow, games);
-        this.setupSearchInput(emulatorWindow, games);
-        this.setupRandomGameButton(emulatorWindow, games);
+    async open({ context = 'nes' }) {
+        const emulatorWindow = this.createEmulatorWindow(context);
+        //alert(context); // Debugging purpose to check the context
+       
+        // Load game list based on context
+        const games = await this.bp.load(`${cdnUrl}/${context}.json`);
+        this.setupGameSelector(emulatorWindow, games, context);
+        this.setupSearchInput(emulatorWindow, games, context);
+        this.setupRandomGameButton(emulatorWindow, games, context);
     }
 
-    createEmulatorWindow() {
+    createEmulatorWindow(context) {
+        const emulatorTitles = {
+            nes: 'NES',
+            sega: 'Sega Genesis'
+        };
+
+        const emulatorIcons = {
+            nes: '/desktop/assets/images/icons/icon_nes_64.png',
+            sega: '/desktop/assets/images/icons/icon_sega_64.png'
+        };
+
         return this.bp.apps.ui.windowManager.createWindow({
-            id: 'emulators',
-            title: 'NES',
+            id: `emulators-${context}`,
+            title: emulatorTitles[context] || 'Emulator',
             x: 50,
             y: 100,
             width: 600,
@@ -28,7 +41,7 @@ export default class Emulator {
             minHeight: 500,
             parent: $('#desktop')[0],
             iframeContent: '/v5/apps/based/emulator/emulator-js/index.html',
-            icon: '/desktop/assets/images/icons/icon_nes_64.png',
+            icon: emulatorIcons[context] || emulatorIcons.nes,
             resizable: true,
             minimizable: true,
             maximizable: true,
@@ -48,7 +61,7 @@ export default class Emulator {
                     win.sendMessage({
                         event: 'startGame',
                         message: 'Hello from Emulator',
-                        gameSystem: 'nes',
+                        gameSystem: context, // Dynamically assign game system
                         gameUrl: this.gameUrl
                     });
                     this.gameIsRunning = true;
@@ -57,20 +70,29 @@ export default class Emulator {
         });
     }
 
-    setupGameSelector(emulatorWindow, games) {
+    setupGameSelector(emulatorWindow, games, context) {
         const content = emulatorWindow.content;
         const gameSelector = document.createElement('div');
         gameSelector.classList.add('menu-bars');
         gameSelector.innerHTML = '<select id="loadROM">Load ROM</select>';
         content.parentNode.insertBefore(gameSelector, content);
+
         games.forEach(game => {
-            $('#loadROM').append(`<option value="${cdnUrl}/nes/roms/${game}">${game}</option>`);
+            if (context === 'sega') {
+                $('#loadROM').append(`<option value="${cdnUrl}/${context}/${game}">${game}</option>`);
+
+            } else {
+                // nes legacy /roms/ subfolder
+                $('#loadROM').append(`<option value="${cdnUrl}/${context}/roms/${game}">${game}</option>`);
+    
+            }
         });
+
         $(gameSelector).hide();
         $('#loadROM').on('change', e => {
             emulatorWindow.sendMessage({
                 event: 'unloadGame',
-                gameSystem: 'nes',
+                gameSystem: context,
                 gameUrl: e.target.value
             });
             this.gameUrl = e.target.value;
@@ -78,19 +100,20 @@ export default class Emulator {
         });
     }
 
-    setupSearchInput(emulatorWindow, games) {
+    setupSearchInput(emulatorWindow, games, context) {
         const content = emulatorWindow.content;
         const searchInput = document.createElement('input');
         searchInput.type = 'text';
         searchInput.id = 'searchInput';
-        searchInput.placeholder = 'Search for a game';
+        searchInput.placeholder = `Search for a ${context.toUpperCase()} game`;
         searchInput.style = 'font-size: 2.5em; background-color: black; color: white;';
         content.parentNode.insertBefore(searchInput, content);
+        
         $(searchInput).autocomplete({
             source: games,
-            select: (e, ui) => this.handleGameSelection(ui.item.value, emulatorWindow)
+            select: (e, ui) => this.handleGameSelection(ui.item.value, emulatorWindow, context)
         }).data('ui-autocomplete')._renderItem = (ul, item) => {
-            const prettyLabel = item.label.replace(/_/g, ' ').replace('.nes', '').replace('.zip', '');
+            const prettyLabel = item.label.replace(/_/g, ' ').replace(/\.(nes|zip|smd|bin)/, '');
             return $("<li>")
                 .attr("data-value", item.value)
                 .append($("<div>").text(prettyLabel))
@@ -98,39 +121,44 @@ export default class Emulator {
         };
     }
 
-    setupRandomGameButton(emulatorWindow, games) {
+    setupRandomGameButton(emulatorWindow, games, context) {
         const content = emulatorWindow.content;
         const randomGameButton = document.createElement('button');
         randomGameButton.innerHTML = 'Random Game';
         randomGameButton.classList.add('button');
         randomGameButton.style.width = '100%';
-        randomGameButton.onclick = () => this.handleRandomGame(games, emulatorWindow);
+        randomGameButton.onclick = () => this.handleRandomGame(games, emulatorWindow, context);
         content.parentNode.insertBefore(randomGameButton, content);
     }
 
-    handleGameSelection(gameName, emulatorWindow) {
-        const gameUrl = `${cdnUrl}/nes/roms/${gameName}`;
+    handleGameSelection(gameName, emulatorWindow, context) {
+        let gameUrl = `${cdnUrl}/${context}/roms/${gameName}`;
+        if (context === 'sega') {
+            gameUrl = `${cdnUrl}/${context}/${gameName}`;
+        }
         this.gameUrl = gameUrl;
         this.gameIsRunning = false;
+        
         emulatorWindow.sendMessage({
             event: 'unloadGame',
-            gameSystem: 'nes',
+            gameSystem: context,
             gameUrl: gameUrl
         });
+
         setTimeout(() => {
             emulatorWindow.sendMessage({
                 event: 'startGame',
                 message: 'Hello from Emulator',
-                gameSystem: 'nes',
+                gameSystem: context,
                 gameUrl: this.gameUrl
             });
             this.gameIsRunning = true;
         }, 200);
     }
 
-    handleRandomGame(games, emulatorWindow) {
+    handleRandomGame(games, emulatorWindow, context) {
         const randomGame = games[Math.floor(Math.random() * games.length)];
-        this.handleGameSelection(randomGame, emulatorWindow);
+        this.handleGameSelection(randomGame, emulatorWindow, context);
     }
 
     async loadROM(url) {
