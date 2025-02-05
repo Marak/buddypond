@@ -192,6 +192,7 @@ export default function defaultDesktopShortcuts() {
 
     bp.apps.desktop.addFolder({
         name: 'Games',
+        height: 250,
         items: [
             {
                 id: 'mantra',
@@ -213,6 +214,14 @@ export default function defaultDesktopShortcuts() {
                     context: 'sega',
                 },
                 icon: 'desktop/assets/images/icons/icon_sega_64.png'
+            },
+            {
+                id: 'emulator',
+                label: 'SNES',
+                options: {
+                    context: 'snes',
+                },
+                icon: 'desktop/assets/images/icons/icon_snes_64.png'
             },
 
             {
