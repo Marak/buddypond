@@ -5,12 +5,12 @@
     <div class="coin-mint-form">
         <h2>Mint a New Coin</h2>
         <label for="coin-name">Coin Name:</label>
-        <input type="text" id="coin-name" placeholder="Enter coin name">
+        <input type="text" id="coin-name" placeholder="Enter coin name" value="Good Buddy Points">
         <label for="coin-symbol">Symbol:</label>
-        <input type="text" id="coin-symbol" placeholder="e.g. MEME">
+        <input type="text" id="coin-symbol" placeholder="e.g. MEME" value="GBP">
         <label for="coin-supply">Total Supply:</label>
-        <input type="number" id="coin-supply" placeholder="Total Supply">
-        <button id="mint-coin">Mint Coin</button>
+        <input type="number" id="coin-supply" placeholder="Total Supply" value="9001">
+        <button id="mint-coin" class="mint-coin">Mint Coin</button>
     </div>
 
     <!-- User's Coins -->
@@ -24,7 +24,7 @@
                     <th>Supply</th>
                 </tr>
             </thead>
-            <tbody id="user-coin-list">
+            <tbody class="user-coin-list">
                 <!-- User coins will be listed here -->
             </tbody>
         </table>
@@ -42,7 +42,7 @@
                     <th>Creator</th>
                 </tr>
             </thead>
-            <tbody id="all-coin-list">
+            <tbody class="all-coin-list">
                 <!-- All coins will be listed here -->
             </tbody>
         </table>
