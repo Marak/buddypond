@@ -14,7 +14,6 @@ export default function applyData(el, data) {
     $.getJSON(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data.videoId}&format=json`, function(data) {
       $el.find('.card-youtube-title').text(data.title);
       $el.find('.card-youtube-author').text(data.author_name);
-      console.log('data', data)
       // description
       $el.find('.card-youtube-description').text(data.description);
     })
