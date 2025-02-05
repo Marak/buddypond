@@ -6,6 +6,7 @@ import forbiddenNotes from '../forbiddenNotes.js';
 import renderGeoFlag from './renderGeoFlag.js';
 import isValidUrl from './isValidUrl.js';
 import isValidYoutubeLink from './isValidYoutubeLink.js';
+import isValidGithubLink from './isValidGithubLink.js';
 
 let scrollTimeout;
 
@@ -48,11 +49,31 @@ export default async function renderChatMessage(message, _chatWindow) {
       }
     }
 
+    // TODO: move all this app specific code *outside* of the buddylist / renderMessage
+    // use the system.addMessageProcessor() API instead
     if (isValidYoutubeLink(contentUrl)) {
       message.card.type = 'youtube';
       message.card.thumbnail = `https://img.youtube.com/vi/${contentUrl.split('v=')[1]}/0.jpg`;
       message.card.videoId = contentUrl.split('v=')[1];
       message.text = 'I sent a youtube link:';
+    }
+
+    if (isValidGithubLink(contentUrl)) {
+      message.card.type = 'github';
+      message.text = 'I sent a github link:';
+
+      // TODO: Extract owner, repo, and filename from the URL
+      const githubRegex = /^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/;
+      const match = contentUrl.match(githubRegex);
+      if (match) {
+          message.card.owner = match[1]; // "Marak"
+          message.card.repo = match[2]; // "buddypond"
+          message.card.filename = match[4]; // "v5/apps/based/client/lib/api.js"
+      } else {
+          console.error("Invalid GitHub URL format.");
+      }
+      
+
     }
 
     // TODO: we know is URL now, we can check to see if its a youtube link

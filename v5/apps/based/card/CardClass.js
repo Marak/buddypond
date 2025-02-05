@@ -50,7 +50,13 @@ export default class Card {
   
       // Execute the dynamically loaded applyData function if available
       if (this.applyData && typeof this.applyData === 'function') {
-        this.applyData(cardContainer, this.cardData);
+        try {
+          // fire and forget, may be an await, may not be
+          this.applyData(cardContainer, this.cardData, this);
+
+        } catch (err) {
+          console.error('Error in applyData function:', err);
+        }
       }
     }
   }
