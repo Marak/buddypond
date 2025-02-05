@@ -139,6 +139,43 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
+    function coinBeta () {
+        bp.apps.desktop.addShortCut({
+            name: 'orderbook',
+            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+            label: 'Orderbook',
+        }, {
+            onClick: () => {
+                bp.open('orderbook');
+            }
+        });
+    
+        bp.apps.desktop.addShortCut({
+            name: 'coin',
+            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+            label: 'Coin',
+        }, {
+            onClick: () => {
+                bp.open('coin');
+            }
+        });
+    
+    
+        bp.apps.desktop.addShortCut({
+            name: 'buddybux',
+            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+            label: 'BuddyBux',
+        }, {
+            onClick: () => {
+                bp.open('buddybux');
+            }
+        });
+
+        bp.apps.desktop.arrangeShortcuts(3);
+    }
+
+    window.coinBeta = coinBeta;
+
 
     /*
     bp.apps.desktop.addShortCut({
@@ -170,6 +207,15 @@ export default function defaultDesktopShortcuts() {
                 icon: 'desktop/assets/images/icons/icon_nes_64.png'
             },
             {
+                id: 'emulator',
+                label: 'Sega',
+                options: {
+                    context: 'sega',
+                },
+                icon: 'desktop/assets/images/icons/icon_sega_64.png'
+            },
+
+            {
                 id: 'solitaire',
                 label: 'Solitaire'
             }
@@ -191,7 +237,7 @@ export default function defaultDesktopShortcuts() {
             },
             {
                 id: 'hacker-typer',
-                label: 'Hacker Typer',
+                label: 'Hack Typer',
             },
             {
                 id: 'hex-editor',
@@ -205,7 +251,6 @@ export default function defaultDesktopShortcuts() {
 
         ],
     });
-    /*
     bp.apps.desktop.addShortCut({
         name: 'audio-player',
         icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
@@ -215,8 +260,6 @@ export default function defaultDesktopShortcuts() {
             bp.open('audio-player');
         }
     });
-    */
-
 
 
 }

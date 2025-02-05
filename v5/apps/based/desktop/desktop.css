@@ -47,7 +47,9 @@
 .folder-holder {
     width: 100%;
     height: 100%;
-    background-color: white;
+    /* beige folder */
+    background-color: #f5f5dc;
+    position: relative;
 }
 
 @media (max-width: 1000px) {
