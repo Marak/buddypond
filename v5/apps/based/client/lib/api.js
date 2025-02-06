@@ -244,9 +244,9 @@ buddypond.setStatus = function sendMessage(buddyName, status, cb) {
   })
 }
 
-buddypond.readMessages = function readMessages(buddyName, cb) {
+buddypond.receiveInstantMessage = function receiveInstantMessage(buddyName, cb) {
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
-  apiRequest('/buddylist/' + buddypond.me + '/readMessages', 'POST', {
+  apiRequest('/buddylist/' + buddypond.me + '/receiveInstantMessage', 'POST', {
     buddyname: buddyName,
     newMessages: false,
   }, function (err, data) {
@@ -281,7 +281,6 @@ function preprocessDeepSeek(data) {
   console.log('new data', data);  
 
 }
-
 
 // TODO: pass card values to sendMessage fn scope
 buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
@@ -864,6 +863,24 @@ buddypond.setPowerLevel = function setPowerLevel(buddyName, level) {
   })
 
 }
+
+// TODO
+
+buddypond.imageSearchEndpoint = 'https://bp-image-search.cloudflare1973.workers.dev'; // for now
+buddypond.searchImages = async (query, numResults = 6) => {
+  // make a request to the image search endpoint
+  let url = `${buddypond.imageSearchEndpoint}/image-search?q=${query}&num=${numResults}`;
+  console.log('searchImages', url);
+  let response = await fetch(url);
+  let data = await response.json();
+  return data;
+};
+
+buddypond.searchImage = async (query) => {
+  let imgs = await this.fetchImages(query, 10);
+  // return a random image
+  return imgs[Math.floor(Math.random() * imgs.length)];
+};
 
 
 //

@@ -49,6 +49,7 @@ export default class BuddyList {
             });
             //return event.returnValue;
         });
+        // this.bp.load('ramblor');
     }
 
     async open(config = { type: 'buddylist-profile' }) {
@@ -422,12 +423,12 @@ export default class BuddyList {
         for (const message of data.result.messages) {
             try {
                 // check to see if we have newMessages in local profile for message.from
-                // if so, send buddypond.readMessages(message.from)
+                // if so, send buddypond.receiveInstantMessage(message.from)
                 if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
                     // console.log("SENDING READ NEWMESSAGES ALERT");
                     this.data.profileState.buddylist[message.from].newMessages = false;
-                    buddypond.readMessages(message.from, function(err, re){
-                        console.log('readMessagesreadMessages', err, re);
+                    buddypond.receiveInstantMessage(message.from, function(err, re){
+                        console.log('receiveInstantMessage', err, re);
                     });
                 }
                 await this.renderChatMessage(message);
