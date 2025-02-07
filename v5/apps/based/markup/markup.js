@@ -10,16 +10,14 @@
 */
 
 export default class Markup {
-    static id = 'markup';
-
-    constructor({ displayOriginalHTML = false } = {}) {
-        this.id = Markup.id;
-        this.displayOriginalHTML = displayOriginalHTML;
+    constructor(bp, options = {}) {
+        this.bp = bp;
     }
 
     init() {
+        this.bp.parseHTML = this.parseHTML.bind(this);
         // Initialization logic if needed
-        this.parseHTML();
+        //this.parseHTML();
     }
 
     defineCustomElements() {
@@ -43,14 +41,31 @@ export default class Markup {
         console.log('Parsing custom Buddypond DOM elements...');
         const elements = Array.from(document.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('bp-'));
 
-        elements.forEach(element => {
+        elements.forEach(async (element)  => {
             const tagName = element.tagName.toLowerCase();
             const app = tagName.replace('bp-', '');
             const context = element.getAttribute('context');
             const type = element.getAttribute('type');
+            // determine if an attribute exists named "opem" ( has no value )
+            const open = element.hasAttribute('open');
+            // TODO: needs a way to instead replace the element with the app,
+            // instead of opening the window
+            // this indicates at least two types of behaviors for custom elements
+            // the default behavior should be to replace the element with the app
+            // the custom behavior with a flag should be to open the app in a window
+            // TODO: how to get content from bp.open() without side-effects of opening a window...
+
 
             if (app) {
-                bp.open(app, { context, type });
+                await bp.load(app);
+                if (bp.apps[app] && bp.apps[app].render) {
+                    //let html = await bp.apps[app].render();
+                    //console.log('html:', html);
+                }
+                if (bp.apps[app] && open && bp.apps[app].open) {
+                    bp.open(app, { context, type });
+                }
+
             }
         });
 
@@ -63,7 +78,7 @@ export default class Markup {
         document.body.appendChild(pre);
     }
 
-    parseHTML() {
+    parseHTML(parent = document) { // TODO: use parent to limit scope of parsing
         this.defineCustomElements();
         this.parseCustomDomElements();
 

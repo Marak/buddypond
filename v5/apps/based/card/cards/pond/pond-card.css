@@ -1,32 +1,59 @@
+
+
+
 .pond-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
+    background-color: #e6ecf0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    
+}
+
+.pond-card-content {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    padding: 15px 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: auto;
-    white-space: nowrap;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 15px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin: 0 auto;
+
+}
+
+.pond-card-content i {
+    font-size: 40px;
+    color: #4CAF50;
+    align-self: center;
 }
 
 .pond-list {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
 }
 
 .card-pond-pond-name {
     background-color: #0078D7;
     color: white;
     padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
-    display: inline-block;
-    transition: background-color 0.3s ease;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .card-pond-pond-name:hover {
     background-color: #005fa3;
+    transform: translateY(-3px);
+}
+
+.card-pond-pond-name:active {
+    background-color: #004c82;
+    transform: translateY(0);
 }

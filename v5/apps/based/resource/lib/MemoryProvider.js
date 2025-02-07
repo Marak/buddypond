@@ -4,6 +4,7 @@ export default class MemoryProvider {
     constructor(resourceName) {
         this.resourceName = resourceName;
         memoryStore[this.resourceName] = {}; // Change from array to object
+        this.memoryStore = memoryStore;
     }
 
     create(owner, data, schema) {

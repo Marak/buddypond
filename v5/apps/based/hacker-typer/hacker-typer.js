@@ -1,13 +1,11 @@
-export default class FluidSimulation {
+export default class HackerTyper {
     constructor(bp, options = {}) {
         this.bp = bp;
         return this;
     }
 
     async init() {
-        this.bp.log('Hello from FluidSimulation');
-
-    
+        this.bp.log('Hello from HackerTyper');
         return 'loaded Piano';
     }
 

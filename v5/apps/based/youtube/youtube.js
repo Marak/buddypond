@@ -8,6 +8,7 @@ export default class Youtube {
 
     async init() {
         this.html = await this.bp.load('/v5/apps/based/youtube/youtube.html');
+        // is importModule not using the correct host path here?
         let playlistModule = await this.bp.importModule('/v5/apps/based/youtube/data/playlist.js', {}, false);
         this.playlist = playlistModule.default;
 
@@ -33,8 +34,8 @@ export default class Youtube {
 
     async open(options = {}) {
         if (this.youtubeWindow) {
-            if (this.player && options.videoId) {
-                this.player.loadVideoById(options.videoId);
+            if (this.player && options.context) {
+                this.player.loadVideoById(options.context);
             }
             return;
         }
@@ -70,7 +71,7 @@ export default class Youtube {
             this.playRandomVideo();
         });
 
-        let startingVideo = options.videoId || this.playlist[Math.floor(Math.random() * this.playlist.length)];
+        let startingVideo = options.context || this.playlist[Math.floor(Math.random() * this.playlist.length)];
 
         this.player = new YT.Player('youtube-player', {
             height: '390',
