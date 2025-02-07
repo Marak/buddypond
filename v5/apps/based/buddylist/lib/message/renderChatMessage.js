@@ -10,6 +10,11 @@ import isValidGithubLink from './isValidGithubLink.js';
 
 let scrollTimeout;
 
+// TODO: make useMarkdown a user setting
+let useMarkdown = true;
+// TODO: make allowHTML a user setting
+let allowHTML = true;
+
 export default async function renderChatMessage(message, _chatWindow) {
   // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
@@ -290,10 +295,23 @@ export default async function renderChatMessage(message, _chatWindow) {
     // Combine elements for the sender
     messageSender.prepend(geoFlag);  // Prepend geoFlag to the sender span
 
+
+    // render as markdown ( if enabled )
+    // TODO: should probably be a markdown registered as messagesProcessor with SystemsManager
+    if (useMarkdown) {
+      message.text = parseMarkdownWithoutPTags(message.text);
+      console.log('message.text', message.text)
+    }
+
     // Prepare the message content span
     let messageContent = document.createElement('span');
     messageContent.className = `message ${messageClass}`;
-    messageContent.textContent = message.text; // Assuming 'message.text' contains the message text
+
+    if (allowHTML) {
+      $(messageContent).html(message.text);
+      //messageContent.textContent = message.text; // Assuming 'message.text' contains the message text
+
+    }
 
     // Combine all parts into the chatMessage
     chatMessage.appendChild(dateTimeSpan);
@@ -378,4 +396,17 @@ export default async function renderChatMessage(message, _chatWindow) {
     this.bp.emit('buddy::message::processed', message);
   }
 
+}
+
+
+
+// Function to remove outer <p> tags
+function parseMarkdownWithoutPTags(markdown) {
+  let html = marked.parse(markdown);
+  return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1'); 
+  // Explanation:
+  // ^<p>       → Matches the opening <p> at the start
+  // (.*?)      → Captures the content inside (non-greedy)
+  // <\/p>\s*$  → Matches the closing </p> with optional trailing whitespace
+  // $1         → Returns only the captured content
 }

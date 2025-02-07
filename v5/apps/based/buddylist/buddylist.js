@@ -1,3 +1,6 @@
+// TODO: decouple Buddylist class from Message Class
+// TODO: formalize Message class
+
 import processBuddylist from "./lib/processProfile.js";
 import renderOrUpdateBuddyInBuddyList from "./lib/renderOrUpdateBuddyInBuddyList.js";
 import renderChatMessage from "./lib/message/renderChatMessage.js";
@@ -50,6 +53,9 @@ export default class BuddyList {
             //return event.returnValue;
         });
         // this.bp.load('ramblor');
+
+        await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
+
     }
 
     async open(config = { type: 'buddylist-profile' }) {
