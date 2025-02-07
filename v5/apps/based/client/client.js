@@ -51,6 +51,10 @@ export default class Client {
             this.bp.qtokenid = this.qtokenid;
             this.connect();
 
+            // immediately let the server know the client is now alive
+            // this is required to show online status immediately ( instead of waiting for startKeepaliveTimer)
+            buddypond.keepAlive();
+
             // Start the keepalive timer after authentication
             // TODO: uncomment this when server is ready
             this.startKeepaliveTimer();
@@ -67,7 +71,7 @@ export default class Client {
                 buddypond.keepAlive();
                 this.bp.log('Keepalive ping sent');
             }
-        }, 3000); // 30 seconds interval
+        }, 30000); // 30 seconds interval
     }
 
     stopKeepaliveTimer() {

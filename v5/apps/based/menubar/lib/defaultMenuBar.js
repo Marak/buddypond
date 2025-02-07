@@ -69,7 +69,11 @@ export default function defaultMenuBar (bp) {
                 label: '<span class="loggedIn">Logout</span>',
                 //visible: bp.apps.client.isLoggedIn(), // Only show if logged in
                   click: () => {
-                      bp.apps.client.logout();
+                    if(bp.logout) {
+
+                        bp.logout();
+                    }
+                      //bp.apps.client.logout();
                       // Close all chat windows and ponds
                       bp.apps.ui.windowManager.windows.forEach((window) => {
                           if (window.app === 'buddylist' && (window.type === 'buddy' || window.type === 'pond')) {

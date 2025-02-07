@@ -236,6 +236,7 @@ buddypond.passwordChange = async function passwordChange({ buddyname, password }
 
 buddypond.setStatus = function sendMessage(buddyName, status, cb) {
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
+  buddypond.status = status;
   apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
     buddyname: buddyName,
     status: status,
@@ -286,7 +287,8 @@ buddypond.keepAlive = function keepalive() {
   console.log('Keepalive ping sent');
   apiRequest('/buddylist/' + buddypond.me + '/keepAlive', 'POST', {
     buddyname: buddypond.me,
-    qtokenid: buddypond.qtokenid
+    qtokenid: buddypond.qtokenid,
+    status: buddypond.status || 'online'
   }, function (err, data) {
     if (err) {
       console.log('Keepalive error', err);

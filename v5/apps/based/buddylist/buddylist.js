@@ -33,6 +33,8 @@ export default class BuddyList {
         this.subscribedPonds = [];
         this.options = options;
 
+        this.bp.logout = this.logout.bind(this);
+
         this.options.chatWindowButtons = this.options.chatWindowButtons || defaultChatWindowButtons(this.bp);
 
         this.opened = false;
