@@ -1,4 +1,9 @@
 export default async function applyData(el, data, cardClass) {
+
+    // will return immediately if cached
+    await cardClass.bp.appendScript("https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js");
+    await cardClass.bp.appendCSS("https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-coy.css");
+
     data.message.text = marked.parse(data.message.text);
 
     const messageHTML = data.message.text;
