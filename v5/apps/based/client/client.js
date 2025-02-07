@@ -53,7 +53,7 @@ export default class Client {
 
             // Start the keepalive timer after authentication
             // TODO: uncomment this when server is ready
-            // this.startKeepaliveTimer();
+            this.startKeepaliveTimer();
         });
 
         return this;

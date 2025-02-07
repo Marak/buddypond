@@ -23,7 +23,8 @@ export default class Console {
         
         $(document).on('keydown', (e) => {
 
-            if (event.which == 192 ) {
+            // if key is 192 and shift is pressed, open the console
+            if (event.which == 192 && event.shiftKey) {
                 this.open();
                 return false;
               }

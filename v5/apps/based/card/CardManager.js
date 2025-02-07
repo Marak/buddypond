@@ -14,7 +14,13 @@ export default class CardManager {
     }
   
     renderAll(container) {
-      this.cards.forEach(card => card.render(container));
+      this.cards.forEach(card => {
+
+        if (typeof card.render === 'function') {
+          card.render(container)
+        }
+
+      });
     }
   }
   

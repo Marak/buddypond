@@ -15,5 +15,14 @@ export default class Card {
     this.cardManager = new CardManager(this.bp);
   }
 
+  // we really actually want to bp.addMessageProcessor('card', function (message) {});
+  // this way the order of apps being loaded doesn't matter
+  // ECS invert the control
+  // handles all chat message cards ( youtube / url / image / etc )
+  // bp.addMessageProcessor('card', function (message) {});
+  // bp.addMessageProcessor('buddyscript', function (message) {});
+
+
+
 }
  

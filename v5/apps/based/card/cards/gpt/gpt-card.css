@@ -1,0 +1,53 @@
+.card-gpt {
+    background-color: #f4f4f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    max-width: 400px;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card-gpt:hover {
+    transform: translateY(-5px);
+}
+
+.card-gpt-header {
+    background-color: #0078D7;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #005fa3;
+}
+
+.gpt-bot-name {
+    font-size: 16px;
+}
+
+.card-gpt-body {
+    padding: 15px;
+    background-color: white;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card-gpt-response {
+    padding: 10px;
+    background-color: #eef2f7;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -284,7 +284,7 @@ function preprocessDeepSeek(data) {
 
 buddypond.keepAlive = function keepalive() {
   console.log('Keepalive ping sent');
-  apiRequest('/keepAlive', 'POST', { // scoped to root, implies session scope
+  apiRequest('/buddylist/' + buddypond.me + '/keepAlive', 'POST', {
     buddyname: buddypond.me,
     qtokenid: buddypond.qtokenid
   }, function (err, data) {
