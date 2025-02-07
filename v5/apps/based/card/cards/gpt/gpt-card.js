@@ -1,7 +1,7 @@
 export default async function applyData(el, data, cardClass) {
     console.log('this is our data', data, el);
 
-    const messageText = data.message.text;
+    const messageText = new String(data.message.text);
     const messageTime = new Date(data.message.ctime);
     const currentTime = new Date();
     const timeDifference = (currentTime - messageTime) / 1000; // difference in seconds

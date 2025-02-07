@@ -39,8 +39,10 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     buddyListItemEl.style.display = 'none';
   }
 
-  let formattedDate = DateFormat.format.date(buddydata.utime, 'E MMMM dd, hh:mm:ss a');
-  $(buddyListItemEl).find('.buddy-status').attr('title', formattedDate);
+  if (buddydata.utime) {
+    let formattedDate = DateFormat.format.date(buddydata.utime, 'E MMMM dd, hh:mm:ss a');
+    $(buddyListItemEl).find('.buddy-status').attr('title', formattedDate);
+  }
 
   // Append to the buddy list temporarily
   $('.buddylist').append(buddyListItemEl);
