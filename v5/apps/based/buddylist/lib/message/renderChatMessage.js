@@ -213,10 +213,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     // this is a /say message
     this.bp.apps.say.processMessages(message);
   }
-
-  // Format message time
-  messageTime = messageTime.toString();
-
+  
   // check if mobile, is so shorten the time
   // legacy API
   if (this.bp.apps.ui.isMobile()) {
@@ -224,8 +221,11 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   } else {
     messageTime = DateFormat.format.date(messageTime, 'E MMMM dd, hh:mm:ss a');
-
   }
+
+  // Format message time
+  messageTime = messageTime.toString();
+
 
   //console.log('message', message)
   /* TODO: keep this code, just keep it commented out for now
