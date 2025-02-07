@@ -282,7 +282,21 @@ function preprocessDeepSeek(data) {
 
 }
 
+buddypond.keepAlive = function keepalive() {
+  console.log('Keepalive ping sent');
+  apiRequest('/keepAlive', 'POST', { // scoped to root, implies session scope
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid
+  }, function (err, data) {
+    if (err) {
+      console.log('Keepalive error', err);
+    }
+  })
+}
+
 // TODO: pass card values to sendMessage fn scope
+// TODO: we could send this directly to the deepseek API ( and not have to touch chat backend )
+// TODO: migrate this outside of messages codepath ( low priority )
 buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
   let msg = {
     from: buddypond.me,

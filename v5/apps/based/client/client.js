@@ -20,6 +20,9 @@ export default class Client {
         
         // Track active subscriptions
         this.subscriptions = new Map();
+
+        // Timer for keepalive
+        this.keepaliveInterval = null;
     }
 
     async init() {
@@ -47,15 +50,35 @@ export default class Client {
             this.bp.me = this.me;
             this.bp.qtokenid = this.qtokenid;
             this.connect();
+
+            // Start the keepalive timer after authentication
+            // TODO: uncomment this when server is ready
+            // this.startKeepaliveTimer();
         });
 
         return this;
     }
 
-    addSubscription(type, context) {
+    startKeepaliveTimer() {
+        if (this.keepaliveInterval) return; // Prevent multiple intervals
 
+        this.keepaliveInterval = setInterval(() => {
+            if (this.subscriptions.size > 0) {
+                buddypond.keepAlive();
+                this.bp.log('Keepalive ping sent');
+            }
+        }, 3000); // 30 seconds interval
+    }
+
+    stopKeepaliveTimer() {
+        if (this.keepaliveInterval) {
+            clearInterval(this.keepaliveInterval);
+            this.keepaliveInterval = null;
+        }
+    }
+
+    addSubscription(type, context) {
         if (!this.bp.qtokenid) {
-            // try again after 100ms
             setTimeout(() => this.addSubscription(type, context), 100);
             return;
         }
@@ -77,6 +100,10 @@ export default class Client {
             this.subscriptions.get(key).disconnectSSE();
             this.subscriptions.delete(key);
             console.log(`Unsubscribed from ${key}`);
+
+            if (this.subscriptions.size === 0) {
+                this.stopKeepaliveTimer();
+            }
         } else {
             console.log(`Not subscribed to ${key}`);
         }
@@ -84,16 +111,13 @@ export default class Client {
 
     connect() {
         if (!this.sseConnected) {
-            // always connect to buddylist SSE
             this.buddylistSSEManager.connectSSE(`${this.config.api}/api/v6/sse/buddylist?buddyname=${this.bp.me}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
-            
             this.sseConnected = true;
         }
     }
 
     sendMessage(message) {
         this.bp.log('sendMessage', message);
-        // console.log('client.sendMessage', message);
         message.me = this.api.me;
     }
 
@@ -102,6 +126,8 @@ export default class Client {
         this.subscriptions.forEach(sse => sse.disconnectSSE());
         this.subscriptions.clear();
         this.sseConnected = false;
+
+        this.stopKeepaliveTimer();
     }
 
     logout() {
