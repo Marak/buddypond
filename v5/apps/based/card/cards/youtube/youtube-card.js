@@ -10,14 +10,11 @@ export default function applyData(el, data) {
         videoId: data.videoId
       })
     });
-
-    $.getJSON(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data.videoId}&format=json`, function(data) {
+    $.getJSON(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data.context}&format=json`, function(data) {
       $el.find('.card-youtube-title').text(data.title);
       $el.find('.card-youtube-author').text(data.author_name);
       // description
       $el.find('.card-youtube-description').text(data.description);
     })
-
-
     $el.find('.card-url-url').attr('target', '_blank');
-  }
+}
