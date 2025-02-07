@@ -1,0 +1,32 @@
+.pond-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pond-list {
+    display: flex;
+    gap: 10px;
+}
+
+.card-pond-pond-name {
+    background-color: #0078D7;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.card-pond-pond-name:hover {
+    background-color: #005fa3;
+}

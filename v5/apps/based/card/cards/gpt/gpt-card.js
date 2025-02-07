@@ -1,5 +1,4 @@
 export default async function applyData(el, data, cardClass) {
-    console.log('this is our data', data, el);
 
     data.message.text = marked.parse(data.message.text);
 
@@ -10,7 +9,7 @@ export default async function applyData(el, data, cardClass) {
 
     const responseElement = $(el).find('.card-gpt-response');
     responseElement.empty(); // Clear existing content
-    console.log('messageText', messageText);
+    //console.log('messageText', messageText);
     data.message.text = 'I have an AI-generated response:';
 
     if (timeDifference < 45) {
@@ -29,5 +28,4 @@ export default async function applyData(el, data, cardClass) {
         responseElement.html($('<span>').html(messageText));
     }
 
-    console.log('this is our text', messageText);
 }

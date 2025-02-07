@@ -71,13 +71,13 @@ export default async function renderChatMessage(message, _chatWindow) {
       const githubRegex = /^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/;
       const match = contentUrl.match(githubRegex);
       if (match) {
-          message.card.owner = match[1]; // "Marak"
-          message.card.repo = match[2]; // "buddypond"
-          message.card.filename = match[4]; // "v5/apps/based/client/lib/api.js"
+        message.card.owner = match[1]; // "Marak"
+        message.card.repo = match[2]; // "buddypond"
+        message.card.filename = match[4]; // "v5/apps/based/client/lib/api.js"
       } else {
-          console.error("Invalid GitHub URL format.");
+        console.error("Invalid GitHub URL format.");
       }
-      
+
 
     }
 
@@ -90,6 +90,15 @@ export default async function renderChatMessage(message, _chatWindow) {
     // TODO: detect type based on URL extension, use supportedTypes array
     // img, media, video, audio, etc
     // use smartlinks if youtube open youtube player, etc audio player
+  }
+
+  // if there is a #pondname in the message, add a pond card type
+  let pondNames = findAllHashPondNames(message.text);
+  if (pondNames.length > 0) {
+    message.card = {
+      type: 'pond',
+      pondNames: pondNames
+    }
   }
 
 
@@ -243,7 +252,11 @@ export default async function renderChatMessage(message, _chatWindow) {
     // make sure card has props
     if (Object.keys(cardData).length > 0) {
 
-      cardData.message = message;
+      // create a clone of message
+      let cloned = Object.assign({}, message);
+      delete cloned.card;
+      cardData.message = message; // TODO probably should clone for CardManager, etc
+      // default JSON rendering will now fail by default due to nested messages cards with arbitrary props ( no .data scope either ), .context might be good...
       let cardManager = this.bp.apps.card.cardManager;
 
       const _card = await cardManager.loadCard(cardData.type, cardData);
@@ -398,15 +411,30 @@ export default async function renderChatMessage(message, _chatWindow) {
 
 }
 
-
+// TODO: add via addMessageProcessor() on `marked` and `pond` apps
 
 // Function to remove outer <p> tags
 function parseMarkdownWithoutPTags(markdown) {
   let html = marked.parse(markdown);
-  return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1'); 
+  return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
   // Explanation:
   // ^<p>       → Matches the opening <p> at the start
   // (.*?)      → Captures the content inside (non-greedy)
   // <\/p>\s*$  → Matches the closing </p> with optional trailing whitespace
   // $1         → Returns only the captured content
+}
+
+
+function findAllHashPondNames(text) {
+  // Given a string such as "The #test room is good also is #music"
+  // return an array of all the pond names without the '#' symbol
+  // TODO: may need a safe regex helper for bp
+  let hashPondNameRegex = /#([a-zA-Z0-9_-]+)/g;
+  let matches = [];
+  let match;
+  // Using regex.exec to capture groups in a global search
+  while ((match = hashPondNameRegex.exec(text)) !== null) {
+    matches.push(match[1]); // match[1] contains the pond name without '#'
+  }
+  return matches;
 }
