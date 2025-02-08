@@ -1,4 +1,8 @@
 /* Orderbook.js - Marak Squires 2025 - BuddyPond */
+import render from './lib/render.js';
+import eventBind from './lib/eventBind.js';
+import Resource from '../resource/lib/Resource.js';
+
 export default class Orderbook {
 
     constructor(bp, options = {}) {
@@ -9,6 +13,23 @@ export default class Orderbook {
     async init() {
         this.html = await this.bp.load('/v5/apps/based/orderbook/orderbook.html');
         this.css = await this.bp.load('/v5/apps/based/orderbook/orderbook.css');
+
+        this.resource = new Resource("orderbook", {
+            provider: 'memory',
+            apiEndpoint: this.bp.config.api,
+            schema: {
+                // orderbook schema
+                owner: { type: "string" },
+                pair: { type: "string" },
+                price: { type: "number" },
+                amount: { type: "number" },
+                side: { type: "string" }, // BUY or SELL
+                ctime: { type: "number" },
+                utime: { type: "number" } // only utime if removed / or admin update ( for now )
+            },
+            bp: this.bp
+        });
+
     }
 
     async open () {
@@ -24,7 +45,6 @@ export default class Orderbook {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                content: this.html,
                 resizable: true,
                 minimizable: true,
                 maximizable: true,
@@ -36,7 +56,12 @@ export default class Orderbook {
                    this.orderbookWindow = null;
                 }
             });
+            this.render(this.orderbookWindow.content);
+            this.eventBind(this.orderbookWindow.content);
         }
     }  
     
 }
+
+Orderbook.prototype.render = render;
+Orderbook.prototype.eventBind = eventBind;

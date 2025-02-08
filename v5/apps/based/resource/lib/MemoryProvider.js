@@ -8,6 +8,20 @@ export default class MemoryProvider {
     }
 
     create(owner, data, schema) {
+        // Check for required fields
+        Object.keys(schema).forEach((key) => {
+            if (schema[key].required && (data[key] === undefined || data[key] === null)) {
+                throw new Error(`${key} is required`);
+            }
+
+            if (schema[key].unique) {
+                const entries = Object.values(memoryStore[this.resourceName]);
+                if (entries.some(entry => entry[key] === data[key])) {
+                    throw new Error(`${key} must be unique`);
+                }
+            }
+        });
+
         const newId = generateUniqueId();
         const newEntry = { id: newId, owner };
 
@@ -30,6 +44,21 @@ export default class MemoryProvider {
             throw new Error(`${this.resourceName} not found or unauthorized`);
         }
 
+        // Check for required fields
+        Object.keys(schema).forEach((key) => {
+            if (schema[key].required && (data[key] === undefined || data[key] === null)) {
+                throw new Error(`${key} is required`);
+            }
+            /*
+            if (schema[key].unique && data[key] !== undefined) {
+                const entries = Object.values(memoryStore[this.resourceName]);
+                if (entries.some(e => e.id !== id && e[key] === data[key])) {
+                    throw new Error(`${key} must be unique`);
+                }
+            }
+                */
+        });
+
         Object.keys(schema).forEach((key) => {
             if (data[key] !== undefined) {
                 entry[key] = data[key];
@@ -49,15 +78,19 @@ export default class MemoryProvider {
         return { success: true };
     }
 
+    search(owner, query) {
+        // example query: { name: 'John', age: 30 }
+        return Object.values(memoryStore[this.resourceName]).filter(item => item.owner === owner && Object.keys(query).every(key => item[key] === query[key]));
+    }
+
     list(owner) {
         return Object.values(memoryStore[this.resourceName]).filter(item => item.owner === owner);
     }
-    all () {
+
+    all() {
         return Object.values(memoryStore[this.resourceName]);
     }
 }
-
-
 
 // 🚀 Helper Function: Generate a Unique ID
 function generateUniqueId() {

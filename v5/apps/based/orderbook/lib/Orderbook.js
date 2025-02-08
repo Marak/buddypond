@@ -7,6 +7,7 @@ export default class Orderbook {
     }
 
     placeOrder(type, amount, price, options = {}) {
+        console.log('placeOrder', type, amount, price, options);
         const order = {
             id: this.orderIdCounter++,
             type,

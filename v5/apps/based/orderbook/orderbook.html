@@ -1,46 +1,50 @@
-    <div class="orderbook-container">
-        <h1 class="orderbook-title">Orderbook</h1>
-        
-        <!-- Market Selection -->
-        <div class="market-selector">
-            <label for="market">Market:</label>
-            <select id="market">
-                <option value="BTC-USD">BTC / USD</option>
-                <option value="ETH-USD">ETH / USD</option>
-                <option value="DOGE-USD">DOGE / USD</option>
-            </select>
-        </div>
-        
-        <div class="orderbook-content">
-            <!-- Buy and Sell Orders Table -->
-            <div class="orderbook-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Price (USD)</th>
-                            <th>Amount</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orderbook-entries">
-                        <!-- Orders will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Trade Form -->
-            <div class="trade-form">
-                <h2>Place an Order</h2>
-                <label for="order-type">Order Type:</label>
-                <select id="order-type">
-                    <option value="buy">Buy</option>
-                    <option value="sell">Sell</option>
-                </select>
-                <label for="order-amount">Amount:</label>
-                <input type="number" id="order-amount" placeholder="Amount">
-                <label for="order-price">Price (USD):</label>
-                <input type="number" id="order-price" placeholder="Price">
-                <button id="place-order">Submit Order</button>
-            </div>
-        </div>
+<div class="orderbook-container">
+    <h1 class="orderbook-title">Orderbook</h1>
+
+    <!-- Market Selection -->
+    <div class="market-selector">
+        <label for="market">Market:</label>
+        <select id="market">
+            <option value="BTC-USD">BTC / USD</option>
+            <option value="ETH-USD">ETH / USD</option>
+            <option value="DOGE-USD">DOGE / USD</option>
+        </select>
     </div>
+
+    <div class="orderbook-content">
+
+        <!-- Trade Form -->
+        <div class="trade-form">
+            <h2>Place an Order</h2>
+            <label for="order-side">Order Type:</label>
+            <select id="order-side">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+            </select>
+            <label for="order-amount">Amount:</label>
+            <input type="number" id="order-amount" placeholder="Amount">
+            <label for="order-price">Price (USD):</label>
+            <input type="number" id="order-price" placeholder="Price">
+            <button class="place-order">Submit Order</button>
+        </div>
+
+
+        <!-- Buy and Sell Orders Table -->
+        <div class="orderbook-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Price (USD)</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody class="orderbook-entries">
+                    <!-- Orders will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>

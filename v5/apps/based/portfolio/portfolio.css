@@ -1,0 +1,89 @@
+/* General Styles */
+
+.portfolio-container {
+    background-color: #121212;
+    color: #fff;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.portfolio-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00d1b2;
+}
+
+/* Portfolio Summary */
+.portfolio-summary {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 45%;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.summary-item h3 {
+    color: #00d1b2;
+    margin-bottom: 10px;
+}
+
+.summary-item p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Portfolio Table */
+.portfolio-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.portfolio-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+}
+
+.portfolio-table th, .portfolio-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.portfolio-table th {
+    background: #333;
+}
+
+/* Portfolio Actions */
+.portfolio-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.action-button {
+    background: #00d1b2;
+    color: #121212;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.action-button:hover {
+    background: #008c7e;
+}

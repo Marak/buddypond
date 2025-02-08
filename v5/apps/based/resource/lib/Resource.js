@@ -52,6 +52,10 @@ export default class Resource {
     list(owner) {
         return this.provider.list(owner);
     }
+
+    search(owner, query) {
+        return this.provider.search(owner, query);
+    }
     
     all() {
         return this.provider.all();
