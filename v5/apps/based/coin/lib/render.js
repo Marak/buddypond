@@ -12,7 +12,8 @@ export default async function render(parent) {
         await this.resource.create(this.bp.me, {
             name: 'BuddyBux',
             symbol: 'BUX',
-            amount: Infinity,
+            amount: 1000,
+            supply: Infinity,
             price: prices['BUX'],
             cost: 1000 * prices['BUX'],
             owner: 'Marak'
@@ -38,6 +39,12 @@ export default async function render(parent) {
     if (this.bp.me === 'Marak') {
         // TODO:
     }
-    await createInitialCoins.call(this);
+    try {
+        await createInitialCoins.call(this);
+
+    } catch (err) {
+        console.error(err);
+        $('.coin-error').text(err.message);
+    }
 
 }

@@ -22,11 +22,11 @@ export default class Orderbook {
             apiEndpoint: this.bp.config.api,
             schema: {
                 // orderbook schema
-                owner: { type: "string" },
-                pair: { type: "string" },
-                price: { type: "number" },
-                amount: { type: "number" },
-                side: { type: "string" }, // BUY or SELL
+                owner: { type: "string", required: true },
+                pair: { type: "string", required: true },
+                price: { type: "number", required: true },
+                amount: { type: "number", required: true },
+                side: { type: "string", required: true }, // BUY or SELL
                 ctime: { type: "number" },
                 utime: { type: "number" } // only utime if removed / or admin update ( for now )
             },
@@ -35,7 +35,7 @@ export default class Orderbook {
 
     }
 
-    async open () {
+    async open (options = {}) {
         if (!this.orderbookWindow) {
             this.orderbookWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'orderbook',
@@ -59,9 +59,17 @@ export default class Orderbook {
                    this.orderbookWindow = null;
                 }
             });
-            this.render(this.orderbookWindow.content);
-            this.eventBind(this.orderbookWindow.content);
+            this.render(this.orderbookWindow.content, options);
+            this.eventBind(this.orderbookWindow.content, options);
+        } else {
+            // we will want to re-render the orderbook window, especially if the `context` market pair has changed
+            this.render(this.orderbookWindow.content, options);
+            this.eventBind(this.orderbookWindow.content, options);
         }
+        if (options.context !== 'Default') {
+            this.orderbookWindow.setTitle('Orderbook ' + options.context);
+        }
+
     }  
     
 }

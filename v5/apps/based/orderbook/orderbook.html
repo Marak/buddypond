@@ -1,5 +1,6 @@
 <div class="orderbook-container">
     <h1 class="orderbook-title">Orderbook</h1>
+    <span class="orderbook-error error"></span>
 
     <!-- Market Selection -->
     <div class="market-selector">
@@ -24,9 +25,9 @@
                 <option value="sell">Sell</option>
             </select>
             <label for="order-amount">Amount:</label>
-            <input type="number" id="order-amount" placeholder="Amount">
+            <input type="number" id="order-amount" placeholder="Amount" required>
             <label for="order-price">Price (USD):</label>
-            <input type="number" id="order-price" placeholder="Price">
+            <input type="number" id="order-price" placeholder="Price" required>
             <button class="place-order">Submit Order</button>
         </div>
 

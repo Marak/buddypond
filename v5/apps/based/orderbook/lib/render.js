@@ -1,4 +1,4 @@
-export default async function render(parent) {
+export default async function render(parent, options = {}) {
     $(parent).html(this.html);
     let selector = $('#market-pairs', parent);
     // get all the markets by getting all the coins and pairing them with BUDDYBUX
@@ -19,4 +19,11 @@ export default async function render(parent) {
         option.val(coin.symbol + '/BUX');
         selector.append(option);
     });
+
+    if (options.context) {
+        // assume this is the market pair
+        $('#market-pairs', parent).val(options.context);
+    }
+
+
 }

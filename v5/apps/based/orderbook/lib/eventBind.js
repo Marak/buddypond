@@ -1,4 +1,8 @@
 export default async function eventBind(parent) {
+    $('#market-pairs').on('change', async (e) => {
+        this.bp.open('orderbook', { context: $('#market-pairs').val() });
+    });
+
 
     $('.place-order', parent).on('click', async (e) => {
         // this.placeOrder(); ???
@@ -6,13 +10,21 @@ export default async function eventBind(parent) {
         // since resource might be diff here and server...
         // TODO: this.placeOrder();
         // create the order
-        this.resource.create(this.bp.me, {
-            owner: this.bp.me,
-            type: 'order',
-            side: $('#order-size').val(),
-            price: 100,
-            amount: $('#order-amount').val(),
-        });
+        let marketPair = $('#market-pairs').val();
+        try {
+            this.resource.create(this.bp.me, {
+                owner: this.bp.me,
+                type: 'order',
+                pair: marketPair,
+                side: $('#order-side').val(),
+                price: 100,
+                amount: $('#order-amount').val(),
+            });
+    
+        } catch (err) {
+            $('.orderbook-error', parent).text(err.message);
+
+        }
 
         // update the orderbook list
         let orders = await this.resource.list(this.bp.me);

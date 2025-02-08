@@ -1,6 +1,6 @@
 /* Coin.js - Marak Squires 2025 - BuddyPond */
 import Resource from '../resource/lib/Resource.js';
-import bindUIEvents from './lib/bindUIEvents.js';
+import eventBind from './lib/eventBind.js';
 import updateCoinList from './lib/updateCoinList.js';
 import render from './lib/render.js';
 export default class Coin {
@@ -20,10 +20,10 @@ export default class Coin {
             provider: 'memory',
             apiEndpoint: this.bp.config.api,
             schema: {
-                name: { type: "string" },
-                symbol: { type: "string", unique: true },
-                owner: { type: "string" },
-                supply : { type: "number" },
+                name: { type: "string", required: true },
+                symbol: { type: "string", unique: true, required: true },
+                owner: { type: "string", required: true },
+                supply : { type: "number", required: true },
             },
             bp: this.bp
         });
@@ -65,13 +65,13 @@ export default class Coin {
                 }
             });
             await this.render(coinWindow.content);
-            this.bindUIEvents(coinWindow);
+            this.eventBind(coinWindow);
             this.updateCoinList(coinWindow);
         }
     }  
     
 }
 
-Coin.prototype.bindUIEvents = bindUIEvents;
+Coin.prototype.eventBind = eventBind;
 Coin.prototype.updateCoinList = updateCoinList;
 Coin.prototype.render = render;

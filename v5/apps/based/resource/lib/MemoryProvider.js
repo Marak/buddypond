@@ -20,6 +20,11 @@ export default class MemoryProvider {
                     throw new Error(`${key} must be unique`);
                 }
             }
+
+            if (schema[key].type && typeof data[key] !== schema[key].type) {
+                throw new Error(`${key} must be of type ${schema[key].type} value is ${data[key]}`);
+            }
+
         });
 
         const newId = generateUniqueId();
