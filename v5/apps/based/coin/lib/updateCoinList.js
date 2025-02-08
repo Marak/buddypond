@@ -44,7 +44,7 @@ function createCoinRow(coin, includeOwner = false) {
     `);
 
     row.on('click', () => {
-        this.bp.open('coin', { context: coin.symbol });
+        this.bp.open('orderbook', { context: coin.symbol });
     });
 
     return row;

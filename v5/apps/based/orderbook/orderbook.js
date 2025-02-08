@@ -14,6 +14,9 @@ export default class Orderbook {
         this.html = await this.bp.load('/v5/apps/based/orderbook/orderbook.html');
         this.css = await this.bp.load('/v5/apps/based/orderbook/orderbook.css');
 
+        // load coin so we can get market pair information
+        await this.bp.load('coin');
+
         this.resource = new Resource("orderbook", {
             provider: 'memory',
             apiEndpoint: this.bp.config.api,

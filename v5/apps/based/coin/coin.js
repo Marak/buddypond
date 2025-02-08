@@ -2,6 +2,7 @@
 import Resource from '../resource/lib/Resource.js';
 import bindUIEvents from './lib/bindUIEvents.js';
 import updateCoinList from './lib/updateCoinList.js';
+import render from './lib/render.js';
 export default class Coin {
 
     constructor(bp, options = {}) {
@@ -16,17 +17,21 @@ export default class Coin {
         this.coinWindows = [];
         // create a new resource to manage coin operations to provider ( restful server in this case )
         this.resource = new Resource("coin", {
-            provider: 'indexeddb',
+            provider: 'memory',
             apiEndpoint: this.bp.config.api,
             schema: {
                 name: { type: "string" },
-                symbol: { type: "string" },
+                symbol: { type: "string", unique: true },
                 owner: { type: "string" },
                 supply : { type: "number" },
             },
             bp: this.bp
         });
 
+    }
+
+    async render () {
+        return this.html;
     }
 
     async open (options = {}) {
@@ -47,7 +52,7 @@ export default class Coin {
                 minHeight: 200,
                 type: 'coin',
                 parent: $('#desktop')[0],
-                content: this.html,
+                // content: this.html,
                 resizable: true,
                 minimizable: true,
                 maximizable: true,
@@ -59,6 +64,7 @@ export default class Coin {
                     this.coinWindows[coinWindowId] = null;
                 }
             });
+            await this.render(coinWindow.content);
             this.bindUIEvents(coinWindow);
             this.updateCoinList(coinWindow);
         }
@@ -68,3 +74,4 @@ export default class Coin {
 
 Coin.prototype.bindUIEvents = bindUIEvents;
 Coin.prototype.updateCoinList = updateCoinList;
+Coin.prototype.render = render;

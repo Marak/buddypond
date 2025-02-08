@@ -7,7 +7,7 @@
     max-width: 900px;
     margin: auto;
     background: #1e1e1e;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
