@@ -4,16 +4,16 @@ export default async function applyData(el, data, cardClass) {
     await cardClass.bp.appendScript("https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js");
     await cardClass.bp.appendCSS("https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-coy.css");
 
-    data.message.text = marked.parse(data.message.text);
+    let cloneText = data.message.text;
+    cloneText = marked.parse(data.message.text);
 
-    const messageHTML = data.message.text;
+    const messageHTML = cloneText;
     const messageTime = new Date(data.message.ctime);
     const currentTime = new Date();
     const timeDifference = (currentTime - messageTime) / 1000; // difference in seconds
 
     const responseElement = $(el).find('.card-gpt-response');
     responseElement.empty(); // Clear existing content
-
     data.message.text = 'I have an AI-generated response:';
 
     if (timeDifference < 30) {
@@ -82,4 +82,6 @@ export default async function applyData(el, data, cardClass) {
             Prism.highlightElement(this);
         });
     }
+
+    return data;
 }

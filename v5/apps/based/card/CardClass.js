@@ -57,7 +57,7 @@ export default class Card {
 
         if (this.applyData && typeof this.applyData === 'function') {
             try {
-                this.applyData(cardContainer, this.cardData, this);
+                return this.applyData(cardContainer, this.cardData, this);
             } catch (err) {
                 console.error('Error in applyData function:', err);
             }

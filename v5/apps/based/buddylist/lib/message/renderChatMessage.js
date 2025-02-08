@@ -260,8 +260,8 @@ export default async function renderChatMessage(message, _chatWindow) {
     if (Object.keys(cardData).length > 0) {
 
       // create a clone of message
-      let cloned = Object.assign({}, message);
-      delete cloned.card;
+      //let cloned = Object.assign({}, message);
+      //delete cloned.card;
       cardData.message = message; // TODO probably should clone for CardManager, etc
       // default JSON rendering will now fail by default due to nested messages cards with arbitrary props ( no .data scope either ), .context might be good...
       let cardManager = this.bp.apps.card.cardManager;
@@ -269,7 +269,7 @@ export default async function renderChatMessage(message, _chatWindow) {
       const _card = await cardManager.loadCard(cardData.type, cardData);
       container = document.createElement('div');
       container.classList.add('cardContainer');
-      _card.render(container);
+      let d = await _card.render(container);
     }
 
   }
