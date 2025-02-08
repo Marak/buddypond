@@ -53,7 +53,9 @@ export default class Client {
 
             // immediately let the server know the client is now alive
             // this is required to show online status immediately ( instead of waiting for startKeepaliveTimer)
-            buddypond.keepAlive();
+            setTimeout(function(){
+                buddypond.keepAlive();
+            }, 1000);
 
             // Start the keepalive timer after authentication
             // TODO: uncomment this when server is ready
