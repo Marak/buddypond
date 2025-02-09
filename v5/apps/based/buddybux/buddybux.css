@@ -1,5 +1,9 @@
+#buddybux .bp-window-content {
+    background-color: #121212;
+}
 
-.buddybux-container {
+
+#buddybux-tabs {
     max-width: 400px;
     margin: auto;
     background: #1e1e1e;

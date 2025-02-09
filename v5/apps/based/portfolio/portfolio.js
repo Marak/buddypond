@@ -25,7 +25,7 @@ export default class Portfolio {
 
         this.resource = new Resource("portfolio", {
             provider: 'rest',
-            apiEndpoint: 'https://localhost:9002' || this.bp.config.api,
+            apiEndpoint: 'http://localhost:9002' || this.bp.config.api,
             schema: {
                 symbol: { type: "string" },
                 owner: { type: "string" },

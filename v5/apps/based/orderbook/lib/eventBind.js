@@ -1,9 +1,10 @@
 export default async function eventBind(parent) {
 
+    this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', parent);
+
     $('#market-pairs').on('change', async (e) => {
         this.bp.open('orderbook', { context: $('#market-pairs').val() });
     });
-
 
     $('.place-order', parent).on('click', async (e) => {
         let order = {
@@ -14,7 +15,13 @@ export default async function eventBind(parent) {
             price: 100,
             amount: $('#order-amount').val()
         };
-        this.orderbook.placeOrder(parent, order);
+        await this.orderbook.placeOrder(parent, order);
+
+        this.tabs.navigateToTab('#orderbook-book');
+
+
+
+
         return;
         // this.placeOrder(); ???
         // how to share on resource? we need to keep placeOrder as headless as possible

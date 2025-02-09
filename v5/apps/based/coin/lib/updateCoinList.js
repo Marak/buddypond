@@ -1,5 +1,4 @@
 export default async function updateCoinList(coinWindow) {
-    console.log('updateCoinList');
     let coins = await this.resource.list();
     console.log('All Coins:', coins);
 
@@ -8,24 +7,47 @@ export default async function updateCoinList(coinWindow) {
 
     // Update all minted coins
     updateAllCoins.call(this, coinWindow, coins);
+
+    // update the coin <select> values
+    let coinSelector = $('#coin-send-name');
+    console.log("coinSelector", this.context, coinSelector)
+    coinSelector.html(''); // Clear existing entries
+    coins.forEach(coin => {
+        console.log('appending coin', coin);
+        if (coin.symbol === this.context) {
+            coinSelector.append(`<option value="${coin.symbol}" selected>${coin.name}</option>`);
+            return;
+        }
+        coinSelector.append(`<option value="${coin.symbol}">${coin.name}</option>`);
+    });
+
+
+
 }
 
 function updateUserCoins(coinWindow, coins) {
+
+    let myCoins = coins.filter(coin => coin.owner === this.bp.me);
+    if (myCoins.length === 0) {
+        $('.user-coin-table', coinWindow.content).hide();
+        $('.no-coins', coinWindow.content).show();
+        return;
+    }
+    $('.user-coin-table', coinWindow.content).show();
+    $('.no-coins', coinWindow.content).hide();
     let userCoinList = $('.user-coin-list', coinWindow.content);
     userCoinList.html(''); // Clear existing entries
 
-    coins.forEach(coin => {
-        if (coin.owner === this.bp.me) {
+    myCoins.forEach(coin => {
             let row = createCoinRow.call(this, coin, false, true, coinWindow);
             userCoinList.append(row); // Use jQuery .append()
-        }
+        
     });
 }
 
 function updateAllCoins(coinWindow, coins) {
     let allCoinList = $('.all-coin-list', coinWindow.content);
     allCoinList.html(''); // Clear existing entries
-
     coins.forEach(coin => {
         let row = createCoinRow.call(this, coin, true, false, coinWindow);
         allCoinList.append(row); // Use jQuery .append()
@@ -36,8 +58,8 @@ function updateAllCoins(coinWindow, coins) {
 function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWindow) {
     let row = $(`
         <tr>
-            <td>${coin.name}</td>
             <td>${coin.symbol}</td>
+            <td>${coin.name}</td>
             <td>${coin.supply}</td>
             ${includeOwner ? `<td>${coin.owner}</td>` : ''}
             ${includeAdmin ? `<td>

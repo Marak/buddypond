@@ -62,7 +62,9 @@ export default async function render(parent) {
         // Format as USD currency
         const formattedPriceValue = assetPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-        table.append(`
+
+
+       let row = $(`
             <tr>
                 <td>${asset.symbol}</td>
                 <td>${asset.amount}</td>
@@ -70,6 +72,13 @@ export default async function render(parent) {
                 <td>${asset.cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
             </tr>
         `);
+
+        row.click(() => {
+            this.bp.open('coin', { context: asset.symbol, type: 'coin-send' });
+        });
+
+        table.append(row);
+
     });
 
     // Calculate profit/loss

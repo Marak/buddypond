@@ -3,66 +3,28 @@ prices['BUX'] = 1.00;
 prices['MEGA'] = 0.50;
 prices['GBP'] = 0.25;
 
-export default async function render(parent) {
-    $(parent).html(this.html);
+export default async function render(coinWindow) {
 
-    // create a new test portfolio
+    console.log('coinWindow', coinWindow, 'this', this.html);
+    $(coinWindow.content).html(this.html);
 
-    async function createInitialCoins () {
-        try {
-            await this.resource.create('BUX', {
-                name: 'BuddyBux',
-                symbol: 'BUX',
-                supply: 10000000,
-                //price: prices['BUX'],
-                //cost: 1000 * prices['BUX'],
-                owner: 'Marak'
-            });
-        } catch (err) {
-            console.error(err);
-            $('.coin-error').text(err.message);
-        }
+    await this.updateCoinList(coinWindow);
 
-        try {
-            await this.resource.create('MEGA', {
-                name: 'Megabytes',
-                symbol: 'MEGA',
-                supply: 1000000000,
-                //price: prices['MEGA'],
-                //cost: '0', // everyone gets 10 for free
-                owner: 'Marak'
-            });
-        } catch (err) {
-            console.error(err);
-            $('.coin-error').text(err.message);
-        }
-
-
-        try {
-            await this.resource.create('GBP', {
-                name: 'Good Buddy Points',
-                symbol: 'GBP',
-                supply: 10000000000,
-                //price: prices['GBP'],
-                //cost: '0', // everyone gets 10 for free
-                owner: 'Marak'
-            });
-        } catch (err) {
-            console.error(err);
-            $('.coin-error').text(err.message);
-        }
-       
-    }
-   
     if (this.bp.me === 'Marak') {
-        // TODO:
-    }
-    try {
-        await createInitialCoins.call(this);
+        // initial seed coins, will only work the first time
+        // additional calls will fail due to unique constraint on symbol
+        try {
+            await this.createInitialCoins.call(this);
 
-    } catch (err) {
-        console.error(err);
-        $('.coin-error').text(err.message);
+        } catch (err) {
+            console.error(err);
+            $('.coin-error').text(err.message);
+        }
+
     }
+
+    // attempt to pre-select the #coin-name drop down value based on symbol
+    let coinSelector = $('#coin-send-name', coinWindow.content);
+    coinSelector.val(this.context);
 
 }

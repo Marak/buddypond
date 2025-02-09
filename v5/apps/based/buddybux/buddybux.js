@@ -1,5 +1,7 @@
 /* BuddyBux.js - Marak Squires 2025 - BuddyPond */
 import Resource from '../resource/lib/Resource.js';
+import eventBind from './lib/eventBind.js';
+import checkoutComplete from './lib/checkoutComplete.js';
 
 export default class BuddyBux {
 
@@ -26,6 +28,8 @@ export default class BuddyBux {
             bp: this.bp
         });
 
+        // Remark: Probably not best practice to do this, instead better to reference
+        // entire portfolio app so we can use the app controller methods instead of resource methods directly
         this.portfolioResource = new Resource("portfolio", {
             provider: provider,
             apiEndpoint: this.bp.config.api,
@@ -43,26 +47,11 @@ export default class BuddyBux {
             // Mint the new coin
             this.resource.create("Marak", { // is that right?
                 name: 'BuddyBux',
-                symbol: 'BUDDYBUX',
+                symbol: 'BUX',
                 owner: this.bp.me,
                 supply: Infinity
             });
         }
-
-
-
-    }
-
-    async checkoutComplete (amount) {
-        // TODO: update or create
-        this.portfolioResource.create(this.bp.me, 'BUDDYBUX', {
-            symbol: 'BUDDYBUX',
-            amount: amount,
-            owner: this.bp.me,
-            ctime: Date.now(),
-            utime: Date.now()
-        });
-
 
     }
 
@@ -79,7 +68,7 @@ export default class BuddyBux {
                 x: 250,
                 y: 75,
                 width: 400,
-                height: 450,
+                height: 500,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -96,108 +85,12 @@ export default class BuddyBux {
                 }
             });
 
-
-            const pricePerBux = 0.01; // 1 BuddyBux = $0.01
-            const discountTiers = [
-                { threshold: 1000, price: 0.009 }, // 10% off
-                { threshold: 2000, price: 0.0075 }, // 25% off
-                { threshold: 5000, price: 0.005 }  // 50% off
-            ];
-
-            function calculatePrice(amount) {
-                let finalPrice = amount * pricePerBux;
-                for (let tier of discountTiers) {
-                    if (amount >= tier.threshold) {
-                        finalPrice = amount * tier.price;
-                    }
-                }
-                return finalPrice.toFixed(2);
-            }
-
-            document.getElementById("buddybux-amount").addEventListener("input", function () {
-                let amount = parseInt(this.value) || 1;
-                amount = Math.min(Math.max(amount, 1), 5000);
-                this.value = amount;
-                document.getElementById("total-price").innerText = `$${calculatePrice(amount)}`;
-            });
-
-            document.getElementById("stripe-checkout").addEventListener("click", () => {
-                //alert("Redirecting to Stripe Checkout...");
-                // this.bp.open('stripe');
-                // Stripe checkout logic here
-                // assume checkout was successful ( for now )
-
-                let amount = document.getElementById("buddybux-amount").value;
-                this.checkoutComplete(amount);
-           
-                //this.resource.updateOrCreate...
-            });
-
-            document.getElementById("crypto-checkout").addEventListener("click", function () {
-                alert("Connecting to MetaMask...");
-                // Ethereum transaction logic here
-            });
-
-            this.tabs = new this.bp.apps.ui.Tabs('.buddybux-tabs', this.buddybuxWindow.content);
-
-            this.tabs.onTab((tabId) => {
-                alert(`Switched to tab: ${tabId}`);
-
-            });
-
-            // Update total price
-            $('#buddybux-amount').on('input', function () {
-                const amount = $(this).val();
-                $('#total-price').text(`$${(amount * 0.01).toFixed(2)}`);
-            });
-
-            // Send BuddyBux
-            $('#send-buddybux').on('click', function () {
-                const recipient = $('#recipient').val();
-                const amount = $('#send-amount').val();
-
-                if (recipient && amount > 0) {
-                    const confirmation = prompt(`Type the buddy name '${recipient}' to confirm:`);
-
-                    if (confirmation === recipient) {
-                        alert(`Successfully sent ${amount} BuddyBux to ${recipient}!`);
-                    } else {
-                        alert('Confirmation failed. Please try again.');
-                    }
-                } else {
-                    alert('Please fill out all fields correctly.');
-                }
-            });
-
-            function animateBalance(el) {
-
-                const balance = Math.floor(Math.random() * 1000); // Example random balance
-                const digits = String(balance).padStart(3, '0').split('');
-
-                $('.digit').each(function (index) {
-                    $(this).addClass('spin');
-                    setTimeout(() => {
-                        $(this).removeClass('spin');
-                        $(this).text(digits[index]);
-                    }, 500 * (index + 1));
-                });
-
-
-            }
-
-            // Check Balance with slot machine animation
-            $('#check-balance').on('click', async function () {
-
-                let portfolio = await this.portfolioResource.get(this.bp.me);
-                console.log(`Portfolio for ${this.bp.me}:`, portfolio);
-
-                animateBalance(this);
-
-            });
-            // TODO: ontab active perform the animation
-            animateBalance(this);
+            this.eventBind();
 
         }
     }
 
 }
+
+BuddyBux.prototype.eventBind = eventBind;
+BuddyBux.prototype.checkoutComplete = checkoutComplete;

@@ -60,4 +60,9 @@ export default class Resource {
     all() {
         return this.provider.all();
     }
+
+    async apiRequest(method, path, body = null) {
+        return this.provider.apiRequest(method, path, body);
+    }
+
 }

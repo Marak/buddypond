@@ -3,6 +3,7 @@
 // TODO: move this code to the server-side
 
 import mintCoin from './mintCoin.js';
+import sendCoin from './sendCoin.js';
 export default class Coin {
     constructor(config = {}) {
         this.name = config.name || 'Good Buddy Points';
@@ -103,3 +104,4 @@ export default class Coin {
 }
 
 Coin.prototype.mintCoin = mintCoin;
+Coin.prototype.sendCoin = sendCoin;

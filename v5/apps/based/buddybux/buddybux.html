@@ -1,46 +1,51 @@
-<div class="buddybux-container tabs-container">
-    <ul class="tab-list">
-        <li class="buddybux-tab active"><a href="#buddybux-buy">Buy BuddyBux</a></li>
-        <li class="buddybux-tab"><a href="#buddybux-send">Send BuddyBux</a></li>
-        <li class="buddybux-tab"><a href="#buddybux-balance">BuddyBux Balance</a></li>
-    </ul>
+<div class="buddybux-container">
 
-    <div id="buddybux-buy" class="tab-content">
-        <h1 class="buddybux-title">Buy BuddyBux</h1>
-        <div class="buddybux-selector">
-            <label for="buddybux-amount">Select Amount:</label>
-            <input type="number" id="buddybux-amount" min="1" max="5000" value="100" step="100">
-            <p class="price-info">Total: <span id="total-price">$1.00</span></p>
-        </div>
-        <div class="payment-options">
-            <h2>Choose Payment Method</h2>
-            <button id="stripe-checkout" class="payment-button">Pay with Stripe</button>
-            <button id="crypto-checkout" class="payment-button">Pay with MetaMask</button>
-        </div>
-    </div>
+    <div id="buddybux-tabs" class="tabs-container">
+        <ul class="tab-list">
+            <li class="buddybux-tab active"><a href="#buddybux-buy">Buy</a></li>
+            <li class="buddybux-tab"><a href="#buddybux-send">Send</a></li>
+            <li class="buddybux-tab"><a href="#buddybux-balance">Balance</a></li>
+        </ul>
 
-    <div id="buddybux-send" class="tab-content">
-        <h1 class="buddybux-title">Send BuddyBux</h1>
-        <form id="send-buddybux-form">
-            <label for="recipient">To (Buddy Name):</label>
-            <input type="text" id="recipient" required><br><br>
-
-            <label for="send-amount">Amount:</label>
-            <input type="number" id="send-amount" min="1" required><br><br>
-
-            <button type="button" id="send-buddybux" class="payment-button">Send BuddyBux</button>
-        </form>
-    </div>
-
-    <div id="buddybux-balance" class="tab-content">
-        <h1 class="buddybux-title">Your BuddyBux Balance</h1>
-        <div class="balance-display">
-            <div id="slot-machine">
-                <span class="digit">0</span>
-                <span class="digit">0</span>
-                <span class="digit">0</span>
+        <div id="buddybux-buy" class="tab-content">
+            <h1 class="buddybux-title">Buy BuddyBux</h1>
+            <div class="buddybux-selector">
+                <label for="buddybux-amount">Select Amount:</label>
+                <input type="number" id="buddybux-amount" min="1" max="5000" value="100" step="100">
+                <p class="price-info">Total: <span id="total-price">$1.00</span></p>
             </div>
-            <button id="check-balance" class="payment-button">Check Balance</button>
+            <div class="payment-options">
+                <h2>Choose Payment Method</h2>
+                <button id="stripe-checkout" class="payment-button">Pay with Stripe</button>
+                <button id="crypto-checkout" class="payment-button">Pay with MetaMask</button>
+            </div>
+        </div>
+
+        <div id="buddybux-send" class="tab-content">
+            <h1 class="buddybux-title">Send BuddyBux</h1>
+            <form id="send-buddybux-form">
+                <label for="recipient">To (Buddy Name):</label>
+                <input type="text" id="recipient" required><br><br>
+
+                <label for="send-amount">Amount:</label>
+                <input type="number" id="send-amount" min="1" required><br><br>
+
+                <button type="button" id="send-buddybux" class="payment-button">Send BuddyBux</button>
+            </form>
+        </div>
+
+        <div id="buddybux-balance" class="tab-content">
+            <h1 class="buddybux-title">Your BuddyBux Balance</h1>
+            <div class="balance-display">
+                <div id="slot-machine">
+                    <span class="digit">0</span>
+                    <span class="digit">0</span>
+                    <span class="digit">0</span>
+                </div>
+                <button id="check-balance" class="payment-button">Check Balance</button>
+                <button id="open-portfolio" data-app="portfolio" class="open-app payment-button">View Portfolio</button>
+
+            </div>
         </div>
     </div>
 </div>

@@ -32,9 +32,17 @@ export default class Profile {
         buddyname = buddyname.replace(":", ""); // remove any colons for now
         buddyname = buddyname.replace(" ", ""); // remove any spaces for now
 
-        let buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
-        if (buddyname == this.bp.me) {
-            buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
+
+        let buddyProfile = {};
+        buddyProfile.localState = {};
+
+        try {
+            buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
+            if (buddyname == this.bp.me) {
+                buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
+            }
+        } catch (err) {
+            console.log('error getting profile', err);
         }
 
         // Create main content div and setup for tabs
