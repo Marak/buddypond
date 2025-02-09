@@ -1,10 +1,21 @@
 export default async function eventBind(parent) {
+
     $('#market-pairs').on('change', async (e) => {
         this.bp.open('orderbook', { context: $('#market-pairs').val() });
     });
 
 
     $('.place-order', parent).on('click', async (e) => {
+        let order = {
+            owner: this.bp.me,
+            type: 'order',
+            pair: $('#market-pairs').val(),
+            side: $('#order-side').val(),
+            price: 100,
+            amount: $('#order-amount').val()
+        };
+        this.orderbook.placeOrder(parent, order);
+        return;
         // this.placeOrder(); ???
         // how to share on resource? we need to keep placeOrder as headless as possible
         // since resource might be diff here and server...

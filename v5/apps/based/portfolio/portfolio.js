@@ -8,6 +8,7 @@
 /* Portfolio.js - Marak Squires 2025 - BuddyPond */
 
 import Resource from '../resource/lib/Resource.js';
+import PortfolioClass from './lib/Portfolio.js';
 import render from './lib/render.js';
 import eventBind from './lib/eventBind.js';
 
@@ -23,10 +24,10 @@ export default class Portfolio {
         this.css = await this.bp.load('/v5/apps/based/portfolio/portfolio.css');
 
         this.resource = new Resource("portfolio", {
-            provider: 'memory',
-            apiEndpoint: this.bp.config.api,
+            provider: 'rest',
+            apiEndpoint: 'https://localhost:9002' || this.bp.config.api,
             schema: {
-                symbol: { type: "string", unique: true },
+                symbol: { type: "string" },
                 owner: { type: "string" },
                 amount: { type: "number" },
                 price: { type: "number" },
@@ -34,6 +35,8 @@ export default class Portfolio {
             },
             bp: this.bp
         });
+
+        this.portfolio = new PortfolioClass({ resource: this.resource, me: this.bp.me });
 
     }
 
@@ -49,6 +52,7 @@ export default class Portfolio {
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
+                className: 'portfolio-window-content',
                 parent: $('#desktop')[0],
                 // content: this.html,
                 resizable: true,

@@ -5,12 +5,20 @@
     color: #fff;
     margin: 0;
     padding: 20px;
-    max-width: 900px;
     margin: auto;
+    height: 100%;
     padding: 20px;
     background: #1e1e1e;
     /* border-radius: 8px; */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.orderbook-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
 }
 
 .orderbook-title {
@@ -98,4 +106,25 @@
 
 .trade-form button:hover {
     background: #008c7e;
+}
+
+
+.orderbook-container .tabs-container {
+    background-color: black;
+}
+
+.orderbook-container .tabs-container ul {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.orderbook-container .tabs-container li {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    color: #fff;
 }

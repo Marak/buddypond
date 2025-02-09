@@ -9,4 +9,8 @@ export default function eventBind (parent) {
         this.bp.open('coin');
     });
 
+    $('.send-coins', parent).on('click', () =>{
+        this.bp.open('coin', { context: '#coin-send' });
+    });
+
 }

@@ -4,9 +4,9 @@
     background-color: #121212;
     color: #fff;
     padding: 20px;
-    max-width: 900px;
     margin: auto;
     background: #1e1e1e;
+    height: 100%;
     /* border-radius: 8px; */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }

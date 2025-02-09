@@ -1,51 +1,69 @@
 <div class="orderbook-container">
-    <h1 class="orderbook-title">Orderbook</h1>
-    <span class="orderbook-error error"></span>
-
-    <!-- Market Selection -->
-    <div class="market-selector">
-        <label for="market">Market:</label>
-        <select id="market-pairs">
-            <!--
-            <option value="BTC-USD">BTC / USD</option>
-            <option value="ETH-USD">ETH / USD</option>
-            <option value="DOGE-USD">DOGE / USD</option>
-            -->
-        </select>
-    </div>
 
     <div class="orderbook-content">
 
-        <!-- Trade Form -->
-        <div class="trade-form">
-            <h2>Place an Order</h2>
-            <label for="order-side">Order Type:</label>
-            <select id="order-side">
-                <option value="buy">Buy</option>
-                <option value="sell">Sell</option>
-            </select>
-            <label for="order-amount">Amount:</label>
-            <input type="number" id="order-amount" placeholder="Amount" required>
-            <label for="order-price">Price (USD):</label>
-            <input type="number" id="order-price" placeholder="Price" required>
-            <button class="place-order">Submit Order</button>
+        <div class="orderbook-header">
+            <h1 class="orderbook-title">Markets:</h1>
+
+            <!-- Market Selection -->
+            <div class="market-selector">
+                <select id="market-pairs">
+                    <!--
+                    <option value="BTC-USD">BTC / USD</option>
+                    <option value="ETH-USD">ETH / USD</option>
+                    <option value="DOGE-USD">DOGE / USD</option>
+                    -->
+                </select>
+                <label for="market"></label>
+            </div>
+
         </div>
 
+        <div id="coinTabs" class="tabs-container">
+            <ul class="tab-list">
+                <li><a href="#orderbook-book">Orderbook</a></li>
+                <li><a href="#orderbook-order">Place Order</a></li>
+            </ul>
 
-        <!-- Buy and Sell Orders Table -->
-        <div class="orderbook-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Price (USD)</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody class="orderbook-entries">
-                    <!-- Orders will be inserted here -->
-                </tbody>
-            </table>
+            <!-- Coin Minting Form -->
+            <div id="orderbook-order" class="coin-mint-form tab-content">
+                <span class="orderbook-error error"></span>
+
+                <!-- Trade Form -->
+                <div class="trade-form">
+                    <h2>Place an Order</h2>
+                    <label for="order-side">Order Type:</label>
+                    <select id="order-side">
+                        <option value="buy">Buy</option>
+                        <option value="sell">Sell</option>
+                    </select>
+                    <label for="order-amount">Amount:</label>
+                    <input type="number" id="order-amount" placeholder="Amount" required>
+                    <label for="order-price">Price (USD):</label>
+                    <input type="number" id="order-price" placeholder="Price" required>
+                    <button class="place-order">Submit Order</button>
+                </div>
+            </div>
+            <div id="orderbook-book" class="coin-send-form tab-content">
+                <!-- Buy and Sell Orders Table -->
+                <div class="orderbook-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Side</th>
+                                <th>Amount</th>
+                                <th>Price (USD)</th>
+                                <th>Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody class="orderbook-entries">
+                            <!-- Orders will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
 
 

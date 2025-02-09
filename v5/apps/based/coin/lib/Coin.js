@@ -2,13 +2,15 @@
 // TODO: for now the provider will be hard-coded to D1 on Cloudflare
 // TODO: move this code to the server-side
 
+import mintCoin from './mintCoin.js';
 export default class Coin {
     constructor(config = {}) {
         this.name = config.name || 'Good Buddy Points';
         this.symbol = config.symbol || 'GBP';
         this.owner = config.owner || 'Randolph';
         this.supply = config.supply || Infinity;
-
+        this.resource = config.resource;
+        this.me = config.me;
         this.stubBalances = {
             'Bob': {
                 'GBP': 0
@@ -99,3 +101,5 @@ export default class Coin {
     }
 
 }
+
+Coin.prototype.mintCoin = mintCoin;

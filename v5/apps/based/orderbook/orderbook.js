@@ -2,6 +2,7 @@
 import render from './lib/render.js';
 import eventBind from './lib/eventBind.js';
 import Resource from '../resource/lib/Resource.js';
+import OrderbookClass from './lib/Orderbook.js';
 
 export default class Orderbook {
 
@@ -18,12 +19,12 @@ export default class Orderbook {
         await this.bp.load('coin');
 
         this.resource = new Resource("orderbook", {
-            provider: 'memory',
-            apiEndpoint: this.bp.config.api,
+            provider: 'rest',
+            apiEndpoint: 'https://localhost:9003' || this.bp.config.api,
             schema: {
                 // orderbook schema
                 owner: { type: "string", required: true },
-                pair: { type: "string", required: true },
+                pair: { type: "string", required: true, key: true },
                 price: { type: "number", required: true },
                 amount: { type: "number", required: true },
                 side: { type: "string", required: true }, // BUY or SELL
@@ -32,6 +33,8 @@ export default class Orderbook {
             },
             bp: this.bp
         });
+
+        this.orderbook = new OrderbookClass({ resource: this.resource, me: this.bp.me });
 
     }
 
@@ -66,7 +69,7 @@ export default class Orderbook {
             this.render(this.orderbookWindow.content, options);
             this.eventBind(this.orderbookWindow.content, options);
         }
-        if (options.context !== 'Default') {
+        if (options.context !== 'default') {
             this.orderbookWindow.setTitle('Orderbook ' + options.context);
         }
 

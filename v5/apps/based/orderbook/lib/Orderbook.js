@@ -1,11 +1,18 @@
+import placeOrder from "./placeOrder.js";
+import listOrdersPerMarket from "./listOrdersPerMarket.js";
+import cancelOrder from "./cancelOrder.js";
+
 export default class Orderbook {
     constructor(config = {}) {
         this.asset = config.asset || 'GBP';
         this.currency = config.currency || 'BuddyBux';
         this.orders = { buy: [], sell: [] };
         this.orderIdCounter = 1;
+        this.resource = config.resource;
+        this.me = config.me || 'Guest';
     }
 
+    /*
     placeOrder(type, amount, price, options = {}) {
         console.log('placeOrder', type, amount, price, options);
         const order = {
@@ -33,6 +40,7 @@ export default class Orderbook {
         // console.log('Order placed:', order);
         return order.id;
     }
+        */
 
     buy(amount, price = null, options = {}) {
         return this.placeOrder('buy', amount, price, options);
@@ -82,3 +90,8 @@ export default class Orderbook {
         return this.orders;
     }
 }
+
+
+Orderbook.prototype.placeOrder = placeOrder;
+Orderbook.prototype.listOrdersPerMarket = listOrdersPerMarket;
+Orderbook.prototype.cancelOrder = cancelOrder;

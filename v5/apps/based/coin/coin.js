@@ -3,6 +3,7 @@ import Resource from '../resource/lib/Resource.js';
 import eventBind from './lib/eventBind.js';
 import updateCoinList from './lib/updateCoinList.js';
 import render from './lib/render.js';
+import CoinClass from './lib/Coin.js';
 export default class Coin {
 
     constructor(bp, options = {}) {
@@ -17,8 +18,8 @@ export default class Coin {
         this.coinWindows = [];
         // create a new resource to manage coin operations to provider ( restful server in this case )
         this.resource = new Resource("coin", {
-            provider: 'memory',
-            apiEndpoint: this.bp.config.api,
+            provider: 'rest',
+            apiEndpoint: 'https://192.168.200.59:9001' || this.bp.config.api,
             schema: {
                 name: { type: "string", required: true },
                 symbol: { type: "string", unique: true, required: true },
@@ -27,6 +28,8 @@ export default class Coin {
             },
             bp: this.bp
         });
+
+        this.coin = new CoinClass({ resource: this.resource, me: this.bp.me });
 
     }
 
@@ -37,7 +40,7 @@ export default class Coin {
     async open (options = {}) {
         let context = options.context || '';
 
-        let coinWindowId = 'coin' + context;
+        let coinWindowId = 'coin-' + context;
 
         if (!this.coinWindows[coinWindowId]) {
             let coinWindow = this.coinWindows[coinWindowId] = this.bp.apps.ui.windowManager.createWindow({
@@ -52,6 +55,7 @@ export default class Coin {
                 minHeight: 200,
                 type: 'coin',
                 parent: $('#desktop')[0],
+                className: 'coin-window-content',
                 // content: this.html,
                 resizable: true,
                 minimizable: true,
@@ -67,6 +71,11 @@ export default class Coin {
             await this.render(coinWindow.content);
             this.eventBind(coinWindow);
             this.updateCoinList(coinWindow);
+
+
+            if (options.context !== 'default') {
+                this.tabs.navigateToTab(options.context);
+            }
         }
     }  
     

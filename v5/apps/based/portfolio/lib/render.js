@@ -1,52 +1,31 @@
 const prices = {};
-prices['BUDDYBUX'] = 1.00;
-prices['MEGABYTES'] = 0.50;
+prices['BUX'] = 1.00;
+prices['MEGA'] = 0.01;
+prices['GBP'] = 0.001;
 
 export default async function render(parent) {
     $(parent).html(this.html);
-
-    async function addOrUpdate({ symbol, amount, price, cost }) {
-
-        // first check is user already owns this asset
-        const found = await this.resource.search(this.bp.me, { symbol });
-        console.log('found', found);
-        if (found && found.length > 0) {
-            let existing = found[0];
-            let currentAmount = existing.amount;
-            let currentCost = existing.cost;
-            let newAmount = currentAmount + amount;
-            let newCost = currentCost + cost;
-            let newPrice = newCost / newAmount;
-            await this.resource.update(this.bp.me, existing.id, {
-                amount: newAmount,
-                price: newPrice,
-                cost: newCost
-            });
-            console.log(`Updated ${symbol} amount from ${currentAmount} to ${newAmount}`);
-
-        } else {
-            await this.resource.create(this.bp.me, {
-                symbol,
-                owner: this.bp.me,
-                amount,
-                price,
-                cost
-            });
-            console.log(`Added ${amount} of ${symbol} to portfolio`);
-
-        }
-
-
+    /*
+    try {
+        await this.resource.create(this.bp.me, {
+            symbol: 'BUX',
+            amount: 1000,
+            price: prices['BUX'],
+            cost: 1000 * prices['BUX']
+        });
+    
     }
-
+    catch (err) {}
+    */
+    /*
 
     // create a new test portfolio
-
+    console.log('creating new test porte', this.bp.me);
     await addOrUpdate.call(this, {
-        symbol: 'BUDDYBUX',
+        symbol: 'BUX',
         amount: 1000,
-        price: prices['BUDDYBUX'],
-        cost: 1000 * prices['BUDDYBUX']
+        price: prices['BUX'],
+        cost: 1000 * prices['BUX']
     });
 
     await addOrUpdate.call(this, {
@@ -55,14 +34,18 @@ export default async function render(parent) {
         price: prices['MEGABYTES'],
         cost: '0' // everyone gets 10 for free
     });
+    */
 
 
 
 
 
     // get the portfolio's assets
-    const assets = await this.resource.list(this.bp.me);
+    const assets = await this.resource.search(this.bp.me, {
+        owner: this.bp.me
+    });
     console.log('assetsassetsassets', assets);
+    let results = assets.results;
 
     // render the results to the table
     const table = $('.portfolio-entries', parent);
@@ -72,7 +55,7 @@ export default async function render(parent) {
     let totalValue = 0;
     let initialInvestment = 0; // Assume this is known or fetched from somewhere
 
-    assets.forEach(asset => {
+    results.forEach(asset => {
         let assetPrice = (prices[asset.symbol] || 0) * asset.amount;
         totalValue += assetPrice;
 

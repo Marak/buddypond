@@ -12,18 +12,31 @@ export default class RestProvider {
           if (this.bp.qtokenid) {
             options.headers["Authorization"] = `Bearer ${this.bp.qtokenid}`; // ✅ Use Authorization header
           }
-        
 
 
+
+          
         const response = await fetch(`${this.apiEndpoint}/${path}`, options);
         if (!response.ok) {
-            throw new Error(`API request failed: ${response.statusText}`);
+            console.log('API request failed:', response);
+            // try to get json from json
+            try {
+                let json = await response.json();
+                console.log('API request failed:', json);
+                throw new Error(`API request failed: ${json.error}`);
+                return json;
+            } catch (err) {
+                console.log('eeeee', err);
+                throw new Error(err);
+            }
+            throw new Error(`API request failed: ${json.error}`);
         }
         return response.json();
     }
 
-    async create(owner, data) {
-        return this.apiRequest('POST', `${this.resourceName}/${owner}`, data);
+    async create(id, data) {
+        console.log('calling create', `${this.resourceName}/${id}`, data);
+        return this.apiRequest('POST', `${this.resourceName}/${id}`, data);
     }
 
     async get(owner, id) {
@@ -34,11 +47,20 @@ export default class RestProvider {
         return this.apiRequest('PUT', `${this.resourceName}/${owner}/${id}`, data);
     }
 
-    async remove(owner, id) {
-        return this.apiRequest('DELETE', `${this.resourceName}/${owner}/${id}`);
+    async remove(id) {
+        return this.apiRequest('DELETE', `${this.resourceName}/${id}`);
     }
 
-    async list(owner) {
-        return this.apiRequest('GET', `${this.resourceName}/${owner}`);
+    async list() {
+        console.log('calling list', `${this.resourceName}`);
+        return this.apiRequest('GET', `${this.resourceName}`);
+    }
+
+    async all() {
+        return this.apiRequest('GET', this.resourceName);
+    }
+
+    async search (owner, query) {
+        return this.apiRequest('POST', `${this.resourceName}/search`, query);
     }
 }
