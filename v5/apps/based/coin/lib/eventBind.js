@@ -4,6 +4,10 @@ export default function eventBind(coinWindow) {
     
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', coinWindow.content);
 
+    this.tabs.onTab((tabId) => {
+        $('.coin-error').text('');
+    });
+
     $('.mint-coin', coinWindow.content).click(async () => {
         // Retrieve values from the form
         let coinName = document.querySelector('#coin-name').value.trim();

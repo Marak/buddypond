@@ -6,7 +6,7 @@ export default function eventBind (parent) {
     });
 
     $('.mint-coins', parent).on('click', () =>{
-        this.bp.open('coin');
+        this.bp.open('coin', {  type: "coin-mint" });
     });
 
     $('.send-coins', parent).on('click', () =>{

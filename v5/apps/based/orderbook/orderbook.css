@@ -9,7 +9,6 @@
     height: 100%;
     padding: 20px;
     background: #1e1e1e;
-    /* border-radius: 8px; */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
@@ -42,26 +41,74 @@
     font-size: 1rem;
 }
 
-/* Orderbook Table */
 .orderbook-table {
     width: 100%;
-    overflow-x: auto;
 }
 
-.orderbook-table table {
+/* Reusable Table Styles */
+.table-style {
+    font-family: Arial, sans-serif;
     width: 100%;
     border-collapse: collapse;
     background: #222;
+    border: 1px solid #444;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    overflow: hidden;
 }
 
-.orderbook-table th, .orderbook-table td {
-    padding: 10px;
+.table-style th, .table-style td {
+    padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #444;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-.orderbook-table th {
+.table-style th {
     background: #333;
+    color: #ffcc00;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-style tr:nth-child(even) {
+    background: #2a2a2a;
+}
+
+.table-style tr:nth-child(odd) {
+    background: #1f1f1f;
+}
+
+.table-style tr:hover {
+    background: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+.table-style tr.active {
+    background: #555;
+    color: #ffcc00;
+}
+
+@media (max-width: 768px) {
+    .table-style th, .table-style td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+.table-style td.updated {
+    animation: highlightUpdate 1.5s ease-in-out;
+}
+
+@keyframes highlightUpdate {
+    0% { background: #006400; color: #fff; }
+    50% { background: #222; color: #ddd; }
+    100% { background: transparent; color: inherit; }
 }
 
 /* Trade Form */
@@ -107,7 +154,6 @@
 .trade-form button:hover {
     background: #008c7e;
 }
-
 
 .orderbook-container .tabs-container {
     background-color: black;

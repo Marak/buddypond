@@ -34,7 +34,7 @@ export default class Orderbook {
             bp: this.bp
         });
 
-        this.orderbook = new OrderbookClass({ resource: this.resource, me: this.bp.me });
+        this.orderbook = new OrderbookClass({ resource: this.resource, me: this.bp.me, bp: this.bp }); // TODO: remove BP reference from inside class
 
     }
 

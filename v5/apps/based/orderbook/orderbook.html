@@ -23,10 +23,11 @@
             <ul class="tab-list">
                 <li><a href="#orderbook-book">Orderbook</a></li>
                 <li><a href="#orderbook-order">Place Order</a></li>
+                <li><a href="#orderbook-marketmakers">Market Makers</a></li>
             </ul>
 
             <!-- Coin Minting Form -->
-            <div id="orderbook-order" class="coin-mint-form tab-content">
+            <div id="orderbook-order" class="tab-content">
                 <span class="orderbook-error error"></span>
 
                 <!-- Trade Form -->
@@ -44,10 +45,11 @@
                     <button class="place-order">Submit Order</button>
                 </div>
             </div>
-            <div id="orderbook-book" class="coin-send-form tab-content">
+            <div id="orderbook-book" class="tab-content">
+                <span class="no-orders">No Orders on Book</span>
                 <!-- Buy and Sell Orders Table -->
                 <div class="orderbook-table">
-                    <table>
+                    <table class="table-style">
                         <thead>
                             <tr>
                                 <th>Pair</th>
@@ -59,6 +61,30 @@
                         </thead>
                         <tbody class="orderbook-entries">
                             <!-- Orders will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="orderbook-my-open-orders">
+                    <span class="no-open-orders">You have no open orders in this market.</span>
+
+                    <h2>My Orders</h2>
+                </div>
+
+            </div>
+
+            <div id="orderbook-marketmakers" class="tab-content">
+                <h2>Market Makers</h2>
+                <div class="marketmakers-table">
+                    <table class="table-style">
+                        <thead>
+                            <tr>
+                                <th>Maker</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="marketmakers-entries">
+                            <!-- Market Makers will be inserted here -->
                         </tbody>
                     </table>
                 </div>

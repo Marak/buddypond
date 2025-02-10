@@ -1,24 +1,41 @@
-export default async function listOrdersPerMarket(parent, marketPair) {
-
+export default async function listMarketMakersPerMarket (parent, marketPair) {
+    console.log('listMarketMakersPerMarketlistMarketMakersPerMarketlistMarketMakersPerMarket')
     // update the orderbook list
-    let orders = await this.resource.list(marketPair);
+    console.log('listMarketMakersPerMarket', marketPair);
 
-    if (orders.length === 0) {
-        $('.orderbook-table', parent).hide();
-        $('.orderbook-my-open-orders', parent).hide();
-        $('.no-orders', parent).show();
-        return;
-    }
-    $('.orderbook-table', parent).show();
-    // $('.orderbook-my-open-orders', parent).show();
-    $('.no-orders', parent).hide();
-    console.log('got back orders', orders);
+    let markets = marketPair.split('/');
+    let selling = markets[0];
+    let buying = markets[1];
+
+    await this.bp.load('portfolio');
+
+    // get the portfolio's assets
+    const assetHolders = await this.bp.apps.portfolio.resource.search(this.bp.me, {
+        symbol: selling
+    });
+    console.log('assetHoldersassetHoldersassetHolders', assetHolders.results);
+
+    let topHolders = assetHolders.results;
+
+
     let html = '';
-    let table = $('.orderbook-entries', parent);
+    let table = $('.marketmakers-entries', parent);
 
     // clear the table
     table.empty();
 
+
+    topHolders.forEach(holder => {
+        let row = $(`
+     <tr>
+         <td>${holder.owner}</td>
+         <td>${holder.amount}</td>
+     </tr>`);
+        table.append(row);
+        
+    });
+
+    /*
     orders.forEach(order => {
         let includeAdmin = false;
         if (order.owner === this.me) {
@@ -40,13 +57,11 @@ export default async function listOrdersPerMarket(parent, marketPair) {
 
             // check if target has class .removeCoin
             if ($(ev.target).hasClass('cancelOrder')) {
-                /*
                 let confirmDelete = prompt(`Are you sure you want to delete this coin? Type "${coin.symbol}" to confirm.`);
                 if (confirmDelete !== coin.symbol) {
                     return;
                 }
-                */
-                this.cancelOrder(parent, order);
+               this.cancelOrder(parent, order);
                 return false;
             }
         });
@@ -55,7 +70,7 @@ export default async function listOrdersPerMarket(parent, marketPair) {
 
 
     });
-
+    */
 
 
 }

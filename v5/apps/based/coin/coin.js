@@ -4,6 +4,8 @@ import eventBind from './lib/eventBind.js';
 import updateCoinList from './lib/updateCoinList.js';
 import render from './lib/render.js';
 import CoinClass from './lib/Coin.js';
+import createInitialCoins from './lib/createInitialCoins.js';
+
 export default class Coin {
 
     constructor(bp, options = {}) {
@@ -19,7 +21,7 @@ export default class Coin {
         // create a new resource to manage coin operations to provider ( restful server in this case )
         this.resource = new Resource("coin", {
             provider: 'rest',
-            apiEndpoint: 'https://192.168.200.59:9001' || this.bp.config.api,
+            apiEndpoint: 'http://127.0.0.1:9001' || this.bp.config.api,
             schema: {
                 name: { type: "string", required: true },
                 symbol: { type: "string", unique: true, required: true },
@@ -38,7 +40,13 @@ export default class Coin {
     }
 
     async open (options = {}) {
-        let context = options.context || '';
+        let context = options.context;
+        if (context === 'default') {
+            context = 'BUX';
+        }
+        let type = options.type || '';
+        this.context = context;
+        this.type = type;
 
         let coinWindowId = 'coin-' + context;
 
@@ -68,13 +76,12 @@ export default class Coin {
                     this.coinWindows[coinWindowId] = null;
                 }
             });
-            await this.render(coinWindow.content);
+            await this.render(coinWindow);
             this.eventBind(coinWindow);
-            this.updateCoinList(coinWindow);
 
 
-            if (options.context !== 'default') {
-                this.tabs.navigateToTab(options.context);
+            if (type) {
+                this.tabs.navigateToTab('#' + type);
             }
         }
     }  
@@ -84,3 +91,4 @@ export default class Coin {
 Coin.prototype.eventBind = eventBind;
 Coin.prototype.updateCoinList = updateCoinList;
 Coin.prototype.render = render;
+Coin.prototype.createInitialCoins = createInitialCoins;

@@ -1,5 +1,6 @@
 import placeOrder from "./placeOrder.js";
 import listOrdersPerMarket from "./listOrdersPerMarket.js";
+import listMarketMakersPerMarket from "./listMarketMakersPerMarket.js";
 import cancelOrder from "./cancelOrder.js";
 
 export default class Orderbook {
@@ -10,6 +11,7 @@ export default class Orderbook {
         this.orderIdCounter = 1;
         this.resource = config.resource;
         this.me = config.me || 'Guest';
+        this.bp = config.bp;
     }
 
     /*
@@ -91,7 +93,7 @@ export default class Orderbook {
     }
 }
 
-
+Orderbook.prototype.cancelOrder = cancelOrder;
 Orderbook.prototype.placeOrder = placeOrder;
 Orderbook.prototype.listOrdersPerMarket = listOrdersPerMarket;
-Orderbook.prototype.cancelOrder = cancelOrder;
+Orderbook.prototype.listMarketMakersPerMarket = listMarketMakersPerMarket;

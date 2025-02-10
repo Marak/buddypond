@@ -23,5 +23,6 @@ export default async function render(parent, options = {}) {
         $('#market-pairs', parent).val(options.context);
     }
     this.orderbook.listOrdersPerMarket(parent, options.context);
+    this.orderbook.listMarketMakersPerMarket(parent, options.context);
 
 }

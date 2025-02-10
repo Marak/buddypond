@@ -2,6 +2,10 @@ export default async function eventBind(parent) {
 
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', parent);
 
+    this.tabs.onTab((tabId) => {
+        $('.coin-error').text('');
+    });
+
     $('#market-pairs').on('change', async (e) => {
         this.bp.open('orderbook', { context: $('#market-pairs').val() });
     });
@@ -15,9 +19,17 @@ export default async function eventBind(parent) {
             price: 100,
             amount: $('#order-amount').val()
         };
-        await this.orderbook.placeOrder(parent, order);
 
-        this.tabs.navigateToTab('#orderbook-book');
+        try {
+            await this.orderbook.placeOrder(parent, order);
+
+            // this.tabs.navigateToTab('#orderbook-book');
+    
+        } catch (err) {
+            console.log('Error placing order:', err);
+            $('.orderbook-error', parent).text(err.message);
+
+        }
 
 
 

@@ -10,7 +10,7 @@
 
         <!-- Coin Minting Form -->
         <div id="coin-mint" class="coin-mint-form tab-content">
-            <h1 class="coin-title">Mint Coins</h1>
+            <h1 class="coin-title">MINT COINS</h1>
             <span class="coin-error error"></span>
             <label for="coin-name">Coin Name:</label>
             <input type="text" id="coin-name" placeholder="Enter coin name" value="Good Buddy Points">
@@ -21,22 +21,60 @@
             <button id="mint-coin" class="mint-coin">Mint Coin</button>
         </div>
 
-        <div id="coin-send" class="coin-send-form tab-content">
-            <h1 class="coin-title">Send Coins</h1>
-            <span class="coin-error error"></span>
-            <label for="coin-recipient">Recipient:</label>
-            <input type="text" id="coin-recipient" placeholder="Enter recipient">
-            <label for="coin-amount">Amount:</label>
-            <input type="number" id="coin-amount" placeholder="Amount">
-            <button id="send-coin" class="send-coin">Send Coin</button>
-        </div>
+       <div id="coin-send" class="coin-send-form tab-content">
+        <h1 class="coin-title">Send Coins</h1>
+        <span class="coin-error error"></span>
+        <span class="coin-send-message"></span>
 
-        <!-- User's Coins -->
+        
+        <label for="coin-send-to">Recipient:</label>
+        <input type="text" id="coin-send-to" placeholder="Enter recipient">
+    
+        <label for="coin-send-name">Coin:</label>
+        <select id="coin-send-name">
+            <option value="GBP">Good Buddy Points</option>
+            <option value="MEGA">Megabytes</option>
+            <option value="BUX">BuddyBux</option>
+        </select>
+    
+        <!-- Display current balance -->
+        <div id="coin-balance" class="coin-balance">Your Balance: <span id="current-balance">0</span></div>
+    
+        <label for="coin-send-amount">Amount:</label>
+        <input type="number" id="coin-send-amount" placeholder="Amount">
+    
+        <button id="send-coin" class="send-coin">Send Coin</button>
+    </div>
+
         <div id="coin-coins" class="tab-content">
-            <!--
-            <div class="user-coins">
-                <h2>Your Coins</h2>
+
+            <!-- All Minted Coins -->
+            <div class="all-coins">
+                <h1 class="coin-title">Coin Supply</h1>
+                <span class="coin-error error"></span>
+
                 <table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Supply</th>
+                            <th>Creator</th>
+                        </tr>
+                    </thead>
+                    <tbody class="all-coin-list">
+                        <!-- All coins will be listed here -->
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <hr/>
+
+            <!-- User's Coins -->
+            <div class="user-coins">
+                <h2>Your Minted Coins</h2>
+                <h3 class="no-coins">You have not Minted any of your own Coins yet.</h3>
+                <table class="user-coin-table">
                     <thead>
                         <tr>
                             <th>Coin</th>
@@ -49,26 +87,7 @@
                     </tbody>
                 </table>
             </div>
-            -->
-            <!-- All Minted Coins -->
-            <div class="all-coins">
-                <h1 class="coin-title">Coin Supply</h1>
-                <span class="coin-error error"></span>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Coin</th>
-                            <th>Symbol</th>
-                            <th>Supply</th>
-                            <th>Creator</th>
-                        </tr>
-                    </thead>
-                    <tbody class="all-coin-list">
-                        <!-- All coins will be listed here -->
-                    </tbody>
-                </table>
-            </div>
         </div>
 
 
