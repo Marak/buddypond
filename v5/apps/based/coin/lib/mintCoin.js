@@ -8,8 +8,9 @@ export default async function mintCoin (parent, coin) {
             owner: coin.owner,
             supply: coin.supply
         });
-        console.log('rrrr', res)
+        console.log('mintCoin response', res)
         $('.coin-error').text('');
+        $('.coin-success').text('Coin minted successfully ' + JSON.stringify(res));
         return res;
     } catch (err) {
         // display error in UI

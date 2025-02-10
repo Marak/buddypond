@@ -2,8 +2,8 @@
 
     <div id="coinTabs" class="tabs-container">
         <ul class="tab-list">
-            <li><a href="#coin-coins">Market</a></li>
             <li><a href="#coin-mint">Mint</a></li>
+            <li><a href="#coin-coins">Market</a></li>
             <li><a href="#coin-send">Send</a></li>
             <li><a class="open-app" data-app="portfolio" href="#">Portfolio</a></li>
         </ul>
@@ -12,10 +12,12 @@
         <div id="coin-mint" class="coin-mint-form tab-content">
             <h1 class="coin-title">MINT COINS</h1>
             <span class="coin-error error"></span>
+            <span class="coin-success"></span>
+
             <label for="coin-name">Coin Name:</label>
-            <input type="text" id="coin-name" placeholder="Enter coin name" value="Good Buddy Points">
+            <input type="text" id="coin-name" placeholder="e.g. My Meme Coin" value="">
             <label for="coin-symbol">Symbol:</label>
-            <input type="text" id="coin-symbol" placeholder="e.g. MEME" value="GBP">
+            <input type="text" id="coin-symbol" placeholder="e.g. MEME" value="">
             <label for="coin-supply">Total Supply:</label>
             <input type="number" id="coin-supply" placeholder="Total Supply" value="9001">
             <button id="mint-coin" class="mint-coin">Mint Coin</button>
@@ -53,7 +55,7 @@
 
             <!-- All Minted Coins -->
             <div class="all-coins">
-                <h1 class="coin-title">Coin Supply</h1>
+                <h1 class="coin-title">ALL BUDDY COINS</h1>
                 <span class="coin-error error"></span>
 
                 <table>
