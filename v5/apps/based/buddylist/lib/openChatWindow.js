@@ -64,6 +64,10 @@ export default function openChatWindow(data) {
                     console.error('Error rendering message', message, err, _window);
                 }
             }
+
+            // now focus on the .aim-input field
+            $('.aim-input', _window.content).focus();
+
         },
         onClose: () => {
             client.removeSubscription(windowType, contextName);
@@ -123,6 +127,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
 
     $('.message_form .aim-to', chatWindow.content).val(contextName);
 
+    // TODO: move this to sendMessage.js()
     $('.message_form', chatWindow.content).submit(async (e) => {
         e.preventDefault();
         const message = $('.aim-input', chatWindow.content).val();
@@ -136,6 +141,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
             files: [],
         };
     
+        // TODO: move file upload code to separate function
         // Get file previews
         const filePreviews = $('.file-preview', chatWindow.content);
         const files = [];
@@ -257,8 +263,16 @@ function setupChatWindow (windowType, contextName, chatWindow) {
             _data.type = 'buddy';
         }
 
-        this.bp.emit('buddy::sendMessage', _data);
+        // TODO: move all message preprocessing to a separate function
+        if (_data.text.startsWith('/image')) {
+            _data.text = await this.bp.searchImage(_data.text.replace('/image', ''));
+            _data.card = {
+                type: 'image',
+                url: _data.text
+            };
+        }
 
+        this.bp.emit('buddy::sendMessage', _data);
     
         // Clear input
         $('.aim-input', chatWindow.content).val('');

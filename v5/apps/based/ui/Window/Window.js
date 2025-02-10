@@ -572,7 +572,10 @@ class Window {
     }
 
     focus(propigate = true) {
-        // console.log('on focus called from Window.js')
+        console.log('on focus called from Window.js')
+        if (propigate) {
+            this.windowManager.focusWindow(this);
+        }
         this.onFocus(this);
     }
 
@@ -587,6 +590,9 @@ class Window {
         // TODO: save the window state ???
         // ???? this.parent.appendChild(this.container);
         this.bp.emit('window::open', this);
+        console.log('callling focus from open');
+        // set focus to this window
+        this.focus();
     }
     close() {
 

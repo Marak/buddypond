@@ -69,6 +69,12 @@ export default class Portfolio {
         }
         this.render(this.portfolioWindow.content);
         this.eventBind(this.portfolioWindow.content);
+
+        console.log('focus the portfolioWindow');
+
+        // focus the window
+        this.portfolioWindow.focus();
+
     }
 
 }
