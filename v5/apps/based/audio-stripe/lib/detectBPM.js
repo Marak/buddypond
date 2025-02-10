@@ -18,7 +18,7 @@ export default class BPMDetectPlugin {
     // Method to detect BPM, can be called anytime after initialization
     async detectBPM() {
         let audioBuffer = this.track.audioBuffer;
-
+        return 125; // for now, need to add back web-audio-beat-detector, aubio is too slow
         // Load the Aubio.js module
         const aubioModule = await aubio();
 

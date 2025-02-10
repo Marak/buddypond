@@ -1,5 +1,5 @@
 // import BeatmasherEffect from "./BeatmasherEffect";
-import BeatmasherEffect from '../../../nodes/BeatMasher.js';
+import BeatmasherEffect from '../../../nodes/Beatmasher.js';
 
 export default class BeatmasherComponent {
   constructor(track, options = {}) {
