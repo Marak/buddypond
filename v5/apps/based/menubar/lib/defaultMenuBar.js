@@ -53,8 +53,8 @@ export default function defaultMenuBar (bp) {
           label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
           submenu: [
               { 
-                  label: 'We are stoked to be your Buddy', 
-                  click: () => api.ui.toggleDeviceSettings() 
+                  label: 'We are stoked to be your Buddy'
+                  // click: () => api.ui.toggleDeviceSettings() 
               },
               {
                   label: 'Edit Profile',
@@ -95,6 +95,7 @@ export default function defaultMenuBar (bp) {
                   label: 'Hide All Windows', 
                   click: () => bp.apps.ui.windowManager.minimizeAllWindows()
               },
+              /*
               {
                   label: 'Set Active Window to Wallpaper',
                   disabled: true,
@@ -111,12 +112,28 @@ export default function defaultMenuBar (bp) {
                       }
                       return false;
                   }
-              }
+              } */
+            
           ]
       },
+      /*
+      {
+        label: 'Help',
+        click: () => bp.open('help')
+      },
+      */
+   
       { label: selectMusicPlaylist, flex: 1 },
       { label: selectTheme },
       { label: networkStatsStr },
+      {
+        label: 'Source Code',
+        click: () => {
+            // open a new window to https://github.com/marak/buddypond
+            let url = 'https://github.com/marak/buddypond';
+            window.open(url, '_blank');
+        }
+      },
       { label: volumeStr },
       { label: clockStr }
   ];

@@ -690,6 +690,13 @@ class Window {
         // save the window state
         this.windowManager.saveWindowsState();
     }
+
+    setContent(content) {
+        this.contentValue = content;
+        this.content.innerHTML = content;
+        // save the window state
+        this.windowManager.saveWindowsState();
+    }
 }
 
 export default Window;
