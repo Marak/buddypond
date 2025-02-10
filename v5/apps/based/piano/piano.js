@@ -1,6 +1,7 @@
 export default class Example {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.icon = '/desktop/assets/images/icons/icon_piano_64.png';
         return this;
     }
 
@@ -35,7 +36,7 @@ export default class Example {
                 minHeight: 200,
                 parent: $('#desktop')[0],
                 iframeContent: '/v5/apps/based/piano/vendor/index.html',
-                icon: '/desktop/assets/images/icons/icon_piano_64.png',
+                icon: this.icon,
                 resizable: true,
                 minimizable: true,
                 maximizable: true,

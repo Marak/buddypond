@@ -5,6 +5,7 @@ import eventBind from './lib/eventBind.js';
 export default class Help {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.icon = 'desktop/assets/images/icons/icon_help_64.png';
         return this;
     }
 
@@ -28,7 +29,7 @@ export default class Help {
             this.helpWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'help',
                 title: 'Help',
-                icon: 'desktop/assets/images/icons/icon_console_64.png',
+                icon: this.icon,
                 x: 250,
                 y: 75,
                 width: 400,

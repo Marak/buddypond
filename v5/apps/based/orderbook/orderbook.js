@@ -10,6 +10,8 @@ export default class Orderbook {
 
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.icon = 'desktop/assets/images/icons/icon_orderbook_64.png';
+
         return this;
     }
 
@@ -45,7 +47,7 @@ export default class Orderbook {
             this.orderbookWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'orderbook',
                 title: 'Orderbook',
-                icon: 'desktop/assets/images/icons/icon_console_64.png',
+                icon: this.icon,
                 x: 250,
                 y: 75,
                 width: 800,
