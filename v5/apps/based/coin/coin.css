@@ -49,6 +49,8 @@
     color: #00d1b2;
 }
 
+
+
 /* Coin Minting Form */
 .coin-mint-form {
     background: #222;
@@ -255,6 +257,16 @@
     z-index: 1;
 }
 
+.user-coins table button {
+    background: #00d1b2;
+    color: #121212;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
 /* Alternating row colors */
 .user-coins tr:nth-child(even), .all-coins tr:nth-child(even) {
     background: #2a2a2a;
@@ -299,3 +311,4 @@
     50% { background: #222; color: #ddd; }
     100% { background: transparent; color: inherit; }
 }
+

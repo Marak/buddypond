@@ -40,8 +40,9 @@ export default class RestProvider {
         return this.apiRequest('GET', `${this.resourceName}/${owner}/${id}`);
     }
 
-    async update(owner, id, data) {
-        return this.apiRequest('PUT', `${this.resourceName}/${owner}/${id}`, data);
+    async update(id, data) {
+        console.log(`calling update ${this.resourceName}/${id}`, data);
+        return this.apiRequest('PUT', `${this.resourceName}/${id}`, data);
     }
 
     async remove(id) {

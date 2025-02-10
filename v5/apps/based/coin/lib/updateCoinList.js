@@ -1,5 +1,5 @@
 export default async function updateCoinList(coinWindow) {
-    let coins = await this.resource.list();
+    let coins = await this.resource.list(); // TODO: .search()
     console.log('All Coins:', coins);
 
     // Update user-owned coins
@@ -20,8 +20,6 @@ export default async function updateCoinList(coinWindow) {
         }
         coinSelector.append(`<option value="${coin.symbol}">${coin.name}</option>`);
     });
-
-
 
 }
 
@@ -49,6 +47,9 @@ function updateAllCoins(coinWindow, coins) {
     let allCoinList = $('.all-coin-list', coinWindow.content);
     allCoinList.html(''); // Clear existing entries
     coins.forEach(coin => {
+        if (coin.status !== 'listed') {
+            return;
+        }
         let row = createCoinRow.call(this, coin, true, false, coinWindow);
         allCoinList.append(row); // Use jQuery .append()
     });
@@ -57,6 +58,7 @@ function updateAllCoins(coinWindow, coins) {
 // Utility function to create a row and handle clicks
 function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWindow) {
     const formattedSupply = coin.supply.toLocaleString('en-US');
+    let listVerb = coin.status === 'listed' ? 'Delist' : 'List';
     let row = $(`
         <tr>
             <td>${coin.symbol}</td>
@@ -64,12 +66,46 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
             <td>${formattedSupply}</td>
             ${includeOwner ? `<td>${coin.owner}</td>` : ''}
             ${includeAdmin ? `<td>
+                <button class="listDelistCoin" title="${listVerb} your coin on the BuddyCoin Market">${listVerb} Coin</button>
                 <button class="removeCoin">Destroy</button>
             </td>` : ''}
         </tr>
     `);
 
     row.on('click', async (ev) => {
+
+        // check if target has class .listDelistCoin
+        if ($(ev.target).hasClass('listDelistCoin')) {
+            /*
+            let confirmList = prompt(`Are you sure you want to list this coin? Type "${coin.symbol}" to confirm.`);
+            if (confirmList !== coin.symbol) {
+                return;
+            }
+            */
+
+            // toggle the status based on the current value
+            // if value === "List Coin", set status to "private"
+            // if value === "Delist Coin", set status to "listed"
+
+            if (coin.status === 'listed') {
+                let updatedResponse = await this.resource.update(coin.id, { status: 'private' });
+                console.log("set private updatedResponse", updatedResponse);
+                // update the coin list
+                updateCoinList.call(this, coinWindow);
+                return false;
+            }
+
+            if (coin.status === 'private') {
+                let updatedResponse = await this.resource.update(coin.id, { status: 'listed' });
+                console.log("set listed updatedResponse", updatedResponse);
+                // update the coin list
+                updateCoinList.call(this, coinWindow);
+                return false;
+            }
+
+            return false;
+
+        }
 
         // check if target has class .removeCoin
         if ($(ev.target).hasClass('removeCoin')) {

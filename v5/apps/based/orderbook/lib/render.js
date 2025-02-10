@@ -24,6 +24,11 @@ export default async function render(parent, options = {}) {
 
     // for each market, add an options to the selector
     coins.forEach(coin => {
+
+        if (coin.status !== 'listed') {
+            return;
+        }
+
         let option = $('<option></option>');
 
         // if the symbol is BUX, skip it as we can't pair it was USD
