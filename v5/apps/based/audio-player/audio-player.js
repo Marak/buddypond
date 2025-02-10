@@ -19,12 +19,12 @@ export default class AudioPlayer {
     //await this.bp.appendScript('/v5/apps/based/audio-stripe/vendor/web-audio-beat-detector.js');
     ///await this.bp.appendScript('https://unpkg.com/web-audio-beat-detector@8.2.20/build/es5/bundle.js');
     await this.bp.appendScript('/v5/apps/based/audio-stripe/vendor/jsmediatags.min.js');
-    let aubio = await this.bp.importModule('/v5/apps/based/audio-stripe/vendor/aubio.js', {}, false);
+    // let aubio = await this.bp.importModule('/v5/apps/based/audio-stripe/vendor/aubio.js', {}, false);
     //let webAudioBeatDetector = await this.bp.importModule('/v5/apps/based/audio-stripe/vendor/web-audio-beat-detector.js', {}, false);
     //window.webAudioBeatDetector = webAudioBeatDetector.default;
 
 
-    window.aubio = aubio.default;
+    // window.aubio = aubio.default;
     PlayerKeyboardBindings.bindKeys(this.bp);
 
 
@@ -72,7 +72,7 @@ export default class AudioPlayer {
     alert(JSON.stringify(song));
   }
 
-  open(config) {
+  async open(config) {
     console.log("AudioPlayer open", config);
 
     let playerId = 'audio-player-' + this.audioPlayers.length;
@@ -84,7 +84,7 @@ export default class AudioPlayer {
     let audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
       id: playerId,
       title: 'Audio Player',
-      icon: 'desktop/assets/images/icons/icon_midifighter_64.png',
+      icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
       x: 250,
       y: 75,
       width: 980,
@@ -113,7 +113,7 @@ export default class AudioPlayer {
     });
     console.log('new win', this.audioPlayerWindow)
 
-    config.url = 'Maroon%205%20-%20One%20More%20Night%20[MetroGnome%20Remix].mp3';
+    config.url = 'v5/apps/based/audio-player/vendor/One%20More%20Night%20[MetroGnome%20Remix].mp3';
 
     config.container = audioPlayerWindow.content;
     // if this is the first time, create the audio player and load a file
@@ -122,12 +122,12 @@ export default class AudioPlayer {
 
     // TODO: audioPlayer.load()
     // TODO: audioPlayer.unload()
-    audioPlayer.init();
-    audioPlayer.load(config.url);
+    await audioPlayer.init();
+    await audioPlayer.load(config.url);
 
     this.audioPlayers.push(audioPlayer);
 
-
+    await audioPlayer.play();
     // creates or opens a new window
     // if config.context has audio file, load it
 
