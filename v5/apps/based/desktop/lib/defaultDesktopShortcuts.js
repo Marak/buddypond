@@ -227,6 +227,22 @@ export default function defaultDesktopShortcuts() {
                 },
                 icon: 'desktop/assets/images/icons/icon_snes_64.png'
             },
+            {
+                id: 'emulator',
+                label: 'Atari 2600',
+                options: {
+                    context: 'atari2600',
+                },
+                icon: 'desktop/assets/images/icons/icon_atari2600_64.png'
+            },
+            {
+                id: 'emulator',
+                label: 'n64',
+                options: {
+                    context: 'n64',
+                },
+                icon: 'desktop/assets/images/icons/icon_n64_64.png'
+            },
 
             {
                 id: 'solitaire',
