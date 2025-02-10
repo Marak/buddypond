@@ -266,7 +266,7 @@ export default function defaultDesktopShortcuts() {
     });
     bp.apps.desktop.addShortCut({
         name: 'audio-player',
-        icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
+        icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
         label: 'Audio Player',
     }, {
         onClick: () => {
