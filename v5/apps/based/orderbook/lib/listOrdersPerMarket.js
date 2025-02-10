@@ -15,6 +15,7 @@ export default async function listOrdersPerMarket(parent, marketPair) {
         $('.orderbook-table', parent).hide();
         $('.orderbook-my-open-orders', parent).hide();
         $('.no-orders', parent).show();
+        $('.no-open-orders', parent).show();
         return;
     }
     $('.orderbook-table', parent).show();
@@ -68,6 +69,7 @@ export default async function listOrdersPerMarket(parent, marketPair) {
         table.append(row);
 
         if (order.owner === this.me) {
+            $('.no-open-orders', parent).hide();
             openOrdersTable.append(row.clone());
         }
 

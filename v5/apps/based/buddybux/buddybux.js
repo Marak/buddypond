@@ -2,6 +2,8 @@
 import Resource from '../resource/lib/Resource.js';
 import eventBind from './lib/eventBind.js';
 import checkoutComplete from './lib/checkoutComplete.js';
+import balanceOf from './lib/balanceOf.js';
+import render from './lib/render.js';
 
 export default class BuddyBux {
 
@@ -55,10 +57,6 @@ export default class BuddyBux {
 
     }
 
-    async checkBalance () {
-
-    }
-
     async open() {
         if (!this.buddybuxWindow) {
             this.buddybuxWindow = this.bp.apps.ui.windowManager.createWindow({
@@ -85,6 +83,7 @@ export default class BuddyBux {
                 }
             });
 
+            this.render();
             this.eventBind();
 
         }
@@ -94,3 +93,5 @@ export default class BuddyBux {
 
 BuddyBux.prototype.eventBind = eventBind;
 BuddyBux.prototype.checkoutComplete = checkoutComplete;
+BuddyBux.prototype.balanceOf = balanceOf;
+BuddyBux.prototype.render = render;

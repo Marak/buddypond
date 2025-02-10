@@ -258,14 +258,9 @@ export default async function renderChatMessage(message, _chatWindow) {
     // console.log("USING CARD", cardData, message);
     // make sure card has props
     if (Object.keys(cardData).length > 0) {
-
-      // create a clone of message
-      //let cloned = Object.assign({}, message);
-      //delete cloned.card;
       cardData.message = message; // TODO probably should clone for CardManager, etc
       // default JSON rendering will now fail by default due to nested messages cards with arbitrary props ( no .data scope either ), .context might be good...
       let cardManager = this.bp.apps.card.cardManager;
-
       const _card = await cardManager.loadCard(cardData.type, cardData);
       container = document.createElement('div');
       container.classList.add('cardContainer');
@@ -320,7 +315,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     // TODO: should probably be a markdown registered as messagesProcessor with SystemsManager
     if (useMarkdown) {
       message.text = parseMarkdownWithoutPTags(message.text);
-      console.log('message.text', message.text)
+      // console.log('message.text', message.text)
     }
 
     // Prepare the message content span

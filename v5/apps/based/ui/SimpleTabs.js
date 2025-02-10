@@ -34,9 +34,20 @@ export default class SimpleTabs {
 
           this.navigateToTab(tabId);
       });
+
+      // always navigate to the first tab
+      //alert('navigating to first tab');
+      let tabId = this.container.find('.tab-list li a').first();
+      console.log('init tabId', tabId);
+      this.navigateToTab($(tabId).attr('href'));
   }
 
   navigateToTab(tabId) {
+     // check that tabId is a valid jQuery expression
+     if (tabId.startsWith("#") === false || tabId.length < 2) {
+         console.warn("Invalid tabId:", tabId);
+        return;
+     }
       // Ensure tab exists before switching
       if (!this.container.find(tabId).length) {
           console.warn(`Tab with ID ${tabId} not found.`);

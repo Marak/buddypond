@@ -4,6 +4,7 @@ export default function defaultDesktopShortcuts() {
         name: 'profile',
         icon: `desktop/assets/images/icons/icon_profile_64.png`,
         label: 'My Profile',
+        // class: 'loggedIn'
     }, {
         onClick: () => {
             bp.open('profile');
@@ -82,8 +83,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-   
-
     bp.apps.desktop.addShortCut({
         name: 'camera',
         icon: `desktop/assets/images/icons/icon_camera_64.png`,
@@ -92,10 +91,7 @@ export default function defaultDesktopShortcuts() {
         onClick: () => {
             bp.open('camera');
         },
-    
-
     });
-
 
     bp.apps.desktop.addShortCut({
         name: 'piano',
@@ -106,7 +102,6 @@ export default function defaultDesktopShortcuts() {
             bp.open('piano');
         }
     });
-
 
     bp.apps.desktop.addShortCut({
         name: 'fluid-simulation',
@@ -128,7 +123,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-  
     bp.apps.desktop.addShortCut({
         name: 'audio-visual',
         icon: `desktop/assets/images/icons/icon_visuals_64.png`,
@@ -142,7 +136,7 @@ export default function defaultDesktopShortcuts() {
     function coinBeta () {
         bp.apps.desktop.addShortCut({
             name: 'orderbook',
-            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+            icon: `desktop/assets/images/icons/icon_orderbook_64.png`,
             label: 'Orderbook',
         }, {
             onClick: () => {
@@ -152,18 +146,28 @@ export default function defaultDesktopShortcuts() {
     
         bp.apps.desktop.addShortCut({
             name: 'coin',
-            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
-            label: 'Coin',
+            icon: `desktop/assets/images/icons/icon_coin_64.png`,
+            label: 'Buddy Coins',
         }, {
             onClick: () => {
                 bp.open('coin');
+            }
+        });
+
+        bp.apps.desktop.addShortCut({
+            name: 'portfolio',
+            icon: `desktop/assets/images/icons/icon_portfolio_64.png`,
+            label: 'Portfolio',
+        }, {
+            onClick: () => {
+                bp.open('portfolio');
             }
         });
     
     
         bp.apps.desktop.addShortCut({
             name: 'buddybux',
-            icon: `desktop/assets/images/icons/icon_visuals_64.png`,
+            icon: `desktop/assets/images/icons/icon_buddybux_64.png`,
             label: 'BuddyBux',
         }, {
             onClick: () => {

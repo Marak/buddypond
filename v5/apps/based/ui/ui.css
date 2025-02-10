@@ -80,11 +80,13 @@ a:active {
     align-items: center;
     justify-content: center;
     font-size: 18px;
+    user-select: none;
   }
 
   .tabs-container .tab-list li {
     display: inline-block;
     margin-right: 10px;
+    user-select: none;
   }
   
   .tabs-container .tab-list li.active {
@@ -101,7 +103,6 @@ a:active {
   .tabs-container .tab-content:target {
     display: block;
   }
-
 
   #buddypad {
     width: 100%;

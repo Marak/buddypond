@@ -2,6 +2,10 @@
     background-color: #121212;
 }
 
+#buddybux .tabs-container a {
+    border: none;
+  }
+
 
 #buddybux-tabs {
     max-width: 400px;
@@ -85,3 +89,103 @@
     transform: translateY(20px);
 }
 
+
+
+
+.buddybux-container .tabs-container {
+    background-color: black;
+}
+
+.buddybux-container .tabs-container ul {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.buddybux-container .tabs-container li {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    color: #fff;
+}
+
+
+
+
+/* Coin Send Form */
+#send-buddybux-form {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    color: #ddd;
+}
+
+#send-buddybux-form h1 {
+    color: #ffcc00;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#send-buddybux-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#send-buddybux-form input, 
+#send-buddybux-form select, 
+#send-buddybux-form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#send-buddybux-form input, 
+#send-buddybux-form select {
+    background: #333;
+    color: #fff;
+    outline: none;
+}
+
+#send-buddybux-form input:focus, 
+#send-buddybux-form select:focus {
+    background: #444;
+    border: 1px solid #ffcc00;
+    transform: scale(1.02);
+}
+
+#send-buddybux-form button {
+    background: #00d1b2;
+    color: #121212;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#send-buddybux-form button:hover {
+    background: #008c7e;
+    transform: translateY(-2px);
+}
+
+#send-buddybux-form .coin-error {
+    color: #ff4444;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}

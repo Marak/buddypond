@@ -53,7 +53,7 @@ export default class Coin {
         if (!this.coinWindows[coinWindowId]) {
             let coinWindow = this.coinWindows[coinWindowId] = this.bp.apps.ui.windowManager.createWindow({
                 id: coinWindowId,
-                title: 'Coin',
+                title: 'Buddy Coins',
                 icon: 'desktop/assets/images/icons/icon_console_64.png',
                 x: 250,
                 y: 75,

@@ -9,13 +9,10 @@ export default class RestProvider {
         const options = { method, headers: { 'Content-Type': 'application/json' } };
         if (body) options.body = JSON.stringify(body);
 
-          if (this.bp.qtokenid) {
+        if (this.bp.qtokenid) {
             options.headers["Authorization"] = `Bearer ${this.bp.qtokenid}`; // ✅ Use Authorization header
-          }
+        }
 
-
-
-          
         const response = await fetch(`${this.apiEndpoint}/${path}`, options);
         if (!response.ok) {
             console.log('API request failed:', response);
@@ -35,8 +32,8 @@ export default class RestProvider {
     }
 
     async create(id, data) {
-        console.log('calling create', `${this.resourceName}/${id}`, data);
-        return this.apiRequest('POST', `${this.resourceName}/${id}`, data);
+        console.log('calling create', `${this.resourceName}`, data);
+        return this.apiRequest('POST', `${this.resourceName}`, data);
     }
 
     async get(owner, id) {
@@ -60,7 +57,7 @@ export default class RestProvider {
         return this.apiRequest('GET', this.resourceName);
     }
 
-    async search (owner, query) {
+    async search(owner, query) {
         return this.apiRequest('POST', `${this.resourceName}/search`, query);
     }
 }
