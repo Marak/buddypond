@@ -209,7 +209,7 @@ function startGUI () {
     captureFolder.add({ fun: captureScreenshot }, 'fun').name('take screenshot');
 
 
-    if (isMobile())
+    // if (isMobile())
         gui.close();
 }
 
