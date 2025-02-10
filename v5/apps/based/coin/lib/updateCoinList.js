@@ -56,11 +56,12 @@ function updateAllCoins(coinWindow, coins) {
 
 // Utility function to create a row and handle clicks
 function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWindow) {
+    const formattedSupply = coin.supply.toLocaleString('en-US');
     let row = $(`
         <tr>
             <td>${coin.symbol}</td>
             <td>${coin.name}</td>
-            <td>${coin.supply}</td>
+            <td>${formattedSupply}</td>
             ${includeOwner ? `<td>${coin.owner}</td>` : ''}
             ${includeAdmin ? `<td>
                 <button class="removeCoin">Destroy</button>

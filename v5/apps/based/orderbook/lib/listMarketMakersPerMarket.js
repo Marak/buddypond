@@ -1,5 +1,4 @@
 export default async function listMarketMakersPerMarket (parent, marketPair) {
-    console.log('listMarketMakersPerMarketlistMarketMakersPerMarketlistMarketMakersPerMarket')
     // update the orderbook list
     console.log('listMarketMakersPerMarket', marketPair);
 
@@ -32,7 +31,7 @@ export default async function listMarketMakersPerMarket (parent, marketPair) {
          <td>${holder.amount}</td>
      </tr>`);
         table.append(row);
-        
+
     });
 
     /*

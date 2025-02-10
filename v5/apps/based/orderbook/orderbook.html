@@ -3,7 +3,7 @@
     <div class="orderbook-content">
 
         <div class="orderbook-header">
-            <h1 class="orderbook-title">Markets:</h1>
+            <h1 class="orderbook-title">Market:</h1>
 
             <!-- Market Selection -->
             <div class="market-selector">
@@ -28,11 +28,16 @@
 
             <!-- Coin Minting Form -->
             <div id="orderbook-order" class="tab-content">
+                <span class="orderbook-order-status"></span>
+
                 <span class="orderbook-error error"></span>
 
                 <!-- Trade Form -->
                 <div class="trade-form">
                     <h2>Place an Order</h2>
+                    <label for="order-market">Market</label>
+                    <input type="text" id="order-market" placeholder="Market" readonly>
+
                     <label for="order-side">Order Type:</label>
                     <select id="order-side">
                         <option value="buy">Buy</option>
@@ -40,7 +45,7 @@
                     </select>
                     <label for="order-amount">Amount:</label>
                     <input type="number" id="order-amount" placeholder="Amount" required>
-                    <label for="order-price">Price (USD):</label>
+                    <label for="order-price">Price (BUX):</label>
                     <input type="number" id="order-price" placeholder="Price" required>
                     <button class="place-order">Submit Order</button>
                 </div>
@@ -55,8 +60,7 @@
                                 <th>Pair</th>
                                 <th>Side</th>
                                 <th>Amount</th>
-                                <th>Price (USD)</th>
-                                <th>Admin</th>
+                                <th>Price (BUX)</th>
                             </tr>
                         </thead>
                         <tbody class="orderbook-entries">
@@ -66,9 +70,26 @@
                 </div>
 
                 <div class="orderbook-my-open-orders">
+                    <h2>My Orders</h2>
                     <span class="no-open-orders">You have no open orders in this market.</span>
 
-                    <h2>My Orders</h2>
+                    <div class="orderbook-openorder-table">
+                        <table class="table-style">
+                            <thead>
+                                <tr>
+                                    <th>Pair</th>
+                                    <th>Side</th>
+                                    <th>Amount</th>
+                                    <th>Price (BUX)</th>
+                                    <th>Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody class="orderbook-openorder-entries">
+                                <!-- Orders will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
             </div>

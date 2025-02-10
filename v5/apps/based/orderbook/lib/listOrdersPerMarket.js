@@ -1,8 +1,16 @@
 export default async function listOrdersPerMarket(parent, marketPair) {
 
-    // update the orderbook list
-    let orders = await this.resource.list(marketPair);
+    if (marketPair === 'default') {
+        marketPair = 'GBP/BUX';
+    }
 
+    console.log(`listOrdersPerMarket(${marketPair})`);
+    // update the orderbook list
+    let searchResult = await this.resource.search(this.bp.me, {
+        pair: marketPair,
+        status: 'open'
+    });
+    let orders = searchResult.results;
     if (orders.length === 0) {
         $('.orderbook-table', parent).hide();
         $('.orderbook-my-open-orders', parent).hide();
@@ -15,12 +23,18 @@ export default async function listOrdersPerMarket(parent, marketPair) {
     console.log('got back orders', orders);
     let html = '';
     let table = $('.orderbook-entries', parent);
+    let openOrdersTable = $('.orderbook-openorder-entries', parent);
 
     // clear the table
     table.empty();
+    openOrdersTable.empty();
 
     orders.forEach(order => {
         let includeAdmin = false;
+        let formattedAmount =  order.amount.toLocaleString('en-US');
+        // format as USD
+        let formattedPrice = order.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
         if (order.owner === this.me) {
             includeAdmin = true;
         }
@@ -30,8 +44,8 @@ export default async function listOrdersPerMarket(parent, marketPair) {
      <tr>
          <td>${order.pair}</td>
          <td>${order.side}</td>
-         <td>${order.amount}</td>
-         <td>${order.price}</td>
+         <td>${formattedAmount}</td>
+         <td>${formattedPrice}</td>
         ${includeAdmin ? `<td><button class="cancelOrder">Cancel</button></td>` : ''}
      </tr>
  `);
@@ -53,9 +67,19 @@ export default async function listOrdersPerMarket(parent, marketPair) {
 
         table.append(row);
 
+        if (order.owner === this.me) {
+            openOrdersTable.append(row.clone());
+        }
+
 
     });
 
+    // check length of openOrdersTable, if empty hide it
+    if (openOrdersTable.children().length === 0) {
+        $('.orderbook-my-open-orders', parent).hide();
+    } else {
+        $('.orderbook-my-open-orders', parent).show();
+    }
 
 
 }

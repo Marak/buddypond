@@ -4,6 +4,8 @@ import eventBind from './lib/eventBind.js';
 import Resource from '../resource/lib/Resource.js';
 import OrderbookClass from './lib/Orderbook.js';
 
+import createInitialOrders from './lib/createInitialOrders.js';
+
 export default class Orderbook {
 
     constructor(bp, options = {}) {
@@ -47,7 +49,7 @@ export default class Orderbook {
                 x: 250,
                 y: 75,
                 width: 800,
-                height: 600,
+                height: 700,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -79,3 +81,4 @@ export default class Orderbook {
 
 Orderbook.prototype.render = render;
 Orderbook.prototype.eventBind = eventBind;
+Orderbook.prototype.createInitialOrders = createInitialOrders;

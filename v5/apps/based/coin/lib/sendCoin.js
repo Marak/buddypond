@@ -10,6 +10,7 @@ export default async function sendCoin(parent, userTransaction) {
 
         // trigger change event on the coin name dropdown to update the balance
         $('#coin-send-name').trigger('change');
+        $('.coin-send-message').html(`Sent ${userTransaction.amount} ${userTransaction.symbol} to ${userTransaction.to}!`);
         return res;
     } catch (err) {
         // display error in UI
@@ -18,24 +19,6 @@ export default async function sendCoin(parent, userTransaction) {
     }
 
     $('.coin-send-message').text('Sent coin to buddy!');
-
-    /*
-    try {
-        let res = await this.resource.create(coin.symbol, {
-            name: coin.name,
-            symbol: coin.symbol,
-            owner: coin.owner,
-            supply: coin.supply
-        });
-        console.log('rrrr', res)
-        $('.coin-error').text('');
-        return res;
-    } catch (err) {
-        // display error in UI
-        console.error('Error minting coin:', err);
-        $('.coin-error').text(err.message);
-    }
-        */
 
 
 }

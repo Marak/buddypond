@@ -53,12 +53,19 @@ export default function eventBind(coinWindow) {
         const assets = await this.bp.apps.portfolio.resource.search(this.bp.me, {
             owner: this.bp.me
         });
-        console.log('assetsassetsassets', assets.results);
+        console.log('assetsassetsassets', currentCoin, assets.results);
         let coinBalances = assets.results;
 
+        // update the $('.coin-names') select element
+        // first clear all options
+        $('#coin-send-name', coinWindow.content).empty();
         coinBalances.forEach(asset => {
+            console.log(`asset.symbol: ${asset.symbol} === currentCoin: ${currentCoin}`);
+            $('#coin-send-name', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
             if (asset.symbol === currentCoin) {
                 coinBalance.text(asset.amount);
+                // select the current coin
+                $('#coin-send-name', coinWindow.content).val(asset.symbol);
             }
         });
 

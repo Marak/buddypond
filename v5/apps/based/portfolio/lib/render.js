@@ -5,40 +5,6 @@ prices['GBP'] = 0.001;
 
 export default async function render(parent) {
     $(parent).html(this.html);
-    /*
-    try {
-        await this.resource.create(this.bp.me, {
-            symbol: 'BUX',
-            amount: 1000,
-            price: prices['BUX'],
-            cost: 1000 * prices['BUX']
-        });
-    
-    }
-    catch (err) {}
-    */
-    /*
-
-    // create a new test portfolio
-    console.log('creating new test porte', this.bp.me);
-    await addOrUpdate.call(this, {
-        symbol: 'BUX',
-        amount: 1000,
-        price: prices['BUX'],
-        cost: 1000 * prices['BUX']
-    });
-
-    await addOrUpdate.call(this, {
-        symbol: 'MEGABYTES',
-        amount: 10,
-        price: prices['MEGABYTES'],
-        cost: '0' // everyone gets 10 for free
-    });
-    */
-
-
-
-
 
     // get the portfolio's assets
     const assets = await this.resource.search(this.bp.me, {
@@ -61,13 +27,14 @@ export default async function render(parent) {
 
         // Format as USD currency
         const formattedPriceValue = assetPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        const formattedAmount = asset.amount.toLocaleString('en-US');
+        const formattedAvailable = asset.available.toLocaleString('en-US');
 
-
-
-       let row = $(`
+        let row = $(`
             <tr>
                 <td>${asset.symbol}</td>
-                <td>${asset.amount}</td>
+                <td>${formattedAmount}</td>
+                <td>${formattedAvailable}</td>
                 <td>${formattedPriceValue}</td>
                 <td>${asset.cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
             </tr>

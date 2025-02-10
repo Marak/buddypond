@@ -12,6 +12,11 @@
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+
+.orderbook-container .tabs-container a {
+    border: none;
+  }
+
 .orderbook-header {
     display: flex;
     flex-direction: row;
@@ -38,7 +43,7 @@
     color: #fff;
     border: none;
     padding: 8px;
-    font-size: 1rem;
+    font-size: 1.4rem;
 }
 
 .orderbook-table {

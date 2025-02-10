@@ -21,8 +21,10 @@ export default async function eventBind(parent) {
         };
 
         try {
-            await this.orderbook.placeOrder(parent, order);
-
+            let result = await this.orderbook.placeOrder(parent, order);
+            console.log('placeOrder result', result);
+            $('.orderbook-error', parent).text('');
+            $('.orderbook-order-status', parent).text('Order placed: ' + JSON.stringify(result));
             // this.tabs.navigateToTab('#orderbook-book');
     
         } catch (err) {
@@ -30,9 +32,6 @@ export default async function eventBind(parent) {
             $('.orderbook-error', parent).text(err.message);
 
         }
-
-
-
 
         return;
         // this.placeOrder(); ???
