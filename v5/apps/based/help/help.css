@@ -1,0 +1,62 @@
+
+    .help-container {
+        background-color: #f4f9ff;
+        color: #333;
+        font-family: Arial, sans-serif;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+    }
+
+    .help-container h1, .help-container h3 {
+        color: #007acc;
+    }
+
+    .help-container h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .help-container h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .help-container .help-context {
+        cursor: pointer;
+        background-color: #e6f4ff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+    }
+
+    .help-container .help-context:hover {
+        text-decoration: underline;
+        background-color: #d0eaff;
+    }
+
+    .help-container .help-type {
+        color: #005b99;
+        margin-bottom: 10px;
+    }
+
+    .help-container .help-topics {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #007acc;
+        border-radius: 5px;
+        background-color: #e6f4ff;
+        color: #003d66;
+        margin-bottom: 20px;
+    }
+
+    .help-container .contextualHelpText {
+        background-color: #ffffff;
+        border: 1px solid #007acc;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 122, 204, 0.1);
+        color: #333;
+    }

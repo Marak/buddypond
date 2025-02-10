@@ -1,5 +1,6 @@
 /* Help.js - Marak Squires 2025 - BuddyPond */
 import render from './lib/render.js';
+import eventBind from './lib/eventBind.js';
 
 export default class Help {
     constructor(bp, options = {}) {
@@ -7,15 +8,22 @@ export default class Help {
         return this;
     }
 
+    async help () {
+        return `This is the help file for help you can't help but help
+        Choose any other app from the dropdown select to get more information about that app.
+        `;
+    }
+
     async init() {
 
         console.log('help is: under construction');
 
         this.html = await this.bp.load('/v5/apps/based/help/help.html');
+        await this.bp.load('/v5/apps/based/help/help.css');
         return 'loaded help window';
     }
     
-    async open () {
+    async open (options = {}) {
         if (!this.helpWindow) {
             this.helpWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'help',
@@ -24,7 +32,7 @@ export default class Help {
                 x: 250,
                 y: 75,
                 width: 400,
-                height: 300,
+                height: 400,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -41,9 +49,15 @@ export default class Help {
                 }
             });
         }
-        let html = await this.render();
-        this.helpWindow.setContent(html);
+
+        if (options.context === 'default') {
+            options.context = 'help';
+        }
+
+        await this.render(this.helpWindow);
+        this.eventBind(this.helpWindow);
     }
 }
 
 Help.prototype.render = render;
+Help.prototype.eventBind = eventBind;

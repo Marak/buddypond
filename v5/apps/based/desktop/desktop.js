@@ -28,6 +28,8 @@ export default class Desktop {
         this.bp = bp;
         this.options = options;
 
+        this.apps = {}; // registered apps
+
         this.folders = [];
 
         // Setup containers for the desktop and shortcuts

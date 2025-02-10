@@ -7,7 +7,19 @@ import buildPad from './lib/buildPad.js';
 export default class Pad {
     constructor(bp, options = {}) {
         this.bp = bp;
+        this.icon = '/desktop/assets/images/icons/icon_pad_64.png';
         return this;
+    }
+
+    // TODO: move to file
+    async help () {
+        return `Pads are a fun way to create and share content with others.
+
+        You may create pads here and such...etc.
+
+        Enjoy!
+
+        `
     }
 
     async init() {
@@ -24,11 +36,19 @@ export default class Pad {
         return 'loaded Pad';
     }
 
+    // TODO: common function to bind UI
+    // this will *usually* be called inside an open() mutex with window
+    // if app is running headless mode than this is *expected* to be called after init()
+    // TODO: decouple all .bindUI() from .open()...
+    async bindUI () {
+
+    }
+
     async open() {
 
         if (!this.padWindow) {
             this.padWindow = this.bp.apps.ui.windowManager.createWindow({
-                id: 'example',
+                id: 'pad',
                 title: 'Pads',
                 x: 50,
                 y: 60,
@@ -36,7 +56,7 @@ export default class Pad {
                 height: 600,
                 minWidth: 200,
                 minHeight: 200,
-                icon: '/desktop/assets/images/icons/icon_pad_64.png',
+                icon: this.icon,
                 parent: $('#desktop')[0],
                 content: this.html,
                 resizable: true,

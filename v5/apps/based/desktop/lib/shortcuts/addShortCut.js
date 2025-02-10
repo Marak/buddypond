@@ -67,6 +67,9 @@ export default function addShortCut(app, options = {}, parent) {
         });
     }
 
+    // register the app with desktop.apps
+    this.apps[app.name] = app;
+
 }
 
 /*

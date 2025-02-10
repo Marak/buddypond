@@ -4,6 +4,7 @@ export default class Paint {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.output = null;
+        this.icon = '/desktop/assets/images/icons/icon_paint_64.png';
         return this;
     }
 
@@ -28,7 +29,7 @@ export default class Paint {
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
-                icon: '/desktop/assets/images/icons/icon_paint_64.png',
+                icon: this.icon,
                 content: this.html,
                 resizable: true,
                 minimizable: true,
