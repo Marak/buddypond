@@ -72,6 +72,12 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
         </tr>
     `);
 
+    if (coin.status === 'listed') {
+        // disable the removeCoin button
+        row.find('.removeCoin').prop('disabled', true);
+        row.find('.removeCoin').addClass('disabled');
+    }
+
     row.on('click', async (ev) => {
 
         // check if target has class .listDelistCoin
@@ -125,6 +131,12 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
             return this.bp.open('buddybux', { context: 'buy' });
         }
 
+        if (coin.status !== 'listed') {
+            // do not open orderbook for unlisted coins
+            return;
+        }
+
+        
         this.bp.open('orderbook', { context: coin.symbol + '/BUX' });
     });
 

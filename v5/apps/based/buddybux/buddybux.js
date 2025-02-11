@@ -62,7 +62,7 @@ export default class BuddyBux {
             this.buddybuxWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'buddybux',
                 title: 'BuddyBux',
-                icon: 'desktop/assets/images/icons/icon_console_64.png',
+                icon: 'desktop/assets/images/icons/icon_buddybux_64.png',
                 x: 250,
                 y: 75,
                 width: 400,

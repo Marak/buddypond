@@ -25,7 +25,7 @@ export default class Portfolio {
 
         this.resource = new Resource("portfolio", {
             provider: 'rest',
-            apiEndpoint: 'http://localhost:9002' || this.bp.config.api,
+            apiEndpoint: this.bp.config.portfolioEndpoint || '/',
             schema: {
                 symbol: { type: "string" },
                 owner: { type: "string" },
@@ -45,7 +45,7 @@ export default class Portfolio {
             this.portfolioWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'portfolio',
                 title: 'Portfolio',
-                icon: 'desktop/assets/images/icons/icon_console_64.png',
+                icon: 'desktop/assets/images/icons/icon_portfolio_64.png',
                 x: 250,
                 y: 75,
                 width: 800,

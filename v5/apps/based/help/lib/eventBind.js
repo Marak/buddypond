@@ -28,6 +28,9 @@ export default function eventBind (helpWindow){
             console.log('no help function found for app', appId);
         }
 
+        // set the val of the help-topics dropdown to the appId
+        $('.help-topics', helpWindow.content).val(appId);
+
     });
 
     // when the .help-topics selector changes, attempt to run the help() function for the selected app
@@ -41,6 +44,12 @@ export default function eventBind (helpWindow){
         // update the help context
         let iconSrc = this.bp.apps[appId].icon;
         console.log('iconSrc', iconSrc);
+
+
+        if (!iconSrc) {
+            iconSrc = `desktop/assets/images/icons/icon_${appId}_64.png`;
+        }
+
         if (iconSrc) {
             $('.help-context', helpWindow.content).html(`<img src="${iconSrc}" class="icon" /> ${appId}`);
         } else {
@@ -66,5 +75,6 @@ export default function eventBind (helpWindow){
         console.log('appId', appId);
         this.bp.open(appId);
     });
+
 
 }

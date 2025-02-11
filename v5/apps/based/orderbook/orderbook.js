@@ -24,7 +24,7 @@ export default class Orderbook {
 
         this.resource = new Resource("orderbook", {
             provider: 'rest',
-            apiEndpoint: 'https://localhost:9003' || this.bp.config.api,
+            apiEndpoint: this.bp.config.orderbookEndpoint || '/',
             schema: {
                 // orderbook schema
                 owner: { type: "string", required: true },

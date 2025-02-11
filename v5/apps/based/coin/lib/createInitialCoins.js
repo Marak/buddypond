@@ -4,6 +4,7 @@ export default async function createInitialCoins() {
             name: 'BuddyBux',
             symbol: 'BUX',
             supply: 10000000,
+            status: 'listed',
             //price: prices['BUX'],
             //cost: 1000 * prices['BUX'],
             owner: 'Marak'
@@ -18,6 +19,7 @@ export default async function createInitialCoins() {
             name: 'Megabytes',
             symbol: 'MEGA',
             supply: 1000000000,
+            status: 'listed',
             //price: prices['MEGA'],
             //cost: '0', // everyone gets 10 for free
             owner: 'Marak'
@@ -33,6 +35,7 @@ export default async function createInitialCoins() {
             name: 'Good Buddy Points',
             symbol: 'GBP',
             supply: 10000000000,
+            status: 'listed',
             //price: prices['GBP'],
             //cost: '0', // everyone gets 10 for free
             owner: 'Marak'
