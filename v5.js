@@ -10,6 +10,7 @@ window.bp_v_5 = async function bp_v_5() {
     await bp.load('buddyscript');
 
     await loadCoreApps();
+    
     arrangeDesktop();
 
     // desktop is loaded at this stage, continue with other apps
@@ -64,7 +65,7 @@ window.bp_v_5 = async function bp_v_5() {
     // await bp.load('soundrecorder');
     // await bp.open('camera');
     // bp.apps.buddylist.openChatWindow({ context: 'Buddy', type: 'pond', x: 500 });
-
+    // await this.bp.load('markup');
 
 };
 
@@ -74,7 +75,10 @@ function setConfig() {
         host: _host,
         wsHost: _wsHost,
         api: _api,
-        cdn: _cdn
+        cdn: _cdn,
+        portfolioEndpoint: _portfolioEndpoint,
+        coinEndpoint: _coinEndpoint,
+        orderbookEndpoint: _orderbookEndpoint,
     });
 }
 
@@ -249,12 +253,12 @@ async function loadCoreApps() {
     await bp.load('menubar');
     bp.apps.menubar.load();
 
+    // await bp.load('image-search');
 
     // await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);
     //bp.open('audio-player')
 
-
-
+    // window.coinBeta();
 
 }
 

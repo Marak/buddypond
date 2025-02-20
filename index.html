@@ -102,16 +102,20 @@ window.top.location = 'ie.html';
     <script>
 
       let _host = 'https://buddypond.com';
-      let _api = 'https://api.buddypond.com';
+      let _api = 'https://a.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
       let _cdn = 'https://files.buddypond.com';
-      //_host = 'https://192.168.200.59';
+      let _portfolioEndpoint = 'https://portfolio.buddypond.com';
+      let _orderbookEndpoint = 'https://orderbook.buddypond.com';
+      let _coinEndpoint = 'https://coin.buddypond.com';
+      // _host = 'https://192.168.200.59';
       // _api = 'https://192.168.200.59';
       // _wsHost = 'wss://192.168.200.59';
-      // _host = 'https://localhost'
+      //_host = 'https://localhost'
       // _api = 'https://buddylist.buddypond.com';
-      _api = 'https://a.buddypond.com';
-      //_api = 'https://192.168.200.59:8787';
+      // _api = 'https://192.168.200.59:8787';
+      //_api = 'https://192.168.64.1:8787';
+      //_api = 'https://localhost:8787';
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
@@ -120,6 +124,16 @@ window.top.location = 'ie.html';
       // route the SPA based on the current path
       // any routes that land here outside of root will be proxied to files.buddypond.com ( user pads )
       let currentPath = window.location.pathname;
+
+      // get the current subdomain
+      // if not empty or www, assume its the currentPath
+      let subdomain = window.location.hostname.split('.')[0];
+
+      if (subdomain !== '' && subdomain !== 'www') {
+        // TODO: will need better check for _host.startsWith('https://subdomain')
+        // currentPath = '/' + subdomain; // TODO: all buddynames will need to be lowercased for subdomains to work for everyone
+      }
+      // alert(`currentPath: ${currentPath}`);
       // document.write currentPath
 
       // alert(`currentPath: ${currentPath}`);
@@ -208,7 +222,9 @@ window.top.location = 'ie.html';
     <iframe id="buddypad"></iframe>
     <script type="module" src="/v5/public/buddypond.umd.js"></script>
 
-
+    <!-- <bp-minesweeper open></bp-minesweeper> -->
+    <!-- <bp-youtube open context="G50eivcSvuQ"></bp-youtube> -->
+   
 </body>
 
 </html>

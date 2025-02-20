@@ -12,7 +12,7 @@ export default async function generateDefaultProfile(qtoken) {
     const basePath = "https://files.buddypond.com/" + qtoken.me;
 
     // TODO: uncomment
-    // await requestDefaultCoinAllocations.call(this, qtoken);
+    await requestDefaultCoinAllocations.call(this, qtoken);
 
 
     for (const [fileName, fileContent] of Object.entries(defaultProfileFiles)) {
@@ -100,10 +100,13 @@ async function requestDefaultCoinAllocations(qtoken) {
     //
     try {
         await this.bp.load('portfolio');
-        await this.bp.apps.portfolio.resource.create(qtoken.me + '/' + 'MEGA', {
+
+
+        await this.bp.apps.portfolio.resource.apiRequest('POST', 'portfolio/' + qtoken.me + '/MEGA', {
             symbol: 'MEGA',
             owner: qtoken.me,
             amount: 10,
+            available: 10,
             price: 0.1,
             cost: 0
         });
@@ -117,10 +120,11 @@ async function requestDefaultCoinAllocations(qtoken) {
     //
     try {
         await this.bp.load('portfolio'); // should be cached at this stage
-        await this.bp.apps.portfolio.resource.create(qtoken.me + '/' + 'GBP', {
+        await this.bp.apps.portfolio.resource.apiRequest('POST',  'portfolio/' + qtoken.me + '/GBP', {
             symbol: 'GBP',
             owner: qtoken.me,
             amount: 10000,
+            available: 10000,
             price: 0.001,
             cost: 0
         });

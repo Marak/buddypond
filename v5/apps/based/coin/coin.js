@@ -21,7 +21,7 @@ export default class Coin {
         // create a new resource to manage coin operations to provider ( restful server in this case )
         this.resource = new Resource("coin", {
             provider: 'rest',
-            apiEndpoint: 'http://127.0.0.1:9001' || this.bp.config.api,
+            apiEndpoint: this.bp.config.coinEndpoint || '/',
             schema: {
                 name: { type: "string", required: true },
                 symbol: { type: "string", unique: true, required: true },
@@ -54,7 +54,7 @@ export default class Coin {
             let coinWindow = this.coinWindows[coinWindowId] = this.bp.apps.ui.windowManager.createWindow({
                 id: coinWindowId,
                 title: 'Buddy Coins',
-                icon: 'desktop/assets/images/icons/icon_console_64.png',
+                icon: 'desktop/assets/images/icons/icon_coin_64.png',
                 x: 250,
                 y: 75,
                 width: 800,
