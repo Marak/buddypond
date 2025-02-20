@@ -11,7 +11,7 @@ export default function renderGeoFlag(message) {
     // Create an image element for the flag
     let img = document.createElement('img');
     img.className = 'geoFlag';
-    img.src = `desktop/assets/geo-flags/flags/4x3/${message.location}.svg`;
+    img.src = `desktop/assets/geo-flags/flags/4x3/${message.location.toLowerCase()}.svg`;
     return img;
   }
   
