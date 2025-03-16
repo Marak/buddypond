@@ -18,7 +18,7 @@ let allowHTML = true;
 export default async function renderChatMessage(message, _chatWindow) {
   // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
-
+  // console.log('renderChatMessage', message);
   // console.log('current state', this.bp.apps.buddylist.data.profileState)
 
   // profanity filter
@@ -105,13 +105,17 @@ export default async function renderChatMessage(message, _chatWindow) {
   let now = new Date().getTime();
   let messageTime = new Date(message.ctime).getTime();
   if (now - messageTime < 10000) {
-    let bs = this.bp.apps.buddyscript.parseCommand(message.text);
-    console.log('what is this bs', bs);
+    // needs to determine if this command should be run locally or remotely
+    // for now, only run locally
+    // check to see  if message.from is bp.me
+    if (message.from === this.bp.me) {
+      let bs = this.bp.apps.buddyscript.parseCommand(message.text);
+      // console.log('what is this bs', bs);
+    }
   }
 
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
-
 
   if (message.type === 'buddy') {
 
