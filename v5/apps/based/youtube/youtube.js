@@ -80,7 +80,7 @@ export default class Youtube {
             playerVars: { autoplay: 1, controls: 1 },
             events: {
                 'onReady': this.onPlayerReady,
-                'onStateChange': this.onPlayerStateChange
+                'onStateChange': (event) => this.onPlayerStateChange(event)
             },
             origin: window.location.origin
         });
@@ -91,7 +91,9 @@ export default class Youtube {
     }
 
     onPlayerStateChange(event) {
-        console.log('YouTube Player State Change', event);
+        if (event.data === YT.PlayerState.ENDED) {
+            this.playRandomVideo();
+        }
     }
 
     playRandomVideo() {
