@@ -7,7 +7,7 @@ export default function applyData(el, data) {
 
     $el.find('.card-youtube-card').click(() => {
       this.bp.open('youtube', {
-        videoId: data.videoId
+        context: data.context
       })
     });
     $.getJSON(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data.context}&format=json`, function(data) {
