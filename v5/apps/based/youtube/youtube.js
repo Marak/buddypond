@@ -80,7 +80,8 @@ export default class Youtube {
             playerVars: { autoplay: 1, controls: 1 },
             events: {
                 'onReady': this.onPlayerReady,
-                'onStateChange': (event) => this.onPlayerStateChange(event)
+                'onStateChange': (event) => this.onPlayerStateChange(event),
+                'onError': (event) => this.onPlayerError(event)
             },
             origin: window.location.origin
         });
@@ -92,6 +93,17 @@ export default class Youtube {
 
     onPlayerStateChange(event) {
         if (event.data === YT.PlayerState.ENDED) {
+            this.playRandomVideo();
+        }
+    }
+
+    onPlayerError(event) {
+        console.warn('YouTube Player Error:', event);
+
+        // Handle different error types
+        const errorCodes = [100, 101, 150]; // Common unavailable video errors
+        if (errorCodes.includes(event.data)) {
+            console.warn('Video unavailable, selecting a new one...');
             this.playRandomVideo();
         }
     }
