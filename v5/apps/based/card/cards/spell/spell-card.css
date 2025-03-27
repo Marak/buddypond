@@ -1,0 +1,33 @@
+.card-spell-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .card-spell-title {
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .card-spell-details {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .card-spell-controls img {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .card-spell-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+  
