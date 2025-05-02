@@ -1,4 +1,4 @@
-export default function eventBind (parent) {
+export default function eventBind(parent) {
 
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', parent);
 
@@ -37,7 +37,7 @@ export default function eventBind (parent) {
         let asset = result.results[0];
         console.log('asset', asset);
         let amount = asset.amount;
-        
+
         // update coinBalance
         coinBalance.html(`Your Balance: ${amount.toLocaleString('en-US')}`);
     });
@@ -55,18 +55,38 @@ export default function eventBind (parent) {
         this.bp.open('orderbook');
     });
 
-    $('.mint-coins', parent).on('click', () =>{
-        this.bp.open('coin', {  type: "coin-mint" });
+    $('.mint-coins', parent).on('click', () => {
+        this.bp.open('coin', { type: "coin-mint" });
     });
 
-    $('.send-coins', parent).on('click', () =>{
+    $('.send-coins', parent).on('click', () => {
         this.tabs.navigateToTab('#portfolio-transfer');
+        // this.bp.open('coin', {  type: "coin-send" });
+    });
+
+    $('.admin', parent).on('click', () => {
+        this.tabs.navigateToTab('#portfolio-admin');
         // this.bp.open('coin', {  type: "coin-send" });
     });
 
     $('.user-transactions', parent).on('click', () => {
         this.tabs.navigateToTab('#user-transactions');
         // re-render the transactions
+    });
+
+    $('#portfolio-admin-button-submit', parent).on('click', async () => {
+        let buddyname = $('#portfolio-admin-user').val();
+        let symbol = $('#portfolio-admin-coin').val();
+        if (buddyname && symbol) {
+
+            // delete portfolio for coin holding
+            let url = `portfolio/${buddyname}/${symbol}`;
+            console.log("admin url", url, this.resource.apiRequest);
+            let res = await this.resource.apiRequest('DELETE', url);
+            $('.coin-error').html(res)
+            console.log('res', res)
+        }
+
     });
 
 }

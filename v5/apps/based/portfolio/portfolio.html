@@ -12,6 +12,7 @@
         <button class="action-button send-coins">Send Coins</button>
         <!-- <button class="action-button trade-assets">Trade Coins</button> -->
         <button class="action-button mint-coins">Mint Coins</button>
+        <button class="action-button admin" id="portfolio-admin-button">Admin</button>
     </div>
 
 
@@ -101,6 +102,20 @@
             <input type="number" id="coin-send-amount" placeholder="Amount">
 
             <button id="send-coin" class="send-coin">Send Coin</button>
+        </div>
+
+        <div id="portfolio-admin" class="tab-content">
+            <h1 class="coin-title">Admin</h1>
+            <span class="coin-error error"></span>
+            <select id="portfolio-admin-action">
+                <option value="reset">Reset Portfolio</option>
+            </select>
+            <select id="portfolio-admin-coin" class="coin-names">
+            </select>
+            <!-- user name -->
+            <label for="portfolio-admin-user">User:</label>
+            <input type="text" id="portfolio-admin-user" placeholder="Enter user name">
+            <button id="portfolio-admin-button-submit">Execute</button>
         </div>
 
     </div>

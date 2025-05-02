@@ -61,7 +61,7 @@ export default function eventBind(coinWindow) {
         $('#coin-send-name', coinWindow.content).empty();
         coinBalances.forEach(asset => {
             console.log(`asset.symbol: ${asset.symbol} === currentCoin: ${currentCoin}`, asset);
-            $('#coin-send-name', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
+            $('.coin-names', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
             if (asset.symbol === currentCoin) {
                 coinBalance.text(asset.amount);
                 // select the current coin

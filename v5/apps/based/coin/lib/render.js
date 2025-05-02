@@ -5,7 +5,7 @@ prices['GBP'] = 0.25;
 
 export default async function render(coinWindow) {
 
-    console.log('coinWindow', coinWindow, 'this', this.html);
+    // console.log('coinWindow', coinWindow, 'this', this.html);
     $(coinWindow.content).html(this.html);
 
     await this.updateCoinList(coinWindow);

@@ -11,6 +11,11 @@ export default async function render(parent) {
 
     $(parent).html(this.html);
 
+    if (this.bp.me !== 'Marak') {
+        $('#portfolio-admin', parent).remove();
+        $('#portfolio-admin-button', parent).remove();
+    }
+
     if (this.bp.me && this.bp.me !== 'Guest') {
         $('.loggedOut', this.portfolioWindow.content).flexHide();
         $('.loggedIn', this.portfolioWindow.content).flexShow();

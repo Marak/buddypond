@@ -10,8 +10,7 @@ export default async function updateCoinList(coinWindow) {
     updateAllCoins.call(this, coinWindow, coins);
 
     // update the coin <select> values
-    let coinSelector = $('#coin-send-name');
-    console.log("coinSelector", this.context, coinSelector)
+    let coinSelector = $('.coin-names');
     coinSelector.html(''); // Clear existing entries
     coins.forEach(coin => {
         // console.log('appending coin', coin);
