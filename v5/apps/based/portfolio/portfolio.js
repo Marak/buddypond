@@ -37,6 +37,18 @@ export default class Portfolio {
             bp: this.bp
         });
 
+        this.coinResource = new Resource("coin", {
+            provider: 'rest',
+            apiEndpoint: this.bp.config.coinEndpoint || '/',
+            schema: {
+                name: { type: "string", required: true },
+                symbol: { type: "string", unique: true, required: true },
+                owner: { type: "string", required: true },
+                supply : { type: "number", required: true },
+            },
+            bp: this.bp
+        });
+
         this.transactionResource = new Resource("transactions", {
             provider: 'rest',
             apiEndpoint: this.bp.config.portfolioEndpoint || '/',

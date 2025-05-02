@@ -6,7 +6,8 @@ export default async function mintCoin (parent, coin) {
             name: coin.name,
             symbol: coin.symbol,
             owner: coin.owner,
-            supply: coin.supply
+            supply: coin.supply,
+            price: coin.price
         });
         console.log('mintCoin response', res)
         $('.coin-error').text('');

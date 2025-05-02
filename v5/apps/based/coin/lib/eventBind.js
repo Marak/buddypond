@@ -13,7 +13,7 @@ export default function eventBind(coinWindow) {
         let coinName = document.querySelector('#coin-name').value.trim();
         let coinSymbol = document.querySelector('#coin-symbol').value.trim();
         let coinSupply = parseInt(document.querySelector('#coin-supply').value, 10);
-
+        let coinPrice = parseFloat(document.querySelector('#coin-price').value);
         if (!coinName || !coinSymbol || isNaN(coinSupply) || coinSupply <= 0) {
             alert('Please enter valid coin details.');
             return;
@@ -23,7 +23,8 @@ export default function eventBind(coinWindow) {
             name: coinName,
             owner: this.bp.me,
             symbol: coinSymbol,
-            supply: coinSupply
+            supply: coinSupply,
+            price: coinPrice
         })
      
     });
@@ -61,7 +62,7 @@ export default function eventBind(coinWindow) {
         $('#coin-send-name', coinWindow.content).empty();
         coinBalances.forEach(asset => {
             console.log(`asset.symbol: ${asset.symbol} === currentCoin: ${currentCoin}`, asset);
-            $('.coin-names', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
+            $('#coin-send-name', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
             if (asset.symbol === currentCoin) {
                 coinBalance.text(asset.amount);
                 // select the current coin

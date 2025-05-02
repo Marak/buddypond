@@ -1,7 +1,3 @@
-const prices = {};
-prices['BUX'] = 1.00;
-prices['MEGA'] = 0.01;
-prices['GBP'] = 0.001;
 
 const coins = {};
 coins['MEGA'] = 'Megabytes';
@@ -24,6 +20,16 @@ export default async function render(parent) {
         $('.loggedIn', this.portfolioWindow.content).flexHide();
         return;
     }
+
+    let allCoins = await this.coinResource.list();
+    console.log('allCoins', allCoins)
+
+    let coins = {};
+    allCoins.results.forEach(function(coin){
+        coins[coin.symbol] = coin;
+    });
+
+    console.log("coinscoinscoins", coins)
 
     // get the portfolio's assets
     const assets = await this.resource.search(this.bp.me, {
@@ -86,13 +92,14 @@ export default async function render(parent) {
 
     let totalValue = 0;
     let initialInvestment = 0; // Assume this is known or fetched from somewhere
-
+    console.log('coin results', results)
     results.forEach(asset => {
-        let assetPrice = (prices[asset.symbol] || 0) * asset.amount;
-        totalValue += assetPrice;
+        let assetValue = (asset.price || 0) * asset.amount;
+        totalValue += assetValue;
 
         // Format as USD currency
-        const formattedPriceValue = assetPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        const formattedPriceValue = formatCurrency(assetValue);
+        const formattedPrice = formatCurrency(asset.price);
         const formattedAmount = asset.amount.toLocaleString('en-US');
         const formattedAvailable = asset.available.toLocaleString('en-US');
 
@@ -101,6 +108,7 @@ export default async function render(parent) {
                 <td>${asset.symbol}</td>
                 <td>${formattedAmount}</td>
                 <td>${formattedAvailable}</td>
+                <td>${formattedPrice}</td>
                 <td>${formattedPriceValue}</td>
                 <td>${asset.cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
             </tr>
@@ -127,3 +135,21 @@ export default async function render(parent) {
     $('#coin-send-name', parent).trigger('change');
 
 }
+
+
+
+   // Helper function to format currency with dynamic precision
+   function formatCurrency(value) {
+    // Convert to number, handle non-numeric inputs
+    const num = parseFloat(value);
+    if (isNaN(num)) return '$0.00';
+
+    // Use toLocaleString for clean formatting, up to 8 decimals, removing trailing zeros
+    return (
+      '$' +
+      num.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 8,
+      }).replace(/\.?0+$/, '')
+    );
+  }
