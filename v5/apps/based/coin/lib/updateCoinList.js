@@ -124,7 +124,7 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
                 return;
             }
             */
-            await this.resource.remove(coin.uuid);
+            await this.resource.remove(coin.symbol);
             // update the coin list
             updateCoinList.call(this, coinWindow);
             return false;
