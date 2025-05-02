@@ -11,8 +11,8 @@
 export default async function generateDefaultProfile(qtoken) {
     const basePath = "https://files.buddypond.com/" + qtoken.me;
 
-    // TODO: uncomment
-    await requestDefaultCoinAllocations.call(this, qtoken);
+    // TODO: move to portfolio / faucet
+    // await requestDefaultCoinAllocations.call(this, qtoken);
 
 
     for (const [fileName, fileContent] of Object.entries(defaultProfileFiles)) {

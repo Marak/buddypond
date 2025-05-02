@@ -71,8 +71,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-
-
     bp.apps.desktop.addShortCut({
         name: 'youtube',
         icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
@@ -134,6 +132,7 @@ export default function defaultDesktopShortcuts() {
     });
 
     function coinBeta () {
+        /*
         bp.apps.desktop.addShortCut({
             name: 'orderbook',
             icon: `desktop/assets/images/icons/icon_orderbook_64.png`,
@@ -143,7 +142,7 @@ export default function defaultDesktopShortcuts() {
                 bp.open('orderbook');
             }
         });
-    
+        */
         bp.apps.desktop.addShortCut({
             name: 'coin',
             icon: `desktop/assets/images/icons/icon_coin_64.png`,
@@ -153,6 +152,7 @@ export default function defaultDesktopShortcuts() {
                 bp.open('coin');
             }
         });
+        
 
         bp.apps.desktop.addShortCut({
             name: 'portfolio',
@@ -164,7 +164,7 @@ export default function defaultDesktopShortcuts() {
             }
         });
     
-    
+        /*
         bp.apps.desktop.addShortCut({
             name: 'buddybux',
             icon: `desktop/assets/images/icons/icon_buddybux_64.png`,
@@ -174,6 +174,7 @@ export default function defaultDesktopShortcuts() {
                 bp.open('buddybux');
             }
         });
+        */
 
         bp.apps.desktop.arrangeShortcuts(3);
     }
@@ -253,12 +254,8 @@ export default function defaultDesktopShortcuts() {
 
     bp.apps.desktop.addFolder({
         name: 'Hacking Tools',
-        Olditems: [
-            'globe',
-            'hacker-typer',
-            'hex-editor',
-            'maps'
-        ],
+        width: 320,
+        height: 220,
         items: [
             {
                 id: 'globe',
@@ -276,6 +273,11 @@ export default function defaultDesktopShortcuts() {
                 id: 'maps',
                 label: 'Maps'
             }
+            /*,
+            {
+                id: 'spellbook',
+                label: 'Spellbook'
+            }*/
 
 
         ],
@@ -290,5 +292,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
+    // coinBeta();
 
 }

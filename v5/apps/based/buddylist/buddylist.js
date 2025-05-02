@@ -76,6 +76,8 @@ export default class BuddyList {
             if (this.opened) {
                 this.buddyListWindow.open();
                 this.bp.apps.ui.windowManager.focusWindow(this.buddyListWindow);
+                this.buddyListWindow.restore();
+                $('.loginForm input[name="username"]').focus();
                 return 'buddylist already open';
             }
 
@@ -152,6 +154,7 @@ export default class BuddyList {
         this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => {
             // give the app a moment to load messages and open windows before generating default profile
             setTimeout(() => {
+
                 try {
                     // alert('Generating default profile files');
                     this.generateDefaultProfile(qtoken)
@@ -159,7 +162,7 @@ export default class BuddyList {
                 } catch (err) {
                     console.error('generate-default-profile-files', err);
                 }
-            }, 5000);
+            }, 1000);
         });
 
         // Remark: This has been removed in favor of letting windows manage their own state
@@ -516,6 +519,7 @@ export default class BuddyList {
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me });
                 //                $('.loggedIn').addClass('show');
                 $('.loggedIn').flexShow();
+                $('.loggedOut').flexHide();
 
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');

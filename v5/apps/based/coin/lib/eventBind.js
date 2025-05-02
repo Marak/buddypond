@@ -34,7 +34,7 @@ export default function eventBind(coinWindow) {
         let symbol = $('#coin-send-name').val();
         let amount = $('#coin-send-amount').val();
 
-        this.coin.sendCoin(coinWindow.content, {
+        this.portfolio.transfer(coinWindow.content, {
             from: this.bp.me,
             to: sendTo,
             symbol: symbol,
@@ -60,7 +60,7 @@ export default function eventBind(coinWindow) {
         // first clear all options
         $('#coin-send-name', coinWindow.content).empty();
         coinBalances.forEach(asset => {
-            console.log(`asset.symbol: ${asset.symbol} === currentCoin: ${currentCoin}`);
+            console.log(`asset.symbol: ${asset.symbol} === currentCoin: ${currentCoin}`, asset);
             $('#coin-send-name', coinWindow.content).append(`<option value="${asset.symbol}">${asset.symbol}</option>`);
             if (asset.symbol === currentCoin) {
                 coinBalance.text(asset.amount);

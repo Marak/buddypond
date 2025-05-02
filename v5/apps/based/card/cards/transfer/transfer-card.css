@@ -1,0 +1,197 @@
+/* CSS for Buddy Coin Transfer Card */
+.card-transfer-info {
+    --card-transfer-primary-color: #f4b400; /* Crypto-inspired yellow */
+    --card-transfer-background-color: #1e1e2e; /* Dark background */
+    --card-transfer-text-color: #ffffff; /* White text */
+    --card-transfer-secondary-text-color: #b0b0b0; /* Gray for secondary text */
+    --card-transfer-border-radius: 8px;
+    --card-transfer-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --card-transfer-transition: all 0.3s ease;
+
+    --card-transfer-button-bg: var(--card-transfer-primary-color);
+    --card-transfer-button-text: #1e1e2e; /* Dark text for contrast on yellow */
+    --card-transfer-button-hover-bg: #d9a000; /* Darker yellow on hover */
+    --card-transfer-button-active-bg: #bf8c00; /* Even darker on click */
+    --card-transfer-button-padding: 8px 16px;
+    --card-transfer-button-font-size: 0.9rem;
+  
+    display: flex;
+    flex-direction: column;
+    max-width: 300px; /* Compact for chat */
+    background: var(--card-transfer-background-color);
+    color: var(--card-transfer-text-color);
+    border-radius: var(--card-transfer-border-radius);
+    box-shadow: var(--card-transfer-shadow);
+    padding: 16px;
+    margin: 8px;
+    transition: var(--card-transfer-transition);
+    animation: card-transfer-slideIn 0.3s ease-out;
+  }
+  
+  /* Header with title and icon */
+  .card-transfer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--card-transfer-primary-color);
+  }
+  
+  .card-transfer-icon {
+    font-size: 1.5rem;
+    animation: card-transfer-pulse 1.5s infinite;
+  }
+  
+  /* Card body */
+  .card-transfer-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .card-transfer-from {
+    font-size: 0.9rem;
+    color: var(--card-transfer-secondary-text-color);
+    margin: 0;
+  }
+  
+  .card-transfer-from::before {
+    content: "From: ";
+    color: var(--card-transfer-secondary-text-color);
+  }
+  
+  /* Details grid */
+  .card-transfer-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .card-transfer-detail-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-transfer-detail-label {
+    font-size: 0.8rem;
+    color: var(--card-transfer-secondary-text-color);
+  }
+  
+  .card-transfer-amount,
+  .card-transfer-symbol,
+  .card-transfer-price,
+  .card-transfer-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--card-transfer-text-color);
+  }
+  
+  /* Error message */
+  .card-error {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff4d4f;
+    margin-top: 8px;
+    min-height: 1rem; /* Prevent layout shift */
+  }
+  
+  /* Slide-in animation */
+  @keyframes card-transfer-slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Pulse animation for icon */
+  @keyframes card-transfer-pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Hover effect */
+  .card-transfer-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+
+.card-transfer-open-portfolio {
+    background: var(--card-transfer-button-bg);
+    color: var(--card-transfer-button-text);
+    border: none;
+    border-radius: var(--card-transfer-border-radius);
+    padding: var(--card-transfer-button-padding);
+    font-size: var(--card-transfer-button-font-size);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--card-transfer-transition);
+    margin-top: 12px; /* Space above button */
+    align-self: flex-start; /* Left-align in card-transfer-body */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Hover state */
+  .card-transfer-open-portfolio:hover {
+    background: var(--card-transfer-button-hover-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Active state */
+  .card-transfer-open-portfolio:active {
+    background: var(--card-transfer-button-active-bg);
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Focus state for accessibility */
+  .card-transfer-open-portfolio:focus {
+    outline: 2px solid var(--card-transfer-primary-color);
+    outline-offset: 2px;
+  }
+  
+  /* Disabled state (if needed) */
+  .card-transfer-open-portfolio:disabled {
+    background: var(--card-transfer-secondary-text-color);
+    color: var(--card-transfer-background-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .card-transfer-open-portfolio {
+      width: 100%; /* Full-width on small screens */
+      align-self: stretch; /* Stretch to fill container */
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .card-transfer-info {
+      max-width: 100%;
+      margin: 4px;
+    }
+  
+    .card-transfer-details {
+      grid-template-columns: 1fr; /* Stack details on small screens */
+    }
+  }

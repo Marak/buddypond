@@ -70,7 +70,7 @@
 .portfolio-actions {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .action-button {
@@ -87,7 +87,6 @@
 .action-button:hover {
     background: #008c7e;
 }
-
 
 
 /* Alternating row colors */
@@ -111,6 +110,118 @@
     background: #555;
     color: #ffcc00;
 }
+
+/* Coin Send Form */
+.coin-send-form {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    color: #ddd;
+}
+
+.coin-send-form h1 {
+    color: #ffcc00;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.coin-send-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.coin-send-form input, 
+.coin-send-form select, 
+.coin-send-form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.coin-send-form input, 
+.coin-send-form select {
+    background: #333;
+    color: #fff;
+    outline: none;
+}
+
+.coin-send-form input:focus, 
+.coin-send-form select:focus {
+    background: #444;
+    border: 1px solid #ffcc00;
+    transform: scale(1.02);
+}
+
+.coin-send-form button {
+    background: #00d1b2;
+    color: #121212;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.coin-send-form button:hover {
+    background: #008c7e;
+    transform: translateY(-2px);
+}
+
+.coin-send-form .coin-error {
+    color: #ff4444;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+
+/* Coin Balance Display */
+.coin-balance {
+    margin-top: 10px;
+    padding: 8px;
+    background: #333;
+    color: #ffcc00;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+}
+
+.coin-balance:hover {
+    background: #444;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .coin-send-form {
+        padding: 15px;
+    }
+
+    .coin-send-form input, 
+    .coin-send-form select, 
+    .coin-send-form button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .coin-send-form h1 {
+        font-size: 1.5rem;
+    }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

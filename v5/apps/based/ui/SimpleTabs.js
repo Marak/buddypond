@@ -1,65 +1,71 @@
 export default class SimpleTabs {
-  constructor(selector, root = document) {
-      this.container = $(selector, root);
-      this.container.addClass('tabs-container');
-      this._onTabCallbacks = [];
-      this.init();
-  }
+    constructor(selector, root = document) {
+        this.container = $(selector, root);
+        this.container.addClass('tabs-container');
+        this._onTabCallbacks = [];
+        this.init();
+    }
 
-  onTab(callback) {
-      // Correctly reference the instance property
-      this._onTabCallbacks.push(callback);
-  }
+    onTab(callback) {
+        // Correctly reference the instance property
+        this._onTabCallbacks.push(callback);
+    }
 
-  _onTab(tabId) {
-      // Call all registered callbacks
-      this._onTabCallbacks.forEach(callback => callback(tabId));
-  }
+    _onTab(tabId) {
+        // Call all registered callbacks
+        this._onTabCallbacks.forEach(callback => callback(tabId));
+    }
 
-  init() {
-      // Setup the tabs and panels
-      this.container.find('.tab-content').hide();
-      this.container.find('.tab-content').first().show();
-      this.container.find('.tab-list li').first().addClass('active');
+    init() {
+        // Setup the tabs and panels
+        this.container.find('.tab-content').hide();
+        this.container.find('.tab-content').first().show();
+        this.container.find('.tab-list li').first().addClass('active');
 
-      // Event listener for tab clicks
-      this.container.find('.tab-list li a').on('click', (e) => {
-          e.preventDefault();
-          const tabId = $(e.target).attr('href');
+        // Event listener for tab clicks
+        this.container.find('.tab-list li a').on('click', (e) => {
+            e.preventDefault();
+            const tabId = $(e.target).attr('href');
 
-          if (!tabId || tabId.startsWith("#") === false) {
-              console.warn("Invalid tab href:", tabId);
-              return;
-          }
+            if (!tabId || tabId.startsWith("#") === false) {
+                console.warn("Invalid tab href:", tabId);
+                return;
+            }
 
-          this.navigateToTab(tabId);
-      });
+            this.navigateToTab(tabId);
+        });
 
-      // always navigate to the first tab
-      //alert('navigating to first tab');
-      let tabId = this.container.find('.tab-list li a').first();
-      console.log('init tabId', tabId);
-      this.navigateToTab($(tabId).attr('href'));
-  }
+        // always navigate to the first tab
+        //alert('navigating to first tab');
+        let tabId = this.container.find('.tab-list li a').first();
+        console.log('init tabId', tabId);
+        this.navigateToTab($(tabId).attr('href'));
+    }
 
-  navigateToTab(tabId) {
-     // check that tabId is a valid jQuery expression
-     if (tabId.startsWith("#") === false || tabId.length < 2) {
-         console.warn("Invalid tabId:", tabId);
-        return;
-     }
-      // Ensure tab exists before switching
-      if (!this.container.find(tabId).length) {
-          console.warn(`Tab with ID ${tabId} not found.`);
-          return;
-      }
+    navigateToTab(tabId) {
 
-      this.container.find('.tab-list li').removeClass('active');
-      this.container.find(`.tab-list li a[href="${tabId}"]`).parent().addClass('active');
+        if (!tabId) {
+            console.warn("No tabId provided.");
+            return;
+        }
 
-      this.container.find('.tab-content').hide();
-      this.container.find(tabId).show();
+        // check that tabId is a valid jQuery expression
+        if (tabId.startsWith("#") === false || tabId.length < 2) {
+            console.warn("Invalid tabId:", tabId);
+            return;
+        }
+        // Ensure tab exists before switching
+        if (!this.container.find(tabId).length) {
+            console.warn(`Tab with ID ${tabId} not found.`);
+            return;
+        }
 
-      this._onTab(tabId);
-  }
+        this.container.find('.tab-list li').removeClass('active');
+        this.container.find(`.tab-list li a[href="${tabId}"]`).parent().addClass('active');
+
+        this.container.find('.tab-content').hide();
+        this.container.find(tabId).show();
+
+        this._onTab(tabId);
+    }
 }

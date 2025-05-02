@@ -1,40 +1,110 @@
 <div class="portfolio-container">
-    <h1 class="portfolio-title">My Portfolio</h1>
+    <!-- <h1 class="portfolio-title">My Portfolio</h1> -->
 
-    <!-- Portfolio Summary -->
-    <div class="portfolio-summary">
-        <div class="summary-item">
-            <h3>Total Value</h3>
-            <p class="total-value">$0.00</p>
-        </div>
-        <div class="summary-item">
-            <h3>Profit/Loss</h3>
-            <p class="profit-loss">$0.00</p>
-        </div>
+    <div class="loggedOut" align="center">
+        <h1 class="portfolio-title">My Portfolio</h1>
+        <h3 class="portfolio-message">Please <button class="open-app action-button" data-app="buddylist">log in</button> to view your portfolio.</h3>
     </div>
 
-    <!-- Portfolio Table -->
-    <div class="portfolio-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Coin</th>
-                    <th>Amount</th>
-                    <th>Available</th>
-                    <th>Current Value (BUX)</th>
-                    <th>Cost</th>
-                </tr>
-            </thead>
-            <tbody class="portfolio-entries">
-                <!-- Portfolio entries will be inserted here -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Call to Actions -->
-    <div class="portfolio-actions">
-        <button class="action-button trade-assets">Trade Coins</button>
+    <div class="portfolio-actions loggedIn">
+        <button class="action-button user-portfolio">My Portfolio</button>
+        <button class="action-button user-transactions">Transactions</button>
         <button class="action-button send-coins">Send Coins</button>
+        <!-- <button class="action-button trade-assets">Trade Coins</button> -->
         <button class="action-button mint-coins">Mint Coins</button>
     </div>
+
+
+    <div id="portfolioTabs" class="tabs-container loggedIn">
+        <!-- Portfolio Table -->
+
+        <div id="user-portfolio" class="tab-content">
+
+            <!-- Portfolio Summary -->
+            <div class="portfolio-summary">
+                <div class="summary-item">
+                    <h3>Total Value</h3>
+                    <p class="total-value">$0.00</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Profit/Loss</h3>
+                    <p class="profit-loss">$0.00</p>
+                </div>
+            </div>
+
+            <div class="portfolio-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Coin</th>
+                            <th>Amount</th>
+                            <th>Available</th>
+                            <th>Current Value</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody class="portfolio-entries">
+                        <!-- Portfolio entries will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div id="user-transactions" class="tab-content">
+            <h1 class="coin-title">Transactions</h1>
+            <span class="coin-error error"></span>
+            <span class="coin-send-message"></span>
+
+            <div class="transaction-table portfolio-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Coin</th>
+                            <th>Amount</th>
+                            <th>Value</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="transaction-entries">
+                        <!-- Transaction entries will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="portfolio-transfer" class="coin-send-form tab-content">
+            <h1 class="coin-title">Send Coins</h1>
+            <span class="coin-error error"></span>
+            <span class="coin-send-message"></span>
+
+
+            <label for="coin-send-to">Recipient:</label>
+            <input type="text" id="coin-send-to" placeholder="Enter recipient">
+
+            <label for="coin-send-name">Coin:</label>
+            <select id="coin-send-name" class="coin-names">
+                <!--
+            <option value="GBP">Good Buddy Points</option>
+            <option value="MEGA">Megabytes</option>
+            <option value="BUX">BuddyBux</option>
+
+            -->
+            </select>
+
+            <!-- Display current balance -->
+            <div id="coin-balance" class="coin-balance">Your Balance: <span id="current-balance">0</span></div>
+
+            <label for="coin-send-amount">Amount:</label>
+            <input type="number" id="coin-send-amount" placeholder="Amount">
+
+            <button id="send-coin" class="send-coin">Send Coin</button>
+        </div>
+
+    </div>
+
+
+
 </div>

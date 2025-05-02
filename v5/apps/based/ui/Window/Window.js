@@ -27,7 +27,7 @@ class Window {
             onLoad = () => { }, // Callback when the window is loaded ( remote content )
             className = '', // Custom classes for styling
             resizeable = true, // Enable resizable feature
-            preventOverlap = false, // prevents direct overlap with other windows
+            preventOverlap = true, // prevents direct overlap with other windows
             canBeBackground = false // Can be set as background
         } = options;
 
@@ -572,7 +572,7 @@ class Window {
     }
 
     focus(propigate = true) {
-        console.log('on focus called from Window.js')
+        // console.log('on focus called from Window.js')
         if (propigate) {
             this.windowManager.focusWindow(this);
         }

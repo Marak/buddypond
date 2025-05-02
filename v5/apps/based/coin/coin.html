@@ -2,10 +2,10 @@
 
     <div id="coinTabs" class="tabs-container">
         <ul class="tab-list">
-            <li><a href="#coin-mint">Mint</a></li>
-            <li><a href="#coin-coins">Market</a></li>
-            <li><a href="#coin-send">Send</a></li>
-            <li><a class="open-app" data-app="portfolio" href="#">Portfolio</a></li>
+            <li><a href="#coin-coins" draggable="false">Market</a></li>
+            <!-- <li><a href="#coin-send">Send</a></li> -->
+            <li><a class="open-app" data-app="portfolio" href="#" draggable="false">Portfolio</a></li>
+            <li><a href="#coin-mint" draggable="false">Mint</a></li>
         </ul>
 
         <!-- Coin Minting Form -->
@@ -20,36 +20,32 @@
             <input type="text" id="coin-symbol" placeholder="e.g. MEME" value="">
             <label for="coin-supply">Total Supply:</label>
             <input type="number" id="coin-supply" placeholder="Total Supply" value="9001">
-            <button id="mint-coin" class="mint-coin">Mint Coin</button>
+            <button id="mint-coin" class="mint-coin action-button">Mint Coin</button>
         </div>
 
-       <div id="coin-send" class="coin-send-form tab-content">
-        <h1 class="coin-title">Send Coins</h1>
-        <span class="coin-error error"></span>
-        <span class="coin-send-message"></span>
+        <!--
+        <div id="coin-send" class="coin-send-form tab-content">
+            <h1 class="coin-title">Send Coins</h1>
+            <span class="coin-error error"></span>
+            <span class="coin-send-message"></span>
 
-        
-        <label for="coin-send-to">Recipient:</label>
-        <input type="text" id="coin-send-to" placeholder="Enter recipient">
-    
-        <label for="coin-send-name">Coin:</label>
-        <select id="coin-send-name" class="coin-names">
-            <!--
-            <option value="GBP">Good Buddy Points</option>
-            <option value="MEGA">Megabytes</option>
-            <option value="BUX">BuddyBux</option>
 
-            -->
-        </select>
-    
-        <!-- Display current balance -->
-        <div id="coin-balance" class="coin-balance">Your Balance: <span id="current-balance">0</span></div>
-    
-        <label for="coin-send-amount">Amount:</label>
-        <input type="number" id="coin-send-amount" placeholder="Amount">
-    
-        <button id="send-coin" class="send-coin">Send Coin</button>
-    </div>
+            <label for="coin-send-to">Recipient:</label>
+            <input type="text" id="coin-send-to" placeholder="Enter recipient">
+
+            <label for="coin-send-name">Coin:</label>
+            <select id="coin-send-name" class="coin-names">
+         
+            </select>
+
+            <div id="coin-balance" class="coin-balance">Your Balance: <span id="current-balance">0</span></div>
+
+            <label for="coin-send-amount">Amount:</label>
+            <input type="number" id="coin-send-amount" placeholder="Amount">
+
+            <button id="send-coin" class="send-coin">Send Coin</button>
+        </div>
+        -->
 
         <div id="coin-coins" class="tab-content">
 
@@ -68,12 +64,13 @@
                         </tr>
                     </thead>
                     <tbody class="all-coin-list">
+                        <img src="desktop/assets/images/gui/loading.gif" class="loading-coins" />
                         <!-- All coins will be listed here -->
                     </tbody>
                 </table>
             </div>
-            <br/>
-            <hr/>
+            <br />
+            <hr />
 
             <!-- User's Coins -->
             <div class="user-coins">

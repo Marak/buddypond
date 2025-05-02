@@ -9,6 +9,7 @@
 
 import Resource from '../resource/lib/Resource.js';
 import PortfolioClass from './lib/Portfolio.js';
+import TransactionClass from './lib/Transaction.js';
 import render from './lib/render.js';
 import eventBind from './lib/eventBind.js';
 
@@ -36,7 +37,32 @@ export default class Portfolio {
             bp: this.bp
         });
 
+        this.transactionResource = new Resource("transactions", {
+            provider: 'rest',
+            apiEndpoint: this.bp.config.portfolioEndpoint.replace('/portfolio', '/transactions') || '/',
+            schema: {
+                id: { type: "string", key: true }, // Unique transaction ID
+                sender: { type: "string" },
+                receiver: { type: "string" },
+                symbol: { type: "string" },
+                amount: { type: "number" },
+                price: { type: "number" },
+                value: { type: "number" },
+                timestamp: { type: "string" } // ISO timestamp
+            },
+            bp: this.bp
+        });
+
+
         this.portfolio = new PortfolioClass({ resource: this.resource, me: this.bp.me });
+        this.transaction = new TransactionClass({ resource: this.transactionResource, me: this.bp.me });
+
+    }
+
+    async close () {
+
+        // clear the refresh timer
+        this.portfolioWindow = null;
 
     }
 
@@ -63,9 +89,13 @@ export default class Portfolio {
                 maximized: false,
                 minimized: false,
                 onClose: () => {
-                    this.portfolioWindow = null;
+                    this.close();
                 }
             });
+            // create a refresh timer
+            this.portfolioWindow.refreshTimer = setInterval(() => {
+                // this.render(this.portfolioWindow.content);
+            }, 2000); // every 5 seconds
         }
         this.render(this.portfolioWindow.content);
         this.eventBind(this.portfolioWindow.content);
@@ -74,6 +104,15 @@ export default class Portfolio {
 
         // focus the window
         this.portfolioWindow.focus();
+   
+        this.bp.on('auth::qtoken', 'render-portfolio', async(data) => {
+            // re-render the portfolio
+            await this.render(this.portfolioWindow.content);
+            await this.eventBind(this.portfolioWindow.content);
+            $('.loggedOut', this.portfolioWindow.content).flexHide();
+            $('.loggedIn', this.portfolioWindow.content).flexShow();
+        });
+
 
     }
 

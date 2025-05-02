@@ -13,13 +13,14 @@ export default async function updateCoinList(coinWindow) {
     console.log("coinSelector", this.context, coinSelector)
     coinSelector.html(''); // Clear existing entries
     coins.forEach(coin => {
-        console.log('appending coin', coin);
+        // console.log('appending coin', coin);
         if (coin.symbol === this.context) {
             coinSelector.append(`<option value="${coin.symbol}" selected>${coin.name}</option>`);
             return;
         }
         coinSelector.append(`<option value="${coin.symbol}">${coin.name}</option>`);
     });
+    $('.loading-coins', coinWindow.content).hide();
 
 }
 
@@ -37,9 +38,9 @@ function updateUserCoins(coinWindow, coins) {
     userCoinList.html(''); // Clear existing entries
 
     myCoins.forEach(coin => {
-            let row = createCoinRow.call(this, coin, false, true, coinWindow);
-            userCoinList.append(row); // Use jQuery .append()
-        
+        let row = createCoinRow.call(this, coin, false, true, coinWindow);
+        userCoinList.append(row); // Use jQuery .append()
+
     });
 }
 
@@ -53,6 +54,7 @@ function updateAllCoins(coinWindow, coins) {
         let row = createCoinRow.call(this, coin, true, false, coinWindow);
         allCoinList.append(row); // Use jQuery .append()
     });
+
 }
 
 // Utility function to create a row and handle clicks
@@ -128,7 +130,7 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
         }
 
         if (coin.symbol === 'BUX') {
-            return this.bp.open('buddybux', { context: 'buy' });
+            // return this.bp.open('buddybux', { context: 'buy' });
         }
 
         if (coin.status !== 'listed') {
@@ -136,8 +138,8 @@ function createCoinRow(coin, includeOwner = false, includeAdmin = false, coinWin
             return;
         }
 
-        
-        this.bp.open('orderbook', { context: coin.symbol + '/BUX' });
+
+        // this.bp.open('orderbook', { context: coin.symbol + '/BUX' });
     });
 
     return row;

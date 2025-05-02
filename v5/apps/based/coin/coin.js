@@ -4,6 +4,7 @@ import eventBind from './lib/eventBind.js';
 import updateCoinList from './lib/updateCoinList.js';
 import render from './lib/render.js';
 import CoinClass from './lib/Coin.js';
+import PortfolioClass from '../portfolio/lib/Portfolio.js';
 import createInitialCoins from './lib/createInitialCoins.js';
 
 export default class Coin {
@@ -32,6 +33,7 @@ export default class Coin {
         });
 
         this.coin = new CoinClass({ resource: this.resource, me: this.bp.me });
+        // this.portfolio = new PortfolioClass({ resource: this.resource, me: this.bp.me });
 
     }
 
@@ -42,13 +44,13 @@ export default class Coin {
     async open (options = {}) {
         let context = options.context;
         if (context === 'default') {
-            context = 'BUX';
+            context = 'GBP';
         }
         let type = options.type || '';
         this.context = context;
         this.type = type;
 
-        let coinWindowId = 'coin-' + context;
+        let coinWindowId = 'coin-window';/* + context;*/
 
         if (!this.coinWindows[coinWindowId]) {
             let coinWindow = this.coinWindows[coinWindowId] = this.bp.apps.ui.windowManager.createWindow({
@@ -79,10 +81,20 @@ export default class Coin {
             await this.render(coinWindow);
             this.eventBind(coinWindow);
 
-
             if (type) {
                 this.tabs.navigateToTab('#' + type);
             }
+
+            if (this.bp.me !== 'Marak') {
+                // disables the mint-coin button unless Admin ( for now )
+                // only enforced client-side, coming soon
+                $('#mint-coin').attr('disabled', 'disabled');
+                $('#mint-coin').addClass('disabled');
+                $('#mint-coin').attr('title', "You do not have permission to Mint new coins!");
+            }
+        } else {
+            // focus the window
+            this.coinWindows[coinWindowId].focus();
         }
     }  
     

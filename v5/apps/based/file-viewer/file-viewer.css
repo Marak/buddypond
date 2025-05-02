@@ -8,7 +8,7 @@
     background: #f5f5f5;
 }
 
-.tabs-container {
+.file-viewer .tabs-container {
     flex: 1;
     display: flex;
     flex-direction: column;

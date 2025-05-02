@@ -7,8 +7,9 @@ body {
     color: red;
 }
 .disabled {
-  pointer-events: none;
+  /* pointer-events: none; */
   opacity: 0.6;
+  cursor: not-allowed !important;
 }
 .show {
   display: flex !important;

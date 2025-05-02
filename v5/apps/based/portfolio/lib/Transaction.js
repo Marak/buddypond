@@ -1,6 +1,4 @@
-import transfer from "./transfer.js";
-
-export default class Portfolio {
+export default class Transaction {
     constructor(config = {}) {
         this.resource = config.resource;
         this.me = config.me || 'Guest';
@@ -12,13 +10,10 @@ export default class Portfolio {
         return result;
     }
 
-    async search (query = {}) {
-        console.log('portfolio search', this.me, query);
-        let result = await this.resource.search(this.me, query);
+    async search (buddyname, query = {}) {
+        let result = await this.resource.search(buddyname, query);
         console.log('search result', result);
         return result.results;
     }
 
 }
-
-Portfolio.prototype.transfer = transfer;

@@ -20,7 +20,7 @@ export default class RestProvider {
             try {
                 let json = await response.json();
                 console.log('API request failed:', json);
-                throw new Error(`API request failed: ${json.error}`);
+                throw new Error(`${json.error}`);
                 return json;
             } catch (err) {
                 console.log('eeeee', err);

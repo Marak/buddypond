@@ -54,6 +54,9 @@ export default class UI {
 
         }
 
+       // await this.bp.appendScript('/desktop/assets/js/jquery.js');
+
+       
         if (!this.options.noTabs) {
             // what happened here with config? we shouldn't need to reference host here,
             // TODO: check implementation of importModule with options
