@@ -1,5 +1,6 @@
 export default async function updateCoinList(coinWindow) {
-    let coins = await this.resource.list(); // TODO: .search()
+    let result = await this.resource.list(); // TODO: .search()
+    let coins = result.results;
     console.log('All Coins:', coins);
 
     // Update user-owned coins
