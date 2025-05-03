@@ -45,6 +45,7 @@ export default class Motd {
 
 
         // header image
+        /*
         let imageGuyLeft = document.createElement('img');
         imageGuyLeft.src = 'v5/assets/guy-left.gif';
         motdContent.appendChild(imageGuyLeft);
@@ -56,6 +57,7 @@ export default class Motd {
         motdContent.appendChild(imageGuyRight);
 
         motdWindow.content.appendChild(motdContent);
+        */
 
         // message
         let message = document.createElement('div');
@@ -63,7 +65,7 @@ export default class Motd {
         message.style.fontSize = '1.5em';
         message.style.fontWeight = 'bold';
         message.style.padding = '20px';
-        message.innerHTML = 'Cloud Edge v6 is Online!<br/>All chat features have been reset. <br/><br/><em>Expect some breaking changes.</em>';
+        message.innerHTML = `<a href="https://discord.gg/T9RgwcB5dB" class="link">Join our Discord</a> <br/><br/>Buddy Coins are online!<br/><br/>You will get coins when logging in.<br/><button class="open-app action-button" data-app="portfolio">View Portfolio</button>`;
 
         motdWindow.content.appendChild(message);
 
