@@ -59,7 +59,7 @@ export default async function render(parent) {
                 <td>${transaction.receiver}</td>
                 <td>${transaction.symbol}</td>
                 <td>${transaction.amount}</td>
-                <td>${transaction.value}</td>
+                <td>${formatCurrency(transaction.value)}</td>
                 <td>${DateFormat.format.date(transaction.timestamp, 'E MMMM dd, hh:mm:ss a')}</td>
             </tr>
         `);
@@ -79,10 +79,10 @@ export default async function render(parent) {
     results.forEach(coin => {
         // console.log('appending coin', coin);
         if (coin.symbol === this.context) {
-            coinSelector.append(`<option value="${coin.symbol}" selected>${coin.symbol} - ${coins[coin.symbol]}</option>`);
+            coinSelector.append(`<option value="${coin.symbol}" selected>${coin.symbol} - ${coins[coin.symbol].name}</option>`);
             return;
         }
-        coinSelector.append(`<option value="${coin.symbol}">${coin.symbol} - ${coins[coin.symbol]}</option>`);
+        coinSelector.append(`<option value="${coin.symbol}">${coin.symbol} - ${coins[coin.symbol].name}</option>`);
     });
 
     // render the results to the table
