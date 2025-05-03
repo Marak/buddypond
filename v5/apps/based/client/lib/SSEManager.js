@@ -4,9 +4,12 @@ export default class SSEManager {
         this.log = client.bp.log;
         this.sse = null;
         this.sseConnected = false;
+        this.connectionUrl = null;
     }
 
     connectSSE(eventSourceUrl) {
+        this.connectionUrl = eventSourceUrl;
+        console.log('connectSSE', eventSourceUrl);
         this.hardDisconnect = false;
         this.initiateSSE(eventSourceUrl);
     }
@@ -39,7 +42,7 @@ export default class SSEManager {
         setTimeout(() => {
             this.log("Reconnecting SSE...");
             if (!this.sse || this.sse.readyState === EventSource.CLOSED) {
-                this.connectSSE();
+                this.connectSSE(this.connectionUrl);
             }
         }, 5000);
     }
