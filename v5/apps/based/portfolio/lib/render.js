@@ -1,8 +1,3 @@
-
-const coins = {};
-coins['MEGA'] = 'Megabytes';
-coins['GBP'] = 'Good Buddy Points';
-
 export default async function render(parent) {
 
     $(parent).html(this.html);
@@ -30,6 +25,8 @@ export default async function render(parent) {
     });
 
     console.log("coinscoinscoins", coins)
+    $('.loading-portfolio', this.portfolioWindow.content).show();
+    $('.loading-transactions', this.portfolioWindow.content).show();
 
     // get the portfolio's assets
     const assets = await this.resource.search(this.bp.me, {
@@ -76,19 +73,28 @@ export default async function render(parent) {
     let coinSelector = $('#coin-send-name');
     console.log("coinSelector", this.context, coinSelector)
     coinSelector.html(''); // Clear existing entries
+    console.log('iterating results', results)
     results.forEach(coin => {
-        // console.log('appending coin', coin);
-        if (coin.symbol === this.context) {
-            coinSelector.append(`<option value="${coin.symbol}" selected>${coin.symbol} - ${coins[coin.symbol].name}</option>`);
-            return;
+        try {
+            console.log('appending coin', coin);
+            if (coin.symbol === this.context) {
+                coinSelector.append(`<option value="${coin.symbol}" selected>${coin.symbol} - ${coins[coin.symbol].name}</option>`);
+                return;
+            }
+            coinSelector.append(`<option value="${coin.symbol}">${coin.symbol} - ${coins[coin.symbol].name}</option>`);
+    
+        } catch (err) {
+            console.log(`Could not append coin row`, coin);
         }
-        coinSelector.append(`<option value="${coin.symbol}">${coin.symbol} - ${coins[coin.symbol].name}</option>`);
     });
 
     // render the results to the table
     const table = $('.portfolio-entries', parent);
     console.log('tabletabletable', table);
     table.html('');
+
+    $('.loading-portfolio', this.portfolioWindow.content).hide();
+    $('.loading-transactions', this.portfolioWindow.content).hide();
 
     let totalValue = 0;
     let initialInvestment = 0; // Assume this is known or fetched from somewhere

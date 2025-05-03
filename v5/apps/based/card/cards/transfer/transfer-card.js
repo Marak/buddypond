@@ -7,7 +7,7 @@ export default function applyData(el, data) {
       amount: data.amount || '0',
       symbol: data.symbol || 'N/A',
       price: data.price || '0.00',
-      value: data.value || '0.00',
+      value: data.amount * data.price
     };
   
     // Helper function to format currency with dynamic precision

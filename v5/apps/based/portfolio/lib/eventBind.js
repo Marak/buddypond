@@ -79,12 +79,29 @@ export default function eventBind(parent) {
         let symbol = $('#portfolio-admin-coin').val();
         if (buddyname && symbol) {
 
-            // delete portfolio for coin holding
-            let url = `portfolio/${buddyname}/${symbol}`;
-            console.log("admin url", url, this.resource.apiRequest);
-            let res = await this.resource.apiRequest('DELETE', url);
-            $('.coin-error').html(res)
-            console.log('res', res)
+
+            try {
+                // delete portfolio for coin holding
+                let url = `portfolio/${buddyname}/${symbol}`;
+                console.log("admin url", url, this.resource.apiRequest);
+                let res = await this.resource.apiRequest('DELETE', url);
+                console.log('res', res)
+
+            } catch (err) {
+                console.log(err)
+            }
+
+            try {
+                let resetTransactionsUrl = `transactions/reset/${buddyname}`;
+                console.log("resetTransactionsUrl url", resetTransactionsUrl, this.resource.apiRequest);
+                let resetTransactionsRes = await this.resource.apiRequest('GET', resetTransactionsUrl);
+                console.log('resetTransactionsRes', resetTransactionsRes)
+
+            } catch (err) {
+                console.log(err);
+            }
+
+            // $('.coin-error').html(res)
         }
 
     });

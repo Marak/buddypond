@@ -1,8 +1,3 @@
-const prices = {};
-prices['BUX'] = 1.00;
-prices['MEGA'] = 0.50;
-prices['GBP'] = 0.25;
-
 export default async function render(coinWindow) {
 
     // console.log('coinWindow', coinWindow, 'this', this.html);

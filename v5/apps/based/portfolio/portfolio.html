@@ -20,6 +20,7 @@
         <!-- Portfolio Table -->
 
         <div id="user-portfolio" class="tab-content">
+            <img src="desktop/assets/images/gui/loading.gif" class="loading-portfolio" />
 
             <!-- Portfolio Summary -->
             <div class="portfolio-summary">
@@ -57,6 +58,7 @@
             <h1 class="coin-title">Transactions</h1>
             <span class="coin-error error"></span>
             <span class="coin-send-message"></span>
+            <img src="desktop/assets/images/gui/loading.gif" class="loading-transactions" />
 
             <div class="transaction-table portfolio-table">
                 <table>
@@ -111,15 +113,15 @@
             <select id="portfolio-admin-action">
                 <option value="reset">Reset Portfolio</option>
             </select>
-            <input id="portfolio-admin-coin"/>
-            <!-- user name -->
             <label for="portfolio-admin-user">User:</label>
             <input type="text" id="portfolio-admin-user" placeholder="Enter user name">
+            <label for="portfolio-admin-coin">Coin</label>
+            <input id="portfolio-admin-coin"/>
+
             <button id="portfolio-admin-button-submit">Execute</button>
+
         </div>
 
     </div>
-
-
 
 </div>
