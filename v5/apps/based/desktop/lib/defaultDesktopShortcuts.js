@@ -292,6 +292,6 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-    // coinBeta();
+    coinBeta();
 
 }
