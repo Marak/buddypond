@@ -53,13 +53,15 @@ export default class Resource {
         return this.provider.list(owner);
     }
 
-    search(owner, query) {
-        return this.provider.search(owner, query);
+    search(owner, query, urlparams) {
+        return this.provider.search(owner, query, urlparams);
     }
     
     all() {
         return this.provider.all();
     }
+
+    
 
     async apiRequest(method, path, body = null) {
         return this.provider.apiRequest(method, path, body);

@@ -16,6 +16,10 @@ export default async function render(parent) {
         return;
     }
 
+    $('.loading-portfolio', this.portfolioWindow.content).show();
+    $('.loading-transactions', this.portfolioWindow.content).show();
+
+
     let allCoins = await this.coinResource.list();
     console.log('allCoins', allCoins)
 
@@ -25,8 +29,6 @@ export default async function render(parent) {
     });
 
     console.log("coinscoinscoins", coins)
-    $('.loading-portfolio', this.portfolioWindow.content).show();
-    $('.loading-transactions', this.portfolioWindow.content).show();
 
     // get the portfolio's assets
     const assets = await this.resource.search(this.bp.me, {
@@ -35,17 +37,13 @@ export default async function render(parent) {
     console.log('assetsassetsassets', assets);
     let results = assets.results;
 
+    /*
     // get recent transactions
-    const sentTransactions = await this.transaction.search(this.bp.me, {
-        sender: this.bp.me
-    });
-    console.log('sentTransactions', sentTransactions);
-    const receivedTransactions = await this.transaction.search(this.bp.me, {
+    const transactions = await this.transaction.search(this.bp.me, {
+        sender: this.bp.me,
         receiver: this.bp.me
     });
-    console.log('receivedTransactions', receivedTransactions);
 
-    const transactions = sentTransactions.concat(receivedTransactions);
     console.log('transactions', transactions);
     
     transactions.forEach(transaction => {
@@ -61,12 +59,21 @@ export default async function render(parent) {
             </tr>
         `);
         console.log('transactionRow', transactionRow);
-        /*
-        transactionRow.click(() => {
-            this.bp.open('coin', { context: transaction.symbol, type: 'coin-send' });
-        });
-        */
         $('.transaction-entries', parent).append(transactionRow);
+    });
+    */
+    await renderTransactions.call(this, 1, 8);
+
+    $('.prev-page', this.portfolioWindow.content).on('click', () => {
+        const currentPage = $('.pagination-controls').data('current-page');
+        if (currentPage > 1) {
+            renderTransactions.call(this, currentPage - 1);
+        }
+    });
+
+    $('.next-page', this.portfolioWindow.content).on('click', () => {
+        const currentPage = $('.pagination-controls').data('current-page');
+        renderTransactions.call(this, currentPage + 1);
     });
 
 
@@ -159,3 +166,57 @@ export default async function render(parent) {
       }).replace(/\.?0+$/, '')
     );
   }
+
+
+
+  // Function to fetch and render transactions
+async function renderTransactions(page = 1, limit = 8) {
+    console.log('called renderTransactions', page, limit);
+    try {
+        // Show loading indicator
+        $('.loading-transactions').show();
+        $('.transaction-entries').empty(); // Clear existing rows
+
+        // Fetch transactions with pagination
+        const response = await this.transaction.search(this.bp.me, {
+            sender: this.bp.me,
+            receiver: this.bp.me
+        }, { page, limit });
+
+        console.log('transactions response', response);
+
+        // Extract data and pagination info
+        const { results, pagination } = response;
+
+        // Render transactions
+        results.forEach(transaction => {
+            let transactionRow = $(`
+                <tr>
+                    <td>${transaction.sender}</td>
+                    <td>${transaction.receiver}</td>
+                    <td>${transaction.symbol}</td>
+                    <td>${transaction.amount}</td>
+                    <td>${formatCurrency(transaction.value)}</td>
+                    <td>${DateFormat.format.date(transaction.timestamp, 'E MMMM dd, hh:mm:ss a')}</td>
+                </tr>
+            `);
+            $('.transaction-entries').append(transactionRow);
+        });
+
+        // Update pagination controls
+        $('.page-info').text(`Page ${pagination.page} of ${pagination.totalPages}`);
+        
+        // Enable/disable buttons based on pagination
+        $('.prev-page').prop('disabled', pagination.page <= 1);
+        $('.next-page').prop('disabled', pagination.page >= pagination.totalPages);
+
+        // Store current page in data attribute for button handlers
+        $('.pagination-controls').data('current-page', pagination.page);
+
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        $('.coin-error').text('Failed to load transactions');
+    } finally {
+        $('.loading-transactions').hide();
+    }
+}

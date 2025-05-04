@@ -10,10 +10,11 @@ export default class Transaction {
         return result;
     }
 
-    async search (buddyname, query = {}) {
-        let result = await this.resource.search(buddyname, query);
+    async search (buddyname, query = {}, urlparams = {}) {
+        console.log('transactions search', buddyname, query, urlparams);
+        let result = await this.resource.search(buddyname, query, urlparams);
         console.log('search result', result);
-        return result.results;
+        return result;
     }
 
 }

@@ -5,7 +5,7 @@ export default class RestProvider {
         this.apiEndpoint = options.apiEndpoint;
     }
 
-    async apiRequest(method, path, body = null) {
+    async apiRequest(method, path, body = null, urlparams = {}) {
         const options = { method, headers: { 'Content-Type': 'application/json' } };
         if (body) options.body = JSON.stringify(body);
 
@@ -13,7 +13,15 @@ export default class RestProvider {
             options.headers["Authorization"] = `Bearer ${this.bp.qtokenid}`; // ✅ Use Authorization header
         }
 
-        const response = await fetch(`${this.apiEndpoint}/${path}`, options);
+        let url = `${this.apiEndpoint}/${path}`;
+        // append urlparams to url
+        if (urlparams) {
+            const params = new URLSearchParams(urlparams);
+            url += `?${params.toString()}`;
+        }
+        console.log('apiRequest', method, url, options);
+
+        const response = await fetch(url, options);
         if (!response.ok) {
             console.log('API request failed:', response);
             // try to get json from json
@@ -58,7 +66,8 @@ export default class RestProvider {
         return this.apiRequest('GET', this.resourceName);
     }
 
-    async search(owner, query) {
-        return this.apiRequest('POST', `${this.resourceName}/search`, query);
+    async search(owner, query, urlparams = {}) {
+        return this.apiRequest('POST', `${this.resourceName}/search`, query, urlparams);
     }
+
 }
