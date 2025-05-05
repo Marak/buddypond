@@ -1,4 +1,5 @@
 import enumerateDevices from "./lib/enumerateDevices.js";
+import replaceStream from "./lib/replaceStream.js";
 let wsUrl = 'wss://192.168.200.59:8001/ws';
 
 export default class VideoCall {
@@ -13,6 +14,8 @@ export default class VideoCall {
         this.alldevices = {};
         this.currentBuddy = null;
         this.websocket = null;
+        this.isHost = false;
+        this.remoteBuddy = null;
 
         return this;
     }
@@ -35,7 +38,7 @@ export default class VideoCall {
             // const buddyName = $(e.target).closest('.buddy_message').data('context');
             const buddyName = $('#videochat-buddyname').val();
             const isHost = $('#videochat-isHost').is(':checked');
-            this.startCall(isHost, buddyName);
+            this.startCall(this.isHost, this.remoteBuddy);
         });
 
         d.on('mousedown', '.endVideoCall', (e) => {
@@ -91,9 +94,13 @@ export default class VideoCall {
         // const buddyName = $('#videochat-buddyname').val();
 
         let buddyName = 'Marak';
+        this.isHost = false;
         if (this.bp.me === 'Marak') {
             buddyName = 'Bob';
+            this.isHost = true;
         }
+
+        this.remoteBuddy = buddyName;
         await this.enumerateDevices();
         await this.addLocalCamera();
         await this.initWebSocket(buddyName);
@@ -124,8 +131,9 @@ export default class VideoCall {
         this.currentBuddy = buddyName;
         $('.endVideoCall').css('opacity', '1');
         $('.startVideoCall').css('opacity', '0.4');
-        //$('#window_videochat .buddyName', this.videocallWindow).html(buddyName);
-        $('.webrtcStatus', this.videocallWindow).html('Sending WebRTC Handshake Request...');
+        $('.buddyName', this.videocallWindow.content).html(buddyName);
+        $('.webrtcStatus', this.videocallWindow.content).html('Sending WebRTC Handshake Request...');
+        await this.initPeer(isHost, buddyName);
 
     }
 
@@ -143,34 +151,48 @@ export default class VideoCall {
     
                 if (data.status === 'connected') {
                     console.log('WebSocket connection opened:', { me: data.me, buddyname: data.buddyname });
-                    $('.webrtcStatus', this.videocallWindow).html(`Waiting for ${buddyName} to connect...`);
+                    if (this.isHost) {
+                        $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect...`);
+                    } else {
+                        // Click Start Call button to start the call
+                        $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to accept call from ${buddyName}`);
+                        
+                    }
                     return;
                 }
     
                 if (data.type === 'buddyready') {
                     console.log(`Buddy ${buddyName} is ready for pairing`);
-                    $('.webrtcStatus', this.videocallWindow).html(`${buddyName} is ready! Starting call...`);
+                    $('.webrtcStatus', this.videocallWindow.content).html(`${buddyName} is ready! Starting call...`);
     
                     // Determine if this client is the host (initiator)
                     // const isHost = this.bp.me < buddyName; // Alphabetical order to avoid conflicts
-                    let isHost = true;
+                    this.isHost = true;
                     if (this.bp.me !== 'Marak') {
-                        isHost = false;
+                        this.isHost = false;
                     }
-                    await this.initPeer(isHost, buddyName);
+                    // instead of automatically starting the call, enable the start call button
+                    $('.startVideoCall').css('opacity', '1');
+                    // remove disabled class
+                    $('.startVideoCall').removeClass('disabled');
+
+                    // if isHost, start the call
+                    if (this.isHost) {
+                        await this.startCall(this.isHost, this.remoteBuddy);
+                    }
                     return;
                 }
     
                 if (data.type === 'buddydisconnected') {
                     console.log(`Buddy ${buddyName} disconnected`);
-                    $('.webrtcStatus', this.videocallWindow).html(`${buddyName} disconnected`);
+                    $('.webrtcStatus', this.videocallWindow.content).html(`${buddyName} disconnected`);
                     this.endCall(buddyName);
                     return;
                 }
     
                 if (data.error) {
                     console.error('WebSocket server error:', data.error, 'code:', data.code);
-                    $('.webrtcStatus', this.videocallWindow).html('Connection failed');
+                    $('.webrtcStatus', this.videocallWindow.content).html('Connection failed');
                     this.endCall(buddyName);
                     return;
                 }
@@ -186,13 +208,13 @@ export default class VideoCall {
     
         this.websocket.onerror = (err) => {
             console.error('WebSocket error:', err);
-            $('.webrtcStatus', this.videocallWindow).html('WebSocket connection failed');
+            $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection failed');
             this.endCall(buddyName);
         };
     
         this.websocket.onclose = (event) => {
             console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
-            $('.webrtcStatus', this.videocallWindow).html('WebSocket connection closed');
+            $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
             this.endCall(buddyName);
         };
     
@@ -214,7 +236,7 @@ export default class VideoCall {
 
     async initPeer(isHost, buddyName) {
         console.log('Initializing WebRTC peer connection', isHost, buddyName);
-        $('.webrtcStatus', this.videocallWindow).html('Initiating Peer Connection...');
+        $('.webrtcStatus', this.videocallWindow.content).html('Initiating Peer Connection...');
         this.webrtc = new SimplePeer({ initiator: isHost });
     
         // Store pending signals for retry
@@ -222,7 +244,7 @@ export default class VideoCall {
         let retryInterval = null;
         const maxRetries = 9999; // Max retry attempts
         const maxDelay = 8000; // Max delay between retries (8s)
-        const retryTimeout = 30000; // Stop retrying after 30s
+        const retryTimeout = 60000; // Stop retrying after 60s
         let retryCount = 0;
         let startTime = Date.now();
     
@@ -230,7 +252,7 @@ export default class VideoCall {
         const retrySignals = () => {
             if (retryCount >= maxRetries || Date.now() - startTime > retryTimeout) {
                 console.log(`Stopped retrying for ${buddyName}: max retries or timeout reached`);
-                $('.webrtcStatus', this.videocallWindow).html('Failed to connect: Buddy not available');
+                $('.webrtcStatus', this.videocallWindow.content).html('Failed to connect: Buddy not available');
                 this.endCall(buddyName);
                 return;
             }
@@ -241,7 +263,9 @@ export default class VideoCall {
     
             const signalData = signalQueue[0]; // Retry the first signal
             console.log(`Retrying signal to ${buddyName} (attempt ${retryCount + 1}/${maxRetries})`);
-            $('.webrtcStatus', this.videocallWindow).html(`Retrying connection to ${buddyName}... (Attempt ${retryCount + 1})`);
+            // $('.webrtcStatus', this.videocallWindow.content).html(`Retrying connection to ${buddyName}... (Attempt ${retryCount + 1})`);
+            // waiting for buddyName to accept the call
+            $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to accept the call...`);
             this.websocket.send(JSON.stringify(signalData));
         };
     
@@ -289,7 +313,7 @@ export default class VideoCall {
         // Handle WebRTC connect
         this.webrtc.on('connect', async () => {
             console.log('WebRTC peer connection established');
-            $('.webrtcStatus', this.videocallWindow).html('WebRTC peer connection established!');
+            $('.webrtcStatus', this.videocallWindow.content).html('WebRTC peer connection established!');
             clearInterval(retryInterval); // Stop retries on successful connection
             signalQueue.length = 0; // Clear queue
             await this.addLocalCamera();
@@ -306,9 +330,9 @@ export default class VideoCall {
                     if (data.error.includes('not connected') && signalQueue.length > 0) {
                         retryCount++;
                         // Retry will happen via setInterval
-                        $('.webrtcStatus', this.videocallWindow).html(`Waiting for ${buddyName} to connect... (Attempt ${retryCount})`);
+                        $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect... (Attempt ${retryCount})`);
                     } else {
-                        $('.webrtcStatus', this.videocallWindow).html('Connection failed');
+                        $('.webrtcStatus', this.videocallWindow.content).html('Connection failed');
                         clearInterval(retryInterval);
                         this.endCall(buddyName);
                     }
@@ -328,7 +352,7 @@ export default class VideoCall {
             }
         };
     
-        $('.webrtcStatus', this.videocallWindow).html(`Waiting for ${buddyName} to connect...`);
+        $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect...`);
     }
 
     async addLocalCamera() {
@@ -351,9 +375,20 @@ export default class VideoCall {
         $('.startVideoCall').css('opacity', '1');
         $('.endVideoCall').css('opacity', '0.4');
 
+        // revert webrtcStatus message back to "Click Start Call" or "Waiting for buddy to connect"
+        if (this.isHost) {
+            $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to connect to ${buddyName}`);
+        }
+        else {
+            $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect...`);
+        }
+
+        // Keep the local stream open ( if this works for reconnects )
+        /*
         if (this.localStream) {
             this.localStream.getTracks().forEach((track) => track.stop());
         }
+        */
 
         if (this.remoteStream) {
             this.remoteStream.getTracks().forEach((track) => track.stop());
@@ -364,44 +399,22 @@ export default class VideoCall {
             this.webrtc = null;
         }
 
+        // TODO: should probably be on window close, not endcall
+        // since websocket connection is implied once window opens
+        /*
         if (this.websocket) {
             this.websocket.close();
             this.websocket = null;
         }
+        */
 
         this.callInProgress = false;
         this.currentBuddy = null;
 
-        if (buddyName) {
-            // this.bp.apps.buddylist.setBuddy(buddyName, { isCalling: false });
-            // Notify buddy via API (optional, depending on your backend)
-            // await this.bp.endBuddyCall(buddyName);
-        }
     }
 
-    async replaceStream(label, kind) {
-        const newDevice = this.alldevices[label];
-        if (!newDevice) return;
-
-        try {
-            const constraints = kind === 'video' ? { video: { deviceId: newDevice.deviceId }, audio: false } : { audio: { deviceId: newDevice.deviceId }, video: false };
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            const newTrack = stream.getTracks()[0];
-
-            this.localStream.getTracks().forEach((track) => {
-                if (track.kind === kind) {
-                    this.webrtc.replaceTrack(track, newTrack, this.localStream);
-                    track.stop(); // Stop the old track
-                }
-            });
-
-            const video = document.querySelector('#chatVideoMe');
-            video.srcObject = stream;
-            $(`.select${kind === 'video' ? 'Camera' : 'Audio'}`, this.videocallWindow).val(newTrack.label);
-        } catch (err) {
-            console.error(`Error replacing ${kind} stream:`, err);
-        }
-    }
+   
 }
 
 VideoCall.prototype.enumerateDevices = enumerateDevices;
+VideoCall.prototype.replaceStream = replaceStream;
