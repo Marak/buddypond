@@ -313,7 +313,13 @@ buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
   preprocessDeepSeek(msg);
   apiRequest('/buddy/' + buddyName + '/send', 'POST', msg, function (err, data) {
     cb(err, data);
-  })
+  });
+}
+
+buddypond.sendCardMessage = function sendCardMessage(message, cb) {
+  apiRequest('/buddy/' + message.to + '/send', 'POST', message, function (err, data) {
+    cb(err, data);
+  });
 }
 
 // TODO: pass card values to pondSendMessage fn scope
@@ -355,17 +361,25 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
   })
 }
 
-buddypond.castSpell = function castSpell(buddyName, spellName, cb) {
+
+buddypond.castSpell = async function castSpell(buddyName, spellName, cb) {
   cb = cb || function noop(err, re) {
     console.log('buddyPond.castSpell completed noop', err, re);
   };
-  apiRequest('/messages/buddy/' + buddyName, 'POST', {
-    buddyname: buddyName,
-    text: spellName,
-    type: 'agent'
-  }, function (err, data) {
+
+  let msg = {
+    from: buddypond.me,
+    to: buddyName,
+    text: '/merlin ' + spellName,
+    type: 'pond',
+    // geoflag: desktop.settings.geo_flag_hidden,
+  };
+
+
+  apiRequest('/buddy/' + buddyName + '/send', 'POST', msg, function (err, data) {
     cb(err, data);
   })
+
 }
 
 buddypond.sendBuddySignal = function sendBuddySignal(buddyname, signal, cb) {

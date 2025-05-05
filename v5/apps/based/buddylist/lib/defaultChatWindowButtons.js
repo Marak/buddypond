@@ -63,6 +63,40 @@ export default function chatWindowButtons(bp) {
 
         }
     },
+    {
+        text: 'BuddyCall',
+        image: 'desktop/assets/images/icons/svg/1f4de.svg',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // desktop.ui.openWindow('mirror', { type: type || 'buddy', context: context, output: type || 'buddy' });
+            bp.open('videocall', { type: type || 'buddy', output: type || 'buddy', context: context });
+
+            // should send message to buddy that will open the videocall window on receiving end
+            let message = {
+                from: bp.me,
+                to: context,
+                text: 'Incoming BuddyCall',
+                type: 'buddy',
+                card: {
+                    type: 'videocall'
+                }
+            }
+
+
+            console.log('BuddyCall message', message);
+            // send message to buddy
+            buddypond.sendCardMessage(message, function(err, response){
+                if (err) {
+                    console.error('Error sending message', err);
+                } else {
+                    console.log('Message sent', response);
+                }
+            });
+
+
+        }
+    }
     /* // TODO: add Dictate with improved UX
     {
         text: 'Dictate',
