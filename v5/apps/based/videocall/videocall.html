@@ -1,0 +1,32 @@
+<div class="videocall-container">
+    <div class="video-section">
+        <div class="video-wrapper">
+            <video id="chatVideoMe" autoplay playsinline muted></video>
+            <label class="video-label">You</label>
+        </div>
+        <div class="video-wrapper">
+            <video id="chatVideoBuddy" autoplay playsinline></video>
+            <label class="video-label">Buddy: <span class="buddyName">Connecting...</span></label>
+        </div>
+    </div>
+    <div class="controls-section">
+        <div class="status">
+            <span class="webrtcStatus">Initializing...</span>
+        </div>
+        <div class="device-controls">
+            <label for="selectCamera">Camera:</label>
+            <select class="selectCamera" id="selectCamera"></select>
+            <label for="selectAudio">Microphone:</label>
+            <select class="selectAudio" id="selectAudio"></select>
+        </div>
+        <div class="call-controls">
+            <button class="startVideoCall">Start Call</button>
+            <button class="endVideoCall">End Call</button>
+        </div>
+        <!--- isHost checkbox -->
+        <label for="videochat-isHost">Is Host:</label>
+        <input type="checkbox" id="videochat-isHost" class="isHost" checked />
+
+        <input id="videochat-buddyname" type="text" placeholder="Enter Buddy Name" value="Bob" />
+    </div>
+</div>

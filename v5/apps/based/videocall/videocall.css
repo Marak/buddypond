@@ -1,0 +1,122 @@
+  .videocall-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+  }
+
+  .video-section {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .video-wrapper {
+    flex: 1;
+    position: relative;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .controls-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .status {
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .webrtcStatus {
+    font-weight: bold;
+  }
+
+  .device-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .device-controls label {
+    font-size: 14px;
+    color: #333;
+  }
+
+  .selectCamera,
+  .selectAudio {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 150px;
+  }
+
+  .call-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .startVideoCall,
+  .endVideoCall {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+
+  .startVideoCall {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .endVideoCall {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .startVideoCall:disabled,
+  .endVideoCall:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .startVideoCall:not(:disabled):hover {
+    background-color: #218838;
+  }
+
+  .endVideoCall:not(:disabled):hover {
+    background-color: #c82333;
+  }
