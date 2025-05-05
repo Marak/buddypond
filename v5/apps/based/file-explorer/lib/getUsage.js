@@ -4,7 +4,8 @@
         let currentUsage = await this.bp.apps.client.api.getFileUsage();
         // console.log('currentUsage', currentUsage);
         this.currentStorageUsage = currentUsage.usage;
-        let storageLimit = 10000000; // 10mb
+        console.log('got back currentUsage', currentUsage);
+        let storageLimit = currentUsage.storageLimit || 10000000; // 10mb
         let storageRemaining = storageLimit - currentUsage.usage;
         this.currentStorageRemaining = storageRemaining;
 
