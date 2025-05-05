@@ -131,6 +131,12 @@ function setupChatWindow (windowType, contextName, chatWindow) {
     $('.message_form', chatWindow.content).submit(async (e) => {
         e.preventDefault();
         const message = $('.aim-input', chatWindow.content).val();
+
+        if (!message || message.length === 0) {
+            console.log('No message to send');
+            return;
+        }
+
         const _data = {
             to: $('.aim-to', chatWindow.content).val(),
             type: windowType,
@@ -276,22 +282,55 @@ function setupChatWindow (windowType, contextName, chatWindow) {
     
         // Clear input
         $('.aim-input', chatWindow.content).val('');
+
+        let $sendButton = $('.aim-send-btn', chatWindow.content);
+        $sendButton.css('opacity', 0.5);
+
     });
     
     // Hitting enter key will send the message
     $('.aim-input', chatWindow.content).keydown((e) => {
+
+        // allow shift + enter to add a new line
+        if (e.which === 13 && e.shiftKey) {
+            // insert new line to the textarea
+            let $input = $(e.target);
+            let inputValue = $input.val();
+            let cursorPosition = $input[0].selectionStart;
+            let newValue = inputValue.slice(0, cursorPosition) + '\n' + inputValue.slice(cursorPosition);
+            $input.val(newValue);
+            $input[0].setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+
+            // check if the message is empty
+            return false;
+        }
+
         if (e.which === 13) {
+            // replace /n with <br>
+            let message = $(e.target).val();
+            message = message.replace(/\n/g, '<br>');
+            $(e.target).val(message);
             $('.message_form', chatWindow.content).submit();
             e.preventDefault();
             return false;
         }
     });
 
-
-
+    // Buddy "is typing" event on message_text input
+    $('.aim-input').on('keyup', (e) => {
+        // check value of the input field, if not empty, set opacity to 1
+        let inputValue = $(e.target).val();
+        let $sendButton = $('.aim-send-btn', chatWindow.content);
+        if (inputValue.length > 0) {
+            $sendButton.css('opacity', 1);
+        } else {
+            $sendButton.css('opacity', 0.5);
+        }
+    });
 
     // Buddy "is typing" event on message_text input
-    $('.aim-input').on('keypress', () => {
+    $('.aim-input').on('keypress', (e) => {
+
         return;
         let buddyName = this.bp.me;
         let context = contextName;
