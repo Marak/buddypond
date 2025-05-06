@@ -63,6 +63,7 @@ export default function chatWindowButtons(bp) {
 
         }
     },
+    /*
     {
         text: 'BuddyCall',
         image: 'desktop/assets/images/icons/svg/1f4de.svg',
@@ -97,6 +98,7 @@ export default function chatWindowButtons(bp) {
 
         }
     }
+        */
     /* // TODO: add Dictate with improved UX
     {
         text: 'Dictate',
