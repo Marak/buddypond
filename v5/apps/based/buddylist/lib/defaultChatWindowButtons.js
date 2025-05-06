@@ -63,21 +63,21 @@ export default function chatWindowButtons(bp) {
 
         }
     },
-    /*
     {
         text: 'BuddyCall',
-        image: 'desktop/assets/images/icons/svg/1f4de.svg',
+        type: 'buddy-only',
+        image: 'desktop/assets/images/icons/icon_phone_64.png',
         onclick: (ev) => {
             let context = ev.target.dataset.context;
             let type = ev.target.dataset.type;
             // desktop.ui.openWindow('mirror', { type: type || 'buddy', context: context, output: type || 'buddy' });
-            bp.open('videocall', { type: type || 'buddy', output: type || 'buddy', context: context });
+            bp.open('videocall', { type: type || 'buddy', output: type || 'buddy', context: context, isHost: true });
 
             // should send message to buddy that will open the videocall window on receiving end
             let message = {
                 from: bp.me,
                 to: context,
-                text: 'Incoming BuddyCall',
+                text: 'Let\'s have a video call',
                 type: 'buddy',
                 card: {
                     type: 'videocall'
@@ -98,7 +98,6 @@ export default function chatWindowButtons(bp) {
 
         }
     }
-        */
     /* // TODO: add Dictate with improved UX
     {
         text: 'Dictate',

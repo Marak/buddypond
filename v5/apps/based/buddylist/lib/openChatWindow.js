@@ -116,10 +116,20 @@ function setupChatWindow (windowType, contextName, chatWindow) {
 
     }
     if (this.options.chatWindowButtons) {
+        // copy the options
+        let chatWindowButtons = this.options.chatWindowButtons.slice();
+        if (windowType === 'pond') {
+            // filter out any this.options.chatWindowButtons that are buddy specific
+            chatWindowButtons = chatWindowButtons.filter((button) => {
+                console.log('checking button', button);
+                return button.type !== 'buddy-only';
+            });
+        }
+
         const chatWindowButtonBar = new ChatWindowButtonBar(this.bp, {
             context: contextName,
             type: windowType,
-            buttons: this.options.chatWindowButtons
+            buttons: chatWindowButtons
         });
         $('.aim-message-controls', chatWindow.content).prepend(chatWindowButtonBar.container);
 
@@ -147,7 +157,6 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         const filePreviews = $('.file-preview', chatWindow.content);
         const files = [];
     
-
         if ((!message || message.length === 0) && filePreviews.length === 0) {
             console.log('No message to send');
             return;

@@ -1,6 +1,9 @@
 import enumerateDevices from "./lib/enumerateDevices.js";
 import replaceStream from "./lib/replaceStream.js";
-let wsUrl = 'wss://192.168.200.59:8001/ws';
+import endCall from "./lib/endCall.js";
+
+let wsUrl = 'wss://videochat.buddypond.com/ws';
+wsUrl = 'wss://192.168.200.59:8001/ws';
 
 export default class VideoCall {
     constructor(bp, options = {}) {
@@ -16,6 +19,8 @@ export default class VideoCall {
         this.websocket = null;
         this.isHost = false;
         this.remoteBuddy = null;
+
+        this.acceptedCall = false;
 
         return this;
     }
@@ -58,61 +63,65 @@ export default class VideoCall {
     }
 
     async open(options = {}) {
-        if (this.videocallWindow) {
-            if (this.player && options.context) {
-                this.player.loadVideoById(options.context);
-            }
-            return;
-        }
 
         console.log('Opening Video Call Window', options);
-        let outgoingBuddy = options.context || null;
-        this.videocallWindow = this.bp.apps.ui.windowManager.createWindow({
-            id: 'videocall-window',
-            title: 'Video Call',
-            x: 50,
-            y: 100,
-            width: 600,
-            height: 480,
-            minWidth: 200,
-            minHeight: 200,
-            parent: $('#desktop')[0],
-            icon: '/desktop/assets/images/icons/icon_interdimensionalcable_64.png',
-            content: this.html,
-            resizable: true,
-            minimizable: true,
-            maximizable: true,
-            closable: true,
-            focusable: true,
-            maximized: false,
-            minimized: false,
-            onClose: () => this.close()
-        });
+        let buddyname = options.context || null;
 
-        // let buddyname = options.context || null;
-        // $('#videochat-buddyname').val(outgoingBuddy);
-        // const buddyName = $('#videochat-buddyname').val();
-
-        let buddyName = 'Marak';
-        this.isHost = false;
-        if (this.bp.me === 'Marak') {
-            buddyName = 'Bob';
-            this.isHost = true;
+        if (typeof options.isHost !== 'undefined') {
+            this.isHost = options.isHost;
         }
 
-        this.remoteBuddy = buddyName;
+        if (!this.videocallWindow ) {
+            this.videocallWindow = this.bp.apps.ui.windowManager.createWindow({
+                id: 'videocall-window',
+                title: 'Video Call',
+                x: 50,
+                y: 100,
+                width: 800,
+                height: 480,
+                minWidth: 200,
+                minHeight: 200,
+                parent: $('#desktop')[0],
+                icon: '/desktop/assets/images/icons/icon_interdimensionalcable_64.png',
+                content: this.html,
+                resizable: true,
+                minimizable: true,
+                maximizable: true,
+                closable: true,
+                focusable: true,
+                maximized: false,
+                minimized: false,
+                onClose: () => this.close()
+            });
+        }
+
+        this.videocallWindow.focus();
+
+        this.remoteBuddy = buddyname;
+
+        if (options.acceptedCall) {
+            this.acceptedCall = true;
+        }
+
         await this.enumerateDevices();
         await this.addLocalCamera();
-        await this.initWebSocket(buddyName);
+        await this.initWebSocket(buddyname);
 
     }
 
     async close() {
+        await this.endCall(this.currentBuddy);
+        // close the local stream
+        if (this.localStream) {
+            this.localStream.getTracks().forEach((track) => track.stop());
+        }
+        if (this.websocket) { // close the websocket
+            this.websocket.close();
+            this.websocket = null;
+        }
         if (this.videocallWindow) {
-            this.videocallWindow.close();
             this.videocallWindow = null;
         }
-        await this.endCall(this.currentBuddy);
     }
 
     async startCall(isHost, buddyName) {
@@ -138,7 +147,7 @@ export default class VideoCall {
     }
 
     async initWebSocket(buddyName) {
-        wsUrl += `?me=${encodeURIComponent(this.bp.me)}&buddyname=${encodeURIComponent(buddyName)}&token=your-secret-token`;
+        wsUrl += `?me=${encodeURIComponent(this.bp.me)}&buddyname=${encodeURIComponent(buddyName)}&qtokenid=${encodeURIComponent(this.bp.qtokenid)}`;
         console.log('Connecting to WebSocket:', wsUrl);
         this.websocket = new WebSocket(wsUrl);
     
@@ -151,12 +160,12 @@ export default class VideoCall {
     
                 if (data.status === 'connected') {
                     console.log('WebSocket connection opened:', { me: data.me, buddyname: data.buddyname });
+
                     if (this.isHost) {
                         $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect...`);
                     } else {
                         // Click Start Call button to start the call
                         $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to accept call from ${buddyName}`);
-                        
                     }
                     return;
                 }
@@ -165,19 +174,13 @@ export default class VideoCall {
                     console.log(`Buddy ${buddyName} is ready for pairing`);
                     $('.webrtcStatus', this.videocallWindow.content).html(`${buddyName} is ready! Starting call...`);
     
-                    // Determine if this client is the host (initiator)
-                    // const isHost = this.bp.me < buddyName; // Alphabetical order to avoid conflicts
-                    this.isHost = true;
-                    if (this.bp.me !== 'Marak') {
-                        this.isHost = false;
-                    }
                     // instead of automatically starting the call, enable the start call button
                     $('.startVideoCall').css('opacity', '1');
                     // remove disabled class
                     $('.startVideoCall').removeClass('disabled');
 
                     // if isHost, start the call
-                    if (this.isHost) {
+                    if (this.isHost || this.acceptedCall) {
                         await this.startCall(this.isHost, this.remoteBuddy);
                     }
                     return;
@@ -215,6 +218,11 @@ export default class VideoCall {
         this.websocket.onclose = (event) => {
             console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
             $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
+            /*
+            if (retryInterval) {
+                clearInterval(retryInterval);
+            }*/
+            // signalQueue.length = 0; // Clear queue on WebSocket close
             this.endCall(buddyName);
         };
     
@@ -299,7 +307,9 @@ export default class VideoCall {
         // Handle WebRTC errors
         this.webrtc.on('error', (err) => {
             console.error('WebRTC error:', err);
-            clearInterval(retryInterval);
+            if (retryInterval){
+                clearInterval(retryInterval);
+            }
             this.endCall(buddyName);
         });
     
@@ -317,6 +327,8 @@ export default class VideoCall {
             clearInterval(retryInterval); // Stop retries on successful connection
             signalQueue.length = 0; // Clear queue
             await this.addLocalCamera();
+            this.startCallTimer();
+
         });
     
         // Update WebSocket message handler to manage retries
@@ -367,54 +379,30 @@ export default class VideoCall {
             this.localStream = stream;
         } catch (err) {
             console.error('Error accessing local camera:', err);
+            let errorMessage = 'Failed to access camera and microphone.';
+            if (err.name === 'NotAllowedError') {
+                errorMessage = 'Camera and microphone access was denied. Please allow access in your browser settings.';
+            } else if (err.name === 'NotFoundError') {
+                errorMessage = 'No camera or microphone found. Please ensure devices are connected.';
+            }
+            $('.webrtcStatus', this.videocallWindow.content).html(errorMessage);
         }
     }
 
-    async endCall(buddyName) {
-        this.pollSignal = false;
-        $('.startVideoCall').css('opacity', '1');
-        $('.endVideoCall').css('opacity', '0.4');
 
-        // revert webrtcStatus message back to "Click Start Call" or "Waiting for buddy to connect"
-        if (this.isHost) {
-            $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to connect to ${buddyName}`);
-        }
-        else {
-            $('.webrtcStatus', this.videocallWindow.content).html(`Waiting for ${buddyName} to connect...`);
-        }
-
-        // Keep the local stream open ( if this works for reconnects )
-        /*
-        if (this.localStream) {
-            this.localStream.getTracks().forEach((track) => track.stop());
-        }
-        */
-
-        if (this.remoteStream) {
-            this.remoteStream.getTracks().forEach((track) => track.stop());
-        }
-
-        if (this.webrtc) {
-            this.webrtc.destroy();
-            this.webrtc = null;
-        }
-
-        // TODO: should probably be on window close, not endcall
-        // since websocket connection is implied once window opens
-        /*
-        if (this.websocket) {
-            this.websocket.close();
-            this.websocket = null;
-        }
-        */
-
-        this.callInProgress = false;
-        this.currentBuddy = null;
-
+    startCallTimer() {
+        let seconds = 0;
+        this.callTimer = setInterval(() => {
+            seconds++;
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            $('.callTimer', this.videocallWindow.content).html(`Call Duration: ${minutes}:${secs.toString().padStart(2, '0')}`);
+        }, 1000);
     }
+    
 
-   
 }
 
+VideoCall.prototype.endCall = endCall;
 VideoCall.prototype.enumerateDevices = enumerateDevices;
 VideoCall.prototype.replaceStream = replaceStream;
