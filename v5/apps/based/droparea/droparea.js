@@ -130,6 +130,11 @@ export default class DropArea {
             // TODO: invert control, have the buddylist handle the drop event
             if (targetApp === 'buddylist') {
 
+                let aimMessageControls = $('.aim-message-controls', this.dropTarget);
+                let aimSendButton = $('.aim-send-btn', aimMessageControls);
+                // set opacity to 1
+                aimSendButton.css('opacity', '1');
+
 
                 // insert a div above the .aim-input div
                 // this should be a preview of the file
@@ -162,11 +167,10 @@ export default class DropArea {
                 closeButton.style.zIndex = '1000';
                 closeButton.onclick = () => {
                     preview.remove();
+                    aimSendButton.css('opacity', '0.5');
                 };
 
                 preview.appendChild(closeButton);
-
-                let aimMessageControls = $('.aim-message-controls', this.dropTarget);
 
                 for (let i = 0; i < event.dataTransfer.files.length; i++) {
                     let file = event.dataTransfer.files[i];
