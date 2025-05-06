@@ -13,11 +13,11 @@ const defaultIndexHtml = `
     <div class="welcome-section">
         <p>Welcome to your BuddyPad, a custom page hosted on the BuddyPond CDN!</p>
         <p><strong>About BuddyPads:</strong></p>
-        <p>BuddyPads are custom routed pages on BuddyPond, allowing you to host any static content. Each BuddyPad is stored as a virtual directory in our CDN, accessible via the File Explorer app in the "pads" folder.</p>
+        <p>BuddyPads are custom routed pages on BuddyPond, allowing you to host any static content. Each BuddyPad is stored as a virtual directory in our CDN, accessible via the <strong>Buddy Files</strong> app in the "pads" folder.</p>
         <p><strong>How to Customize Your BuddyPad:</strong></p>
         <ul>
             <li><strong>This Default Pad</strong>: This page includes <code>index.html</code> (structure), <code>style.css</code> (styling), and <code>index.js</code> (interactivity). These are linked using relative paths (e.g., <code>./style.css</code>, <code>./index.js</code>).</li>
-            <li><strong>Upload Any Files</strong>: Use the File Explorer app (navigate to the "pads" folder) to upload any static files, such as HTML, CSS, JS, images, or entire projects (e.g., React, Vue, or static sites).</li>
+            <li><strong>Upload Any Files</strong>: Use the <strong>Buddy Files</strong> app (navigate to the "pads" folder) to upload any static files, such as HTML, CSS, JS, images, or entire projects (e.g., React, Vue, or static sites).</li>
             <li><strong>Flexible Structure</strong>: You're not limited to these default files. Create multiple files, folders, or complex project structures. The BuddyPond CDN serves your content as configured.</li>
             <li><strong>Accessing Your Pad</strong>: Your BuddyPad is hosted at a unique URL and served directly from our CDN for fast, reliable delivery.</li>
         </ul>

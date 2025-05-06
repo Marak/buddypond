@@ -16,7 +16,7 @@ const defaultProfileFiles = {
         <ul>
             <li>This default profile includes <code>index.html</code>, <code>style.css</code>, and <code>profile.js</code>.</li>
             <li>You may use any files, the only requirement is <code>index.html</code> must be located in root.</li>
-            <li>Edit or upload files in the <strong>File Explorer</strong> app (root directory).</li>
+            <li>Edit or upload files in the <strong>Buddy Files</strong> app (root directory).</li>
             <li>Add any static files (HTML, CSS, JS, images) or projects (e.g., React, Vue).</li>
             <li>Use relative paths (e.g., <code>./style.css</code>) to link files.</li>
         </ul>
