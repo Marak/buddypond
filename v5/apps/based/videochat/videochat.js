@@ -3,7 +3,7 @@ import replaceStream from "./lib/replaceStream.js";
 import endCall from "./lib/endCall.js";
 
 let wsUrl = 'wss://videochat.buddypond.com/ws';
-wsUrl = 'wss://192.168.200.59:8001/ws';
+// wsUrl = 'wss://192.168.200.59:8001/ws';
 
 export default class VideoChat {
     constructor(bp, options = {}) {
