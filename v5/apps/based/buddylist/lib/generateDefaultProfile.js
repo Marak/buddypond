@@ -7,6 +7,7 @@
 // if we didn't do this, we'd have to check profile on File Explorer open or Profile open or Pad open,
 // which would result in a fragmented code and a delay in UI while we check for profile existence
 
+import defaultProfileFiles from './defaultProfileFiles.js';
 
 export default async function generateDefaultProfile(qtoken) {
     const basePath = "https://files.buddypond.com/" + qtoken.me;
@@ -47,39 +48,6 @@ export default async function generateDefaultProfile(qtoken) {
         }
     }
 }
-
-const defaultProfileFiles = {
-    'index.html': `
-        <!-- You can replace all of this with plain text if you wish --->
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>My Profile</title>
-            <link rel="stylesheet" href="./style.css">
-        </head>
-        <body>
-            <h1>Welcome to my Profile</h1>
-            <p>This is my profile. There are many like it, but this one is mine.</p>
-            <script src="./profile.js"></script>
-        </body>
-        </html>`,
-    'style.css': `
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #007bff;
-        }
-        p {
-            font-size: 1.2em;
-        }`,
-    'profile.js': `
-        console.log('Hello from my profile.js');`
-};
 
 function getFileType(fileName) {
     if (fileName.endsWith('.html')) return 'text/html';
