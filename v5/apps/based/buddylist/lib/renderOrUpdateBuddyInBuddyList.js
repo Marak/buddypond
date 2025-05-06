@@ -32,7 +32,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   let buddyListItem = `<li data-buddy="${buddyname}" class="buddy-message-sender">
                           <span class="buddy-status">${newMessages}${connectedStatusIcon}${isCalling}</span> 
-                          <a data-buddy="${buddyname}" class="message-buddy" href="#">${buddyname}</a>
+                          <a data-buddy="${buddyname}" class="message-buddy" href="#" draggable="false">${buddyname}</a>
                         </li>`;
   let buddyListItemEl = document.createElement('div');
   buddyListItemEl.innerHTML = buddyListItem;

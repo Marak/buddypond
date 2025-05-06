@@ -50,6 +50,7 @@ export default class ChatWindowButtonBar {
                 imgElement.dataset.type = this.options.type || 'buddy';
                 imgElement.alt = button.text;
                 imgElement.classList.add('button-bar-button');
+                imgElement.draggable = false;
                 if (button.className) {
                     imgElement.classList.add(button.className);
                 }
