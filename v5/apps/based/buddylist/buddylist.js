@@ -252,11 +252,9 @@ export default class BuddyList {
         this.bp.on('auth::logout', 'logout', () => this.logout());
 
         this.bp.on('profile::status', 'update-profile-status', status => {
-
             if (status === 'signout') {
                 this.logout()
             }
-
 
             buddypond.setStatus(this.bp.me, status, function(err, re){
                 // console.log('errrrr', err, re);
@@ -266,7 +264,7 @@ export default class BuddyList {
 
         this.bp.on('buddy::messages', 'render-chat-message', data => this.handleChatMessages(data));
         this.bp.on('buddy::sendMessage', 'send-buddy-message-to-server', data => this.sendMessageToServer(data));
-        this.bp.on('pond::sendMessage', 'send-pond-message-to-server', data => this.sendPondMessageToServer(data));
+        // this.bp.on('pond::sendMessage', 'send-pond-message-to-server', data => this.sendPondMessageToServer(data));
 
         //this.bp.on('buddy::sendMessage', 'process-buddymessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
         //this.bp.on('pond::sendMessage', 'process-pondmessage-bs', data => this.bp.apps.buddyscript.parseCommand(data.text));
@@ -442,6 +440,7 @@ export default class BuddyList {
                         console.log('receiveInstantMessage', err, re);
                     });
                 }
+                // console.log('rendering chat message', message);
                 await this.renderChatMessage(message);
 
             } catch (err) {
@@ -453,6 +452,12 @@ export default class BuddyList {
     sendMessageToServer(data, emitLocal = false) {
         this.bp.log('buddy::sendMessage', data);
         data.uuid = uuid();
+
+        if (data.text === '') {
+            console.log('will not sendMessageToServer: no text');
+            return;
+        }
+
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
         if (data.type === 'pond') {
             console.log('sendMessageToServer', data);
@@ -467,8 +472,7 @@ export default class BuddyList {
             buddypond.sendMessage(data.to, data.text, function(err, result){ 
                 console.log('pondSendMessage', err, result)
                 console.log(err,result)
-            })
-    
+            });
         }
         /*
         this.bp.apps.client.sendMessage({ id: data.uuid, method: 'sendMessage', data: data });
@@ -483,6 +487,7 @@ export default class BuddyList {
         */
     }
 
+    /*
     sendPondMessageToServer(data, emitLocal = false) {
         data.type = 'pond';
         this.bp.log('pond::sendMessage', data);
@@ -498,6 +503,7 @@ export default class BuddyList {
             this.renderChatMessage(data);
         }
     }
+    */
 
     handleAuthentication() {
         const api = this.bp.apps.client.api;
