@@ -20,9 +20,9 @@ export default function applyData(el, data) {
     // Handle accept button click
     $el.find('.accept-call').click(() => {
         if (data.message.from === this.bp.me) {
-            this.bp.open('videocall', { type: 'buddy', context: data.message.to, isHost: true });
+            this.bp.open('videochat', { type: 'buddy', context: data.message.to, isHost: true });
         } else {
-            this.bp.open('videocall', { type: 'buddy', context: data.message.from, acceptedCall: true });
+            this.bp.open('videochat', { type: 'buddy', context: data.message.from, acceptedCall: true });
         }
     });
 
@@ -43,5 +43,5 @@ export default function applyData(el, data) {
         return;
     }
 
-    this.bp.open('videocall', { type: 'buddy', context: data.message.from });
+    this.bp.open('videochat', { type: 'buddy', context: data.message.from });
 }

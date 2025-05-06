@@ -5,7 +5,7 @@ import endCall from "./lib/endCall.js";
 let wsUrl = 'wss://videochat.buddypond.com/ws';
 wsUrl = 'wss://192.168.200.59:8001/ws';
 
-export default class VideoCall {
+export default class VideoChat {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.webrtc = null;
@@ -27,8 +27,8 @@ export default class VideoCall {
     }
 
     async init() {
-        await this.bp.load('/v5/apps/based/videocall/videocall.css');
-        this.html = await this.bp.load('/v5/apps/based/videocall/videocall.html');
+        await this.bp.load('/v5/apps/based/videochat/videochat.css');
+        this.html = await this.bp.load('/v5/apps/based/videochat/videochat.html');
         await this.bp.load('/desktop/assets/js/simplepeer.min.js');
         this.bindEvents();
     }
@@ -102,8 +102,8 @@ export default class VideoCall {
 
         if (!this.videocallWindow) {
             this.videocallWindow = this.bp.apps.ui.windowManager.createWindow({
-                id: 'videocall-window',
-                title: 'Video Call',
+                id: 'videochat-window',
+                title: 'Video Chat',
                 x: 50,
                 y: 100,
                 width: 800,
@@ -413,11 +413,11 @@ export default class VideoCall {
             seconds++;
             const minutes = Math.floor(seconds / 60);
             const secs = seconds % 60;
-            this.videocallWindow.setTitle(`Video Call - (${minutes}:${secs.toString().padStart(2, '0')})`);
+            this.videocallWindow.setTitle(`Video Chat - (${minutes}:${secs.toString().padStart(2, '0')})`);
         }, 1000);
     }
 }
 
-VideoCall.prototype.endCall = endCall;
-VideoCall.prototype.enumerateDevices = enumerateDevices;
-VideoCall.prototype.replaceStream = replaceStream;
+VideoChat.prototype.endCall = endCall;
+VideoChat.prototype.enumerateDevices = enumerateDevices;
+VideoChat.prototype.replaceStream = replaceStream;
