@@ -132,11 +132,6 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         e.preventDefault();
         const message = $('.aim-input', chatWindow.content).val();
 
-        if (!message || message.length === 0) {
-            console.log('No message to send');
-            return;
-        }
-
         const _data = {
             to: $('.aim-to', chatWindow.content).val(),
             type: windowType,
@@ -152,6 +147,12 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         const filePreviews = $('.file-preview', chatWindow.content);
         const files = [];
     
+
+        if ((!message || message.length === 0) && filePreviews.length === 0) {
+            console.log('No message to send');
+            return;
+        }
+
         // Collect all files first
         filePreviews.each((_, filePreview) => {
             $('.file-content', filePreview).each((_, fileContent) => {
