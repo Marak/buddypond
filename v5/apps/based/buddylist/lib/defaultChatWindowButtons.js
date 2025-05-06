@@ -71,7 +71,7 @@ export default function chatWindowButtons(bp) {
             let context = ev.target.dataset.context;
             let type = ev.target.dataset.type;
             // desktop.ui.openWindow('mirror', { type: type || 'buddy', context: context, output: type || 'buddy' });
-            bp.open('videocall', { type: type || 'buddy', output: type || 'buddy', context: context, isHost: true });
+            bp.open('videochat', { type: type || 'buddy', output: type || 'buddy', context: context, isHost: true });
 
             // should send message to buddy that will open the videocall window on receiving end
             let message = {
@@ -80,7 +80,7 @@ export default function chatWindowButtons(bp) {
                 text: 'Let\'s have a video call',
                 type: 'buddy',
                 card: {
-                    type: 'videocall'
+                    type: 'videochat'
                 }
             }
 
