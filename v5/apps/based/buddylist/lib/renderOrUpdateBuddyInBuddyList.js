@@ -72,7 +72,7 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
   let lastSeen = buddydata.utime ? buddydata.utime : 0;
   let lastSeenDate = new Date(lastSeen);
   let lastSeenString = '';
-  
+
   try {
     lastSeenString = 'Last seen: ' + lastSeenDate.toLocaleString('en-US', {
       year: 'numeric',
@@ -111,48 +111,13 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
   this.sortBuddyList();
 
   // Add context menu functionality
-  attachContextMenu(buddyListItemEl);
+  attachContextMenu.call(this, buddyListItemEl);
 }
 
 function attachContextMenu(buddyElement) {
-  $(buddyElement).on('contextmenu', function (e) {
+  $(buddyElement).on('contextmenu', (e) => {
     e.preventDefault();
     let buddyName = e.target.closest('li').dataset.buddy;
-    showContextMenu(e.pageX, e.pageY, buddyName);
-  });
-}
-
-function showContextMenu(x, y, buddyName) {
-  const $menu = $('<div>', {
-    id: 'customContextMenu',
-    css: {
-      position: 'absolute',
-      top: y,
-      left: x,
-      zIndex: 99999,
-      display: 'block',
-      background: 'white',
-      border: '1px solid #ccc',
-      padding: '10px',
-      cursor: 'pointer'
-    }
-  }).append($('<ul>').append(
-    $('<li>').text('View Profile').on('click', () => openProfile(buddyName))
-  ));
-
-  function openProfile(buddyName) {
-    console.log('Opening profile for ' + buddyName);
-    if (bp.admin) {
-      bp.open('admin-profile', { context: buddyName });
-    } else {
-      bp.open('user-profile', { context: buddyName });
-    }
-  }
-
-  $('#customContextMenu').remove();
-  $('body').append($menu);
-
-  $(document).one('click', function () {
-    $('#customContextMenu').remove();
+    this.showContextMenu(e.pageX, e.pageY, buddyName);
   });
 }

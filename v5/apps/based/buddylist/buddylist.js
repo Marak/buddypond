@@ -10,6 +10,7 @@ import openChatWindow from "./lib/openChatWindow.js";
 import generateDefaultProfile from "./lib/generateDefaultProfile.js";
 import defaultChatWindowButtons from "./lib/defaultChatWindowButtons.js";
 import sortBuddyList from "./lib/sortBuddyList.js";
+import showContextMenu from "./lib/showContextMenu.js";
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -567,6 +568,7 @@ BuddyList.prototype.buddylistUIEvents = buddylistUIEvents;
 BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
 BuddyList.prototype.sortBuddyList = sortBuddyList;
+BuddyList.prototype.showContextMenu = showContextMenu;
 
 BuddyList.prototype.logout = function () {
 
