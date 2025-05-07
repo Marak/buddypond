@@ -22,12 +22,16 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
   }
 
   let now = new Date().getTime();
+  let diff = now - buddydata.utime;
+  console.log('checking timeout', buddyname, buddydata.utime, diff);
   if (now - buddydata.utime > buddyTimeoutsInterval) { // --2 keepAlives + buffer ( for now )
+    console.log('buddy has timed out', buddyname, buddydata.utime, diff);
     buddydata.isConnected = false;
   }
 
   // set a timeout to remove the buddy from the list if they are offline
   if (buddydata.isConnected) {
+    console.log('buddy is connected, creating timeout', buddyname, buddydata.utime, diff);
     // clear the timeout if it exists
     if (this.bp.buddyTimeouts[buddyname]) {
       clearTimeout(this.bp.buddyTimeouts[buddyname]);
@@ -45,6 +49,7 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
           newMessages: false
         }
       };
+      console.log('buddy has timed out, calling renderOrUpdateBuddyInBuddyList', buddyname, _data);
       renderOrUpdateBuddyInBuddyList.call(this, _data, false);
     }, buddyTimeoutsInterval);
   }
