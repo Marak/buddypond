@@ -69,7 +69,7 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
     exists.remove();
   }
 
-  let buddyListItem = `<li data-buddy="${buddyname}" class="buddy-message-sender">
+  let buddyListItem = `<li data-buddy="${buddyname}" data-utime="${buddydata.utime}" class="buddy-message-sender">
                           <span class="buddy-status">${newMessages}${connectedStatusIcon}${isCalling}</span> 
                           <a data-buddy="${buddyname}" class="message-buddy" href="#" draggable="false">${buddyname}</a>
                         </li>`;
@@ -100,6 +100,7 @@ function sortBuddyList() {
   let buddyItems = Array.from(document.querySelectorAll('.buddylist li'));
 
   buddyItems.sort((a, b) => {
+    // Sort by status (online 🟢 first)
     let aStatus = a.querySelector('.buddy-status').textContent.includes('🟢') ? 0 : 1;
     let bStatus = b.querySelector('.buddy-status').textContent.includes('🟢') ? 0 : 1;
 
@@ -107,7 +108,16 @@ function sortBuddyList() {
       return aStatus - bStatus; // Online first
     }
 
-    return a.dataset.buddy.localeCompare(b.dataset.buddy); // Alphabetical order
+    // Sort by utime (most recent first)
+    let aUtime = parseInt(a.dataset.utime || 0);
+    let bUtime = parseInt(b.dataset.utime || 0);
+    console.log('sorting by utime', a.dataset.buddy, aUtime, b.dataset.buddy, bUtime);
+    if (aUtime !== bUtime) {
+      return bUtime - aUtime; // Higher utime (more recent) first
+    }
+
+    // Sort by name (alphabetical)
+    return a.dataset.buddy.localeCompare(b.dataset.buddy);
   });
 
   let buddyList = document.querySelector('.buddylist');
