@@ -31,7 +31,7 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
     // clear the timeout if it exists
     if (this.bp.buddyTimeouts[buddyname]) {
       clearTimeout(this.bp.buddyTimeouts[buddyname]);
-      delete this.buddyTimeouts[buddyname];
+      delete this.bp.buddyTimeouts[buddyname];
     }
     this.bp.buddyTimeouts[buddyname] = setTimeout(() => {
       let _data = {
