@@ -44,14 +44,14 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
           buddyname: buddyname,
           isConnected: false,
           status: 'offline',
-          utime: 0,
+          utime: new Date().getTime(),
           dtime: new Date().getTime(),
           newMessages: false
         }
       };
       console.log('buddy has timed out, calling renderOrUpdateBuddyInBuddyList', buddyname, _data);
       renderOrUpdateBuddyInBuddyList.call(this, _data, false);
-    }, buddyTimeoutsInterval);
+    }, buddyTimeoutsInterval * 1.5);
   }
 
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
