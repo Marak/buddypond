@@ -553,7 +553,7 @@ function findAllHashPondNames(text) {
   // Regex: # followed by at least one letter/digit, then optional letters/digits/underscores/hyphens
   // Requires space or start of string before #, supports Unicode
   const hashPondNameRegex = /(^|\s)#([a-zA-Z0-9\p{L}][a-zA-Z0-9\p{L}_-]*)/gu;
-  return Array.from(decodedText.matchAll(hashPondNameRegex), m => m[2].toLowerCase());
+  return Array.from(decodedText.matchAll(hashPondNameRegex), m => m[2]);
 }
 
 function decodeEntities(text) {
