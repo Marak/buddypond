@@ -9,6 +9,7 @@ import buddylistUIEvents from "./lib/buddylistUIEvents.js";
 import openChatWindow from "./lib/openChatWindow.js";
 import generateDefaultProfile from "./lib/generateDefaultProfile.js";
 import defaultChatWindowButtons from "./lib/defaultChatWindowButtons.js";
+import sortBuddyList from "./lib/sortBuddyList.js";
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -171,7 +172,7 @@ export default class BuddyList {
 
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
-        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
+        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data, true));
         this.bp.on('profile::buddy::out', 'remove-buddy-from-buddylist', data => {
 
             console.log('profile::buddy::out', data);
@@ -565,6 +566,7 @@ BuddyList.prototype.processBuddylist = processBuddylist;
 BuddyList.prototype.buddylistUIEvents = buddylistUIEvents;
 BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
+BuddyList.prototype.sortBuddyList = sortBuddyList;
 
 BuddyList.prototype.logout = function () {
 
