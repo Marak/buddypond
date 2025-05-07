@@ -265,6 +265,7 @@ export default async function renderChatMessage(message, _chatWindow) {
       cardData.message = message; // TODO probably should clone for CardManager, etc
       // default JSON rendering will now fail by default due to nested messages cards with arbitrary props ( no .data scope either ), .context might be good...
       let cardManager = this.bp.apps.card.cardManager;
+      // console.log('cardManager.loadCard', cardData);
       const _card = await cardManager.loadCard(cardData.type, cardData);
       container = document.createElement('div');
       container.classList.add('cardContainer');
@@ -523,9 +524,6 @@ function parseMarkdownWithoutPTags(markdown) {
   
   let html = marked.parse(markdown);
 
-
-
-
   return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
   // Explanation:
   // ^<p>       → Matches the opening <p> at the start
@@ -535,7 +533,7 @@ function parseMarkdownWithoutPTags(markdown) {
 }
 
 
-function findAllHashPondNames(text) {
+function findAllHashPondNamesOld(text) {
   // Given a string such as "The #test room is good also is #music"
   // return an array of all the pond names without the '#' symbol
   // TODO: may need a safe regex helper for bp
@@ -547,4 +545,26 @@ function findAllHashPondNames(text) {
     matches.push(match[1]); // match[1] contains the pond name without '#'
   }
   return matches;
+}
+
+function findAllHashPondNames(text) {
+  // Decode HTML entities more comprehensively
+  const decodedText = decodeEntities(text);
+  // Regex: # followed by at least one letter/digit, then optional letters/digits/underscores/hyphens
+  // Requires space or start of string before #, supports Unicode
+  const hashPondNameRegex = /(^|\s)#([a-zA-Z0-9\p{L}][a-zA-Z0-9\p{L}_-]*)/gu;
+  return Array.from(decodedText.matchAll(hashPondNameRegex), m => m[2].toLowerCase());
+}
+
+function decodeEntities(text) {
+  const entities = {
+    '&amp;': '&',
+    '&quot;': '"',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&apos;': "'",
+    '&nbsp;': ' ',
+    // Add more as needed
+  };
+  return text.replace(/&[a-zA-Z0-9#]+;/g, match => entities[match] || match);
 }
