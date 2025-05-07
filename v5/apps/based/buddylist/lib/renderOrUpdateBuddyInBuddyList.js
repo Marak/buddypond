@@ -69,7 +69,25 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
     exists.remove();
   }
 
-  let buddyListItem = `<li data-buddy="${buddyname}" data-utime="${buddydata.utime}" class="buddy-message-sender">
+  let lastSeen = buddydata.utime ? buddydata.utime : 0;
+  let lastSeenDate = new Date(lastSeen);
+  let lastSeenString = '';
+  
+  try {
+    lastSeenString = 'Last seen: ' + lastSeenDate.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+  } catch (err) {
+    console.log('Error formatting last seen date', err);
+  }
+
+  let buddyListItem = `<li data-buddy="${buddyname}" data-utime="${buddydata.utime}" class="buddy-message-sender" title="${lastSeenString}">
                           <span class="buddy-status">${newMessages}${connectedStatusIcon}${isCalling}</span> 
                           <a data-buddy="${buddyname}" class="message-buddy" href="#" draggable="false">${buddyname}</a>
                         </li>`;
