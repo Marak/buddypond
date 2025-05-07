@@ -1,7 +1,6 @@
 // TODO: we may need a timer here client-side to check now - buddydata.utime is too long
 // which indicates the buddy is offline and stopped sending keepAlives
-let buddyTimeoutsInterval = 30000; // 30 seconds
-
+let buddyTimeoutsInterval = 60000; // 60 seconds
 
 export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false) {
   let bp = this.bp;
@@ -23,7 +22,7 @@ export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false
   }
 
   let now = new Date().getTime();
-  if (now - buddydata.utime > 30000) { // --2 keepAlives + buffer ( for now )
+  if (now - buddydata.utime > buddyTimeoutsInterval) { // --2 keepAlives + buffer ( for now )
     buddydata.isConnected = false;
   }
 
