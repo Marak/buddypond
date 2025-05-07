@@ -1,18 +1,53 @@
 // TODO: we may need a timer here client-side to check now - buddydata.utime is too long
 // which indicates the buddy is offline and stopped sending keepAlives
+let buddyTimeoutsInterval = 30000; // 30 seconds
 
-export default function renderOrUpdateBuddyInBuddyList(data) {
+
+export default function renderOrUpdateBuddyInBuddyList(data, buddy_added = false) {
   let bp = this.bp;
   let buddyname = data.name;
   let buddydata = data.profile;
+
+  this.bp.buddyTimeouts = this.bp.buddyTimeouts || {};
+
+  // console.log('renderOrUpdateBuddyInBuddyList', buddy_added, buddyname, buddydata);
 
   if (buddydata.status === 'online') {
     buddydata.isConnected = true;
   }
 
+  // clear the timeout if it exists
+  if (this.bp.buddyTimeouts[buddyname]) {
+    clearTimeout(this.bp.buddyTimeouts[buddyname]);
+    delete this.bp.buddyTimeouts[buddyname];
+  }
+
   let now = new Date().getTime();
   if (now - buddydata.utime > 30000) { // --2 keepAlives + buffer ( for now )
     buddydata.isConnected = false;
+  }
+
+  // set a timeout to remove the buddy from the list if they are offline
+  if (buddydata.isConnected) {
+    // clear the timeout if it exists
+    if (this.bp.buddyTimeouts[buddyname]) {
+      clearTimeout(this.bp.buddyTimeouts[buddyname]);
+      delete this.buddyTimeouts[buddyname];
+    }
+    this.bp.buddyTimeouts[buddyname] = setTimeout(() => {
+      let _data = {
+        name: buddyname,
+        profile: {
+          buddyname: buddyname,
+          isConnected: false,
+          status: 'offline',
+          utime: 0,
+          dtime: new Date().getTime(),
+          newMessages: false
+        }
+      };
+      renderOrUpdateBuddyInBuddyList.call(this, _data, false);
+    }, buddyTimeoutsInterval);
   }
 
   let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
