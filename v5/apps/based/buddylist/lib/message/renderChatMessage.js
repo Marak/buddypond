@@ -3,17 +3,11 @@
 // and removing any potential dead code ( while being very careful to not remove anythign that is needed )
 
 import forbiddenNotes from '../forbiddenNotes.js';
-import renderGeoFlag from './renderGeoFlag.js';
 import isValidUrl from './isValidUrl.js';
 import isValidYoutubeLink from './isValidYoutubeLink.js';
 import isValidGithubLink from './isValidGithubLink.js';
 
 let scrollTimeout = null;
-
-// TODO: make useMarkdown a user setting
-let useMarkdown = true;
-// TODO: make allowHTML a user setting
-let allowHTML = true;
 
 export default async function renderChatMessage(message, _chatWindow) {
   console.log('renderChatMessage', message, _chatWindow);
@@ -278,112 +272,9 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   let bp = this.bp;
 
-  // TODO: move this to separate file first
-  function renderMessage(message, messageTime, chatWindow, container) {
-    // Create elements
-    let chatMessage = document.createElement('div');
-    chatMessage.className = 'chatMessage';
+  
 
-    // Prepare the date-time display
-    let dateTimeSpan = document.createElement('span');
-    dateTimeSpan.className = 'datetime';
-    dateTimeSpan.textContent = messageTime;
-
-    // Determine message sender and apply styles
-    let senderText;
-    if (message.from === 'anonymous') {
-      // Include a tripcode for anonymous messages; use a default if none provided
-      let tripcode = message.tripcode || 'tr1pc0d3';
-      senderText = `${message.from} (${tripcode}): `;
-    } else {
-      // For non-anonymous users, just use the username followed by a colon
-      senderText = `${message.from}: `;
-    }
-
-    let messageSender = document.createElement('span');
-    // TODO: remove from messageSender, use parent element
-    messageSender.setAttribute('data-from', message.from);
-    messageSender.setAttribute('data-to', message.to);
-    messageSender.setAttribute('data-type', message.type);
-
-    let messageClass = message.from === bp.me ? '' : 'purple';
-    messageSender.className = messageClass;
-    messageSender.classList.add('buddy-message-sender');
-    messageSender.textContent = senderText;
-
-    // Prepare geoFlag (assuming renderGeoFlag is a function returning an element)
-    let geoFlag = renderGeoFlag(message);
-
-    // Combine elements for the sender
-    messageSender.prepend(geoFlag);  // Prepend geoFlag to the sender span
-
-
-    // render as markdown ( if enabled )
-    // TODO: should probably be a markdown registered as messagesProcessor with SystemsManager
-    if (useMarkdown) {
-      message.text = parseMarkdownWithoutPTags(message.text);
-      // console.log('message.text', message.text)
-    }
-
-    // Prepare the message content span
-    let messageContent = document.createElement('span');
-    messageContent.className = `message ${messageClass}`;
-
-    if (allowHTML) {
-      $(messageContent).html(message.text);
-      //messageContent.textContent = message.text; // Assuming 'message.text' contains the message text
-
-    }
-
-    // Combine all parts into the chatMessage
-    chatMessage.appendChild(dateTimeSpan);
-    chatMessage.appendChild(messageSender);
-    chatMessage.appendChild(messageContent);
-    chatMessage.appendChild(document.createElement('br'));
-
-    const aimMessages = chatWindow.content.querySelector('.aim-messages');
-
-    if (container) {
-      chatMessage.appendChild(container);
-    } else {
-
-    }
-    chatMessage.setAttribute('data-id', message.id);
-    chatMessage.setAttribute('data-from', message.from);
-    chatMessage.setAttribute('data-to', message.to);
-    chatMessage.setAttribute('data-type', message.type);
-    chatMessage.setAttribute('data-uuid', message.uuid);
-
-    // Since images may be lazy loaded we won't know their height until they load
-    // After each image loads attempt to scroll to the bottom
-    // Without this code, the scroll to bottom functionality will not scroll all the way down
-    $(chatMessage).find('img').on('load', function () {
-      // Scroll again after each image loads
-      scrollToBottom();
-    });
-
-    // Find all messages in chat ordered by data-id
-    let allMessages = Array.from(aimMessages.querySelectorAll('.chatMessage'));
-    let inserted = false;
-
-    // Iterate over existing messages to find the correct insertion point
-    for (let existingMessage of allMessages) {
-      let existingId = parseInt(existingMessage.getAttribute('data-id'), 10);
-      if (message.id < existingId) {
-        aimMessages.insertBefore(chatMessage, existingMessage); // Insert before the first larger ID
-        inserted = true;
-        break;
-      }
-    }
-
-    // If no larger ID was found, append it to the end
-    if (!inserted) {
-      aimMessages.appendChild(chatMessage);
-    }
-
-  }
-
-  renderMessage(message, messageTime, chatWindow, container);
+  this.createChatMessageElement(message, messageTime, chatWindow, container);
 
   // Example usage: renderMessage(messageObject, '12:00 PM', chatWindowObject);
 
@@ -438,117 +329,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
 // TODO: add via addMessageProcessor() on `marked` and `pond` apps
 
-// Function to remove outer <p> tags
-function parseMarkdownWithoutPTags(markdown) {
 
-  /*
-  const customElementExtension = {
-    extensions: [{
-      name: 'custom-element',
-      level: 'inline', // or 'block' depending on your element
-      start(src) { return src.match(/::custom::/)?.[0].length; },
-      tokenizer(src, tokens) {
-        const match = src.match(/::custom::(.*?)::custom::/);
-        if (match) {
-          return {
-            type: 'custom-element',
-            raw: match[0],
-            text: match[1].trim(),
-          };
-        }
-      },
-      renderer(token) {
-        return `<h1>${token.text}</h1>`;
-      }
-    }], 
-  };
-
-  // Apply the custom tokenizer and renderer
-  marked.use(customElementExtension);
-  */
-
-
-  // Supported colors and styles
-  const supportedColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'black', 'white', 'gray', 'cyan', 'magenta', 'pink'];
-  const supportedStyles = ['bold', 'italic', 'underline', 'strike', 'blink', 'reverse', 'hidden', 'dim', 'rainbow'];
-  
-  const styleExtension = {
-    name: 'style',
-    level: 'inline',
-  
-    tokenizer(src) {
-      const match = /^((?:\w+\.)*\w+)\(\s*([\s\S]+?)\s*\)/.exec(src);
-      if (match) {
-        const raw = match[0];
-        const modifiers = match[1].split('.');
-        const text = match[2];
-  
-        const isValid = modifiers.every(mod => supportedColors.includes(mod) || supportedStyles.includes(mod));
-        if (!isValid) return;
-  
-        return {
-          type: 'style',
-          raw,
-          modifiers,
-          text,
-          tokens: this.lexer.inlineTokens(text)
-        };
-      }
-    },
-  
-    renderer(token) {
-      let content = this.parser.parseInline(token.tokens);
-  
-      // Apply modifiers in reverse order to maintain proper nesting
-      token.modifiers.reverse().forEach(mod => {
-        if (supportedColors.includes(mod)) {
-          content = `<span style="color: ${mod};">${content}</span>`;
-        } else if (mod === 'bold') {
-          content = `<strong>${content}</strong>`;
-        } else if (mod === 'italic') {
-          content = `<em>${content}</em>`;
-        } else if (mod === 'underline') {
-          content = `<u>${content}</u>`;
-        } else if (mod === 'strike') {
-          content = `<s>${content}</s>`;
-        } else if (mod === 'blink') {
-          // Using CSS animation instead of deprecated <blink> tag
-          content = `<span style="animation: blink 1s step-start infinite;">${content}</span>`;
-        } else if (mod === 'reverse') {
-          content = content.split('').reverse().join('');
-        } else if (mod === 'hidden') {
-          content = `<span style="visibility: hidden;" onmouseover="this.style.visibility='visible'" onmouseout="this.style.visibility='hidden'">${content}</span>`;
-        } else if (mod === 'dim') {
-          content = `<span style="opacity: 0.5;">${content}</span>`;
-        } else if (mod === 'rainbow') {
-          content = content
-            .split('')
-            .map((char, i) => `<span style="color: hsl(${(i * 360) / content.length}, 100%, 50%);">${char}</span>`)
-            .join('');
-        }
-      });
-  
-      return content;
-    },
-  
-    walkTokens(token) {
-      if (token.type === 'style') {
-        console.log(`Detected style token: ${token.modifiers.join('.')}`);
-      }
-    }
-  };
-  
-  marked.use({ extensions: [styleExtension] });
-  
-  let html = marked.parse(markdown);
-
-  return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
-  // Explanation:
-  // ^<p>       → Matches the opening <p> at the start
-  // (.*?)      → Captures the content inside (non-greedy)
-  // <\/p>\s*$  → Matches the closing </p> with optional trailing whitespace
-  // $1         → Returns only the captured content
-}
 
 
 function findAllHashPondNamesOld(text) {

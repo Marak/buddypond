@@ -3,6 +3,7 @@
 
 import processBuddylist from "./lib/processProfile.js";
 import renderOrUpdateBuddyInBuddyList from "./lib/renderOrUpdateBuddyInBuddyList.js";
+import createChatMessageElement from "./lib/message/createChatMessageElement.js";
 import renderChatMessage from "./lib/message/renderChatMessage.js";
 import renderBuddyRequests from "./lib/renderBuddyRequests.js";
 import buddylistUIEvents from "./lib/buddylistUIEvents.js";
@@ -564,6 +565,7 @@ export default class BuddyList {
 }
 
 BuddyList.prototype.renderOrUpdateBuddyInBuddyList = renderOrUpdateBuddyInBuddyList;
+BuddyList.prototype.createChatMessageElement = createChatMessageElement;
 BuddyList.prototype.renderChatMessage = renderChatMessage;
 BuddyList.prototype.renderBuddyRequests = renderBuddyRequests;
 BuddyList.prototype.processBuddylist = processBuddylist;
