@@ -126,15 +126,21 @@ export default class Themes {
     }
   
     applyTheme(themeName) {
+      console.log('aaaa', this.themes, themeName);
+      // alert(`applyTheme: ${themeName}`);
       const theme = this.themes[themeName];
       if (!theme) return;
   
+
+
       for (const prop in theme.styles) {
         for (const attr in theme.styles[prop]) {
           $(this.themeMappings[prop]).css(attr, theme.styles[prop][attr]);
         }
       }
-  
+
+      bp.set('active_theme', themeName);
+      console.log("ttt", theme)
       if (theme.wallpaper) {
         //alert(`wallpaper_name: ${theme.wallpaper.name}`);
         bp.set('wallpaper_name', theme.wallpaper.name);

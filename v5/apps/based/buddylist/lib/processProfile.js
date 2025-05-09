@@ -93,6 +93,7 @@ function _processBuddylistData(buddylist, buddylistData) {
       let buddyName = b.replace('buddies/', '');
       // check to see if the buddy is already in the local buddylist
       // if not, render the buddy in the buddylist
+      /*
       if (!buddylist.data.buddylist[b]) {
         if (buddy.isConnected) {
           buddylist.bp.emit('profile::buddy::in', {
@@ -110,7 +111,8 @@ function _processBuddylistData(buddylist, buddylistData) {
             wasOnline: false
           });
         }
-      }
+      }*/
+
 
       buddylist.renderOrUpdateBuddyInBuddyList({
         name: buddyName,

@@ -173,7 +173,7 @@ export default class BuddyList {
 
         this.bp.on('profile::buddylist', 'process-buddylist', ev => this.processBuddylist(ev.data));
 
-        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data, true));
+        this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
         this.bp.on('profile::buddy::out', 'remove-buddy-from-buddylist', data => {
 
             console.log('profile::buddy::out', data);

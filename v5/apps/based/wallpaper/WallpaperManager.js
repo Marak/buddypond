@@ -37,7 +37,9 @@ export default class WallpaperManager {
 
 
         bp.on('settings::wallpaper_color', 'update-wallpaper-bg-color', (color) => {
-            this.wallpapers[this.active].changeColor(color);
+            if (this.wallpapers[this.active]) {
+                this.wallpapers[this.active].changeColor(color);
+            }
         });
 
     }

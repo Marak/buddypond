@@ -1,7 +1,7 @@
 window.bp_v_5 = async function bp_v_5() {
     await bp.load('error-tracker', {
-        apiEndpoint: 'https://errors.buddypond.com/error',
-        // apiEndpoint: 'http://localhost:8787/error',
+        // apiEndpoint: 'https://errors.buddypond.com/error',
+        apiEndpoint: 'https://192.168.200.59:8787/error',
     });
 
     setConfig();
@@ -43,8 +43,6 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('console');
      bp.load('clock');
      bp.load('appstore');
-     bp.load('themes');
-     bp.load('wallpaper');
      bp.load('motd');
      bp.load('say');
      bp.load('droparea');
@@ -119,22 +117,6 @@ function bindUIEvents() {
 
     let d = $(document);
 
-
-    // Delegate click event for .volumeToggle
-    d.on('click', '.volumeToggle', function () {
-        let audio_enabled = localStorage.getItem('audio_enabled');
-        if (audio_enabled === 'true') {
-            localStorage.setItem('audio_enabled', 'false');
-            $('.volumeFull').hide();
-            $('.volumeMuted').show();
-        } else {
-            localStorage.setItem('audio_enabled', 'true');
-            $('.volumeFull').show();
-            $('.volumeMuted').hide();
-            bp.play('desktop/assets/audio/IM.wav', { tryHard: Infinity });
-        }
-    });
-
     // Delegate click event for .loginLink
     d.on('click', '.loginLink', function () {
         bp.open('buddylist');
@@ -158,6 +140,7 @@ function bindUIEvents() {
 
     // Delegate change event for .selectTheme
     d.on('change', '.selectTheme', function () {
+        // alert('set the theme')
         let theme = $(this).val();
         if (theme === 'Customize') {
             bp.open('profile', { context: 'themes' });
@@ -166,7 +149,6 @@ function bindUIEvents() {
             desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
             */
             bp.apps.themes.applyTheme(theme);
-            bp.set('active_theme', theme);
         }
     });
 
@@ -204,13 +186,15 @@ function bindUIEvents() {
         }
     });
 
-
 }
 
 async function loadCoreApps() {
 
     console.log("start ui import")
 
+    await bp.load('wallpaper');
+    await bp.load('themes');
+    
     await bp.importModule({
         name: 'ui',
         parent: $('#desktop').get(0),
@@ -253,6 +237,9 @@ async function loadCoreApps() {
     await bp.load('menubar');
     bp.apps.menubar.load();
 
+    // await bp.load('spellbook');
+    //await bp.open('spellbook');
+    
     // await bp.load('image-search');
 
     // await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);

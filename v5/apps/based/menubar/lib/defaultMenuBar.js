@@ -116,12 +116,12 @@ export default function defaultMenuBar (bp) {
             
           ]
       },
-      /*
+      /*      */
+
       {
         label: 'Help',
         click: () => bp.open('help')
       },
-      */
    
       { label: selectMusicPlaylist, flex: 1 },
       { label: selectTheme },
@@ -134,7 +134,25 @@ export default function defaultMenuBar (bp) {
             window.open(url, '_blank');
         }
       },
-      { label: volumeStr },
+      {
+        label: volumeStr,
+        click: () => {
+            console.log('Volume toggle clicked');
+            
+            if (bp.settings.audio_enabled === false) {
+                bp.set('audio_enabled', true);
+                $('.volumeFull').show();
+                $('.volumeMuted').hide();
+                bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
+            } else {
+                bp.set('audio_enabled', false);
+                $('.volumeFull').hide();
+                $('.volumeMuted').show();
+            }
+            // alert(bp.settings.audio_enabled)
+        }
+        
+      },
       { label: clockStr }
   ];
   

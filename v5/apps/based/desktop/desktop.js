@@ -71,6 +71,14 @@ export default class Desktop {
             this.setWallpaper(this.bp.settings.wallpaper_url);
         }
 
+        console.log('this.bp.settings.active_theme', this.bp.settings.active_theme)
+        if (this.bp.settings.active_theme) {
+            // alert(this.bp.settings.active_theme);
+            this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
+        }
+
+        // if (this.bp.settings.wallpaper) {
+
         // TODO: after launch, port legacy wallpaper app
         // this.setupWallpaper(); // Set initial wallpaper
         return 'loaded desktop';

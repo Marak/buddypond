@@ -15,16 +15,9 @@ export default class Play {
 
     async play(mediaPath, { tryHard = 0, onEnd = () => {}, onError = () => {} } = {}) {
 
-        // check to see if this.bp.config.sound is set to false, if so, we don't play any sounds
-        let audio_enabled = localStorage.getItem('audio_enabled');
-        if (audio_enabled === 'false') {
+        if (this.bp.settings.audio_enabled === false) {
             return;
         }
-        /*
-        if (this.bp.config.sound === false) {
-            return;
-        }
-        */
 
         // Check if media is already playing and if retries are not allowed
         if (Play.playing.get(mediaPath) && !tryHard) {

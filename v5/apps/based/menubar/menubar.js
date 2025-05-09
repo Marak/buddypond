@@ -56,7 +56,26 @@ export default class MenuBar {
         //console.log('Rendering menu with data:', menuData);
 
         this.menuBarElement = new MenuBarClass(menuData).createMenu();
-        //console.log('new menuBarElement', parent, this.menuBarElement);
+        console.log('new menuBarElement', parent, this.menuBarElement);
+
+        // update the default values based on local storage settings
+        // TODO: we may want to move this somewhere else
+        console.log('setting current theme', this.bp.settings.active_theme);
+        if (this.bp.settings.active_theme) {
+            $('.selectTheme', this.menuBarElement).val(this.bp.settings.active_theme);
+        } else {
+            $('.selectTheme', this.menuBarElement).val('Hacker'); // for now
+        }
+        console.log('setting audio', this.bp.settings.audio_enabled);
+        if (this.bp.settings.audio_enabled === false) {
+            $('.volumeFull', this.menuBarElement).hide();
+            $('.volumeMuted', this.menuBarElement).show();
+        } else {
+            $('.volumeFull', this.menuBarElement).show();
+            $('.volumeMuted', this.menuBarElement).hide();
+        }
+        // alert(this.bp.settings.audio_enabled);
+
         parent.appendChild(this.menuBarElement);
     }
 }
