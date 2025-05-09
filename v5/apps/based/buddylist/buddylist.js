@@ -507,7 +507,10 @@ export default class BuddyList {
     }
     */
 
+    // called on open to verify token ( if exists )
+    // signup / login logic is in buddylistUIEvents.js
     handleAuthentication() {
+        
         const api = this.bp.apps.client.api;
         const localToken = localStorage.getItem('qtokenid');
         const me = localStorage.getItem('me');

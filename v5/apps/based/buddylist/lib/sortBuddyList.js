@@ -1,4 +1,11 @@
 export default function sortBuddyList() {
+
+  let buddyList = document.querySelector('.buddylist');
+  if (!buddyList) {
+    console.log('Buddy list not found, unable to sort');
+    return;
+  }
+
   let buddyItems = Array.from(document.querySelectorAll('.buddylist li')); // TODO: more specific selector?
 
   buddyItems.sort((a, b) => {
@@ -25,7 +32,7 @@ export default function sortBuddyList() {
     return a.dataset.buddy.localeCompare(b.dataset.buddy);
   });
 
-  let buddyList = document.querySelector('.buddylist');
+
   buddyList.innerHTML = '';
   buddyItems.forEach(item => buddyList.appendChild(item));
 }

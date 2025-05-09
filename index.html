@@ -108,14 +108,25 @@ window.top.location = 'ie.html';
       let _portfolioEndpoint = 'https://portfolio.buddypond.com';
       let _orderbookEndpoint = 'https://orderbook.buddypond.com';
       let _coinEndpoint = 'https://coin.buddypond.com';
+      let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
+      
+      //_portfolioEndpoint = 'http://127.0.0.1:9002';
+      //_portfolioEndpoint = 'http://192.168.200.59:9002';
+      //_coinEndpoint = 'http://127.0.0.1:9001';
+      // _messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
+
       // _host = 'https://192.168.200.59';
+      //_host = 'http://192.168.64.1'
       // _api = 'https://192.168.200.59';
       // _wsHost = 'wss://192.168.200.59';
       //_host = 'https://localhost'
       // _api = 'https://buddylist.buddypond.com';
-      // _api = 'https://192.168.200.59:8787';
+      //_api = 'https://192.168.200.59:8787';
+      //_api = 'http://192.168.200.59:8787';
       //_api = 'https://192.168.64.1:8787';
-      //_api = 'https://localhost:8787';
+      //_api = 'http://localhost:8787';
+      
+      buddypond.messagesWsEndpoint = _messagesWsEndpoint;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
@@ -176,7 +187,8 @@ window.top.location = 'ie.html';
 
             // set the src of the buddypad to the current path
             let filesSrc = 'https://files.buddypond.com' + currentPath;
-            console.log('setting src to', filesSrc);
+            console.log('Setting BuddyPad src to', filesSrc);
+            console.log(`You may visit ${filesSrc} directly in your browser.`);
             $('#buddypad').attr('src', filesSrc);
 
 

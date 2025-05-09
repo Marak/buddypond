@@ -1,12 +1,14 @@
 // import AutoComplete from '../../ui/AutoComplete/AutoComplete.js'; // using jquery autocomplete ( for now )
 import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
 export default function openChatWindow(data) {
-    this.bp.emit('client::requestWebsocketConnection', 'buddylist');
+    // this.bp.emit('client::requestWebsocketConnection', 'buddylist');
+
+    // attempt to subscribe / open websocket connection to messages ws server
 
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
     let windowTitle = windowType === 'pond' ? 'Pond' : '';
-
+    
     if (data.context) {
         contextName = data.context;
     }
@@ -42,7 +44,10 @@ export default function openChatWindow(data) {
             //console.log('client', client);
             //console.log('client.subscriptions', client.subscriptions);
             
-            client.addSubscription(windowType, contextName);
+            this.bp.apps.client.api.subscribeMessages(windowType, contextName);
+
+            // Old SSE API
+            // client.addSubscription(windowType, contextName);
             
             const _data = { me: this.bp.me };
             if (windowType === 'pond') {
@@ -112,16 +117,14 @@ function setupChatWindow (windowType, contextName, chatWindow) {
                 return true;
             }
         });
-
-
     }
+
     if (this.options.chatWindowButtons) {
         // copy the options
         let chatWindowButtons = this.options.chatWindowButtons.slice();
         if (windowType === 'pond') {
             // filter out any this.options.chatWindowButtons that are buddy specific
             chatWindowButtons = chatWindowButtons.filter((button) => {
-                console.log('checking button', button);
                 return button.type !== 'buddy-only';
             });
         }

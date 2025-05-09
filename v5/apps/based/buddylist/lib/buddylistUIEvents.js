@@ -12,7 +12,11 @@ export default function buddylistUIEvents() {
     }
     api.authBuddy(username, password, function (err, result) {
       if (err) {
-        $('.loginForm .error').text('Failed to authenticate buddy');
+        if (result && result.error) {
+          $('.loginForm .error').text(result.error);
+        } else {
+          $('.loginForm .error').text('Failed to authenticate buddy');
+        }
         $('.password').show();
         console.error('Failed to authenticate buddy:', err);
         return;
@@ -131,7 +135,7 @@ export default function buddylistUIEvents() {
       $('#customContextMenu').addClass('disabled');
     }
 
-    let from = chatMessage.attr('data-form');
+    let from = chatMessage.attr('data-from');
     let to = chatMessage.attr('data-to');
     let uuid = chatMessage.attr('data-uuid');
     let type = chatMessage.attr('data-type');

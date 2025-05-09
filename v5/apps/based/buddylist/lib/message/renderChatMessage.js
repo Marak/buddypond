@@ -8,7 +8,7 @@ import isValidUrl from './isValidUrl.js';
 import isValidYoutubeLink from './isValidYoutubeLink.js';
 import isValidGithubLink from './isValidGithubLink.js';
 
-let scrollTimeout;
+let scrollTimeout = null;
 
 // TODO: make useMarkdown a user setting
 let useMarkdown = true;
@@ -16,7 +16,7 @@ let useMarkdown = true;
 let allowHTML = true;
 
 export default async function renderChatMessage(message, _chatWindow) {
-  // console.log('renderChatMessage', message, _chatWindow);
+  console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
   // console.log('renderChatMessage', message);
   // console.log('current state', this.bp.apps.buddylist.data.profileState)
@@ -93,11 +93,13 @@ export default async function renderChatMessage(message, _chatWindow) {
   }
 
   // if there is a #pondname in the message, add a pond card type
-  let pondNames = findAllHashPondNames(message.text);
-  if (pondNames.length > 0) {
-    message.card = {
-      type: 'pond',
-      pondNames: pondNames
+  if (message.text && message.text.length > 0) {
+    let pondNames = findAllHashPondNames(message.text);
+    if (pondNames.length > 0) {
+      message.card = {
+        type: 'pond',
+        pondNames: pondNames
+      }
     }
   }
 
@@ -393,11 +395,27 @@ export default async function renderChatMessage(message, _chatWindow) {
   function scrollToBottom() {
     const lastElement = $('.message', chatWindow.content).last()[0];
     if (lastElement) {
-      clearInterval(scrollTimeout);
-      scrollTimeout = setTimeout(function () {
-        // console.log('scrolling to bottom', lastElement);
-        lastElement.scrollIntoView({ behavior: 'instant' });
-      }, 1);
+      // Clear any existing timeout or interval
+      clearTimeout(scrollTimeout);
+      clearInterval(scrollTimeout); // In case it was an interval
+  
+      // Function to attempt scrolling
+      const tryScroll = () => {
+        if (chatWindow.content.offsetParent !== null) {
+          // Chat window is visible, scroll to last element
+          lastElement.scrollIntoView({ behavior: 'instant' });
+        } else {
+          // Not visible, retry every 5ms
+          scrollTimeout = setInterval(() => {
+            if (chatWindow.content.offsetParent !== null) {
+              clearInterval(scrollTimeout); // Stop retrying
+              lastElement.scrollIntoView({ behavior: 'instant' });
+            }
+          }, 5);
+        }
+      };
+      // Start the scroll attempt
+      tryScroll();
     }
   }
 

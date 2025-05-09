@@ -17,7 +17,7 @@ buddypond.supportedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
 buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 
-buddypond.supportedImageTypesExt = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico' ];
+buddypond.supportedImageTypesExt = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
 buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
 
 // legacy v4 API
@@ -41,6 +41,105 @@ buddypond.endpoint = 'https://buddylist.buddypond.com/api/v6';
 
 buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
 
+// buddypond.uploadsEndpoint = 'https://192.168.200.59:9004';
+// buddypond.messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
+
+buddypond.messagesWsClients = new Map();
+buddypond.subscribeMessages = function subscribeMessages(type, context) {
+  console.log(`subscribeMessages subscribing to ${type}/${context}`);
+  let chatId = type + '/' + context;
+
+  if (type === 'buddy') {
+    // if the context is a buddy, we need to create a unique chatId to represent the tuple
+    // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+    let buddyNames = [buddypond.me, context].sort();
+    chatId = type + '/' + buddyNames.join('/');
+  }
+
+  // check if an entry exists in the map
+  if (!buddypond.messagesWsClients.has(chatId)) {
+    console.log(`buddypond.messagesWsClients does not have ${chatId}, creating new entry`);
+    let wsClient = new WebSocket(buddypond.messagesWsEndpoint + '?me=' + buddypond.me + '&qtokenid=' + buddypond.qtokenid + '&chatId=' + chatId);
+    buddypond.messagesWsClients.set(chatId, wsClient);
+    wsClient.onopen = function () {
+      console.log('WebSocket connection opened to', chatId);
+      // request the history of messages for this chat
+      wsClient.send(JSON.stringify({
+        action: 'getHistory',
+        chatId: chatId,
+        buddyname: buddypond.me,
+        qtokenid: buddypond.qtokenid
+      }));
+    };
+
+    wsClient.onmessage = function (event) {
+      console.log('got back from server', event.data);
+      let parseData = JSON.parse(event.data);
+      console.log('WebSocket message received:', parseData);
+      if (parseData.action === 'message') {
+        console.log('WebSocket message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+      }
+      if (parseData.action === 'getHistory') {
+        console.log('getHistory message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: parseData.messages } });
+      }
+    };
+  }
+  /*
+  if (!buddypond.messagesWs) {
+    // buddypond.messagesWs = new WebSocket(buddypond.messagesWsEndpoint);
+    // create a new WebSocket connection with "x-me" header
+    let chatId = type + '/' + context;
+
+    buddypond.messagesWs = new WebSocket(buddypond.messagesWsEndpoint + '?me=' + buddypond.me + '&qtokenid=' + buddypond.qtokenid + '&chatId=' + chatId);
+    buddypond.messagesWs.onopen = function () {
+      console.log('WebSocket connection opened');
+      buddypond.messagesWs.send(JSON.stringify({
+        action: 'subscribe',
+        chatId: chatId,
+        buddyname: buddypond.me,
+        qtokenid: buddypond.qtokenid
+      }));
+    };
+
+    buddypond.messagesWs.onmessage = function (event) {
+      console.log('WebSocket message received:', event.data);
+      let parseData = JSON.parse(event.data);
+      if (parseData.action === 'sent') {
+        console.log('WebSocket message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+      }
+      if (parseData.type === 'history') {
+        console.log('WebSocket message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: parseData.messages } });
+      }
+
+
+    };
+
+    buddypond.messagesWs.onclose = function () {
+      console.log('WebSocket connection closed');
+    };
+
+    buddypond.messagesWs.onerror = function (error) {
+      console.error('WebSocket error:', error);
+    }
+
+  } else {
+    // already connected, subscribe to the new chat
+    let chatId = type + '/' + context;
+    console.log(`buddypond.messagesWs already connected, subscribing to ${chatId}`);
+    buddypond.messagesWs.send(JSON.stringify({
+      action: 'subscribe',
+      chatId: chatId,
+      buddyname: buddypond.me,
+      qtokenid: buddypond.qtokenid
+    }));
+  }
+    */
+
+}
 //buddypond.uploadsEndpoint = 'https://uploads-dev.buddypond.com';
 //buddypond.uploadsEndpoint = 'https://bp-storage-dev.cloudflare1973.workers.dev';
 
@@ -275,16 +374,16 @@ function preprocessDeepSeek(data) {
           }
         }
       });
-  
+
     }
   }
 
-  console.log('new data', data);  
+  console.log('new data', data);
 
 }
 
 buddypond.keepAlive = function keepalive() {
-  console.log('Keepalive ping sent');
+  // console.log('Keepalive ping sent');
   apiRequest('/buddylist/' + buddypond.me + '/keepAlive', 'POST', {
     buddyname: buddypond.me,
     qtokenid: buddypond.qtokenid,
@@ -311,9 +410,41 @@ buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
     }
   };
   preprocessDeepSeek(msg);
+  console.log('attempting to send message', msg);
+
+  console.log('Buddy', `About to send a Buddy message: ${msg.text} -> ${msg.type}/${msg.to}`);
+  console.log(msg);
+
+  // get the ws connection from Map based on the chatId
+  let chatId = msg.type + '/' + msg.to;
+
+  // if the context is a buddy, we need to create a unique chatId to represent the tuple
+  // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+  let buddyNames = [buddypond.me, msg.to].sort();
+  chatId = 'buddy/' + buddyNames.join('/');
+
+
+
+  let wsClient = buddypond.messagesWsClients.get(chatId);
+  if (!wsClient) {
+    console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+  }
+
+  // send the message via ws connection
+  wsClient.send(JSON.stringify({
+    action: 'send',
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    message: msg
+  }));
+
+
+  /*
   apiRequest('/buddy/' + buddyName + '/send', 'POST', msg, function (err, data) {
     cb(err, data);
   });
+  */
 }
 
 buddypond.sendCardMessage = function sendCardMessage(message, cb) {
@@ -355,12 +486,33 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
   }
 
   // console.log('nonCircularMsg', nonCircularMsg);
+  console.log('Pond', `About to send a Pond message: ${nonCircularMsg.text} -> ${nonCircularMsg.type}/${nonCircularMsg.to}`);
+  nonCircularMsg.action = 'send';
+  console.log(nonCircularMsg)
 
-  apiRequest('/pond/' + pondname + '/send', 'POST', nonCircularMsg, function (err, data) {
-    cb(err, data);
-  })
+  // get the ws connection from Map based on the chatId
+  let chatId = nonCircularMsg.type + '/' + nonCircularMsg.to;
+  let wsClient = buddypond.messagesWsClients.get(chatId);
+  if (!wsClient) {
+    console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+  }
+
+  let chatHistory = nonCircularMsg.chatHistory || null;
+  delete nonCircularMsg.chatHistory;
+
+  // send the message via ws connection
+  wsClient.send(JSON.stringify({
+    action: 'send',
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    message: nonCircularMsg,
+    chatHistory: chatHistory
+  }));
+
+  console.log('Pond', `Sent a Pond message: ${nonCircularMsg.text} -> ${nonCircularMsg.type}/${nonCircularMsg.to}`);
+
 }
-
 
 buddypond.castSpell = async function castSpell(buddyName, spellName, cb) {
   cb = cb || function noop(err, re) {
@@ -594,7 +746,7 @@ buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, c
 //                    and should be replaced with buddypond.uploadFile()
 //                    This function is still used by legacy: desktop.paint, desktop.gifstudio, desktop.mirror
 //                    TODO: port all those apps to new v5 API     
-buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, delay, source, cb) {
+buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, source, cb) {
   let x = (new TextEncoder().encode(snapsJSON)).length;
   console.log('Snaps', `About to send a Snap: ${x} bytes -> ${type}/${name}`);
   console.log('type', type, 'name', name, 'text', text, 'snapsJSON', snapsJSON, 'delay', delay);
@@ -669,7 +821,7 @@ buddypond.sendSnaps = function pondSendMessage(type, name, text, snapsJSON, dela
   });
 
 }
-buddypond.sendAudio = function pondSendMessage(type, name, text, audioJSON, cb) {
+buddypond.sendAudio = function sendAudio(type, name, text, audioJSON, cb) {
   let x = (new TextEncoder().encode(audioJSON)).length;
   console.log('Sounds', `About to send an Audio: ${x} bytes -> ${type}/${name}`);
 
@@ -969,7 +1121,20 @@ buddypond.logout = function logout() {
 // TODO: refactor this and remove legacy
 // TODO: add back API data tracking with usage stats
 function apiRequest(uri, method, data, cb) {
-  let url = buddypond.endpoint + uri;
+  let url;
+
+  // check to see if uri starts with /buddy/ or /pond/
+  // if so, we should use buddypond.messageEndpoint
+  if (uri.startsWith('/buddy/') || uri.startsWith('/pond/')) {
+    url = buddypond.messageEndpoint + uri;
+  } else {
+    url = buddypond.endpoint + uri;
+  }
+
+  url = buddypond.endpoint + uri;
+
+
+
   // console.log("making apiRequest", url, method, data);
 
   let headers = {
@@ -1002,7 +1167,14 @@ function apiRequest(uri, method, data, cb) {
     .then(response => {
       clearTimeout(timeoutId);
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        // Parse JSON for non-2xx responses
+        return response.json().then(errorData => {
+          // Create a custom error with status and JSON data
+          const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
+          error.status = response.status;
+          error.data = errorData; // Attach JSON payload
+          throw error;
+        });
       }
       return response.json();
     })
@@ -1018,11 +1190,14 @@ function apiRequest(uri, method, data, cb) {
         msg = "Fetch request timeout";
       } else if (error.message.includes("Payload Too Large")) {
         msg = "File upload was too large. Try a smaller file.";
+      } else if (error.status === 400 && error.data) {
+        // Use the JSON payload from the 400 error
+        msg = error.data.error || error.data.message || "Invalid input. Please try again.";
       } else {
         msg = error.message;
       }
       console.error("❌ API Request Failed:", error);
-      cb(new Error(msg), null);
+      cb(new Error(msg), error.data || null);
     });
 }
 

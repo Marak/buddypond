@@ -11,7 +11,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   let buddyListItems = document.querySelectorAll('.buddylist li');
   let existingBuddy = Array.from(buddyListItems).find(el => el.dataset.buddy === buddyname);
   let wasConnected = existingBuddy ? existingBuddy.querySelector('.buddy-status').textContent.includes('🟢') : false;
-
+  // console.log('wasConnected', wasConnected, buddyname, buddydata.isConnected);
   // Update connection status
   if (buddydata.status === 'online') {
     buddydata.isConnected = true;
@@ -57,7 +57,8 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     if (buddydata.isConnected && !wasConnected) {
       bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
     } else if (!buddydata.isConnected && wasConnected) {
-      bp.play('desktop/assets/audio/BUDDY-OUT.wav'); // Buddy goes offline
+      // Remark: Removed the signout sound as it was too loud / jarring
+      // bp.play('desktop/assets/audio/BUDDY-OUT.wav'); // Buddy goes offline
     }
   }
 
