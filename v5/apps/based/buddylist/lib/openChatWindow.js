@@ -319,6 +319,9 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         }
 
         if (e.which === 13) {
+            if (this.bp.editingMode) {
+                return false;
+            }
             // replace /n with <br>
             let message = $(e.target).val();
             message = message.replace(/\n/g, '<br>');

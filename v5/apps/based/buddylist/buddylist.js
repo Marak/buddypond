@@ -11,7 +11,11 @@ import openChatWindow from "./lib/openChatWindow.js";
 import generateDefaultProfile from "./lib/generateDefaultProfile.js";
 import defaultChatWindowButtons from "./lib/defaultChatWindowButtons.js";
 import sortBuddyList from "./lib/sortBuddyList.js";
+// buddylist context menu
 import showContextMenu from "./lib/showContextMenu.js";
+// chat message context menu
+import bindMessageContextMenu from "./lib/message/bindMessageContextMenu.js";
+import createMessageContextMenu from "./lib/message/createMessageContextMenu.js";
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -43,6 +47,9 @@ export default class BuddyList {
         this.opened = false;
         this.showingIsTyping = this.showingIsTyping || {};
 
+        this.activeMessageContextMenu = null;
+
+
     }
 
     async init() {
@@ -60,6 +67,20 @@ export default class BuddyList {
         // this.bp.load('ramblor');
 
         await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
+
+
+        this.dicebear = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/+esm', {}, false);
+        this.dicebearAvatars = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/identicon@9.2.2/+esm', {}, false);
+        console.log('LOADED dicebear', this.dicebear);
+        console.log('LOADED dicebearAvatars', this.dicebearAvatars);
+
+        this.bindMessageContextMenu();
+        //await this.bp.importModule('https://unpkg.com/@dicebear/identicon@9.2.2/lib/index.js');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/avatars@4.10.8/dist/index.umd.min.js');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/lib/index.min.js');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/collection@9.2.2/lib/index.min.js');
+
+
 
     }
 
@@ -436,7 +457,7 @@ export default class BuddyList {
             try {
                 // check to see if we have newMessages in local profile for message.from
                 // if so, send buddypond.receiveInstantMessage(message.from)
-                if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
+                if (message.from && this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
                     // console.log("SENDING READ NEWMESSAGES ALERT");
                     this.data.profileState.buddylist[message.from].newMessages = false;
                     buddypond.receiveInstantMessage(message.from, function(err, re){
@@ -574,6 +595,9 @@ BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
 BuddyList.prototype.sortBuddyList = sortBuddyList;
 BuddyList.prototype.showContextMenu = showContextMenu;
+
+BuddyList.prototype.createMessageContextMenu = createMessageContextMenu;
+BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
 
 BuddyList.prototype.logout = function () {
 

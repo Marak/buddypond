@@ -11,8 +11,8 @@
     border-top: 1px solid #000;
 }
 
-.loggedIn, .buddy_list_not_connected {
-}
+.loggedIn,
+.buddy_list_not_connected {}
 
 .loginForm {
     padding-bottom: 10px;
@@ -44,19 +44,21 @@
     background-color: #0056b3;
 }
 
-.h2, .h3 {
+.h2,
+.h3 {
     color: #000;
     font-size: 18px;
 }
 
 .buddyListButton {
-    background-color: #48d1cc; /* Mimic old AIM button color */
+    background-color: #48d1cc;
+    /* Mimic old AIM button color */
     border: none;
     padding: 5px 10px;
     margin-top: 5px;
     cursor: pointer;
     border-radius: 3px;
-    
+
 }
 
 .addBuddyForm {
@@ -70,7 +72,8 @@
     background-color: #2ca6a4;
 }
 
-.buddyListHolder, .addBuddyForm {
+.buddyListHolder,
+.addBuddyForm {
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
@@ -91,6 +94,7 @@
 .onlineStatus {
     width: 100%;
 }
+
 .onlineStatusSelect {
     width: 100%;
     padding: 0;
@@ -106,9 +110,12 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    border: 2px solid #ffffff; /* Classic blue border */
-    background-color: #ffffff; /* White background for the chat area */
-    font-family: Arial, sans-serif; /* Typical font for that era */
+    border: 2px solid #ffffff;
+    /* Classic blue border */
+    background-color: #ffffff;
+    /* White background for the chat area */
+    font-family: Arial, sans-serif;
+    /* Typical font for that era */
 }
 
 .aim-chat-area {
@@ -121,12 +128,12 @@
     padding-left: 5px;
 }
 
-.aim-messages-container {
-}
+.aim-messages-container {}
 
 
 .aim-no-messages {
-    color: #808080; /* Grey text indicating no messages yet */
+    color: #808080;
+    /* Grey text indicating no messages yet */
 }
 
 .aim-messages {
@@ -134,10 +141,13 @@
 }
 
 .aim-message-controls {
-    width: calc(100% - 16px); /* Subtract padding from total width */
+    width: calc(100% - 16px);
+    /* Subtract padding from total width */
     padding: 8px;
-    background: #f0f0f0; /* Light grey background for the control area */
-    border-top: 1px solid #d3d3d3; /* Separator */
+    background: #f0f0f0;
+    /* Light grey background for the control area */
+    border-top: 1px solid #d3d3d3;
+    /* Separator */
     box-sizing: border-box;
 }
 
@@ -151,14 +161,17 @@
     flex-grow: 1;
     margin-right: 8px;
     padding: 4px;
-    border: 1px solid #c0c0c0; /* Light grey border for input */
-    border-radius: 3px; /* Slightly rounded corners for the input box */
+    border: 1px solid #c0c0c0;
+    /* Light grey border for input */
+    border-radius: 3px;
+    /* Slightly rounded corners for the input box */
     width: 100%;
 }
 
 .aim-send-btn {
     padding: 6px 12px;
-    background-color: #0084ff; /* Bright blue background for the send button */
+    background-color: #0084ff;
+    /* Bright blue background for the send button */
     color: white;
     border: none;
     border-radius: 3px;
@@ -175,11 +188,14 @@
 }
 
 .aim-send-btn:hover {
-    background-color: #0056b3; /* Darker blue when hovering */
+    background-color: #0056b3;
+    /* Darker blue when hovering */
 }
 
-.aim-from, .aim-to {
-    display: none; /* Hide these fields */
+.aim-from,
+.aim-to {
+    display: none;
+    /* Hide these fields */
 }
 
 .buddy-message-sender {
@@ -202,7 +218,8 @@
 }
 
 .loginButton {
-    background-color: #48d1cc; /* Mimic old AIM button color */
+    background-color: #48d1cc;
+    /* Mimic old AIM button color */
     border: none;
     padding: 5px 10px;
     margin-top: 5px;
@@ -259,10 +276,11 @@
 
 
 @media (max-width: 1000px) {
-    .app-buddylist > p,
-    .app-buddylist > input,
-    .app-buddylist > i,
-    .app-buddylist > button {
+
+    .app-buddylist>p,
+    .app-buddylist>input,
+    .app-buddylist>i,
+    .app-buddylist>button {
         font-size: 64px !important;
     }
 
@@ -275,11 +293,13 @@
         width: 64px !important;
         height: 64px !important;
     }
+
     .aim-send-btn {
         height: 128px;
         width: 128px;
 
     }
+
     .emojiPicker {
         display: none;
     }
@@ -288,3 +308,135 @@
 .file-preview {
     width: 100%;
 }
+
+
+/* new css */
+.aim-chat-message {
+    display: flex;
+    padding: 8px 16px;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.aim-chat-message:hover {
+    background: #f8f9fa;
+}
+
+.aim-profile-picture svg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.aim-message-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+}
+
+.aim-sender {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.aim-timestamp {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.aim-message-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aim-hover-menu {
+    display: none;
+    position: absolute;
+    right: 8px;
+    top: -20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.aim-chat-message:hover .aim-hover-menu {
+    display: flex;
+}
+
+.aim-hover-menu button {
+    padding: 6px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.aim-hover-menu button:hover {
+    background: #f3f4f6;
+}
+
+.aim-message-content {
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.aim-context-menu {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+    min-width: 180px;
+    font-size: 13px;
+  }
+  
+  .aim-context-menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .aim-context-menu-item:hover {
+    background: #f3f4f6;
+  }
+
+  .aim-editable-container {
+    position: relative;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #f9fafb;
+    margin: 4px 0;
+    width: 100%;
+  }
+  
+  .aim-message-content[data-editing="true"] {
+    outline: none;
+    min-height: 1.4em;
+  }
+  
+  .aim-edit-hint {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .aim-edit-hint-action {
+    color: #3b82f6;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .aim-edit-hint-action:hover {
+    color: #1d4ed8;
+  }

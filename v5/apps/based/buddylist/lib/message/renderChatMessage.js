@@ -6,8 +6,7 @@ import forbiddenNotes from '../forbiddenNotes.js';
 import isValidUrl from './isValidUrl.js';
 import isValidYoutubeLink from './isValidYoutubeLink.js';
 import isValidGithubLink from './isValidGithubLink.js';
-
-let scrollTimeout = null;
+import scrollToBottom from './scrollToBottom.js';
 
 export default async function renderChatMessage(message, _chatWindow) {
   console.log('renderChatMessage', message, _chatWindow);
@@ -166,11 +165,31 @@ export default async function renderChatMessage(message, _chatWindow) {
   }
 
   if (message.removed) {
+    console.log("ATTEMPTING TO REMOVE MESSAGE", message);
     // find the chatMessage by uuid
-    let removedMessageEl = $(`.chatMessage[data-uuid="${message.removed}"]`); // could be document as well?
+    let removedMessageEl = $(`.aim-chat-message[data-uuid="${message.removed}"]`); // could be document as well?
     if (removedMessageEl.length > 0) {
       // remove the removed message
       removedMessageEl.remove();
+    }
+    return;
+  }
+
+  if (message.edited) {
+    console.log("ATTEMPTING TO EDIT MESSAGE", message);
+    // find the chatMessage by uuid
+    let editedMessageEl = $(`.aim-chat-message[data-uuid="${message.edited}"]`); // could be document as well?
+
+    if (!editedMessageEl.length > 0) {
+      console.error('No original message found');
+      return;
+    }
+
+    // get the aim-message-content and set the text to the new message
+    let editedMessageContent = editedMessageEl.find('.aim-message-content');
+    if (editedMessageContent.length > 0) {
+      // remove the edited message
+      editedMessageContent.html(message.text);
     }
     return;
   }
@@ -282,36 +301,8 @@ export default async function renderChatMessage(message, _chatWindow) {
   // console.log('content', chatWindow.content)
   // chatWindow.content.innerHTML = 'FFFFF';
 
-  // Scroll to the last message
-  function scrollToBottom() {
-    const lastElement = $('.message', chatWindow.content).last()[0];
-    if (lastElement) {
-      // Clear any existing timeout or interval
-      clearTimeout(scrollTimeout);
-      clearInterval(scrollTimeout); // In case it was an interval
-  
-      // Function to attempt scrolling
-      const tryScroll = () => {
-        if (chatWindow.content.offsetParent !== null) {
-          // Chat window is visible, scroll to last element
-          lastElement.scrollIntoView({ behavior: 'instant' });
-        } else {
-          // Not visible, retry every 5ms
-          scrollTimeout = setInterval(() => {
-            if (chatWindow.content.offsetParent !== null) {
-              clearInterval(scrollTimeout); // Stop retrying
-              lastElement.scrollIntoView({ behavior: 'instant' });
-            }
-          }, 5);
-        }
-      };
-      // Start the scroll attempt
-      tryScroll();
-    }
-  }
-
   // Initially try to scroll to the bottom
-  scrollToBottom();
+  scrollToBottom(chatWindow.content);
 
   // console.log('parseChatMessage result', result);
 

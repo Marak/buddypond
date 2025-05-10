@@ -80,7 +80,6 @@ export default class WindowManager {
 
                 }
 
-
                 // close all windows
                 // this.minimizeAllWindows();
                 // this.windowsClosed = true;
@@ -92,14 +91,15 @@ export default class WindowManager {
             }
         });
 
-
         if (this.options.hideTaskBar) {
             this.taskBar.taskBarElement.style.display = 'none';
         }
 
         if (this.useKeyboardControls) {
             window.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") {
+                // alert(this.bp.editingMode);
+                if (e.key === "Escape" && !this.bp.editingMode) {
+                    // alert("Escape key pressed");
                     // find the window with the highest depth and close it
                     const window = this.windows[0]; // no sort needed, windows are already sorted by depth
                     if (window) {
