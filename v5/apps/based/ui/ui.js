@@ -10,7 +10,7 @@ export default class UI {
         windowManagerOptions.window = options.window || {};
         windowManagerOptions.hideTaskBar = options.hideTaskBar;
         this.windowManager = new WindowManager(this, windowManagerOptions);
-
+        this.bp.windows = this.windowManager.windows;
         // will re-load any previous stored metadata about windows
         // storage provider is defaulted to localStorage
         this.windowManager.loadWindows();

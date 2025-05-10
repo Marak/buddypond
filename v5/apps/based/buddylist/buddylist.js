@@ -69,10 +69,10 @@ export default class BuddyList {
         await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
 
 
-        this.dicebear = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/+esm', {}, false);
-        this.dicebearAvatars = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/identicon@9.2.2/+esm', {}, false);
-        console.log('LOADED dicebear', this.dicebear);
-        console.log('LOADED dicebearAvatars', this.dicebearAvatars);
+        this.bp.vendor.dicebear = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/+esm', {}, false);
+        this.bp.vendor.dicebearAvatars = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/identicon@9.2.2/+esm', {}, false);
+        //console.log('LOADED dicebear', this.dicebear);
+        //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
 
         this.bindMessageContextMenu();
         //await this.bp.importModule('https://unpkg.com/@dicebear/identicon@9.2.2/lib/index.js');

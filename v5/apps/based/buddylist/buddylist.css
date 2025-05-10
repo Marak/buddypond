@@ -322,6 +322,10 @@
     background: #f8f9fa;
 }
 
+.aim-profile-picture {
+  cursor: pointer;
+}
+
 .aim-profile-picture svg {
     width: 40px;
     height: 40px;
@@ -372,7 +376,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 19px;
 }
 
 .aim-hover-menu button:hover {

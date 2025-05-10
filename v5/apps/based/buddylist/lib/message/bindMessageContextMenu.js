@@ -6,6 +6,9 @@ import scrollToBottom from "./scrollToBottom.js";
 //       We can assume that data-from will be the same as the sender of the message we are replying to
 
 export default function bindMessageContextMenu() {
+
+  bindProfilePictureClick.call(this);
+
   // Single event delegation for context menu, hover menu, and edit hint actions
   document.addEventListener('click', (event) => {
     const target = event.target;
@@ -372,4 +375,30 @@ function cancelReply(target) {
     this.bp.replyData = null;
   }
   console.log('Reply cancelled');
+}
+
+function bindProfilePictureClick() {
+
+  document.addEventListener('click', (event) => {
+    let target = event.target;
+    // if target is svg and parent has class aim-profile-picture
+    console.log('target', target, target.tagName);
+    if ($(target).parents().hasClass('aim-profile-picture')) {
+      //if (target.classList.contains('.aim-avatar')) {
+      const buddyname = target.closest('.aim-chat-message').getAttribute('data-from');
+      console.log('Profile picture clicked', buddyname);
+
+      if (buddyname === this.bp.me) {
+        // opens profile edit page
+        this.bp.open('profile', { context: 'edit' });
+      } else {
+        // opens profile page
+        // this.bp.emit('profile::view', buddyname);
+        this.bp.open('user-profile', { context: buddyname });
+
+      }
+
+    } 
+  });
+
 }

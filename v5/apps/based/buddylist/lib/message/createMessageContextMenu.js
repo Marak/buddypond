@@ -27,11 +27,11 @@ export default function createMessageContextMenu(target, closestMessage) {
 
   const menuItems = [
     { text: 'Reply', action: 'reply-message' },
-    { text: 'Quote', action: 'quote-message' },
+    // { text: 'Quote', action: 'quote-message' },
     { text: 'Say Message', action: 'say-message' },
     { text: 'Edit Message', action: 'edit-message' },
     { text: 'Report Message', action: 'report-message' },
-    { text: 'Copy Message', action: 'copy-message' },
+    // { text: 'Copy Message', action: 'copy-message' },
     { text: 'Delete Message', action: 'delete-message' }
   ];
 

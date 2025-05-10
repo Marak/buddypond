@@ -5,8 +5,7 @@ export default class Profile {
     }
 
     async init() {
-        this.bp.log('Hello from Example');
-
+        this.bp.log('Hello from User Profile');
         // we can load modules or html fragments or css files here
         // using this.bp.load() method
 
@@ -26,7 +25,7 @@ export default class Profile {
         buddyname = buddyname.replace(":", ""); // remove any colons for now
         buddyname = buddyname.replace(" ", ""); // remove any spaces for now
 
-     
+
 
         // create a new element from the html string
         let profileContent = document.createElement('div');
@@ -48,7 +47,7 @@ export default class Profile {
         contentDiv.style.width = '100%';
         contentDiv.style.height = '100%';
 
-        
+
         contentDiv.append(iframe);
 
         profileContent.append(contentDiv);
@@ -79,6 +78,9 @@ export default class Profile {
                     this.profileWindow = null;
                 }
             });
+
+
+
         } else {
             // If the window exists and the context has changed, re-render the content
             this.profileWindow.content = contentDiv;
@@ -87,12 +89,12 @@ export default class Profile {
                 // $(this.profileWindow.content).html(contentDiv.innerHTML);
                 this.profileWindow.setTitle('Profile - ' + buddyname);
             }
-        
+
         }
-    
+
         // Focus on the newly created or updated window
         this.bp.apps.ui.windowManager.focusWindow(this.profileWindow);
     }
-    
+
 
 }

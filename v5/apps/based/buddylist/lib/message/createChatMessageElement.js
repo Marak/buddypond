@@ -7,6 +7,42 @@ const config = {
   allowHTML: true,
 };
 
+// New function to create hover menu
+// TODO: remove buttons, just use icons
+// TODO: update bindMessageContextMenu() method to bind to the icons instead of buttons
+function createHoverMenu() {
+  const hoverMenu = document.createElement('div');
+  hoverMenu.className = 'aim-hover-menu';
+
+  const menuItems = [
+    // TODO: add reaction
+    // { text: 'Add Reaction', action: 'add-reaction' },
+    { text: 'Edit Message', action: 'edit-message',  icon: 'fa-duotone fa-regular fa-pencil' },
+    { text: 'Reply Message', action: 'reply-message', icon: 'fa-duotone fa-regular fa-reply' },
+    { text: '...', action: 'more-options', icon: 'fa-solid fa-regular fa-ellipsis' },
+  ];
+
+  menuItems.forEach(item => {
+    const button = document.createElement('button');
+    button.setAttribute('data-action', item.action);
+    button.className = 'aim-hover-menu-item';
+
+    if (item.icon) {
+      const icon = document.createElement('i');
+      icon.className = item.icon;
+      button.appendChild(icon);
+      button.appendChild(document.createTextNode(' ')); // Add space between icon and text
+    } else {
+      button.appendChild(document.createTextNode(item.text));
+    }
+    // set title hint with item.text  
+    button.setAttribute('title', item.text);
+    hoverMenu.appendChild(button);
+  });
+
+  return hoverMenu;
+}
+
 export default function createChatMessageElement(message, messageTime, chatWindow, container) {
   // Create main message container
   const chatMessage = document.createElement('div');
@@ -23,6 +59,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   profilePicture.className = 'aim-profile-picture';
   const defaultAvatar = defaultAvatarSvg.call(this, message.from);
   profilePicture.innerHTML = defaultAvatar;
+  console.log('profilePicture', profilePicture);
   profilePicture.alt = `${message.from}'s avatar`;
 
   // Message content wrapper
@@ -100,23 +137,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   }
 
   // Hover menu
-  const hoverMenu = document.createElement('div');
-  hoverMenu.className = 'aim-hover-menu';
-
-  const menuItems = [
-    { text: 'Add Reaction', action: 'add-reaction' },
-    { text: 'Edit Message', action: 'edit-message' },
-    { text: 'Reply Message', action: 'reply-message' },
-    { text: '...', action: 'more-options' },
-  ];
-
-  menuItems.forEach(item => {
-    const button = document.createElement('button');
-    button.textContent = item.text;
-    button.setAttribute('data-action', item.action);
-    button.className = 'aim-hover-menu-item';
-    hoverMenu.appendChild(button);
-  });
+  const hoverMenu = createHoverMenu();
 
   // Assemble message
   contentWrapper.appendChild(messageHeader);
@@ -165,9 +186,17 @@ function insertChatMessage(chatWindow, message, chatMessage) {
   return chatMessage;
 }
 
+// Create a simple in-memory cache
+const avatarCache = new Map();
+
 function defaultAvatarSvg(username) {
+  // Check if avatar is already cached
+  if (avatarCache.has(username)) {
+    return avatarCache.get(username);
+  }
+
   // Create an identicon avatar using DiceBear
-  const avatar = this.dicebear.createAvatar(this.dicebearAvatars, {
+  const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
     seed: username, // Username as seed for consistent avatar
     size: 40, // Avatar size in pixels
     backgroundColor: ["#f0f0f0"], // Optional: Customize background
@@ -175,5 +204,9 @@ function defaultAvatarSvg(username) {
 
   // Convert avatar to SVG string
   const svg = avatar.toString();
+
+  // Store in cache
+  avatarCache.set(username, svg);
+
   return svg;
 }

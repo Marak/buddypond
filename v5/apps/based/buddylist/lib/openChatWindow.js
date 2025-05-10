@@ -79,11 +79,13 @@ export default function openChatWindow(data) {
         }
     });
 
+    chatWindow.loggedIn = true;
+
     setupChatWindow.call(this, windowType, contextName, chatWindow);
     return chatWindow;
 }
 
-
+// TODO: move to separate file, rename bindChatWindowEvents
 function setupChatWindow (windowType, contextName, chatWindow) {
 
     const chatWindowTemplate = this.messageTemplateString;
@@ -294,13 +296,23 @@ function setupChatWindow (windowType, contextName, chatWindow) {
             };
         }
 
-
         console.log('emitting message', _data);
         this.bp.emit('buddy::sendMessage', _data);
     
         // Clear input
         $('.aim-input', chatWindow.content).val('');
 
+        // Hide the aim-reply-box
+        $('.aim-reply-box', chatWindow.content).hide();
+
+        const replyBox = target.closest('.aim-reply-box');
+        if (replyBox) {
+          replyBox.remove();
+          this.activeReplyBox = null;
+          this.bp.replyMode = false;
+          this.bp.replyData = null;
+        }
+      
         let $sendButton = $('.aim-send-btn', chatWindow.content);
         $sendButton.css('opacity', 0.5);
 

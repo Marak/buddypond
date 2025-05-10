@@ -17,9 +17,42 @@
         <div id="your-profile" class="tab-content">
             <div class="userProfile">
                 <span class="ctime"></span>
-                <span class="share-your-pad">Share Your Profile With This Link: <a href="#" target="_blank" class="liveProfileLink"></a></span>
-                <button class="open-app desktopButton" data-app="file-explorer" data-context="/index.html">Edit Your Profile</button>
-                
+            
+                <!-- First Row: Three Columns -->
+                <div class="aim-profile-row">
+                    <!-- Column 1: Profile Picture Section -->
+                    <div class="aim-profile-column aim-profile-picture-column">
+                        <div class="aim-profile-picture-section">
+                            <div class="aim-profile-picture-preview">
+                                <img src="/default-avatar.png" alt="Profile Picture" class="aim-profile-picture-img">
+                            </div>
+                            <div class="aim-profile-picture-actions">
+                                <label class="aim-profile-picture-upload" for="profile-picture-input">Upload Picture</label>
+                                <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+                                <button class="aim-profile-picture-remove">Remove Picture</button>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Column 2: Edit Your Profile Button -->
+                    <div class="aim-profile-column aim-edit-profile-column">
+                        <button class="open-app profile-button" data-app="file-explorer" data-context="/index.html">Edit Profile Page</button>
+                    </div>
+            
+                    <!-- Column 3: Set Password and Email Button -->
+                    <div class="aim-profile-column aim-password-email-column">
+                        <button class="aim-set-password-email profile-button">Set Password</button>
+                    </div>
+                </div>
+            
+                <!-- Second Row: Single Column -->
+                <div class="aim-profile-row">
+                    <div class="aim-profile-column aim-pad-editor-column">
+                        <!-- <span class="share-your-pad">Share Your Profile Page: <a href="#" target="_blank" class="liveProfileLink"></a></span> -->
+
+                        <div class="pad-editor-holder"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="your-apps" class="tab-content">

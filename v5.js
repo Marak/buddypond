@@ -91,6 +91,14 @@ function bindUIEvents() {
         bp.apps.client.api.logout(function (err, data) {
             console.log('logout', err, data);
         });
+
+        // TODO: close all windows that have "loggedIn" flag ( not class )
+        for (let window of bp.windows) {
+            console.log('window', window);
+            if (window.loggedIn) {
+                window.close();
+            }
+        }
     });
 
     bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {

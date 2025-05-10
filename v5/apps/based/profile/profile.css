@@ -85,3 +85,190 @@
     min-height: 500px;
     justify-content: center;
 }
+
+/* Row and Column Layout */
+.aim-profile-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    /* margin: 16px 0; */
+}
+
+.aim-profile-column {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aim-profile-picture-column {
+    flex: 2; /* Slightly wider for profile picture section */
+}
+
+.aim-pad-editor-column {
+    flex: 100%; /* Full width for second row */
+}
+
+/* Set Password and Email Button */
+.aim-set-password-email {
+}
+
+.aim-set-password-email:hover {
+}
+
+/* Style for Edit Your Profile Button (consistent with new button) */
+.open-app.desktopButton {
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    width: 100%;
+    text-align: center;
+}
+
+.open-app.desktopButton:hover {
+    background: #1d4ed8;
+}
+
+/* Pad Editor Holder */
+.pad-editor-holder {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    min-height: 100px;
+    width: 100%;
+    padding: 16px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+    .aim-profile-row {
+        flex-direction: column;
+    }
+
+    .aim-profile-column {
+        min-width: 100%;
+    }
+
+    .aim-profile-picture-column {
+        flex: 1;
+    }
+}
+
+/* Existing Styles (unchanged, included for context) */
+.aim-profile-picture-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.aim-profile-picture-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+    background: #fff;
+}
+
+.aim-profile-picture-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aim-profile-picture-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aim-profile-picture-upload {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.profile-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    transition: background 0.2s;
+    border-color: #3b82f6;
+}
+
+.profile-button:hover {
+    background: #1d4ed8;
+}
+
+.aim-profile-picture-upload:hover {
+    background: #1d4ed8;
+}
+
+.aim-profile-picture-remove {
+    padding: 8px 16px;
+    background: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.aim-profile-picture-remove:hover {
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+@media (max-width: 600px) {
+    .aim-profile-picture-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .aim-profile-picture-actions {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .aim-profile-picture-upload,
+    .aim-profile-picture-remove {
+        width: 100%;
+    }
+}
+
+/* Other existing styles remain unchanged */
+.profileEditor {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.share-your-pad {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 18px;
+    justify-content: center;
+}

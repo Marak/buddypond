@@ -83,10 +83,92 @@ export default class Profile {
                     this.profileWindow = null;
                 }
             });
-            new this.bp.apps.ui.Tabs('.tabs-container', '#' + this.profileWindow.id); // Initialize the tab functionality
+            this.profileWindow.loggedIn = true;
+            this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', '#' + this.profileWindow.id); // Initialize the tab functionality
 
             wallpapers.legacyWallpapers(bp);
 
+            const profilePictureInput = document.getElementById('profile-picture-input');
+            const profilePictureImg = document.querySelector('.aim-profile-picture-img');
+            const removeButton = document.querySelector('.aim-profile-picture-remove');
+
+            $('.aim-set-password-email').on('click', (e) => {
+                this.tabs.navigateToTab('#tabs-3');
+            });
+
+            // Handle file selection
+            profilePictureInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    // Preview the selected image
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        profilePictureImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+
+                    // Stub for file upload API call
+                    // TODO: Replace with actual API call
+                    console.log('Uploading file:', file);
+
+                    // change the filename to "profile-picture.png"
+                    // TODO: should we bother doing this, or just allow a custom picture
+                    // if we always rename, it means the old profile picture will be lost
+                    // if we allow a custom name, we need set a value on the user buddyprofile to track the data
+                    // probably better to save on profile, that way we can fetch the profile picture directly
+                    // without having to detect it's existence
+                    // file.name = 'profile-picture.png';
+                    
+                    let onProgress = (progress) => {
+                        console.log('Upload progress:', progress);
+                    };
+                    let url = await buddypond.uploadFile(file, onProgress);
+                    console.log('File uploaded to:', url);
+
+                    // TODO: update the user's buddy profile with the new picture
+                    // buddyProfile.profilePicture = url;, etc
+                    // await this.bp.apps.client.api.updateProfile(buddyname, buddyProfile);
+                    
+
+                    // now that we have a 
+
+
+                    // TODO: use buddypond.uploadFile() API and get the returned URL
+                    // Example: uploadProfilePicture(file).then(response => {
+                    //     profilePictureImg.src = response.url;
+                    // }).catch(error => {
+                    //     console.error('Upload failed:', error);
+                    // });
+                }
+            });
+
+            // Handle remove button click
+            removeButton.addEventListener('click', () => {
+                // Reset to default avatar
+                profilePictureImg.src = '/default-avatar.png';
+
+                // Stub for removing profile picture API call
+                // TODO: Replace with actual API call
+                console.log('Removing profile picture');
+                // Example: removeProfilePicture().then(() => {
+                //     profilePictureImg.src = '/default-avatar.png';
+                // }).catch(error => {
+                //     console.error('Remove failed:', error);
+                // });
+            });
+
+            const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
+                seed: this.bp.me, // Username as seed for consistent avatar
+                size: 128, // Avatar size in pixels
+                backgroundColor: ["#f0f0f0"], // Optional: Customize background
+            });
+
+            // Convert avatar to SVG string
+            const svg = avatar.toString();
+            console.log('Avatar SVG:', svg);
+
+            let profilePicturePreview = $('.aim-profile-picture-preview');
+            profilePicturePreview.html(svg);
 
         } else {
             // this.profileWindow.content.innerHTML = '';
@@ -147,8 +229,8 @@ export default class Profile {
         userSettings(bp);
 
 
-        let padEditorHolder = document.createElement('div');
-        padEditorHolder.className = 'pad-editor-holder';
+        let padEditorHolder = $('.pad-editor-holder', this.profileWindow.content)[0];
+        // padEditorHolder.className = 'pad-editor-holder';
 
         /*
         let fileExplorer = await this.bp.apps['file-explorer'].create();
