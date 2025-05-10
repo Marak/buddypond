@@ -163,12 +163,21 @@
 /* Existing Styles (unchanged, included for context) */
 .aim-profile-picture-section {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-direction: column; /* Stack container and status vertically */
+    align-items: center; /* Center content */
+    gap: 12px; /* Space between container and status */
     margin: 16px 0;
     padding: 12px;
     background: #f9fafb;
     border-radius: 8px;
+}
+
+.aim-profile-picture-container {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Maintain horizontal gap between preview and actions */
+    width: 100%; /* Ensure full width for alignment */
+    justify-content: center; /* Center preview and actions */
 }
 
 .aim-profile-picture-preview {
@@ -204,23 +213,6 @@
     transition: background 0.2s;
 }
 
-.profile-button {
-    display: inline-block;
-    padding: 8px 16px;
-    background: #3b82f6;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: center;
-    transition: background 0.2s;
-    border-color: #3b82f6;
-}
-
-.profile-button:hover {
-    background: #1d4ed8;
-}
-
 .aim-profile-picture-upload:hover {
     background: #1d4ed8;
 }
@@ -241,10 +233,37 @@
     color: #dc2626;
 }
 
+.aim-profile-picture-upload-status {
+    font-size: 14px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.aim-profile-picture-upload-status.uploading .status-text {
+    color: #007bff; /* Blue for uploading */
+}
+
+.aim-profile-picture-upload-status.success .status-text {
+    color: #28a745; /* Green for success */
+}
+
+.aim-profile-picture-upload-status.error .status-text {
+    color: #dc3545; /* Red for error */
+}
+
+.aim-profile-picture-upload-status.hidden {
+    display: none;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 600px) {
     .aim-profile-picture-section {
-        flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch; /* Ensure full width on small screens */
+    }
+
+    .aim-profile-picture-container {
+        flex-direction: column; /* Stack preview and actions vertically */
+        align-items: center;
     }
 
     .aim-profile-picture-actions {
@@ -257,6 +276,7 @@
         width: 100%;
     }
 }
+
 
 /* Other existing styles remain unchanged */
 .profileEditor {
@@ -271,4 +291,27 @@
     gap: 10px;
     font-size: 18px;
     justify-content: center;
+}
+
+.aim-profile-picture-upload-status {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.aim-profile-picture-upload-status.uploading .status-text {
+    color: #007bff; /* Blue for uploading */
+}
+
+.aim-profile-picture-upload-status.success .status-text {
+    color: #28a745; /* Green for success */
+}
+
+.aim-profile-picture-upload-status.error .status-text {
+    color: #dc3545; /* Red for error */
+}
+
+.aim-profile-picture-upload-status.hidden {
+    display: none;
 }

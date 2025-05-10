@@ -3,6 +3,7 @@ import audioSettings from './lib/audio-settings.js';
 import userSettings from './lib/user-settings.js';
 import PadEditor from '../pad/PadEditor.js';
 import LoadingContainer from '../ui/LoadingContainer/LoadingContainer.js';
+import updateProfilePicture from './lib/updateProfilePicture.js';
 let defaultFileContent = {};
 
 
@@ -98,54 +99,17 @@ export default class Profile {
 
             // Handle file selection
             profilePictureInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    // Preview the selected image
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profilePictureImg.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-
-                    // Stub for file upload API call
-                    // TODO: Replace with actual API call
-                    console.log('Uploading file:', file);
-
-                    // change the filename to "profile-picture.png"
-                    // TODO: should we bother doing this, or just allow a custom picture
-                    // if we always rename, it means the old profile picture will be lost
-                    // if we allow a custom name, we need set a value on the user buddyprofile to track the data
-                    // probably better to save on profile, that way we can fetch the profile picture directly
-                    // without having to detect it's existence
-                    // file.name = 'profile-picture.png';
-                    
-                    let onProgress = (progress) => {
-                        console.log('Upload progress:', progress);
-                    };
-                    let url = await buddypond.uploadFile(file, onProgress);
-                    console.log('File uploaded to:', url);
-
-                    // TODO: update the user's buddy profile with the new picture
-                    // buddyProfile.profilePicture = url;, etc
-                    // await this.bp.apps.client.api.updateProfile(buddyname, buddyProfile);
-                    
-
-                    // now that we have a 
-
-
-                    // TODO: use buddypond.uploadFile() API and get the returned URL
-                    // Example: uploadProfilePicture(file).then(response => {
-                    //     profilePictureImg.src = response.url;
-                    // }).catch(error => {
-                    //     console.error('Upload failed:', error);
-                    // });
-                }
+                updateProfilePicture.call(this, event, profilePictureImg);
             });
 
             // Handle remove button click
             removeButton.addEventListener('click', () => {
                 // Reset to default avatar
-                profilePictureImg.src = '/default-avatar.png';
+
+                // This is done by calling setStatus profile.profilePicture = '';
+                // await this.bp.apps.client.api.uploadProfilePicture(resizedFile);
+
+                // profilePictureImg.src = '/default-avatar.png';
 
                 // Stub for removing profile picture API call
                 // TODO: Replace with actual API call
@@ -211,7 +175,7 @@ export default class Profile {
         //        $('.profileEditor', this.profileWindow.content).appendTo(this.profileWindow.content);
 
         // $('.profileHtml', this.profileWindow.content).val(buddyProfilePad.content);
-       
+
         $('.cancelProfileEdit', this.profileWindow.content).on('click', () => {
             // hide the profile editor
             $('.profileEditor', this.profileWindow.content).flexHide();
