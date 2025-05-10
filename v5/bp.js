@@ -18,7 +18,7 @@ bp.apps = {};
 bp.data = {};     // stores data specific to the bp instance itself ( not yet, stored per app )
 bp.settings = {}; // stores app settings for the user ( preferences, defaults, etc )
 bp._modules = {};
-
+bp.vendor = {}; // stores vendor specific imported modules 
 bp._cache = {};
 bp._cache.css = {};
 bp._cache.html = {};
