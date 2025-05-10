@@ -29,6 +29,13 @@ export default function bindMessageContextMenu() {
       return;
     }
 
+        // Handle reply cancel button click
+        if (target.classList.contains('aim-reply-cancel') && action === 'cancel-reply') {
+          cancelReply.call(this, target);
+          return;
+        }
+    
+
     // Handle more-options click (exact match)
     if (action === 'more-options' && target.tagName === 'BUTTON') {
       event.preventDefault();
@@ -69,7 +76,7 @@ function handleEditHintAction(action, target) {
   const messageData = {
     uuid: messageUUID,
     chatId: originalMessage.getAttribute('data-chat-id'),
-    text: originalMessage.getAttribute('data-original-text') || messageContent.innerText,
+    text: originalMessage.getAttribute('data-original-text') || messageContent.innerText
   };
 
   if (action === 'cancel-edit') {
@@ -88,6 +95,12 @@ function closeMenus() {
   if (this.activeMessageHoverMenu) {
     this.activeMessageHoverMenu = null; // Rely on CSS for hiding hover menu
   }
+  if (this.activeReplyBox) {
+    return;
+    this.activeReplyBox.remove();
+    this.activeReplyBox = null;
+    this.bp.replyMode = false;
+  }
 }
 
 // Perform the specified action
@@ -100,9 +113,11 @@ function performAction(action, target) {
 
   const messageUUID = closestTarget.getAttribute('data-uuid');
   const messageChatId = closestTarget.getAttribute('data-chat-id');
+  const messageFrom = closestTarget.getAttribute('data-from');
   const messageData = {
     uuid: messageUUID,
     chatId: messageChatId,
+    from: messageFrom,
   };
 
   const originalMessage = document.querySelector(`.aim-chat-message[data-uuid="${messageUUID}"]`);
@@ -126,7 +141,7 @@ function performAction(action, target) {
       editMessage.call(this, messageData);
       break;
     case 'reply-message':
-      console.log('Reply message clicked');
+      replyMessage.call(this, messageData, originalMessage);
       break;
     case 'more-options':
       console.log('More options clicked');
@@ -284,4 +299,69 @@ function saveEdit(messageContent, messageData) {
     uuid: messageData.uuid,
     text: newMessageText,
   });
+
+}
+
+// Reply to a message
+function replyMessage(messageData, originalMessage) {
+  // Close any existing reply box
+  if (this.activeReplyBox) {
+    this.activeReplyBox.remove();
+    this.activeReplyBox = null;
+  }
+
+  this.bp.replyMode = true;
+  this.bp.replyData = messageData; // Store reply data for message submission
+
+  // Create reply box
+  const replyBox = document.createElement('div');
+  replyBox.className = 'aim-reply-box';
+  replyBox.innerHTML = `
+    <span class="aim-reply-header">Replying to ${messageData.from}</span>
+    <button class="aim-reply-cancel" data-action="cancel-reply">Cancel</button>
+  `;
+  //   <span class="aim-reply-text">${messageData.text}</span>
+
+
+  // Insert reply box above .aim-message-sender
+  console.log("originalMessage", originalMessage)
+  const messageSender = $(originalMessage).parent().parent().parent().parent().find('.aim-message-sender')[0];
+  console.log('REEE messageSender', messageSender);
+  if (!messageSender) {
+    console.error('No message sender found');
+    return;
+  }
+  messageSender.parentNode.insertBefore(replyBox, messageSender);
+
+  // Store active reply box
+  this.activeReplyBox = replyBox;
+  // this.activeReplyUUID = messageData.uuid;
+  // find the closet input named "message_replyto"
+  const replyInput = replyBox.closest('.chatWindow').querySelector('input[name="message_replyto"]');
+  // set the value of the input to the messageData.uuid
+  if (replyInput) {
+    replyInput.value = messageData.uuid;
+  } else {
+    console.error('No reply input found');
+  }
+
+  // Find the closest chatWindow and scroll to bottom
+  const chatWindow = originalMessage.closest('.chatWindow');
+  if (chatWindow) {
+    scrollToBottom(chatWindow);
+  }
+
+  console.log('Reply mode activated', messageData);
+}
+
+// Cancel reply mode
+function cancelReply(target) {
+  const replyBox = target.closest('.aim-reply-box');
+  if (replyBox) {
+    replyBox.remove();
+    this.activeReplyBox = null;
+    this.bp.replyMode = false;
+    this.bp.replyData = null;
+  }
+  console.log('Reply cancelled');
 }

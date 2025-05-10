@@ -1,18 +1,11 @@
 import renderGeoFlag from './renderGeoFlag.js';
 import parseMarkdownWithoutPTags from './parseMarkdownWithoutPTags.js';
 
-// TODO: edit message
-// TODO: remove message
-// TODO: update profile picture
-
 // Configuration
 const config = {
   useMarkdown: true,
   allowHTML: true,
 };
-
-
-// TODO: move geoflag / metaarea to the right of username, before timestamp
 
 export default function createChatMessageElement(message, messageTime, chatWindow, container) {
   // Create main message container
@@ -23,17 +16,13 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   chatMessage.setAttribute('data-to', message.to);
   chatMessage.setAttribute('data-type', message.type);
   chatMessage.setAttribute('data-uuid', message.uuid);
-
-  // should chatId just be on the message?
   chatMessage.setAttribute('data-chat-id', message.chatId);
 
-  // Profile picture ( should be svg )
+  // Profile picture (SVG)
   const profilePicture = document.createElement('div');
   profilePicture.className = 'aim-profile-picture';
-
-  let defaultAvatar = defaultAvatarSvg.call(this, message.from);
+  const defaultAvatar = defaultAvatarSvg.call(this, message.from);
   profilePicture.innerHTML = defaultAvatar;
-  // profilePicture.src = defaultAvatar;
   profilePicture.alt = `${message.from}'s avatar`;
 
   // Message content wrapper
@@ -46,14 +35,13 @@ export default function createChatMessageElement(message, messageTime, chatWindo
 
   const sender = document.createElement('span');
   sender.className = 'aim-sender';
-  sender.textContent = message.from === 'anonymous' 
+  sender.textContent = message.from === 'anonymous'
     ? `Anonymous (${message.tripcode || 'tr1pc0d3'})`
     : message.from;
 
   const timestamp = document.createElement('span');
   timestamp.className = 'aim-timestamp';
   timestamp.textContent = messageTime;
-
 
   // Message meta (geoflag + badges placeholder)
   const messageMeta = document.createElement('div');
@@ -62,7 +50,6 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   const geoFlag = renderGeoFlag(message);
   const badgesContainer = document.createElement('span');
   badgesContainer.className = 'aim-badges';
-  // Badges can be populated later with actual badge elements
 
   messageMeta.appendChild(geoFlag);
   messageMeta.appendChild(badgesContainer);
@@ -71,11 +58,38 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   messageHeader.appendChild(messageMeta);
   messageHeader.appendChild(timestamp);
 
+  // Reply indicator (if message is a reply)
+  let replyIndicator = null;
+  if (message.replyto) {
+    const repliedMessage = chatWindow.content.querySelector(
+      `.aim-chat-message[data-uuid="${message.replyto}"]`
+    );
+    if (repliedMessage) {
+      const repliedSender = repliedMessage.querySelector('.aim-sender')?.textContent || 'Unknown';
+      const repliedText = repliedMessage.querySelector('.aim-message-content')?.innerText || '';
+
+      replyIndicator = document.createElement('div');
+      replyIndicator.className = 'aim-reply-indicator';
+      replyIndicator.innerHTML = `
+        <span class="aim-reply-sender">${repliedSender}</span>
+        <span class="aim-reply-content">${repliedText}</span>
+      `;
+
+      // Add click handler to scroll to the replied message
+      const replySender = replyIndicator.querySelector('.aim-reply-sender');
+      replySender.addEventListener('click', () => {
+        repliedMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        repliedMessage.classList.add('aim-highlight');
+        setTimeout(() => repliedMessage.classList.remove('aim-highlight'), 2000);
+      });
+    }
+  }
+
   // Message content
   const messageContent = document.createElement('div');
   messageContent.className = 'aim-message-content';
-  
-  const processedText = config.useMarkdown 
+
+  const processedText = config.useMarkdown
     ? parseMarkdownWithoutPTags(message.text)
     : message.text;
 
@@ -88,7 +102,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   // Hover menu
   const hoverMenu = document.createElement('div');
   hoverMenu.className = 'aim-hover-menu';
-  
+
   const menuItems = [
     { text: 'Add Reaction', action: 'add-reaction' },
     { text: 'Edit Message', action: 'edit-message' },
@@ -106,12 +120,15 @@ export default function createChatMessageElement(message, messageTime, chatWindo
 
   // Assemble message
   contentWrapper.appendChild(messageHeader);
+  if (replyIndicator) {
+    contentWrapper.appendChild(replyIndicator);
+  }
   contentWrapper.appendChild(messageContent);
   contentWrapper.appendChild(hoverMenu);
 
   chatMessage.appendChild(profilePicture);
   chatMessage.appendChild(contentWrapper);
-  
+
   if (container) {
     chatMessage.appendChild(container);
   }
@@ -149,22 +166,14 @@ function insertChatMessage(chatWindow, message, chatMessage) {
 }
 
 function defaultAvatarSvg(username) {
+  // Create an identicon avatar using DiceBear
+  const avatar = this.dicebear.createAvatar(this.dicebearAvatars, {
+    seed: username, // Username as seed for consistent avatar
+    size: 40, // Avatar size in pixels
+    backgroundColor: ["#f0f0f0"], // Optional: Customize background
+  });
 
-    // Create an identicon avatar using DiceBear
-    const avatar = this.dicebear.createAvatar(this.dicebearAvatars, {
-      seed: username, // Username as seed for consistent avatar
-      size: 40, // Avatar size in pixels
-      backgroundColor: ["#f0f0f0"], // Optional: Customize background
-      // Add other options as needed (see DiceBear docs)
-    });
-
-    // Convert avatar to SVG string
-    const svg = avatar.toString();
-
-    // Insert SVG into the DOM
-    //const avatarContainer = document.getElementById("avatar");
-    //avatarContainer.innerHTML = svg;
-    return svg
-
-
+  // Convert avatar to SVG string
+  const svg = avatar.toString();
+  return svg;
 }

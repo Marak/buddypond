@@ -147,6 +147,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
 
         const _data = {
             to: $('.aim-to', chatWindow.content).val(),
+            replyto: $('.aim-replyto', chatWindow.content).val(),
             type: windowType,
             from: this.bp.me,
             message,
@@ -242,8 +243,10 @@ function setupChatWindow (windowType, contextName, chatWindow) {
                         to: _data.to,
                         from: _data.from,
                         type: _data.type,
+                        replyto: _data.replyto,
                         text: fileUrl
                     };
+                    // TODO: replyto
                     console.log("sending multimedia message", message);
                     this.bp.emit('buddy::sendMessage', message);
                     
@@ -291,6 +294,8 @@ function setupChatWindow (windowType, contextName, chatWindow) {
             };
         }
 
+
+        console.log('emitting message', _data);
         this.bp.emit('buddy::sendMessage', _data);
     
         // Clear input

@@ -153,7 +153,7 @@
 
 .aim-message-form {
     display: flex;
-    align-items: center;
+    align-items: start;
     flex-direction: column;
 }
 
@@ -439,4 +439,71 @@
   
   .aim-edit-hint-action:hover {
     color: #1d4ed8;
+  }
+
+  .aim-reply-box {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: #f1f5f9;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #1f2937;
+  }
+  
+  .aim-reply-header {
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  .aim-reply-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .aim-reply-cancel {
+    padding: 4px 8px;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .aim-reply-cancel:hover {
+    color: #dc2626;
+  }
+
+  .aim-reply-indicator {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    border-left: 2px solid #3b82f6;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #1f2937;
+  }
+  
+  .aim-reply-sender {
+    font-weight: 600;
+    color: #3b82f6;
+    cursor: pointer;
+    margin-right: 8px;
+  }
+  
+  .aim-reply-sender:hover {
+    text-decoration: underline;
+  }
+  
+  .aim-reply-content {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }

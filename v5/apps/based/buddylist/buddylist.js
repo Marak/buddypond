@@ -485,7 +485,7 @@ export default class BuddyList {
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
         if (data.type === 'pond') {
             console.log('sendMessageToServer', data);
-            buddypond.pondSendMessage(data.to, data.text, function(err, result){ 
+            buddypond.pondSendMessage(data.to, data.text, data, function(err, result){ 
                 console.log('pondSendMessage', err, result)
                 console.log(err,result)
             })
@@ -493,7 +493,7 @@ export default class BuddyList {
         }
         if (data.type === 'buddy') {
             console.log('sendMessageToServer', data);
-            buddypond.sendMessage(data.to, data.text, function(err, result){ 
+            buddypond.sendMessage(data.to, data.text, data, function(err, result){ 
                 console.log('pondSendMessage', err, result)
                 console.log(err,result)
             });
