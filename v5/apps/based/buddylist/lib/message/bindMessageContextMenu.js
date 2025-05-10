@@ -11,6 +11,16 @@ export default function bindMessageContextMenu() {
     const target = event.target;
     const action = target.getAttribute('data-action');
 
+    // Handle more-options click (exact match)
+    if (action === 'more-options' && target.tagName === 'BUTTON') {
+      event.preventDefault();
+      const closestMessage = target.closest('.aim-chat-message');
+      if (closestMessage) {
+        this.createMessageContextMenu(target, closestMessage);
+      }
+      return;
+    }
+
     // Handle context menu item click
     if (target.classList.contains('aim-context-menu-item') && action) {
       handleContextMenuItemClick.call(this, action, target);
@@ -29,20 +39,9 @@ export default function bindMessageContextMenu() {
       return;
     }
 
-        // Handle reply cancel button click
-        if (target.classList.contains('aim-reply-cancel') && action === 'cancel-reply') {
-          cancelReply.call(this, target);
-          return;
-        }
-    
-
-    // Handle more-options click (exact match)
-    if (action === 'more-options' && target.tagName === 'BUTTON') {
-      event.preventDefault();
-      const closestMessage = target.closest('.aim-chat-message');
-      if (closestMessage) {
-        this.createMessageContextMenu(target, closestMessage);
-      }
+    // Handle reply cancel button click
+    if (target.classList.contains('aim-reply-cancel') && action === 'cancel-reply') {
+      cancelReply.call(this, target);
       return;
     }
 
@@ -338,11 +337,18 @@ function replyMessage(messageData, originalMessage) {
   // this.activeReplyUUID = messageData.uuid;
   // find the closet input named "message_replyto"
   const replyInput = replyBox.closest('.chatWindow').querySelector('input[name="message_replyto"]');
+  const messageTextInput = replyBox.closest('.chatWindow').querySelector('textarea[name="message_text"]');
   // set the value of the input to the messageData.uuid
+  // set the focus to the replyInput
   if (replyInput) {
     replyInput.value = messageData.uuid;
   } else {
     console.error('No reply input found');
+  }
+  if (messageTextInput) {
+    messageTextInput.focus();
+  } else {
+    console.error('No message text input found');
   }
 
   // Find the closest chatWindow and scroll to bottom
@@ -352,6 +358,8 @@ function replyMessage(messageData, originalMessage) {
   }
 
   console.log('Reply mode activated', messageData);
+
+
 }
 
 // Cancel reply mode

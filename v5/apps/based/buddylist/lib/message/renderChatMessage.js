@@ -54,6 +54,7 @@ export default async function renderChatMessage(message, _chatWindow) {
       message.card.thumbnail = `https://img.youtube.com/vi/${contentUrl.split('v=')[1]}/0.jpg`;
       message.card.context = contentUrl.split('v=')[1];
       message.text = 'I sent a youtube link:';
+      message.text = '';
     }
 
     if (isValidGithubLink(contentUrl)) {

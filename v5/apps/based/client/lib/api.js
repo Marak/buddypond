@@ -75,7 +75,6 @@ buddypond.subscribeMessages = function subscribeMessages(type, context) {
     wsClient.onmessage = function (event) {
       console.log('got back from server', event.data);
       let parseData = JSON.parse(event.data);
-      console.log('WebSocket message received:', parseData);
       if (parseData.action === 'message') {
         console.log('WebSocket message received:', parseData);
         bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
@@ -84,6 +83,17 @@ buddypond.subscribeMessages = function subscribeMessages(type, context) {
         console.log('getHistory message received:', parseData);
         bp.emit('buddy::messages', { result: { messages: parseData.messages } });
       }
+
+      if (parseData.action === 'removeInstantMessage') {
+        console.log('removeInstantMessage message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+      }
+
+      if (parseData.action === 'editInstantMessage') {
+        console.log('editInstantMessage message received:', parseData);
+        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+      }
+
     };
   }
   /*
@@ -300,6 +310,7 @@ buddypond.updateBuddyProfile = function updateBuddyProfile(profileUpdates, cb) {
   })
 }
 
+// Legacy, can remove soon
 buddypond.removeMessage = async function removeMessage({ from, to, type, uuid }) {
   return new Promise((resolve, reject) => {
     apiRequest('/' + type + '/' + to + '/removeInstantMessage', 'POST', {
@@ -398,7 +409,7 @@ buddypond.keepAlive = function keepalive() {
 // TODO: pass card values to sendMessage fn scope
 // TODO: we could send this directly to the deepseek API ( and not have to touch chat backend )
 // TODO: migrate this outside of messages codepath ( low priority )
-buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
+buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
   let msg = {
     from: buddypond.me,
     to: buddyName,
@@ -409,6 +420,9 @@ buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
       voiceIndex: desktop.settings.tts_voice_index
     }
   };
+  if (data.replyto) {
+    msg.replyto = data.replyto;
+  }
   preprocessDeepSeek(msg);
   console.log('attempting to send message', msg);
 
@@ -447,6 +461,43 @@ buddypond.sendMessage = function sendMessage(buddyName, text, cb) {
   */
 }
 
+buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid, text }) {
+  let wsClient = buddypond.messagesWsClients.get(chatId);
+  if (!wsClient) {
+    console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+  }
+
+  console.log('sending request to editInstantMessage', chatId, uuid, text);
+  // send the message via ws connection
+  wsClient.send(JSON.stringify({
+    action: 'editInstantMessage',
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    uuid: uuid,
+    text: text
+  }));
+}
+
+buddypond.removeInstantMessage = async function removeInstantMessage({ chatId, uuid }) {
+  
+
+  let wsClient = buddypond.messagesWsClients.get(chatId);
+  if (!wsClient) {
+    console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+  }
+
+  // send the message via ws connection
+  wsClient.send(JSON.stringify({
+    action: 'removeInstantMessage',
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    uuid: uuid,
+  }));
+  
+}
+
 buddypond.sendCardMessage = function sendCardMessage(message, cb) {
   apiRequest('/buddy/' + message.to + '/send', 'POST', message, function (err, data) {
     cb(err, data);
@@ -454,7 +505,7 @@ buddypond.sendCardMessage = function sendCardMessage(message, cb) {
 }
 
 // TODO: pass card values to pondSendMessage fn scope
-buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
+buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, cb) {
   let msg = {
     from: buddypond.me,
     to: pondname,
@@ -465,6 +516,11 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, cb) {
       voiceIndex: desktop.settings.tts_voice_index
     }
   };
+
+  if (data.replyto) {
+    msg.replyto = data.replyto;
+  }
+
   console.log('preprocessDeepSeek', msg);
 
   preprocessDeepSeek(msg);

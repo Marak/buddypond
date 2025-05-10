@@ -355,8 +355,8 @@
 .aim-hover-menu {
     display: none;
     position: absolute;
-    right: 8px;
-    top: -20px;
+    right: 0px;
+    top: 0px;
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 4px;

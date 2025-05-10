@@ -129,8 +129,8 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   chatMessage.appendChild(profilePicture);
   chatMessage.appendChild(contentWrapper);
 
-  if (container) {
-    chatMessage.appendChild(container);
+  if (container) { // card container?
+    contentWrapper.appendChild(container);
   }
 
   // Image load handler
