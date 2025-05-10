@@ -15,6 +15,11 @@
     "copy"
   ],
   [
+    "mail-reply",
+    null,
+    "reply"
+  ],
+  [
     61579,
     "fas",
     "right-from-bracket"
@@ -23,5 +28,10 @@
     61637,
     "far",
     "copy"
+  ],
+  [
+    61714,
+    "fas",
+    "reply"
   ]
 ]

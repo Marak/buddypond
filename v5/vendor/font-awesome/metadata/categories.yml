@@ -6,6 +6,7 @@ animals:
 arrows:
   icons:
     - arrows-rotate
+    - reply
     - right-from-bracket
     - upload
   label: Arrows
@@ -13,6 +14,8 @@ business:
   icons:
     - copy
     - folder-arrow-up
+    - keynote
+    - pencil
   label: Business
 camping:
   icons:
@@ -31,9 +34,14 @@ communication:
   icons:
     - microphone-lines
   label: Communication
+construction:
+  icons:
+    - pencil
+  label: Construction
 design:
   icons:
     - copy
+    - pencil
   label: Design
 devices-hardware:
   icons:
@@ -43,6 +51,9 @@ devices-hardware:
 editing:
   icons:
     - arrows-rotate
+    - ellipsis
+    - pencil
+    - trash
   label: Editing
 education:
   icons:
@@ -98,6 +109,10 @@ nature:
   icons:
     - frog
   label: Nature
+political:
+  icons:
+    - flag-swallowtail
+  label: Political
 science:
   icons:
     - book-sparkles
@@ -124,3 +139,7 @@ users-people:
     - head-side-gear
     - house-user
   label: Users + People
+writing:
+  icons:
+    - pencil
+  label: Writing

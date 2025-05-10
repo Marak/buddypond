@@ -216,6 +216,83 @@ copy:
       - paste
   unicode: f0c5
   voted: false
+ellipsis:
+  aliases:
+    names:
+      - ellipsis-h
+    unicodes:
+      secondary:
+        - 10f141
+  changes:
+    - 3.1.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.0.0-beta3
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free:
+      - family: classic
+        style: solid
+    pro:
+      - family: classic
+        style: solid
+  label: Ellipsis
+  search:
+    terms:
+      - dots
+      - drag
+      - kebab
+      - list
+      - menu
+      - nav
+      - navigation
+      - ol
+      - pacman
+      - reorder
+      - settings
+      - three dots
+      - ul
+  unicode: f141
+  voted: false
+flag-swallowtail:
+  aliases:
+    names:
+      - flag-alt
+    unicodes:
+      secondary:
+        - 10f74c
+  changes:
+    - 5.5.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.2.1
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Flag Swallowtail
+  search:
+    terms:
+      - country
+      - notice
+      - notification
+      - notify
+      - pole
+      - report
+      - symbol
+  unicode: f74c
+  voted: false
 folder-arrow-up:
   aliases:
     names:
@@ -404,6 +481,36 @@ house-user:
       - uer
   unicode: e1b0
   voted: false
+keynote:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f66c
+  changes:
+    - 5.3.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Keynote
+  search:
+    terms:
+      - lecture
+      - panel
+      - seminar
+      - speak
+      - speaker
+      - talk
+  unicode: f66c
+  voted: false
 list-music:
   aliases:
     unicodes:
@@ -516,6 +623,51 @@ music:
       - sing
       - sound
   unicode: f001
+  voted: false
+pencil:
+  aliases:
+    names:
+      - pencil-alt
+    unicodes:
+      composite:
+        - 270f
+        - f040
+      primary:
+        - f040
+      secondary:
+        - 10f040
+        - 10f303
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+    - 6.2.1
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Pencil
+  search:
+    terms:
+      - Lower Left Pencil
+      - design
+      - draw
+      - edit
+      - lead
+      - maintenance
+      - modify
+      - pencil
+      - update
+      - write
+  unicode: f303
   voted: false
 piano-keyboard:
   aliases:
@@ -679,6 +831,39 @@ record-vinyl:
       - sound
   unicode: f8d9
   voted: false
+reply:
+  aliases:
+    names:
+      - mail-reply
+    unicodes:
+      composite:
+        - f112
+      secondary:
+        - 10f3e5
+  changes:
+    - 3.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.2.1
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Reply
+  search:
+    terms:
+      - mail
+      - message
+      - respond
+  unicode: f3e5
+  voted: false
 right-from-bracket:
   aliases:
     names:
@@ -746,6 +931,38 @@ stop:
       - stop
       - stop button
   unicode: f04d
+  voted: false
+trash:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f1f8
+  changes:
+    - 4.2.0
+    - 5.0.0
+    - 5.7.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Trash
+  search:
+    terms:
+      - delete
+      - garbage
+      - hide
+      - remove
+  unicode: f1f8
   voted: false
 upload:
   aliases:

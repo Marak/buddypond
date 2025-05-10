@@ -433,6 +433,10 @@ readers do not read off random characters that represent icons */
 .fa-border-center-v { --fa: "\f89d"; --fa--fa: "\f89d\f89d"; }
 .fa-cassette-tape { --fa: "\f8ab"; --fa--fa: "\f8ab\f8ab"; }
 .fa-copy { --fa: "\f0c5"; --fa--fa: "\f0c5\f0c5"; }
+.fa-ellipsis { --fa: "\f141"; --fa--fa: "\f141\f141"; }
+.fa-ellipsis-h { --fa: "\f141"; --fa--fa: "\f141\f141"; }
+.fa-flag-alt { --fa: "\f74c"; --fa--fa: "\f74c\f74c"; }
+.fa-flag-swallowtail { --fa: "\f74c"; --fa--fa: "\f74c\f74c"; }
 .fa-folder-arrow-up { --fa: "\e054"; --fa--fa: "\e054\e054"; }
 .fa-folder-music { --fa: "\e18d"; --fa--fa: "\e18d\e18d"; }
 .fa-folder-upload { --fa: "\e054"; --fa--fa: "\e054\e054"; }
@@ -442,20 +446,26 @@ readers do not read off random characters that represent icons */
 .fa-head-side-gear { --fa: "\e611"; --fa--fa: "\e611\e611"; }
 .fa-home-user { --fa: "\e1b0"; --fa--fa: "\e1b0\e1b0"; }
 .fa-house-user { --fa: "\e1b0"; --fa--fa: "\e1b0\e1b0"; }
+.fa-keynote { --fa: "\f66c"; --fa--fa: "\f66c\f66c"; }
 .fa-list-music { --fa: "\f8c9"; --fa--fa: "\f8c9\f8c9"; }
+.fa-mail-reply { --fa: "\f3e5"; --fa--fa: "\f3e5\f3e5"; }
 .fa-microphone-alt { --fa: "\f3c9"; --fa--fa: "\f3c9\f3c9"; }
 .fa-microphone-lines { --fa: "\f3c9"; --fa--fa: "\f3c9\f3c9"; }
 .fa-music { --fa: "\f001"; --fa--fa: "\f001\f001"; }
+.fa-pencil { --fa: "\f303"; --fa--fa: "\f303\f303"; }
+.fa-pencil-alt { --fa: "\f303"; --fa--fa: "\f303\f303"; }
 .fa-piano-keyboard { --fa: "\f8d5"; --fa--fa: "\f8d5\f8d5"; }
 .fa-play { --fa: "\f04b"; --fa--fa: "\f04b\f04b"; }
 .fa-play-pause { --fa: "\e22f"; --fa--fa: "\e22f\e22f"; }
 .fa-qrcode { --fa: "\f029"; --fa--fa: "\f029\f029"; }
 .fa-record-vinyl { --fa: "\f8d9"; --fa--fa: "\f8d9\f8d9"; }
 .fa-refresh { --fa: "\f021"; --fa--fa: "\f021\f021"; }
+.fa-reply { --fa: "\f3e5"; --fa--fa: "\f3e5\f3e5"; }
 .fa-right-from-bracket { --fa: "\f2f5"; --fa--fa: "\f2f5\f2f5"; }
 .fa-sign-out-alt { --fa: "\f2f5"; --fa--fa: "\f2f5\f2f5"; }
 .fa-stop { --fa: "\f04d"; --fa--fa: "\f04d\f04d"; }
 .fa-sync { --fa: "\f021"; --fa--fa: "\f021\f021"; }
+.fa-trash { --fa: "\f1f8"; --fa--fa: "\f1f8\f1f8"; }
 .fa-upload { --fa: "\f093"; --fa--fa: "\f093\f093"; }
 
 .sr-only,

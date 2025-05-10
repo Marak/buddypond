@@ -2,6 +2,8 @@
 files-o:
   name: copy
   prefix: far
+mail-reply:
+  name: reply
 refresh:
   name: arrows-rotate
 sign-out:
