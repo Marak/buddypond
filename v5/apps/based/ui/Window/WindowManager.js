@@ -98,7 +98,7 @@ export default class WindowManager {
         if (this.useKeyboardControls) {
             window.addEventListener("keydown", (e) => {
                 // alert(this.bp.editingMode);
-                if (e.key === "Escape" && !this.bp.editingMode) {
+                if (e.key === "Escape" && !this.bp.ignoreUIControlKeys) {
                     // alert("Escape key pressed");
                     // find the window with the highest depth and close it
                     const window = this.windows[0]; // no sort needed, windows are already sorted by depth

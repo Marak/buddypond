@@ -121,18 +121,36 @@ export default class Profile {
                 // });
             });
 
-            const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
-                seed: this.bp.me, // Username as seed for consistent avatar
-                size: 128, // Avatar size in pixels
-                backgroundColor: ["#f0f0f0"], // Optional: Customize background
-            });
-
-            // Convert avatar to SVG string
-            const svg = avatar.toString();
-            console.log('Avatar SVG:', svg);
-
+            // check if user profile has a profilePicture
+            let profilePicture = buddyProfile.localState.profilePicture || buddyProfile.profilePicture;
+            console.log('localState', buddyProfile.localState);
+            console.log('profilePicture', profilePicture);
             let profilePicturePreview = $('.aim-profile-picture-preview');
-            profilePicturePreview.html(svg);
+
+            if (profilePicture) {
+
+                // profilePicture is a url, set the profilePicturePreview to the url
+                // create a new img element inside .aim-profile-picture-preview
+                let img = document.createElement('img');
+                img.src = profilePicture;
+                img.classList.add('aim-profile-picture-img');
+                profilePicturePreview.append(img);
+
+
+            } else {
+                const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
+                    seed: this.bp.me, // Username as seed for consistent avatar
+                    size: 128, // Avatar size in pixels
+                    backgroundColor: ["#f0f0f0"], // Optional: Customize background
+                });
+    
+                // Convert avatar to SVG string
+                const svg = avatar.toString();
+                console.log('Avatar SVG:', svg);
+    
+                profilePicturePreview.html(svg);
+    
+            }
 
         } else {
             // this.profileWindow.content.innerHTML = '';

@@ -344,12 +344,32 @@ buddypond.passwordChange = async function passwordChange({ buddyname, password }
   });
 }
 
-buddypond.setStatus = function sendMessage(buddyName, status, cb) {
+buddypond.updateProfile = async function updateProfile(buddyname, update) {
+  console.log('buddypond.updateProfile', buddyname, update);
+  return new Promise((resolve, reject) => {
+    apiRequest('/buddylist/' + buddyname + '/setStatus', 'POST', {
+      buddyname: buddyname,
+      status: update.status,
+      profilePicture: update.profilePicture,
+    }, function (err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+
+
+buddypond.setStatus = function setStatus(buddyName, update, cb) {
+  // TODO: status becomes profile object with profile.status and profile.profilePicture
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
   buddypond.status = status;
   apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
-    buddyname: buddyName,
-    status: status,
+    buddyname: buddyName, // should this be bp.me?, prob not for admin actions
+    status: update.status,
+    profilePicture: update.profilePicture,
   }, function (err, data) {
     cb(err, data);
   })
@@ -517,6 +537,11 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, c
     }
   };
 
+  if (bp.apps.buddylist.data.profileState.profilePicture) {
+    // console.log('sending message with profile picture', bp.apps.buddylist.data.profileState.buddylist[bp.me].profilePicture);
+    msg.profilePicture = bp.apps.buddylist.data.profileState.profilePicture;
+  }
+
   if (data.replyto) {
     msg.replyto = data.replyto;
   }
@@ -563,7 +588,8 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, c
     buddyname: buddypond.me,
     qtokenid: buddypond.qtokenid,
     message: nonCircularMsg,
-    chatHistory: chatHistory
+    chatHistory: chatHistory,
+    profilePicture: nonCircularMsg.profilePicture
   }));
 
   console.log('Pond', `Sent a Pond message: ${nonCircularMsg.text} -> ${nonCircularMsg.type}/${nonCircularMsg.to}`);
@@ -1006,6 +1032,8 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   console.log("buddypond.uploadFile", file);
   // Construct the URL for the Worker to generate the signed URL
   let fileName = encodeURIComponent(file.webkitRelativePath || file.name);
+
+  // filePath is our custom attribute from the file object to root the file into a specific folder / path
   let filePath = file.filePath || '';
   console.log("using filePath", filePath);
 
