@@ -63,19 +63,6 @@ export default async function processProfile(profileState) {
   // console.log('getBuddyProfile', api, profileState);
   profileState.updates = profileState.updates || {};
 
-  // TODO: we can perform differential updates to the profileState here, we don't need to send entire buddylist
-  if (profileNeedsUpdate) {
-    //console.log("SENDING TO SERVER", this.data.profileState.buddylist);
-    let updates = this.data.profileState.buddylist;
-    // console.log('sending updates', updates);
-    api.getBuddyProfile({ updates }, function (err, data) {
-      if (err) {
-        console.log(err);
-      }
-      // console.log(err, data)
-    });
-  }
-
 }
 
 function _processBuddyRequestsData(buddylist, buddyrequests) {

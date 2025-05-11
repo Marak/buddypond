@@ -284,12 +284,15 @@ export default class FileViewer {
             const originalFile = this.getFile(content);
             console.log('sending file', originalFile);
             if (originalFile) {
+                // TODO:
+                /*
                 this.bp.sendFile({
                     type: 'pond', // TOOD: hardcoded?
                     name: targetAppId,
                     text: 'Sending file: ' + originalFile.name,
                     file: originalFile
                 });
+                */
             }
         });
     }

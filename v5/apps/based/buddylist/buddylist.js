@@ -31,6 +31,8 @@ export default class BuddyList {
             processedMessages: {},
             profileState: {
                 me: null,
+                status: null, // are these used?
+                profilePicture: null, // are these used?
                 updates: {}
             }
         };
@@ -59,7 +61,9 @@ export default class BuddyList {
             //event.preventDefault();
             //event.returnValue = "Are you sure you want to leave? Your status will be set to offline.";
             // Attempt to set status to offline (you may need a sync alternative)
-            buddypond.setStatus(this.bp.me, 'offline', function(err, re) {
+            buddypond.setStatus(this.bp.me, {
+                status: 'offline'
+            }, function(err, re) {
                 console.log('buddypond.setStatus', err, re);
             });
             //return event.returnValue;
@@ -207,13 +211,12 @@ export default class BuddyList {
             if (buddyListItem) {
             }
 
-
         });
 
 
         this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
 
-            console.log('profile::buddy::full_profile', data);
+            // console.log('profile::buddy::full_profile', data);
             for (let b in data) {
                 let buddy = {
                     name: b,
@@ -225,6 +228,12 @@ export default class BuddyList {
                 this.data.profileState.buddylist[b] = buddy.profile;
                 // console.log('renderOrUpdateBuddyInBuddyList', buddy);
                 this.renderOrUpdateBuddyInBuddyList(buddy);
+            }
+
+            if (data[this.bp.me]) {
+                // for now...needs to change shape of server response to include root fields?
+                console.log('setting profilePicture', data[this.bp.me].profilePicture);
+                this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
             }
 
             // iterate through all buddies and call renderOrUpdateBuddyInBuddylist
@@ -280,7 +289,7 @@ export default class BuddyList {
                 this.logout()
             }
 
-            buddypond.setStatus(this.bp.me, status, function(err, re){
+            buddypond.setStatus(this.bp.me, { status }, function(err, re){
                 // console.log('errrrr', err, re);
             });
 
@@ -578,7 +587,9 @@ export default class BuddyList {
         }
 
         // set status to online
-        buddypond.setStatus(this.bp.me, 'online', function(err, re){
+        buddypond.setStatus(this.bp.me, {
+            status: 'online'
+        }, function(err, re){
             console.log('buddypond.setStatus', err, re);
         });
 
@@ -602,7 +613,9 @@ BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
 BuddyList.prototype.logout = function () {
 
      // set status to online
-     buddypond.setStatus(this.bp.me, 'offline', function(err, re){
+     buddypond.setStatus(this.bp.me, {
+        status: 'offline'
+     }, function(err, re){
         console.log('buddypond.setStatus', err, re);
     });
     // close any open chat windows

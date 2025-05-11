@@ -69,10 +69,10 @@ export default class Client {
         if (this.keepaliveInterval) return; // Prevent multiple intervals
 
         this.keepaliveInterval = setInterval(() => {
-            if (this.subscriptions.size > 0) {
+            //if (this.subscriptions.size > 0) {
                 buddypond.keepAlive();
                 this.bp.log('Keepalive ping sent');
-            }
+            //}
         }, 30000); // 30 seconds interval
     }
 
@@ -84,6 +84,9 @@ export default class Client {
     }
 
     addSubscription(type, context) {
+        this.bp.apps.client.api.subscribeMessages(type, context);
+        /* Legacy code for SSE, replaced with WebSocket API in api.js
+        // TODO: we could move the api code back here for cleaner code
         if (!this.bp.qtokenid) {
             setTimeout(() => this.addSubscription(type, context), 100);
             return;
@@ -98,21 +101,27 @@ export default class Client {
         } else {
             console.log(`Already subscribed to ${key}`);
         }
+        */
     }
 
     removeSubscription(type, context) {
+        this.api.unsubscribeMessages(type, context);
+        /* Legacy code for SSE, replaced with WebSocket API in api.js
+        // TODO: we could move the api code back here for cleaner code
+
         const key = `${type}/${context}`;
         if (this.subscriptions.has(key)) {
             this.subscriptions.get(key).disconnectSSE();
             this.subscriptions.delete(key);
             console.log(`Unsubscribed from ${key}`);
-
+            console.log('subscriptions', this.subscriptions);
             if (this.subscriptions.size === 0) {
                 this.stopKeepaliveTimer();
             }
         } else {
             console.log(`Not subscribed to ${key}`);
         }
+        */
     }
 
     connect() {

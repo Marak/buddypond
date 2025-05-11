@@ -7,68 +7,76 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   this.bp.buddyTimeouts = this.bp.buddyTimeouts || {};
 
+  console.log('renderOrUpdateBuddyInBuddyList', buddyname, data);
+
   // Track previous connection status to detect changes
   let buddyListItems = document.querySelectorAll('.buddylist li');
   let existingBuddy = Array.from(buddyListItems).find(el => el.dataset.buddy === buddyname);
   let wasConnected = existingBuddy ? existingBuddy.querySelector('.buddy-status').textContent.includes('🟢') : false;
-  // console.log('wasConnected', wasConnected, buddyname, buddydata.isConnected);
-  // Update connection status
-  if (buddydata.status === 'online') {
-    buddydata.isConnected = true;
-  }
 
-  // Clear the timeout if it exists
-  if (this.bp.buddyTimeouts[buddyname]) {
-    clearTimeout(this.bp.buddyTimeouts[buddyname]);
-    delete this.bp.buddyTimeouts[buddyname];
-  }
+  // Handle status update only if status field is present
+  if (buddydata.hasOwnProperty('status')) {
+    if (buddydata.status === 'online') {
+      buddydata.isConnected = true;
+    } else {
+      buddydata.isConnected = false;
+    }
 
-  let now = new Date().getTime();
-  let diff = now - buddydata.utime;
-  // console.log('checking timeout', buddyname, buddydata.utime, diff);
-  if (now - buddydata.utime > buddyTimeoutsInterval) {
-    // console.log('buddy has timed out', buddyname, buddydata.utime, diff);
-    buddydata.isConnected = false;
-  }
+    // Clear the timeout if it exists
+    if (this.bp.buddyTimeouts[buddyname]) {
+      clearTimeout(this.bp.buddyTimeouts[buddyname]);
+      delete this.bp.buddyTimeouts[buddyname];
+    }
 
-  // Set a timeout to mark buddy as offline if they are currently connected
-  if (buddydata.isConnected) {
-    // console.log('buddy is connected, creating timeout', buddyname, buddydata.utime, diff);
-    this.bp.buddyTimeouts[buddyname] = setTimeout(() => {
-      let _data = {
-        name: buddyname,
-        profile: {
-          buddyname: buddyname,
-          isConnected: false,
-          status: 'offline',
-          utime: new Date().getTime(),
-          dtime: new Date().getTime(),
-          newMessages: false
-        }
-      };
-      // console.log('buddy has timed out, calling renderOrUpdateBuddyInBuddyList', buddyname, _data);
-      renderOrUpdateBuddyInBuddyList.call(this, _data, false);
-    }, buddyTimeoutsInterval * 1.5);
-  }
+    let now = new Date().getTime();
+    let diff = now - buddydata.utime;
+    if (now - buddydata.utime > buddyTimeoutsInterval) {
+      buddydata.isConnected = false;
+    }
 
-  // Play sound based on status change
-  // Don't play sound if buddy is me
-  if (buddyname !== this.bp.me) {
-    if (buddydata.isConnected && !wasConnected) {
-      bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
-    } else if (!buddydata.isConnected && wasConnected) {
-      // Remark: Removed the signout sound as it was too loud / jarring
-      // bp.play('desktop/assets/audio/BUDDY-OUT.wav'); // Buddy goes offline
+    // Set a timeout to mark buddy as offline if they are currently connected
+    if (buddydata.isConnected) {
+      this.bp.buddyTimeouts[buddyname] = setTimeout(() => {
+        let _data = {
+          name: buddyname,
+          profile: {
+            buddyname: buddyname,
+            isConnected: false,
+            status: 'offline',
+            utime: new Date().getTime(),
+            dtime: new Date().getTime(),
+            newMessages: false
+          }
+        };
+        renderOrUpdateBuddyInBuddyList.call(this, _data, false);
+      }, buddyTimeoutsInterval * 1.5);
+    }
+
+    // Play sound based on status change
+    // Don't play sound if buddy is me
+    if (buddyname !== this.bp.me) {
+      if (buddydata.isConnected && !wasConnected) {
+        bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
+      } else if (!buddydata.isConnected && wasConnected) {
+        // Remark: Removed the signout sound as it was too loud / jarring
+        // bp.play('desktop/assets/audio/BUDDY-OUT.wav'); // Buddy goes offline
+      }
     }
   }
 
-  let connectedStatusIcon = buddydata.isConnected ? '🟢' : '🟠';
+  // Use existing isConnected if available, otherwise derive from DOM state
+  let isConnected = buddydata.hasOwnProperty('isConnected') ? buddydata.isConnected : wasConnected;
+
+  if (buddydata.newMessages) {
+    isConnected = true;
+    this.bp.apps.buddylist.openChatWindow({ context: buddyname, type: 'buddy' });
+  }
+
+  let connectedStatusIcon = isConnected ? '🟢' : '🟠';
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
 
-  if (buddydata.newMessages) {
-    this.bp.apps.buddylist.openChatWindow({ context: buddyname, type: 'buddy' });
-  }
+
 
   let lastSeen = buddydata.utime ? buddydata.utime : 0;
   let lastSeenDate = new Date(lastSeen);

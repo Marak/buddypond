@@ -45,6 +45,134 @@ buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
 // buddypond.messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
 
 buddypond.messagesWsClients = new Map();
+
+buddypond.unsubscribeMessages = function unsubscribeMessages(type, context) {
+  console.log(`unsubscribeMessages unsubscribing from ${type}/${context}`);
+  let chatId = type + '/' + context;
+
+  if (type === 'buddy') {
+    // if the context is a buddy, we need to create a unique chatId to represent the tuple
+    // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+    let buddyNames = [buddypond.me, context].sort();
+    chatId = type + '/' + buddyNames.join('/');
+  }
+
+  // check if an entry exists in the map
+  if (buddypond.messagesWsClients.has(chatId)) {
+    console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
+    let wsClient = buddypond.messagesWsClients.get(chatId);
+    console.log('closing wsClient', wsClient);
+
+    console.log('Before close, readyState:', wsClient.readyState);
+    wsClient.closeConnection();
+  }
+}
+
+// Track reconnect state
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 999999; // Set to a high number for unlimited attempts
+const maxBackoffDelay = 10000; // 10 seconds
+
+// Function to create a WebSocket client for a given chatId
+function createWebSocketClient(chatId) {
+  console.log(`Creating WebSocket client for chatId: ${chatId}`);
+  const wsClient = new WebSocket(
+    `${buddypond.messagesWsEndpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&chatId=${chatId}`
+  );
+  buddypond.messagesWsClients.set(chatId, wsClient);
+
+  let isIntentionallyClosed = false; // Flag to track intentional closure
+
+  // Handle open event
+  wsClient.addEventListener('open', function () {
+    console.log('WebSocket connection opened to', chatId);
+    reconnectAttempts = 0; // Reset reconnect attempts on successful connection
+    wsClient.send(
+      JSON.stringify({
+        action: 'getHistory',
+        chatId: chatId,
+        buddyname: buddypond.me,
+        qtokenid: buddypond.qtokenid,
+      })
+    );
+  });
+
+  // Handle message event
+  wsClient.addEventListener('message', function (event) {
+    try {
+      console.log('Got back from server:', event.data);
+      const parseData = JSON.parse(event.data);
+
+      switch (parseData.action) {
+        case 'message':
+          console.log('WebSocket message received:', parseData);
+          bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+          break;
+
+        case 'getHistory':
+          console.log('getHistory message received:', parseData);
+          bp.emit('buddy::messages', { result: { messages: parseData.messages } });
+          break;
+
+        case 'removeInstantMessage':
+          console.log('removeInstantMessage message received:', parseData);
+          bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+          break;
+
+        case 'editInstantMessage':
+          console.log('editInstantMessage message received:', parseData);
+          bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+          break;
+
+        default:
+          console.warn('Unknown action received:', parseData.action);
+          break;
+      }
+    } catch (error) {
+      console.error('Error parsing WebSocket message:', error);
+    }
+  });
+
+  // Handle close event
+  wsClient.addEventListener('close', function (event) {
+    console.log('WebSocket connection closed to', chatId, 'Code:', event.code, 'Reason:', event.reason);
+    buddypond.messagesWsClients.delete(chatId);
+    console.log('Current WebSocket clients:', buddypond.messagesWsClients);
+    console.log('reconnectAttempts:', reconnectAttempts);
+    // Reconnect only if the closure was not intentional
+    if (!isIntentionallyClosed && reconnectAttempts < maxReconnectAttempts) {
+      const delay = Math.min(
+        200 * Math.pow(2, reconnectAttempts) * (1 + 0.1 * Math.random()), // Exponential backoff with jitter
+        maxBackoffDelay
+      );
+      console.log(`Scheduling reconnect attempt ${reconnectAttempts + 1} for ${chatId} in ${delay}ms`);
+      setTimeout(() => {
+        reconnectAttempts++;
+        createWebSocketClient(chatId); // Attempt to reconnect
+      }, delay);
+    } else if (reconnectAttempts >= maxReconnectAttempts) {
+      console.error(`Max reconnect attempts (${maxReconnectAttempts}) reached for ${chatId}. Giving up.`);
+    }
+  });
+
+  // Handle error event
+  wsClient.addEventListener('error', function (event) {
+    console.error('WebSocket error for', chatId, event);
+    // The error event is often followed by a close event, so we rely on the close handler for reconnection
+    // Optionally, you can close the WebSocket here to trigger the close handler immediately
+    wsClient.close(1000, 'Error occurred');
+  });
+
+  // Method to intentionally close the WebSocket
+  wsClient.closeConnection = function () {
+    isIntentionallyClosed = true;
+    console.log(`Intentionally closing WebSocket for ${chatId}`);
+    wsClient.close(1000, 'Normal closure');
+  };
+
+  return wsClient;
+}
+
 buddypond.subscribeMessages = function subscribeMessages(type, context) {
   console.log(`subscribeMessages subscribing to ${type}/${context}`);
   let chatId = type + '/' + context;
@@ -58,100 +186,10 @@ buddypond.subscribeMessages = function subscribeMessages(type, context) {
 
   // check if an entry exists in the map
   if (!buddypond.messagesWsClients.has(chatId)) {
-    console.log(`buddypond.messagesWsClients does not have ${chatId}, creating new entry`);
-    let wsClient = new WebSocket(buddypond.messagesWsEndpoint + '?me=' + buddypond.me + '&qtokenid=' + buddypond.qtokenid + '&chatId=' + chatId);
-    buddypond.messagesWsClients.set(chatId, wsClient);
-    wsClient.onopen = function () {
-      console.log('WebSocket connection opened to', chatId);
-      // request the history of messages for this chat
-      wsClient.send(JSON.stringify({
-        action: 'getHistory',
-        chatId: chatId,
-        buddyname: buddypond.me,
-        qtokenid: buddypond.qtokenid
-      }));
-    };
-
-    wsClient.onmessage = function (event) {
-      console.log('got back from server', event.data);
-      let parseData = JSON.parse(event.data);
-      if (parseData.action === 'message') {
-        console.log('WebSocket message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
-      }
-      if (parseData.action === 'getHistory') {
-        console.log('getHistory message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: parseData.messages } });
-      }
-
-      if (parseData.action === 'removeInstantMessage') {
-        console.log('removeInstantMessage message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
-      }
-
-      if (parseData.action === 'editInstantMessage') {
-        console.log('editInstantMessage message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
-      }
-
-    };
+    createWebSocketClient(chatId);
   }
-  /*
-  if (!buddypond.messagesWs) {
-    // buddypond.messagesWs = new WebSocket(buddypond.messagesWsEndpoint);
-    // create a new WebSocket connection with "x-me" header
-    let chatId = type + '/' + context;
-
-    buddypond.messagesWs = new WebSocket(buddypond.messagesWsEndpoint + '?me=' + buddypond.me + '&qtokenid=' + buddypond.qtokenid + '&chatId=' + chatId);
-    buddypond.messagesWs.onopen = function () {
-      console.log('WebSocket connection opened');
-      buddypond.messagesWs.send(JSON.stringify({
-        action: 'subscribe',
-        chatId: chatId,
-        buddyname: buddypond.me,
-        qtokenid: buddypond.qtokenid
-      }));
-    };
-
-    buddypond.messagesWs.onmessage = function (event) {
-      console.log('WebSocket message received:', event.data);
-      let parseData = JSON.parse(event.data);
-      if (parseData.action === 'sent') {
-        console.log('WebSocket message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
-      }
-      if (parseData.type === 'history') {
-        console.log('WebSocket message received:', parseData);
-        bp.emit('buddy::messages', { result: { messages: parseData.messages } });
-      }
-
-
-    };
-
-    buddypond.messagesWs.onclose = function () {
-      console.log('WebSocket connection closed');
-    };
-
-    buddypond.messagesWs.onerror = function (error) {
-      console.error('WebSocket error:', error);
-    }
-
-  } else {
-    // already connected, subscribe to the new chat
-    let chatId = type + '/' + context;
-    console.log(`buddypond.messagesWs already connected, subscribing to ${chatId}`);
-    buddypond.messagesWs.send(JSON.stringify({
-      action: 'subscribe',
-      chatId: chatId,
-      buddyname: buddypond.me,
-      qtokenid: buddypond.qtokenid
-    }));
-  }
-    */
 
 }
-//buddypond.uploadsEndpoint = 'https://uploads-dev.buddypond.com';
-//buddypond.uploadsEndpoint = 'https://bp-storage-dev.cloudflare1973.workers.dev';
 
 buddypond.authBuddy = function authBuddy(me, password, cb) {
 
@@ -187,6 +225,7 @@ buddypond.addBuddy = function addBuddy(buddyname, cb) {
   })
 }
 
+/*
 buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
   apiRequest('/buddylist/' + buddypond.me + '/removeBuddy', 'POST', {
     buddyname: buddyname
@@ -217,13 +256,7 @@ buddypond.banBuddy = function banBuddy(buddyname, cb) {
     cb(err, data);
   })
 }
-
-// Legacy REST method for getting / setting buddy profile in one call
-buddypond.getBuddyProfile = function getBuddyProfile(profileUpdates, cb) {
-  apiRequest('/buddies', 'POST', profileUpdates, function (err, data) {
-    cb(err, data);
-  })
-}
+*/
 
 // Newer v5 getProfile ( read only )
 buddypond.getProfile = async function getProfile(buddyname) {
@@ -361,7 +394,6 @@ buddypond.updateProfile = async function updateProfile(buddyname, update) {
   });
 }
 
-
 buddypond.setStatus = function setStatus(buddyName, update, cb) {
   // TODO: status becomes profile object with profile.status and profile.profilePicture
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
@@ -385,6 +417,7 @@ buddypond.receiveInstantMessage = function receiveInstantMessage(buddyName, cb) 
   })
 }
 
+// TODO: move outside of api.js file
 function preprocessDeepSeek(data) {
 
   function isDeepSeekCommand(data) { // TODO move
@@ -440,6 +473,12 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
       voiceIndex: desktop.settings.tts_voice_index
     }
   };
+
+  if (bp.apps.buddylist.data.profileState.profilePicture) {
+    // console.log('sending message with profile picture', bp.apps.buddylist.data.profileState.buddylist[bp.me].profilePicture);
+    msg.profilePicture = bp.apps.buddylist.data.profileState.profilePicture;
+  }
+
   if (data.replyto) {
     msg.replyto = data.replyto;
   }
@@ -456,8 +495,6 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
   // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
   let buddyNames = [buddypond.me, msg.to].sort();
   chatId = 'buddy/' + buddyNames.join('/');
-
-
 
   let wsClient = buddypond.messagesWsClients.get(chatId);
   if (!wsClient) {
@@ -500,7 +537,7 @@ buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid,
 }
 
 buddypond.removeInstantMessage = async function removeInstantMessage({ chatId, uuid }) {
-  
+
 
   let wsClient = buddypond.messagesWsClients.get(chatId);
   if (!wsClient) {
@@ -515,7 +552,7 @@ buddypond.removeInstantMessage = async function removeInstantMessage({ chatId, u
     qtokenid: buddypond.qtokenid,
     uuid: uuid,
   }));
-  
+
 }
 
 buddypond.sendCardMessage = function sendCardMessage(message, cb) {
@@ -616,89 +653,6 @@ buddypond.castSpell = async function castSpell(buddyName, spellName, cb) {
 
 }
 
-buddypond.sendBuddySignal = function sendBuddySignal(buddyname, signal, cb) {
-  apiRequest('/buddies/' + buddyname + '/signal', 'POST', {
-    data: signal
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.getBuddySignal = function getBuddySignal(buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/signal', 'GET', {}, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.callBuddy = function callBuddy(buddyName, text, cb) {
-  apiRequest('/buddies/' + buddyName + '/call', 'POST', {
-    buddyname: buddyName,
-    text: text
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.endBuddyCall = function endBuddyCall(buddyName, cb) {
-  apiRequest('/buddies/' + buddyName + '/endcall', 'POST', {
-    buddyname: buddyName,
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.endCall = function endCall(buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/endcall', 'POST', {
-    buddyname: buddyname
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.declineCall = function declineCall(buddyname, cb) {
-  apiRequest('/buddies/' + buddyname + '/declinecall', 'POST', {
-    buddyname: buddyname
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.getMessages = function getMessages(params, cb) {
-  apiRequest('/messages/getMessages', 'POST', params, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.getGbpMarket = function getGbpMarket(cb) {
-  apiRequest('/gbp/market', 'GET', {}, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.purchaseGbp = function purchaseGbp(params, cb) {
-  apiRequest('/gbp/purchase', 'POST', params, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.giveGbp = function giveGbp(params, cb) {
-  apiRequest('/gbp/send', 'POST', params, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.getGbpBalance = function purchaseGbp(params, cb) {
-  apiRequest('/gbp/balance', 'GET', params, function (err, data) {
-    cb(err, data);
-  })
-}
-
-buddypond.getGbpRecentTransactions = function recentGbpTransactions(params, cb) {
-  apiRequest('/gbp/recent', 'GET', params, function (err, data) {
-    cb(err, data);
-  })
-}
-
 // Helper function to check file types
 buddypond.getFileCategory = function getFileCategory(fileType) {
   if (buddypond.supportedImageTypes.includes(fileType)) {
@@ -712,117 +666,6 @@ buddypond.getFileCategory = function getFileCategory(fileType) {
   }
   return 'binary';
 }
-
-buddypond.getFiles = async function getFiles(owner) {
-  return new Promise((resolve, reject) => {
-    apiRequest(`/files/${buddypond.me}`, 'GET', {}, function (err, data) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-}
-
-buddypond.sendFile = async function sendFile({ type, name, text, file, delay }) {
-  return new Promise((resolve, reject) => {
-    const fileCategory = buddypond.getFileCategory(file.type);
-
-    // Convert file to base64
-    const reader = new FileReader();
-    reader.onload = async function () {
-      try {
-        const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
-
-        switch (fileCategory) {
-          case 'image': {
-            // Handle images as snaps
-            const snapsJSON = JSON.stringify(base64Data);
-
-            buddypond.sendSnaps(type, name, text, snapsJSON, delay, 'paint', (err, data) => {
-              if (err) reject(err);
-              else resolve(data);
-            });
-            break;
-          }
-
-          case 'audio': {
-            // Handle audio files
-            const audioJSON = JSON.stringify({
-              data: base64Data,
-              type: file.type,
-              name: file.name
-            });
-
-            buddypond.sendAudio(type, name, text, audioJSON, (err, data) => {
-              if (err) reject(err);
-              else resolve(data);
-            });
-            break;
-          }
-
-          case 'video':
-          case 'binary': {
-            // Handle video and other binary files
-            const fileJSON = JSON.stringify({
-              data: base64Data,
-              type: file.type,
-              name: file.name,
-              size: file.size
-            });
-
-            buddypond.sendBinaryFile(type, name, text, fileJSON, (err, data) => {
-              if (err) reject(err);
-              else resolve(data);
-            });
-            break;
-          }
-        }
-      } catch (err) {
-        reject(err);
-      }
-    };
-
-    reader.onerror = () => {
-      reject(new Error('Error reading file'));
-    };
-    console.log('ffff', file);
-    // Start reading the file
-    // get the blob from the file
-    // let blob = ???;
-    // file.src is an object URL
-    // how to gert blob?
-    reader.readAsDataURL(file);
-  });
-}
-
-buddypond.sendBinaryFile = function sendBinaryFile(type, name, text, fileJSON, cb) {
-  let x = (new TextEncoder().encode(fileJSON)).length;
-  console.log('File', `About to send a file: ${x} bytes -> ${type}/${name}`);
-
-  const payload = {
-    type: type,
-    card: {
-      type: 'file',
-      file: fileJSON
-    }
-  };
-
-  // Add type-specific fields
-  if (type === 'pond') {
-    payload.pondname = name;
-    payload.pondtext = text;
-  } else if (type === 'buddy') {
-    payload.buddyname = name;
-    payload.text = text;
-  }
-
-  apiRequest(`/messages/${type}/${name}`, 'POST', payload, function (err, data) {
-    cb(err, data);
-  });
-}
-
 
 // Remark: 1/6/2025 - buddypond.sendSnaps() is now considered legacy function
 //                    and should be replaced with buddypond.uploadFile()
@@ -1284,6 +1127,5 @@ function apiRequest(uri, method, data, cb) {
       cb(new Error(msg), error.data || null);
     });
 }
-
 
 //export default buddypond;

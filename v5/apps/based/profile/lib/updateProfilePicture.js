@@ -105,9 +105,9 @@ export default function updateProfilePicture(event, profilePictureImg) {
 
             console.log('Uploading file:', resizedFile);
 
-            /* TODO: add back after buddylist updates compelted
+            let url;
             try {
-              let url = await buddypond.uploadFile(resizedFile, onProgress);
+              url = await buddypond.uploadFile(resizedFile, onProgress);
               console.log('File uploaded to:', url);
               updateStatus('Upload complete!', 'success');
               hideStatusAfterDelay();
@@ -115,10 +115,10 @@ export default function updateProfilePicture(event, profilePictureImg) {
             } catch (err) {
               console.error('Error uploading file:', err);
               updateStatus('Upload failed: ' + err.message, 'error');
+              return;
             }
-            */
 
-            let url = 'https://files.buddypond.com/Jane/profile-pics/terry-called.jpg';
+            //let url = 'https://files.buddypond.com/Jane/profile-pics/terry-called.jpg';
             console.log('File uploaded to:', url);
 
             // Now we call updateProfile to update the profile picture

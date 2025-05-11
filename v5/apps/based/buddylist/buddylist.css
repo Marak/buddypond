@@ -318,6 +318,24 @@
     transition: background 0.2s;
 }
 
+.aim-chat-message-profile-picture-img {
+    /* should be size 40px */
+    /* should have circle shape */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    background: #e5e7eb;
+    /* Light grey background for the profile picture */
+    object-fit: cover;
+    /* Cover the entire area of the image */
+    flex-shrink: 0;
+    /* Prevent shrinking */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+
+}
+
 .aim-chat-message:hover {
     background: #f8f9fa;
 }

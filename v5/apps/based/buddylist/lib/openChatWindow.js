@@ -43,11 +43,8 @@ export default function openChatWindow(data) {
         onOpen: async (_window) => {
             //console.log('client', client);
             //console.log('client.subscriptions', client.subscriptions);
-            
-            this.bp.apps.client.api.subscribeMessages(windowType, contextName);
 
-            // Old SSE API
-            // client.addSubscription(windowType, contextName);
+            client.addSubscription(windowType, contextName);
             
             const _data = { me: this.bp.me };
             if (windowType === 'pond') {
