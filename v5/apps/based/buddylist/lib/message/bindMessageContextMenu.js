@@ -7,22 +7,14 @@ import scrollToBottom from "./scrollToBottom.js";
 
 export default function bindMessageContextMenu() {
 
+
+
   bindProfilePictureClick.call(this);
 
   // Single event delegation for context menu, hover menu, and edit hint actions
   document.addEventListener('click', (event) => {
     const target = event.target;
-    const action = target.getAttribute('data-action');
-
-    // Handle more-options click (exact match)
-    if (action === 'more-options' && target.tagName === 'BUTTON') {
-      event.preventDefault();
-      const closestMessage = target.closest('.aim-chat-message');
-      if (closestMessage) {
-        this.createMessageContextMenu(target, closestMessage);
-      }
-      return;
-    }
+    let action = target.getAttribute('data-action');
 
     // Handle context menu item click
     if (target.classList.contains('aim-context-menu-item') && action) {
@@ -31,7 +23,13 @@ export default function bindMessageContextMenu() {
     }
 
     // Handle hover menu item click
-    if (target.classList.contains('aim-hover-menu-item') && action) {
+
+    // TODO: there must be a better way to do this
+    // Remark: The issue is that we wish to cover the click action for the parent item and all its potential children
+    let isHoverMenuAction = $(target).hasClass('aim-hover-menu-item') || $(target).parents().hasClass('aim-hover-menu-item');
+    action = target.getAttribute('data-action') || target.parentNode.getAttribute('data-action');
+
+    if (isHoverMenuAction && action) {
       handleContextMenuItemClick.call(this, action, target);
       return;
     }
@@ -44,7 +42,9 @@ export default function bindMessageContextMenu() {
 
     // Handle reply cancel button click
     if (target.classList.contains('aim-reply-cancel') && action === 'cancel-reply') {
-      cancelReply.call(this, target);
+      // get the closest reply box
+      const replyBox = target.closest('.aim-reply-box');
+      cancelReply.call(this, replyBox);
       return;
     }
 
@@ -55,9 +55,10 @@ export default function bindMessageContextMenu() {
 
 // Handle context menu or hover menu item click
 function handleContextMenuItemClick(action, target) {
-  console.log(`Context menu action: ${action}`);
   performAction.call(this, action, target);
-  closeMenus.call(this);
+  if (action !== 'more-options') {
+    closeMenus.call(this);
+  }
 }
 
 // Handle edit hint action (escape/enter)
@@ -82,10 +83,11 @@ function handleEditHintAction(action, target) {
   };
 
   if (action === 'cancel-edit') {
-    cancelEdit(messageContent, messageData.text);
+    cancelEdit.call(this, messageContent, messageData.text);
   } else if (action === 'save-edit') {
     saveEdit.call(this, messageContent, messageData);
   }
+
 }
 
 // Close active context and hover menus
@@ -146,13 +148,21 @@ function performAction(action, target) {
       replyMessage.call(this, messageData, originalMessage);
       break;
     case 'more-options':
-      console.log('More options clicked');
+      event.preventDefault();
+      const closestMessage = target.closest('.aim-chat-message');
+      console.log('closestMessage', closestMessage);
+      if (closestMessage) {
+        this.createMessageContextMenu(target, closestMessage);
+      }
+
       break;
     case 'quote-message':
       console.log('Quote message clicked');
       break;
     case 'say-message':
       console.log('Say message clicked');
+      console.log('sayMessage', messageData);
+      this.bp.emit('say::message', messageData);
       break;
     case 'report-message':
       console.log('Report message clicked');
@@ -184,7 +194,7 @@ function editMessage(messageData) {
     return;
   }
 
-  this.bp.editingMode = true;
+  this.bp.ignoreUIControlKeys = true;
   const originalText = messageData.text;
 
   // Wrap message content in an editable container
@@ -218,7 +228,7 @@ function editMessage(messageData) {
   // Named event handler for keydown
   const handleKeydown = (event) => {
     if (event.key === 'Escape') {
-      cancelEdit(messageContent, originalText);
+      cancelEdit.call(this, messageContent, originalText);
       cleanupListeners();
       event.preventDefault();
       event.stopPropagation();
@@ -231,16 +241,20 @@ function editMessage(messageData) {
   };
 
   // Named event handler for blur
-  const handleBlur = () => {
-    cancelEdit(messageContent, originalText);
-    cleanupListeners();
+  const handleBlur = (ev) => {
+    // ensure the target was not ".aim-edit-hint-action"
+    console.log('handleBlur', ev.relatedTarget, ev.target.classList);
+    if (ev.relatedTarget && !ev.relatedTarget.classList.contains('aim-edit-hint-action')) {
+      cancelEdit.call(this, messageContent, originalText);
+      cleanupListeners();
+    }
   };
 
   // Cleanup function for event listeners
   const cleanupListeners = () => {
     messageContent.removeEventListener('keydown', handleKeydown);
     messageContent.removeEventListener('blur', handleBlur);
-    this.bp.editingMode = false;
+    this.bp.ignoreUIControlKeys = false;
   };
 
   // Attach event listeners
@@ -251,7 +265,7 @@ function editMessage(messageData) {
 }
 
 // Cancel editing and restore original text
-function cancelEdit(messageContent, originalText) {
+function cancelEdit(messageContent, originalText, restoreText = true) {
   const editableContainer = messageContent.closest('.aim-editable-container');
   if (editableContainer) {
     // Move messageContent back to its original parent
@@ -261,7 +275,9 @@ function cancelEdit(messageContent, originalText) {
 
   messageContent.setAttribute('contenteditable', 'false');
   messageContent.removeAttribute('data-editing');
-  messageContent.innerText = originalText;
+  if (restoreText) {
+    messageContent.innerText = originalText;
+  }
   messageContent.blur();
 
   const messageElement = messageContent.closest('.aim-chat-message');
@@ -270,10 +286,11 @@ function cancelEdit(messageContent, originalText) {
   }
 
   console.log('Edit cancelled');
+  this.bp.ignoreUIControlKeys = false;
 }
 
 // Save edited message
-function saveEdit(messageContent, messageData) {
+async function saveEdit(messageContent, messageData) {
   const editableContainer = messageContent.closest('.aim-editable-container');
   if (editableContainer) {
     console.log('Editable container found', editableContainer);
@@ -296,12 +313,14 @@ function saveEdit(messageContent, messageData) {
 
   console.log('Edit saved', newMessageText);
 
-  buddypond.editInstantMessage({
+  await buddypond.editInstantMessage({
     chatId: messageData.chatId,
     uuid: messageData.uuid,
     text: newMessageText,
   });
 
+  // close the edit hint
+  cancelEdit.call(this, messageContent, null, false);
 }
 
 // Reply to a message
@@ -312,7 +331,8 @@ function replyMessage(messageData, originalMessage) {
     this.activeReplyBox = null;
   }
 
-  this.bp.replyMode = true;
+
+  this.bp.ignoreUIControlKeys = true;
   this.bp.replyData = messageData; // Store reply data for message submission
 
   // Create reply box
@@ -360,20 +380,54 @@ function replyMessage(messageData, originalMessage) {
     scrollToBottom(chatWindow);
   }
 
-  console.log('Reply mode activated', messageData);
+  const handleKeydown = (event) => {
+    if (event.key === 'Escape') {
+      //cancelEdit(messageContent, originalText);
+      cancelReply.call(this, replyBox);
+      cleanupListeners();
+      event.preventDefault();
+      event.stopPropagation();
+    } else if (event.key === 'Enter') {
+      // saveEdit.call(this, messageContent, messageData);
+      cleanupListeners();
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
 
+  // Cleanup function for event listeners
+  const cleanupListeners = () => {
+    messageTextInput.removeEventListener('keydown', handleKeydown);
+    // messageTextInput.removeEventListener('blur', handleBlur);
+    this.bp.ignoreUIControlKeys = false;
+  };
+
+  messageTextInput.addEventListener('keydown', handleKeydown);
+
+  console.log('Reply mode activated', messageData);
 
 }
 
 // Cancel reply mode
-function cancelReply(target) {
-  const replyBox = target.closest('.aim-reply-box');
+function cancelReply(replyBox) {
+  console.log('Cancel reply', replyBox);
+  console.log('aimReplyBox', replyBox);
   if (replyBox) {
+
+    // clear out the .aim-replyto input value
+    const replyInput = replyBox.closest('.chatWindow').querySelector('input[name="message_replyto"]');
+    if (replyInput) {
+      replyInput.value = '';
+    } else {
+      console.error('No reply input found');
+    }
+
     replyBox.remove();
     this.activeReplyBox = null;
-    this.bp.replyMode = false;
+    this.bp.ignoreUIControlKeys = false;
     this.bp.replyData = null;
   }
+
   console.log('Reply cancelled');
 }
 
@@ -382,7 +436,7 @@ function bindProfilePictureClick() {
   document.addEventListener('click', (event) => {
     let target = event.target;
     // if target is svg and parent has class aim-profile-picture
-    console.log('target', target, target.tagName);
+    // console.log(' bindProfilePictureClick target', target, target.tagName);
     if ($(target).parents().hasClass('aim-profile-picture')) {
       //if (target.classList.contains('.aim-avatar')) {
       const buddyname = target.closest('.aim-chat-message').getAttribute('data-from');
@@ -398,7 +452,7 @@ function bindProfilePictureClick() {
 
       }
 
-    } 
+    }
   });
 
 }

@@ -2,7 +2,7 @@ let scrollTimeout = null;
 
 // Scroll to the last message
 export default function scrollToBottom(parent) {
-  console.log('scrollToBottom', parent);
+  // console.log('scrollToBottom', parent);
   const lastElement = $('.aim-chat-message', parent).last()[0];
   if (lastElement) {
     // Clear any existing timeout or interval

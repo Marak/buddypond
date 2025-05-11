@@ -303,8 +303,11 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         $('.aim-input', chatWindow.content).val('');
 
         // Hide the aim-reply-box
-        $('.aim-reply-box', chatWindow.content).hide();
+        $('.aim-reply-box', chatWindow.content).remove();
 
+        // clear the replyTo input value
+        $('.aim-replyto', chatWindow.content).val('');
+        /*
         const replyBox = target.closest('.aim-reply-box');
         if (replyBox) {
           replyBox.remove();
@@ -312,6 +315,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
           this.bp.replyMode = false;
           this.bp.replyData = null;
         }
+        */
       
         let $sendButton = $('.aim-send-btn', chatWindow.content);
         $sendButton.css('opacity', 0.5);
@@ -336,8 +340,9 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         }
 
         if (e.which === 13) {
-            if (this.bp.editingMode) {
-                return false;
+            // this.bp.ignoreUIControlKeys = true;
+            if (this.bp.ignoreUIControlKeys) {
+                // return false;
             }
             // replace /n with <br>
             let message = $(e.target).val();

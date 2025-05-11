@@ -9,7 +9,7 @@ import isValidGithubLink from './isValidGithubLink.js';
 import scrollToBottom from './scrollToBottom.js';
 
 export default async function renderChatMessage(message, _chatWindow) {
-  console.log('renderChatMessage', message, _chatWindow);
+  // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
   // console.log('renderChatMessage', message);
   // console.log('current state', this.bp.apps.buddylist.data.profileState)

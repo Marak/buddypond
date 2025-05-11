@@ -18,9 +18,12 @@ export default function createMessageContextMenu(target, closestMessage) {
   // aim-hover-menu:hover sets display: flex, without its display: none
   // we need this bypassed while the context menu is open
   const hoverMenu = target.closest('.aim-hover-menu');
+  /*
+  console.log('hoverMenu', hoverMenu);
   if (hoverMenu) {
     // hoverMenu.style.display = 'flex';
   }
+  */
 
   const contextMenu = document.createElement('div');
   contextMenu.className = 'aim-context-menu';
@@ -30,7 +33,7 @@ export default function createMessageContextMenu(target, closestMessage) {
     // { text: 'Quote', action: 'quote-message' },
     { text: 'Say Message', action: 'say-message' },
     { text: 'Edit Message', action: 'edit-message' },
-    { text: 'Report Message', action: 'report-message' },
+    // { text: 'Report Message', action: 'report-message' },
     // { text: 'Copy Message', action: 'copy-message' },
     { text: 'Delete Message', action: 'delete-message' }
   ];

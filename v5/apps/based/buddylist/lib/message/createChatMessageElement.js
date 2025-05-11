@@ -57,9 +57,22 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   // Profile picture (SVG)
   const profilePicture = document.createElement('div');
   profilePicture.className = 'aim-profile-picture';
-  const defaultAvatar = defaultAvatarSvg.call(this, message.from);
-  profilePicture.innerHTML = defaultAvatar;
-  console.log('profilePicture', profilePicture);
+
+
+  if (message.profilePicture) {
+    // use url as profile picture src
+    const img = document.createElement('img');
+    img.src = message.profilePicture;
+    img.alt = `${message.from}'s avatar`;
+    img.className = 'aim-chat-message-profile-picture-img';
+    profilePicture.appendChild(img);
+
+  } else {
+    const defaultAvatar = defaultAvatarSvg.call(this, message.from);
+    profilePicture.innerHTML = defaultAvatar;
+  }
+
+  // console.log('profilePicture', profilePicture);
   profilePicture.alt = `${message.from}'s avatar`;
 
   // Message content wrapper
