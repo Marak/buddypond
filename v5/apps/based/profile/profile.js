@@ -91,7 +91,7 @@ export default class Profile {
 
             const profilePictureInput = document.getElementById('profile-picture-input');
             const profilePictureImg = document.querySelector('.aim-profile-picture-img');
-            const removeButton = document.querySelector('.aim-profile-picture-remove');
+            // const removeButton = document.querySelector('.aim-profile-picture-remove');
 
             $('.aim-set-password-email').on('click', (e) => {
                 this.tabs.navigateToTab('#tabs-3');
@@ -101,7 +101,7 @@ export default class Profile {
             profilePictureInput.addEventListener('change', async (event) => {
                 updateProfilePicture.call(this, event, profilePictureImg);
             });
-
+            /*
             // Handle remove button click
             removeButton.addEventListener('click', () => {
                 // Reset to default avatar
@@ -120,6 +120,7 @@ export default class Profile {
                 //     console.error('Remove failed:', error);
                 // });
             });
+            */
 
             // check if user profile has a profilePicture
             let profilePicture = buddyProfile.localState.profilePicture || buddyProfile.profilePicture;

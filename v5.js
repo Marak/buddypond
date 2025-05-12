@@ -1,7 +1,7 @@
 window.bp_v_5 = async function bp_v_5() {
     await bp.load('error-tracker', {
-        // apiEndpoint: 'https://errors.buddypond.com/error',
-        apiEndpoint: 'https://192.168.200.59:8787/error',
+        apiEndpoint: 'https://errors.buddypond.com/error',
+        //apiEndpoint: 'https://192.168.200.59:8787/error',
     });
 
     setConfig();
