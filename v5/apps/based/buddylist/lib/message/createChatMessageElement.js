@@ -58,6 +58,19 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   const profilePicture = document.createElement('div');
   profilePicture.className = 'aim-profile-picture';
 
+  if (!message.profilePicture) {
+    // check if we happen to have a profilePicture in local cache
+    // this may happen if Randolph or other admin is sending messages on behalf of a user
+    // TODO: better way to do this...
+    if (
+      this.bp.apps.buddylist.data.profileState &&
+      this.bp.apps.buddylist.data.profileState.buddylist &&
+      this.bp.apps.buddylist.data.profileState.buddylist[message.from] && 
+      this.bp.apps.buddylist.data.profileState.buddylist[message.from].profilePicture) {
+      message.profilePicture = this.bp.apps.buddylist.data.profileState.buddylist[message.from].profilePicture;
+    }
+
+  }
 
   if (message.profilePicture) {
     // use url as profile picture src
@@ -66,7 +79,6 @@ export default function createChatMessageElement(message, messageTime, chatWindo
     img.alt = `${message.from}'s avatar`;
     img.className = 'aim-chat-message-profile-picture-img';
     profilePicture.appendChild(img);
-
   } else {
     const defaultAvatar = defaultAvatarSvg.call(this, message.from);
     profilePicture.innerHTML = defaultAvatar;
