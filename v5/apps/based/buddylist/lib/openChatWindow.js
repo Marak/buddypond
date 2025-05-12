@@ -54,7 +54,7 @@ export default function openChatWindow(data) {
             }
             
             this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
-            await this.bp.load('emoji-picker');
+            // await this.bp.load('emoji-picker');
             
             let rerenderMessages = [...this.data.processedMessages[contextName]];
             this.data.processedMessages[contextName] = [];

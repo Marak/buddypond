@@ -45,7 +45,29 @@ export default function chatWindowButtons(bp) {
         text: 'BuddyEmoji',
         image: 'desktop/assets/images/icons/svg/1f600.svg',
         className: 'emojiPicker',
-        onclick: (ev) => {
+        onclick: async (ev) => {
+            // EmojiPicker lazy load is a special case
+            // All other BuddyPond deps / lazy imports with await bp.load() are fine to work as expected
+            // We usually don't need to check existence of the app before loading it
+            // For EmojiPicker we need to recall the original click event with same parameters
+            // This could be resolved by using a new EmojiPicker library or patching the current one
+            if (!bp.apps['emoji-picker']) { // this is not a normal practice for user in await bp.load()
+                await bp.load('emoji-picker');
+                // Create a new MouseEvent with the original event's coordinates
+                const newEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    clientX: ev.clientX, // Preserve original x coordinate
+                    clientY: ev.clientY, // Preserve original y coordinate
+                    // Include other relevant properties if needed
+                    button: ev.button,
+                    target: ev.target
+                });
+                // Dispatch the new event on the original target
+                ev.target.dispatchEvent(newEvent);
+                return;
+            }
+            // now that the emoji-picker is loaded, we can open it as normal
 
             // focus on the .emojiPicker input
             $('.emojiPicker').focus();
@@ -58,8 +80,6 @@ export default function chatWindowButtons(bp) {
             let messageControls = $(ev.target).closest('.aim-message-controls');
             // find the closest textarea to the ev.target
             $('.aim-input', messageControls).addClass('activeTextArea');
-
-
 
         }
     },
