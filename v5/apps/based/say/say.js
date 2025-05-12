@@ -8,7 +8,6 @@ export default class Say {
           language: settings.language || 'en-US'
       };
       this.voices = [];
-      this.init();
   }
 
   init() {
@@ -23,6 +22,9 @@ export default class Say {
           console.log('Speech Synthesis not supported in this browser.');
       }
       this.bp.say = this.speak.bind(this);
+      this.bp.on('say::message', 'speak-message-text', (message) => {
+          this.speak(message.text);
+      });
   }
 
   loadVoices() {

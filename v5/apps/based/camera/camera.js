@@ -3,7 +3,6 @@ import startCamera from './lib/startCamera.js';
 import bindUIEvents from './lib/bindUIEvents.js';
 import resizeFullVideo from './lib/resizeFullVideo.js';
 
-
 // snaps
 import takeSnap from './lib/snaps/takeSnap.js';
 import takeSingleSnap from './lib/snaps/takeSingleSnap.js';
@@ -42,10 +41,6 @@ export default class Camera {
 
         // temporary storage for snaps before being sent out
         this.snaps = [];
-
-
-
-
 
         return this;
     }
@@ -103,7 +98,6 @@ export default class Camera {
                         this.cancelSnap();
                     }
 
-                    console.log('tttt', this)
                     // when closing the window for the Mirror App
                     // stop all tracks associated with open stream
                     if (this.localStream && this.localStream.getTracks) {
@@ -116,18 +110,11 @@ export default class Camera {
                 }
             });
 
-
-
-
             $('#mirrorCanvasMe', this.cameraWindow.content).css('width', 640);
             $('#mirrorCanvasMe', this.cameraWindow.content).css('height', 480);
 
             $('#snapDelaySlider', this.cameraWindow.content).show();
             this.bindUIEvents();
-
-
-
-
 
         }
 
