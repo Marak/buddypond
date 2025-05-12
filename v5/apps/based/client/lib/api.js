@@ -100,7 +100,7 @@ function createWebSocketClient(chatId) {
   // Handle message event
   wsClient.addEventListener('message', function (event) {
     try {
-      console.log('Got back from server:', event.data);
+      // console.log('Got back from server:', event.data);
       const parseData = JSON.parse(event.data);
 
       switch (parseData.action) {
@@ -494,6 +494,7 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
 
   // if the context is a buddy, we need to create a unique chatId to represent the tuple
   // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+  // TODO: might be easier to contstruct chatId on backend?
   let buddyNames = [buddypond.me, msg.to].sort();
   chatId = 'buddy/' + buddyNames.join('/');
 
@@ -556,10 +557,37 @@ buddypond.removeInstantMessage = async function removeInstantMessage({ chatId, u
 
 }
 
-buddypond.sendCardMessage = function sendCardMessage(message, cb) {
-  apiRequest('/buddy/' + message.to + '/send', 'POST', message, function (err, data) {
-    cb(err, data);
-  });
+buddypond.sendCardMessage = function sendCardMessage(msg, cb) {
+
+  let chatId = msg.type + '/' + msg.to;
+
+  // if the context is a buddy, we need to create a unique chatId to represent the tuple
+  // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+  // TODO: might be easier to contstruct chatId on backend?
+  let buddyNames = [buddypond.me, msg.to].sort();
+  chatId = 'buddy/' + buddyNames.join('/');
+
+
+  let wsClient = buddypond.messagesWsClients.get(chatId);
+  if (!wsClient) {
+    console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+    return;
+  }
+
+  if (bp.apps.buddylist.data.profileState.profilePicture) {
+    // console.log('sending message with profile picture', bp.apps.buddylist.data.profileState.buddylist[bp.me].profilePicture);
+    msg.profilePicture = bp.apps.buddylist.data.profileState.profilePicture;
+  }
+
+  // send the message via ws connection
+  wsClient.send(JSON.stringify({
+    action: 'send',
+    chatId: chatId,
+    buddyname: buddypond.me,
+    qtokenid: buddypond.qtokenid,
+    message: msg,
+  }));
+
 }
 
 // TODO: pass card values to pondSendMessage fn scope
