@@ -28,15 +28,23 @@ export default function createMessageContextMenu(target, closestMessage) {
   const contextMenu = document.createElement('div');
   contextMenu.className = 'aim-context-menu';
 
+  const messageFrom = closestMessage.getAttribute('data-from');
+
+
   const menuItems = [
     { text: 'Reply', action: 'reply-message' },
     // { text: 'Quote', action: 'quote-message' },
     { text: 'Say Message', action: 'say-message' },
-    { text: 'Edit Message', action: 'edit-message' },
     // { text: 'Report Message', action: 'report-message' },
     // { text: 'Copy Message', action: 'copy-message' },
-    { text: 'Delete Message', action: 'delete-message' }
   ];
+
+  if (messageFrom === this.bp.me) {
+    menuItems.push(
+      { text: 'Edit Message', action: 'edit-message' },
+      { text: 'Delete Message', action: 'delete-message' }
+    );
+  }
 
   menuItems.forEach(item => {
     const menuItem = document.createElement('div');
