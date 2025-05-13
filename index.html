@@ -113,7 +113,8 @@ window.top.location = 'ie.html';
       let _orderbookEndpoint = 'https://orderbook.buddypond.com';
       let _coinEndpoint = 'https://coin.buddypond.com';
       let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
-
+      let _uploadsEndpoint = 'https://uploads.buddypond.com';
+      
       // checks if current host is buddypond.com
       let devmode = false;
       if (devmode) {
@@ -122,6 +123,7 @@ window.top.location = 'ie.html';
         _coinEndpoint = 'http://127.0.0.1:9001';
         _messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
         _host = 'https://192.168.200.59';
+        _uploadsEndpoint = 'http://192.168.200.59:9004';
         //_host = 'http://192.168.64.1'
         // _api = 'https://192.168.200.59';
         // _wsHost = 'wss://192.168.200.59';

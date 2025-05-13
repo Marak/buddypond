@@ -1,5 +1,6 @@
 import SSEManager from './lib/SSEManager.js';
 import handleWorkerMessage from './lib/handleWorkerMessage.js';
+import createWebSocketClient from './lib/ws/createWebSocketClient.js';
 
 export default class Client {
     constructor(bp, options = {}) {
@@ -17,6 +18,8 @@ export default class Client {
         this.api.endpoint = `${this.config.api}/api/v6`;
         this.sseConnected = false;
         this.queuedMessages = [];
+
+        this.messagesWsClients = new Map();
         
         // Track active subscriptions
         this.subscriptions = new Map();
@@ -83,8 +86,35 @@ export default class Client {
         }
     }
 
+    sendWsMessage(chatId, message) {
+
+        let wsClient = this.messagesWsClients.get(chatId);
+        if (!wsClient) {
+          console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+        }
+        // send the message via ws connection
+        wsClient.send(JSON.stringify(message));
+
+    }
+
     addSubscription(type, context) {
-        this.bp.apps.client.api.subscribeMessages(type, context);
+
+        console.log(`subscribeMessages subscribing to ${type}/${context}`);
+        let chatId = type + '/' + context;
+      
+        if (type === 'buddy') {
+          // if the context is a buddy, we need to create a unique chatId to represent the tuple
+          // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+          let buddyNames = [buddypond.me, context].sort();
+          chatId = type + '/' + buddyNames.join('/');
+        }
+      
+        // check if an entry exists in the map
+        if (!this.messagesWsClients.has(chatId)) {
+          this.createWebSocketClient(chatId);
+        }
+
+        // this.bp.apps.client.api.subscribeMessages(type, context);
         /* Legacy code for SSE, replaced with WebSocket API in api.js
         // TODO: we could move the api code back here for cleaner code
         if (!this.bp.qtokenid) {
@@ -105,7 +135,28 @@ export default class Client {
     }
 
     removeSubscription(type, context) {
-        this.api.unsubscribeMessages(type, context);
+
+        console.log(`unsubscribeMessages unsubscribing from ${type}/${context}`);
+        let chatId = type + '/' + context;
+      
+        if (type === 'buddy') {
+          // if the context is a buddy, we need to create a unique chatId to represent the tuple
+          // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+          let buddyNames = [buddypond.me, context].sort();
+          chatId = type + '/' + buddyNames.join('/');
+        }
+      
+        // check if an entry exists in the map
+        if (this.messagesWsClients.has(chatId)) {
+          console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
+          let wsClient = this.messagesWsClients.get(chatId);
+          console.log('closing wsClient', wsClient);
+      
+          console.log('Before close, readyState:', wsClient.readyState);
+          wsClient.closeConnection();
+        }
+
+        // this.api.unsubscribeMessages(type, context);
         /* Legacy code for SSE, replaced with WebSocket API in api.js
         // TODO: we could move the api code back here for cleaner code
 
@@ -166,3 +217,4 @@ export default class Client {
 }
 
 Client.prototype.handleWorkerMessage = handleWorkerMessage;
+Client.prototype.createWebSocketClient = createWebSocketClient;
