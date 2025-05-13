@@ -1,43 +1,49 @@
 <style>
-    .spellbook-content {
-      background-image: url("desktop/assets/images/misc/ivy-bg.png");
-      background-color: black;
-    }
-    #window_spellbook .window_main {
-      padding-left: 48px;
-      padding-right: 48px;
-      padding-top: 32px;
-      font-size: 32px;
-    }
-    #window_spellbook input,select {
-      font-size: 24px;
-    }
-    #window_spellbook label {
-      color: white;
-    }
-    .ponderSpellbook {
-      float: right;
-    }
-  </style>
-  
-      <div id="window_spellbook" class="spellbook-content">
-        <div class="window_main">
-          <form class="castSpellForm">
-            <a class="desktopButton ponderSpellbook orb" href="#">
-              <img src="desktop/assets/images/misc/orb.jpeg" width="100" height="100" title="Cast spell..."/>
-            </a>
-            <label for="omegaSpellTome">Spell</label>
-            <br/>
-            <select class="omegaSpellTome">
-              <option>Choose your spell wisely...</option>
-            </select>
-            <br/>
-            <label for="castSpellBuddyName">Buddy Name</label>
-            <br/>
-            <input type="text" id="castSpellBuddyName" placeholder="pick your target..."/>
-            <br/>
-            <br/>
-            <span class="warning"><strong>Warning:</strong> Casting spells is reserved only for Matrix Agents. If you are not a LVL 12 Grammaton Cleric or higher you might invoke the wrath of Merlin.</span>
-          </form>
-        </div>
-      </div>
+  .spellbook-content {
+    background-image: url("desktop/assets/images/misc/ivy-bg.png");
+    background-color: black;
+  }
+
+  #window_spellbook .window_main {
+    padding-left: 48px;
+    padding-right: 48px;
+    padding-top: 32px;
+    font-size: 32px;
+  }
+
+  #window_spellbook input,
+  select {
+    font-size: 24px;
+  }
+
+  #window_spellbook label {
+    color: white;
+  }
+
+  .ponderSpellbook {
+    float: right;
+  }
+</style>
+
+<div id="window_spellbook" class="spellbook-content">
+  <div class="window_main">
+    <form class="castSpellForm">
+      <a class="desktopButton ponderSpellbook orb" href="#">
+        <img src="desktop/assets/images/misc/orb.jpeg" width="100" height="100" title="Cast spell..." />
+      </a>
+      <label for="omegaSpellTome">Spell</label>
+      <br />
+      <select class="omegaSpellTome">
+        <option>Choose your spell wisely...</option>
+      </select>
+      <br />
+      <label for="castSpellBuddyName">Buddy Name</label>
+      <br />
+      <input type="text" id="castSpellBuddyName" placeholder="pick your target..." />
+      <br />
+      <br />
+      <span class="warning"><strong>Warning:</strong> Casting spells is reserved only for Matrix Agents. If you are not
+        a LVL 12 Grammaton Cleric or higher you might invoke the wrath of Merlin.</span>
+    </form>
+  </div>
+</div>

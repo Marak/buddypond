@@ -16,6 +16,7 @@ import showContextMenu from "./lib/showContextMenu.js";
 // chat message context menu
 import bindMessageContextMenu from "./lib/message/bindMessageContextMenu.js";
 import createMessageContextMenu from "./lib/message/createMessageContextMenu.js";
+import loadUserApps from "./lib/loadUserApps.js";
 
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
@@ -179,6 +180,8 @@ export default class BuddyList {
 
     registerEventHandlers() {
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
+        this.bp.on('auth::qtoken', 'load-user-apps', qtoken => this.loadUserApps());
+
         this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => {
             // give the app a moment to load messages and open windows before generating default profile
             setTimeout(() => {
@@ -609,6 +612,7 @@ BuddyList.prototype.showContextMenu = showContextMenu;
 
 BuddyList.prototype.createMessageContextMenu = createMessageContextMenu;
 BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
+BuddyList.prototype.loadUserApps = loadUserApps;
 
 BuddyList.prototype.logout = function () {
 

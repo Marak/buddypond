@@ -1,4 +1,5 @@
-// import _alert from './spells/_alert';
+import client from './lib/client.js';
+import castSpell from './lib/castSpell.js';
 
 export default class Spellbook {
     constructor(bp, options = {}) {
@@ -48,12 +49,17 @@ export default class Spellbook {
         });
 
         $('.castSpellForm', spellbookWindow.content).on('submit', () => {
-          this.castSpell();
+          let buddyName = $('#castSpellBuddyName', spellbookWindow.content).val();
+          let spellName = $('.omegaSpellTome', spellbookWindow.content).val();
+          this.castSpell(buddyName, spellName);
           return false;
         });
     
         $('.ponderSpellbook', spellbookWindow.content).on('click', () => {
-          this.castSpell();
+          let buddyName = $('#castSpellBuddyName', spellbookWindow.content).val();
+          let spellName = $('.omegaSpellTome', spellbookWindow.content).val();
+          // alert(`You ponder the spell ${spellName} for ${buddyName}`);
+          this.castSpell(buddyName, spellName);
         });
 
     }
@@ -74,42 +80,6 @@ Spellbook.prototype.spells = [
     'banhammer'
 ];
 
-Spellbook.prototype.castSpell = async function castSpell() {
-    let spellName = $('.omegaSpellTome').val();
-    let buddyName = $('#castSpellBuddyName').val();
-    console.log(spellName, buddyName);
-    if (spellName.length > 0 && buddyName.length > 0) {
-        // if Buddy fails role check, reflect the spell back onto them
-        await buddypond.castSpell(buddyName, spellName);
+Spellbook.prototype.castSpell = castSpell;
 
-        /*
-        $( '.castSpellForm' ).effect('shake', { direction: 'down', distance: 10, times: 33 }, 300, function () {
-          buddypond.castSpell(buddyName, spellName, function (err, data) {
-            if (err) {
-              alert(err.message);
-            }
-            if (data.success === false) {
-              if (data.message === 'qtokenid is required') {
-                alert(`You didn't even try to login!\n\n${spellName} has fizzled.`);
-                //desktop.app.spellbook[spellName]();
-              } else {
-                if (buddyName === buddypond.me) {
-                  alert('You targeted yourself? Well played.');
-                }
-                if (desktop.app.spellbook && desktop.app.spellbook[spellName]) {
-                  alert(`${data.message}\n\nReflecting ${spellName} back to Desktop Client`);
-                  desktop.app.spellbook[spellName]();
-                } else {
-                  alert(spellName + ' is forbidden knowledge');
-                  $('#window_spellbook').hide();
-                }
-              }
-            } else {
-              // success
-            }
-          });
-        });
-              */
-
-    }
-}
+Spellbook.prototype.client = client;

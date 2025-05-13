@@ -65,7 +65,9 @@ export default class SimpleTabs {
 
         this.container.find('.tab-content').hide();
         this.container.find(tabId).show();
-
         this._onTab(tabId);
     }
 }
+
+// easier to remember
+SimpleTabs.prototype.showTab = SimpleTabs.prototype.navigateToTab;
