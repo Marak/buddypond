@@ -81,7 +81,8 @@ window.top.location = 'ie.html';
     <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
     <!-- <link rel="stylesheet" href="desktop/assets/css/mobile.css" /> -->
 
-    <script src="/desktop/assets/js/jquery.js"></script>
+    <!-- <script src="/desktop/assets/js/jquery.js"></script> -->
+    <script src="/desktop/assets/js/jquery.min.js"></script>
     <!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
 
     <!-- <script src="/v5/router.js"></script> -->
@@ -89,8 +90,10 @@ window.top.location = 'ie.html';
     <script src="/v5/vendor/flexHide.js"></script>
 
     <!-- jQuery UI can be replaced when legacy autocomplete and Windows are fully replaced -->
-    <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css">
-    <script src="/desktop/assets/js/jquery.ui.js"></script><!--  -->
+    <!-- <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css"> -->
+    <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.min.css">
+    <!-- <script src="/desktop/assets/js/jquery.ui.js"></script> -->
+    <script src="/desktop/assets/js/jquery-ui.min.js"></script>
     <script src="/desktop/assets/js/jquery.dateformat.js"></script>
 
 
@@ -105,29 +108,37 @@ window.top.location = 'ie.html';
       let _api = 'https://a.buddypond.com';
       let _wsHost = 'wss://api.buddypond.com';
       let _cdn = 'https://files.buddypond.com';
+      let _admin = 'https://admin.buddypond.com';
       let _portfolioEndpoint = 'https://portfolio.buddypond.com';
       let _orderbookEndpoint = 'https://orderbook.buddypond.com';
       let _coinEndpoint = 'https://coin.buddypond.com';
       let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
-      //_portfolioEndpoint = 'http://127.0.0.1:9002';
-      //_portfolioEndpoint = 'http://192.168.200.59:9002';
-      //_coinEndpoint = 'http://127.0.0.1:9001';
-      //_messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
 
-      // _host = 'https://192.168.200.59';
-      //_host = 'http://192.168.64.1'
-      // _api = 'https://192.168.200.59';
-      // _wsHost = 'wss://192.168.200.59';
-      //_host = 'https://localhost'
-      // _api = 'https://buddylist.buddypond.com';
-      //_api = 'https://192.168.200.59:8787';
-      //_api = 'http://192.168.200.59:8787';
-      //_api = 'http://localhost:8787';
-      
-      buddypond.messagesWsEndpoint = _messagesWsEndpoint;
+      // checks if current host is buddypond.com
+      let devmode = false;
+      if (devmode) {
+        //_portfolioEndpoint = 'http://127.0.0.1:9002';
+        _portfolioEndpoint = 'http://192.168.200.59:9002';
+        _coinEndpoint = 'http://127.0.0.1:9001';
+        _messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
+        _host = 'https://192.168.200.59';
+        //_host = 'http://192.168.64.1'
+        // _api = 'https://192.168.200.59';
+        // _wsHost = 'wss://192.168.200.59';
+        //_host = 'https://localhost'
+        // _api = 'https://buddylist.buddypond.com';
+        //_api = 'https://192.168.200.59:8787';
+        _api = 'http://192.168.200.59:8787';
+        _admin = 'http://192.168.200.59:8789';
+        //_api = 'http://localhost:8787';
+        console.log('Running in development mode. All services are pointing to local sources.');
+      }
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
+      buddypond.messagesWsEndpoint = _messagesWsEndpoint;
+      buddypond.adminEndpoint = _admin;
+
       let renderBpApp = true;
 
       // route the SPA based on the current path
@@ -234,7 +245,7 @@ window.top.location = 'ie.html';
 
     <!-- <bp-minesweeper open></bp-minesweeper> -->
     <!-- <bp-youtube open context="G50eivcSvuQ"></bp-youtube> -->
-   
+
 </body>
 
 </html>
