@@ -1,0 +1,97 @@
+<h1>Admin</h1>
+
+<div class="tabs-container loggedIn admin-tabs-container" id="admin-tabls">
+
+<ul class="tab-list admin-tab-list">
+    <li><a href="#admin-recent-logins">Recent Logins</a></li>
+    <li><a href="#admin-userbyIP">User By IP</a></li>
+    <li><a href="#admin-buddyProfile">Buddy Profile</a></li>
+    <li><a href="#admin-banlist">Ban List</a></li>
+</ul>
+
+<div id="admin-recent-logins" class="tab-content admin-tab-content">
+    <h2>Recent Logins</h2>
+    <table class="admin-table" id="recent-logins-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>IP Address</th>
+                <th>Login Time</th>
+                <th>Known IPs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populated by JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<div id="admin-userbyIP" class="tab-content admin-tab-content">
+    <h2>User By IP</h2>
+    <div class="admin-input-group">
+        <input type="text" id="ip-input" class="admin-input" placeholder="Enter IP Address">
+        <button id="ip-search-button" class="admin-button">Search</button>
+
+    </div>
+    <table class="admin-table" id="user-by-ip-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>IP Address</th>
+                <th>Known IPs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populated by JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<div id="admin-buddyProfile" class="tab-content admin-tab-content">
+    <h2>Buddy Profile</h2>
+    <span class="api-response"></span>
+    <div class="admin-input-group">
+        <input type="text" id="profile-input" class="admin-input" placeholder="Enter Username">
+        <button id="profile-search-button" class="admin-button">Search</button>
+        <button id="ip-ban-button" class="admin-button">Ban Buddy</button>
+        <select id="ban-type" class="admin-select">
+            <option value="BAN" selected>BAN</option>
+            <option value="Babel.js">Babel.js</option>
+            <option value="Riddikulus">Riddikulus</option>
+        </select>
+        <select id="ban-length" class="admin-select">
+            <!-- bans by hour length -->
+            <option value="1">1 hour</option>
+            <option value="24">1 day</option>
+            <!-- three days -->
+            <option value="72">3 days</option>
+            <option value="168">1 week</option>
+            <option value="720">30 days</option>
+            <option value="0">10 Years</option>
+        </select>
+
+    </div>
+    <h2>Database Data</h2>
+    <div id="profile-display-database" class="admin-json-display"></div>
+    <h2>Durable Object Cached Data</h2>
+    <div id="profile-display-durable" class="admin-json-display"></div>
+</div>
+
+<div id="admin-banlist" class="tab-content admin-tab-content">
+    <h2>Ban List</h2>
+    <span class="api-response"></span>
+    <table class="admin-table" id="banlist-table">
+        <thead>
+            <tr>
+                <th>IP Address</th>
+                <th>Buddyname</th>
+                <th>Curses</th>
+                <th>Last updated</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populated by JavaScript -->
+        </tbody>
+    </table>
+</div>

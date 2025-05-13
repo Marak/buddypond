@@ -1,0 +1,104 @@
+.admin-tabs-container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.admin-tab-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.admin-tab-list li {
+    margin-right: 10px;
+}
+
+.admin-tab-list a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    background: #f5f5f5;
+    border-radius: 5px 5px 0 0;
+}
+
+.admin-tab-list a:hover,
+.admin-tab-list a.active {
+    background: #007bff;
+    color: white;
+}
+
+.admin-tab-content {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    background: white;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-table th {
+    background: #f5f5f5;
+}
+
+.admin-table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.admin-input-group {
+    margin-bottom: 20px;
+}
+
+.admin-input {
+    padding: 8px;
+    width: 200px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.admin-button {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-button:hover {
+    background: #0056b3;
+}
+
+.admin-username-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.admin-username-link:hover {
+    text-decoration: underline;
+}
+
+.admin-json-display {
+    background: #f5f5f5;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
