@@ -142,6 +142,14 @@ export default class Client {
         this.subscriptions.clear();
         this.sseConnected = false;
 
+        // iterate through all buddypond.messagesWsClients Map and closeConnection() all of them
+        this.bp.log('Disconnecting all WebSocket clients');
+        this.api.messagesWsClients.forEach(client => {
+            client.closeConnection();
+        });
+
+        this.api.messagesWsClients = new Map
+
         this.stopKeepaliveTimer();
     }
 
