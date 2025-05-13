@@ -32,6 +32,19 @@ export default function parseMarkdownWithoutPTags(markdown) {
     const supportedColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'black', 'white', 'gray', 'cyan', 'magenta', 'pink'];
     const supportedStyles = ['bold', 'italic', 'underline', 'strike', 'blink', 'reverse', 'hidden', 'dim', 'rainbow'];
     
+    // Custom renderer for links to add target="_blank"
+    const linkExtension = {
+      name: 'link',
+      level: 'inline',
+      renderer(token) {
+        // Ensure href is properly encoded
+        const href = token.href.replace(/"/g, '&quot;');
+        // Add target="_blank" and rel="noopener" for security
+        return `<a href="${href}" target="_blank" rel="noopener">${this.parser.parseInline(token.tokens)}</a>`;
+      }
+    };
+
+
     const styleExtension = {
       name: 'style',
       level: 'inline',
@@ -98,7 +111,7 @@ export default function parseMarkdownWithoutPTags(markdown) {
       }
     };
     
-    marked.use({ extensions: [styleExtension] });
+    marked.use({ extensions: [styleExtension, linkExtension] });
     
     let html = marked.parse(markdown);
   
