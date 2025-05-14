@@ -234,8 +234,10 @@ export default class BuddyList {
 
             if (data[this.bp.me]) {
                 // for now...needs to change shape of server response to include root fields?
-                console.log('setting profilePicture', data[this.bp.me].profilePicture);
-                this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
+                if (data[this.bp.me].profilePicture) {
+                  console.log('setting profilePicture', data[this.bp.me].profilePicture);
+                  this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
+                }
             }
 
             // iterate through all buddies and call renderOrUpdateBuddyInBuddylist

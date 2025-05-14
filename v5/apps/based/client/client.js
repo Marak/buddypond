@@ -90,7 +90,8 @@ export default class Client {
 
         let wsClient = this.messagesWsClients.get(chatId);
         if (!wsClient) {
-          console.log('buddypond.messagesWs not connected, unable to send message to', chatId);
+          console.log('buddypond.messagesWs not connected, unable to send message to', chatId, message);
+          return;
         }
         // send the message via ws connection
         wsClient.send(JSON.stringify(message));
@@ -99,7 +100,6 @@ export default class Client {
 
     addSubscription(type, context) {
 
-        console.log(`subscribeMessages subscribing to ${type}/${context}`);
         let chatId = type + '/' + context;
       
         if (type === 'buddy') {
@@ -108,7 +108,8 @@ export default class Client {
           let buddyNames = [buddypond.me, context].sort();
           chatId = type + '/' + buddyNames.join('/');
         }
-      
+        console.log(`subscribeMessages subscribing to ${chatId}`);
+
         // check if an entry exists in the map
         if (!this.messagesWsClients.has(chatId)) {
           this.createWebSocketClient(chatId);
@@ -136,7 +137,6 @@ export default class Client {
 
     removeSubscription(type, context) {
 
-        console.log(`unsubscribeMessages unsubscribing from ${type}/${context}`);
         let chatId = type + '/' + context;
       
         if (type === 'buddy') {
@@ -146,6 +146,8 @@ export default class Client {
           chatId = type + '/' + buddyNames.join('/');
         }
       
+        console.log(`unsubscribeMessages unsubscribing from ${chatId}`);
+
         // check if an entry exists in the map
         if (this.messagesWsClients.has(chatId)) {
           console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
@@ -154,6 +156,7 @@ export default class Client {
       
           console.log('Before close, readyState:', wsClient.readyState);
           wsClient.closeConnection();
+        
         }
 
         // this.api.unsubscribeMessages(type, context);
