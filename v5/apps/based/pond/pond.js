@@ -18,18 +18,40 @@ export default class Pond {
         // should be automatic? why didn't bp.load() pick up on this?
         this.open();
 
-        this.bp.on('ponds::hotPonds', 'update-hotponds-list', data => this.updateHotPonds(data));
+        // this.bp.on('ponds::hotPonds', 'update-hotponds-list', data => this.updateHotPonds(data));
 
-
-        $('.joinPond').on('click', (e) => {
+        // joinPondForm cancel submission ( for now )
+        // should not hijack joinPond, use proper submit handler
+        $('.joinPondForm').on('submit', (e) => {
             e.preventDefault();
-
-              // get value from #customPondName
-              let pondName = $('#customPondName').val();
-              this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+            /*
+            // get value from #customPondName
+            let pondName = $('#customPondName').val();
+            if (pondName) {
+                this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+            } else {
+                alert('Please enter a pond name');
+            }
+            */
+            joinPond();
             return false;
         });
 
+        function joinPond() {
+              // get value from #customPondName
+              let pondName = $('#customPondName').val();
+              if (pondName) {
+                this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+              }
+        };
+
+        $('.joinPond').on('click', (e) => {
+            e.preventDefault();
+            joinPond.call(this);
+            return false;
+        });
+
+        /*
         $('.joinPondTable').on('click', (e) => {
             e.preventDefault();
             // check if target is a button
@@ -45,6 +67,7 @@ export default class Pond {
             } 
             return false;
         });
+        */
 
         // await imports the module and returns it
         // let module = await this.bp.load('/v5/apps/based/pond/pond.js');
@@ -92,6 +115,7 @@ export default class Pond {
 
         // we now need to indicate that the profile should subscribe to get updates about the most popular ponds
         // the easiest way seems to create timer on client that sends ws message "getHotPonds" every 5 seconds
+        /*
         this.bp.emit('client::requestWebsocketConnection', 'ponds');
 
         this.updatePondsTimer = setInterval(() => {
@@ -100,6 +124,7 @@ export default class Pond {
 
         // immediately get the hot ponds
         this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
+        */
 
         if (this.pondWindow) {
             this.pondWindow.open();
@@ -131,10 +156,8 @@ export default class Pond {
             onClose: () => {
                 console.log('pond window closed');
                 this.pondWindow = null;
-                clearInterval(this.updatePondsTimer);
-
-                this.bp.apps.client.releaseWebsocketConnection('ponds');
-
+                // clearInterval(this.updatePondsTimer);
+                // this.bp.apps.client.releaseWebsocketConnection('ponds');
             }
         });
 
