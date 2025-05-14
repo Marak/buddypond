@@ -11,6 +11,8 @@ export default function buddylistUIEvents() {
       password = username;
     }
     api.authBuddy(username, password, function (err, result) {
+      console.log('authBuddy', err, result);
+
       if (err) {
         if (result && result.error) {
           $('.loginForm .error').text(result.error);
@@ -21,13 +23,13 @@ export default function buddylistUIEvents() {
         console.error('Failed to authenticate buddy:', err);
         return;
       }
-      console.log('authBuddy', err, result);
       if (result.success) {
         // attempt to connect for events after getting auth token
         //console.log('connecting with valid qtokenid', api.qtokenid);
         result.me = username;
         bp.emit('auth::qtoken', result);
         $('.loggedIn').flexShow();
+        $('.loginForm .error').text('');
       } else {
         if (username === password) {
           $('.password').show();

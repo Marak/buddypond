@@ -114,6 +114,8 @@ window.top.location = 'ie.html';
       let _coinEndpoint = 'https://coin.buddypond.com';
       let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
+      let _errorsEndpoint = 'https://errors.buddypond.com/error';
+
       
       // checks if current host is buddypond.com
       let devmode = false;
@@ -133,6 +135,8 @@ window.top.location = 'ie.html';
         _api = 'http://192.168.200.59:8787';
         _admin = 'http://192.168.200.59:8789';
         //_api = 'http://localhost:8787';
+        _errorsEndpoint = 'https://192.168.200.59:8787/error';
+
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
@@ -140,6 +144,7 @@ window.top.location = 'ie.html';
       buddypond.endpoint = _api + '/api/v6';
       buddypond.messagesWsEndpoint = _messagesWsEndpoint;
       buddypond.adminEndpoint = _admin;
+      buddypond.errorsEndpoint = _errorsEndpoint;
 
       let renderBpApp = true;
 

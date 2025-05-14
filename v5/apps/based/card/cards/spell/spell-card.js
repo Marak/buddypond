@@ -19,7 +19,6 @@ export default function applyData(el, data) {
         return;
     }
 
-
     if (data.target === this.bp.me) {
         console.log('ddddd', data)
         if (data.spell === 'alert') {
@@ -33,6 +32,10 @@ export default function applyData(el, data) {
         }
         if (data.spell === 'zalgo') {
             zalgo(Number(data.text));
+        }
+        if (data.spell === 'logout') {
+            this.bp.logout();
+            alert('You have been remotely logged out by ' + data.message.from);
         }
     }
 

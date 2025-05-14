@@ -195,24 +195,29 @@ export default class Client {
 
         // iterate through all buddypond.messagesWsClients Map and closeConnection() all of them
         this.bp.log('Disconnecting all WebSocket clients');
-        this.api.messagesWsClients.forEach(client => {
+        this.messagesWsClients.forEach(client => {
             client.closeConnection();
         });
-
-        this.api.messagesWsClients = new Map
 
         this.stopKeepaliveTimer();
     }
 
     logout() {
+        // disconnects buddylist SSE and all message web sockets
         this.disconnect();
         this.qtokenid = null;
         this.api.qtokenid = null;
+
         this.api.me = 'Guest';
         this.me = 'Guest';
         this.bp.me = 'Guest';
+
+        localStorage.removeItem('qtokenid');
+        localStorage.removeItem('me');
+
+        // once we have performed the logout, we need to emit the event
+        // such that the UI can update
         this.bp.emit('auth::logout');
-        this.api.logout();
     }
 }
 

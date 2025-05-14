@@ -1,7 +1,6 @@
 window.bp_v_5 = async function bp_v_5() {
     await bp.load('error-tracker', {
-        apiEndpoint: 'https://errors.buddypond.com/error',
-        //apiEndpoint: 'https://192.168.200.59:8787/error',
+        apiEndpoint: buddypond.errorsEndpoint
     });
 
     setConfig();
@@ -49,6 +48,8 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('file-viewer');
      //bp.open('file-explorer');
 
+     await bp.load('spellbook');
+     bp.open('spellbook');
     
      // bp.open('piano')
      // bp.open('hacker-typer');
@@ -80,18 +81,12 @@ function setConfig() {
     });
 }
 
-
 function bindUIEvents() {
     // Legacy BP logout / login
+    // TODO: move these to buddylist app
     bp.on('auth::logout', 'old-bp-logout', function () {
         $('.loggedIn').flexHide();
-
         $('.loggedOut').flexShow();
-        //$('.loggedOut').addClass('show');
-        bp.apps.client.api.logout(function (err, data) {
-            console.log('logout', err, data);
-        });
-
         // TODO: close all windows that have "loggedIn" flag ( not class )
         for (let window of bp.windows) {
             console.log('window', window);

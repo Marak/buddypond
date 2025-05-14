@@ -43,6 +43,8 @@ export default class BuddyList {
         this.subscribedPonds = [];
         this.options = options;
 
+        // alias global logout to the buddylist logout
+        // buddylist logout will handle both buddylist and message logout
         this.bp.logout = this.logout.bind(this);
 
         this.options.chatWindowButtons = this.options.chatWindowButtons || defaultChatWindowButtons(this.bp);
@@ -51,7 +53,6 @@ export default class BuddyList {
         this.showingIsTyping = this.showingIsTyping || {};
 
         this.activeMessageContextMenu = null;
-
 
     }
 
@@ -84,8 +85,6 @@ export default class BuddyList {
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/avatars@4.10.8/dist/index.umd.min.js');
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/lib/index.min.js');
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/collection@9.2.2/lib/index.min.js');
-
-
 
     }
 
@@ -285,7 +284,8 @@ export default class BuddyList {
 
         });
 
-        this.bp.on('auth::logout', 'logout', () => this.logout());
+        // buddylist should not respond to auth::logout 
+        // this.bp.on('auth::logout', 'logout', () => this.logout());
 
         this.bp.on('profile::status', 'update-profile-status', status => {
             if (status === 'signout') {
@@ -615,23 +615,21 @@ BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
 BuddyList.prototype.loadUserApps = loadUserApps;
 
 BuddyList.prototype.logout = function () {
-
-     // set status to online
-     buddypond.setStatus(this.bp.me, {
-        status: 'offline'
-     }, function(err, re){
-        console.log('buddypond.setStatus', err, re);
-    });
+  // set status to online
+  buddypond.setStatus(this.bp.me, {
+    status: 'offline'
+  }, (err, re) => {
+    console.log('buddypond.setStatus', err, re);
     // close any open chat windows
     $('.chatWindow').remove(); // maybe, they could stay open as well
     // disconnect the client
-    this.bp.apps.client.disconnect();
+    // this.bp.apps.client.logout();
     $('.password').val('');
     $('.loggedIn').flexHide();
     $('.loggedOut').flexShow();
-    localStorage.removeItem('qtokenid');
-    localStorage.removeItem('me');
+
     this.data.profileState = null;
-    clearInterval(this.closingWebsocketTimer);
     this.bp.play('desktop/assets/audio/GOODBYE.wav');
+    this.bp.apps.client.logout();
+  });
 }
