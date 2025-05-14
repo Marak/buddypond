@@ -34,16 +34,18 @@ export default async function renderChatMessage(message, _chatWindow) {
     // check to see if file extention is supportedImageTypes, if so it's data.card.type = 'image'
     if (contentUrl) {
       let ext = contentUrl.split('.').pop();
-      if (buddypond.supportedImageTypesExt.includes(ext)) {
-        message.card.type = 'image';
-        message.text = 'I sent an image:';
-      }
-      if (buddypond.supportedAudioTypesExt.includes(ext)) {
-        message.card.type = 'audio';
-        message.text = 'I sent audio:';
-      }
-      if (buddypond.supportedVideoTypes.includes(ext)) {
-        //data.card.type = 'video'; // soon TODO
+      if (ext && typeof ext === 'string') {
+        if (buddypond.supportedImageTypesExt.includes(ext.toLowerCase())) {
+          message.card.type = 'image';
+          message.text = 'I sent an image:';
+        }
+        if (buddypond.supportedAudioTypesExt.includes(ext.toLowerCase())) {
+          message.card.type = 'audio';
+          message.text = 'I sent audio:';
+        }
+        if (buddypond.supportedVideoTypes.includes(ext)) {
+          //data.card.type = 'video'; // soon TODO
+        }
       }
     }
 
