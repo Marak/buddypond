@@ -74,7 +74,7 @@ export default function createWebSocketClient(chatId) {
         console.log(`Scheduling reconnect attempt ${reconnectAttempts + 1} for ${chatId} in ${delay}ms`);
         setTimeout(() => {
           reconnectAttempts++;
-          createWebSocketClient(chatId); // Attempt to reconnect
+          this.createWebSocketClient(chatId); // Attempt to reconnect
         }, delay);
       } else if (reconnectAttempts >= maxReconnectAttempts) {
         console.error(`Max reconnect attempts (${maxReconnectAttempts}) reached for ${chatId}. Giving up.`);

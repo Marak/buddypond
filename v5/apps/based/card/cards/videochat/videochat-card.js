@@ -1,8 +1,6 @@
 export default function applyData(el, data) {
     const $el = $(el);
 
-    console.log('opening videocall app', el, data);
-
     let headerEl = $el.find('.card-videocall-header');
     let acceptEl = $el.find('.accept-call');
     let declineEl = $el.find('.decline-call');
@@ -37,11 +35,13 @@ export default function applyData(el, data) {
     const now = new Date();
     const messageDate = new Date(data.message.ctime);
     const timeDiff = (now.getTime() - messageDate.getTime()) / 1000;
-    console.log('timeDiff', timeDiff);
+    // console.log('timeDiff', timeDiff);
 
     if (timeDiff > 10 || data.message.from === this.bp.me) {
         return;
     }
+
+    console.log('opening videocall app', el, data);
 
     this.bp.open('videochat', { type: 'buddy', context: data.message.from });
 }

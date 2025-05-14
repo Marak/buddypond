@@ -19,7 +19,9 @@ export default async function enumerateDevices(parent) {
                 );
             }
         });
+        console.log('videochat completed enumerateDevices', devices);
     } catch (err) {
         console.error('Error enumerating devices:', err);
+        throw err;
     }
 }

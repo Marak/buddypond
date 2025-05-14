@@ -3,7 +3,7 @@ import replaceStream from "./lib/replaceStream.js";
 import endCall from "./lib/endCall.js";
 
 let wsEndpoint = 'wss://videochat.buddypond.com/ws';
-// wsUrl = 'wss://192.168.200.59:8001/ws';
+// wsEndpoint = 'wss://192.168.200.59:8001/ws';
 
 export default class VideoChat {
     constructor(bp, options = {}) {
@@ -131,7 +131,6 @@ export default class VideoChat {
             this.acceptedCall = true;
         }
 
-        await this.enumerateDevices();
         await this.addLocalCamera();
         await this.initWebSocket(buddyname);
     }
@@ -140,6 +139,7 @@ export default class VideoChat {
         await this.endCall(this.currentBuddy);
         if (this.localStream) {
             this.localStream.getTracks().forEach((track) => track.stop());
+            this.localStream = null;
         }
         if (this.websocket) {
             this.websocket.close();
@@ -232,7 +232,7 @@ export default class VideoChat {
             $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection failed');
             this.endCall(buddyName);
         };
-
+        // TODO: add a reconnection strategy for unexpected closures
         this.websocket.onclose = (event) => {
             console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
             $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
@@ -378,7 +378,17 @@ export default class VideoChat {
     async addLocalCamera() {
         try {
             if (!this.localStream) {
+                console.log('Requesting local camera and microphone access');
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                try {
+                    await this.enumerateDevices();
+                } catch (err) {
+                    console.error('Error enumerating devices:', err);
+                    $('.webrtcStatus', this.videocallWindow.content).html('Failed to access camera and microphone. Please check your browser settings.');
+                    return;
+                }
+                console.log('Local camera and microphone access granted');
+                // TODO: maybe enumerate here instead?
                 this.localStream = stream;
                 const video = document.querySelector('#chatVideoMe');
                 video.srcObject = stream;
