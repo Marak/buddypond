@@ -7,7 +7,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   this.bp.buddyTimeouts = this.bp.buddyTimeouts || {};
 
-  console.log('renderOrUpdateBuddyInBuddyList', buddyname, data);
+  // console.log('renderOrUpdateBuddyInBuddyList', buddyname, buddydata);
 
   // Track previous connection status to detect changes
   let buddyListItems = document.querySelectorAll('.buddylist li');
@@ -22,6 +22,8 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
       buddydata.isConnected = false;
     }
 
+    // console.log('isConnected', buddydata.isConnected, buddyname, buddydata.status);
+
     // Clear the timeout if it exists
     if (this.bp.buddyTimeouts[buddyname]) {
       clearTimeout(this.bp.buddyTimeouts[buddyname]);
@@ -29,8 +31,10 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     }
 
     let now = new Date().getTime();
+
     let diff = now - buddydata.utime;
     if (now - buddydata.utime > buddyTimeoutsInterval) {
+      // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
       buddydata.isConnected = false;
     }
 

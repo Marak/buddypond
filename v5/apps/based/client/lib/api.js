@@ -68,6 +68,10 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
     qtokenid: qtokenid
   }, function (err, data) {
     buddypond.me = me;
+    if (data && data.banned) {
+      alert(data.error);
+    }
+    console.log('verifyTokenresult', err, data);
     cb(err, data);
   })
 }
@@ -635,6 +639,7 @@ buddypond.syncWithR2 = async function syncWithR2(prefix = '', depth = 6) {
   }
 }
 
+// TODO: move files API logic into `file-explorer` app
 buddypond.listFiles = async function listFiles(prefix = '', depth = 1) {
   let url = `${buddypond.uploadsEndpoint}/getFileList?v=6&me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&userFolder=${buddypond.me}&prefix=${prefix}&depth=${depth}`;
   console.log("fetching files from", url);

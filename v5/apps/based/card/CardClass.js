@@ -9,6 +9,12 @@ export default class Card {
     }
 
     async load() {
+
+        if (!this.cardType) {
+            console.error('Card type is not defined');
+            return;
+        }
+
         const htmlUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.html`;
         const cssUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.css`;
         const jsUrl = `/v5/apps/based/card/cards/${this.cardType}/${this.cardType}-card.js`;
@@ -16,7 +22,7 @@ export default class Card {
         this.cssContent = await this.bp.load(cssUrl);
         const applyDataModule = await this.bp.importModule(jsUrl, {}, false);
 
-        if (typeof applyDataModule.default === 'function') {
+        if (applyDataModule && typeof applyDataModule.default === 'function') {
             this.applyData = applyDataModule.default.bind(this);
         }
 
@@ -28,12 +34,17 @@ export default class Card {
         }
         if (!this.applyData) {
             this.applyData = (container, cardData) => {
+                // cardData.message is circular, so remove it for default stringify
+                if (cardData.message) {
+                    delete cardData.message;
+                }
                 container.querySelector('.card').textContent = JSON.stringify(cardData);
             };
         }
     }
 
     render(container) {
+        // console.log('calling rendering card', container, this.cardType, this.cardData);
         const styleTag = document.createElement('style');
         styleTag.textContent = this.cssContent;
         container.appendChild(styleTag);
@@ -54,7 +65,7 @@ export default class Card {
 
         // Add reaction UI
         //this.addReactionsUI(cardContainer);
-
+        // console.log('what is this.applyData', this.applyData);
         if (this.applyData && typeof this.applyData === 'function') {
             try {
                 return this.applyData(cardContainer, this.cardData, this);

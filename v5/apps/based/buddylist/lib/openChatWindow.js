@@ -20,7 +20,9 @@ export default function openChatWindow(data) {
     let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
     let client = this.bp.apps.client;
 
-    let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowIdPrefix + contextName);
+    let windowId = windowIdPrefix + contextName;
+    // console.log('opening chat window ', windowId)
+    let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
     if (chatWindow) {
         return chatWindow;
     }

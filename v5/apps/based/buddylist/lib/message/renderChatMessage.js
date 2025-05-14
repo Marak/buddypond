@@ -113,16 +113,33 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Determine the window ID based on the message context
   let windowId = `buddy_message_-${message.to}`;
 
+  // dynamically create the windowId based on the message details
   if (message.type === 'buddy') {
-
     if (message.to === this.bp.me) {
-      windowId = `buddy_message_-${message.from}`;
-      context = message.from;
+      // we need to check if message.from is not part of the buddy type chatId, could be a bot talking in the buddy chat
+      // this differs from pond chats, as its a third party in a two person chat
+      // the whole approach here is a bit awkward, but is required if we wish for bots to join buddy chat conversations
+      // check if message.from is not part of the chatId
+      let participants = message.chatId.split('/');
+      // remove the first item from the array
+      participants.shift();
+      // check if message.from is not inside the participants array
+      if (!participants.includes(message.from)) {
+        // this means a third party is sending a message in a buddy chat ( a bot most likely )
+        // we need to set the windowId to be the non-me participant
+        let notMe = participants.find(participant => participant !== this.bp.me);
+        // console.log('Setting windowId for non-me participant', notMe);
+        windowId = `buddy_message_-${notMe}`;
+        context = notMe;
+      } else {
+        // regular buddy conversation with (2) participants
+        windowId = `buddy_message_-${message.from}`;
+        context = message.from;
+      }
     } else {
       windowId = `buddy_message_-${message.to}`;
       context = message.to;
     }
-
   }
 
   if (message.type === 'pond') {
@@ -132,10 +149,17 @@ export default async function renderChatMessage(message, _chatWindow) {
   // console.log('windowIdwindowId', windowId)
   // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
-  //alert(windowId)
+  // console.log('chat window id', windowId, message);
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+
   if (_chatWindow) {
     chatWindow = _chatWindow;
+  }
+
+  if (!chatWindow || !chatWindow.content) {
+    console.log('chat window not ready, trying again soon');
+    console.log(message);
+    return;
   }
 
   // Check if message already exists in the DOM
@@ -143,9 +167,11 @@ export default async function renderChatMessage(message, _chatWindow) {
     return; // Message is already rendered
   }
 
+  // console.log('checking this.data.processedMessages[context]', this.data.processedMessages[context]);
   // Check if message has been processed to avoid duplication
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
+      // console.log('Message already processed, skipping rendering', message);
       return;
       // we have a special case here we wish to re-render the client message
       // this indicates the server filtered parts of the message and it should be removed and re-rendered

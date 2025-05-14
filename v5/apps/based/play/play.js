@@ -36,7 +36,7 @@ export default class Play {
             media.play().then(() => {
                 onEnd();
             }).catch(error => {
-                console.error('Playback failed:', error.message);
+                // console.error('Playback failed:', error.message);
                 Play.playing.set(mediaPath, false); // Reset playing flag on failure
                 if (tryHard > 0) {
                     setTimeout(() => {

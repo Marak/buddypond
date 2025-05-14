@@ -192,6 +192,10 @@ export default function createChatMessageElement(message, messageTime, chatWindo
 
 function insertChatMessage(chatWindow, message, chatMessage) {
   const aimMessages = chatWindow.content.querySelector('.aim-messages');
+  if (!aimMessages) {
+    console.error('aim-messages not found. user most likely not in the chat window');
+    return;
+  }
   const allMessages = Array.from(aimMessages.querySelectorAll('.aim-chat-message'));
   let inserted = false;
 
