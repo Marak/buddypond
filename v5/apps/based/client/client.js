@@ -104,7 +104,7 @@ export default class Client {
       
         if (type === 'buddy') {
           // if the context is a buddy, we need to create a unique chatId to represent the tuple
-          // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+          // it's important that the tuple is consistent across all services, so we sort the buddy names by alphabetical order
           let buddyNames = [buddypond.me, context].sort();
           chatId = type + '/' + buddyNames.join('/');
         }
@@ -141,7 +141,7 @@ export default class Client {
       
         if (type === 'buddy') {
           // if the context is a buddy, we need to create a unique chatId to represent the tuple
-          // it's important that the tuple is consistent across all clients, so we sort the buddy names by alphabetical order
+          // it's important that the tuple is consistent across all services, so we sort the buddy names by alphabetical order
           let buddyNames = [buddypond.me, context].sort();
           chatId = type + '/' + buddyNames.join('/');
         }

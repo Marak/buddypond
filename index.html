@@ -91,7 +91,7 @@ window.top.location = 'ie.html';
 
     <!-- jQuery UI can be replaced when legacy autocomplete and Windows are fully replaced -->
     <!-- <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.css"> -->
-    <link rel="stylesheet" href="/desktop/assets/css/jquery.ui.min.css">
+    <link rel="stylesheet" href="/desktop/assets/css/jquery-ui.min.css">
     <!-- <script src="/desktop/assets/js/jquery.ui.js"></script> -->
     <script src="/desktop/assets/js/jquery-ui.min.js"></script>
     <script src="/desktop/assets/js/jquery.dateformat.js"></script>
@@ -131,14 +131,20 @@ window.top.location = 'ie.html';
         // _wsHost = 'wss://192.168.200.59';
         //_host = 'https://localhost'
         // _api = 'https://buddylist.buddypond.com';
-        //_api = 'https://192.168.200.59:8787';
         _api = 'http://192.168.200.59:8787';
+        // _api = 'https://clear-buses-carry.loca.lt';
+        // _messagesWsEndpoint = 'wss://strong-walls-matter.loca.lt/ws/messages';
+        // _api = 'https://192.168.200.59:8787';
+
         _admin = 'http://192.168.200.59:8789';
         //_api = 'http://localhost:8787';
         _errorsEndpoint = 'https://192.168.200.59:8787/error';
 
         console.log('Running in development mode. All services are pointing to local sources.');
       }
+
+      // http://192.168.200.59:8787
+      // ws://192.168.200.59:8788
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';

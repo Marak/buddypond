@@ -23,6 +23,7 @@ buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
 // legacy v4 API
 let desktop = { settings: {} };
 
+//TODO: remove uploadsEndpoint definition here, now done in index.html
 if (document.location.protocol === 'https:') {
   buddypond.endpoint = 'https://api.buddypond.com/api/v6';
   buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
@@ -38,11 +39,6 @@ if (buddypond.mode === 'dev') {
 }
 
 buddypond.endpoint = 'https://buddylist.buddypond.com/api/v6';
-
-// Track reconnect state
-let reconnectAttempts = 0;
-const maxReconnectAttempts = 999999; // Set to a high number for unlimited attempts
-const maxBackoffDelay = 10000; // 10 seconds
 
 // buddypond.subscribeMessages = function subscribeMessages(type, context) {}
 

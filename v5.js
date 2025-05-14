@@ -48,8 +48,8 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('file-viewer');
      //bp.open('file-explorer');
 
-     await bp.load('spellbook');
-     bp.open('spellbook');
+     // await bp.load('spellbook');
+     // bp.open('spellbook');
     
      // bp.open('piano')
      // bp.open('hacker-typer');
@@ -82,6 +82,7 @@ function setConfig() {
 }
 
 function bindUIEvents() {
+
     // Legacy BP logout / login
     // TODO: move these to buddylist app
     bp.on('auth::logout', 'old-bp-logout', function () {
@@ -89,7 +90,6 @@ function bindUIEvents() {
         $('.loggedOut').flexShow();
         // TODO: close all windows that have "loggedIn" flag ( not class )
         for (let window of bp.windows) {
-            console.log('window', window);
             if (window.loggedIn) {
                 window.close();
             }
@@ -103,6 +103,7 @@ function bindUIEvents() {
         $('.loggedIn').flexShow();
         //$('.loggedIn').addClass('show');
         $('.loggedOut').flexHide();
+        // $('.loggedIn').flexShow();
         $('#me_title').html('Welcome ' + bp.me);
         bp.apps.desktop.load();
     });
