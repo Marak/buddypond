@@ -116,6 +116,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   // dynamically create the windowId based on the message details
   if (message.type === 'buddy') {
     if (message.to === this.bp.me) {
+      /*
       // we need to check if message.from is not part of the buddy type chatId, could be a bot talking in the buddy chat
       // this differs from pond chats, as its a third party in a two person chat
       // the whole approach here is a bit awkward, but is required if we wish for bots to join buddy chat conversations
@@ -136,6 +137,11 @@ export default async function renderChatMessage(message, _chatWindow) {
         windowId = `buddy_message_-${message.from}`;
         context = message.from;
       }
+      */
+      windowId = `buddy_message_-${message.from}`;
+      context = message.from;
+
+
     } else {
       windowId = `buddy_message_-${message.to}`;
       context = message.to;

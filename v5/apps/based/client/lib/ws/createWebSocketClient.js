@@ -96,10 +96,10 @@ export default function createWebSocketClient(chatId) {
   }
 
   // Add event listeners with named functions
-  wsClient.addEventListener('open', handleOpen);
-  wsClient.addEventListener('message', handleMessage);
-  wsClient.addEventListener('close', handleClose);
-  wsClient.addEventListener('error', handleError);
+  wsClient.addEventListener('open', handleOpen.bind(this));
+  wsClient.addEventListener('message', handleMessage.bind(this));
+  wsClient.addEventListener('close', handleClose.bind(this));
+  wsClient.addEventListener('error', handleError.bind(this));
 
   // Method to intentionally close the WebSocket
   wsClient.closeConnection = function () {
