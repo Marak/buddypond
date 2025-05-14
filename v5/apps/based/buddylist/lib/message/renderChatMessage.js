@@ -158,6 +158,43 @@ export default async function renderChatMessage(message, _chatWindow) {
   // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
   // console.log('chat window id', windowId, message);
+
+
+  // Remark: Removing and editing messages do not currently require a windowId since they currently
+  // do not have a from / to property
+  // We may want to change this in the future to allow for more granular control directly in the chatWindow instance
+  if (message.removed) {
+    console.log("ATTEMPTING TO REMOVE MESSAGE", message);
+    // find the chatMessage by uuid
+    let removedMessageEl = $(`.aim-chat-message[data-uuid="${message.removed}"]`); // could be document as well?
+    if (removedMessageEl.length > 0) {
+      // remove the removed message
+      removedMessageEl.remove();
+    }
+    return;
+  }
+
+  if (message.edited) {
+    console.log("ATTEMPTING TO EDIT MESSAGE", message);
+    // find the chatMessage by uuid
+    let editedMessageEl = $(`.aim-chat-message[data-uuid="${message.edited}"]`); // could be document as well?
+
+    if (!editedMessageEl.length > 0) {
+      console.error('No original message found');
+      return;
+    }
+
+    // get the aim-message-content and set the text to the new message
+    let editedMessageContent = editedMessageEl.find('.aim-message-content');
+    if (editedMessageContent.length > 0) {
+      // remove the edited message
+      editedMessageContent.html(message.text);
+    }
+    return;
+  }
+
+
+
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
 
   if (_chatWindow) {
@@ -165,7 +202,7 @@ export default async function renderChatMessage(message, _chatWindow) {
   }
 
   if (!chatWindow || !chatWindow.content) {
-    console.log('chat window not ready, trying again soon');
+    console.log('chat window not ready, trying again soon', windowId, message);
     console.log(message);
     return;
   }
@@ -197,36 +234,6 @@ export default async function renderChatMessage(message, _chatWindow) {
         return;
       }
     }
-  }
-
-  if (message.removed) {
-    console.log("ATTEMPTING TO REMOVE MESSAGE", message);
-    // find the chatMessage by uuid
-    let removedMessageEl = $(`.aim-chat-message[data-uuid="${message.removed}"]`); // could be document as well?
-    if (removedMessageEl.length > 0) {
-      // remove the removed message
-      removedMessageEl.remove();
-    }
-    return;
-  }
-
-  if (message.edited) {
-    console.log("ATTEMPTING TO EDIT MESSAGE", message);
-    // find the chatMessage by uuid
-    let editedMessageEl = $(`.aim-chat-message[data-uuid="${message.edited}"]`); // could be document as well?
-
-    if (!editedMessageEl.length > 0) {
-      console.error('No original message found');
-      return;
-    }
-
-    // get the aim-message-content and set the text to the new message
-    let editedMessageContent = editedMessageEl.find('.aim-message-content');
-    if (editedMessageContent.length > 0) {
-      // remove the edited message
-      editedMessageContent.html(message.text);
-    }
-    return;
   }
 
   // Manage size of processedMessages to prevent memory leaks
