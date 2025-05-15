@@ -58,13 +58,14 @@ export default function eventBind(adminWindow) {
         }
         let buddyname = document.querySelector('#profile-input').value.trim();
         let banType = document.querySelector('#ban-type').value;
+        let banLength = document.querySelector('#ban-length').value; // in minutes
         buddyname = buddyname;
         if (!buddyname) {
             alert('No buddyname provided');
             return;
         }
         if (buddyname) {
-            banBuddy.call(this, buddyname, banType);
+            banBuddy.call(this, buddyname, banType, banLength);
         }
     });
 

@@ -22,6 +22,11 @@ export default class SimpleTabs {
         this.container.find('.tab-content').first().show();
         this.container.find('.tab-list li').first().addClass('active');
 
+        $('.tab-list li a', this.container).each((index, element) => {
+            // set draggable to false
+            $(element).attr('draggable', false);
+        });
+
         // Event listener for tab clicks
         this.container.find('.tab-list li a').on('click', (e) => {
             e.preventDefault();

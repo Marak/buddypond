@@ -157,8 +157,45 @@ export default async function renderChatMessage(message, _chatWindow) {
   // console.log('windowIdwindowId', windowId)
   // TODO: scope on processedMessages needs to be keyed by type in addition to context
   this.data.processedMessages[context] = this.data.processedMessages[context] || [];
-  // console.log('chat window id', windowId, message);
 
+  // Stores all active users across all chat windows
+  this.data.activeUsers = this.data.activeUsers || [];
+
+  // Stores all buddies that are currently active in the context of the chat window
+  this.data.activeUsersInContext = this.data.activeUsersInContext || {};
+  this.data.activeUsersInContext[context] = this.data.activeUsersInContext[context] || [];
+
+  if (message.type === 'buddy') {
+    // If message.to is not in the activeUsers, add it
+    if (message.to && !this.data.activeUsers.includes(message.to)) {
+      this.data.activeUsers.push(message.to);
+      this.bp.emit('buddy::activeUserAdded', message.to);
+    }
+    // If message.to is not in the activeUsersInContext, add it
+    if (message.to && !this.data.activeUsersInContext[context].includes(message.to)) {
+      this.data.activeUsersInContext[context].push(message.to);
+    }
+
+  }
+
+  // TODO: emit event if new pond context is created
+  // this.bp.emit('pond::activeContextAdded', context);
+
+
+  // If message.from is not in the activeUsers, add it
+  if (message.from && !this.data.activeUsers.includes(message.from)) {
+    this.data.activeUsers.push(message.from);
+    this.bp.emit('buddy::activeUserAdded', message.from);
+  }
+
+
+  // If message.from is not in the activeUsersInContext, add it
+  if (message.from && !this.data.activeUsersInContext[context].includes(message.from)) {
+    this.data.activeUsersInContext[context].push(message.from);
+  }
+
+
+  // console.log('chat window id', windowId, message);
 
   // Remark: Removing and editing messages do not currently require a windowId since they currently
   // do not have a from / to property
@@ -274,7 +311,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     // this is a /say message
     this.bp.apps.say.processMessages(message);
   }
-  
+
   // check if mobile, is so shorten the time
   // legacy API
   if (this.bp.apps.ui.isMobile()) {
@@ -333,7 +370,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   let bp = this.bp;
 
-  
+
 
   this.createChatMessageElement(message, messageTime, chatWindow, container);
 

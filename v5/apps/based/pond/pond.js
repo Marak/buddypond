@@ -33,7 +33,7 @@ export default class Pond {
                 alert('Please enter a pond name');
             }
             */
-            joinPond();
+            joinPond.call(this);
             return false;
         });
 

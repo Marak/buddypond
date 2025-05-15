@@ -1,6 +1,6 @@
 // Function to remove outer <p> tags
 export default function parseMarkdownWithoutPTags(markdown) {
-
+  if (!markdown) return ''; // empty text
     /*
     const customElementExtension = {
       extensions: [{
@@ -113,7 +113,12 @@ export default function parseMarkdownWithoutPTags(markdown) {
     
     marked.use({ extensions: [styleExtension, linkExtension] });
     
-    let html = marked.parse(markdown);
+    let html;
+    try {
+      html = marked.parse(markdown);
+    } catch (error) {
+      html = markdown;
+    }
   
     return html.replace(/^<p>(.*?)<\/p>\s*$/s, '$1');
     // Explanation:

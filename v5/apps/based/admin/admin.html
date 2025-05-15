@@ -53,7 +53,7 @@
     <div class="admin-input-group">
         <input type="text" id="profile-input" class="admin-input" placeholder="Enter Username">
         <button id="profile-search-button" class="admin-button">Search</button>
-        <button id="ip-ban-button" class="admin-button">Ban Buddy</button>
+        <button id="ip-ban-button" class="admin-button">Curse Buddy</button>
         <select id="ban-type" class="admin-select">
             <option value="BAN" selected>BAN</option>
             <option value="Babel.js">Babel.js</option>
@@ -61,13 +61,20 @@
         </select>
         <select id="ban-length" class="admin-select">
             <!-- bans by hour length -->
-            <option value="1">1 hour</option>
-            <option value="24">1 day</option>
-            <!-- three days -->
-            <option value="72">3 days</option>
-            <option value="168">1 week</option>
-            <option value="720">30 days</option>
-            <option value="0">10 Years</option>
+            <option value="1">1 minute</option>
+            <option value="5">5 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="1440">1 day</option>            
+            <option value="2880">2 days</option>
+            <option value="4320">3 days</option>
+            <!-- one week -->
+            <option value="10080">1 week</option>
+            <!-- 30 days -->
+            <option value="43200">30 days</option>
+            <!-- 10 years -->
+            <option value="525600">10 years</option>
         </select>
 
     </div>

@@ -44,6 +44,7 @@ export default class Admin {
                     this.adminWindow = null
                 }
             });
+            this.adminWindow.loggedIn = true;
         }
 
         if (options.context === 'default') {

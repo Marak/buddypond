@@ -58,7 +58,11 @@ bp.open = async function open(app, config = { context: 'default' }) {
     if (typeof bp.apps[appName].open === 'function') {
         // console.log('open', appName, config)
         // console.log('open', appName, config)
-        bp.apps[appName].open(config);
+        let _window = await bp.apps[appName].open(config);
+        console.log('open window', _window);
+        if (_window && typeof _window.focus === 'function') { // focus the window if it was created
+            _window.focus();
+        }
     }
 }
 

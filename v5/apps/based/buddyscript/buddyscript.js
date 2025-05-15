@@ -34,6 +34,10 @@ export default class BuddyScript {
     }
 
     parseCommand(input) {
+        if (!input || input.length < 2) {
+            // console.log('Invalid command length');
+            return false; // Ignore empty or too short commands
+        }
         // alert(input)
         let firstChar = input.substr(0, 1);
         let commands = input.split(' ');
