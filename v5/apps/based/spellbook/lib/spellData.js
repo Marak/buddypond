@@ -116,7 +116,7 @@ export default {
         description: 'Forces the target to log out.',
         cost: 250, // High impact, disrupts user session
         costText: '🪙5',
-        config: {},
+        config: { targets: ['self'] }
       },
     ],
   
@@ -202,6 +202,23 @@ export default {
   
     memes: [
       {
+        name: 'chicken-jockey',
+        label: '🐔 Chicken Jockey',
+        description: 'Summons a chicken jockey.',
+        cost: 10, // Minimal impact, humorous
+        costText: '🪙1',
+        config: { targets: ['self', 'buddy', 'pond'], duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 } },
+      },
+      {
+        name: 'hamster-dance',
+        label: '🐹 Hamster Dance',
+        description: 'Plays a funny hamster dance sound.',
+        cost: 10, // Minimal impact, humorous sound
+        costText: '🪙1',
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+      },
+      /*
+      {
         name: 'helicopter',
         label: '🚁 Helicopter',
         description: 'Plays a funny helicopter meme sound.',
@@ -233,5 +250,6 @@ export default {
         costText: '🪙1',
         config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
       },
+      */
     ],
   };

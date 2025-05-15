@@ -1,13 +1,3 @@
-import _alert from '../../../spellbook/spells/_alert.js';
-import rickroll from '../../../spellbook/spells/rickroll.js';
-import forbiddenRickRoll from '../../../spellbook/spells/forbiddenRickRoll.js';
-import zalgo from '../../../spellbook/spells/zalgo.js';
-import earthquake from '../../../spellbook/spells/earthquake.js';
-import fireball from '../../../spellbook/spells/fireball.js';
-import lightning from '../../../spellbook/spells/lightning.js';
-import flood from '../../../spellbook/spells/flood.js';
-import vortex from '../../../spellbook/spells/vortex.js';
-import barrelRoll from '../../../spellbook/spells/barrelRoll.js';
 // TODO: discoParty
 // TODO: pixelate
 
@@ -82,15 +72,20 @@ const countdownManager = (() => {
     };
 })();
 
-export default function applyData(el, data) {
+export default async function applyData(el, data) {
     const $el = $(el);
     let targetName = data.target;
-    if (data.target === this.bp.me) {
+    if (data.message.from === this.bp.me) {
         targetName = 'myself.';
     }
     $el.find('.card-spell-target').text('I have casted ' + data.spell + ' on ' + targetName);
     $el.find('.card-spell-name').text(data.spell);
     
+
+    if (data.spellType === 'spell') {
+        // remove .card-spell-duration
+        $el.find('.card-spell-duration').remove();
+    }
 
     // Initialize countdown
     const countDownEl = $el.find('.card-spell-duration .countdown-date');
@@ -116,44 +111,10 @@ export default function applyData(el, data) {
     }
     bp.set('processedCards', processedCards);
 
+    // TODO: replace switch case with dictionary lookup
     if (data.target === this.bp.me) {
-        switch (data.spell) {
-            case 'rickroll':
-                rickroll(data.url);
-                break;
-            case 'forbiddenRickRoll':
-                forbiddenRickRoll();
-                break;
-            case 'zalgo':
-                zalgo(Number(data.text));
-                break;
-            case 'earthquake':
-                earthquake(); // TODO: config
-                break;
-            case 'fireball':
-                fireball();
-                break;
-            case 'lightning':
-                lightning();
-                break;
-            case 'flood':
-                flood();
-                break;
-            case 'vortex':
-                vortex();
-                break;
-            case 'barrelRoll':
-                barrelRoll();
-                break;
-            case 'alert':
-                _alert(data.text);
-                break;
-            case 'logout':
-                this.bp.logout();
-                alert('You have been remotely logged out by ' + data.message.from);
-                break;
-            default:
-                console.log('Unknown spell:', data.spell);
-        }
+        // dynamically import the spell
+        let spellModule =  await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
+        spellModule.default.call(this);
     }
 }
