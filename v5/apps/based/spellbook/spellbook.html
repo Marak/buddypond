@@ -12,10 +12,9 @@
     <div class="spellbook-selection">
       <label for="spellType">Spell Type:</label>
       <select id="spellType" name="spellType">
-        <option value="spells">Spell</option>
-        <option value="memes">Meme</option>
-
-        <option value="curses">Curse</option>
+        <option value="spells">Spells</option>
+        <option value="memes">Memes</option>
+        <option value="curses">Curses</option>
       </select>
 
       <label for="spellName">Spell/Curse:</label>
@@ -30,18 +29,26 @@
         <option value="self">Self</option>
       </select>
 
-      <!-- spellDuration -->
-      <label for="spellDuration">Duration:</label>
-      <!-- slider from 1 minute to 30 minutes -->
-      <input type="range" id="spellDuration" name="spellDuration" min="1" max="30" value="1" />
-      <!-- total calculated cost of spell -->
-      <span id="spellCost">Cost: 1</span>
       <label for="spellTargetName">Target Buddy:</label>
       <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
         <option value="">Select target...</option>
       </select>
       <input type="text" id="spellTargetInput" name="spellTargetInput" placeholder="Enter target name..." />
       <button type="button" id="toggleTargetInput">Choose name not on list</button>
+
+      <label for="spellTargetPond">Target Pond:</label>
+      <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">
+        <option value="">Select target...</option>
+      </select>
+
+
+
+      <!-- spellDuration -->
+      <label for="spellDuration">Duration:</label>
+      <!-- slider from 1 minute to 30 minutes -->
+      <input type="range" id="spellDuration" name="spellDuration" min="1" max="30" value="1" />
+      <!-- total calculated cost of spell -->
+      <span id="spellCost">Cost: 1</span>
 
       <label for="spellTargetPond">Target Pond:</label>
       <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">

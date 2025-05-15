@@ -9,7 +9,7 @@ export default {
         description: 'Corrupts text with chaotic glyphs.',
         cost: 10, // Low impact, simple text corruption
         costText: '🪙3',
-        config: { intensity: { type: 'number', label: 'Intensity', value: 10, min: 1, max: 50 } },
+        config: { targets: ['self', 'buddy'], intensity: { type: 'number', label: 'Intensity', value: 10, min: 1, max: 50 } },
       },
       /*
       {
@@ -26,7 +26,7 @@ export default {
         description: 'Removes a curse from the target.',
         cost: 20, // Moderate impact, beneficial effect
         costText: '🪙4',
-        config: {},
+        config: { },
       },
       {
         name: 'rickroll',
@@ -34,7 +34,7 @@ export default {
         description: 'Plays a classic prank video.',
         cost: 10, // Minimal impact, humorous
         costText: '🪙1',
-        config: { url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
+        config: { targets: ['self'], url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
       },
       {
         name: 'forbiddenRickRoll',
@@ -42,7 +42,7 @@ export default {
         description: 'An inescapable prank video.',
         cost: 30, // Slightly higher due to "inescapable" nature
         costText: '🪙2',
-        config: { url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
+        config: { targets: ['self'], url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
       },
       /*
       {
@@ -59,7 +59,7 @@ export default {
         description: 'Strikes with a dazzling bolt.',
         cost: 80, // Moderate impact, visually intense
         costText: '🪙3',
-        config: { intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 } },
       },
       {
         name: 'fireball',
@@ -67,7 +67,7 @@ export default {
         description: 'Hurls a fiery projectile.',
         cost: 80, // Moderate impact, similar to lightning
         costText: '🪙3',
-        config: { power: { type: 'number', label: 'Power', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], power: { type: 'number', label: 'Power', value: 5, min: 1, max: 10 } },
       },
       {
         name: 'earthquake',
@@ -75,7 +75,7 @@ export default {
         description: 'Shakes the ground beneath.',
         cost: 80, // Moderate impact, similar to lightning
         costText: '🪙3',
-        config: { magnitude: { type: 'number', label: 'Magnitude', value: 5, min: 1, max: 10 } }
+        config: { targets: ['self', 'buddy', 'pond'], magnitude: { type: 'number', label: 'Magnitude', value: 5, min: 1, max: 10 } }
       },
       {
         name: 'alert',
@@ -83,7 +83,7 @@ export default {
         description: 'Displays a custom message.',
         cost: 10, // Minimal impact, simple message
         costText: '🪙1',
-        config: { text: { type: 'text', label: 'Message', value: 'You have been cursed!' } },
+        config: { targets: ['self'], text: { type: 'text', label: 'Message', value: 'You have been cursed!' } },
       },
       {
         name: 'logout',
@@ -111,7 +111,7 @@ export default {
         description: 'Scrambles communication.',
         cost: 120, // Moderate impact, disrupts chat
         costText: '🪙3',
-        config: { intensity: { type: 'number', label: 'Scramble Intensity', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self'], duration: { type: 'number', label: 'Curse Duration', value: 1, min: 1, max: 5 } },
       },
       {
         name: 'riddikulus',
@@ -119,7 +119,7 @@ export default {
         description: 'Turns fears into something funny.',
         cost: 60, // Moderate impact, temporary and humorous
         costText: '🪙2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 30, min: 10, max: 300 } },
+        config: {  targets: ['self'], duration: { type: 'number', label: 'Duration (seconds)', value: 1, min: 1, max: 5 } },
       },
       /*
       {
@@ -182,7 +182,7 @@ export default {
         description: 'Plays a funny helicopter meme sound.',
         cost: 10, // Minimal impact, humorous sound
         costText: '🪙1',
-        config: { volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
       },
       {
         name: 'price-is-wrong',
@@ -190,7 +190,7 @@ export default {
         description: 'Plays a sad trombone sound.',
         cost: 10, // Minimal impact, humorous sound
         costText: '🪙1',
-        config: { volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
       },
       {
         name: 'airhorn',
@@ -198,7 +198,7 @@ export default {
         description: 'Plays an airhorn sound.',
         cost: 10, // Minimal impact, humorous sound
         costText: '🪙1',
-        config: { volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
       },
       {
         name: 'doge',
@@ -206,7 +206,7 @@ export default {
         description: 'Plays a funny doge meme sound.',
         cost: 10, // Minimal impact, humorous sound
         costText: '🪙1',
-        config: { volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
       },
     ],
   };

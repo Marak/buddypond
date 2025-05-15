@@ -50,12 +50,98 @@ export default class Spellbook {
         const spellsList = this.data[spellType];
         const $spellName = $('#spellName', $content);
         console.log('updateSpellsDropdown', spellType, spellsList);
-        $spellName.empty().append(`<option value="">Choose your ${spellType} wisely...</option>`);
+        $spellName.empty();
         spellsList.forEach((spell) => {
-          $spellName.append(`<option value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
+
+          let disabled = '';
+
+          // check spell.config.targets
+          if (!spell.config || !spell.config.targets) {
+            disabled = 'disabled';
+          }
+          // TODO: uncomment / add role check from session
+          // Remark: This is validated server-side
+          /*
+          // Ensures that admins can cast any spell
+          if (this.bp.me === 'Marak') {
+            disabled = '';
+          }
+          */
+          $spellName.append(`<option ${disabled} value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
         });
+
+        // Sort spells
+        // Step 1: Group by disabled status (enabled first, disabled last)
+        let options = $spellName.find('option').get().sort((a, b) => {
+          const aDisabled = $(a).prop('disabled') ? 1 : 0;
+          const bDisabled = $(b).prop('disabled') ? 1 : 0;
+          return aDisabled - bDisabled;
+        });
+
+        // Step 2: Sort alphabetically while preserving groups
+        options = options.sort((a, b) => {
+          const aDisabled = $(a).prop('disabled') ? 1 : 0;
+          const bDisabled = $(b).prop('disabled') ? 1 : 0;
+
+          // Preserve group order: enabled (0) before disabled (1)
+          if (aDisabled !== bDisabled) {
+            return aDisabled - bDisabled;
+          }
+
+          // Sort alphabetically within groups
+          return $(a).val().localeCompare($(b).val(), 'en', { sensitivity: 'base' });
+        });
+
+        // Append sorted options back to the select
+        $spellName.empty().append(options);
+        // prepend as first option
+        $spellName.prepend('<option value="" selected>Choose your spell wisely...</option>');
+
         updateConfigForm();
       };
+
+      const updateValidTargets = () => {
+        const spellName = $('#spellName', $content).val();
+        // get the spellData ref
+        const spellType = $('#spellType', $content).val();
+        const spellsList = this.data[spellType];
+        const spell = spellsList.find((s) => s.name === spellName);
+        const spellConfig = spell.config;
+
+        // check the spellConfig.targets and then update the targetType dropdown with disabled options such that any values
+        // not found in the spellConfig.targets are disabled
+        console.log('updateValidTargets', spellName, spellType, spell);
+        const $targetType = $('#spellTargetType', $content);
+        $targetType.empty().append('<option value="">Choose your target wisely...</option>');
+        if (spellConfig && spellConfig.targets) {
+          let allTargets = ['self', 'buddy', 'pond'];
+          allTargets.forEach((value) => {
+            let disabled = 'disabled';
+            if (spellConfig.targets.includes(value)) {
+              disabled = '';
+            }
+            // TODO: uncomment / add role check from session
+            // Remark: This is validated server-side
+            // Ensures that admins can choose any target
+            /*
+            if (this.bp.me === 'Marak') {
+                disabled = '';
+            }
+            */
+            // upperCast first letter
+            const targetLabel = value.charAt(0).toUpperCase() + value.slice(1);
+            $targetType.append(`<option ${disabled} value="${value}">${targetLabel}</option>`);
+          });
+          // if only one targetType, select it
+          if (Object.keys(spellConfig.targets).length === 1) {
+            const targetType = spellConfig.targets[0];
+            console.log('updateValidTargets - only one targetType', targetType);
+            $targetType.val(targetType);
+          }
+        } else {
+          $targetType.append('<option disabled value="self">Self</option>');
+        }
+      }
 
       // Populate config form based on selected spell
       const updateConfigForm = () => {
@@ -96,7 +182,9 @@ export default class Spellbook {
 
       // Initialize dropdowns and events
       $('#spellType', $content).on('change', updateSpellsDropdown);
+
       $('#spellName', $content).on('change', updateConfigForm);
+      $('#spellName', $content).on('change', updateValidTargets);
       $('#spellTargetType', $content).on('change', updateTargetVisibility);
       // spellDuration is a slider, needs to update on slide
       $('#spellDuration', $content).on('input', (e) => {
@@ -168,21 +256,21 @@ export default class Spellbook {
         console.log(`Casting ${spellName} on ${target} with a total cost of ${totalCost} buddy points.`);
 
         if (spellName && target) {
-            try {
-                let result = await this.castSpell(target, spellName, { type: spellType, config });
-                if (result && result.error) {
-                    // display error message
-                    $('.spell-message', $content).addClass('error');
-                    $('.spell-message', $content).text(result.error).show();
-                } else {
-                    // display success message
-                    $('.spell-message', $content).removeClass('error');
-                    $('.spell-message', $content).text('Spell cast successfully!').show();
-                }
-            } catch (error) {
-                throw new Error(`Error casting spell: ${error.message}`);
+          try {
+            let result = await this.castSpell(target, spellName, { type: spellType, config });
+            if (result && result.error) {
+              // display error message
+              $('.spell-message', $content).addClass('error');
+              $('.spell-message', $content).text(result.error).show();
+            } else {
+              // display success message
+              $('.spell-message', $content).removeClass('error');
+              $('.spell-message', $content).text('Spell cast successfully!').show();
             }
-            
+          } catch (error) {
+            throw new Error(`Error casting spell: ${error.message}`);
+          }
+
           console.log('Spell cast result:', result);
         } else {
           alert('Please select a spell and a valid target.');
