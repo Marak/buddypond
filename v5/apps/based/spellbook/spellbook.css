@@ -1,0 +1,103 @@
+.spellbook-content {
+    background-image: url("desktop/assets/images/misc/ivy-bg.png");
+    background-color: #1a1a1a; /* Dark fallback */
+    background-size: cover;
+    height: 100%;
+    padding: 15px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow-y: auto;
+  }
+  
+  .spellbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .spellbook-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #FFD700; /* Gold title */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  
+  .ponderSpellbook.orb {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+  
+  .ponderSpellbook.orb:hover {
+    transform: scale(1.1);
+  }
+  
+  .ponderSpellbook.orb img {
+    border-radius: 50%;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  
+  .spellbook-selection,
+  .spellbook-config {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .spellbook-selection label,
+  .spellbook-config label {
+    flex: 1 0 120px;
+    font-size: 14px;
+    color: #E0E0E0;
+    line-height: 30px;
+  }
+  
+  .spellbook-selection select,
+  .spellbook-selection input,
+  .spellbook-config input {
+    flex: 2 0 200px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #FFD700;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .spellbook-selection select:focus,
+  .spellbook-selection input:focus,
+  .spellbook-config input:focus {
+    outline: none;
+    border-color: #FFEFBF;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
+  .spellbook-selection button,
+  .castSpellButton {
+    padding: 8px 15px;
+    background: #FFD700;
+    color: #2b1a3f;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .spellbook-selection button:hover,
+  .castSpellButton:hover {
+    background: #FFEFBF;
+  }
+  
+  .castSpellButton {
+    width: 100%;
+    max-width: 200px;
+    margin-top: 10px;
+  }
+  
+  #spellTargetInput,
+  #spellTargetPond {
+    display: none; /* Hidden by default, shown via JS */
+  }

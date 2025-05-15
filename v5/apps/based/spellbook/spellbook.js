@@ -1,136 +1,12 @@
 import client from './lib/client.js';
 import castSpell from './lib/castSpell.js';
+import spellData from './lib/spellData.js';
+import calculateCost from './lib/calculateCost.js';
 
 export default class Spellbook {
   constructor(bp, options = {}) {
     this.bp = bp;
-    // Define spells and curses as objects with name, description, cost, and config
-    this.spells = [
-      {
-        name: 'zalgo',
-        description: 'Corrupts text with chaotic glyphs.',
-        cost: 'ඞ3',
-        config: { intensity: { type: 'number', label: 'Intensity', value: 10, min: 1, max: 50 } },
-      },
-      {
-        name: 'ebublio',
-        description: 'Traps target in a bubble.',
-        cost: 'ඞ2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 30, min: 10, max: 300 } },
-      },
-      {
-        name: 'cure',
-        description: 'Removes a curse from the target.',
-        cost: 'ඞ4',
-        config: {},
-      },
-      {
-        name: 'rickroll',
-        description: 'Plays a classic prank video.',
-        cost: 'ඞ1',
-        config: { url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
-      },
-      {
-        name: 'forbiddenRickRoll',
-        description: 'An inescapable prank video.',
-        cost: 'ඞ2',
-        config: { url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
-      },
-      {
-        name: 'passwordisusername',
-        description: 'Forces a weak password reset.',
-        cost: 'ඞ3',
-        config: {},
-      },
-      {
-        name: 'lightning',
-        description: 'Strikes with a dazzling bolt.',
-        cost: 'ඞ3',
-        config: { intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 } },
-      },
-      {
-        name: 'fireball',
-        description: 'Hurls a fiery projectile.',
-        cost: 'ඞ3',
-        config: { power: { type: 'number', label: 'Power', value: 5, min: 1, max: 10 } },
-      },
-      {
-        name: 'alert',
-        description: 'Displays a custom message.',
-        cost: 'ඞ1',
-        config: { text: { type: 'text', label: 'Message', value: 'You have been cursed!' } },
-      },
-      {
-        name: 'logout',
-        description: 'Forces the target to log out.',
-        cost: 'ඞ5',
-        config: {},
-      },
-    ];
-
-    this.curses = [
-      {
-        name: 'zalgo',
-        description: 'Corrupts text with chaotic glyphs for a duration.',
-        cost: 'ඞ3',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 60, min: 10, max: 300 } },
-      },
-      {
-        name: 'babel.js',
-        description: 'Scrambles communication.',
-        cost: 'ඞ3',
-        config: { intensity: { type: 'number', label: 'Scramble Intensity', value: 5, min: 1, max: 10 } },
-      },
-      {
-        name: 'riddikulus',
-        description: 'Turns fears into something funny.',
-        cost: 'ඞ2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 30, min: 10, max: 300 } },
-      },
-      {
-        name: 'ebublio',
-        description: 'Traps target in a bubble for a duration.',
-        cost: 'ඞ2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 30, min: 10, max: 300 } },
-      },
-      {
-        name: 'episkey',
-        description: 'Heals minor injuries over time.',
-        cost: 'ඞ2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 60, min: 10, max: 300 } },
-      },
-      {
-        name: 'rickroll',
-        description: 'Plays a prank video repeatedly.',
-        cost: 'ඞ1',
-        config: { url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
-      },
-      {
-        name: 'forbiddenRickRoll',
-        description: 'An inescapable prank video for a duration.',
-        cost: 'ඞ2',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 60, min: 10, max: 300 } },
-      },
-      {
-        name: 'passwordisusername',
-        description: 'Forces a weak password for a duration.',
-        cost: 'ඞ3',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 300, min: 60, max: 3600 } },
-      },
-      {
-        name: 'logout',
-        description: 'Forces logout for a duration.',
-        cost: 'ඞ5',
-        config: { duration: { type: 'number', label: 'Duration (seconds)', value: 300, min: 60, max: 3600 } },
-      },
-      {
-        name: 'banhammer',
-        description: 'Temporarily bans the target.',
-        cost: 'ඞ10',
-        config: { duration: { type: 'number', label: 'Ban Duration (seconds)', value: 600, min: 300, max: 86400 } },
-      },
-    ];
-
+    this.data = spellData;
     return this;
   }
 
@@ -145,16 +21,16 @@ export default class Spellbook {
       this.spellbookWindow = this.bp.apps.ui.windowManager.createWindow({
         id: 'spellbook',
         title: 'Spellbook',
-        icon: 'desktop/assets/images/icons/icon_console_64.png',
+        icon: 'desktop/assets/images/icons/icon_spellbook_64.png',
         x: 250,
         y: 75,
-        width: 650,
+        width: 400,
         height: 420,
         minWidth: 200,
         minHeight: 200,
         parent: $('#desktop')[0],
         content: this.html,
-        resizable: true,
+        resizable: false, // no works?
         minimizable: true,
         maximizable: true,
         closable: true,
@@ -171,11 +47,12 @@ export default class Spellbook {
       // Populate spells dropdown based on spellType
       const updateSpellsDropdown = () => {
         const spellType = $('#spellType', $content).val();
-        const spellsList = spellType === 'spell' ? this.spells : this.curses;
+        const spellsList = this.data[spellType];
         const $spellName = $('#spellName', $content);
-        $spellName.empty().append('<option value="">Choose your spell wisely...</option>');
+        console.log('updateSpellsDropdown', spellType, spellsList);
+        $spellName.empty().append(`<option value="">Choose your ${spellType} wisely...</option>`);
         spellsList.forEach((spell) => {
-          $spellName.append(`<option value="${spell.name}">${spell.name} (${spell.cost})</option>`);
+          $spellName.append(`<option value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
         });
         updateConfigForm();
       };
@@ -184,7 +61,7 @@ export default class Spellbook {
       const updateConfigForm = () => {
         const spellName = $('#spellName', $content).val();
         const spellType = $('#spellType', $content).val();
-        const spellsList = spellType === 'spell' ? this.spells : this.curses;
+        const spellsList = this.data[spellType];
         const spell = spellsList.find((s) => s.name === spellName);
         const $config = $('#spellConfig', $content);
         $config.empty();
@@ -221,6 +98,15 @@ export default class Spellbook {
       $('#spellType', $content).on('change', updateSpellsDropdown);
       $('#spellName', $content).on('change', updateConfigForm);
       $('#spellTargetType', $content).on('change', updateTargetVisibility);
+      // spellDuration is a slider, needs to update on slide
+      $('#spellDuration', $content).on('input', (e) => {
+        const duration = parseInt($(e.target).val(), 10);
+        const spellType = $('#spellType', $content).val();
+        const spellName = $('#spellName', $content).val();
+        const _spellData = this.data[spellType].find((s) => s.name === spellName);
+        const spellCost = calculateCost(_spellData, { duration });
+        $('#spellCost', $content).text(`Total cost: ${spellCost} buddy points`);
+      });
 
       // Toggle between dropdown and text input for buddy
       let isUsingInput = false;
@@ -251,11 +137,15 @@ export default class Spellbook {
       });
 
       // Form submission
-      $('#castSpellForm', $content).on('submit', (e) => {
+      $('#castSpellForm', $content).on('submit', async (e) => {
         e.preventDefault();
+
+
         const spellType = $('#spellType', $content).val();
         const spellName = $('#spellName', $content).val();
         const targetType = $('#spellTargetType', $content).val();
+        const spellDuration = $('#spellDuration', $content).val();
+        const _spellData = this.data[spellType].find((s) => s.name === spellName);
         let target = null;
         const config = {};
         if (targetType === 'buddy') {
@@ -272,8 +162,28 @@ export default class Spellbook {
           config[name] = $(this).val();
         });
 
+        config.duration = spellDuration;
+
+        let totalCost = calculateCost(_spellData, config);
+        console.log(`Casting ${spellName} on ${target} with a total cost of ${totalCost} buddy points.`);
+
         if (spellName && target) {
-          this.castSpell(target, spellName, { type: spellType, config });
+            try {
+                let result = await this.castSpell(target, spellName, { type: spellType, config });
+                if (result && result.error) {
+                    // display error message
+                    $('.spell-message', $content).addClass('error');
+                    $('.spell-message', $content).text(result.error).show();
+                } else {
+                    // display success message
+                    $('.spell-message', $content).removeClass('error');
+                    $('.spell-message', $content).text('Spell cast successfully!').show();
+                }
+            } catch (error) {
+                throw new Error(`Error casting spell: ${error.message}`);
+            }
+            
+          console.log('Spell cast result:', result);
         } else {
           alert('Please select a spell and a valid target.');
         }

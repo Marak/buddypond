@@ -2,16 +2,20 @@
   <form id="castSpellForm" class="castSpellForm">
     <div class="spellbook-header">
       <h2>Cast a Spell</h2>
+      <!-- 
       <a class="desktopButton ponderSpellbook orb" href="#" title="Cast spell...">
         <img src="desktop/assets/images/misc/orb.jpeg" width="80" height="80" alt="Cast Spell" />
       </a>
+      -->
     </div>
 
     <div class="spellbook-selection">
       <label for="spellType">Spell Type:</label>
       <select id="spellType" name="spellType">
-        <option value="spell">Spell</option>
-        <option value="curse">Curse</option>
+        <option value="spells">Spell</option>
+        <option value="memes">Meme</option>
+
+        <option value="curses">Curse</option>
       </select>
 
       <label for="spellName">Spell/Curse:</label>
@@ -26,6 +30,12 @@
         <option value="self">Self</option>
       </select>
 
+      <!-- spellDuration -->
+      <label for="spellDuration">Duration:</label>
+      <!-- slider from 1 minute to 30 minutes -->
+      <input type="range" id="spellDuration" name="spellDuration" min="1" max="30" value="1" />
+      <!-- total calculated cost of spell -->
+      <span id="spellCost">Cost: 1</span>
       <label for="spellTargetName">Target Buddy:</label>
       <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
         <option value="">Select target...</option>
@@ -42,7 +52,7 @@
     <div id="spellConfig" class="spellbook-config">
       <!-- Dynamic spell configuration options will be injected here -->
     </div>
-
+    <span class="spell-message"></span>
     <button type="submit" class="castSpellButton">Cast Spell</button>
   </form>
 </div>
