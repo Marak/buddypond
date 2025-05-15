@@ -24,22 +24,25 @@
 
       <label for="spellTargetType">Target Type:</label>
       <select id="spellTargetType" name="spellTargetType">
-        <option value="buddy">Buddy</option>
-        <option value="pond">Pond</option>
+        <option value="buddy">Buddy Name</option>
+        <option value="pond">Pond Name</option>
         <option value="self">Self</option>
       </select>
 
-      <label for="spellTargetName">Target Buddy:</label>
+      <label for="spellTargetName">Target Name:</label>
       <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
         <option value="">Select target...</option>
       </select>
+      <span class="spellTargetSelf"></span>
       <input type="text" id="spellTargetInput" name="spellTargetInput" placeholder="Enter target name..." />
       <button type="button" id="toggleTargetInput">Choose name not on list</button>
 
+      <!--
       <label for="spellTargetPond">Target Pond:</label>
       <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">
         <option value="">Select target...</option>
       </select>
+      -->
 
 
 

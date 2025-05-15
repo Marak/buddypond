@@ -3,6 +3,28 @@ import castSpell from './lib/castSpell.js';
 import spellData from './lib/spellData.js';
 import calculateCost from './lib/calculateCost.js';
 
+// TODO: remove these, used for testing
+import earthquake from './spells/earthquake.js';
+window.earthquake = earthquake;
+
+import fireball from './spells/fireball.js';
+window.fireball = fireball;
+
+import lightning from './spells/lightning.js';
+window.lightning = lightning;
+
+import flood from './spells/flood.js';
+window.flood = flood;
+
+import vortex from './spells/vortex.js';
+window.vortex = vortex;
+
+import barrelRoll from './spells/barrelRoll.js';
+window.barrelRoll = barrelRoll;
+
+import pixelate from './spells/pixelate.js';
+window.pixelate = pixelate;
+
 export default class Spellbook {
   constructor(bp, options = {}) {
     this.bp = bp;
@@ -137,6 +159,25 @@ export default class Spellbook {
             const targetType = spellConfig.targets[0];
             console.log('updateValidTargets - only one targetType', targetType);
             $targetType.val(targetType);
+            if (targetType === 'self') {
+              // hide the spellTargetName
+              $('#spellTargetName', $content).hide();
+              // show the spellTargetSelf with value as this.bp.me
+              $('.spellTargetSelf', $content).html(this.bp.me).show();
+              $('#toggleTargetInput', $content).hide();
+            } else {
+              // show the spellTargetName
+              $('#spellTargetName', $content).show();
+              // hide the spellTargetSelf
+              $('.spellTargetSelf', $content).hide();
+              $('#toggleTargetInput', $content).show();
+            }
+          } else {
+            // show the spellTargetName
+            $('#spellTargetName', $content).show();
+            // hide the spellTargetSelf
+            $('.spellTargetSelf', $content).hide();
+            $('#toggleTargetInput', $content).show();
           }
         } else {
           $targetType.append('<option disabled value="self">Self</option>');
@@ -153,6 +194,9 @@ export default class Spellbook {
         $config.empty();
         if (spell && spell.config) {
           Object.entries(spell.config).forEach(([key, config]) => {
+            if (key === 'targets') {
+              return;
+            }
             const inputId = `spellConfig-${key}`;
             const $label = $(`<label for="${inputId}">${config.label}</label>`);
             let $input;
@@ -168,6 +212,7 @@ export default class Spellbook {
 
       // Update target visibility based on target type
       const updateTargetVisibility = () => {
+        // TODO: just use spellTargetName for both pond and buddy
         const targetType = $('#spellTargetType', $content).val();
         const spellType = $('#spellType', $content).val();
         $('#spellTargetName, #spellTargetInput, #toggleTargetInput, #spellTargetPond', $content).hide();
@@ -267,11 +312,11 @@ export default class Spellbook {
               $('.spell-message', $content).removeClass('error');
               $('.spell-message', $content).text('Spell cast successfully!').show();
             }
+            console.log('Spell cast result:', result);
           } catch (error) {
             throw new Error(`Error casting spell: ${error.message}`);
           }
 
-          console.log('Spell cast result:', result);
         } else {
           alert('Please select a spell and a valid target.');
         }

@@ -2,6 +2,14 @@ import _alert from '../../../spellbook/spells/_alert.js';
 import rickroll from '../../../spellbook/spells/rickroll.js';
 import forbiddenRickRoll from '../../../spellbook/spells/forbiddenRickRoll.js';
 import zalgo from '../../../spellbook/spells/zalgo.js';
+import earthquake from '../../../spellbook/spells/earthquake.js';
+import fireball from '../../../spellbook/spells/fireball.js';
+import lightning from '../../../spellbook/spells/lightning.js';
+import flood from '../../../spellbook/spells/flood.js';
+import vortex from '../../../spellbook/spells/vortex.js';
+import barrelRoll from '../../../spellbook/spells/barrelRoll.js';
+// TODO: discoParty
+// TODO: pixelate
 
 // Encapsulated countdown manager
 const countdownManager = (() => {
@@ -76,7 +84,11 @@ const countdownManager = (() => {
 
 export default function applyData(el, data) {
     const $el = $(el);
-    $el.find('.card-spell-target').text(data.target + ' has been cursed with ' + data.spell);
+    let targetName = data.target;
+    if (data.target === this.bp.me) {
+        targetName = 'myself.';
+    }
+    $el.find('.card-spell-target').text('I have casted ' + data.spell + ' on ' + targetName);
     $el.find('.card-spell-name').text(data.spell);
     
 
@@ -114,6 +126,24 @@ export default function applyData(el, data) {
                 break;
             case 'zalgo':
                 zalgo(Number(data.text));
+                break;
+            case 'earthquake':
+                earthquake(); // TODO: config
+                break;
+            case 'fireball':
+                fireball();
+                break;
+            case 'lightning':
+                lightning();
+                break;
+            case 'flood':
+                flood();
+                break;
+            case 'vortex':
+                vortex();
+                break;
+            case 'barrelRoll':
+                barrelRoll();
                 break;
             case 'alert':
                 _alert(data.text);

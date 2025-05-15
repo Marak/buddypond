@@ -26,7 +26,7 @@ export default {
         description: 'Removes a curse from the target.',
         cost: 20, // Moderate impact, beneficial effect
         costText: '🪙4',
-        config: { },
+        config: { targets: ['self'] },
       },
       {
         name: 'rickroll',
@@ -42,7 +42,7 @@ export default {
         description: 'An inescapable prank video.',
         cost: 30, // Slightly higher due to "inescapable" nature
         costText: '🪙2',
-        config: { targets: ['self'], url: { type: 'text', label: 'Video URL', value: 'https://youtu.be/dQw4w9WgXcQ' } },
+        config: { targets: ['self'] },
       },
       /*
       {
@@ -76,6 +76,31 @@ export default {
         cost: 80, // Moderate impact, similar to lightning
         costText: '🪙3',
         config: { targets: ['self', 'buddy', 'pond'], magnitude: { type: 'number', label: 'Magnitude', value: 5, min: 1, max: 10 } }
+      },
+      {
+        name: 'flood',
+        label: '🌊 Flood',
+        description: 'Covers the area in water.',
+        cost: 80, // Moderate impact, similar to lightning
+        costText: '🪙3',
+        config: { targets: ['self', 'buddy', 'pond'], depth: { type: 'number', label: 'Depth', value: 5, min: 1, max: 10 } }
+      },
+      // lightning, fireball, flood, vortex
+      {
+        name: 'vortex',
+        label: '🌪️ Vortex',
+        description: 'Creates a swirling wind.',
+        cost: 80, // Moderate impact, similar to lightning
+        costText: '🪙3',
+        config: { targets: ['self', 'buddy', 'pond'], strength: { type: 'number', label: 'Strength', value: 5, min: 1, max: 10 } }
+      },
+      {
+        name: 'barrelRoll',
+        label: '🎢 Barrel Roll',
+        description: 'Performs a barrel roll.',
+        cost: 10, // Minimal impact, humorous
+        costText: '🪙1',
+        config: { targets: ['self'] },
       },
       {
         name: 'alert',
