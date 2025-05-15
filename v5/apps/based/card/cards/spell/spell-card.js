@@ -76,7 +76,7 @@ const countdownManager = (() => {
 
 export default function applyData(el, data) {
     const $el = $(el);
-    $el.find('.card-spell-target').text(data.target + ' has been cursed with');
+    $el.find('.card-spell-target').text(data.target + ' has been cursed with ' + data.spell);
     $el.find('.card-spell-name').text(data.spell);
     
 

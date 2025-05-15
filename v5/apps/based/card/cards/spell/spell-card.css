@@ -1,33 +1,175 @@
 .card-spell-card {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    border-radius: 5px;
-    position: relative;
+  position: relative;
+  width: 320px; /* Updated to required width */
+  height: 120px; /* Updated to required height */
+  margin: 5px; /* Reduced margin */
+  border: 2px solid #FFD700; /* Slightly thinner gold border */
+  border-radius: 8px; /* Smaller radius for compact look */
+  background: linear-gradient(135deg, #2b1a3f 0%, #4b2e6b 100%); /* Mystical purple gradient */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 215, 0, 0.3); /* Subtler shadow */
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex; /* Flex for sidebar layout */
+}
+
+.card-spell-card:hover {
+  transform: scale(1.02); /* Smaller zoom due to tight chat space */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), inset 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.card-spell-art {
+  position: relative;
+  width: 80px; /* Sidebar art */
+  height: 100%;
+  background: url('https://via.placeholder.com/80x120/3a2c5f/ffffff?text=Spell+Art') center/cover no-repeat; /* Updated placeholder */
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.card-spell-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-spell-cost {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  background: #FFD700; /* Gold background for cost */
+  color: #2b1a3f; /* Dark purple text */
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 50%;
+  border: 1px solid #DAA520;
+  z-index: 3;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.card-spell-content {
+  position: relative;
+  z-index: 3;
+  padding: 8px; /* Reduced padding */
+  width: calc(100% - 80px); /* Content takes remaining space */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 8px; /* Reduced gap */
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.card-spell-target {
+  display: block;
+  color: #FFD700;
+  font-size: 14px; /* Smaller font */
+  font-weight: bold;
+  text-align: left;
+  text-decoration: none;
+  margin: 0;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-spell-target:hover {
+  color: #FFEFBF;
+  text-decoration: none;
+}
+
+.card-spell-name {
+  display: block;
+  color: #E0E0E0;
+  font-size: 18px; /* Smaller font */
+  font-style: italic;
+  text-align: left;
+  text-decoration: none;
+  margin: 2px 0;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-spell-name:hover {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.card-spell-flavor {
+  font-size: 10px; /* Tiny font for flavor text */
+  color: #D3D3D3;
+  text-align: left;
+  margin: 2px 0;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+}
+
+.card-spell-duration {
+  font-size: 14px; /* Smaller font */
+  color: #B0E0E6;
+  text-align: left;
+  margin: 0;
+  padding: 4px; /* Reduced padding */
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  border: 1px solid #4682B4;
+  animation: pulse 2s infinite ease-in-out;
+  white-space: nowrap;
+}
+
+.countdown-date {
+  font-weight: bold;
+  color: #00CED1;
+}
+
+/* Glowing pulse animation for countdown */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 3px rgba(0, 206, 209, 0.5);
   }
-  
-  .card-spell-title {
-    color: #333;
-    font-weight: bold;
-    font-size: 16px;
+  50% {
+    box-shadow: 0 0 8px rgba(0, 206, 209, 0.8);
   }
-  
-  .card-spell-details {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #555;
+  100% {
+    box-shadow: 0 0 3px rgba(0, 206, 209, 0.5);
   }
-  
-  .card-spell-controls img {
-    cursor: pointer;
-    margin-right: 5px;
+}
+
+/* Decorative border */
+.card-spell-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 1px solid #DAA520;
+  border-radius: 8px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 340px) {
+  .card-spell-card {
+    width: 100%;
+    max-width: 320px;
+    margin: 5px 0;
   }
-  
-  .card-spell-image {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-  }
-  
+}
