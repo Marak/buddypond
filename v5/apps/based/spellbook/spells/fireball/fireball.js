@@ -5,7 +5,7 @@ export default function fireball(duration = 1500, intensity = 5) {
     // Add fireball class to body
     const $body = $('body');
     $body.addClass('fireball-active');
-    
+    this.bp.play('v5/apps/based/spellbook/spells/fireball/fireball.mp3');
     // Create overlay for fiery effect
     const $overlay = $('<div>').css({
         position: 'fixed',

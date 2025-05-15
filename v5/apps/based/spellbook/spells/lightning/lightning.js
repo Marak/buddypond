@@ -35,6 +35,12 @@ export default function lightning(duration = 5000, boltCount = 5, intensity = 3)
             zIndex: 9999
         }).appendTo($body);
         bolts.push($bolt);
+        if (i % 2 === 0) {
+            this.bp.play('v5/apps/based/spellbook/spells/lightning/thunder1.mp3', { tryHard: 1 });
+        } else {
+            this.bp.play('v5/apps/based/spellbook/spells/lightning/thunder2.mp3' , { tryHard: 1 });
+        }
+
     }
     
     // Animation loop

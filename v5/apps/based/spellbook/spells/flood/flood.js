@@ -59,6 +59,8 @@ export default function flood(duration = 3000, intensity = 3) {
     
     // Add wave effect
     $water.addClass('water-wave');
+
+    this.bp.play('v5/apps/based/spellbook/spells/flood/flood.mp3', { duration: duration + 3000 });
     
     // Create bubbles
     const bubbleCount = 10;

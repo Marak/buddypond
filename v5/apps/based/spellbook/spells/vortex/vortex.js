@@ -1,4 +1,4 @@
-export default function vortex(duration = 4400, intensity = 4, pause = 500) {
+export default function vortex(duration = 6500, intensity = 4, pause = 500) {
     // Prevent multiple vortices
     if ($('body').hasClass('vortex-active')) return;
     
@@ -44,6 +44,8 @@ export default function vortex(duration = 4400, intensity = 4, pause = 500) {
     // Create vortex overlay
     const $vortex = $('<div>').addClass('vortex-overlay').appendTo($body);
     
+    this.bp.play('v5/apps/based/spellbook/spells/vortex/vortex.mp3');
+
     // Create particles
     const particleCount = 15;
     const particles = [];

@@ -1,4 +1,4 @@
-export default function earthquake(duration = 2000, intensity = 10) {
+export default function earthquake(duration = 6800, intensity = 30) {
 
     // ensure that duration is a number
     if (isNaN(duration)) {
@@ -62,5 +62,7 @@ export default function earthquake(duration = 2000, intensity = 10) {
     }
     
     // Start shaking
+    this.bp.play('v5/apps/based/spellbook/spells/earthquake/earthquake.mp3');
+
     shake();
 }

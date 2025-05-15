@@ -30,6 +30,9 @@ export default function barrelRoll({
       }
     `;
     document.head.appendChild(style);
+    this.bp.play('v5/apps/based/spellbook/spells/barrelRoll/barrelRoll.mp3');
+
+
   
     // Cleanup after animation
     setTimeout(() => {
