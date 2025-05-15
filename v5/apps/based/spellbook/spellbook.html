@@ -1,49 +1,48 @@
-<style>
-  .spellbook-content {
-    background-image: url("desktop/assets/images/misc/ivy-bg.png");
-    background-color: black;
-  }
-
-  #window_spellbook .window_main {
-    padding-left: 48px;
-    padding-right: 48px;
-    padding-top: 32px;
-    font-size: 32px;
-  }
-
-  #window_spellbook input,
-  select {
-    font-size: 24px;
-  }
-
-  #window_spellbook label {
-    color: white;
-  }
-
-  .ponderSpellbook {
-    float: right;
-  }
-</style>
-
-<div id="window_spellbook" class="spellbook-content">
-  <div class="window_main">
-    <form class="castSpellForm">
-      <a class="desktopButton ponderSpellbook orb" href="#">
-        <img src="desktop/assets/images/misc/orb.jpeg" width="100" height="100" title="Cast spell..." />
+<div class="spellbook-content">
+  <form id="castSpellForm" class="castSpellForm">
+    <div class="spellbook-header">
+      <h2>Cast a Spell</h2>
+      <a class="desktopButton ponderSpellbook orb" href="#" title="Cast spell...">
+        <img src="desktop/assets/images/misc/orb.jpeg" width="80" height="80" alt="Cast Spell" />
       </a>
-      <label for="omegaSpellTome">Spell</label>
-      <br />
-      <select class="omegaSpellTome">
-        <option>Choose your spell wisely...</option>
+    </div>
+
+    <div class="spellbook-selection">
+      <label for="spellType">Spell Type:</label>
+      <select id="spellType" name="spellType">
+        <option value="spell">Spell</option>
+        <option value="curse">Curse</option>
       </select>
-      <br />
-      <label for="castSpellBuddyName">Buddy Name</label>
-      <br />
-      <input type="text" id="castSpellBuddyName" placeholder="pick your target..." />
-      <br />
-      <br />
-      <span class="warning"><strong>Warning:</strong> Casting spells is reserved only for Matrix Agents. If you are not
-        a LVL 12 Grammaton Cleric or higher you might invoke the wrath of Merlin.</span>
-    </form>
-  </div>
+
+      <label for="spellName">Spell/Curse:</label>
+      <select id="spellName" name="spellName" class="spells">
+        <option value="">Choose your spell wisely...</option>
+      </select>
+
+      <label for="spellTargetType">Target Type:</label>
+      <select id="spellTargetType" name="spellTargetType">
+        <option value="buddy">Buddy</option>
+        <option value="pond">Pond</option>
+        <option value="self">Self</option>
+      </select>
+
+      <label for="spellTargetName">Target Buddy:</label>
+      <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
+        <option value="">Select target...</option>
+      </select>
+      <input type="text" id="spellTargetInput" name="spellTargetInput" placeholder="Enter target name..." />
+      <button type="button" id="toggleTargetInput">Choose name not on list</button>
+
+      <label for="spellTargetPond">Target Pond:</label>
+      <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">
+        <option value="">Select pond...</option>
+      </select>
+    </div>
+
+    <div id="spellConfig" class="spellbook-config">
+      <!-- Dynamic spell configuration options will be injected here -->
+    </div>
+
+    <button type="submit" class="castSpellButton">Cast Spell</button>
+  </form>
 </div>
