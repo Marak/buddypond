@@ -2,28 +2,7 @@ import client from './lib/client.js';
 import castSpell from './lib/castSpell.js';
 import spellData from './lib/spellData.js';
 import calculateCost from './lib/calculateCost.js';
-
-// TODO: remove these, used for testing
-import earthquake from './spells/earthquake.js';
-window.earthquake = earthquake;
-
-import fireball from './spells/fireball.js';
-window.fireball = fireball;
-
-import lightning from './spells/lightning.js';
-window.lightning = lightning;
-
-import flood from './spells/flood.js';
-window.flood = flood;
-
-import vortex from './spells/vortex.js';
-window.vortex = vortex;
-
-import barrelRoll from './spells/barrelRoll.js';
-window.barrelRoll = barrelRoll;
-
-import pixelate from './spells/pixelate.js';
-window.pixelate = pixelate;
+import submitFormHandler from './lib/submitFormHandler.js';
 
 export default class Spellbook {
   constructor(bp, options = {}) {
@@ -35,10 +14,25 @@ export default class Spellbook {
   async init() {
     this.html = await this.bp.load('/v5/apps/based/spellbook/spellbook.html');
     await this.bp.load('/v5/apps/based/spellbook/spellbook.css');
+
+    this.isUsingInput = false;
+
     return 'loaded Spellbook';
   }
 
-  async open() {
+  async open(options = {}) {
+
+    let context = null;
+    let output = null;
+
+    if (options.output) { // could be a buddy or a pond
+      output = options.output;
+    }
+
+    if (options.context) { // could be a buddyname or pond name
+      context = options.context;
+    }
+
     if (!this.spellbookWindow) {
       this.spellbookWindow = this.bp.apps.ui.windowManager.createWindow({
         id: 'spellbook',
@@ -64,173 +58,23 @@ export default class Spellbook {
         },
       });
 
+
+      //
+      // Spellbook eventBind listeners
+      //
       const $content = $(this.spellbookWindow.content);
 
-      // Populate spells dropdown based on spellType
-      const updateSpellsDropdown = () => {
-        const spellType = $('#spellType', $content).val();
-        const spellsList = this.data[spellType];
-        const $spellName = $('#spellName', $content);
-        console.log('updateSpellsDropdown', spellType, spellsList);
-        $spellName.empty();
-        spellsList.forEach((spell) => {
-
-          let disabled = '';
-
-          // check spell.config.targets
-          if (!spell.config || !spell.config.targets) {
-            disabled = 'disabled';
-          }
-          // TODO: uncomment / add role check from session
-          // Remark: This is validated server-side
-          /*
-          // Ensures that admins can cast any spell
-          if (this.bp.me === 'Marak') {
-            disabled = '';
-          }
-          */
-          $spellName.append(`<option ${disabled} value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
-        });
-
-        // Sort spells
-        // Step 1: Group by disabled status (enabled first, disabled last)
-        let options = $spellName.find('option').get().sort((a, b) => {
-          const aDisabled = $(a).prop('disabled') ? 1 : 0;
-          const bDisabled = $(b).prop('disabled') ? 1 : 0;
-          return aDisabled - bDisabled;
-        });
-
-        // Step 2: Sort alphabetically while preserving groups
-        options = options.sort((a, b) => {
-          const aDisabled = $(a).prop('disabled') ? 1 : 0;
-          const bDisabled = $(b).prop('disabled') ? 1 : 0;
-
-          // Preserve group order: enabled (0) before disabled (1)
-          if (aDisabled !== bDisabled) {
-            return aDisabled - bDisabled;
-          }
-
-          // Sort alphabetically within groups
-          return $(a).val().localeCompare($(b).val(), 'en', { sensitivity: 'base' });
-        });
-
-        // Append sorted options back to the select
-        $spellName.empty().append(options);
-        // prepend as first option
-        $spellName.prepend('<option value="" selected>Choose your spell wisely...</option>');
-
-        updateConfigForm();
-      };
-
-      const updateValidTargets = () => {
-        const spellName = $('#spellName', $content).val();
-        // get the spellData ref
-        const spellType = $('#spellType', $content).val();
-        const spellsList = this.data[spellType];
-        const spell = spellsList.find((s) => s.name === spellName);
-        const spellConfig = spell.config;
-
-        // check the spellConfig.targets and then update the targetType dropdown with disabled options such that any values
-        // not found in the spellConfig.targets are disabled
-        console.log('updateValidTargets', spellName, spellType, spell);
-        const $targetType = $('#spellTargetType', $content);
-        $targetType.empty().append('<option value="">Choose your target wisely...</option>');
-        if (spellConfig && spellConfig.targets) {
-          let allTargets = ['self', 'buddy', 'pond'];
-          allTargets.forEach((value) => {
-            let disabled = 'disabled';
-            if (spellConfig.targets.includes(value)) {
-              disabled = '';
-            }
-            // TODO: uncomment / add role check from session
-            // Remark: This is validated server-side
-            // Ensures that admins can choose any target
-            /*
-            if (this.bp.me === 'Marak') {
-                disabled = '';
-            }
-            */
-            // upperCast first letter
-            const targetLabel = value.charAt(0).toUpperCase() + value.slice(1);
-            $targetType.append(`<option ${disabled} value="${value}">${targetLabel}</option>`);
-          });
-          // if only one targetType, select it
-          if (Object.keys(spellConfig.targets).length === 1) {
-            const targetType = spellConfig.targets[0];
-            console.log('updateValidTargets - only one targetType', targetType);
-            $targetType.val(targetType);
-            if (targetType === 'self') {
-              // hide the spellTargetName
-              $('#spellTargetName', $content).hide();
-              // show the spellTargetSelf with value as this.bp.me
-              $('.spellTargetSelf', $content).html(this.bp.me).show();
-              $('#toggleTargetInput', $content).hide();
-            } else {
-              // show the spellTargetName
-              $('#spellTargetName', $content).show();
-              // hide the spellTargetSelf
-              $('.spellTargetSelf', $content).hide();
-              $('#toggleTargetInput', $content).show();
-            }
-          } else {
-            // show the spellTargetName
-            $('#spellTargetName', $content).show();
-            // hide the spellTargetSelf
-            $('.spellTargetSelf', $content).hide();
-            $('#toggleTargetInput', $content).show();
-          }
-        } else {
-          $targetType.append('<option disabled value="self">Self</option>');
-        }
-      }
-
-      // Populate config form based on selected spell
-      const updateConfigForm = () => {
-        const spellName = $('#spellName', $content).val();
-        const spellType = $('#spellType', $content).val();
-        const spellsList = this.data[spellType];
-        const spell = spellsList.find((s) => s.name === spellName);
-        const $config = $('#spellConfig', $content);
-        $config.empty();
-        if (spell && spell.config) {
-          Object.entries(spell.config).forEach(([key, config]) => {
-            if (key === 'targets') {
-              return;
-            }
-            const inputId = `spellConfig-${key}`;
-            const $label = $(`<label for="${inputId}">${config.label}</label>`);
-            let $input;
-            if (config.type === 'number') {
-              $input = $(`<input type="number" id="${inputId}" name="spellConfig[${key}]" value="${config.value}" min="${config.min}" max="${config.max}">`);
-            } else {
-              $input = $(`<input type="text" id="${inputId}" name="spellConfig[${key}]" value="${config.value}">`);
-            }
-            $config.append($label, $input);
-          });
-        }
-      };
-
-      // Update target visibility based on target type
-      const updateTargetVisibility = () => {
-        // TODO: just use spellTargetName for both pond and buddy
-        const targetType = $('#spellTargetType', $content).val();
-        const spellType = $('#spellType', $content).val();
-        $('#spellTargetName, #spellTargetInput, #toggleTargetInput, #spellTargetPond', $content).hide();
-        if (targetType === 'buddy') {
-          $('#spellTargetName, #toggleTargetInput', $content).show();
-        } else if (targetType === 'pond' && spellType === 'spell') {
-          $('#spellTargetPond', $content).show();
-        } else if (targetType === 'self') {
-          // No target input needed for self
-        }
-      };
-
       // Initialize dropdowns and events
-      $('#spellType', $content).on('change', updateSpellsDropdown);
-
-      $('#spellName', $content).on('change', updateConfigForm);
-      $('#spellName', $content).on('change', updateValidTargets);
-      $('#spellTargetType', $content).on('change', updateTargetVisibility);
+      $('#spellType', $content).on('change', (e) => {
+        updateSpellsDropdown.call(this, $content);
+      });
+      $('#spellName', $content).on('change', (e) => {
+        updateValidTargets.call(this, $content);
+      });
+      // $('#spellName', $content).on('change', updateConfigForm);
+      $('#spellTargetType', $content).on('change', (e) => {
+        updateTargetVisibility.call(this, $content);
+      });
       // spellDuration is a slider, needs to update on slide
       $('#spellDuration', $content).on('input', (e) => {
         const duration = parseInt($(e.target).val(), 10);
@@ -241,13 +85,11 @@ export default class Spellbook {
         $('#spellCost', $content).text(`Total cost: ${spellCost} buddy points`);
       });
 
-      // Toggle between dropdown and text input for buddy
-      let isUsingInput = false;
       $('#toggleTargetInput', $content).on('click', () => {
-        isUsingInput = !isUsingInput;
-        $('#spellTargetName', $content).toggle(!isUsingInput);
-        $('#spellTargetInput', $content).toggle(isUsingInput);
-        $('#toggleTargetInput', $content).text(isUsingInput ? 'Choose from list' : 'Choose name not on list');
+        this.isUsingInput = !this.isUsingInput;
+        $('#spellTargetName', $content).toggle(!this.isUsingInput);
+        $('#spellTargetInput', $content).toggle(this.isUsingInput);
+        $('#toggleTargetInput', $content).text(this.isUsingInput ? 'Choose from list' : 'Choose name not on list');
       });
 
       // Populate active users
@@ -258,8 +100,8 @@ export default class Spellbook {
       }
 
       // Populate active ponds
-      if (this.bp.apps.pond?.data?.activePonds) {
-        this.bp.apps.pond.data.activePonds.forEach((pond) => {
+      if (this.bp.apps.buddylist?.data?.activePonds) {
+        this.bp.apps.buddylist.data.activePonds.forEach((pond) => {
           $('#spellTargetPond', $content).append(`<option value="${pond}">${pond}</option>`);
         });
       }
@@ -271,55 +113,7 @@ export default class Spellbook {
 
       // Form submission
       $('#castSpellForm', $content).on('submit', async (e) => {
-        e.preventDefault();
-
-
-        const spellType = $('#spellType', $content).val();
-        const spellName = $('#spellName', $content).val();
-        const targetType = $('#spellTargetType', $content).val();
-        const spellDuration = $('#spellDuration', $content).val();
-        const _spellData = this.data[spellType].find((s) => s.name === spellName);
-        let target = null;
-        const config = {};
-        if (targetType === 'buddy') {
-          target = isUsingInput ? $('#spellTargetInput', $content).val() : $('#spellTargetName', $content).val();
-        } else if (targetType === 'pond' && spellType === 'spell') {
-          target = $('#spellTargetPond', $content).val();
-        } else if (targetType === 'self') {
-          target = this.bp.me; // Use current user
-        }
-
-        // Collect config values
-        $('#spellConfig input', $content).each(function () {
-          const name = $(this).attr('name').match(/spellConfig\[(.*)\]/)[1];
-          config[name] = $(this).val();
-        });
-
-        config.duration = spellDuration;
-
-        let totalCost = calculateCost(_spellData, config);
-        console.log(`Casting ${spellName} on ${target} with a total cost of ${totalCost} buddy points.`);
-
-        if (spellName && target) {
-          try {
-            let result = await this.castSpell(target, spellName, { type: spellType, config });
-            if (result && result.error) {
-              // display error message
-              $('.spell-message', $content).addClass('error');
-              $('.spell-message', $content).text(result.error).show();
-            } else {
-              // display success message
-              $('.spell-message', $content).removeClass('error');
-              $('.spell-message', $content).text('Spell cast successfully!').show();
-            }
-            console.log('Spell cast result:', result);
-          } catch (error) {
-            throw new Error(`Error casting spell: ${error.message}`);
-          }
-
-        } else {
-          alert('Please select a spell and a valid target.');
-        }
+        this.submitFormHandler(e, $content);
       });
 
       // Orb click (alternative cast trigger)
@@ -335,19 +129,255 @@ export default class Spellbook {
         }
       });
 
-      this.bp.on('pond::activeContextAdded', 'update-spellbook-pond-targets', (pond) => {
+      this.bp.on('pond::activePondAdded', 'update-spellbook-pond-targets', (pond) => {
         if (!$(`#spellTargetPond option[value="${pond}"]`, $content).length) {
-          $('#spellTargetPond', $content).append(`<option value="${pond}">${pond}</option>`);
+          $('#spellTargetPond', $content).append(`<option value="${pond}">${pond} Pond</option>`);
         }
       });
 
       // Initial setup
-      updateSpellsDropdown();
-      updateTargetVisibility();
+      updateSpellsDropdown.call(this, $content);
+      updateTargetVisibility.call(this, $content);
     }
+
+    if (output) {
+      // select the targetType using the output value
+      $('#spellTargetType', this.spellbookWindow.content).val(output);
+      // trigger change event to update target visibility
+      $('#spellTargetType', this.spellbookWindow.content).trigger('change');
+    }
+    if (context) {
+      if (output === 'buddy') {
+        // select the targetName using the context value
+        $('#spellTargetName', this.spellbookWindow.content).val(context);
+        // trigger change event to update target visibility
+        $('#spellTargetName', this.spellbookWindow.content).trigger('change');
+      }
+      if (output === 'pond') {
+        // select the targetPond using the context value
+        $('#spellTargetPond', this.spellbookWindow.content).val(context);
+        // trigger change event to update target visibility
+        $('#spellTargetPond', this.spellbookWindow.content).trigger('change');
+      }
+    }
+
     return this.spellbookWindow;
   }
 }
 
+//
+// Spellbook functions
+//
+
+// Update target visibility based on target type
+function updateTargetVisibility($content) {
+  // TODO: just use spellTargetName for both pond and buddy
+  const targetType = $('#spellTargetType', $content).val();
+
+  if (targetType === 'pond') {
+    $('#spellTargetPond', $content).show();
+    $('#spellTargetName', $content).hide();
+    $('.spellTargetSelf', $content).hide();
+    $('#toggleTargetInput', $content).show();
+    $('.spellTargetNameLabel').hide();
+    $('.spellTargetPondLabel').show();
+  }
+
+  if (targetType === 'buddy') {
+    // show the buddy dropdown
+    $('#spellTargetName', $content).show();
+    $('#spellTargetPond', $content).hide();
+    $('.spellTargetSelf', $content).hide();
+    $('#toggleTargetInput', $content).show();
+    $('.spellTargetNameLabel').show();
+    $('.spellTargetPondLabel').hide();
+  }
+
+  if (targetType === 'self') {
+    // hide the buddy and pond dropdowns
+    $('#spellTargetName', $content).hide();
+    $('#spellTargetPond', $content).hide();
+    $('.spellTargetSelf', $content).html(this.bp.me).show();
+    $('#toggleTargetInput', $content).hide();
+    $('.spellTargetNameLabel').show();
+    $('.spellTargetPondLabel').hide();
+  }
+
+  return;
+
+  const spellType = $('#spellType', $content).val();
+  $('#spellTargetName, #spellTargetInput, #toggleTargetInput, #spellTargetPond', $content).hide();
+  if (targetType === 'buddy') {
+    $('#spellTargetName, #toggleTargetInput', $content).show();
+  } else if (targetType === 'pond' && spellType === 'spell') {
+    $('#spellTargetPond', $content).show();
+  } else if (targetType === 'self') {
+    // No target input needed for self
+  }
+};
+
+// Populate spells dropdown based on spellType
+function updateSpellsDropdown($content) {
+  const spellType = $('#spellType', $content).val();
+  const spellsList = this.data[spellType];
+  const $spellName = $('#spellName', $content);
+  console.log('updateSpellsDropdown', spellType, spellsList);
+  $spellName.empty();
+  spellsList.forEach((spell) => {
+
+    let disabled = '';
+
+    // check spell.config.targets
+    if (!spell.config || !spell.config.targets) {
+      disabled = 'disabled';
+    }
+    // TODO: uncomment / add role check from session
+    // Remark: This is validated server-side
+    /*
+    // Ensures that admins can cast any spell
+    if (this.bp.me === 'Marak') {
+      disabled = '';
+    }
+    */
+    $spellName.append(`<option ${disabled} value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
+  });
+
+  // Sort spells
+  // Step 1: Group by disabled status (enabled first, disabled last)
+  let options = $spellName.find('option').get().sort((a, b) => {
+    const aDisabled = $(a).prop('disabled') ? 1 : 0;
+    const bDisabled = $(b).prop('disabled') ? 1 : 0;
+    return aDisabled - bDisabled;
+  });
+
+  // Step 2: Sort alphabetically while preserving groups
+  options = options.sort((a, b) => {
+    const aDisabled = $(a).prop('disabled') ? 1 : 0;
+    const bDisabled = $(b).prop('disabled') ? 1 : 0;
+
+    // Preserve group order: enabled (0) before disabled (1)
+    if (aDisabled !== bDisabled) {
+      return aDisabled - bDisabled;
+    }
+
+    // Sort alphabetically within groups
+    return $(a).val().localeCompare($(b).val(), 'en', { sensitivity: 'base' });
+  });
+
+  // Append sorted options back to the select
+  $spellName.empty().append(options);
+  // prepend as first option
+  $spellName.prepend('<option value="" selected>Choose your spell wisely...</option>');
+
+  // updateConfigForm.call(this, $content);
+};
+
+function updateValidTargets($content) {
+  const spellName = $('#spellName', $content).val();
+  // get the spellData ref
+  const spellType = $('#spellType', $content).val();
+  const spellsList = this.data[spellType];
+  const spell = spellsList.find((s) => s.name === spellName);
+  const spellConfig = spell.config;
+  const previousTargetType = $('#spellTargetType', $content).val();
+  const previousTargetName = $('#spellTargetName', $content).val();
+
+  // check the spellConfig.targets and then update the targetType dropdown with disabled options such that any values
+  // not found in the spellConfig.targets are disabled
+  console.log('updateValidTargets', spellName, spellType, spell);
+  const $targetType = $('#spellTargetType', $content);
+  $targetType.empty().append('<option value="">Choose your target wisely...</option>');
+  if (spellConfig && spellConfig.targets) {
+    let allTargets = ['self', 'buddy', 'pond'];
+    allTargets.forEach((value) => {
+      let disabled = 'disabled';
+      if (spellConfig.targets.includes(value)) {
+        disabled = '';
+      }
+      // TODO: uncomment / add role check from session
+      // Remark: This is validated server-side
+      // Ensures that admins can choose any target
+      /*
+      if (this.bp.me === 'Marak') {
+          disabled = '';
+      }
+      */
+      // upperCast first letter
+      const targetLabel = value.charAt(0).toUpperCase() + value.slice(1);
+      $targetType.append(`<option ${disabled} value="${value}">${targetLabel}</option>`);
+    });
+    // if only one targetType, select it
+    if (Object.keys(spellConfig.targets).length === 1) {
+      const targetType = spellConfig.targets[0];
+      console.log('updateValidTargets - only one targetType', targetType);
+      $targetType.val(targetType);
+      if (targetType === 'self') {
+        // hide the spellTargetName
+        $('#spellTargetName', $content).hide();
+        // show the spellTargetSelf with value as this.bp.me
+        $('.spellTargetSelf', $content).html(this.bp.me).show();
+        $('#toggleTargetInput', $content).hide();
+      } else {
+        // show the spellTargetName
+        $('#spellTargetName', $content).show();
+        // hide the spellTargetSelf
+        $('.spellTargetSelf', $content).hide();
+        $('#toggleTargetInput', $content).show();
+      }
+    } else {
+      // show the spellTargetName
+      $('#spellTargetName', $content).show();
+      // hide the spellTargetSelf
+      $('.spellTargetSelf', $content).hide();
+      $('#toggleTargetInput', $content).show();
+    }
+  } else {
+    $targetType.append('<option disabled value="self">Self</option>');
+  }
+
+  // if the previousTargetType is available in the spellConfig.targets, select it
+  if (spellConfig && spellConfig.targets && spellConfig.targets.includes(previousTargetType)) {
+    $targetType.val(previousTargetType);
+  } else {
+    $targetType.val('');
+  }
+  /*
+  // if the previousTargetName is available in the spellConfig.targets, select it
+  if (spellConfig && spellConfig.targets && spellConfig.targets.includes(previousTargetName)) {
+    $('#spellTargetName', $content).val(previousTargetName);
+  } else {
+    $('#spellTargetName', $content).val('');
+  }
+  */
+
+}
+
+// Populate config form based on selected spell
+function updateConfigForm($content) {
+  const spellName = $('#spellName', $content).val();
+  const spellType = $('#spellType', $content).val();
+  const spellsList = this.data[spellType];
+  const spell = spellsList.find((s) => s.name === spellName);
+  const $config = $('#spellConfig', $content);
+  $config.empty();
+  if (spell && spell.config) {
+    Object.entries(spell.config).forEach(([key, config]) => {
+      if (key === 'targets') {
+        return;
+      }
+      const inputId = `spellConfig-${key}`;
+      const $label = $(`<label for="${inputId}">${config.label}</label>`);
+      let $input;
+      if (config.type === 'number') {
+        $input = $(`<input type="number" id="${inputId}" name="spellConfig[${key}]" value="${config.value}" min="${config.min}" max="${config.max}">`);
+      } else {
+        $input = $(`<input type="text" id="${inputId}" name="spellConfig[${key}]" value="${config.value}">`);
+      }
+      $config.append($label, $input);
+    });
+  }
+};
+
 Spellbook.prototype.castSpell = castSpell;
 Spellbook.prototype.client = client;
+Spellbook.prototype.submitFormHandler = submitFormHandler;

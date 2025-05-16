@@ -165,6 +165,15 @@ export default async function renderChatMessage(message, _chatWindow) {
   this.data.activeUsersInContext = this.data.activeUsersInContext || {};
   this.data.activeUsersInContext[context] = this.data.activeUsersInContext[context] || [];
 
+  this.data.activePonds = this.data.activePonds || [];
+  if (message.type === 'pond') {
+    // If message.to is not in the activePonds, add it
+    if (message.to && !this.data.activePonds.includes(message.to)) {
+      this.data.activePonds.push(message.to);
+      this.bp.emit('pond::activePondAdded', message.to);
+    }
+  }
+
   if (message.type === 'buddy') {
     // If message.to is not in the activeUsers, add it
     if (message.to && !this.data.activeUsers.includes(message.to)) {

@@ -117,6 +117,17 @@ export default function chatWindowButtons(bp) {
 
 
         }
+    },
+    // spellbook
+    {
+        text: 'BuddySpellbook',
+        image: 'desktop/assets/images/icons/icon_spellbook_64.png',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // desktop.ui.openWindow('spellbook', { type: type || 'buddy', context: context, output: type || 'buddy' });
+            bp.open('spellbook', { type: type || 'buddy', output: type || 'buddy', context: context });
+        }
     }
     /* // TODO: add Dictate with improved UX
     {

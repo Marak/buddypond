@@ -1,7 +1,7 @@
 .card-spell-card {
   position: relative;
-  width: 320px; /* Updated to required width */
-  height: 120px; /* Updated to required height */
+  width: 320px;
+  /* height: 120px; */
   margin: 5px; /* Reduced margin */
   border: 2px solid #FFD700; /* Slightly thinner gold border */
   border-radius: 8px; /* Smaller radius for compact look */
@@ -24,6 +24,11 @@
   background: url('https://via.placeholder.com/80x120/3a2c5f/ffffff?text=Spell+Art') center/cover no-repeat; /* Updated placeholder */
   opacity: 0.8;
   z-index: 1;
+}
+
+.card-spell-card a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .card-spell-overlay {

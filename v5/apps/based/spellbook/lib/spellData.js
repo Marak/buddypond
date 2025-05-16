@@ -100,7 +100,7 @@ export default {
         description: 'Performs a barrel roll.',
         cost: 10, // Minimal impact, humorous
         costText: '🪙1',
-        config: { targets: ['self'] },
+        config: { targets: ['self', 'buddy', 'pond'] },
       },
       {
         name: 'alert',
@@ -108,7 +108,7 @@ export default {
         description: 'Displays a custom message.',
         cost: 10, // Minimal impact, simple message
         costText: '🪙1',
-        config: { targets: ['self'], text: { type: 'text', label: 'Message', value: 'You have been cursed!' } },
+        config: { targets: ['self', 'buddy'], text: { type: 'text', label: 'Message', value: 'You have been cursed!' } },
       },
       {
         name: 'logout',
@@ -131,7 +131,7 @@ export default {
       },
       */
       {
-        name: 'babel.js',
+        name: 'babel',
         label: '🗣️ Babel.js',
         description: 'Scrambles communication.',
         cost: 120, // Moderate impact, disrupts chat
@@ -145,6 +145,14 @@ export default {
         cost: 60, // Moderate impact, temporary and humorous
         costText: '🪙2',
         config: {  targets: ['self'], duration: { type: 'number', label: 'Duration (seconds)', value: 1, min: 1, max: 5 } },
+      },
+      {
+        name: 'antimagic-field',
+        label: '🛡️ Antimagic Field',
+        description: 'Blocks all magic for a duration.',
+        cost: 200, // High impact, blocks all magic
+        costText: '🪙5',
+        config: {}
       },
       /*
       {
@@ -213,6 +221,22 @@ export default {
         name: 'hamster-dance',
         label: '🐹 Hamster Dance',
         description: 'Plays a funny hamster dance sound.',
+        cost: 10, // Minimal impact, humorous sound
+        costText: '🪙1',
+        config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },
+      },
+      {
+        name: 'cappuccino-assassino',
+        label: '☕ Cappuccino Assassino',
+        description: 'Summons a cappuccino assassin.',
+        cost: 10, // Minimal impact, humorous
+        costText: '🪙1',
+        config: { targets: ['self', 'buddy', 'pond'], duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 } },
+      },
+      {
+        name: 'peanut-butter-jelly-time',
+        label: '🍞 Peanut Butter Jelly Time',
+        description: 'Plays a funny peanut butter jelly time sound.',
         cost: 10, // Minimal impact, humorous sound
         costText: '🪙1',
         config: { targets: ['self', 'buddy', 'pond'], volume: { type: 'number', label: 'Volume', value: 5, min: 1, max: 10 } },

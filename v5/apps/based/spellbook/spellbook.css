@@ -101,3 +101,19 @@
   #spellTargetPond {
     display: none; /* Hidden by default, shown via JS */
   }
+
+  #spellCost {
+    display: none;
+  }
+
+  .spell-message {
+    font-size: 22   px;
+    color: #FFD700;
+  }
+
+  .spell-hint {
+    padding-top: 10px;
+    font-size: 14px;
+    color: #E0E0E0;
+    margin-top: 15px;
+  }

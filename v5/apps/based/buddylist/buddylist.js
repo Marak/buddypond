@@ -256,6 +256,10 @@ export default class BuddyList {
         //         ( was triggering too many sounds too often )
         //this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
         this.bp.on('buddy::message::processed', 'play-im-sound', data => {
+            if (data.noAlert) {
+                // don't play sound if noAlert is set by server
+                return;
+            }
             // only play sounds for recent messages
             let messageTime = new Date(data.ctime);
             let now = new Date().getTime();
