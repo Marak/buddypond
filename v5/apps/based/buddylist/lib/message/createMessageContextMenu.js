@@ -46,6 +46,11 @@ export default function createMessageContextMenu(target, closestMessage) {
     );
   }
 
+  menuItems.push({
+    text: 'Cast Spell',
+    action: 'cast-spell',
+  });
+
   menuItems.forEach(item => {
     const menuItem = document.createElement('div');
     menuItem.className = 'aim-context-menu-item';
@@ -65,6 +70,7 @@ export default function createMessageContextMenu(target, closestMessage) {
   const uuid = closestMessage.getAttribute('data-uuid');
   contextMenu.setAttribute('data-chat-id', chatId);
   contextMenu.setAttribute('data-uuid', uuid);
+  contextMenu.setAttribute('data-from', messageFrom);
 
   this.activeMessageContextMenu = contextMenu;
   this.activeMessageHoverMenu = hoverMenu;

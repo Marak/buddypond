@@ -9,7 +9,7 @@ export default async function submitFormHandler(e, $content) {
     const config = {};
 
     if (targetType === 'buddy') {
-      target = isUsingInput ? $('#spellTargetInput', $content).val() : $('#spellTargetName', $content).val();
+      target = this.isUsingInput ? $('#spellTargetInput', $content).val() : $('#spellTargetName', $content).val();
     }
 
     if (targetType === 'pond') {

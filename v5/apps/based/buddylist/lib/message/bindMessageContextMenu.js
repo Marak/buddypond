@@ -114,7 +114,7 @@ function performAction(action, target) {
     console.error('No closest target found');
     return;
   }
-
+  // console.log('closestTarget', closestTarget);
   const messageUUID = closestTarget.getAttribute('data-uuid');
   const messageChatId = closestTarget.getAttribute('data-chat-id');
   const messageFrom = closestTarget.getAttribute('data-from');
@@ -172,6 +172,9 @@ function performAction(action, target) {
       break;
     case 'delete-message':
       deleteMessage.call(this, messageData);
+      break;
+    case 'cast-spell':
+      this.bp.open('spellbook', { context: messageData.from, output: 'buddy'});
       break;
     default:
       console.error(`Unknown action: ${action}`);

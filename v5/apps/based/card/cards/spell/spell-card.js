@@ -15,7 +15,7 @@ export default async function applyData(el, data) {
     });
 
     let targetName = data.target;
-    if (data.message.from === this.bp.me) {
+    if (data.target === data.castedBy) {
         targetName = 'myself.';
     }
 

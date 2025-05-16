@@ -3,6 +3,7 @@ import castSpell from './lib/castSpell.js';
 import spellData from './lib/spellData.js';
 import calculateCost from './lib/calculateCost.js';
 import submitFormHandler from './lib/submitFormHandler.js';
+import updateConfigForm from './lib/updateConfigForm.js';
 
 export default class Spellbook {
   constructor(bp, options = {}) {
@@ -135,31 +136,39 @@ export default class Spellbook {
         }
       });
 
-      // Initial setup
-      updateSpellsDropdown.call(this, $content);
-      updateTargetVisibility.call(this, $content);
     }
 
     if (output) {
       // select the targetType using the output value
       $('#spellTargetType', this.spellbookWindow.content).val(output);
       // trigger change event to update target visibility
-      $('#spellTargetType', this.spellbookWindow.content).trigger('change');
+      // $('#spellTargetType', this.spellbookWindow.content).trigger('change');
     }
     if (context) {
       if (output === 'buddy') {
         // select the targetName using the context value
         $('#spellTargetName', this.spellbookWindow.content).val(context);
         // trigger change event to update target visibility
-        $('#spellTargetName', this.spellbookWindow.content).trigger('change');
+        // $('#spellTargetName', this.spellbookWindow.content).trigger('change');
       }
       if (output === 'pond') {
         // select the targetPond using the context value
-        $('#spellTargetPond', this.spellbookWindow.content).val(context);
+        $('#spellTargetPond', this.spellbookWindow.content).show().val(context);
         // trigger change event to update target visibility
-        $('#spellTargetPond', this.spellbookWindow.content).trigger('change');
+        // $('#spellTargetPond', this.spellbookWindow.content).trigger('change');
+        setTimeout(() => {
+          // Remark: For some reason there is race condition with the pond dropdown
+          // only when first opening the spellbook, TODO: resolve this
+          $('#spellTargetPond', this.spellbookWindow.content).show();
+        }, 400);
       }
+
     }
+
+    let $content = $(this.spellbookWindow.content);
+    updateTargetVisibility.call(this, $content);
+    updateSpellsDropdown.call(this, $content);
+
 
     return this.spellbookWindow;
   }
@@ -173,7 +182,6 @@ export default class Spellbook {
 function updateTargetVisibility($content) {
   // TODO: just use spellTargetName for both pond and buddy
   const targetType = $('#spellTargetType', $content).val();
-
   if (targetType === 'pond') {
     $('#spellTargetPond', $content).show();
     $('#spellTargetName', $content).hide();
@@ -202,18 +210,6 @@ function updateTargetVisibility($content) {
     $('.spellTargetNameLabel').show();
     $('.spellTargetPondLabel').hide();
   }
-
-  return;
-
-  const spellType = $('#spellType', $content).val();
-  $('#spellTargetName, #spellTargetInput, #toggleTargetInput, #spellTargetPond', $content).hide();
-  if (targetType === 'buddy') {
-    $('#spellTargetName, #toggleTargetInput', $content).show();
-  } else if (targetType === 'pond' && spellType === 'spell') {
-    $('#spellTargetPond', $content).show();
-  } else if (targetType === 'self') {
-    // No target input needed for self
-  }
 };
 
 // Populate spells dropdown based on spellType
@@ -239,7 +235,7 @@ function updateSpellsDropdown($content) {
       disabled = '';
     }
     */
-    $spellName.append(`<option ${disabled} value="${spell.name}">${spell.label || spell.name} (${spell.costText})</option>`);
+    $spellName.append(`<option ${disabled} value="${spell.name}">(${spell.cost}) - ${spell.label || spell.name}</option>`);
   });
 
   // Sort spells
@@ -269,7 +265,7 @@ function updateSpellsDropdown($content) {
   // prepend as first option
   $spellName.prepend('<option value="" selected>Choose your spell wisely...</option>');
 
-  // updateConfigForm.call(this, $content);
+  // this.updateConfigForm.call($content);
 };
 
 function updateValidTargets($content) {
@@ -341,43 +337,10 @@ function updateValidTargets($content) {
   } else {
     $targetType.val('');
   }
-  /*
-  // if the previousTargetName is available in the spellConfig.targets, select it
-  if (spellConfig && spellConfig.targets && spellConfig.targets.includes(previousTargetName)) {
-    $('#spellTargetName', $content).val(previousTargetName);
-  } else {
-    $('#spellTargetName', $content).val('');
-  }
-  */
 
 }
-
-// Populate config form based on selected spell
-function updateConfigForm($content) {
-  const spellName = $('#spellName', $content).val();
-  const spellType = $('#spellType', $content).val();
-  const spellsList = this.data[spellType];
-  const spell = spellsList.find((s) => s.name === spellName);
-  const $config = $('#spellConfig', $content);
-  $config.empty();
-  if (spell && spell.config) {
-    Object.entries(spell.config).forEach(([key, config]) => {
-      if (key === 'targets') {
-        return;
-      }
-      const inputId = `spellConfig-${key}`;
-      const $label = $(`<label for="${inputId}">${config.label}</label>`);
-      let $input;
-      if (config.type === 'number') {
-        $input = $(`<input type="number" id="${inputId}" name="spellConfig[${key}]" value="${config.value}" min="${config.min}" max="${config.max}">`);
-      } else {
-        $input = $(`<input type="text" id="${inputId}" name="spellConfig[${key}]" value="${config.value}">`);
-      }
-      $config.append($label, $input);
-    });
-  }
-};
 
 Spellbook.prototype.castSpell = castSpell;
 Spellbook.prototype.client = client;
 Spellbook.prototype.submitFormHandler = submitFormHandler;
+Spellbook.prototype.updateConfigForm = updateConfigForm;
