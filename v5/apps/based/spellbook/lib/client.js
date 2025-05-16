@@ -1,7 +1,7 @@
 const client = {};
 
 // admin client endpoint
-client.endpoint = 'http://192.168.200.59:8789';
+client.endpoint = buddypond.adminEndpoint;
 
 client.apiRequest = async (uri, method = 'GET', data = null) => {
 
