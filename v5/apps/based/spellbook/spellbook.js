@@ -231,10 +231,11 @@ function updateSpellsDropdown($content) {
     // Remark: This is validated server-side
     /*
     // Ensures that admins can cast any spell
+    */
     if (this.bp.me === 'Marak') {
       disabled = '';
     }
-    */
+
     $spellName.append(`<option ${disabled} value="${spell.name}">(${spell.cost}) - ${spell.label || spell.name}</option>`);
   });
 
@@ -294,10 +295,10 @@ function updateValidTargets($content) {
       // Remark: This is validated server-side
       // Ensures that admins can choose any target
       /*
-      if (this.bp.me === 'Marak') {
-          disabled = '';
-      }
       */
+      if (this.bp.me === 'Marak') {
+        disabled = '';
+      }
       // upperCast first letter
       const targetLabel = value.charAt(0).toUpperCase() + value.slice(1);
       $targetType.append(`<option ${disabled} value="${value}">${targetLabel}</option>`);
