@@ -13,49 +13,66 @@ export default class Play {
 
     }
 
-    async play(mediaPath, { tryHard = 0, onEnd = () => {}, onError = () => {} } = {}) {
-
+    async play(mediaPath, { tryHard = 0, repeat = false, duration = 9999, onEnd = () => {}, onError = () => {} } = {}) {
         if (this.bp.settings.audio_enabled === false) {
             return;
         }
-
+    
         // Check if media is already playing and if retries are not allowed
         if (Play.playing.get(mediaPath) && !tryHard) {
             console.log(`Warning: Already playing ${mediaPath}. Will not play the same media file concurrently.`);
             return;
         }
-
+    
         // Mark the media as playing
         Play.playing.set(mediaPath, true);
-
-        // Create the media element (audio or video based on file type or a specified option)
-        const media = new Audio(mediaPath); // This can be replaced with 'new Video()' if handling video
-
-        // Function to handle retry logic
-        const attemptPlay = () => {
-            media.play().then(() => {
-                onEnd();
-            }).catch(error => {
-                // console.error('Playback failed:', error.message);
-                Play.playing.set(mediaPath, false); // Reset playing flag on failure
-                if (tryHard > 0) {
-                    setTimeout(() => {
-                        tryHard--;
-                        attemptPlay();
-                    }, 3333); // Retry after a delay
-                } else {
-                    onError(error);
-                }
-            });
+    
+        const media = new Audio(mediaPath);
+        let stopTimeout;
+        let forceStop = false;
+    
+        const cleanup = () => {
+            clearTimeout(stopTimeout);
+            media.pause();
+            media.currentTime = 0;
+            media.loop = false;
+            forceStop = true;
+            Play.playing.delete(mediaPath);
         };
-
-        // Add event listener for when the media ends
+    
+        const stopAtDuration = () => {
+            stopTimeout = setTimeout(() => {
+                cleanup();
+                onEnd();
+            }, duration);
+        };
+    
         media.addEventListener('ended', () => {
-            Play.playing.set(mediaPath, false);
-            onEnd();
+            if (!repeat || forceStop) {
+                cleanup();
+                onEnd();
+            }
+            // If repeating, do nothing — allow media.loop to handle replay
         });
-
-        // Start playback attempt
-        attemptPlay();
+    
+        media.addEventListener('error', (err) => {
+            cleanup();
+            onError(err);
+        });
+    
+        try {
+            // Handle repeat logic
+            if (repeat) {
+                media.loop = true;
+            }
+    
+            await media.play();
+            stopAtDuration();
+        } catch (error) {
+            cleanup();
+            onError(error);
+        }
     }
+    
+    
 }
