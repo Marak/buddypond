@@ -25,7 +25,7 @@ export default function cappuccinoAssassino({ count = 6, duration = 6500 } = {})
     for (let i = 0; i < count; i++) {
         // Create cappuccinoAssassino image
         const $cappuccinoAssassino = $('<img>').addClass('cappuccino-assassino')
-            .attr('src', 'v5/apps/based/spellbook/spells/cappuccino-assassino/cappuccino-assassino.webp')
+            .attr('src', 'v5/apps/based/spellbook/spells/cappuccino-assassino/cappuccino-assassino3.webp')
             .css({
                 left: Math.random() * (viewportWidth - 100), // Random X, accounting for width
                 top: Math.random() * (viewportHeight - 100) // Random Y, accounting for height
