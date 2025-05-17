@@ -1,62 +1,63 @@
 .spellbook-content {
-    background-image: url("desktop/assets/images/misc/ivy-bg.png");
-    background-color: #1a1a1a; /* Dark fallback */
+    background-color: #1a1a1a;
+    /* Dark fallback */
     background-size: cover;
     height: 100%;
     padding: 15px;
     color: #fff;
     font-family: Arial, sans-serif;
     overflow-y: auto;
-  }
-  
-  .spellbook-header {
+}
+
+.spellbook-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-  }
-  
-  .spellbook-header h2 {
+}
+
+.spellbook-header h2 {
     margin: 0;
     font-size: 24px;
-    color: #FFD700; /* Gold title */
+    color: #FFD700;
+    /* Gold title */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  }
-  
-  .ponderSpellbook.orb {
+}
+
+.ponderSpellbook.orb {
     display: block;
     transition: transform 0.2s ease;
-  }
-  
-  .ponderSpellbook.orb:hover {
+}
+
+.ponderSpellbook.orb:hover {
     transform: scale(1.1);
-  }
-  
-  .ponderSpellbook.orb img {
+}
+
+.ponderSpellbook.orb img {
     border-radius: 50%;
     border: 2px solid #FFD700;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  }
-  
-  .spellbook-selection,
-  .spellbook-config {
+}
+
+.spellbook-selection,
+.spellbook-config {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 15px;
-  }
-  
-  .spellbook-selection label,
-  .spellbook-config label {
+}
+
+.spellbook-selection label,
+.spellbook-config label {
     flex: 1 0 120px;
     font-size: 14px;
     color: #E0E0E0;
     line-height: 30px;
-  }
-  
-  .spellbook-selection select,
-  .spellbook-selection input,
-  .spellbook-config input {
+}
+
+.spellbook-selection select,
+.spellbook-selection input,
+.spellbook-config input {
     flex: 2 0 200px;
     padding: 5px;
     background: rgba(255, 255, 255, 0.1);
@@ -64,18 +65,18 @@
     border-radius: 4px;
     color: #fff;
     font-size: 14px;
-  }
-  
-  .spellbook-selection select:focus,
-  .spellbook-selection input:focus,
-  .spellbook-config input:focus {
+}
+
+.spellbook-selection select:focus,
+.spellbook-selection input:focus,
+.spellbook-config input:focus {
     outline: none;
     border-color: #FFEFBF;
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-  }
-  
-  .spellbook-selection button,
-  .castSpellButton {
+}
+
+.spellbook-selection button,
+.castSpellButton {
     padding: 8px 15px;
     background: #FFD700;
     color: #2b1a3f;
@@ -84,36 +85,138 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s ease;
-  }
-  
-  .spellbook-selection button:hover,
-  .castSpellButton:hover {
+}
+
+.spellbook-selection button:hover,
+.castSpellButton:hover {
     background: #FFEFBF;
-  }
-  
-  .castSpellButton {
+}
+
+.castSpellButton {
     width: 100%;
     max-width: 200px;
     margin-top: 10px;
-  }
-  
-  #spellTargetInput,
-  #spellTargetPond {
-    display: none; /* Hidden by default, shown via JS */
-  }
+}
 
-  #spellCost {
+#spellTargetInput,
+#spellTargetPond {
     display: none;
-  }
+    /* Hidden by default, shown via JS */
+}
 
-  .spell-message {
-    font-size: 22   px;
+#spellCost {
+    display: none;
+}
+
+.spell-message {
+    font-size: 22 px;
     color: #FFD700;
-  }
+}
 
-  .spell-hint {
+.spell-hint {
     padding-top: 10px;
     font-size: 14px;
     color: #E0E0E0;
     margin-top: 15px;
-  }
+}
+
+/* Responsive adjustments for mobile (up to 1000px) */
+@media (max-width: 1000px) {
+    .spellbook-content {
+        padding: 20px; /* Doubled from 10px */
+        /* Reduced padding for more content space */
+    }
+
+    .spellbook-header {
+        flex-direction: column;
+        /* Stack header elements vertically */
+        align-items: flex-start;
+        gap: 20px; /* Doubled from 10px */
+        /* Space between stacked elements */
+        margin-bottom: 40px; /* Doubled from 20px */
+        /* Slightly more margin */
+    }
+
+    .spellbook-header h2 {
+        font-size: 56px; /* Doubled from 28px */
+        /* Larger title for readability */
+    }
+
+    .ponderSpellbook.orb {
+        transform: none;
+        /* Disable hover effect on mobile */
+    }
+
+    .ponderSpellbook.orb:hover {
+        transform: none;
+        /* Disable hover scaling */
+    }
+
+    .ponderSpellbook.orb img {
+        width: 100px; /* Doubled from 50px */
+        /* Slightly larger orb for touch */
+        height: 100px; /* Doubled from 50px */
+    }
+
+    .spellbook-selection,
+    .spellbook-config {
+        flex-direction: column;
+        /* Stack form elements vertically */
+        gap: 24px; /* Doubled from 12px */
+        /* Larger gap for clarity */
+        margin-bottom: 40px; /* Doubled from 20px */
+        /* More margin for separation */
+    }
+
+    .spellbook-selection label,
+    .spellbook-config label {
+        font-size: 32px; /* Doubled from 16px */
+        /* Larger text for readability */
+        line-height: 1.5;
+        /* Adjust line height */
+        flex: none;
+        /* Remove flex growth */
+    }
+
+    .spellbook-selection select,
+    .spellbook-selection input,
+    .spellbook-config input {
+        font-size: 32px; /* Doubled from 16px */
+        /* Larger text for readability */
+        padding: 16px; /* Doubled from 8px */
+        /* More padding for touch */
+        flex: none;
+        /* Remove flex growth */
+        width: 100%;
+        /* Full width for inputs */
+    }
+
+    .spellbook-selection button,
+    .castSpellButton {
+        font-size: 32px; /* Doubled from 16px */
+        /* Larger text for readability */
+        padding: 20px 40px; /* Doubled from 10px 20px */
+        /* Larger padding for touch */
+        width: 100%;
+        /* Full width for buttons */
+        max-width: none;
+        /* Remove max-width restriction */
+    }
+
+    .castSpellButton {
+        margin-top: 30px; /* Doubled from 15px */
+        /* More spacing */
+    }
+
+    .spell-message {
+        font-size: 48px; /* Doubled from 24px */
+        /* Slightly larger for emphasis */
+    }
+
+    .spell-hint {
+        font-size: 32px; /* Doubled from 16px */
+        /* Larger text for readability */
+        padding-top: 24px; /* Doubled from 12px */
+        /* Slightly more padding */
+    }
+}

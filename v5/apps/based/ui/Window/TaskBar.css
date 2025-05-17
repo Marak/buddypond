@@ -65,10 +65,6 @@
     visibility: visible;
 }
 
-
-
-
-
 .taskbar-item-alert {
     animation: blinker 1s linear infinite;
 }
@@ -88,7 +84,7 @@
     }
 
     .taskbar-item {
-        padding: 15px 25px !important; /* Larger padding for easier touch */
+        padding: 15px 64px !important; /* Larger padding for easier touch */
         margin-right: 15px !important; /* Increase spacing between buttons */
         font-size: 28px !important; /* Increase font size for readability */
         transition: background-color 0.3s ease !important; /* Ensure smooth color transition */
@@ -108,7 +104,7 @@
     }
     /* image size */
     .taskbar-item img {
-        width: 48px !important;
-        height: 48px !important;
+        width: 128px !important;
+        height: 128px !important;
     }
 }

@@ -68,6 +68,14 @@
     .desktop-shortcuts-container .title {
         font-size: 32px !important;
     }
+    .bp-desktop-icon {
+        width: 128px !important; /* Set a fixed width for the icon */
+        height: 128px !important; /* Set a fixed height for the icon */
+    }
+
+    .shortcut .title {
+        font-size: 32px !important; /* Adjusted for better readability */
+    }
 }
 
 .desktop-context-menu {

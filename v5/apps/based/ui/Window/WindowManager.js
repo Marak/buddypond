@@ -58,17 +58,27 @@ export default class WindowManager {
                     this.state = 'stacked-horizontal';
 
                 } else if (this.state === 'stacked-vertical') {
-
+                    // stack-vertical has been removed ( for now )
+                    // it wasn't looking good as a default and was rarely used
+                    /*
                     // restore all windows to their previous positions
                     this.windows.forEach((w, i) => {
                         w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
                         w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
                     });
                     this.state = 'maximized';
+                    */
 
                 } else if (this.state === 'stacked-horizontal') {
-                    this.arrangeVerticalStacked();
-                    this.state = 'stacked-vertical';
+                    // this.arrangeVerticalStacked();
+                    // this.state = 'stacked-vertical';
+                    // restore all windows to their previous positions
+                    this.windows.forEach((w, i) => {
+                        w.move(this.lastPositionsBeforeArranged[i].x, this.lastPositionsBeforeArranged[i].y);
+                        w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
+                    });
+                    this.state = 'maximized';
+                    
                 } else {
                     this.minimizeAllWindows(true);
                     this.windows.forEach((w, i) => {

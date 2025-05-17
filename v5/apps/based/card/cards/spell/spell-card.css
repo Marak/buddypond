@@ -170,11 +170,58 @@
   pointer-events: none;
 }
 
-/* Responsive adjustments */
-@media (max-width: 340px) {
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 1000px) {
   .card-spell-card {
-    width: 100%;
-    max-width: 320px;
-    margin: 5px 0;
+    width: 100%; /* Full width for mobile */
+    width: 768px; /* Slightly larger max-width for flexibility */
+    margin: 8px 0; /* Slightly more vertical margin */
+    flex-direction: column; /* Stack art and content vertically */
+    min-height: 200px; /* Ensure enough space for content */
+  }
+
+  .card-spell-art {
+    width: 100%; /* Full width for art */
+    height: 120px; /* Fixed height for art */
+    background: url('https://via.placeholder.com/400x120/3a2c5f/ffffff?text=Spell+Art') center/cover no-repeat; /* Adjusted placeholder */
+    opacity: 0.9; /* Slightly higher opacity for prominence */
+  }
+
+  .card-spell-content {
+    width: 100%; /* Full width for content */
+    padding: 12px; /* Increased padding for touch comfort */
+    gap: 10px; /* Slightly larger gap */
+  }
+
+  .card-spell-target {
+    font-size: 40px !important; /* Larger text for readability */
+  }
+
+  .card-spell-name {
+    font-size: 32px; /* Larger text for readability */
+  }
+
+  .card-spell-flavor {
+    font-size: 14px; /* Larger text for readability */
+    -webkit-line-clamp: 3; /* Allow more lines for flavor text */
+  }
+
+  .card-spell-duration {
+    font-size: 16px; /* Larger text for readability */
+    padding: 6px; /* More padding for touch targets */
+  }
+
+  .card-spell-cost {
+    width: 30px; /* Larger cost circle */
+    height: 30px;
+    font-size: 18px; /* Larger text */
+    line-height: 30px; /* Adjust line height to match */
+    top: 8px; /* Slightly adjusted position */
+    right: 8px;
+  }
+
+  .card-spell-card:hover {
+    transform: none; /* Disable hover effect on mobile */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 215, 0, 0.3); /* Revert to default shadow */
   }
 }

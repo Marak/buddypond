@@ -6,7 +6,7 @@
     .bp-window-content {
         padding: 5px; /* Less padding for mobile */
         font-size: 14px; /* Larger font for better readability */
-        max-height: 100% !important;
+        max-height: calc(100% - 70px) !important; /* Adjust max height */
     }
 
     .window-controls button {
@@ -31,6 +31,43 @@
         height: 100% !important;
     }
 
+    .aim-message-content {
+        font-size: 32px !important; /* Larger font for better readability */
+    }
+
+    .aim-sender {
+        font-size: 32px !important; /* Larger font for better readability */
+    }
+    .aim-timestamp {
+        font-size: 32px !important; /* Larger font for better readability */
+    }
+    .aim-chat-message-profile-picture-img {
+        width: 64px !important;
+        height: 64px !important;
+        margin-right: 16px;
+    }
+    .aim-profile-picture svg {
+        width: 64px !important;
+        height: 64px !important;
+        margin-right: 16px;
+    }
+    .aim-hover-menu button {
+        padding: 8px 32px;
+        margin: 12px;
+        font-size: 42px !important;
+    }
+    .aim-reply-box {
+        padding: 5px;
+        font-size: 32px !important; /* Larger font for better readability */
+        width: 80%; /* Adjust width for the send button */
+    }
+    .aim-reply-cancel {
+        font-size: 32px !important; /* Larger font for better readability */
+    }
+    .aim-reply-header {
+        width: 100%;
+    }
+
     /* Buddy list adjustments */
     .app-buddylist .window-main {
         display: block; /* Stack vertically on mobile */
@@ -44,8 +81,28 @@
     .loginForm input[type="text"],
     .loginForm input[type="password"],
     .addBuddyForm input[type="text"] {
-        width: 100%; /* Full width inputs */
-        margin-bottom: 10px; /* Spacing between inputs */
+        width: 100%;
+        margin-bottom: 10px; 
+        font-size: 32px;
+    }
+
+    button {
+        width: 100%; /* Full width buttons */
+        padding: 10px; /* Larger touch targets */
+        font-size: 32px; /* Larger font for better readability */
+    }
+
+    input[type="checkbox"] {
+        width: 32px; /* Larger checkbox */
+        height: 32px; /* Larger checkbox */
+    }
+
+    div {
+        font-size: 32px; /* Larger font for better readability */
+    }
+
+    p {
+        font-size: 32px; /* Larger font for better readability */
     }
 
     .loginButton, .sendBuddyRequest {
@@ -72,15 +129,9 @@
         font-size: 22px !important; /* Larger font for better readability */
     }
 
-    .aim-input {
-        width: calc(100% - 90px); /* Adjust width for the send button */
-        height: 40px; /* Larger input for easy touch */
-        font-size: 22px; /* Larger font for better readability */
-    }
-
     .aim-send-btn {
-        width: 80px; /* Static width for send button */
-        height: 40px; /* Matching input height */
+        width: 200px !important; /* Static width for send button */
+        height: 100px !important; /* Matching input height */
     }
 
     /* Typing indicator styling */
