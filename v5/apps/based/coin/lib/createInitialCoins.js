@@ -20,7 +20,7 @@ export default async function createInitialCoins() {
             symbol: 'MEGA',
             supply: 1000000000,
             status: 'listed',
-            //price: prices['MEGA'],
+            price: 0.01,
             //cost: '0', // everyone gets 10 for free
             owner: 'Marak'
         });
@@ -36,8 +36,7 @@ export default async function createInitialCoins() {
             symbol: 'GBP',
             supply: 10000000000,
             status: 'listed',
-            //price: prices['GBP'],
-            //cost: '0', // everyone gets 10 for free
+            price: 0.001,
             owner: 'Marak'
         });
     } catch (err) {

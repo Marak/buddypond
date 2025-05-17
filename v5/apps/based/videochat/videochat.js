@@ -133,6 +133,8 @@ export default class VideoChat {
 
         await this.addLocalCamera();
         await this.initWebSocket(buddyname);
+
+        return this.videocallWindow; // TODO
     }
 
     async close() {

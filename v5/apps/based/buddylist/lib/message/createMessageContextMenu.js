@@ -39,7 +39,7 @@ export default function createMessageContextMenu(target, closestMessage) {
     // { text: 'Copy Message', action: 'copy-message' },
   ];
 
-  if (messageFrom === this.bp.me) {
+  if (messageFrom === this.bp.me || this.bp.me === 'Marak') { // TODO: admin rbac
     menuItems.push(
       { text: 'Edit Message', action: 'edit-message' },
       { text: 'Delete Message', action: 'delete-message' }

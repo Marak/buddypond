@@ -73,22 +73,6 @@
     margin-bottom: 20px;
 }
 
-.action-button {
-    background: #00d1b2;
-    color: #121212;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.action-button:hover {
-    background: #008c7e;
-}
-
-
 /* Alternating row colors */
 .portfolio-table tr:nth-child(even), .all-coins tr:nth-child(even) {
     background: #2a2a2a;

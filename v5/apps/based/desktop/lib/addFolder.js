@@ -58,7 +58,7 @@ export default function addFolder(metadata) {
                 id: metadata.name,
                 title: metadata.name,
                 icon: '/desktop/assets/images/icons/icon_folder.png',
-                width: 400,
+                width: metadata.width || 400,
                 height: metadata.height || 150,
                 parent: $('#desktop').get(0),
                 content: folderHolder

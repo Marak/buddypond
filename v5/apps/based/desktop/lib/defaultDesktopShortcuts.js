@@ -272,12 +272,11 @@ export default function defaultDesktopShortcuts() {
             {
                 id: 'maps',
                 label: 'Maps'
-            }
-            /*,
+            },
             {
                 id: 'spellbook',
                 label: 'Spellbook'
-            }*/
+            }
 
 
         ],

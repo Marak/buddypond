@@ -4,7 +4,6 @@ export default function arrangeShortcuts(cols = 4, options = {
     x: 0, // TODO: we should start from the x and y position in our calculations
     y: 0
 }) {
-
     let parent;
     if (typeof options.parent !== 'undefined') {
         parent = options.parent;
@@ -14,10 +13,16 @@ export default function arrangeShortcuts(cols = 4, options = {
 
     if (typeof options.rowWidth !== 'number') {
         options.rowWidth = 74;
+        if (this.bp.isMobile()) {
+            options.rowWidth = 256;
+        }
     }
 
     if (typeof options.rowHeight !== 'number') {
         options.rowHeight = 100;
+        if (this.bp.isMobile()) {
+            options.rowHeight = 256;
+        }
     }
 
     if (typeof options.x !== 'number') {

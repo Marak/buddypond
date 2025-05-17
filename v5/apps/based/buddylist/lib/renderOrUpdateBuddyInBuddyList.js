@@ -60,7 +60,13 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     // Don't play sound if buddy is me
     if (buddyname !== this.bp.me) {
       if (buddydata.isConnected && !wasConnected) {
-        bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
+        // compare now time with buddydata.utime
+        // if less than 5 seconds, don't play sound
+        let now = new Date().getTime();
+        let diff = now - buddydata.utime;
+        if (diff > 300) {
+          bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
+        }
       } else if (!buddydata.isConnected && wasConnected) {
         // Remark: Removed the signout sound as it was too loud / jarring
         // bp.play('desktop/assets/audio/BUDDY-OUT.wav'); // Buddy goes offline
