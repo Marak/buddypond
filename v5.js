@@ -20,13 +20,11 @@ window.bp_v_5 = async function bp_v_5() {
     await bp.open('client');
 
     // if not mobile, open buddylist
+    await bp.open({
+        name: 'buddylist',
+        autocomplete: allCommands
+    });
 
-    if (!bp.isMobile()) {
-        await bp.open({
-            name: 'buddylist',
-            autocomplete: allCommands
-        });
-    }
 
     // if mobile and also session, open buddylist
     // TODO: if (bp.isMobile() && bp.me) {
@@ -42,7 +40,8 @@ window.bp_v_5 = async function bp_v_5() {
      bp.load('console');
      bp.load('clock');
      bp.load('appstore');
-     bp.load('motd');
+     await bp.load('motd');
+     bp.open('motd');
      bp.load('say');
      bp.load('droparea');
      bp.load('file-viewer');
