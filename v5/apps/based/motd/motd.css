@@ -1,0 +1,109 @@
+.motd-container {
+    display: flex;
+    height: 100%;
+    background: #1e1e2e;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.patch-notes {
+    flex: 3;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #3b3b4f;
+}
+
+.patch-notes h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #50fa7b;
+    text-transform: uppercase;
+}
+
+.patch-notes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.patch-item {
+    margin-bottom: 20px;
+}
+
+.patch-item h3 {
+    font-size: 1.3em;
+    color: #f1fa8c;
+    margin-bottom: 10px;
+}
+
+.patch-item ul {
+    list-style: disc;
+    padding-left: 20px;
+    font-size: 1em;
+    color: #d0d0d0;
+}
+
+.patch-item li {
+    margin-bottom: 5px;
+}
+
+.sidebar {
+    flex: 1;
+    background: #2a2a3c;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #50fa7b;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-button {
+    background: #3b3b4f;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.1s;
+    text-align: left;
+}
+
+.nav-button:hover {
+    background: #50fa7b;
+    color: #1e1e2e;
+    transform: translateX(5px);
+}
+
+.nav-button:active {
+    transform: translateX(2px);
+}
+
+/* Scrollbar styling for patch notes */
+.patch-notes::-webkit-scrollbar {
+    width: 8px;
+}
+
+.patch-notes::-webkit-scrollbar-track {
+    background: #2a2a3c;
+}
+
+.patch-notes::-webkit-scrollbar-thumb {
+    background: #50fa7b;
+    border-radius: 4px;
+}
+
+.patch-notes::-webkit-scrollbar-thumb:hover {
+    background: #f1fa8c;
+}
