@@ -151,6 +151,21 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     };
   }
 
+  
+  // TODO: move to buddyscript processor
+  if (_data.text.startsWith('/help')) {
+    // show the help card and do not send the message
+    await this.showCard({chatWindow, cardName: 'help'});
+    return;
+  }
+
+  if (_data.text.startsWith('/apps')) {
+    // show the help card and do not send the message
+    await this.showCard({chatWindow, cardName: 'apps'});
+    return;
+}
+
+
   console.log('emitting message', _data);
   this.bp.emit('buddy::sendMessage', _data);
 

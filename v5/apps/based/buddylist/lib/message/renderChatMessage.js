@@ -110,7 +110,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     if (message.to && !this.data.activeUsersInContext[context].includes(message.to)) {
       this.data.activeUsersInContext[context].push(message.to);
     }
-
   }
 
   // If message.from is not in the activeUsers, add it

@@ -26,7 +26,7 @@ export default class Portfolio {
 
         this.resource = new Resource("portfolio", {
             provider: 'rest',
-            apiEndpoint: this.bp.config.portfolioEndpoint || '/',
+            apiEndpoint: buddypond.portfolioEndpoint || '/',
             schema: {
                 symbol: { type: "string" },
                 owner: { type: "string" },
@@ -39,7 +39,7 @@ export default class Portfolio {
 
         this.coinResource = new Resource("coin", {
             provider: 'rest',
-            apiEndpoint: this.bp.config.coinEndpoint || '/',
+            apiEndpoint: buddypond.coinEndpoint || '/',
             schema: {
                 name: { type: "string", required: true },
                 symbol: { type: "string", unique: true, required: true },

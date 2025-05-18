@@ -1,4 +1,4 @@
-export default function chatWindowButtons(bp) {
+export default function defaultChatWindowButtons(bp) {
 
     return [{
         text: 'BuddySound',
@@ -128,7 +128,7 @@ export default function chatWindowButtons(bp) {
             // desktop.ui.openWindow('spellbook', { type: type || 'buddy', context: context, output: type || 'buddy' });
             bp.open('spellbook', { type: type || 'buddy', output: type || 'buddy', context: context });
         }
-    }
+    },
     /* // TODO: add Dictate with improved UX
     {
         text: 'Dictate',
@@ -141,20 +141,21 @@ export default function chatWindowButtons(bp) {
         }
     },
     */
-
-    /*
     {
         text: 'BuddyHelp',
-        image: 'desktop/assets/images/icons/svg/1f9ae.svg',
+        image: 'desktop/assets/images/icons/icon_help_64.png',
         align: 'right',
         onclick: (ev) => {
-            let win = $(ev.target).closest('.aim-window');
-            let windowId = '#' + win.attr('id');
-            //alert(windowId)
-            help({ windowId: windowId });
-
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // TODO: better way to get the windowId
+            let windowIdPrefix = type === 'pond' ? 'pond_message_-' : 'buddy_message_-';
+            let windowId = windowIdPrefix + context;
+            // console.log('opening chat window ', windowId)
+            let chatWindow = bp.apps.ui.windowManager.findWindow(windowId);
+            console.log('chatWindow', chatWindow);
+            bp.apps.buddylist.showCard({ chatWindow, cardName: 'help' });
         }
     }
-    */    
     ]
 }

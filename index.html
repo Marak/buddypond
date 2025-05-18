@@ -76,14 +76,12 @@ window.top.location = 'ie.html';
       </div>
     </div>
 
-    <!--    -->
-
     <link rel="stylesheet" href="desktop/assets/css/desktop.css" />
     <!-- <link rel="stylesheet" href="desktop/assets/css/mobile.css" /> -->
 
     <!-- <script src="/desktop/assets/js/jquery.js"></script> -->
     <script src="/desktop/assets/js/jquery.min.js"></script>
-    <!-- ><script src="desktop/assets/js/jquery.ripples.js"></script> -->
+    <!-- <script src="desktop/assets/js/jquery.ripples.js"></script> -->
 
     <!-- <script src="/v5/router.js"></script> -->
 
@@ -106,51 +104,49 @@ window.top.location = 'ie.html';
 
       let _host = 'https://buddypond.com';
       let _api = 'https://a.buddypond.com';
-      let _wsHost = 'wss://api.buddypond.com';
       let _cdn = 'https://files.buddypond.com';
       let _admin = 'https://admin.buddypond.com';
       let _portfolioEndpoint = 'https://portfolio.buddypond.com';
       let _orderbookEndpoint = 'https://orderbook.buddypond.com';
       let _coinEndpoint = 'https://coin.buddypond.com';
       let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
+      let _buddylistWsEndpoint = 'wss://buddylist2.buddypond.com/ws/buddylist';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
 
-      
-      // checks if current host is buddypond.com
-      let devmode = false;
-      if (devmode) {
-        //_portfolioEndpoint = 'http://127.0.0.1:9002';
-        _portfolioEndpoint = 'http://192.168.200.59:9002';
-        _coinEndpoint = 'http://127.0.0.1:9001';
-        _messagesWsEndpoint = 'ws://192.168.200.59:8788/ws/messages';
-        _host = 'https://192.168.200.59';
-        _uploadsEndpoint = 'http://192.168.200.59:9004';
-        //_host = 'http://192.168.64.1'
-        // _api = 'https://192.168.200.59';
-        // _wsHost = 'wss://192.168.200.59';
-        //_host = 'https://localhost'
-        // _api = 'https://buddylist.buddypond.com';
-        _api = 'http://192.168.200.59:8787';
-        // _api = 'https://clear-buses-carry.loca.lt';
-        // _messagesWsEndpoint = 'wss://strong-walls-matter.loca.lt/ws/messages';
-        // _api = 'https://192.168.200.59:8787';
 
-        _admin = 'http://192.168.200.59:8789';
-        //_api = 'http://localhost:8787';
-        _errorsEndpoint = 'https://192.168.200.59:8787/error';
+      let devmode = true;
+      let localIp = '192.168.200.59';
+      // localIp = '192.168.64.1';
 
-        console.log('Running in development mode. All services are pointing to local sources.');
+      // TODO: checks if current host is buddypond.com
+      // buddypond.com force devmode to false
+      if (window.location.hostname === 'buddypond.com') {
+        devmode = false;
       }
 
-      // http://192.168.200.59:8787
-      // ws://192.168.200.59:8788
+      if (devmode) {
+        _portfolioEndpoint = `http://${localIp}:9002`;
+        _coinEndpoint = `http://${localIp}:9001`;
+        _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
+        _messagesWsEndpoint = `ws://${localIp}:8788/ws/messages`;
+        _host = `https://${localIp}`;
+        _uploadsEndpoint = `http://${localIp}:9004`;
+        _api = `http://${localIp}:8787`;
+        _admin = `http://${localIp}:8789`;
+        _errorsEndpoint = `https://${localIp}:8787/error`;
+        console.log('Running in development mode. All services are pointing to local sources.');
+      }
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
       buddypond.messagesWsEndpoint = _messagesWsEndpoint;
+      buddypond.buddylistWsEndpoint = _buddylistWsEndpoint;
       buddypond.adminEndpoint = _admin;
       buddypond.errorsEndpoint = _errorsEndpoint;
+      buddypond.uploadsEndpoint = _uploadsEndpoint;
+      buddypond.portfolioEndpoint = _portfolioEndpoint;
+      buddypond.coinEndpoint = _coinEndpoint;
 
       let renderBpApp = true;
 

@@ -30,15 +30,20 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
       delete this.bp.buddyTimeouts[buddyname];
     }
 
+    /*
+    Remark: Removed 5/17/2025, no longer depending on utime / keepAlives
     let now = new Date().getTime();
-
     let diff = now - buddydata.utime;
     if (now - buddydata.utime > buddyTimeoutsInterval) {
       // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
       buddydata.isConnected = false;
     }
-
+    */
+    // Remark: Removed 5/17/2025, no longer depending on utime / keepAlives
+    // We may need to add this back in the future for cases when CF worker abruptly disconnects
+    // This would rely on a ping mechanism to keep the connection alive and update the utime
     // Set a timeout to mark buddy as offline if they are currently connected
+    /*
     if (buddydata.isConnected) {
       this.bp.buddyTimeouts[buddyname] = setTimeout(() => {
         let _data = {
@@ -55,6 +60,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
         renderOrUpdateBuddyInBuddyList.call(this, _data, false);
       }, buddyTimeoutsInterval * 1.5);
     }
+    */
 
     // Play sound based on status change
     // Don't play sound if buddy is me
@@ -85,8 +91,6 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
   let connectedStatusIcon = isConnected ? '🟢' : '🟠';
   let isCalling = buddydata.isCalling ? '<span>📞</span>' : '';
   let newMessages = buddydata.newMessages ? '<span>💬</span>' : '';
-
-
 
   let lastSeen = buddydata.utime ? buddydata.utime : 0;
   let lastSeenDate = new Date(lastSeen);

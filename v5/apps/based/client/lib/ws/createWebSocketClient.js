@@ -56,7 +56,7 @@ export default function createWebSocketClient(chatId) {
           break;
 
         default:
-          console.warn('Unknown action received:', parseData.action);
+          console.warn('Unknown action received:', parseData);
           break;
       }
     } catch (error) {

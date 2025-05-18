@@ -10,9 +10,9 @@ export default function buddylistUIEvents() {
     if (!password) {
       password = username;
     }
+
     api.authBuddy(username, password, function (err, result) {
       console.log('authBuddy', err, result);
-
       if (err) {
         if (result && result.error) {
           $('.loginForm .error').text(result.error);
@@ -77,7 +77,8 @@ export default function buddylistUIEvents() {
     $('.buddy_request_name').val('');
     // $('.pendingOutgoingBuddyRequests').append('<li>' + buddyName + '</li>');
     this.bp.log('buddypond.addBuddy ->', buddyName);
-    buddypond.addBuddy(buddyName, (err, data) => {
+
+    this.client.addBuddy(buddyName, (err, data) => {
       if (!data.success) {
         $('.you_have_no_buddies').html(data.message)
         console.error(data);
@@ -85,6 +86,7 @@ export default function buddylistUIEvents() {
       }
       this.bp.log('buddypond.addBuddy <-', data);
     });
+
   });
 
   // Initially disable the login button
