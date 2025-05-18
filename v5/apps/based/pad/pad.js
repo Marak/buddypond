@@ -211,7 +211,8 @@ export default class Pad {
                     await this.buildPad(newPad.title);
 
                 } catch (err) {
-                    alert(`Error building pad: ${err.message}`);
+                    // alert(`Error building pad: ${err.message}`);
+                    console.error('Error building pad', err);
                     return;
                 }
 

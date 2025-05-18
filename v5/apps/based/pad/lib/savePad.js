@@ -21,8 +21,14 @@ export default async function savePad() {
             title: padTitle,
             description: padDescription
         };
-        return await this.bp.apps.client.api.createPad(padData);
-        
+        let createdPad;
+        try {
+            createdPad = await this.bp.apps.client.api.createPad(padData);
+            console.log('created pad', createdPad);
+        } catch (err) {
+            console.error('error creating pad', err);
+        }
+        return createdPad;
     } else {
         console.log('pad already exists, please choose a different name');
         throw new Error('Pad already exists');
