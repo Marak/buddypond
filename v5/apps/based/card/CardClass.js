@@ -43,7 +43,7 @@ export default class Card {
         }
     }
 
-    render(container) {
+    render(container, parent) {
         // console.log('calling rendering card', container, this.cardType, this.cardData);
         const styleTag = document.createElement('style');
         styleTag.textContent = this.cssContent;
@@ -68,7 +68,7 @@ export default class Card {
         // console.log('what is this.applyData', this.applyData);
         if (this.applyData && typeof this.applyData === 'function') {
             try {
-                return this.applyData(cardContainer, this.cardData, this);
+                return this.applyData(cardContainer, this.cardData, this, parent);
             } catch (err) {
                 console.error('Error in applyData function:', err);
             }
