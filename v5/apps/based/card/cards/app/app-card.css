@@ -1,0 +1,53 @@
+.card-app-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-app-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-app-card.card-app-clicked {
+    background: #e6fffa;
+}
+
+.card-app-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.card-app-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #edf2f7;
+}
+
+.card-app-details {
+    flex: 1;
+}
+
+.card-app-name {
+    color: #2d3748;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.card-app-description {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 4px 0 0;
+}

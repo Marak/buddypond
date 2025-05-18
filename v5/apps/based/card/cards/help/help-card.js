@@ -83,6 +83,7 @@ export default function applyData(el, data, cardClass, parent) {
         const helpText = command.helpText;
         const commandDiv = document.createElement('div');
         commandDiv.className = 'card-help-command';
+        commandDiv.setAttribute('data-app', command.card || 'none');
         commandDiv.innerHTML = `
             <span class="card-help-command-text">${commandText}</span>
             <span class="card-help-command-help">${helpText}</span>
@@ -94,7 +95,21 @@ export default function applyData(el, data, cardClass, parent) {
             // Optional: Trigger a visual feedback
             commandDiv.classList.add('card-help-clicked');
             console.log('pppp', parent);
-            this.bp.apps.buddylist.showCard({ chatWindow: parent, cardName: 'apps'})
+
+            // TODO: should run bs script command
+            // this.bp.apps.buddylist.showCard({ chatWindow: parent, cardName: 'apps'})
+            // this doesn't work for /roll...since its a message
+            // maybe just put in text to input and send it?
+            let aimInput = parent.content.querySelector('.aim-input');
+            let sendButton = parent.content.querySelector('.aim-send-btn');
+            if (aimInput) {
+                aimInput.value = commandText;
+                aimInput.dispatchEvent(new Event('input', { bubbles: true })); // Trigger input event
+            }
+            if (sendButton) {
+                sendButton.click(); // Simulate button click
+            }
+            //this.bp.apps.buddyscript.executeCommand(command, chatWindow);
             // TODO: run bs command with chatWindow as context?
 
             setTimeout(() => commandDiv.classList.remove('card-help-clicked'), 200);

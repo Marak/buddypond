@@ -1,4 +1,4 @@
-export default function flood(duration = 3000, intensity = 3) {
+export default function flood(duration = 5000, intensity = 3) {
     // Prevent multiple floods
     if ($('body').hasClass('flood-active')) return;
     

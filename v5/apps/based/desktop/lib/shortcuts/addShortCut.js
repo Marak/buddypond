@@ -48,11 +48,9 @@ export default function addShortCut(app, options = {}, parent) {
 
     // Adding onClick event to the .icon container
     el.addEventListener('click', (e) => {
-
         e.preventDefault();
         options.onClick(e, app);
         return false;
-
     });
 
     // Append the new shortcut to the container
@@ -68,7 +66,15 @@ export default function addShortCut(app, options = {}, parent) {
     }
 
     // register the app with desktop.apps
-    this.apps[app.name] = app;
+    // console.log('ADDING APP', app.name, app, options);
+    app.options = options;
+    if (options && options.context) {
+        this.apps[app.name + '-' + options.context] = app;
+
+    } else {
+        this.apps[app.name] = app;
+
+    }
 
 }
 

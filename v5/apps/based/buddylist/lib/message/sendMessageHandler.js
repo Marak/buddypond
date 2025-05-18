@@ -151,20 +151,43 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     };
   }
 
-  
+
   // TODO: move to buddyscript processor
   if (_data.text.startsWith('/help')) {
     // show the help card and do not send the message
-    await this.showCard({chatWindow, cardName: 'help'});
+    await this.showCard({ chatWindow, cardName: 'help' });
     return;
   }
 
+    // TODO: move to buddyscript processor
+  if (_data.text.startsWith('/bs')) {
+    // show the help card and do not send the message
+    await this.showCard({ chatWindow, cardName: 'bs' });
+    return;
+  }
+
+
+  // shows all apps
   if (_data.text.startsWith('/apps')) {
     // show the help card and do not send the message
-    await this.showCard({chatWindow, cardName: 'apps'});
+    await this.showCard({ chatWindow, cardName: 'apps' });
     return;
-}
+  }
 
+  // TODO: add support for sending /bs commands with \ instead of /
+  /*
+  if (_data.text.startsWith('\\')) {
+    // the command is a /foo style command
+    // extract the command from the text
+    let command = _data.text.split(' ')[0].replace('\\', '');
+    alert(command)
+    _data.text = 'Sent app using `\\' + command + '` command'; // TODO: better UX message
+    _data.card = {
+      type: 'app', // coould also be a "bs" card, might need distinction between app and bs commands
+      context: command
+    };
+  }
+  */
 
   console.log('emitting message', _data);
   this.bp.emit('buddy::sendMessage', _data);

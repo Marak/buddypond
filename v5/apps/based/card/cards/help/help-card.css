@@ -2,7 +2,6 @@
     background: #f8fafc;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -97,4 +96,18 @@
     flex: 1;
     color: #4a5568;
     font-size: 0.95rem;
+}
+
+/* CSS section for mobile to make fonts larger */
+@media (max-width: 1000px) {
+    .card-help-content h2 {
+        font-size: 3.25rem;
+    }
+
+    .card-help-intro-text,
+    .card-help-hint,
+    .card-help-command-text,
+    .card-help-command-help {
+        font-size: 2.25rem;
+    }
 }

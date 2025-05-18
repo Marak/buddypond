@@ -44,7 +44,7 @@ export default async function applyData(el, data) {
     countdownManager.startCountdown(countDownEl, data.expiry);
 
     if (data.spellType === 'curses' && data.castedBy === this.bp.me) {
-        console.log('Cursed by me', data);
+        // console.log('Cursed by me', data);
         // show the cure button
         $el.find('.card-spell-cure').removeClass('hidden');
         $el.find('.cure-spell').on('click', async (e) => {

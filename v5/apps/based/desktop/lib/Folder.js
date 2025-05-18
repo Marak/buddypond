@@ -50,4 +50,9 @@ export default class Folder {
         // Recursively render each child in this folder
         // this.data.children.forEach(child => this.desktop.renderNode(child, folderDiv, this.depth + 1));
     }
+
+    open () {
+        // Logic to open the folder
+           this.options.onOpen();
+    }
 }

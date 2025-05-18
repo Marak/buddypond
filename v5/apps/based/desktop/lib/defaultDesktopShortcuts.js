@@ -4,7 +4,7 @@ export default function defaultDesktopShortcuts() {
         name: 'profile',
         icon: `desktop/assets/images/icons/icon_profile_64.png`,
         label: 'My Profile',
-        // class: 'loggedIn'
+        description: 'Manage your profile and settings'
     }, {
         onClick: () => {
             bp.open('profile');
@@ -15,6 +15,7 @@ export default function defaultDesktopShortcuts() {
         name: 'buddylist',
         icon: `desktop/assets/images/icons/icon_profile_64.png`,
         label: 'BuddyList',
+        description: 'View and manage your contacts'
     }, {
         onClick: () => {
             bp.open('buddylist');
@@ -25,6 +26,7 @@ export default function defaultDesktopShortcuts() {
         name: 'pad',
         icon: `desktop/assets/images/icons/icon_pad_64.png`,
         label: 'Pads',
+        description: 'Create and edit notes or documents'
     }, {
         onClick: () => {
             bp.open('pad');
@@ -35,6 +37,7 @@ export default function defaultDesktopShortcuts() {
         name: 'pond',
         icon: `desktop/assets/images/icons/icon_pond_64.png`,
         label: 'Ponds',
+        description: 'Explore shared content or communities'
     }, {
         onClick: () => {
             bp.open('pond');
@@ -45,6 +48,7 @@ export default function defaultDesktopShortcuts() {
         name: 'file-explorer',
         icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
         label: 'Buddy Files',
+        description: 'Browse and manage your files'
     }, {
         onClick: () => {
             bp.open('file-explorer');
@@ -55,6 +59,7 @@ export default function defaultDesktopShortcuts() {
         name: 'paint',
         icon: `desktop/assets/images/icons/icon_paint_64.png`,
         label: 'Paint',
+        description: 'Create and edit digital artwork'
     }, {
         onClick: () => {
             bp.open('paint');
@@ -65,6 +70,7 @@ export default function defaultDesktopShortcuts() {
         name: 'sound-recorder',
         icon: `desktop/assets/images/icons/icon_soundrecorder_64.png`,
         label: 'Sound Recorder',
+        description: 'Record and save audio clips'
     }, {
         onClick: () => {
             bp.open('soundrecorder');
@@ -75,6 +81,7 @@ export default function defaultDesktopShortcuts() {
         name: 'youtube',
         icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
         label: 'Youtube',
+        description: 'Watch and browse YouTube videos'
     }, {
         onClick: () => {
             bp.open('youtube');
@@ -85,6 +92,7 @@ export default function defaultDesktopShortcuts() {
         name: 'camera',
         icon: `desktop/assets/images/icons/icon_camera_64.png`,
         label: 'Camera',
+        description: 'Capture photos or videos'
     }, {
         onClick: () => {
             bp.open('camera');
@@ -95,6 +103,7 @@ export default function defaultDesktopShortcuts() {
         name: 'piano',
         icon: `desktop/assets/images/icons/icon_piano_64.png`,
         label: 'Piano',
+        description: 'Play a virtual piano keyboard'
     }, {
         onClick: () => {
             bp.open('piano');
@@ -105,6 +114,7 @@ export default function defaultDesktopShortcuts() {
         name: 'fluid-simulation',
         icon: `desktop/assets/images/icons/icon_fluidsimulation_64.png`,
         label: 'Fluid Simulation',
+        description: 'Interact with a fluid dynamics simulation'
     }, {
         onClick: () => {
             bp.open('fluid-simulation');
@@ -115,6 +125,7 @@ export default function defaultDesktopShortcuts() {
         name: 'sampler',
         icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
         label: 'Sampler',
+        description: 'Create and mix audio samples'
     }, {
         onClick: () => {
             bp.open('sampler');
@@ -125,6 +136,7 @@ export default function defaultDesktopShortcuts() {
         name: 'audio-visual',
         icon: `desktop/assets/images/icons/icon_visuals_64.png`,
         label: 'Audio Visuals',
+        description: 'Experience audio-responsive visuals'
     }, {
         onClick: () => {
             bp.open('audio-visual');
@@ -137,6 +149,7 @@ export default function defaultDesktopShortcuts() {
             name: 'orderbook',
             icon: `desktop/assets/images/icons/icon_orderbook_64.png`,
             label: 'Orderbook',
+            description: 'View trading order book data'
         }, {
             onClick: () => {
                 bp.open('orderbook');
@@ -147,6 +160,7 @@ export default function defaultDesktopShortcuts() {
             name: 'coin',
             icon: `desktop/assets/images/icons/icon_coin_64.png`,
             label: 'Buddy Coins',
+            description: 'Manage your virtual currency'
         }, {
             onClick: () => {
                 bp.open('coin');
@@ -158,6 +172,7 @@ export default function defaultDesktopShortcuts() {
             name: 'portfolio',
             icon: `desktop/assets/images/icons/icon_portfolio_64.png`,
             label: 'Portfolio',
+            description: 'Track your investments and assets'
         }, {
             onClick: () => {
                 bp.open('portfolio');
@@ -169,6 +184,7 @@ export default function defaultDesktopShortcuts() {
             name: 'buddybux',
             icon: `desktop/assets/images/icons/icon_buddybux_64.png`,
             label: 'BuddyBux',
+            description: 'Manage BuddyBux currency'
         }, {
             onClick: () => {
                 bp.open('buddybux');
@@ -181,12 +197,12 @@ export default function defaultDesktopShortcuts() {
 
     window.coinBeta = coinBeta;
 
-
     /*
     bp.apps.desktop.addShortCut({
         name: 'Merlin',
         icon: `desktop/assets/images/icons/icon_merlin_64.png`,
         label: 'Merlin Automated Assistant',
+        description: 'Access your AI assistant'
     }, {
         onClick: () => {
             desktop.ui.openWindow('merlin');
@@ -194,23 +210,25 @@ export default function defaultDesktopShortcuts() {
     });
     */
 
-
     bp.apps.desktop.addFolder({
         name: 'Games',
         height: 250,
         items: [
             {
                 id: 'mantra',
-                label: 'Mantra'
+                label: 'Mantra',
+                description: 'Play the Mantra game'
             },
             {
                 id: 'minesweeper',
-                label: 'Minesweeper'
+                label: 'Minesweeper',
+                description: 'Classic Minesweeper puzzle game'
             },
             {
                 id: 'emulator',
                 label: 'NES',
-                icon: 'desktop/assets/images/icons/icon_nes_64.png'
+                icon: 'desktop/assets/images/icons/icon_nes_64.png',
+                description: 'Play Nintendo Entertainment System games'
             },
             {
                 id: 'emulator',
@@ -218,7 +236,8 @@ export default function defaultDesktopShortcuts() {
                 options: {
                     context: 'sega',
                 },
-                icon: 'desktop/assets/images/icons/icon_sega_64.png'
+                icon: 'desktop/assets/images/icons/icon_sega_64.png',
+                description: 'Play Sega console games'
             },
             {
                 id: 'emulator',
@@ -226,7 +245,8 @@ export default function defaultDesktopShortcuts() {
                 options: {
                     context: 'snes',
                 },
-                icon: 'desktop/assets/images/icons/icon_snes_64.png'
+                icon: 'desktop/assets/images/icons/icon_snes_64.png',
+                description: 'Play Super Nintendo games'
             },
             {
                 id: 'emulator',
@@ -234,7 +254,8 @@ export default function defaultDesktopShortcuts() {
                 options: {
                     context: 'atari2600',
                 },
-                icon: 'desktop/assets/images/icons/icon_atari2600_64.png'
+                icon: 'desktop/assets/images/icons/icon_atari2600_64.png',
+                description: 'Play Atari 2600 games'
             },
             {
                 id: 'emulator',
@@ -242,12 +263,13 @@ export default function defaultDesktopShortcuts() {
                 options: {
                     context: 'n64',
                 },
-                icon: 'desktop/assets/images/icons/icon_n64_64.png'
+                icon: 'desktop/assets/images/icons/icon_n64_64.png',
+                description: 'Play Nintendo 64 games'
             },
-
             {
                 id: 'solitaire',
-                label: 'Solitaire'
+                label: 'Solitaire',
+                description: 'Classic Solitaire card game'
             }
         ]
     });
@@ -259,32 +281,37 @@ export default function defaultDesktopShortcuts() {
         items: [
             {
                 id: 'globe',
-                label: 'Globe'
+                label: 'Globe',
+                description: 'Visualize global network data'
             },
             {
                 id: 'hacker-typer',
                 label: 'Hack Typer',
+                description: 'Simulate hacking with a typing game'
             },
             {
                 id: 'hex-editor',
-                label: 'Hex Editor'
+                label: 'Hex Editor',
+                description: 'Edit files in hexadecimal format'
             },
             {
                 id: 'maps',
-                label: 'Maps'
+                label: 'Maps',
+                description: 'Access mapping and navigation tools'
             },
             {
                 id: 'spellbook',
-                label: 'Spellbook'
+                label: 'Spellbook',
+                description: 'Manage scripts or commands'
             }
-
-
         ],
     });
+
     bp.apps.desktop.addShortCut({
         name: 'audio-player',
         icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
         label: 'Audio Player',
+        description: 'Play and manage audio files'
     }, {
         onClick: () => {
             bp.open('audio-player');

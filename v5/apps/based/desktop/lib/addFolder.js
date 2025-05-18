@@ -20,7 +20,6 @@ export default function addFolder(metadata) {
         }
 
         item.options = item.options || {};
-
         that.addShortCut({
             name: item.id,
             icon: item.icon,
@@ -28,7 +27,8 @@ export default function addFolder(metadata) {
         }, {
             onClick: () => {
                 bp.open(item.id, item.options);
-            }
+            },
+            ...item.options
         }, parent);
 
     }
@@ -67,6 +67,7 @@ export default function addFolder(metadata) {
         }
     });
     this.folders.push(folder);
+
     folder.render()
     //this.addShortCut(folder);
     // this.shortCutsContainer.appendChild(folder.render());
