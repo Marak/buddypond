@@ -1,92 +1,18 @@
-// TODO: we need to formalize this file by separating concerns and making separate functions
-// best to start small with a first sweep of organizing code into functions with proper scope
-// and removing any potential dead code ( while being very careful to not remove anythign that is needed )
-
 import forbiddenNotes from '../forbiddenNotes.js';
-import isValidUrl from './isValidUrl.js';
-import isValidYoutubeLink from './isValidYoutubeLink.js';
-import isValidGithubLink from './isValidGithubLink.js';
 import scrollToBottom from './scrollToBottom.js';
+import checkForLinksInMessage from './checkForLinksInMessage.js';
 
 export default async function renderChatMessage(message, _chatWindow) {
   // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
-  // console.log('renderChatMessage', message);
-  // console.log('current state', this.bp.apps.buddylist.data.profileState)
 
   // profanity filter
   if (message.text && message.text.length > 0) {
     message.text = forbiddenNotes.filter(message.text);
   }
 
-  // TODO: check if there is a .roll and if so, show a small link to expand the roll
-  // TODO: add back meme bot
-
-
-  if (isValidUrl(message.text)) {
-    let contentUrl = message.text;
-    // This is a URL, process it as such
-    message.card = {
-      url: message.text,
-      type: 'url',
-    };
-    message.text = 'I sent a link:';
-    // check to see if file extention is supportedImageTypes, if so it's data.card.type = 'image'
-    if (contentUrl) {
-      let ext = contentUrl.split('.').pop();
-      if (ext && typeof ext === 'string') {
-        if (buddypond.supportedImageTypesExt.includes(ext.toLowerCase())) {
-          message.card.type = 'image';
-          message.text = 'I sent an image:';
-        }
-        if (buddypond.supportedAudioTypesExt.includes(ext.toLowerCase())) {
-          message.card.type = 'audio';
-          message.text = 'I sent audio:';
-        }
-        if (buddypond.supportedVideoTypes.includes(ext)) {
-          //data.card.type = 'video'; // soon TODO
-        }
-      }
-    }
-
-    // TODO: move all this app specific code *outside* of the buddylist / renderMessage
-    // use the system.addMessageProcessor() API instead
-    if (isValidYoutubeLink(contentUrl)) {
-      message.card.type = 'youtube';
-      message.card.thumbnail = `https://img.youtube.com/vi/${contentUrl.split('v=')[1]}/0.jpg`;
-      message.card.context = contentUrl.split('v=')[1];
-      message.text = 'I sent a youtube link:';
-      message.text = '';
-    }
-
-    if (isValidGithubLink(contentUrl)) {
-      message.card.type = 'github';
-      message.text = 'I sent a github link:';
-
-      // TODO: Extract owner, repo, and filename from the URL
-      const githubRegex = /^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/;
-      const match = contentUrl.match(githubRegex);
-      if (match) {
-        message.card.owner = match[1]; // "Marak"
-        message.card.repo = match[2]; // "buddypond"
-        message.card.filename = match[4]; // "v5/apps/based/client/lib/api.js"
-      } else {
-        console.error("Invalid GitHub URL format.");
-      }
-
-
-    }
-
-    // TODO: we know is URL now, we can check to see if its a youtube link
-    // or another type of link
-    // and render that using the card system
-
-
-    // message.text = 'I sent a link outside of BuddyPond:';
-    // TODO: detect type based on URL extension, use supportedTypes array
-    // img, media, video, audio, etc
-    // use smartlinks if youtube open youtube player, etc audio player
-  }
+  // TODO: needs to check for links inside the message, not just entire links
+  checkForLinksInMessage(message);
 
   // if there is a #pondname in the message, add a pond card type
   if (message.text && message.text.length > 0) {
@@ -187,10 +113,6 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   }
 
-  // TODO: emit event if new pond context is created
-  // this.bp.emit('pond::activeContextAdded', context);
-
-
   // If message.from is not in the activeUsers, add it
   if (message.from && !this.data.activeUsers.includes(message.from)) {
     this.data.activeUsers.push(message.from);
@@ -202,9 +124,6 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (message.from && !this.data.activeUsersInContext[context].includes(message.from)) {
     this.data.activeUsersInContext[context].push(message.from);
   }
-
-
-  // console.log('chat window id', windowId, message);
 
   // Remark: Removing and editing messages do not currently require a windowId since they currently
   // do not have a from / to property
@@ -238,8 +157,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
     return;
   }
-
-
 
   let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
 
@@ -333,27 +250,6 @@ export default async function renderChatMessage(message, _chatWindow) {
   // Format message time
   messageTime = messageTime.toString();
 
-
-  //console.log('message', message)
-  /* TODO: keep this code, just keep it commented out for now
-  if (message.roll) {
-    // message represents a random roll from Ramblor
-    // show special cards with stats
-    message.card = {
-      type: 'roll',
-      roll: message.roll,
-      text: message.text,
-      from: message.from,
-      to: message.to,
-      uuid: message.uuid,
-      id: message.id,
-      ctime: message.ctime,
-      message: message,
-    };
-  }
-  */
-
-
   // Check to see if message is type card
 
   let container;
@@ -379,15 +275,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   let bp = this.bp;
 
-
-
   this.createChatMessageElement(message, messageTime, chatWindow, container);
-
-  // Example usage: renderMessage(messageObject, '12:00 PM', chatWindowObject);
-
-
-  // console.log('content', chatWindow.content)
-  // chatWindow.content.innerHTML = 'FFFFF';
 
   // Initially try to scroll to the bottom
   scrollToBottom(chatWindow.content);
@@ -407,23 +295,6 @@ export default async function renderChatMessage(message, _chatWindow) {
 }
 
 // TODO: add via addMessageProcessor() on `marked` and `pond` apps
-
-
-
-
-function findAllHashPondNamesOld(text) {
-  // Given a string such as "The #test room is good also is #music"
-  // return an array of all the pond names without the '#' symbol
-  // TODO: may need a safe regex helper for bp
-  let hashPondNameRegex = /#([a-zA-Z0-9_-]+)/g;
-  let matches = [];
-  let match;
-  // Using regex.exec to capture groups in a global search
-  while ((match = hashPondNameRegex.exec(text)) !== null) {
-    matches.push(match[1]); // match[1] contains the pond name without '#'
-  }
-  return matches;
-}
 
 function findAllHashPondNames(text) {
   // Decode HTML entities more comprehensively
