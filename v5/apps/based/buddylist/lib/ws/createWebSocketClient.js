@@ -21,12 +21,6 @@ export default function createWebSocketClient() {
       );
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
-      // TODO: remove these UI events here
-      // Remark: There seems to be a race condition with new wsClient and show / hide elements
-      // This will resolve the issue ( for now )
-      $('.loggedIn').flexShow();
-      $('.loggedOut').flexHide();
-
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 

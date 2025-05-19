@@ -424,11 +424,11 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, c
     msg.replyto = data.replyto;
   }
 
-  console.log('preprocessDeepSeek', msg);
+  // console.log('preprocessDeepSeek', msg);
 
   preprocessDeepSeek(msg);
 
-  console.log('postprocessDeepSeek', msg);
+  // console.log('postprocessDeepSeek', msg);
 
   // we need to remove any message reference on message.card ( circular reference )
   let nonCircularMsg = {

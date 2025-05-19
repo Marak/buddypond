@@ -147,19 +147,6 @@ export default class BuddyList {
             this.registerEventHandlers();
             this.handleAuthentication();
             this.buddylistUIEvents();
-            // $('.loggedIn', buddyListWindow.container).flexHide();
-
-            // needs to check if logged in again after lazy loading pond...
-            /*
-            if (bp.buddyListWsConnected = true) {
-                $('.loggedIn').flexHide();
-                $('.loggedOut').flexShow();
-            } else {
-                $('.loggedIn').flexShow();
-                $('.loggedOut').flexHide();
-            }*/
-
-
             return 'hello buddyList';
         }
 
@@ -689,18 +676,14 @@ export default class BuddyList {
         // plays welcome message
         this.bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
 
-
-        // opens default chat window if defined
-        if (this.defaultPond) {
-            this.openChatWindow({ pondname: this.defaultPond });
-        }
-
         // this will eventually trigger the buddylist::connected event
         this.client = new this.Client(bp);
         let connected = await this.client.connect();
 
-        $('.loggedOut').flexHide();
-        $('.loggedIn').flexShow();
+        // wait until buddylist is connected and then opens default chat window if defined
+        if (this.defaultPond) {
+            this.openChatWindow({ pondname: this.defaultPond });
+        }
 
     }
 }

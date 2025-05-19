@@ -98,8 +98,8 @@ export default class Motd {
         });
 
         // this should be handled globally ( if possible )
-        $('.loggedIn').hide();
-        $('.loggedOut').show();
+        $('.loggedIn', motdWindow.content).hide();
+        $('.loggedOut', motdWindow.content).show();
 
     }
 }

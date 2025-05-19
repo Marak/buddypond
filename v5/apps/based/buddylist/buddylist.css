@@ -106,7 +106,7 @@
     width: 100%;
 }
 .buddylistContainer {
-    display: flex;
+    display: none;
     align-items: flex-start;
     flex-direction: column;
     justify-content: flex-start;

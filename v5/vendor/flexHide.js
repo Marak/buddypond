@@ -10,6 +10,8 @@ $(document).ready(function () {
             }
             // Use the stored display value or default to 'block' if nothing stored
             $this.show().css('display', $this.data('original-display') || 'flex');
+            // remove the hidden class
+            $this.removeClass('hidden');
         });
     };
 
