@@ -115,9 +115,7 @@ window.top.location = 'ie.html';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
 
 
-      let devmode = true;
-      let localIp = '192.168.200.59';
-      // localIp = '192.168.64.1';
+      let devmode = false;
 
       // TODO: checks if current host is buddypond.com
       // buddypond.com force devmode to false
@@ -126,6 +124,9 @@ window.top.location = 'ie.html';
       }
 
       if (devmode) {
+        let localIp = '192.168.200.59';
+        // localIp = '192.168.64.1';
+
         _portfolioEndpoint = `http://${localIp}:9002`;
         _coinEndpoint = `http://${localIp}:9001`;
         _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
