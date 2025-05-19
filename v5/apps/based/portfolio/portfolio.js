@@ -117,6 +117,8 @@ export default class Portfolio {
         // focus the window
         this.portfolioWindow.focus();
    
+        // if portfolio window is open and user logged out, this event will re-render the portfolio
+        // with the latest data / show the user portfolio
         this.bp.on('auth::qtoken', 'render-portfolio', async(data) => {
             // re-render the portfolio
             await this.render(this.portfolioWindow.content);

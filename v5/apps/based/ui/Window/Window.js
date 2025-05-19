@@ -580,7 +580,13 @@ class Window {
     }
 
     open() {
+
+        // set focus to this window ( first )
+        this.focus();
+
+
         try {
+            // onOpen may have additional focus events
             this.onOpen(this);
         } catch (err) {
             console.error(err);
@@ -591,8 +597,6 @@ class Window {
         // ???? this.parent.appendChild(this.container);
         this.bp.emit('window::open', this);
         // console.log('callling focus from open');
-        // set focus to this window
-        this.focus();
     }
     close() {
 

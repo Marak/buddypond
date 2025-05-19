@@ -43,8 +43,6 @@ Client.prototype.addBuddy = async function addBuddy(buddyname, cb) {
 }
 
 Client.prototype.receivedInstantMessage = async function receivedInstantMessage(buddyName, cb) {
-  console.log("NEW Calling receivedInstantMessage", this, buddyName);
-
   apiRequest('/buddylist/' + this.bp.me + '/receivedInstantMessage', 'POST', {
     buddyname: buddyName,
     newMessages: false,
@@ -54,8 +52,6 @@ Client.prototype.receivedInstantMessage = async function receivedInstantMessage(
 }
 
 Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
-  console.log("NEW Calling setStatus", buddyName, update);
-
   apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
     buddyname: buddyName,
     status: update.status,
@@ -64,7 +60,6 @@ Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
     cb(err, data);
   })
 };
-
 
 /*
 
@@ -119,7 +114,7 @@ function apiRequest(uri, method, data, cb) {
 
   buddypond.incrementPackets("packetsSent");
   let perf = { start: new Date() };
-  console.log("apiRequest", url, options);
+  // console.log("apiRequest", url, options);
   fetch(url, { ...options, signal: controller.signal })
     .then(response => {
       clearTimeout(timeoutId);

@@ -45,6 +45,11 @@ export default function openChatWindow(data) {
         onOpen: async (_window) => {
             //console.log('client', client);
             //console.log('client.subscriptions', client.subscriptions);
+            console.log('calling onOpen for new chat window', _window);
+
+
+            setupChatWindow.call(this, windowType, contextName, _window);
+
 
             client.addSubscription(windowType, contextName);
             
@@ -70,7 +75,27 @@ export default function openChatWindow(data) {
             }
 
             // now focus on the .aim-input field
-            $('.aim-input', _window.content).focus();
+            console.log('focus on input', $('.aim-input', _window.content).length);
+            console.log('_window.content', _window.content);
+
+
+            function focusOnInput() {
+                let aimInput = $('.aim-input', _window.content);
+                 console.log('focusOnInput', aimInput.length);
+
+                if (aimInput.length === 0) {
+                    setTimeout(() => {
+                        console.log('focus on input', $('.aim-input', _window.content).length);
+                        console.log('_window.content', _window.content);
+                        focusOnInput();
+                    }
+                    , 100);
+                }
+                $('.aim-input', _window.content).focus();
+            }
+
+            focusOnInput();
+
 
         },
         onClose: () => {
@@ -80,7 +105,6 @@ export default function openChatWindow(data) {
 
     chatWindow.loggedIn = true;
 
-    setupChatWindow.call(this, windowType, contextName, chatWindow);
     return chatWindow;
 }
 

@@ -13,14 +13,17 @@ export default class Play {
 
     }
 
-    async play(mediaPath, { tryHard = 0, repeat = false, duration = 9999, onEnd = () => {}, onError = () => {} } = {}) {
+    async play(mediaPath, {
+        tryHard = 0,
+        repeat = false,
+        duration = 9999, onEnd = () => {}, onError = () => {} } = {}) {
         if (this.bp.settings.audio_enabled === false) {
             return;
         }
     
         // Check if media is already playing and if retries are not allowed
         if (Play.playing.get(mediaPath) && !tryHard) {
-            console.log(`Warning: Already playing ${mediaPath}. Will not play the same media file concurrently.`);
+            // console.log(`Warning: Already playing ${mediaPath}. Will not play the same media file concurrently.`);
             return;
         }
     

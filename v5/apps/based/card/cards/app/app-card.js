@@ -3,7 +3,7 @@ export default function applyData(el, data) {
 
     // Extract app data (expecting name, description, image URL)
     const { name = 'Unnamed App', description = 'No description available', image = '' } = data || {};
-    console.log('App data:', data);
+    // console.log('App data:', data);
 
     let appIcon = this.bp.apps.desktop.apps[data.context]?.icon;
     let appLabel = this.bp.apps.desktop.apps[data.context]?.label;

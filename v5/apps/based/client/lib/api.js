@@ -23,27 +23,7 @@ buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
 // legacy v4 API
 let desktop = { settings: {} };
 
-//TODO: remove uploadsEndpoint definition here, now done in index.html
-if (document.location.protocol === 'https:') {
-  buddypond.endpoint = 'https://api.buddypond.com/api/v6';
-  buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
-  // buddypond.endpoint = 'https://137.184.116.145/api/v3';
-
-} else {
-  buddypond.endpoint = 'http://137.184.116.145/api/v6';
-}
-
-if (buddypond.mode === 'dev') {
-  // buddypond.endpoint = document.location.protocol + '//dev.buddypond.com/api/v3';
-  buddypond.endpoint = 'http://192.168.200.59/api/v6';
-}
-
-buddypond.endpoint = 'https://buddylist.buddypond.com/api/v6';
-
-// buddypond.subscribeMessages = function subscribeMessages(type, context) {}
-
 buddypond.authBuddy = function authBuddy(me, password, cb) {
-
   apiRequest('/auth', 'POST', {
     buddyname: me,
     buddypassword: password
@@ -79,6 +59,9 @@ buddypond.addBuddy = function addBuddy(buddyname, cb) {
     cb(err, data);
   })
 }
+
+
+
 
 /*
 buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
@@ -220,7 +203,7 @@ buddypond.removeMessage = async function removeMessage({ from, to, type, uuid })
 
 buddypond.passwordChange = async function passwordChange({ buddyname, password }) {
   return new Promise((resolve, reject) => {
-    apiRequest('/buddylist/' + buddyname + '/passwordChange', 'POST', {
+    apiRequest('/buddylist/' + buddyname + '/password-change', 'POST', {
       buddyname: buddyname,
       password: password
     }, function (err, data) {
@@ -232,6 +215,7 @@ buddypond.passwordChange = async function passwordChange({ buddyname, password }
     });
   });
 }
+
 
 buddypond.updateProfile = async function updateProfile(buddyname, update) {
   console.log('buddypond.updateProfile', buddyname, update);
@@ -250,6 +234,7 @@ buddypond.updateProfile = async function updateProfile(buddyname, update) {
   });
 }
 
+/*
 buddypond.setStatus = function setStatus(buddyName, update, cb) {
   // TODO: status becomes profile object with profile.status and profile.profilePicture
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
@@ -262,7 +247,9 @@ buddypond.setStatus = function setStatus(buddyName, update, cb) {
     cb(err, data);
   })
 }
+*/
 
+/*
 buddypond.receiveInstantMessage = function receiveInstantMessage(buddyName, cb) {
   // apiRequest('/messages/buddy/' + buddyName, 'POST', {
   apiRequest('/buddylist/' + buddypond.me + '/receiveInstantMessage', 'POST', {
@@ -272,6 +259,7 @@ buddypond.receiveInstantMessage = function receiveInstantMessage(buddyName, cb) 
     cb(err, data);
   })
 }
+*/
 
 // TODO: move outside of api.js file
 function preprocessDeepSeek(data) {
@@ -422,7 +410,8 @@ buddypond.pondSendMessage = function pondSendMessage(pondname, pondtext, data, c
     type: 'pond',
     geoflag: desktop.settings.geo_flag_hidden,
     card: {
-      voiceIndex: desktop.settings.tts_voice_index
+      voiceIndex: desktop.settings.tts_voice_index,
+      ...data.card
     }
   };
 
@@ -681,7 +670,7 @@ buddypond.removeFile = async function removeFile(fileName) {
     return fileName;
   } catch (err) {
     console.error('Error deleting file:', err);
-    throw err; // Rethrow for external handling
+    // throw err; // Rethrow for external handling
   }
 
 };

@@ -2,46 +2,26 @@ export default class ChatWindowButtonBar {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.options = options;
-
-        this.buttons = options.buttons || [/*{
-            text: 'BuddySound',
-            onclick: () => console.log('Send button clicked')
-        },
-        {
-            text: 'BuddyGif',
-            onclick: () => console.log('Close button clicked')
-        },
-        {
-            text: 'BuddyPaint',
-            onclick: () => console.log('Close button clicked')
-        },
-        {
-            text: 'BuddySnap',
-            onclick: () => console.log('Close button clicked')
-        },
-        {
-            text: 'BuddyEmoji',
-            onclick: () => console.log('Close button clicked')
-        },
-        {
-            text: 'BuddyHelp',
-            align: 'right',
-            onclick: () => console.log('Close button clicked')
-        }
-        */
+        this.buttons = options.buttons || [
+            /*
+                {
+                text: 'BuddySound',
+                onclick: () => console.log('Send button clicked')
+                }
+            */
         ];
         this.container = this.render();
         return this;
-
     }
 
     render() {
+        console.log('ChatWindowButtonBar.render', this.buttons);
         let buttonBar = document.createElement('div');
         buttonBar.classList.add('button-bar');
 
         this.buttons.forEach(button => {
 
-
+       
             if (button.image) {
                 let imgElement = document.createElement('img');
                 imgElement.src = button.image;
@@ -55,9 +35,12 @@ export default class ChatWindowButtonBar {
                     imgElement.classList.add(button.className);
                 }
                 imgElement.onclick = button.onclick;
+
+                if (button.align && button.align === 'right') {
+                    // TODO: add option to right align buttons
+                }
+
                 buttonBar.appendChild(imgElement);
-
-
 
             } else {
                 let buttonElement = document.createElement('button');
@@ -70,11 +53,7 @@ export default class ChatWindowButtonBar {
                 }
                 buttonElement.onclick = button.onclick;
                 buttonBar.appendChild(buttonElement);
-    
             }
-
-
-            
 
         });
 
