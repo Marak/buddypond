@@ -1,7 +1,8 @@
-// import handleWorkerMessage from './lib/handleWorkerMessage.js';
+// Remark: We are migrating away from having client application, and instead moved each client to their own application's folder
+// This will be the client for messages, buddylist websocket is handled by apps/buddylist/lib/wsclient.js
+// TODO: Move this to /messages/client.js
 import createWebSocketClient from './lib/ws/createWebSocketClient.js';
-// TODO: move client code to specific app ( in this case buddylist/messages )
-// TODO: client app is being deprecated in favor of each app having its own client
+
 export default class Client {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -62,62 +63,55 @@ export default class Client {
     }
 
     sendWsMessage(chatId, message) {
-
-        let wsClient = this.messagesWsClients.get(chatId);
-        if (!wsClient) {
-          console.log('buddypond.messagesWs not connected, unable to send message to', chatId, message);
-          return;
+        let chatConnection = this.messagesWsClients.get(chatId);
+        if (!chatConnection || !chatConnection.wsClient) {
+            console.log('buddypond.messagesWs not connected, unable to send message to', chatId, message);
+            return;
         }
-        // send the message via ws connection
-        wsClient.send(JSON.stringify(message));
-
+        // Send the message via ws connection
+        chatConnection.wsClient.send(JSON.stringify(message));
     }
 
     addSubscription(type, context) {
-
         let chatId = type + '/' + context;
       
         if (type === 'buddy') {
-          // if the context is a buddy, we need to create a unique chatId to represent the tuple
-          // it's important that the tuple is consistent across all services, so we sort the buddy names by alphabetical order
-          let buddyNames = [buddypond.me, context].sort();
-          chatId = type + '/' + buddyNames.join('/');
+            // If the context is a buddy, create a unique chatId for the tuple
+            let buddyNames = [buddypond.me, context].sort();
+            chatId = type + '/' + buddyNames.join('/');
         }
         console.log(`subscribeMessages subscribing to ${chatId}`);
 
-        // check if an entry exists in the map
+        // Check if an entry exists in the map
         if (!this.messagesWsClients.has(chatId)) {
-          this.createWebSocketClient(chatId);
+            this.createWebSocketClient(chatId);
         }
     }
 
     removeSubscription(type, context) {
-
         let chatId = type + '/' + context;
       
         if (type === 'buddy') {
-          // if the context is a buddy, we need to create a unique chatId to represent the tuple
-          // it's important that the tuple is consistent across all services, so we sort the buddy names by alphabetical order
-          let buddyNames = [buddypond.me, context].sort();
-          chatId = type + '/' + buddyNames.join('/');
+            // If the context is a buddy, create a unique chatId for the tuple
+            let buddyNames = [buddypond.me, context].sort();
+            chatId = type + '/' + buddyNames.join('/');
         }
       
         console.log(`unsubscribeMessages unsubscribing from ${chatId}`);
 
-        // check if an entry exists in the map
+        // Check if an entry exists in the map
         if (this.messagesWsClients.has(chatId)) {
-          console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
-          let wsClient = this.messagesWsClients.get(chatId);
-          console.log('closing wsClient', wsClient);
+            console.log(`buddypond.messagesWsClients has ${chatId}, closing connection`);
+            let chatConnection = this.messagesWsClients.get(chatId);
+            console.log('closing chatConnection', chatConnection);
       
-          console.log('Before close, readyState:', wsClient.readyState);
-          wsClient.closeConnection();
-        
+            console.log('Before close, readyState:', chatConnection.wsClient.readyState);
+            chatConnection.wsClient.closeConnection();
         }
     }
 
     connect() {
-        // moved to buddylist.client.connect()
+        // Moved to buddylist.client.connect()
     }
 
     sendMessage(message) {
@@ -126,17 +120,14 @@ export default class Client {
     }
 
     disconnect() {
-
-        // iterate through all buddypond.messagesWsClients Map and closeConnection() all of them
+        // Iterate through all buddypond.messagesWsClients Map and closeConnection() all of them
         this.bp.log('Disconnecting all WebSocket clients');
-        this.messagesWsClients.forEach(client => {
-            client.closeConnection();
+        this.messagesWsClients.forEach(chatConnection => {
+            chatConnection.wsClient.closeConnection();
         });
-
     }
 
     logout() {
-
         this.disconnect();
         this.qtokenid = null;
         this.api.qtokenid = null;
@@ -148,11 +139,9 @@ export default class Client {
         localStorage.removeItem('qtokenid');
         localStorage.removeItem('me');
 
-        // once we have performed the logout, we need to emit the event
-        // such that the UI can update
+        // Once we have performed the logout, emit the event
         this.bp.emit('auth::logout');
     }
 }
 
-// Client.prototype.handleWorkerMessage = handleWorkerMessage;
 Client.prototype.createWebSocketClient = createWebSocketClient;

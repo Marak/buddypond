@@ -1,24 +1,44 @@
 // Function to create a WebSocket client for a given chatId
-// assume "this" scope is bound to the `client` object
+// Assume "this" scope is bound to the `client` object
+// Currently used for chat rooms, not buddylist
 export default function createWebSocketClient(chatId) {
-  // Track reconnect state
+  // Check if a chatConnection already exists for this chatId
+  let chatConnection = this.messagesWsClients.get(chatId);
   let reconnectAttempts = 0;
   const maxReconnectAttempts = 999999; // Set to a high number for unlimited attempts
   const maxBackoffDelay = 10000; // 10 seconds
 
-  console.log(`Creating WebSocket client for chatId: ${chatId}`);
+  console.log('chatConnection', chatConnection);
+  // If a chatConnection exists, reuse its reconnectAttempts
+  if (chatConnection) {
+    console.log(`Reusing existing chatConnection for chatId: ${chatId}, reconnectAttempts: ${chatConnection.reconnectAttempts}`);
+    reconnectAttempts = chatConnection.reconnectAttempts;
+  } else {
+    console.log(`Creating new WebSocket client for chatId: ${chatId}`);
+  }
+
   const wsClient = new WebSocket(
     `${buddypond.messagesWsEndpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}&chatId=${chatId}`
   );
-  this.messagesWsClients.set(chatId, wsClient);
+
+  // Create or update chatConnection object
+  chatConnection = {
+    wsClient,
+    reconnectAttempts,
+    maxReconnectAttempts,
+    maxBackoffDelay
+  };
+  this.messagesWsClients.set(chatId, chatConnection);
 
   let isIntentionallyClosed = false; // Flag to track intentional closure
 
   // Named function for open event
   function handleOpen() {
     console.log('WebSocket connection opened to', chatId);
-    reconnectAttempts = 0; // Reset reconnect attempts on successful connection
-    wsClient.send(
+    // Reset reconnect attempts on successful connection
+    reconnectAttempts = 0;
+    chatConnection.reconnectAttempts = 0; // Sync with chatConnection
+    chatConnection.wsClient.send(
       JSON.stringify({
         action: 'getHistory',
         chatId: chatId,
@@ -31,7 +51,6 @@ export default function createWebSocketClient(chatId) {
   // Named function for message event
   function handleMessage(event) {
     try {
-      // console.log('Got back from server:', event.data);
       const parseData = JSON.parse(event.data);
 
       switch (parseData.action) {
@@ -67,32 +86,38 @@ export default function createWebSocketClient(chatId) {
   // Named function for close event
   function handleClose(event) {
     console.log('WebSocket connection closed to', chatId, 'Code:', event.code, 'Reason:', event.reason);
-    this.messagesWsClients.delete(chatId);
-    console.log('Current WebSocket clients:', this.messagesWsClients);
-    console.log('reconnectAttempts:', reconnectAttempts);
+    console.log('reconnectAttempts:', chatConnection.reconnectAttempts);
     console.log('isIntentionallyClosed:', isIntentionallyClosed);
-    // Reconnect only if the closure was not intentional
-    if (!isIntentionallyClosed && reconnectAttempts < maxReconnectAttempts) {
+
+    // Only remove from Map if intentionally closed or max reconnect attempts reached
+    if (isIntentionallyClosed || chatConnection.reconnectAttempts >= chatConnection.maxReconnectAttempts) {
+      console.log(`Removing chatConnection for ${chatId} from messagesWsClients`);
+      this.messagesWsClients.delete(chatId);
+      console.log('Current WebSocket clients:', this.messagesWsClients);
+    }
+
+    // Reconnect only if the closure was not intentional and max attempts not reached
+    if (!isIntentionallyClosed && chatConnection.reconnectAttempts < chatConnection.maxReconnectAttempts) {
       const delay = Math.min(
-        200 * Math.pow(2, reconnectAttempts) * (1 + 0.1 * Math.random()), // Exponential backoff with jitter
-        maxBackoffDelay
+        200 * Math.pow(2, chatConnection.reconnectAttempts) * (1 + 0.1 * Math.random()), // Exponential backoff with jitter
+        chatConnection.maxBackoffDelay
       );
-      console.log(`Scheduling reconnect attempt ${reconnectAttempts + 1} for ${chatId} in ${delay}ms`);
+      console.log(`Scheduling reconnect attempt ${chatConnection.reconnectAttempts + 1} for ${chatId} in ${delay}ms`);
       setTimeout(() => {
         reconnectAttempts++;
-        this.createWebSocketClient(chatId); // Attempt to reconnect
+        chatConnection.reconnectAttempts++; // Sync with chatConnection
+        createWebSocketClient.call(this, chatId); // Attempt to reconnect
       }, delay);
-    } else if (reconnectAttempts >= maxReconnectAttempts) {
-      console.error(`Max reconnect attempts (${maxReconnectAttempts}) reached for ${chatId}. Giving up.`);
+    } else if (chatConnection.reconnectAttempts >= chatConnection.maxReconnectAttempts) {
+      console.error(`Max reconnect attempts (${chatConnection.maxReconnectAttempts}) reached for ${chatId}. Giving up.`);
     }
   }
 
   // Named function for error event
   function handleError(event) {
     console.error('WebSocket error for', chatId, event);
-    // The error event is often followed by a close event, so we rely on the close handler for reconnection
-    // Optionally, you can close the WebSocket here to trigger the close handler immediately
-    wsClient.close(1000, 'Error occurred');
+    // Close the WebSocket to trigger the close handler
+    chatConnection.wsClient.close(1000, 'Error occurred');
   }
 
   // Add event listeners with named functions
@@ -105,12 +130,12 @@ export default function createWebSocketClient(chatId) {
   wsClient.closeConnection = function () {
     isIntentionallyClosed = true;
     console.log(`Intentionally closing WebSocket for ${chatId}`);
-    wsClient.close(1000, 'Normal closure');
+    chatConnection.wsClient.close(1000, 'Normal closure');
     // Remove event listeners to prevent memory leaks
-    wsClient.removeEventListener('open', handleOpen);
-    wsClient.removeEventListener('message', handleMessage);
-    wsClient.removeEventListener('close', handleClose);
-    wsClient.removeEventListener('error', handleError);
+    chatConnection.wsClient.removeEventListener('open', handleOpen);
+    chatConnection.wsClient.removeEventListener('message', handleMessage);
+    chatConnection.wsClient.removeEventListener('close', handleClose);
+    chatConnection.wsClient.removeEventListener('error', handleError);
   };
 
   return wsClient;
