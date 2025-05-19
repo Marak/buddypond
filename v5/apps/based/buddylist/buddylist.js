@@ -147,12 +147,17 @@ export default class BuddyList {
             this.registerEventHandlers();
             this.handleAuthentication();
             this.buddylistUIEvents();
-            $('.loggedIn', buddyListWindow.container).flexHide();
-
+            // $('.loggedIn', buddyListWindow.container).flexHide();
 
             // needs to check if logged in again after lazy loading pond...
-            //$('.loggedIn').flexHide();
-            //$('.loggedOut').flexShow();
+            /*
+            if (bp.buddyListWsConnected = true) {
+                $('.loggedIn').flexHide();
+                $('.loggedOut').flexShow();
+            } else {
+                $('.loggedIn').flexShow();
+                $('.loggedOut').flexHide();
+            }*/
 
 
             return 'hello buddyList';
@@ -694,6 +699,8 @@ export default class BuddyList {
         this.client = new this.Client(bp);
         let connected = await this.client.connect();
 
+        $('.loggedOut').flexHide();
+        $('.loggedIn').flexShow();
 
     }
 }
@@ -735,8 +742,8 @@ BuddyList.prototype.logout = function () {
 
         this.data.profileState = null;
         this.bp.play('desktop/assets/audio/GOODBYE.wav');
+        // TODO can we now remove bp.apps.client.logout()?
         this.bp.apps.client.logout();
-        console.log('aaaaa', this.data)
         // clear out the local .data scope
         this.data = {
             processedMessages: {},

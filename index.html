@@ -177,7 +177,19 @@ window.top.location = 'ie.html';
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`
         $(document).ready(function () {
-          // alert(renderBpApp)
+
+          // Use this to debug the focus() method
+          /*
+          (function () {
+            var originalFocus = HTMLElement.prototype.focus;
+            HTMLElement.prototype.focus = function () {
+              console.log('Native focus() called on:', this);
+              console.trace();
+              return originalFocus.apply(this, arguments);
+            };
+          })();
+          */
+         
           if (!renderBpApp) {
             // render the app
             // renderApp();

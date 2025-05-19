@@ -21,6 +21,12 @@ export default function createWebSocketClient(chatId) {
       );
       // Emit connected event
       bp.emit('buddylist-websocket::connected', { chatId });
+      // TODO: remove these UI events here
+      // Remark: There seems to be a race condition with new wsClient and show / hide elements
+      // This will resolve the issue ( for now )
+      $('.loggedIn').flexShow();
+      $('.loggedOut').flexHide();
+
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 
@@ -71,7 +77,7 @@ export default function createWebSocketClient(chatId) {
           this.reconnectAttempts++;
           bp.emit('buddylist-websocket::reconnecting', { chatId, attempt: this.reconnectAttempts });
           try {
-            const newWsClient = await connectWebSocket(); // Attempt to reconnect
+            const newWsClient = await this.connectWebSocket(); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
             Object.assign(wsClient, newWsClient);
           } catch (error) {

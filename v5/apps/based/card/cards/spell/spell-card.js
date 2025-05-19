@@ -88,11 +88,22 @@ export default async function applyData(el, data) {
     // apply the spell if me is the target
     // curses do not require client-side processing ( curses are applied server-side )
     // spells and memes are processed client-side and require a dynamic import of the spell
-    if (data.targetType === 'buddy' && data.target === this.bp.me && message.type !== 'pond' && data.spellType !== 'curses') {
-        await runSpell.call(this, data);
+    if (data.targetType === 'buddy' && data.target === this.bp.me && message.type !== 'pond' /*&& data.spellType !== 'curses'*/) {
+        try {
+            await runSpell.call(this, data);
+
+        } catch (error) {
+            console.error('Error running spell:', error);
+
+        }
     }
-    if (data.targetType === 'pond' && data.spellType !== 'curses') {
-        await runSpell.call(this, data);
+    if (data.targetType === 'pond' /*&& data.spellType !== 'curses'*/) {
+        try {
+            await runSpell.call(this, data);
+
+        } catch (error) {
+            console.error('Error running spell:', error);
+        }
     }
 
 }
