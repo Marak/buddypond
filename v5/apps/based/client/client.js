@@ -1,7 +1,7 @@
-import SSEManager from './lib/SSEManager.js';
-import handleWorkerMessage from './lib/handleWorkerMessage.js';
+// import handleWorkerMessage from './lib/handleWorkerMessage.js';
 import createWebSocketClient from './lib/ws/createWebSocketClient.js';
-
+// TODO: move client code to specific app ( in this case buddylist/messages )
+// TODO: client app is being deprecated in favor of each app having its own client
 export default class Client {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -10,13 +10,8 @@ export default class Client {
             api: "",
         };
         
-        this.messageSSEManager = new SSEManager(this, {});
-        this.buddylistSSEManager = new SSEManager(this, {});
-        this.buddySSEManager = new SSEManager(this, {});
-        
         this.api = buddypond;
         this.api.endpoint = `${this.config.api}/api/v6`;
-        this.sseConnected = false;
         this.queuedMessages = [];
 
         this.messagesWsClients = new Map();
@@ -44,26 +39,6 @@ export default class Client {
             console.error('Worker error:', event);
             config.onerror(event);
         };
-
-        this.bp.on('auth::qtoken', 'connect-to-sse', (qtoken) => {
-            this.qtokenid = qtoken.qtokenid;
-            this.api.qtokenid = this.qtokenid;
-            this.api.me = qtoken.me;
-            this.me = qtoken.me;
-            this.bp.me = this.me;
-            this.bp.qtokenid = this.qtokenid;
-            this.connect();
-
-            // immediately let the server know the client is now alive
-            // this is required to show online status immediately ( instead of waiting for startKeepaliveTimer)
-            setTimeout(function(){
-                buddypond.keepAlive();
-            }, 1000);
-
-            // Start the keepalive timer after authentication
-            // TODO: uncomment this when server is ready
-            this.startKeepaliveTimer();
-        });
 
         return this;
     }
@@ -114,25 +89,6 @@ export default class Client {
         if (!this.messagesWsClients.has(chatId)) {
           this.createWebSocketClient(chatId);
         }
-
-        // this.bp.apps.client.api.subscribeMessages(type, context);
-        /* Legacy code for SSE, replaced with WebSocket API in api.js
-        // TODO: we could move the api code back here for cleaner code
-        if (!this.bp.qtokenid) {
-            setTimeout(() => this.addSubscription(type, context), 100);
-            return;
-        }
-        const key = `${type}/${context}`;
-        if (!this.subscriptions.has(key)) {
-            const sseConnection = new SSEManager(this, {});
-            console.log('Making connection to', `${this.config.api}/api/v6/sse/message?type=${type}&context=${context}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
-            sseConnection.connectSSE(`${this.config.api}/api/v6/sse/message?type=${type}&context=${context}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
-            this.subscriptions.set(key, sseConnection);
-            this.bp.log(`Subscribed to ${key}`);
-        } else {
-            console.log(`Already subscribed to ${key}`);
-        }
-        */
     }
 
     removeSubscription(type, context) {
@@ -158,31 +114,10 @@ export default class Client {
           wsClient.closeConnection();
         
         }
-
-        // this.api.unsubscribeMessages(type, context);
-        /* Legacy code for SSE, replaced with WebSocket API in api.js
-        // TODO: we could move the api code back here for cleaner code
-
-        const key = `${type}/${context}`;
-        if (this.subscriptions.has(key)) {
-            this.subscriptions.get(key).disconnectSSE();
-            this.subscriptions.delete(key);
-            console.log(`Unsubscribed from ${key}`);
-            console.log('subscriptions', this.subscriptions);
-            if (this.subscriptions.size === 0) {
-                this.stopKeepaliveTimer();
-            }
-        } else {
-            console.log(`Not subscribed to ${key}`);
-        }
-        */
     }
 
     connect() {
-        if (!this.sseConnected) {
-            this.buddylistSSEManager.connectSSE(`${this.config.api}/api/v6/sse/buddylist?buddyname=${this.bp.me}&qtokenid=${this.bp.qtokenid}&lastMessageId=0`);
-            this.sseConnected = true;
-        }
+        // moved to buddylist.client.connect()
     }
 
     sendMessage(message) {
@@ -191,10 +126,6 @@ export default class Client {
     }
 
     disconnect() {
-        this.buddylistSSEManager.disconnectSSE();
-        this.subscriptions.forEach(sse => sse.disconnectSSE());
-        this.subscriptions.clear();
-        this.sseConnected = false;
 
         // iterate through all buddypond.messagesWsClients Map and closeConnection() all of them
         this.bp.log('Disconnecting all WebSocket clients');
@@ -202,11 +133,10 @@ export default class Client {
             client.closeConnection();
         });
 
-        this.stopKeepaliveTimer();
     }
 
     logout() {
-        // disconnects buddylist SSE and all message web sockets
+
         this.disconnect();
         this.qtokenid = null;
         this.api.qtokenid = null;
@@ -224,5 +154,5 @@ export default class Client {
     }
 }
 
-Client.prototype.handleWorkerMessage = handleWorkerMessage;
+// Client.prototype.handleWorkerMessage = handleWorkerMessage;
 Client.prototype.createWebSocketClient = createWebSocketClient;

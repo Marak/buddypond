@@ -52,16 +52,13 @@ export default function buddylistUIEvents() {
   });
 
   $('.buddylist').click((e) => {
-
-    // target must be .messageBuddy class
-    if (!$(e.target).hasClass('message-buddy')) {
-      return;
+    // check if element has a data-buddy attribute
+    if (!$(e.target).closest('.buddy-message-sender').data('buddy')) {
+      return
     }
-
-    let buddyname = $(e.target).data('buddy');
+    let buddyname = $(e.target).closest('.buddy-message-sender').data('buddy');
     console.log('message-buddy', buddyname);
     this.openChatWindow({ name: buddyname });
-    // bp.emit('chat::openChatWindow', { name: buddyname });
   });
 
   // Send a buddy request form
@@ -105,27 +102,31 @@ export default function buddylistUIEvents() {
     }
   });
 
+  /*
   // TODO: create context meny for buddy-message-sender
   $(document).on('click', (e) => {
     // delegate based on if e.target is a .buddy-message-sender
     // if so, open profile for that buddy
     //alert(e.target.classList)
     if ($(e.target).hasClass('buddy-message-sender')) {
+      alert('buddy-message-sender');
       let buddyName = $(e.target).text();
       if (this.bp.admin) {
         // roles are handled server-side, this is a simple UI route for the implied role access
         // loading admin-profile from another user won't return admin data
         this.bp.open('admin-profile', { context: buddyName });
       } else {
-        this.bp.open('user-profile', { context: buddyName });
+        // this.bp.open('user-profile', { context: buddyName });
       }
     }
   });
+  */
 
   // Append a custom context menu to the body (hidden initially)
-  $('body').append('<div id="customContextMenu" class="removeMessage" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #ccc; padding: 10px;">Remove Message</div>');
+  // $('body').append('<div id="customContextMenu" class="removeMessage" style="display: none; position: absolute; z-index: 1000; background: white; border: 1px solid #ccc; padding: 10px;">Remove Message</div>');
 
   // Right-click event on elements with class .buddy-message-sender
+  /*
   $(document).on('contextmenu', function (e) {
 
     if (!$(e.target).hasClass('buddy-message-sender')) {
@@ -164,13 +165,16 @@ export default function buddylistUIEvents() {
       // $(this).hide(); // Hide the context menu after click
     });
   });
+  */
 
   // Hide context menu when clicking anywhere else on the document
+  /*
   $(document).on('click', function (e) {
     if (!$(e.target).hasClass('buddy-message-sender')) {
       $('#customContextMenu').hide();
     }
   });
+  */
 
   // Invite a buddy link ( opens twitter with a random message )
   $('.inviteBuddy').on('click', () => {

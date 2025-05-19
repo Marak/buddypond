@@ -72,7 +72,7 @@ export default class BuddyList {
             // Attempt to set status to offline (you may need a sync alternative)
             buddypond.setStatus(this.bp.me, {
                 status: 'offline'
-            }, function(err, re) {
+            }, function (err, re) {
                 console.log('buddypond.setStatus', err, re);
             });
             //return event.returnValue;
@@ -191,6 +191,62 @@ export default class BuddyList {
             height: 500,
             x: x,
             y: 75,
+            onOpen: () => {
+
+                // Remark: We seeing a race condition where the input field is not focusable
+                // Most likely due to element being hidden / shown
+                // We hooked into window focus events and everything appeared OK in regards to conflicting focus() calls
+                // The issue is most likely due to the element being hidden
+                // This still doesn't work as intended since the element might actually be hidden
+                // TODO: find a better way to handle this
+                function focusOnInput() {
+                    const $loginInput = $('.loginForm input[name="username"]');
+                    console.log('focusOnInput: Found elements:', $loginInput.length, $loginInput);
+
+                    // If the element doesn’t exist, retry after a delay
+                    if ($loginInput.length === 0) {
+                        console.log('Input not found, retrying in 100ms');
+                        setTimeout(focusOnInput, 100);
+                        return;
+                    }
+
+                    // Check if the element is focusable
+                    const input = $loginInput[0]; // Get the raw DOM element
+                    const isFocusable = input.offsetParent !== null && // Visible in the DOM
+                        !input.disabled && // Not disabled
+                        input.tabIndex !== -1 && // Focusable via tab
+                        getComputedStyle(input).visibility !== 'hidden' && // Not hidden
+                        getComputedStyle(input).display !== 'none'; // Not display: none
+
+                    if (!isFocusable) {
+                        console.log('Input is not focusable yet, retrying in 100ms', {
+                            isVisible: input.offsetParent !== null,
+                            isEnabled: !input.disabled,
+                            tabIndex: input.tabIndex,
+                            visibility: getComputedStyle(input).visibility,
+                            display: getComputedStyle(input).display
+                        });
+                        setTimeout(focusOnInput, 100);
+                        return;
+                    }
+
+                    // Attempt to focus and verify
+                    $loginInput.focus();
+                    setTimeout(() => {
+                        if (document.activeElement === input) {
+                            console.log('Focus successful on:', input);
+                        } else {
+                            console.warn('Focus failed, active element is:', document.activeElement);
+                            // Optionally retry
+                            setTimeout(focusOnInput, 100);
+                        }
+                    }, 0); // Check focus in the next tick
+                }
+                // focusOnInput();
+                // if we call this in console after load, it works
+                $('.loginForm input[name="username"]').focus();
+
+            },
             onClose: () => {
                 this.opened = false;
             }
@@ -199,7 +255,7 @@ export default class BuddyList {
     }
 
     registerEventHandlers() {
-        
+
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
 
         // On auth success, load user specific apps ( TODO: should pull from DB )
@@ -265,8 +321,8 @@ export default class BuddyList {
             if (data[this.bp.me]) {
                 // for now...needs to change shape of server response to include root fields?
                 if (data[this.bp.me].profilePicture) {
-                  console.log('setting profilePicture', data[this.bp.me].profilePicture);
-                  this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
+                    console.log('setting profilePicture', data[this.bp.me].profilePicture);
+                    this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
                 }
             }
 
@@ -281,7 +337,7 @@ export default class BuddyList {
         // We'll have to be smarter about when to play sounds and limit the amount of BUDDY-IN a single buddy can trigger
         // total amount of buddy-in sounds per time window ( in case of 100s of buddies, etc )
         // this.bp.on('profile::buddy::in', 'play-buddy-in-sound', data => bp.play('desktop/assets/audio/BUDDY-IN.wav'));
-        
+
         // Remark: buddy-out sound disabled until new client connection logic with backend is fully tested 
         //         ( was triggering too many sounds too often )
         //this.bp.on('profile::buddy::out', 'play-buddy-out-sound', data => bp.play('desktop/assets/audio/BUDDY-OUT.wav'));
@@ -327,7 +383,7 @@ export default class BuddyList {
             if (status === 'signout') {
                 this.logout()
             }
-            this.client.setStatus(this.bp.me, { status }, function(err, re){
+            this.client.setStatus(this.bp.me, { status }, function (err, re) {
                 console.log('setStatus', err, re);
             });
             /*
@@ -483,7 +539,7 @@ export default class BuddyList {
     createHTMLContent(htmlStr) {
         const html = document.createElement('div');
         html.innerHTML = htmlStr;
-        $('.loginForm input[name="username"]').focus();
+        // $('.loginForm input[name="username"]').focus();
         return html;
     }
 
@@ -512,7 +568,7 @@ export default class BuddyList {
                 if (message.from && this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
                     // console.log("SENDING READ NEWMESSAGES ALERT");
                     this.data.profileState.buddylist[message.from].newMessages = false;
-                    this.client.receivedInstantMessage(message.from, function(err, re){
+                    this.client.receivedInstantMessage(message.from, function (err, re) {
                         console.log('receivedInstantMessage', err, re);
                     });
                 }
@@ -537,17 +593,17 @@ export default class BuddyList {
         // so confusing client.sendMessage....maybe should be sendWorkerMessage...dunno
         if (data.type === 'pond') {
             console.log('sendMessageToServer', data);
-            buddypond.pondSendMessage(data.to, data.text, data, function(err, result){ 
+            buddypond.pondSendMessage(data.to, data.text, data, function (err, result) {
                 console.log('pondSendMessage', err, result)
-                console.log(err,result)
+                console.log(err, result)
             })
-    
+
         }
         if (data.type === 'buddy') {
             console.log('sendMessageToServer', data);
-            buddypond.sendMessage(data.to, data.text, data, function(err, result){ 
+            buddypond.sendMessage(data.to, data.text, data, function (err, result) {
                 console.log('pondSendMessage', err, result)
-                console.log(err,result)
+                console.log(err, result)
             });
         }
         /*
@@ -622,6 +678,8 @@ export default class BuddyList {
         this.data.profileState = this.data.profileState || {};
         this.data.profileState.me = this.bp.me;
 
+        $('#me_title').html('Welcome ' + this.bp.me);
+
         // TODO: connect-to-websocket-server should happen here
         // plays welcome message
         this.bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
@@ -662,34 +720,34 @@ BuddyList.prototype.showCard = showCard;
 BuddyList.prototype.Client = Client;
 
 BuddyList.prototype.logout = function () {
-  // set status to online
-  this.client.setStatus(this.bp.me, {
-    status: 'offline'
-  }, (err, re) => {
-    console.log('buddypond.setStatus', err, re);
-    // close any open chat windows
-    $('.chatWindow').remove(); // maybe, they could stay open as well
-    // disconnect the client
-    // this.bp.apps.client.logout();
-    $('.password').val('');
-    $('.loggedIn').flexHide();
-    $('.loggedOut').flexShow();
+    // set status to online
+    this.client.setStatus(this.bp.me, {
+        status: 'offline'
+    }, (err, re) => {
+        console.log('buddypond.setStatus', err, re);
+        // close any open chat windows
+        $('.chatWindow').remove(); // maybe, they could stay open as well
+        // disconnect the client
+        // this.bp.apps.client.logout();
+        $('.password').val('');
+        $('.loggedIn').flexHide();
+        $('.loggedOut').flexShow();
 
-    this.data.profileState = null;
-    this.bp.play('desktop/assets/audio/GOODBYE.wav');
-    this.bp.apps.client.logout();
-    console.log('aaaaa', this.data)
-    // clear out the local .data scope
-    this.data = {
-        processedMessages: {},
-        profileState: {
-        },
-        activeUsersInContext: {},
-        activeUsers: [],
-        activePonds: []
-    };
-    // empty the buddylist
-    $('.buddylist').empty();
+        this.data.profileState = null;
+        this.bp.play('desktop/assets/audio/GOODBYE.wav');
+        this.bp.apps.client.logout();
+        console.log('aaaaa', this.data)
+        // clear out the local .data scope
+        this.data = {
+            processedMessages: {},
+            profileState: {
+            },
+            activeUsersInContext: {},
+            activeUsers: [],
+            activePonds: []
+        };
+        // empty the buddylist
+        $('.buddylist').empty();
 
-  });
+    });
 }

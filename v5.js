@@ -71,7 +71,6 @@ window.bp_v_5 = async function bp_v_5() {
 function setConfig() {
     bp.setConfig({
         host: _host,
-        wsHost: _wsHost,
         api: _api,
         cdn: _cdn,
         portfolioEndpoint: _portfolioEndpoint,
@@ -95,26 +94,11 @@ function bindUIEvents() {
         }
     });
 
-    bp.on('auth::qtoken', 'old-bp-login', function (qtoken) {
-        buddypond.qtokenid = qtoken.qtokenid;
-        bp.me = qtoken.me;
-        //console.log("Showing logged in", qtoken);
-        $('.loggedIn').flexShow();
-        //$('.loggedIn').addClass('show');
-        $('.loggedOut').flexHide();
-        // $('.loggedIn').flexShow();
-        $('#me_title').html('Welcome ' + bp.me);
-        bp.apps.desktop.load();
-    });
-
     bp.on('buddy::message::gotfiltered', 'show-toast-info', function (message) {
         // console.log('buddy-message-gotfiltered', message);
-
         // make toastr that stays for 5 seconds
         toastr.options.timeOut = 5000;
-
         toastr.info('Your message was filtered due to being at Power Level 1.');
-
         // desktop.ui.openWindow('buddy_message', { context: message });
     });
 
