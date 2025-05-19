@@ -148,4 +148,20 @@
     .emojiPicker {
         display: none;
     }
+    .loginButton {
+        width: 100%;
+        font-size: 42px;
+        height: 200px;
+    }
+    .loginForm input {
+        font-size: 42px;
+        height: 96px;
+    }
+    #tosAgree {
+        width: 96px;
+        height: 96px;
+    }
+    .loginMessage {
+        font-size: 42px;
+    }
 }

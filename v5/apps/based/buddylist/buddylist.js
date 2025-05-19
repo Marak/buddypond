@@ -18,6 +18,13 @@ import bindMessageContextMenu from "./lib/message/bindMessageContextMenu.js";
 import createMessageContextMenu from "./lib/message/createMessageContextMenu.js";
 import loadUserApps from "./lib/loadUserApps.js";
 
+import sendMessageHandler from "./lib/message/sendMessageHandler.js";
+import showCard from "./lib/message/showCard.js";
+
+
+// new ws api
+import Client from './lib/ws/Client.js';
+
 // TODO: why does client care about making UUID at all?
 // this is the responsibility of the server
 // TODO: remove uuid(), is most likely used for local render of message before server confirms ( which is removed atm )
@@ -74,7 +81,6 @@ export default class BuddyList {
 
         await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
 
-
         this.bp.vendor.dicebear = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/+esm', {}, false);
         this.bp.vendor.dicebearAvatars = await this.bp.importModule('https://cdn.jsdelivr.net/npm/@dicebear/identicon@9.2.2/+esm', {}, false);
         //console.log('LOADED dicebear', this.dicebear);
@@ -85,6 +91,20 @@ export default class BuddyList {
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/avatars@4.10.8/dist/index.umd.min.js');
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/core@9.2.2/lib/index.min.js');
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@dicebear/collection@9.2.2/lib/index.min.js');
+
+        // TODO: probably should remove this event and just use handleAuthSuccess handler?
+        /*
+        this.bp.on('auth::qtoken', 'connect-to-websocket-server', (qtoken) => {
+            //this.qtokenid = qtoken.qtokenid;
+            //this.api.qtokenid = this.qtokenid;
+            //this.api.me = qtoken.me;
+            //this.me = qtoken.me;
+            //this.bp.me = this.me;
+            //this.bp.qtokenid = this.qtokenid;
+            //this.client = new this.Client(bp);
+            //this.client.connect();
+        });
+        */
 
     }
 
@@ -179,9 +199,13 @@ export default class BuddyList {
     }
 
     registerEventHandlers() {
+        
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
+
+        // On auth success, load user specific apps ( TODO: should pull from DB )
         this.bp.on('auth::qtoken', 'load-user-apps', qtoken => this.loadUserApps());
 
+        // Generate default profile files ( TODO: don't run this each time, keep track on profile state if users generated default profile )
         this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => {
             // give the app a moment to load messages and open windows before generating default profile
             setTimeout(() => {
@@ -196,6 +220,17 @@ export default class BuddyList {
             }, 1000);
         });
 
+        this.bp.on('buddylist-websocket::connected', 'update-buddylist-connected', ws => {
+            // sets buddylist status to online
+            $('.onlineStatusSelect').val('online');
+            $('.loggedOut').flexHide();
+            $('.loggedIn').flexShow();
+            //$('.loggedIn').addClass('show');
+            // this event shouldn't happen until websocket client for buddylist is connected
+            this.bp.emit('profile::status', 'online');
+        });
+
+
         // Remark: This has been removed in favor of letting windows manage their own state
         // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
         //this.bp.on('client::websocketConnected', 'get-latest-messages', ws => this.getLatestMessages());
@@ -204,18 +239,12 @@ export default class BuddyList {
 
         this.bp.on('profile::buddy::in', 'render-or-update-buddy-in-buddylist', data => this.renderOrUpdateBuddyInBuddyList(data));
         this.bp.on('profile::buddy::out', 'remove-buddy-from-buddylist', data => {
-
             console.log('profile::buddy::out', data);
             const buddyName = data.name;
             let buddyListItem = $(`li[data-buddy="${buddyName}"]`, '.buddylist');
             console.log('buddyListItem', buddyListItem);
             buddyListItem.remove();
-
-            if (buddyListItem) {
-            }
-
         });
-
 
         this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
 
@@ -298,10 +327,14 @@ export default class BuddyList {
             if (status === 'signout') {
                 this.logout()
             }
-
+            this.client.setStatus(this.bp.me, { status }, function(err, re){
+                console.log('setStatus', err, re);
+            });
+            /*
             buddypond.setStatus(this.bp.me, { status }, function(err, re){
                 // console.log('errrrr', err, re);
             });
+            */
 
         });
 
@@ -479,8 +512,8 @@ export default class BuddyList {
                 if (message.from && this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[message.from] && this.data.profileState.buddylist[message.from].newMessages) {
                     // console.log("SENDING READ NEWMESSAGES ALERT");
                     this.data.profileState.buddylist[message.from].newMessages = false;
-                    buddypond.receiveInstantMessage(message.from, function(err, re){
-                        console.log('receiveInstantMessage', err, re);
+                    this.client.receivedInstantMessage(message.from, function(err, re){
+                        console.log('receivedInstantMessage', err, re);
                     });
                 }
                 // console.log('rendering chat message', message);
@@ -551,11 +584,9 @@ export default class BuddyList {
     // called on open to verify token ( if exists )
     // signup / login logic is in buddylistUIEvents.js
     handleAuthentication() {
-        
         const api = this.bp.apps.client.api;
         const localToken = localStorage.getItem('qtokenid');
         const me = localStorage.getItem('me');
-
         if (!localToken) return;
         // console.log('localToken', localToken, me);
         api.verifyToken(me, localToken, (err, data) => {
@@ -565,11 +596,10 @@ export default class BuddyList {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 return;
             }
-
             this.bp.log('verified token', data);
             if (data.success) {
+                // A pre-existing token was found and verified, emit the auth event
                 this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me });
-                //                $('.loggedIn').addClass('show');
                 $('.loggedIn').flexShow();
                 $('.loggedOut').flexHide();
 
@@ -579,29 +609,33 @@ export default class BuddyList {
                 console.error('Failed to authenticate buddy:');
             }
         });
+
     }
 
+    // TODO: this event should only set the qtokenid and local settings?
+    // it could open the chat window?
+    // maybe also could connect to the websocket server for buddylist?
+    // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
         this.bp.me = qtoken.me;
         this.bp.qtokenid = qtoken.qtokenid;
         this.data.profileState = this.data.profileState || {};
         this.data.profileState.me = this.bp.me;
 
+        // TODO: connect-to-websocket-server should happen here
+        // plays welcome message
         this.bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
 
-        $('.onlineStatusSelect').val('online');
-        $('.loggedOut').flexHide();
+
+        // opens default chat window if defined
         if (this.defaultPond) {
             this.openChatWindow({ pondname: this.defaultPond });
-
         }
 
-        // set status to online
-        buddypond.setStatus(this.bp.me, {
-            status: 'online'
-        }, function(err, re){
-            console.log('buddypond.setStatus', err, re);
-        });
+        // this will eventually trigger the buddylist::connected event
+        this.client = new this.Client(bp);
+        let connected = await this.client.connect();
+
 
     }
 }
@@ -620,10 +654,16 @@ BuddyList.prototype.showContextMenu = showContextMenu;
 BuddyList.prototype.createMessageContextMenu = createMessageContextMenu;
 BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
 BuddyList.prototype.loadUserApps = loadUserApps;
+BuddyList.prototype.sendMessageHandler = sendMessageHandler;
+BuddyList.prototype.showCard = showCard;
+
+
+// new API
+BuddyList.prototype.Client = Client;
 
 BuddyList.prototype.logout = function () {
   // set status to online
-  buddypond.setStatus(this.bp.me, {
+  this.client.setStatus(this.bp.me, {
     status: 'offline'
   }, (err, re) => {
     console.log('buddypond.setStatus', err, re);
@@ -638,5 +678,18 @@ BuddyList.prototype.logout = function () {
     this.data.profileState = null;
     this.bp.play('desktop/assets/audio/GOODBYE.wav');
     this.bp.apps.client.logout();
+    console.log('aaaaa', this.data)
+    // clear out the local .data scope
+    this.data = {
+        processedMessages: {},
+        profileState: {
+        },
+        activeUsersInContext: {},
+        activeUsers: [],
+        activePonds: []
+    };
+    // empty the buddylist
+    $('.buddylist').empty();
+
   });
 }

@@ -1,5 +1,5 @@
 export default async function legacyUserSettings(bp) {
-    $('.updateProfileButton').on('click', function () {
+    $('.updateProfileButton').on('click', async function () {
         let updates = {};
         updates.email = $('.buddy_email').val();
         updates.password = $('.buddy_password').val();
@@ -14,7 +14,8 @@ export default async function legacyUserSettings(bp) {
         }
         $('.updateProfileResponse').removeClass('error');
         try {
-            let passwordChanged = buddypond.passwordChange({ buddyname: bp.me, password: updates.password });
+            let passwordChanged = await buddypond.passwordChange({ buddyname: bp.me, password: updates.password });
+            console.log('password changed', passwordChanged);
             // update successful
             if (passwordChanged) {
                 $('.updateProfileResponse').html('Password changed');

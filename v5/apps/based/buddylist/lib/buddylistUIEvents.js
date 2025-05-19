@@ -27,6 +27,7 @@ export default function buddylistUIEvents() {
         // attempt to connect for events after getting auth token
         //console.log('connecting with valid qtokenid', api.qtokenid);
         result.me = username;
+        // The user has logged in password or signed up successfully, emit the auth event
         bp.emit('auth::qtoken', result);
         $('.loggedIn').flexShow();
         $('.loginForm .error').text('');
