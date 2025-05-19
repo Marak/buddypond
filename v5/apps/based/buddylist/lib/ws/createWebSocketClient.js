@@ -1,8 +1,8 @@
 // TODO: refactor to be buddylist ws client
-export default function createWebSocketClient(chatId) {
+export default function createWebSocketClient() {
   // Track reconnect state
 
-  console.log(`Creating WebSocket client for chatId: ${chatId}`);
+  console.log(`Creating WebSocket client for buddylist`);
   return new Promise((resolve, reject) => {
     const wsClient = new WebSocket(
       `${buddypond.buddylistWsEndpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`
@@ -10,7 +10,7 @@ export default function createWebSocketClient(chatId) {
 
     // Handle open event
     const handleOpen = () => {
-      console.log('WebSocket connection opened to', chatId);
+      console.log('WebSocket connection opened to buddylist');
       this.reconnectAttempts = 0; // Reset reconnect attempts
       wsClient.send(
         JSON.stringify({
@@ -20,7 +20,7 @@ export default function createWebSocketClient(chatId) {
         })
       );
       // Emit connected event
-      bp.emit('buddylist-websocket::connected', { chatId });
+      bp.emit('buddylist-websocket::connected');
       // TODO: remove these UI events here
       // Remark: There seems to be a race condition with new wsClient and show / hide elements
       // This will resolve the issue ( for now )
@@ -57,14 +57,14 @@ export default function createWebSocketClient(chatId) {
       } catch (error) {
         console.log('Last message:', event.data);
         console.error('Error parsing WebSocket message:', error);
-        bp.emit('buddylist-websocket::error', { chatId, error: 'Message parsing failed' });
+        bp.emit('buddylist-websocket::error', { error: 'Message parsing failed' });
       }
     };
 
     // Handle close event
     const handleClose = (event) => {
-      console.log('WebSocket connection closed to', chatId, 'Code:', event.code, 'Reason:', event.reason);
-      bp.emit('buddylist-websocket::disconnected', { chatId, code: event.code, reason: event.reason });
+      console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
+      bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
 
       // Reconnect only if not intentionally closed
       if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
@@ -72,12 +72,12 @@ export default function createWebSocketClient(chatId) {
           200 * Math.pow(2, this.reconnectAttempts) * (1 + 0.1 * Math.random()), // Exponential backoff with jitter
           this.maxBackoffDelay
         );
-        console.log(`Scheduling reconnect attempt ${this.reconnectAttempts + 1} for ${chatId} in ${delay}ms`);
+        console.log(`Scheduling reconnect attempt ${this.reconnectAttempts + 1} for buddylist in ${delay}ms`);
         setTimeout(async () => {
           this.reconnectAttempts++;
-          bp.emit('buddylist-websocket::reconnecting', { chatId, attempt: this.reconnectAttempts });
+          bp.emit('buddylist-websocket::reconnecting', { attempt: this.reconnectAttempts });
           try {
-            const newWsClient = await this.connectWebSocket(); // Attempt to reconnect
+            const newWsClient = await this.createWebSocketClient(); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
             Object.assign(wsClient, newWsClient);
           } catch (error) {
@@ -85,15 +85,15 @@ export default function createWebSocketClient(chatId) {
           }
         }, delay);
       } else if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-        console.error(`Max reconnect attempts (${this.maxReconnectAttempts}) reached for ${chatId}. Giving up.`);
-        bp.emit('websocket::reconnect_failed', { chatId });
+        console.error(`Max reconnect attempts (${this.maxReconnectAttempts}) reached for buddylist. Giving up.`);
+        bp.emit('buddylist-websocket::reconnect_failed');
       }
     };
 
     // Handle error event
     const handleError = (event) => {
-      console.error('WebSocket error for', chatId, event);
-      bp.emit('buddylist-websocket::error', { chatId, error: 'WebSocket error' });
+      console.error('WebSocket error buddylist', event);
+      bp.emit('buddylist-websocket::error', { error: 'WebSocket error' });
       // Reject the promise if connection hasn't opened yet
       if (wsClient.readyState !== WebSocket.OPEN) {
         reject(new Error('WebSocket connection failed'));
@@ -103,22 +103,22 @@ export default function createWebSocketClient(chatId) {
     };
 
     // Add event listeners
-    wsClient.addEventListener('open', handleOpen);
-    wsClient.addEventListener('message', handleMessage);
-    wsClient.addEventListener('close', handleClose);
-    wsClient.addEventListener('error', handleError);
+    wsClient.addEventListener('open', handleOpen.bind(this));
+    wsClient.addEventListener('message', handleMessage.bind(this));
+    wsClient.addEventListener('close', handleClose.bind(this));
+    wsClient.addEventListener('error', handleError.bind(this));
 
     // Method to intentionally close the WebSocket
     wsClient.closeConnection = () => {
       this.isIntentionallyClosed = true;
-      console.log(`Intentionally closing WebSocket for ${chatId}`);
+      console.log(`Intentionally closing WebSocket for buddylist`);
       wsClient.close(1000, 'Normal closure');
       // Remove event listeners to prevent memory leaks
       wsClient.removeEventListener('open', handleOpen);
       wsClient.removeEventListener('message', handleMessage);
       wsClient.removeEventListener('close', handleClose);
       wsClient.removeEventListener('error', handleError);
-      bp.emit('buddylist-websocket::closed', { chatId });
+      bp.emit('buddylist-websocket::closed');
     };
   });
 }
