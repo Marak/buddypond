@@ -85,7 +85,7 @@ Client.prototype.createWebSocketClient = createWebSocketClient;
 function apiRequest(uri, method, data, cb) {
   let url;
 
-  url = 'http://192.168.200.59:8787' + '/api/v6' + uri;
+  url = buddypond.endpoint + uri;
 
   console.log("making apiRequest", url, method, data);
 
