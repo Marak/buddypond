@@ -8,7 +8,7 @@ export default function openChatWindow(data) {
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
     let windowTitle = windowType === 'pond' ? 'Pond' : '';
-    
+
     if (data.context) {
         contextName = data.context;
     }
@@ -52,20 +52,32 @@ export default function openChatWindow(data) {
 
 
             client.addSubscription(windowType, contextName);
-            
+
+            // If when the buddy chat window is opened, the buddy has new messages, we need to set the newMessages flag to false
+            if (windowType === 'buddy') {
+                // check to see if we have newMessages state for this buddy, if so set newMessages to false
+                if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[contextName] && this.data.profileState.buddylist[contextName].newMessages) {
+                    this.data.profileState.buddylist[contextName].newMessages = false;
+                    this.client.receivedInstantMessage(contextName, function (err, re) {
+                        // console.log('receivedInstantMessage', err, re);
+                    });
+                }
+            }
+
+
             const _data = { me: this.bp.me };
             if (windowType === 'pond') {
                 _data.pondname = contextName;
             } else {
                 _data.buddyname = contextName;
             }
-            
+
             this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
             // await this.bp.load('emoji-picker');
-            
+
             let rerenderMessages = [...this.data.processedMessages[contextName]];
             this.data.processedMessages[contextName] = [];
-            
+
             for (const message of rerenderMessages) {
                 try {
                     await this.renderChatMessage(message, _window, true);
@@ -81,7 +93,7 @@ export default function openChatWindow(data) {
 
             function focusOnInput() {
                 let aimInput = $('.aim-input', _window.content);
-                 console.log('focusOnInput', aimInput.length);
+                console.log('focusOnInput', aimInput.length);
 
                 if (aimInput.length === 0) {
                     setTimeout(() => {
@@ -89,7 +101,7 @@ export default function openChatWindow(data) {
                         console.log('_window.content', _window.content);
                         focusOnInput();
                     }
-                    , 100);
+                        , 100);
                 }
                 $('.aim-input', _window.content).focus();
             }
@@ -109,7 +121,7 @@ export default function openChatWindow(data) {
 }
 
 // TODO: move to separate file, rename bindChatWindowEvents
-function setupChatWindow (windowType, contextName, chatWindow) {
+function setupChatWindow(windowType, contextName, chatWindow) {
 
     const chatWindowTemplate = this.messageTemplateString;
 
@@ -170,7 +182,7 @@ function setupChatWindow (windowType, contextName, chatWindow) {
         e.preventDefault();
         await this.sendMessageHandler(e, chatWindow, windowType, contextName);
     });
-    
+
     // Hitting enter key will send the message
     $('.aim-input', chatWindow.content).keydown((e) => {
 
