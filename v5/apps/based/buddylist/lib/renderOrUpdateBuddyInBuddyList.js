@@ -1,4 +1,4 @@
-let buddyTimeoutsInterval = 60000; // 60 seconds
+let buddyTimeoutsInterval = 60000 * 60 * 24; // 1 day
 
 export default function renderOrUpdateBuddyInBuddyList(data) {
   let bp = this.bp;
@@ -28,6 +28,18 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     if (this.bp.buddyTimeouts[buddyname]) {
       clearTimeout(this.bp.buddyTimeouts[buddyname]);
       delete this.bp.buddyTimeouts[buddyname];
+    }
+
+    // Remark: Added 5/18/2025: Adds check if user hasn't been online for a while ( this is needed for legacy API )
+    // This may still stay in as CF worker could miss disconnect events
+    // TODO: consider re-implementing a keepAlive ping each 30 minutes
+    let now = new Date().getTime();
+    let diff = now - buddydata.utime;
+    // console.log('BuddyList: diff', buddyname, buddydata.utime, diff, buddyTimeoutsInterval);
+    // If buddy hasn't been online for a while, set them to offline
+    if (buddydata.isConnected && diff > buddyTimeoutsInterval) {
+      // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
+      buddydata.isConnected = false;
     }
 
     /*
