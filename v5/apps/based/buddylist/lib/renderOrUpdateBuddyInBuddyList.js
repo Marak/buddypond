@@ -83,7 +83,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
         let now = new Date().getTime();
         let diff = now - buddydata.utime;
         if (diff > 300) {
-          bp.play('desktop/assets/audio/BUDDY-IN.wav'); // Buddy comes online
+          bp.play('desktop/assets/audio/BUDDY-IN.mp3'); // Buddy comes online
         }
       } else if (!buddydata.isConnected && wasConnected) {
         // Remark: Removed the signout sound as it was too loud / jarring

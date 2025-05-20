@@ -21,15 +21,22 @@ export default class Client {
 
 Client.prototype.connect = async function connectBuddyListWs() {
   console.log("Connecting to BuddyList WebSocket...");
-  let wsClient = await this.createWebSocketClient();
+  this.wsClient = await this.createWebSocketClient();
   console.log("Connected to BuddyList WebSocket:", wsClient);
   // TODO: needs to return / await the connection event
   // TODO: should emit buddylist::connected event ( not auth::qtokenid event )
-  this.bp.emit('buddylist::connected', wsClient);
+  this.bp.emit('buddylist::connected', this.wsClient);
 }
 
 Client.prototype.disconnect = async function disconnectBuddyListWs() {
-  console.log("Disconnecting from BuddyList WebSocket...");
+  console.log("Attempting disconnecting from BuddyList WebSocket...");
+  if (this.wsClient) {
+    this.wsClient.closeConnection();
+    this.wsClient = null;
+    console.log("Disconnected from BuddyList WebSocket");
+  } else {
+    console.log("No active WebSocket connection to disconnect");
+  }
 }
 
 Client.prototype.addBuddy = async function addBuddy(buddyname, cb) {

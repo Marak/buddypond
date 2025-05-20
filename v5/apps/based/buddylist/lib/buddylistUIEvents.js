@@ -5,6 +5,11 @@ export default function buddylistUIEvents() {
   // bind events
   $('.loginForm').submit((e) => {
     e.preventDefault();
+
+    // disable the login button
+    $('.loginButton').prop('disabled', true);
+    $('.loginButton').addClass('disabled');
+
     let username = $('.loginForm input[name="username"]').val();
     let password = $('.loginForm input[name="password"]').val();
     if (!password) {
@@ -19,6 +24,9 @@ export default function buddylistUIEvents() {
         } else {
           $('.loginForm .error').text('Failed to authenticate buddy');
         }
+        $('.loginButton').prop('disabled', false);
+        $('.loginButton').removeClass('disabled');
+
         $('.password').show();
         console.error('Failed to authenticate buddy:', err);
         return;
@@ -29,9 +37,12 @@ export default function buddylistUIEvents() {
         result.me = username;
         // The user has logged in password or signed up successfully, emit the auth event
         bp.emit('auth::qtoken', result);
-        $('.loggedIn').flexShow();
+        // $('.loggedIn').flexShow();
         $('.loginForm .error').text('');
       } else {
+        // re-enable the login button
+        $('.loginButton').prop('disabled', false);
+        $('.loginButton').removeClass('disabled');
         if (username === password) {
           $('.password').show();
           $('.password').focus();

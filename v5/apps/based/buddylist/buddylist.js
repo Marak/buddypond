@@ -260,8 +260,8 @@ export default class BuddyList {
         // Generate default profile files ( TODO: don't run this each time, keep track on profile state if users generated default profile )
         this.bp.on('auth::qtoken', 'generate-default-profile-files', qtoken => {
             // give the app a moment to load messages and open windows before generating default profile
+            // TODO: we could do this server-side instead
             setTimeout(() => {
-
                 try {
                     // alert('Generating default profile files');
                     this.generateDefaultProfile(qtoken)
@@ -269,7 +269,7 @@ export default class BuddyList {
                 } catch (err) {
                     console.error('generate-default-profile-files', err);
                 }
-            }, 1000);
+            }, 5000);
         });
 
         this.bp.on('buddylist-websocket::connected', 'update-buddylist-connected', ws => {
@@ -669,6 +669,12 @@ export default class BuddyList {
     // maybe also could connect to the websocket server for buddylist?
     // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
+
+        if (this.client) {
+            console.error('buddylist websocket client already exists and has not been closed. This should not happen');
+            return;
+        }
+
         this.bp.me = qtoken.me;
         this.bp.qtokenid = qtoken.qtokenid;
         this.data.profileState = this.data.profileState || {};
@@ -678,7 +684,8 @@ export default class BuddyList {
 
         // TODO: connect-to-websocket-server should happen here
         // plays welcome message
-        this.bp.play('desktop/assets/audio/WELCOME.wav', { tryHard: Infinity });
+        this.bp.play('desktop/assets/audio/WELCOME.mp3', { tryHard: Infinity });
+
 
         // this will eventually trigger the buddylist::connected event
         this.client = new this.Client(bp);
@@ -686,7 +693,9 @@ export default class BuddyList {
 
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond) {
-            this.openChatWindow({ pondname: this.defaultPond });
+            setTimeout(() => {
+                // this.openChatWindow({ pondname: this.defaultPond });
+            }, 200);
         }
 
     }
@@ -715,6 +724,11 @@ BuddyList.prototype.Client = Client;
 
 BuddyList.prototype.logout = function () {
     // set status to online
+
+    $('.loginButton').prop('disabled', false);
+    $('.loginButton').removeClass('disabled');
+
+
     this.client.setStatus(this.bp.me, {
         status: 'offline'
     }, (err, re) => {
@@ -731,6 +745,8 @@ BuddyList.prototype.logout = function () {
         this.bp.play('desktop/assets/audio/GOODBYE.wav');
         // TODO can we now remove bp.apps.client.logout()?
         this.bp.apps.client.logout();
+        this.client.disconnect();
+        this.client = null;
         // clear out the local .data scope
         this.data = {
             processedMessages: {},

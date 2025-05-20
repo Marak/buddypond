@@ -1,4 +1,4 @@
-import forbiddenNotes from '../forbiddenNotes.js';
+// import forbiddenNotes from '../forbiddenNotes.js';
 import scrollToBottom from './scrollToBottom.js';
 import checkForLinksInMessage from './checkForLinksInMessage.js';
 
@@ -6,10 +6,12 @@ export default async function renderChatMessage(message, _chatWindow) {
   // console.log('renderChatMessage', message, _chatWindow);
   let context = 'default';
 
-  // profanity filter
+  // profanity filter ( removed, is now server side )
+  /*
   if (message.text && message.text.length > 0) {
     message.text = forbiddenNotes.filter(message.text);
   }
+  */
 
   // TODO: needs to check for links inside the message, not just entire links
   checkForLinksInMessage(message);
