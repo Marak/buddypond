@@ -50,9 +50,10 @@ window.top.location = 'ie.html';
 </head>
 
 <body>
-  <img id="wallpaper" class="abs wallpaper" src="" />
+  <img id="wallpaper" class="abs wallpaper" />
   <div id="loaderHolder">
     <div id="loader"></div>
+    <p class="loaderText">Loading Buddy Pond...</p>
   </div>
 
   <!--
@@ -114,7 +115,6 @@ window.top.location = 'ie.html';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
 
-
       let devmode = false;
 
       // TODO: checks if current host is buddypond.com
@@ -123,8 +123,9 @@ window.top.location = 'ie.html';
         devmode = false;
       }
 
+      let localIp = '192.168.200.59';
+
       if (devmode) {
-        let localIp = '192.168.200.59';
         // localIp = '192.168.64.1';
 
         _portfolioEndpoint = `http://${localIp}:9002`;
@@ -138,6 +139,8 @@ window.top.location = 'ie.html';
         _errorsEndpoint = `https://${localIp}:8787/error`;
         console.log('Running in development mode. All services are pointing to local sources.');
       }
+
+      // _host = 'https://' + localIp;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
@@ -177,7 +180,22 @@ window.top.location = 'ie.html';
       bindJqueryReady();
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`
-        $(document).ready(function () {
+        $(document).ready(async function () {
+
+
+          bp.on('bp::loading', 'update-loading-text', function (resource) {
+            // desktop.log('Buddy Pond Cloud OS Loading');
+            console.log('Loading ' + resource + '...');
+            $('.loaderText').text('Loading ' + resource + '...');
+          });
+
+          /*
+          bp.on('bp::loaded', 'update-loading-text', function (resource) {
+            // desktop.log('Buddy Pond Cloud OS Loading');
+            console.log('Loaded ' + resource + '...');
+            //$('.loaderText').text(resource + ' loaded');
+          });
+          */
 
           // Use this to debug the focus() method
           /*
@@ -190,7 +208,7 @@ window.top.location = 'ie.html';
             };
           })();
           */
-         
+
           if (!renderBpApp) {
             // render the app
             // renderApp();
@@ -227,8 +245,9 @@ window.top.location = 'ie.html';
 
           }
 
-          bp_v_5();
 
+
+          await bp_v_5();
 
           let documentReadyTime = new Date();
           // desktop.log('Buddy Pond Cloud OS Initialized');
@@ -248,16 +267,14 @@ window.top.location = 'ie.html';
             easing: 'linear',
             duration: fadeInDelay,
             complete: function () {
-              $('#mainOverlay').fadeIn({
+                            $('#mainOverlay').fadeIn({
                 easing: 'linear',
                 duration: 333
               });
             }
           });
-
         });
       }
-
 
     </script>
     <div id="shadowRender">
