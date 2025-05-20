@@ -69,7 +69,6 @@ bp.open = async function open(app, config = { context: 'default' }) {
 // bp.load will delegate to correct provider based on resource type
 // in most cases this will be by file extension or object shape
 bp.load = async function load(resource, config = {}) {
-
     // check to see if resource is a string
     if (typeof resource === 'string') {
         if (resource.endsWith('.css')) {
@@ -94,10 +93,14 @@ bp.load = async function load(resource, config = {}) {
 
 }
 
-bp.importModule = async function importModule(app, config, buddypond = true) {
+bp.importModule = async function importModule(app, config, buddypond = true, cb) {
     // console.log('importModule', app, config, buddypond);
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     let appName = app;
+
+    if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
+        bp.emit('bp::loading', appName);
+    }
 
     if (typeof app === 'object') {
         modulePath = bp.config.host + `/v5/apps/based/${app.name}/${app.name}.js`;
@@ -134,6 +137,10 @@ bp.importModule = async function importModule(app, config, buddypond = true) {
             } else {
                 bp.log('no init function found', appName);
             }
+            if (cb) {
+                bp.emit('bp::loaded', appName, module);
+                cb(bp.apps[appName]);
+            }
 
         }
         bp._modules[modulePath] = module;
@@ -166,7 +173,7 @@ bp.fetchJSON = async function fetchJSON(url) {
     return fetch(url).then(response => response.json());
 }
 
-bp.appendCSS = function appendCSS(url, forceReload = false) {
+bp.appendCSS = async function appendCSS(url, forceReload = false) {
     // TODO: cache request, do not reload unless forced
     let fullUrl = url;
 
@@ -182,14 +189,23 @@ bp.appendCSS = function appendCSS(url, forceReload = false) {
     }
 
     bp._cache.css[fullUrl] = new Date().getTime();
-    // fetching CSS should immediately apply to the document
-    // Remark: We could check for duplicates here based on the URL
-    // Better in dev mode to always fetch the CSS and write it to the document
-    // if (!document.querySelector(`link[href="${url}"]`)) {
     let link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = fullUrl;
-    document.head.appendChild(link);
+
+    // Don't return the promise until the CSS is loaded or fails
+    return new Promise((resolve, reject) => {
+        // Handle successful load
+        link.onload = () => {
+            resolve('loaded');
+        };
+        // Handle load failure
+        link.onerror = () => {
+            reject(new Error(`Failed to load CSS from ${fullUrl}`));
+        };
+        document.head.appendChild(link);
+    });
+
 }
 
 bp.appendScript = async function appendScript(url) {
@@ -250,7 +266,7 @@ bp.emit = function emit(event, ...args) {
 
 bp.on = function on(event, label, callback) {
     if (!event || !label || !callback) {
-        throw new Error('Missing required parameters for on()');
+        throw new Error('Missing required parameters for on(). Try: bp.on(event, label, callback). All Event Emitter require a label');
     }
     // Listen for events with a label
     if (!bp._emitters[event]) {
@@ -309,9 +325,19 @@ bp.get = function get(key) {
 };
 
 
-// implemented in user-space
-bp.play = function noop () { };
-bp.focus = function noop () { };
+// bp.play is implemented in user-space
+bp.play = async function lazyLoadPlayModule() {
+    // will lazy load 'play' module and override this function with play logic
+    await bp.importModule('play');
+    // now immediately call play again with same arguments
+    bp.play.call(this, ...arguments);
+};
+
+bp.focus = function noop() { };
+
+bp.isMobile = function isMobile() {
+    return window.innerWidth < 1000;
+}
 
 // Identify the current user
 bp.me = 'Guest'; // Guest user by default // TODO: auth / login

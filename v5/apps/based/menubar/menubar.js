@@ -12,10 +12,8 @@ export default class MenuBar {
 
     async init() {
         await this.bp.appendCSS('/v5/apps/based/menubar/menubar.css');
-
-
         this.bp.on('auth::logout', 'reset-menu', () => $('.me_title').html('Sign In'));
-        
+        this.load();
     }
 
     load(menuData = {}, parent = document.body) {
@@ -56,7 +54,7 @@ export default class MenuBar {
         //console.log('Rendering menu with data:', menuData);
 
         this.menuBarElement = new MenuBarClass(menuData).createMenu();
-        console.log('new menuBarElement', parent, this.menuBarElement);
+        // console.log('new menuBarElement', parent, this.menuBarElement);
 
         // update the default values based on local storage settings
         // TODO: we may want to move this somewhere else

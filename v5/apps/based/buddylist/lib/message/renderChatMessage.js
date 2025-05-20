@@ -239,7 +239,7 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   // check if mobile, is so shorten the time
   // legacy API
-  if (this.bp.apps.ui.isMobile()) {
+  if (this.bp.isMobile()) {
     messageTime = DateFormat.format.date(messageTime, 'hh:mm:ss a');
 
   } else {

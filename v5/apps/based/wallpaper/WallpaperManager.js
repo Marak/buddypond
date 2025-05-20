@@ -53,7 +53,7 @@ export default class WallpaperManager {
             if (this.bp.settings.wallpaper_url) {
                 this.bp.apps.desktop.setWallpaper(this.bp.settings.wallpaper_url);
             } else {
-                this.active = this.settings.wallpaper_name || 'matrix';
+                this.active = this.settings.wallpaper_name || 'solid';
                 this.start();
             }
 

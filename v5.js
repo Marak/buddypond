@@ -1,22 +1,25 @@
 window.bp_v_5 = async function bp_v_5() {
+
+    // Wait for the error-tracker to load, so we may capture any potential errors during the loading process
     await bp.load('error-tracker', {
         apiEndpoint: buddypond.errorsEndpoint
     });
 
-    setConfig();
-    bindUIEvents();
-    await bp.load('localstorage');
-    await bp.load('buddyscript');
+    setConfig(); // probably can remove this
+    bindUIEvents(); // legacy UI events, these should be removed / refactored to each specific app
 
-    await loadCoreApps();
-    
-    arrangeDesktop();
+    // Must wait for localstorage and buddyscript to load before loading the rest of the apps
+    await Promise.all([
+        bp.load('localstorage'),
+        bp.load('buddyscript')
+    ]);
+
+    loadCoreApps();
 
     // desktop is loaded at this stage, continue with other apps
     // load what is required for buddylist and login
     let allCommands = bp.apps.buddyscript.commands;
 
-    await bp.load('play');
     await bp.open('client');
 
     // if not mobile, open buddylist
@@ -25,39 +28,35 @@ window.bp_v_5 = async function bp_v_5() {
         autocomplete: allCommands
     });
 
-
-    // if mobile and also session, open buddylist
-    // TODO: if (bp.isMobile() && bp.me) {
-        
-
-    // buddy list is operational at this stage
-    // load apps related to chat / social
-    await bp.load("card");
-
-    // 'toastr', 'powerlevel',
+    //await bp.load("card");
+    bp.load('card');
 
     // load any other apps that are non-essential but still useful
-     bp.load('console');
-     bp.load('clock');
-     bp.load('appstore');
-     await bp.load('motd');
-     bp.open('motd');
-     bp.load('say');
-     bp.load('droparea');
-     bp.load('file-viewer');
-     //bp.open('file-explorer');
+    // bp.load('console');
+    bp.load('clock');
+    bp.load('appstore');
+    //await bp.load('motd');
+    bp.open('motd');
+    bp.load('say');
+    bp.load('droparea');
+    bp.load('file-viewer');
 
-     // await bp.load('spellbook');
-     // bp.open('spellbook');
-    
-     // bp.open('piano')
-     // bp.open('hacker-typer');
-     // bp.open('globe');
-     // bp.open('maps');
+    /*
+    */
 
-     //bp.open('minesweeper');
-     //bp.open('solitaire');
-     //bp.open('mantra');
+    //bp.open('file-explorer');
+
+    // await bp.load('spellbook');
+    // bp.open('spellbook');
+
+    // bp.open('piano')
+    // bp.open('hacker-typer');
+    // bp.open('globe');
+    // bp.open('maps');
+
+    //bp.open('minesweeper');
+    //bp.open('solitaire');
+    //bp.open('mantra');
 
     // await bp.load('youtube');
     // await bp.load('soundrecorder');
@@ -119,9 +118,9 @@ function bindUIEvents() {
         }
         desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
         */
-       if (bp.apps.soundcloud) {
-        bp.apps.soundcloud.soundCloudEmbeded = false; // reload
-       }
+        if (bp.apps.soundcloud) {
+            bp.apps.soundcloud.soundCloudEmbeded = false; // reload
+        }
         bp.open('soundcloud', { playlistID: $(this).val() });
     });
 
@@ -141,14 +140,14 @@ function bindUIEvents() {
 
     d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
 
-    
+
         let form = $(this).parent();
         let url = $('.image', form).attr('src');
         let output = $(this).data('output');
         let context = $(this).data('context');
-    
-    
-        let cardContainer =  $(this).parent().parent();
+
+
+        let cardContainer = $(this).parent().parent();
         console.log('cardContainer', cardContainer);
         url = $('.bp-image', cardContainer).attr('src');
         // url = buddypond.host + url;
@@ -160,7 +159,7 @@ function bindUIEvents() {
             context: context
         });
 
-      });
+    });
 
     // Checking and setting the initial state of audio settings
     $(function () {
@@ -179,10 +178,10 @@ async function loadCoreApps() {
 
     console.log("start ui import")
 
-    await bp.load('wallpaper');
-    await bp.load('themes');
-    
-    await bp.importModule({
+    bp.load('wallpaper');
+    bp.load('themes');
+
+    bp.importModule({
         name: 'ui',
         parent: $('#desktop').get(0),
         window: {
@@ -215,24 +214,15 @@ async function loadCoreApps() {
     });
     console.log("ui imported")
 
-    await bp.importModule({
+    bp.load('menubar');
+
+    bp.importModule({
         name: 'desktop',
         parent: $('#desktop').get(0),
+    }, {}, true, function () {
+        arrangeDesktop();
     });
 
-
-    await bp.load('menubar');
-    bp.apps.menubar.load();
-
-    // await bp.load('spellbook');
-    //await bp.open('spellbook');
-    
-    // await bp.load('image-search');
-
-    // await bp.start(['ui', 'fetch-in-webworker', 'audio-track']);
-    //bp.open('audio-player')
-
-    // window.coinBeta();
 
 }
 

@@ -5,10 +5,7 @@ export default class AppStore {
     }
 
     async init() {
-
         this.apps = legacyApps;
-   
-
         return 'loaded appstore';
     }
 }

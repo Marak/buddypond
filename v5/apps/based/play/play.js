@@ -10,7 +10,6 @@ export default class Play {
 
     async init () {
         this.bp.play = this.play.bind(this);
-
     }
 
     async play(mediaPath, {

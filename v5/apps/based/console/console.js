@@ -8,7 +8,7 @@ export default class Console {
         this.bp.log('Hello from Console');
 
 
-        await this.bp.load('buddyscript');
+        // await this.bp.load('buddyscript');
 
         // we can load modules or html fragments or css files here
         // using this.bp.load() method
