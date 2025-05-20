@@ -1,9 +1,0 @@
-Count Zero Interrupt
-        -On recieiving an interrupt,
-         decrement the counter to zero
-
-77a is a simple "shoot the guy on the other side
-of the wall" game. Everything should be self 
-explanitory. 77a was made for the POM'98 contest.
-
- Enjoy
