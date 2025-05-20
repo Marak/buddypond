@@ -30,20 +30,22 @@ album-collection:
     - duotone
   unicode: f8a0
   voted: false
-arrows-rotate:
+desktop:
   aliases:
     names:
-      - refresh
-      - sync
+      - desktop-alt
     unicodes:
       composite:
-        - 1f5d8
+        - 1f5a5
+        - f108
+      primary:
+        - f108
       secondary:
-        - 10f021
+        - 10f108
+        - 10f390
   changes:
-    - 1.0.0
+    - 3.0.0
     - 5.0.0
-    - 5.8.0
     - 6.0.0-beta1
     - 6.2.0
     - 6.3.0
@@ -51,22 +53,395 @@ arrows-rotate:
     - 6.5.0
     - 6.6.0
     - 6.7.0
-  label: Arrows Rotate
+  label: Desktop
   search:
     terms:
-      - Clockwise Right and Left Semicircle Arrows
-      - clockwise
-      - exchange
-      - modify
-      - refresh
-      - reload
-      - renew
-      - retry
-      - rotate
-      - swap
+      - computer
+      - cpu
+      - demo
+      - desktop
+      - desktop computer
+      - device
+      - imac
+      - machine
+      - monitor
+      - pc
+      - screen
   styles:
     - duotone
-  unicode: f021
+  unicode: f390
+  voted: false
+music:
+  aliases:
+    unicodes:
+      composite:
+        - 1f3b5
+      secondary:
+        - 10f001
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.2.0
+    - 5.11.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Music
+  search:
+    terms:
+      - lyrics
+      - melody
+      - music
+      - musical note
+      - note
+      - sing
+      - sound
+  styles:
+    - solid
+    - duotone
+  unicode: f001
+  voted: false
+moon:
+  aliases:
+    unicodes:
+      composite:
+        - 1f319
+        - 23fe
+      secondary:
+        - 10f186
+  changes:
+    - 3.2.0
+    - 5.0.0
+    - 5.11.0
+    - 5.11.1
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Moon
+  search:
+    terms:
+      - Power Sleep Symbol
+      - contrast
+      - crescent
+      - crescent moon
+      - dark
+      - lunar
+      - moon
+      - night
+  styles:
+    - duotone
+  unicode: f186
+  voted: false
+qrcode:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f029
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.10.1
+    - 6.0.0-beta1
+    - 6.0.0-beta3
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Qrcode
+  search:
+    terms:
+      - barcode
+      - info
+      - information
+      - scan
+  styles:
+    - duotone
+  unicode: f029
+  voted: false
+keynote:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f66c
+  changes:
+    - 5.3.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Keynote
+  search:
+    terms:
+      - lecture
+      - panel
+      - seminar
+      - speak
+      - speaker
+      - talk
+  styles:
+    - duotone
+  unicode: f66c
+  voted: false
+copy:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f0c5
+  changes:
+    - 2.0.0
+    - 5.0.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.4.1
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Copy
+  search:
+    terms:
+      - clone
+      - duplicate
+      - file
+      - files-o
+      - paper
+      - paste
+  styles:
+    - solid
+  unicode: f0c5
+  voted: false
+play:
+  aliases:
+    unicodes:
+      composite:
+        - 25b6
+      secondary:
+        - 10f04b
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Play
+  search:
+    terms:
+      - arrow
+      - audio
+      - music
+      - play
+      - play button
+      - playing
+      - right
+      - sound
+      - start
+      - triangle
+      - video
+  styles:
+    - duotone
+  unicode: f04b
+  voted: false
+ellipsis:
+  aliases:
+    names:
+      - ellipsis-h
+    unicodes:
+      secondary:
+        - 10f141
+  changes:
+    - 3.1.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.0.0-beta3
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Ellipsis
+  search:
+    terms:
+      - dots
+      - drag
+      - kebab
+      - list
+      - menu
+      - nav
+      - navigation
+      - ol
+      - pacman
+      - reorder
+      - settings
+      - three dots
+      - ul
+  styles:
+    - solid
+    - duotone
+  unicode: f141
+  voted: false
+sun:
+  aliases:
+    unicodes:
+      composite:
+        - '2600'
+      secondary:
+        - 10f185
+  changes:
+    - 3.2.0
+    - 5.0.0
+    - 5.5.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Sun
+  search:
+    terms:
+      - bright
+      - brighten
+      - contrast
+      - day
+      - lighter
+      - rays
+      - sol
+      - solar
+      - star
+      - sun
+      - sunny
+      - weather
+  styles:
+    - duotone
+  unicode: f185
+  voted: false
+upload:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f093
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Upload
+  search:
+    terms:
+      - hard drive
+      - import
+      - publish
+      - upgrade
+  styles:
+    - duotone
+  unicode: f093
+  voted: false
+stop:
+  aliases:
+    unicodes:
+      composite:
+        - 23f9
+      secondary:
+        - 10f04d
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Stop
+  search:
+    terms:
+      - block
+      - box
+      - square
+      - stop
+      - stop button
+  styles:
+    - duotone
+  unicode: f04d
+  voted: false
+folder-music:
+  changes:
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Folder Music
+  search:
+    terms:
+      - audio
+      - mp3
+  styles:
+    - duotone
+  unicode: e18d
+  voted: false
+flag-swallowtail:
+  aliases:
+    names:
+      - flag-alt
+    unicodes:
+      secondary:
+        - 10f74c
+  changes:
+    - 5.5.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.2.1
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Flag Swallowtail
+  search:
+    terms:
+      - country
+      - notice
+      - notification
+      - notify
+      - pole
+      - report
+      - symbol
+  styles:
+    - duotone
+  unicode: f74c
   voted: false
 book-sparkles:
   aliases:
@@ -108,6 +483,345 @@ book-sparkles:
   styles:
     - duotone
   unicode: f6b8
+  voted: false
+gamepad-modern:
+  aliases:
+    names:
+      - gamepad-alt
+    unicodes:
+      composite:
+        - 1f3ae
+        - f8bc
+      primary:
+        - f8bc
+      secondary:
+        - 10f8bc
+  changes:
+    - 5.11.0
+    - 6.0.0-beta1
+    - 6.1.2
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Gamepad Modern
+  search:
+    terms:
+      - arcade
+      - controller
+      - d-pad
+      - game
+      - joystick
+      - playstore
+      - video
+      - video game
+  styles:
+    - duotone
+  unicode: e5a2
+  voted: false
+trash:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f1f8
+  changes:
+    - 4.2.0
+    - 5.0.0
+    - 5.7.0
+    - 5.10.2
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Trash
+  search:
+    terms:
+      - delete
+      - garbage
+      - hide
+      - remove
+  styles:
+    - duotone
+  unicode: f1f8
+  voted: false
+house-user:
+  aliases:
+    names:
+      - home-user
+  changes:
+    - 6.0.0-beta1
+    - 6.0.0-beta2
+    - 6.0.0-beta3
+    - 6.1.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: House User
+  search:
+    terms:
+      - house
+      - uer
+  styles:
+    - duotone
+  unicode: e1b0
+  voted: false
+code:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f121
+  changes:
+    - 3.1.0
+    - 5.0.0
+    - 6.0.0-beta1
+    - 6.0.0
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Code
+  search:
+    terms:
+      - brackets
+      - code
+      - development
+      - html
+      - mysql
+      - sql
+  styles:
+    - duotone
+  unicode: f121
+  voted: false
+arrows-rotate:
+  aliases:
+    names:
+      - refresh
+      - sync
+    unicodes:
+      composite:
+        - 1f5d8
+      secondary:
+        - 10f021
+  changes:
+    - 1.0.0
+    - 5.0.0
+    - 5.8.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Arrows Rotate
+  search:
+    terms:
+      - Clockwise Right and Left Semicircle Arrows
+      - clockwise
+      - exchange
+      - modify
+      - refresh
+      - reload
+      - renew
+      - retry
+      - rotate
+      - swap
+  styles:
+    - duotone
+  unicode: f021
+  voted: false
+frog:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f52e
+  changes:
+    - 5.0.13
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Frog
+  search:
+    terms:
+      - amphibian
+      - bullfrog
+      - fauna
+      - hop
+      - kermit
+      - kiss
+      - prince
+      - ribbit
+      - toad
+      - wart
+  styles:
+    - duotone
+  unicode: f52e
+  voted: false
+microphone-lines:
+  aliases:
+    names:
+      - microphone-alt
+    unicodes:
+      composite:
+        - 1f399
+      secondary:
+        - 10f3c9
+  changes:
+    - 5.0.0
+    - 5.0.13
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Microphone Lines
+  search:
+    terms:
+      - audio
+      - mic
+      - microphone
+      - music
+      - podcast
+      - record
+      - sing
+      - sound
+      - studio
+      - studio microphone
+      - talking
+      - voice
+  styles:
+    - duotone
+  unicode: f3c9
+  voted: false
+piano-keyboard:
+  aliases:
+    unicodes:
+      composite:
+        - 1f3b9
+      secondary:
+        - 10f8d5
+  changes:
+    - 5.11.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Piano Keyboard
+  search:
+    terms:
+      - instrument
+      - keyboard
+      - keys
+      - midi
+      - music
+      - musical keyboard
+      - piano
+  styles:
+    - duotone
+  unicode: f8d5
+  voted: false
+play-pause:
+  changes:
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Play Pause
+  search:
+    terms:
+      - arrow
+      - pause
+      - play
+      - play or pause button
+      - right
+      - stop
+      - triangle
+  styles:
+    - duotone
+  unicode: e22f
+  voted: false
+head-side-gear:
+  changes:
+    - 6.4.1
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Head Side Gear
+  search:
+    terms:
+      - ai
+      - android
+      - artificial intelligence
+      - augmented
+      - bald
+      - cybernetics
+      - face
+      - gear
+      - learning
+      - machine
+      - profile
+      - robot
+      - settings
+      - thinking
+      - thought
+      - user
+  styles:
+    - duotone
+  unicode: e611
+  voted: false
+folder-arrow-up:
+  aliases:
+    names:
+      - folder-upload
+    unicodes:
+      secondary:
+        - '10e054'
+  changes:
+    - 5.12.1
+    - 5.14.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  label: Folder Arrow Up
+  search:
+    terms:
+      - archive
+      - directory
+      - document
+      - file
+      - save
+      - upgrade
+      - upload
+  styles:
+    - duotone
+  unicode: e054
   voted: false
 border-center-v:
   aliases:
@@ -166,83 +880,18 @@ cassette-tape:
     - duotone
   unicode: f8ab
   voted: false
-copy:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f0c5
-  changes:
-    - 2.0.0
-    - 5.0.0
-    - 5.10.2
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.4.1
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Copy
-  search:
-    terms:
-      - clone
-      - duplicate
-      - file
-      - files-o
-      - paper
-      - paste
-  styles:
-    - solid
-  unicode: f0c5
-  voted: false
-ellipsis:
+reply:
   aliases:
     names:
-      - ellipsis-h
+      - mail-reply
     unicodes:
+      composite:
+        - f112
       secondary:
-        - 10f141
+        - 10f3e5
   changes:
-    - 3.1.0
+    - 3.0.0
     - 5.0.0
-    - 6.0.0-beta1
-    - 6.0.0-beta3
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Ellipsis
-  search:
-    terms:
-      - dots
-      - drag
-      - kebab
-      - list
-      - menu
-      - nav
-      - navigation
-      - ol
-      - pacman
-      - reorder
-      - settings
-      - three dots
-      - ul
-  styles:
-    - solid
-  unicode: f141
-  voted: false
-flag-swallowtail:
-  aliases:
-    names:
-      - flag-alt
-    unicodes:
-      secondary:
-        - 10f74c
-  changes:
-    - 5.5.0
     - 6.0.0-beta1
     - 6.2.0
     - 6.2.1
@@ -251,216 +900,15 @@ flag-swallowtail:
     - 6.5.0
     - 6.6.0
     - 6.7.0
-  label: Flag Swallowtail
+  label: Reply
   search:
     terms:
-      - country
-      - notice
-      - notification
-      - notify
-      - pole
-      - report
-      - symbol
+      - mail
+      - message
+      - respond
   styles:
     - duotone
-  unicode: f74c
-  voted: false
-folder-arrow-up:
-  aliases:
-    names:
-      - folder-upload
-    unicodes:
-      secondary:
-        - '10e054'
-  changes:
-    - 5.12.1
-    - 5.14.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Folder Arrow Up
-  search:
-    terms:
-      - archive
-      - directory
-      - document
-      - file
-      - save
-      - upgrade
-      - upload
-  styles:
-    - duotone
-  unicode: e054
-  voted: false
-folder-music:
-  changes:
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Folder Music
-  search:
-    terms:
-      - audio
-      - mp3
-  styles:
-    - duotone
-  unicode: e18d
-  voted: false
-frog:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f52e
-  changes:
-    - 5.0.13
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Frog
-  search:
-    terms:
-      - amphibian
-      - bullfrog
-      - fauna
-      - hop
-      - kermit
-      - kiss
-      - prince
-      - ribbit
-      - toad
-      - wart
-  styles:
-    - duotone
-  unicode: f52e
-  voted: false
-gamepad-modern:
-  aliases:
-    names:
-      - gamepad-alt
-    unicodes:
-      composite:
-        - 1f3ae
-        - f8bc
-      primary:
-        - f8bc
-      secondary:
-        - 10f8bc
-  changes:
-    - 5.11.0
-    - 6.0.0-beta1
-    - 6.1.2
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Gamepad Modern
-  search:
-    terms:
-      - arcade
-      - controller
-      - d-pad
-      - game
-      - joystick
-      - playstore
-      - video
-      - video game
-  styles:
-    - duotone
-  unicode: e5a2
-  voted: false
-head-side-gear:
-  changes:
-    - 6.4.1
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Head Side Gear
-  search:
-    terms:
-      - ai
-      - android
-      - artificial intelligence
-      - augmented
-      - bald
-      - cybernetics
-      - face
-      - gear
-      - learning
-      - machine
-      - profile
-      - robot
-      - settings
-      - thinking
-      - thought
-      - user
-  styles:
-    - duotone
-  unicode: e611
-  voted: false
-house-user:
-  aliases:
-    names:
-      - home-user
-  changes:
-    - 6.0.0-beta1
-    - 6.0.0-beta2
-    - 6.0.0-beta3
-    - 6.1.0
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: House User
-  search:
-    terms:
-      - house
-      - uer
-  styles:
-    - duotone
-  unicode: e1b0
-  voted: false
-keynote:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f66c
-  changes:
-    - 5.3.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Keynote
-  search:
-    terms:
-      - lecture
-      - panel
-      - seminar
-      - speak
-      - speaker
-      - talk
-  styles:
-    - duotone
-  unicode: f66c
+  unicode: f3e5
   voted: false
 list-music:
   aliases:
@@ -490,78 +938,6 @@ list-music:
   styles:
     - duotone
   unicode: f8c9
-  voted: false
-microphone-lines:
-  aliases:
-    names:
-      - microphone-alt
-    unicodes:
-      composite:
-        - 1f399
-      secondary:
-        - 10f3c9
-  changes:
-    - 5.0.0
-    - 5.0.13
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Microphone Lines
-  search:
-    terms:
-      - audio
-      - mic
-      - microphone
-      - music
-      - podcast
-      - record
-      - sing
-      - sound
-      - studio
-      - studio microphone
-      - talking
-      - voice
-  styles:
-    - duotone
-  unicode: f3c9
-  voted: false
-music:
-  aliases:
-    unicodes:
-      composite:
-        - 1f3b5
-      secondary:
-        - 10f001
-  changes:
-    - 1.0.0
-    - 5.0.0
-    - 5.2.0
-    - 5.11.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Music
-  search:
-    terms:
-      - lyrics
-      - melody
-      - music
-      - musical note
-      - note
-      - sing
-      - sound
-  styles:
-    - solid
-    - duotone
-  unicode: f001
   voted: false
 pencil:
   aliases:
@@ -605,124 +981,6 @@ pencil:
     - duotone
   unicode: f303
   voted: false
-piano-keyboard:
-  aliases:
-    unicodes:
-      composite:
-        - 1f3b9
-      secondary:
-        - 10f8d5
-  changes:
-    - 5.11.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Piano Keyboard
-  search:
-    terms:
-      - instrument
-      - keyboard
-      - keys
-      - midi
-      - music
-      - musical keyboard
-      - piano
-  styles:
-    - duotone
-  unicode: f8d5
-  voted: false
-play:
-  aliases:
-    unicodes:
-      composite:
-        - 25b6
-      secondary:
-        - 10f04b
-  changes:
-    - 1.0.0
-    - 5.0.0
-    - 5.10.2
-    - 6.0.0-beta1
-    - 6.0.0
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Play
-  search:
-    terms:
-      - arrow
-      - audio
-      - music
-      - play
-      - play button
-      - playing
-      - right
-      - sound
-      - start
-      - triangle
-      - video
-  styles:
-    - duotone
-  unicode: f04b
-  voted: false
-play-pause:
-  changes:
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Play Pause
-  search:
-    terms:
-      - arrow
-      - pause
-      - play
-      - play or pause button
-      - right
-      - stop
-      - triangle
-  styles:
-    - duotone
-  unicode: e22f
-  voted: false
-qrcode:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f029
-  changes:
-    - 1.0.0
-    - 5.0.0
-    - 5.10.1
-    - 6.0.0-beta1
-    - 6.0.0-beta3
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Qrcode
-  search:
-    terms:
-      - barcode
-      - info
-      - information
-      - scan
-  styles:
-    - duotone
-  unicode: f029
-  voted: false
 record-vinyl:
   aliases:
     unicodes:
@@ -749,36 +1007,6 @@ record-vinyl:
   styles:
     - solid
   unicode: f8d9
-  voted: false
-reply:
-  aliases:
-    names:
-      - mail-reply
-    unicodes:
-      composite:
-        - f112
-      secondary:
-        - 10f3e5
-  changes:
-    - 3.0.0
-    - 5.0.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.2.1
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Reply
-  search:
-    terms:
-      - mail
-      - message
-      - respond
-  styles:
-    - duotone
-  unicode: f3e5
   voted: false
 right-from-bracket:
   aliases:
@@ -809,89 +1037,4 @@ right-from-bracket:
   styles:
     - solid
   unicode: f2f5
-  voted: false
-stop:
-  aliases:
-    unicodes:
-      composite:
-        - 23f9
-      secondary:
-        - 10f04d
-  changes:
-    - 1.0.0
-    - 5.0.0
-    - 5.10.2
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Stop
-  search:
-    terms:
-      - block
-      - box
-      - square
-      - stop
-      - stop button
-  styles:
-    - duotone
-  unicode: f04d
-  voted: false
-trash:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f1f8
-  changes:
-    - 4.2.0
-    - 5.0.0
-    - 5.7.0
-    - 5.10.2
-    - 6.0.0-beta1
-    - 6.0.0
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Trash
-  search:
-    terms:
-      - delete
-      - garbage
-      - hide
-      - remove
-  styles:
-    - duotone
-  unicode: f1f8
-  voted: false
-upload:
-  aliases:
-    unicodes:
-      secondary:
-        - 10f093
-  changes:
-    - 1.0.0
-    - 5.0.0
-    - 6.0.0-beta1
-    - 6.2.0
-    - 6.3.0
-    - 6.4.0
-    - 6.5.0
-    - 6.6.0
-    - 6.7.0
-  label: Upload
-  search:
-    terms:
-      - hard drive
-      - import
-      - publish
-      - upgrade
-  styles:
-    - duotone
-  unicode: f093
   voted: false

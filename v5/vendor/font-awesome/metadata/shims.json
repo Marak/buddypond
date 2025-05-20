@@ -20,6 +20,16 @@
     "reply"
   ],
   [
+    "sun-o",
+    "far",
+    "sun"
+  ],
+  [
+    "moon-o",
+    "far",
+    "moon"
+  ],
+  [
     61579,
     "fas",
     "right-from-bracket"
@@ -33,5 +43,15 @@
     61714,
     "fas",
     "reply"
+  ],
+  [
+    61829,
+    "far",
+    "sun"
+  ],
+  [
+    61830,
+    "far",
+    "moon"
   ]
 ]

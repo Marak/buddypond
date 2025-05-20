@@ -10,6 +10,10 @@ arrows:
     - right-from-bracket
     - upload
   label: Arrows
+astronomy:
+  icons:
+    - moon
+  label: Astronomy
 business:
   icons:
     - copy
@@ -27,6 +31,7 @@ childhood:
   label: Childhood
 coding:
   icons:
+    - code
     - head-side-gear
     - qrcode
   label: Coding
@@ -45,6 +50,7 @@ design:
   label: Design
 devices-hardware:
   icons:
+    - desktop
     - gamepad-modern
     - upload
   label: Devices + Hardware
@@ -59,6 +65,10 @@ education:
   icons:
     - music
   label: Education
+energy:
+  icons:
+    - sun
+  label: Energy
 files:
   icons:
     - copy
@@ -129,6 +139,7 @@ shapes:
 spinners:
   icons:
     - arrows-rotate
+    - sun
   label: Spinners
 text-formatting:
   icons:
@@ -139,6 +150,11 @@ users-people:
     - head-side-gear
     - house-user
   label: Users + People
+weather:
+  icons:
+    - moon
+    - sun
+  label: Weather
 writing:
   icons:
     - pencil
