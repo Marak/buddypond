@@ -694,8 +694,8 @@ export default class BuddyList {
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond) {
             setTimeout(() => {
-                // this.openChatWindow({ pondname: this.defaultPond });
-            }, 200);
+                this.openChatWindow({ pondname: this.defaultPond });
+            }, 100);
         }
 
     }

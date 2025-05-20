@@ -22,7 +22,7 @@ export default class Client {
 Client.prototype.connect = async function connectBuddyListWs() {
   console.log("Connecting to BuddyList WebSocket...");
   this.wsClient = await this.createWebSocketClient();
-  console.log("Connected to BuddyList WebSocket:", wsClient);
+  console.log("Connected to BuddyList WebSocket:", this.wsClient);
   // TODO: needs to return / await the connection event
   // TODO: should emit buddylist::connected event ( not auth::qtokenid event )
   this.bp.emit('buddylist::connected', this.wsClient);

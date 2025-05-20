@@ -241,7 +241,7 @@ export default class Themes {
 
     // Store the active theme
     this.bp.set('active_theme', themeName);
-    console.log('Applied theme:', themeName, cssRules);
+    //console.log('Applied theme:', themeName, cssRules);
   }
 
 }
