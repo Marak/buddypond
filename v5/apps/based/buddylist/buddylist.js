@@ -70,7 +70,7 @@ export default class BuddyList {
             //event.preventDefault();
             //event.returnValue = "Are you sure you want to leave? Your status will be set to offline.";
             // Attempt to set status to offline (you may need a sync alternative)
-            buddypond.setStatus(this.bp.me, {
+            this.client.setStatus(this.bp.me, {
                 status: 'offline'
             }, function (err, re) {
                 console.log('buddypond.setStatus', err, re);
