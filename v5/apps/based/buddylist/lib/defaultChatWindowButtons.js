@@ -129,6 +129,17 @@ export default function defaultChatWindowButtons(bp) {
             bp.open('spellbook', { type: type || 'buddy', output: type || 'buddy', context: context });
         }
     },
+    // buddycoins
+    {
+        text: 'BuddyCoins',
+        image: 'desktop/assets/images/icons/icon_coin_64.png',
+        onclick: (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // desktop.ui.openWindow('coin', { type: type || 'buddy', context: context, output: type || 'buddy' });
+            bp.open('portfolio', { type: type || 'buddy', output: type || 'buddy', context: '#portfolio-transfer' });
+        }
+    },
     /* // TODO: add Dictate with improved UX
     {
         text: 'Dictate',

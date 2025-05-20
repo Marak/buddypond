@@ -1,4 +1,4 @@
-export default function hamsterDance({ duration = 7700 } = {}) {
+export default function hamsterDance({ duration = 7500 } = {}) {
     if ($('body').hasClass('hamster-dance-active')) return;
 
     const $body = $('body');

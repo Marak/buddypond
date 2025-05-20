@@ -12,6 +12,7 @@
     padding: 20px;
     overflow-y: auto;
     border-right: 1px solid #3b3b4f;
+    background: #1e1e2e;
 }
 
 .patch-notes h2 {
@@ -66,6 +67,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background: none;
 }
 
 .nav-button {

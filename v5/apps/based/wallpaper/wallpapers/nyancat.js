@@ -1,3 +1,16 @@
+// TODO: add mp3 file of song playing in loop
+
+// TODO: modify stars so they cycle through rainbow colors
+/*
+	Remark: the colors should cycle through the rainbow using HSL color space, for example:
+	 this.hue = (this.hue + 1) % 360;
+	  const colorHue = groupColorMode ? this.hue : (this.hue + i * 10) % 360;
+	  this.ctx.fillStyle = `hsl(${colorHue}, 100%, 50%)`;
+*/
+
+let rainbowStars = false;
+
+
 export default class NyanCatWallpaper {
 	constructor(canvasId, settings) {
 		this.canvas = document.getElementById(canvasId);
@@ -7,7 +20,7 @@ export default class NyanCatWallpaper {
 		this.drops = [];
 		this.timer = null;
 		this.settings = settings || {
-			color: '#00FF00', // Default color for the matrix text
+			color: 'white',
 			trailOpacity: 0.04 // Default trail opacity
 		};
 
@@ -15,8 +28,6 @@ export default class NyanCatWallpaper {
 
 		// Initialize drops
 	}
-
-
 
 	resize() {
 		this.canvas.width = window.innerWidth;
@@ -31,19 +42,8 @@ export default class NyanCatWallpaper {
 }
 
 
-
-
-
-/*
-desktop.app.wallpaper.wallpapers.nyancat.changeColor = function (color) {
-	desktop.app.wallpaper.wallpapers.nyancat.draw(color);
-};
-*/
-
-
 let _start = function () {
 	this.started = true;
-	// TODO: add mp3 file of song playing in loop
 	$('#wallpaper').hide();
 	this.draw(desktop.settings.wallpaper_color);
 };
@@ -101,7 +101,14 @@ let _draw = function (color) {
 		coord.speed = {};
 		coord.speed.x = 7;
 		coord.speed.y = 0;
-		coord.style =  that.settings.color || 'white';
+		if (!rainbowStars) {
+			coord.style = that.settings.color || 'white';
+
+		} else {
+			coord.hue = Math.random() * 360; // Initialize with random hue for variety
+
+		}
+
 		coords.push(coord);
 	}
 
@@ -121,10 +128,23 @@ let _draw = function (color) {
 			coord.x += -coord.speed.x;
 			coord.y += coord.speed.y;
 
+			if (rainbowStars) {
+				coord.hue = (coord.hue + 1) % 360; // Increment hue to cycle colors
+
+			}
+
+
 			context.beginPath();
 			context.rect(coord.x, coord.y, 20, 5);
 			context.rect(coord.x + 7, coord.y - 7, 5, 20);
-			context.fillStyle = coord.style;
+
+			if (!rainbowStars) {
+				context.fillStyle = coord.style;
+			} else {
+							context.fillStyle = `hsl(${coord.hue}, 100%, 50%)`; // Use HSL for rainbow effect
+
+			}
+
 			context.fill();
 		}
 

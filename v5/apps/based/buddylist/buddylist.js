@@ -137,6 +137,9 @@ export default class BuddyList {
             this.bp.appendCSS('/v5/apps/based/buddylist/buddylist.css');
             this.bp.appendCSS('/v5/apps/based/buddylist/messages.css');
 
+            this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
+
+
             // await this.bp.importModule('https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm', {}, false)
 
             // loads affirmations messages via the affirmations app

@@ -6,7 +6,6 @@ export default class Motd {
     }
 
     async init() {
-
         this.html = await this.bp.load('/v5/apps/based/motd/motd.html');
         await this.bp.load('/v5/apps/based/motd/motd.css');
         return 'loaded MOTD';
@@ -37,7 +36,6 @@ export default class Motd {
                 // this.bp.apps.ui.windowManager.destroyWindow('motd');
             }
         });
-        console.log('motdWindow', motdWindow);
 
         // Dynamically populate patch notes
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');

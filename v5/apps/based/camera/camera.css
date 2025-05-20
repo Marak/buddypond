@@ -122,7 +122,7 @@
     }
     .mirrorControls {
       position: absolute;
-      top: 16px;
+      top: 40px;
       right: 16px;
       z-index: 99;
     }

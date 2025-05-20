@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
     /* beige folder */
-    background-color: #f5f5dc;
+    /* background-color: #f5f5dc; */
     position: relative;
 }
 
@@ -95,3 +95,6 @@
     cursor: pointer;
 }
 
+.desktop-section {
+    background-color: #f9f9f9;
+}

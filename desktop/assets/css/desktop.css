@@ -547,6 +547,7 @@ th.shrink {
   left: 0;
   right: 0;
   bottom: 0px;
+  background: none;
 }
 
 
@@ -582,6 +583,7 @@ th.shrink {
   bottom: 0;
   min-width: 700px;
   min-height: 500px;
+  background: none;
 }
 
 
@@ -1455,6 +1457,7 @@ img.button-bar-button:hover {
 
 #wallpaper {
   display: none;
+  background: none;
 }
 
 .reaction-summary {

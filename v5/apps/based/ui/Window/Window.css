@@ -53,6 +53,7 @@
     padding-right: 8px;
     right: 0px;
     position: absolute;
+    background: none;
 }
 
 .window-controls button {
@@ -70,6 +71,11 @@
     line-height: 1;
     transition: transform 0.2s ease;
     margin: 1px;
+}
+
+.window-controls button:hover {
+    transform: scale(1.2); /* Slightly enlarge on hover */
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.5); /* Subtle glow effect */
 }
 
 

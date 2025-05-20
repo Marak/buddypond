@@ -436,7 +436,7 @@ class Window {
     setAsBackground() {
         console.log('setAsBackground', this.windowManager.windows);
         if (!this.canBeBackground) {
-            console.log('This window cannot be set as background');
+            console.log('This window cannot be set as background. Try setting canBeBackground:true in the Window declaration');
             return;
         }
         // check other api.ui.windowManager.windows and restore them if isBackground is true

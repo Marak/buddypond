@@ -19,6 +19,7 @@
   right: 0;
   bottom: 0;
   z-index: 99; /* Specify a stack order in case you're using a different order for other elements */
+  background: none;
 }
 
 #loaderHolder {

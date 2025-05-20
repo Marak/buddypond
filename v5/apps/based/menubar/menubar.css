@@ -21,9 +21,6 @@
   font-size: 14px;
   gap: 20px;
   box-sizing: border-box;
-  /* Includes padding and border in the element's width and height */
-
-
 }
 
 /* Top-Level Menu Items */
@@ -33,6 +30,8 @@
   cursor: pointer;
   z-index: 13000;
   border-radius: 4px 4px 0 0;
+  background: none;
+  color: #ddd;
 }
 
 .menu-item select {
@@ -46,6 +45,12 @@
   z-index: 13000;
   font-size: 14px;
 }
+
+.menu-item:hover {
+    transform: scale(1.05);
+
+}
+
 
 .menu-bar a {
   color: #ddd;
@@ -88,6 +93,76 @@
   height: 1px;
   background-color: #555;
   margin: 5px 0;
+}
+
+.volume {
+  background: none;
+}
+
+/* create a rounded border around selectLightMode */
+.selectLightMode {
+  font-size: 18px;
+  /* rounded corners */
+  border-radius: 4px;
+  background-color: #2a2a2a;
+    padding-left: 4px;
+  padding-right: 4px;
+}
+.selectLightMode i {
+  color: #ddd;
+  /* padding: 8px 12px; */
+  cursor: pointer;
+  z-index: 13000;
+  border-radius: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.selectLightMode i:hover {
+  color: #fff;
+  /* zoom in */
+  transform: scale(1.2);
+}
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.icon.trigger {
+  cursor: pointer;
+  /* padding: 8px 12px; */
+  /* background: #f0f0f0; */
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #000;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* light grey highlight */
+.dropdown-menu li:hover {
+  background: #444;
+  color: #fff;
 }
 
 @media (max-width: 1000px) {

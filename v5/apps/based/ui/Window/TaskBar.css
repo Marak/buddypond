@@ -34,11 +34,9 @@
     position: relative;
     /* rounded corners for a modern feel */
     border-radius: 8px;
-}
-
-.taskbar-item {
     transition: transform 0.3s ease;
     width: 48px; /* Adjust based on your icon size */
+    background: none;
 }
 
 .taskbar-item:hover {

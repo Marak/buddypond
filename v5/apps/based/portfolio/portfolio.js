@@ -78,7 +78,7 @@ export default class Portfolio {
 
     }
 
-    async open() {
+    async open(options = {}) {
         if (!this.portfolioWindow) {
             this.portfolioWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'portfolio',
@@ -127,6 +127,9 @@ export default class Portfolio {
             $('.loggedIn', this.portfolioWindow.content).flexShow();
         });
 
+        if (options.context && options.context !== 'default') {
+            this.tabs.showTab(options.context);
+        }
 
     }
 

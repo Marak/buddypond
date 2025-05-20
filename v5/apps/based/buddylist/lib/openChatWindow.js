@@ -117,6 +117,9 @@ export default function openChatWindow(data) {
 
     chatWindow.loggedIn = true;
 
+    // this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
+
+
     return chatWindow;
 }
 

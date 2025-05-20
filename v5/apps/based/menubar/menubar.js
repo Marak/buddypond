@@ -38,8 +38,8 @@ export default class MenuBar {
         }
 
         // Ensure that the most relevant menu data is used
-        const menuData = this.currentMenuData.length 
-            ? this.currentMenuData 
+        const menuData = this.currentMenuData.length
+            ? this.currentMenuData
             : Object.values(this.menus).flat();
 
         console.log('new menuData', menuData);
@@ -62,7 +62,7 @@ export default class MenuBar {
         if (this.bp.settings.active_theme) {
             $('.selectTheme', this.menuBarElement).val(this.bp.settings.active_theme);
         } else {
-            $('.selectTheme', this.menuBarElement).val('Hacker'); // for now
+            $('.selectTheme', this.menuBarElement).val('Dark');
         }
         console.log('setting audio', this.bp.settings.audio_enabled);
         if (this.bp.settings.audio_enabled === false) {
@@ -75,6 +75,102 @@ export default class MenuBar {
         // alert(this.bp.settings.audio_enabled);
 
         parent.appendChild(this.menuBarElement);
+
+        $('.selectLightMode i', this.menuBarElement).on('click', function (e) {
+            let mode = $(e.target).data('mode');
+            //alert('set the mode to ' + mode);
+            bp.apps.themes.applyTheme(mode);
+        });
+
+        $('.icon.trigger').on('click', function (e) {
+            e.stopPropagation(); // Prevent click from bubbling to document
+            $(this).siblings('.dropdown-menu').slideToggle(200);
+        });
+
+        // Handle option selection
+        $('.desktop-settings-dropdown-menu li').on('click', function () {
+            const value = $(this).data('value');
+            const text = $(this).text();
+            // Update the trigger text/icon if desired
+            /*
+            $(this).closest('.dropdown-wrapper').find('.icon.trigger').html(
+                `<i class="fa-duotone fa-regular fa-desktop"></i> ${text}`
+            );
+            */
+            // Hide the dropdown
+            $(this).parent().slideUp(200);
+            // Handle the selected value (e.g., perform an action)
+            console.log('Selected:', value);
+
+
+            if (!value) {
+                return;
+            }
+            if (value === 'urlWallpaper') {
+                bp.apps.desktop.setWallpaper();
+            }
+            if (value === 'open') {
+                // open the desktop settings
+                bp.open('profile', { context: 'themes' });
+                return;
+            }
+            bp.set('wallpaper_name', value);
+        });
+
+
+        $('.select-playlist-dropdown-menu li').on('click', function () {
+            const value = $(this).data('value');
+            const text = $(this).text();
+            // Update the trigger text/icon if desired
+            /*
+            $(this).closest('.dropdown-wrapper').find('.icon.trigger').html(
+                `<i class="fa-duotone fa-regular fa-desktop"></i> ${text}`
+            );
+            */
+            // Hide the dropdown
+            $(this).parent().slideUp(200);
+            // Handle the selected value (e.g., perform an action)
+            console.log('Selected:', value);
+
+        $('#soundcloudiframe').remove();
+        $('#soundcloudplayer').html('');
+        /*
+        if (desktop.app.soundcloud) {
+            desktop.app.soundcloud.embeded = false;
+        }
+        desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+        */
+        if (bp.apps.soundcloud) {
+            bp.apps.soundcloud.soundCloudEmbeded = false; // reload
+        }
+        bp.open('soundcloud', { playlistID: value });
+
+
+            return;
+
+            if (!value) {
+                return;
+            }
+            if (value === 'urlWallpaper') {
+                bp.apps.desktop.setWallpaper();
+            }
+            if (value === 'open') {
+                // open the desktop settings
+                bp.open('profile', { context: 'themes' });
+                return;
+            }
+            bp.set('wallpaper_name', value);
+        });
+
+
+        // Close dropdown when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.dropdown-wrapper').length) {
+                $('.dropdown-menu').slideUp(200);
+            }
+        });
+
+
     }
 }
 

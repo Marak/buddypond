@@ -60,7 +60,7 @@
 .buddyListHolder,
 .addBuddyForm {
     padding: 10px;
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
     border: 1px solid #ccc;
     width: 100%;
 }
@@ -88,10 +88,12 @@
 .login-frog {
     font-size: 64px;
     text-align: center;
+    color: green;
+
 }
 .login-frog i:hover {
-    color: green;
     cursor: pointer;
+    transform: scale(1.1);
 }
 .loginMessage {
     text-align: center;

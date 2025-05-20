@@ -239,6 +239,7 @@ export default class Profile {
 
         yourProfile.append(padEditorHolder);
 
+        // TODO: navigate to tabs? this.tabs.showTab(options.context);
         if (options.context && options.context === 'themes') {
             $('.themesLink').click();
         }

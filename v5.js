@@ -124,18 +124,8 @@ function bindUIEvents() {
         bp.open('soundcloud', { playlistID: $(this).val() });
     });
 
-    // Delegate change event for .selectTheme
-    d.on('change', '.selectTheme', function () {
-        // alert('set the theme')
-        let theme = $(this).val();
-        if (theme === 'Customize') {
-            bp.open('profile', { context: 'themes' });
-        } else {
-            /*
-            desktop.app.themes.applyTheme(desktop.app.themes.themes[theme]);
-            */
-            bp.apps.themes.applyTheme(theme);
-        }
+    $(window).on('resize', function () {
+        bp.apps.desktop.arrangeShortcuts()
     });
 
     d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
@@ -223,9 +213,7 @@ async function loadCoreApps() {
         arrangeDesktop();
     });
 
-
 }
-
 
 function arrangeDesktop() {
     if (bp.isMobile()) {
