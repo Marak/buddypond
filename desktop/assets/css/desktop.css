@@ -1469,3 +1469,13 @@ img.button-bar-button:hover {
 
 .loggedIn {
 }
+
+.loaderText {
+  position: absolute;
+  left: -55%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
