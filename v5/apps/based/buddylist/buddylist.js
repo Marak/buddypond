@@ -381,7 +381,10 @@ export default class BuddyList {
                 this.logout()
             }
             this.client.setStatus(this.bp.me, { status }, function (err, re) {
-                console.log('setStatus', err, re);
+                if (err) {
+                    console.error('error setting status', err);
+                }
+                // console.log('setStatus', err, re);
             });
             /*
             buddypond.setStatus(this.bp.me, { status }, function(err, re){

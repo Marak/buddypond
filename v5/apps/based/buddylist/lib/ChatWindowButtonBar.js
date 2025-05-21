@@ -15,7 +15,7 @@ export default class ChatWindowButtonBar {
     }
 
     render() {
-        console.log('ChatWindowButtonBar.render', this.buttons);
+        // console.log('ChatWindowButtonBar.render', this.buttons);
         let buttonBar = document.createElement('div');
         buttonBar.classList.add('button-bar');
 

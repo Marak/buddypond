@@ -43,13 +43,9 @@ export default function openChatWindow(data) {
         width: 600,
         height: 500,
         onOpen: async (_window) => {
-            //console.log('client', client);
-            //console.log('client.subscriptions', client.subscriptions);
-            console.log('calling onOpen for new chat window', _window);
 
-
+            // console.log('calling onOpen for new chat window', _window);
             setupChatWindow.call(this, windowType, contextName, _window);
-
 
             client.addSubscription(windowType, contextName);
 
@@ -87,14 +83,11 @@ export default function openChatWindow(data) {
             }
 
             // now focus on the .aim-input field
-            console.log('focus on input', $('.aim-input', _window.content).length);
-            console.log('_window.content', _window.content);
-
+            // console.log('focus on input', $('.aim-input', _window.content).length);
+            // console.log('_window.content', _window.content);
 
             function focusOnInput() {
                 let aimInput = $('.aim-input', _window.content);
-                console.log('focusOnInput', aimInput.length);
-
                 if (aimInput.length === 0) {
                     setTimeout(() => {
                         console.log('focus on input', $('.aim-input', _window.content).length);

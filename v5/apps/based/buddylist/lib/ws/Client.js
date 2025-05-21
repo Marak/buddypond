@@ -94,7 +94,7 @@ function apiRequest(uri, method, data, cb) {
 
   url = buddypond.endpoint + uri;
 
-  console.log("making apiRequest", url, method, data);
+  // console.log("making apiRequest", url, method, data);
 
   let headers = {
     "Accept": "application/json",

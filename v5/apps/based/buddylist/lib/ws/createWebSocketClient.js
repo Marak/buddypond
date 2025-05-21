@@ -28,10 +28,10 @@ export default function createWebSocketClient() {
     const handleMessage = (event) => {
       try {
         const parseData = JSON.parse(event.data);
-        console.log('Got back from server:', parseData);
+        // console.log('Got back from server:', parseData);
         switch (parseData.action) {
           case 'buddy_added':
-            console.log('buddy_added WebSocket message received:', parseData);
+            // console.log('buddy_added WebSocket message received:', parseData);
             bp.emit('profile::buddy::in', {
               name: parseData.buddyname,
               profile: parseData.profile || { ctime: new Date().getTime(), dtime: 0 },
@@ -39,7 +39,7 @@ export default function createWebSocketClient() {
             break;
 
           case 'getProfile':
-            console.log('getProfile message received:', parseData);
+            // console.log('getProfile message received:', parseData);
             bp.emit('profile::fullBuddyList', parseData.profile.buddylist);
             break;
 

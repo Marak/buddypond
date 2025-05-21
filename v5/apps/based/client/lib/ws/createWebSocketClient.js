@@ -8,7 +8,6 @@ export default function createWebSocketClient(chatId) {
   const maxReconnectAttempts = 999999; // Set to a high number for unlimited attempts
   const maxBackoffDelay = 10000; // 10 seconds
 
-  console.log('chatConnection', chatConnection);
   // If a chatConnection exists, reuse its reconnectAttempts
   if (chatConnection) {
     console.log(`Reusing existing chatConnection for chatId: ${chatId}, reconnectAttempts: ${chatConnection.reconnectAttempts}`);
