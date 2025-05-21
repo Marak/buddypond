@@ -48,12 +48,12 @@ export default class WallpaperManager {
         try {
  
             this.resizeCanvasToWindow();
-
+            // console.log('Loading wallpapers', this.bp.settings);
             // check to see if this.settings.wallpaper_url is set
             if (this.bp.settings.wallpaper_url) {
                 this.bp.apps.desktop.setWallpaper(this.bp.settings.wallpaper_url);
             } else {
-                this.active = this.settings.wallpaper_name || 'solid';
+                this.active = this.bp.settings.wallpaper_name || 'solid';
                 this.start();
             }
 

@@ -102,19 +102,22 @@ export default class MenuBar {
             // Handle the selected value (e.g., perform an action)
             console.log('Selected:', value);
 
-
             if (!value) {
                 return;
             }
             if (value === 'urlWallpaper') {
                 bp.apps.desktop.setWallpaper();
+                return;
             }
             if (value === 'open') {
                 // open the desktop settings
                 bp.open('profile', { context: 'themes' });
                 return;
             }
+            // clear wallpaper_url if exists
+            bp.set('wallpaper_url', null);
             bp.set('wallpaper_name', value);
+
         });
 
 
