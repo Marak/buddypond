@@ -1,8 +1,9 @@
 export default class Card {
-    constructor(bp, cardType, cardData) {
+    constructor(bp, cardType, cardData, parent) {
         this.bp = bp;
         this.cardType = cardType;
         this.cardData = cardData;
+        this.parent = parent;
         this.htmlContent = '';
         this.cssContent = '';
         this.applyData = null; // Initially null, will be set when JS is loaded
@@ -68,7 +69,7 @@ export default class Card {
         // console.log('what is this.applyData', this.applyData);
         if (this.applyData && typeof this.applyData === 'function') {
             try {
-                return this.applyData(cardContainer, this.cardData, this, parent);
+                return this.applyData(cardContainer, this.cardData, this, this.parent);
             } catch (err) {
                 console.error('Error in applyData function:', err);
             }

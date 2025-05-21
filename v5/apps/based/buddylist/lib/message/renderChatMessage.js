@@ -1,5 +1,4 @@
 // import forbiddenNotes from '../forbiddenNotes.js';
-import scrollToBottom from './scrollToBottom.js';
 import checkForLinksInMessage from './checkForLinksInMessage.js';
 
 export default async function renderChatMessage(message, _chatWindow) {
@@ -181,7 +180,8 @@ export default async function renderChatMessage(message, _chatWindow) {
   for (let i = 0; i < this.data.processedMessages[context].length; i++) {
     if (this.data.processedMessages[context][i].uuid === message.uuid) {
       // console.log('Message already processed, skipping rendering', message);
-      return;
+      // if the message has already been processed by UUID, then it's a duplicate and we should not render it
+      return chatWindow;
       // we have a special case here we wish to re-render the client message
       // this indicates the server filtered parts of the message and it should be removed and re-rendered
       if (this.data.processedMessages[context][i].from === this.bp.me && this.data.processedMessages[context][i].text !== message.text) {
@@ -204,6 +204,9 @@ export default async function renderChatMessage(message, _chatWindow) {
   if (this.data.processedMessages[context].length > 5000) {
     this.data.processedMessages[context].shift();
   }
+
+  // Add the processed message UUID to prevent reprocessing
+  this.data.processedMessages[context].push(message);
 
   if (message.isTyping) {
     // emit buddy::isTyping
@@ -266,7 +269,7 @@ export default async function renderChatMessage(message, _chatWindow) {
       // default JSON rendering will now fail by default due to nested messages cards with arbitrary props ( no .data scope either ), .context might be good...
       let cardManager = this.bp.apps.card.cardManager;
       // console.log('cardManager.loadCard', cardData);
-      const _card = await cardManager.loadCard(cardData.type, cardData);
+      const _card = await cardManager.loadCard(cardData.type, cardData, chatWindow);
       container = document.createElement('div');
       container.classList.add('cardContainer');
       let d = await _card.render(container);
@@ -278,13 +281,8 @@ export default async function renderChatMessage(message, _chatWindow) {
 
   this.createChatMessageElement(message, messageTime, chatWindow, container);
 
-  // Initially try to scroll to the bottom
-  scrollToBottom(chatWindow.content);
-
   // console.log('parseChatMessage result', result);
 
-  // Add the processed message UUID to prevent reprocessing
-  this.data.processedMessages[context].push(message);
 
   // emit the freshly processed message for any post processing events ( such as playing a sound )
   if (message.type === 'pond') {
@@ -292,6 +290,8 @@ export default async function renderChatMessage(message, _chatWindow) {
   } else {
     this.bp.emit('buddy::message::processed', message);
   }
+
+  return chatWindow;
 
 }
 

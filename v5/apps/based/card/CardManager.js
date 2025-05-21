@@ -6,8 +6,8 @@ export default class CardManager {
       this.cards = [];
     }
   
-    async loadCard(cardType, cardData) {
-      const card = new Card(this.bp, cardType, cardData);
+    async loadCard(cardType, cardData, parent) {
+      const card = new Card(this.bp, cardType, cardData, parent);
       await card.load();
       this.cards.push(card);
       return card;

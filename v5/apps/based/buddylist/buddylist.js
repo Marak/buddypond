@@ -20,6 +20,7 @@ import loadUserApps from "./lib/loadUserApps.js";
 
 import sendMessageHandler from "./lib/message/sendMessageHandler.js";
 import showCard from "./lib/message/showCard.js";
+import scrollToBottom from "./lib/message/scrollToBottom.js";
 
 
 // new ws api
@@ -557,6 +558,7 @@ export default class BuddyList {
 
     async handleChatMessages(data) {
         // console.log('handleChatMessages', data);
+        let windowsToUpdate = new Set();
         for (const message of data.result.messages) {
             try {
                 // check to see if we have newMessages in local profile for message.from
@@ -568,12 +570,16 @@ export default class BuddyList {
                         console.log('receivedInstantMessage', err, re);
                     });
                 }
-                // console.log('rendering chat message', message);
-                await this.renderChatMessage(message);
+                // return the chatWindow which the message was rendered in
+                let chatWindow = await this.renderChatMessage(message);
+                windowsToUpdate.add(chatWindow);
 
             } catch (err) {
                 console.log('error rendering chat message', message, err)
             }
+        }
+        for (const chatWindow of windowsToUpdate) {
+            this.scrollToBottom(chatWindow.content);
         }
     }
 
@@ -717,10 +723,12 @@ BuddyList.prototype.bindMessageContextMenu = bindMessageContextMenu;
 BuddyList.prototype.loadUserApps = loadUserApps;
 BuddyList.prototype.sendMessageHandler = sendMessageHandler;
 BuddyList.prototype.showCard = showCard;
+BuddyList.prototype.scrollToBottom = scrollToBottom;
 
 
 // new API
 BuddyList.prototype.Client = Client;
+
 
 BuddyList.prototype.logout = function () {
     // set status to online
