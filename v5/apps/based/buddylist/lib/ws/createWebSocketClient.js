@@ -1,4 +1,4 @@
-// TODO: refactor to be buddylist ws client
+// Remark: createWebSocketClient is a prototype method of Client, as Client.createWebSocketClient()
 export default function createWebSocketClient() {
   // Track reconnect state
 
@@ -21,6 +21,14 @@ export default function createWebSocketClient() {
       );
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
+
+      this.pingInterval = setInterval(() => {
+        if (wsClient.readyState === WebSocket.OPEN) {
+          wsClient.send(JSON.stringify({ action: 'ping' }));
+        }
+      }, 25000);
+
+
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 
@@ -42,6 +50,9 @@ export default function createWebSocketClient() {
             // console.log('getProfile message received:', parseData);
             bp.emit('profile::fullBuddyList', parseData.profile.buddylist);
             break;
+          case 'ping':
+            // console.log('pong message received:', parseData);
+          break;
 
           default:
             console.log('Last message:', event.data);
@@ -58,6 +69,9 @@ export default function createWebSocketClient() {
     // Handle close event
     const handleClose = (event) => {
       console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
+
+      clearInterval(this.pingInterval);
+
       bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
 
       // Reconnect only if not intentionally closed
