@@ -59,6 +59,19 @@ Client.prototype.receivedInstantMessage = async function receivedInstantMessage(
 }
 
 Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
+  // use wsClient to send the status update
+  console.log('calling setStatus', buddyName, update);
+  this.wsClient.send(JSON.stringify({
+    action: "setStatus",
+    buddyname: buddyName,
+    status: update.status,
+    profilePicture: update.profilePicture
+  }));
+  cb(null);
+};
+
+/* Deprecated
+Client.prototype.setStatusViaHTTP = async function setStatus(buddyName, update, cb) {
   apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
     buddyname: buddyName,
     status: update.status,
@@ -67,24 +80,7 @@ Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
     cb(err, data);
   })
 };
-
-/*
-
-buddypond.setStatus = function setStatus(buddyName, update, cb) {
-  // TODO: status becomes profile object with profile.status and profile.profilePicture
-  // apiRequest('/messages/buddy/' + buddyName, 'POST', {
-  buddypond.status = status;
-  apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
-    buddyname: buddyName, // should this be bp.me?, prob not for admin actions
-    status: update.status,
-    profilePicture: update.profilePicture,
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
 */
-
-
 
 Client.prototype.createWebSocketClient = createWebSocketClient;
 

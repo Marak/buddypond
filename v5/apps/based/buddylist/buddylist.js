@@ -279,10 +279,7 @@ export default class BuddyList {
             $('.loggedOut').flexHide();
             $('.loggedIn').flexShow();
             //$('.loggedIn').addClass('show');
-            // this event shouldn't happen until websocket client for buddylist is connected
-            this.bp.emit('profile::status', 'online');
         });
-
 
         // Remark: This has been removed in favor of letting windows manage their own state
         // If the buddylist emits newMessages: true for a buddy, the window will open automatically calling getMessages
