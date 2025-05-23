@@ -21,11 +21,14 @@ export default function createWebSocketClient() {
       );
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
+
+      /*
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
           wsClient.send(JSON.stringify({ action: 'ping' }));
         }
       }, 10000);
+      */
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 
@@ -67,7 +70,7 @@ export default function createWebSocketClient() {
     const handleClose = (event) => {
       console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
 
-      clearInterval(this.pingInterval);
+      // clearInterval(this.pingInterval);
 
       bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
 
