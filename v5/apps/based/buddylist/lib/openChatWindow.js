@@ -24,6 +24,7 @@ export default function openChatWindow(data) {
     // console.log('opening chat window ', windowId)
     let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
     if (chatWindow) {
+        chatWindow.focus();
         return chatWindow;
     }
 

@@ -83,8 +83,8 @@ export default class BuddyList {
         await this.bp.appendScript('/v5/apps/based/buddylist/vendor/marked.min.js');
 
         // TODO: we can load this lazier
-        this.bp.vendor.dicebear = await this.bp.importModule('v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false);
-        this.bp.vendor.dicebearAvatars = await this.bp.importModule('v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false);
+        this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false);
+        this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false);
         //console.log('LOADED dicebear', this.dicebear);
         //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
 
