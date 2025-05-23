@@ -137,7 +137,7 @@ export default function defaultChatWindowButtons(bp) {
             let context = ev.target.dataset.context;
             let type = ev.target.dataset.type;
             // desktop.ui.openWindow('coin', { type: type || 'buddy', context: context, output: type || 'buddy' });
-            bp.open('portfolio', { type: type || 'buddy', output: type || 'buddy', context: '#portfolio-transfer' });
+            bp.open('portfolio', { type: type || 'buddy', output: context, context: '#portfolio-transfer' });
         }
     },
     /* // TODO: add Dictate with improved UX

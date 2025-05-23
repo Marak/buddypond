@@ -110,6 +110,11 @@ export default class Portfolio {
             }, 2000); // every 5 seconds
         }
         this.render(this.portfolioWindow.content);
+
+        if (options.type === 'buddy') {
+            $('#coin-send-to').val(options.output);
+        }
+
         this.eventBind(this.portfolioWindow.content);
 
         console.log('focus the portfolioWindow');
