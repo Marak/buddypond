@@ -21,14 +21,11 @@ export default function createWebSocketClient() {
       );
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
-
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
           wsClient.send(JSON.stringify({ action: 'ping' }));
         }
       }, 10000);
-
-
       resolve(wsClient); // Resolve with the WebSocket instance
     };
 
@@ -88,6 +85,7 @@ export default function createWebSocketClient() {
             const newWsClient = await this.createWebSocketClient(); // Attempt to reconnect
             // Update event listeners to the new WebSocket instance
             Object.assign(wsClient, newWsClient);
+            this.wsClient = newWsClient;
           } catch (error) {
             console.error('Reconnect failed:', error);
           }
