@@ -26,7 +26,7 @@ export default function createWebSocketClient() {
         if (wsClient.readyState === WebSocket.OPEN) {
           wsClient.send(JSON.stringify({ action: 'ping' }));
         }
-      }, 25000);
+      }, 10000);
 
 
       resolve(wsClient); // Resolve with the WebSocket instance
