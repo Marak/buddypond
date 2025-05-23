@@ -46,18 +46,22 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  width: 24px;
+  /* width: 24px; */
   height: 24px;
-  background: #FFD700; /* Gold background for cost */
+  /* background: #FFD700; */
   color: #2b1a3f; /* Dark purple text */
   font-size: 16px;
   font-weight: bold;
   text-align: center;
   line-height: 24px;
   border-radius: 50%;
-  border: 1px solid #DAA520;
+  /* border: 1px solid #DAA520; */
   z-index: 3;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.card-spell-cost img {
+  padding: 2px;
 }
 
 .card-spell-content {

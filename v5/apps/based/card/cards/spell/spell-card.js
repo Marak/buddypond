@@ -1,9 +1,25 @@
 // TODO: discoParty
 // TODO: pixelate
-// TODO: peanut butter jelly time
-// TODO: cappuccino assassino
+import spellData from '../../../spellbook/lib/spellData.js';
 export default async function applyData(el, data) {
     const $el = $(el);
+    //console.log('Spell card data', data);
+    let allSpells = spellData.spells.concat(spellData.memes).concat(spellData.curses);
+    let spell = allSpells.find((spell) => {
+        return spell.name === data.spell;
+    });
+
+    // console.log('Spell data', spell);
+
+    if (spell && spell.costSymbol) {
+        let costSymbols = spell.costSymbol.split(',');
+        let str = '';
+        costSymbols.forEach((symbol) => {
+            let img = `<img src="/v5/apps/based/spellbook/assets/cost-symbols/${symbol.trim()}" class="spell-cost-symbol" />`;
+            str += img;
+        });
+        $el.find('.card-spell-cost').html(str);
+    }
 
     $el.on('click', (e) => {
         // re-apply the spell locally
