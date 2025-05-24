@@ -15,6 +15,7 @@ client.apiRequest = async (uri, method = 'GET', data = null) => {
   };
   if (buddypond.qtokenid) {
     headers["Authorization"] = `Bearer ${buddypond.qtokenid}`; // ✅ Use Authorization header
+    headers["X-Me"] = buddypond.me; // ✅ Use X-Me header
   }
 
 

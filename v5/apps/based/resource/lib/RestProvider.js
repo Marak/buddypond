@@ -13,6 +13,8 @@ export default class RestProvider {
             options.headers["Authorization"] = `Bearer ${this.bp.qtokenid}`; // ✅ Use Authorization header
         }
 
+        options.headers['X-Me'] = this.bp.me; // Add X-Me header
+
         let url = `${this.apiEndpoint}/${path}`;
         // append urlparams to url
         if (urlparams) {

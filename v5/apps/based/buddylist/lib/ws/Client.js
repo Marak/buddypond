@@ -94,7 +94,8 @@ function apiRequest(uri, method, data, cb) {
 
   let headers = {
     "Accept": "application/json",
-    "Content-Type": "application/json; charset=utf-8"
+    "Content-Type": "application/json; charset=utf-8",
+    "X-Me": buddypond.me, // ✅ Include X-Me header for user identification
   };
 
   if (buddypond.qtokenid) {
