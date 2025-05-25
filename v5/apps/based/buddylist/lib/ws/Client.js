@@ -50,15 +50,14 @@ Client.prototype.addBuddy = async function addBuddy(buddyname, cb) {
 }
 
 Client.prototype.receivedInstantMessage = async function receivedInstantMessage(buddyName, cb) {
-  apiRequest('/buddylist/' + this.bp.me + '/receivedInstantMessage', 'POST', {
+  this.wsClient.send(JSON.stringify({
+    action: "receivedInstantMessage",
     buddyname: buddyName,
-    newMessages: false,
-  }, function (err, data) {
-    cb(err, data);
-  })
+  }));
+  cb(null);
 }
 
-Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
+Client.prototype.setStatus = async function setStatus(buddyName, update, cb = function noop () {}) {
   // use wsClient to send the status update
   console.log('calling setStatus', buddyName, update);
   this.wsClient.send(JSON.stringify({
@@ -70,20 +69,7 @@ Client.prototype.setStatus = async function setStatus(buddyName, update, cb) {
   cb(null);
 };
 
-/* Deprecated
-Client.prototype.setStatusViaHTTP = async function setStatus(buddyName, update, cb) {
-  apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
-    buddyname: buddyName,
-    status: update.status,
-    profilePicture: update.profilePicture,
-  }, function (err, data) {
-    cb(err, data);
-  })
-};
-*/
-
 Client.prototype.createWebSocketClient = createWebSocketClient;
-
 
 function apiRequest(uri, method, data, cb) {
   let url;

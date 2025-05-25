@@ -216,51 +216,6 @@ buddypond.passwordChange = async function passwordChange({ buddyname, password }
   });
 }
 
-
-buddypond.updateProfile = async function updateProfile(buddyname, update) {
-  console.log('buddypond.updateProfile', buddyname, update);
-  return new Promise((resolve, reject) => {
-    apiRequest('/buddylist/' + buddyname + '/setStatus', 'POST', {
-      buddyname: buddyname,
-      status: update.status,
-      profilePicture: update.profilePicture,
-    }, function (err, data) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-}
-
-/*
-buddypond.setStatus = function setStatus(buddyName, update, cb) {
-  // TODO: status becomes profile object with profile.status and profile.profilePicture
-  // apiRequest('/messages/buddy/' + buddyName, 'POST', {
-  buddypond.status = status;
-  apiRequest('/buddylist/' + buddyName + '/setStatus', 'POST', {
-    buddyname: buddyName, // should this be bp.me?, prob not for admin actions
-    status: update.status,
-    profilePicture: update.profilePicture,
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-*/
-
-/*
-buddypond.receiveInstantMessage = function receiveInstantMessage(buddyName, cb) {
-  // apiRequest('/messages/buddy/' + buddyName, 'POST', {
-  apiRequest('/buddylist/' + buddypond.me + '/receiveInstantMessage', 'POST', {
-    buddyname: buddyName,
-    newMessages: false,
-  }, function (err, data) {
-    cb(err, data);
-  })
-}
-*/
-
 // TODO: move outside of api.js file
 function preprocessDeepSeek(data) {
 

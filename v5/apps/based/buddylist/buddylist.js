@@ -294,7 +294,7 @@ export default class BuddyList {
 
         this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
 
-            // console.log('profile::buddy::full_profile', data);
+            console.log('profile::buddy::full_profile', data);
             for (let b in data) {
                 let buddy = {
                     name: b,
@@ -310,9 +310,13 @@ export default class BuddyList {
 
             if (data[this.bp.me]) {
                 // for now...needs to change shape of server response to include root fields?
-                if (data[this.bp.me].profilePicture) {
-                    console.log('setting profilePicture', data[this.bp.me].profilePicture);
-                    this.data.profileState.profilePicture = data[this.bp.me].profilePicture;
+                if (data[this.bp.me].profile_picture) {
+                    console.log('setting profilePicture', data[this.bp.me].profile_picture);
+                    this.data.profileState.profilePicture = data[this.bp.me].profile_picture;
+                }
+                if (data[this.bp.me].status) {
+                    console.log('setting status', data[this.bp.me].status);
+                    this.data.profileState.status = data[this.bp.me].status;
                 }
             }
 

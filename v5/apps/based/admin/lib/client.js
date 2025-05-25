@@ -10,7 +10,8 @@ client.apiRequest = async (uri, method = 'GET', data = null) => {
 
     let headers = {
         "Accept": "application/json",
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        "X-Me": buddypond.me
       };
       if (buddypond.qtokenid) {
         headers["Authorization"] = `Bearer ${buddypond.qtokenid}`; // ✅ Use Authorization header

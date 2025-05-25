@@ -121,10 +121,10 @@ export default function updateProfilePicture(event, profilePictureImg) {
             //let url = 'https://files.buddypond.com/Jane/profile-pics/terry-called.jpg';
             console.log('File uploaded to:', url);
 
-            // Now we call updateProfile to update the profile picture
-            await this.bp.apps.client.api.updateProfile(this.bp.me, {
+            await this.bp.apps.buddylist.client.setStatus(this.bp.me, {
               profilePicture : url
             });
+
 
             // set the local profile state ( for use in sending messages)
             this.bp.apps.buddylist.data.profileState.profilePicture = url;

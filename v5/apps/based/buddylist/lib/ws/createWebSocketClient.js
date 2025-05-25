@@ -33,10 +33,11 @@ export default function createWebSocketClient() {
     };
 
     // Handle message event
+    // TODO: move to a separate function
     const handleMessage = (event) => {
       try {
         const parseData = JSON.parse(event.data);
-        // console.log('Got back from server:', parseData);
+        console.log('Got back from server:', parseData);
         switch (parseData.action) {
           case 'buddy_added':
             // console.log('buddy_added WebSocket message received:', parseData);
@@ -47,13 +48,21 @@ export default function createWebSocketClient() {
             break;
 
           case 'getProfile':
-            // console.log('getProfile message received:', parseData);
-            bp.emit('profile::fullBuddyList', parseData.profile.buddylist);
+            console.log('getProfile message received:', parseData);
+            if (parseData.profile && parseData.profile.buddylist) {
+              bp.emit('profile::fullBuddyList', parseData.profile.buddylist);
+            } else {
+              console.error('getProfile message received but no buddylist:', parseData);
+            }
             break;
           case 'ping':
             // console.log('pong message received:', parseData);
           break;
-
+          case 'buddy_removed':
+            alert('buddy_removed WebSocket message received:', parseData);
+            console.log('buddy_removed WebSocket message received:', parseData);
+            this.bp.emit('profile::buddy::out', { name: parseData.buddyname });
+            break;
           default:
             console.log('Last message:', event.data);
             console.warn('Unknown action received:', parseData);

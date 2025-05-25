@@ -4,6 +4,7 @@ import buddyProfile from './commands/buddyProfile.js';
 import banList from './commands/banList.js';
 import banBuddy from './commands/banBuddy.js';
 import unbanBuddy from './commands/unbanBuddy.js';
+import destroyBuddy from './commands/destroyBuddy.js';
 
 export default function eventBind(adminWindow) {
     // Tab manager handles tab switching
@@ -118,6 +119,24 @@ export default function eventBind(adminWindow) {
             const buddyname = unbanButton.dataset.username;
             const curseType = unbanButton.dataset.curse;
             unbanBuddy.call(this, buddyname, curseType);
+        }
+    });
+
+    // delete-buddy-button
+    document.querySelector('#delete-buddy-button').addEventListener('click', () => {
+        let confirmed = confirm('Are you sure you want to delete this buddy?');
+        if (!confirmed) {
+            return;
+        }
+
+        let buddyname = document.querySelector('#profile-input').value.trim();
+        if (!buddyname) {
+            alert('No buddyname provided');
+            return;
+        }
+        if (buddyname) {
+            // this.bp.apps.buddylist.removeBuddy(buddyname);
+            destroyBuddy.call(this, buddyname);
         }
     });
 
