@@ -71,6 +71,8 @@ export default async function applyData(el, data) {
             // let result = await this.castSpell(target, spellName, { type: spellType, config });
 
             console.log('Cure spell clicked', target, spell);
+            // ensure spellbook is loaded
+            await this.bp.load('spellbook');
             let result = await this.bp.apps.spellbook.castSpell(data.targetType, data.target, 'cure', {
                 type: 'spells'
             });
