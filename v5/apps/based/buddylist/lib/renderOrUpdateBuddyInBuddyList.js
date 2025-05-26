@@ -35,11 +35,13 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     // TODO: consider re-implementing a keepAlive ping each 30 minutes
     let now = new Date().getTime();
     let diff = now - buddydata.utime;
+    // console.log('buddydata.utime', buddydata.utime, 'now', now, 'diff', diff);
     // console.log('BuddyList: diff', buddyname, buddydata.utime, diff, buddyTimeoutsInterval);
     // If buddy hasn't been online for a while, set them to offline
     if (buddydata.isConnected && diff > buddyTimeoutsInterval) {
       // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
-      buddydata.isConnected = false;
+      // TODO: add this back in?
+      //buddydata.isConnected = false;
     }
 
     /*
@@ -94,8 +96,8 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
 
   // Use existing isConnected if available, otherwise derive from DOM state
   let isConnected = buddydata.hasOwnProperty('isConnected') ? buddydata.isConnected : wasConnected;
-
-  if (buddydata.newMessages) {
+  // console.log(buddydata);
+  if (buddydata.newMessages && buddydata.newMessages) {
     isConnected = true;
     this.bp.apps.buddylist.openChatWindow({ context: buddyname, type: 'buddy' });
   }

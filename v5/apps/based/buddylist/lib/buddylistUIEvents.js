@@ -88,6 +88,12 @@ export default function buddylistUIEvents() {
     this.bp.log('buddypond.addBuddy ->', buddyName);
 
     this.client.addBuddy(buddyName, (err, data) => {
+      console.log('buddypond.addBuddy <-', err, data);
+      if (data.error) {
+        $('.you_have_no_buddies').html(data.error);
+        console.error(data);
+        return;
+      }
       if (!data.success) {
         $('.you_have_no_buddies').html(data.message)
         console.error(data);

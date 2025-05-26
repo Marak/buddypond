@@ -621,6 +621,10 @@ a:hover {
   border-color: red;
   color: red;
 }
+.danger {
+  color: red;
+  border-color: red;
+}
 
 .invalidPassword {
   display: none;

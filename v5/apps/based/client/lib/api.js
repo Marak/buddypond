@@ -44,6 +44,7 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
     qtokenid: qtokenid
   }, function (err, data) {
     buddypond.me = me;
+    buddypond.qtokenid = qtokenid;
     if (data && data.banned) {
       alert(data.error);
     }
@@ -59,9 +60,6 @@ buddypond.addBuddy = function addBuddy(buddyname, cb) {
     cb(err, data);
   })
 }
-
-
-
 
 /*
 buddypond.removeBuddy = function removeBuddy(buddyname, cb) {
