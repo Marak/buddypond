@@ -587,7 +587,9 @@ export default class BuddyList {
             }
         }
         for (const chatWindow of windowsToUpdate) {
-            this.scrollToBottom(chatWindow.content);
+            if (chatWindow && chatWindow.content) {
+                this.scrollToBottom(chatWindow.content);
+            }
         }
     }
 

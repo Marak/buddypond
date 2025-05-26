@@ -1,4 +1,6 @@
-let buddyTimeoutsInterval = 60000 * 60 * 24; // 1 day
+// Timeout is for legacy API before websocket connections
+// We should now have a reliable way to track buddy status via websocket disconnect events
+let buddyTimeoutsInterval = 60000 * 60 * 24 * 3; // 3 days
 
 export default function renderOrUpdateBuddyInBuddyList(data) {
   let bp = this.bp;
@@ -41,7 +43,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     if (buddydata.isConnected && diff > buddyTimeoutsInterval) {
       // console.log('Setting offline due to timeout', buddyname, buddydata.utime, diff);
       // TODO: add this back in?
-      //buddydata.isConnected = false;
+      buddydata.isConnected = false;
     }
 
     /*
