@@ -9,6 +9,7 @@ import renderBuddyRequests from "./lib/renderBuddyRequests.js";
 import buddylistUIEvents from "./lib/buddylistUIEvents.js";
 import openChatWindow from "./lib/openChatWindow.js";
 import generateDefaultProfile from "./lib/generateDefaultProfile.js";
+import requestDefaultCoinAllocations from "./lib/requestDefaultCoinAllocations.js";
 import defaultChatWindowButtons from "./lib/defaultChatWindowButtons.js";
 import sortBuddyList from "./lib/sortBuddyList.js";
 // buddylist context menu
@@ -266,7 +267,14 @@ export default class BuddyList {
                 } catch (err) {
                     console.error('generate-default-profile-files', err);
                 }
-            }, 5000);
+            }, 6000);
+
+            // TODO: should first check if user profile has a balance of coins
+            // if so, we know that default coins allocation has been set
+            setTimeout(() => {
+                this.requestDefaultCoinAllocations();
+            }, 4000);
+
         });
 
         this.bp.on('buddylist-websocket::connected', 'update-buddylist-connected', ws => {
@@ -715,6 +723,7 @@ BuddyList.prototype.processBuddylist = processBuddylist;
 BuddyList.prototype.buddylistUIEvents = buddylistUIEvents;
 BuddyList.prototype.openChatWindow = openChatWindow;
 BuddyList.prototype.generateDefaultProfile = generateDefaultProfile;
+BuddyList.prototype.requestDefaultCoinAllocations = requestDefaultCoinAllocations;
 BuddyList.prototype.sortBuddyList = sortBuddyList;
 BuddyList.prototype.showContextMenu = showContextMenu;
 

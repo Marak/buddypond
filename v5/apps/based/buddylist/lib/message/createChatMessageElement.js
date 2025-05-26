@@ -66,8 +66,8 @@ export default function createChatMessageElement(message, messageTime, chatWindo
       this.bp.apps.buddylist.data.profileState &&
       this.bp.apps.buddylist.data.profileState.buddylist &&
       this.bp.apps.buddylist.data.profileState.buddylist[message.from] && 
-      this.bp.apps.buddylist.data.profileState.buddylist[message.from].profilePicture) {
-      message.profilePicture = this.bp.apps.buddylist.data.profileState.buddylist[message.from].profilePicture;
+      this.bp.apps.buddylist.data.profileState.buddylist[message.from].profile_picture) {
+      message.profilePicture = this.bp.apps.buddylist.data.profileState.buddylist[message.from].profile_picture;
     }
 
   }
