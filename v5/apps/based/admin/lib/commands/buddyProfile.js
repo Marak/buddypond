@@ -2,7 +2,7 @@
 export default async function buddyProfile(buddyname) {
 
     let buddyProfiles = await this.client.apiRequest(`/super-admin/buddy-profile?buddyname=${buddyname}`, 'GET');
-    console.log('buddyProfiles', buddyProfiles);
+    // console.log('buddyProfiles', buddyProfiles);
 
     let databaseProfile = buddyProfiles.database;
     let durableObjectProfile = buddyProfiles.durableObject;
