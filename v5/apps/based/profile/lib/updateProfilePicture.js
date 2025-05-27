@@ -22,7 +22,7 @@ export default function updateProfilePicture(event, profilePictureImg) {
 
   if (file) {
     // Validate file type
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'image/webp'];
     if (!validImageTypes.includes(file.type)) {
       updateStatus('Please select a valid image file (JPEG, PNG, or GIF).', 'error');
       profilePictureInput.value = ''; // Clear the input
