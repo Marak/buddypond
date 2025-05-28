@@ -224,8 +224,8 @@ function arrangeDesktop() {
             rowWidth: 256,
             rowHeight: 256
         });
+        bp.apps.desktop.showDesktopIcons();
         bp.apps.ui.windowManager.arrangeVerticalStacked()
-            bp.apps.desktop.showDesktopIcons();
 
     } else {
         bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
