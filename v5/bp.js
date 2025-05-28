@@ -337,8 +337,12 @@ bp.play = async function lazyLoadPlayModule() {
 
 bp.focus = function noop() { };
 
-bp.isMobile = function isMobile() {
-    return window.innerWidth < 1000;
+bp.isMobile = function isTouchDevice() {
+    return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0
+    );
 }
 
 
