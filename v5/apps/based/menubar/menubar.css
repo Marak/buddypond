@@ -165,7 +165,7 @@
   color: #fff;
 }
 
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) and (pointer: fine) {
   .menu-bar {
     display: none;
   }

@@ -910,6 +910,8 @@ iframe {
   padding: 0 0 0 0px;
   margin: 0 0 0 0px;
   width: 100%;
+  height: 100%;
+  border: none;
 }
 
 .warning {
@@ -1362,7 +1364,7 @@ iframe {
 }
 
 
-@media (max-width: 1000px) {
+@media (pointer: coarse), (hover: none) and (pointer: fine) {
   .window_top {
       height: 128px;
       font-size: 48px;

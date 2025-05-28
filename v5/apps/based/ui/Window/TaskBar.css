@@ -73,7 +73,7 @@
 
 
 /* Media query for mobile devices */
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) and (pointer: fine) {
     .taskbar-container {
         padding: 12px 20px !important; /* Larger padding for better touch interaction */
         font-size: 16px !important; /* Larger font size for readability */

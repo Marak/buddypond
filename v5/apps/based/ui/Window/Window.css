@@ -161,7 +161,7 @@
     resize: none !important;
 }
 
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) and (pointer: fine) {
     .window-title-bar {
         height: 64px;
         font-size: 48px;

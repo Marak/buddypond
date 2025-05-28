@@ -121,7 +121,7 @@
 }
 
 /* Responsive adjustments for mobile (up to 1000px) */
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) and (pointer: fine) {
     .spellbook-content {
         padding: 20px; /* Doubled from 10px */
         /* Reduced padding for more content space */
