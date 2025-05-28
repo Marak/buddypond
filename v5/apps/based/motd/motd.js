@@ -11,7 +11,7 @@ export default class Motd {
         return 'loaded MOTD';
     }
 
-    async open () {
+    async open() {
         let today = DateFormat.format.date(new Date(), 'MM/dd/yy');
         let motdWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'motd',
@@ -40,33 +40,117 @@ export default class Motd {
         // Dynamically populate patch notes
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
+                        {
+                date: '5/28/25',
+                notes: [
+                    'Improved Mobile Support',
+                    'Buddy Pond Desktop now works on mobile devices',
+                    'Improved Chat Performance for all devices',
+                ]
+            },
+
             {
                 date: '5/15/25',
                 notes: [
-                    'Spellbook app added with new spells',
-                    'Video Calls app added',
-                    'Upgraded Chat with new features',
-                    'Personal Profile Picture added'
+                    'Spellbook Added - Cast Spells with your Buddies',
+                    `Buddy Files storage now backed by Buddy Coins`,
+                    'Personal Profile Pictures added',
+                    'Numerous User Experience Improvements',
                 ]
             },
             {
                 date: '5/03/25',
                 notes: [
                     'Buddy Coins system implemented',
-                    'Portfolio app updated with coin tracking.',
-                    `MEGA and GBP currencies added`
+                    'Portfolio App added with Coin Tracking',
+                    `Added $MEGA and $GBP Buddy Coins`,
+                    'Send and receive Buddy Coins with Buddies',
+                    `Randolph Coin Faucet Bot launched`
+                ]
+            },
+                        {
+                date: '4/30/25',
+                notes: [
+                    'Enchanced Chat Performance',
+                    'Migration to websockets for real-time updates',
+                    'Infinite scaling for Pond chats'
                 ]
             },
             {
-                date: '2/22/25',
+                date: '4/20/25',
                 notes: [
-                    'Buddy Pads launched',
-                    'Buddy Files app added'
+                    'User Experience Improvements',
+                    'Adds Theme Support',
+                    'Buddy Pond User Interface updated',
+                    'Consolidation of User Interface elements',
                 ]
             },
+
+            {
+                date: '4/5/25',
+                notes: [
+                    'Enhanced Chat Experience',
+                    'Repies, Editing, Multimedia support',
+                    'Video and Audio calls'
+                ]
+            },
+            {
+                date: '3/25/25',
+                notes: [
+                    'Enchanced Buddy Cards',
+                    '20+ Chat Cards available',
+                    'Buddy Cards integrated with Chat'
+                ]
+            },
+            {
+                date: '3/12/25',
+                notes: [
+                    'Integrated Code Editor',
+                    'VSCode like experience',
+                    'Edit Buddy Pads with syntax highlighting'
+                ]
+            },
+
+
+            {
+                date: '2/27/25',
+                notes: [
+                    'Buddy Pads launched',
+                    'Buddy Pads can be shared with Buddies',
+                    'Custom Apps for Buddies',
+                ]
+            },
+            {
+                date: '2/14/25',
+                notes: [
+                    'Buddy Bots launched',
+                    'Deepseek AI integration',
+                    'Ramblor Randomization API services',
+
+                ]
+            },
+
+            {
+                date: '2/3/25',
+                notes: [
+                    'Buddy Files launched',
+                    'Cloud File Storage with User Folders',
+                    'Drag and drop File Uploads'
+
+                ]
+            },
+                        {
+                date: '1/22/25',
+                notes: [
+                    'Ported all legacy apps to new Buddy Pond',
+                    'Completed migration to Buddy Pond Cloud API',
+                ]
+            },
+
             {
                 date: '1/1/25',
                 notes: [
+                    'Buddy Pond 6.0 launched',
                     'New Buddy Pond Cloud API launched',
                     'Buddy Pond front-end rewrite completed'
                 ]

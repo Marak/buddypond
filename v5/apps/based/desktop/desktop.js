@@ -42,6 +42,8 @@ export default class Desktop {
         this.shortCutsContainer.className = 'desktop-shortcuts-container';
         this.container.appendChild(this.shortCutsContainer);
 
+
+
         // Set parent container
         this.parent = options.parent || document.body;
         this.parent.appendChild(this.container);
@@ -193,6 +195,14 @@ Desktop.prototype.viewSource = viewSource;
 
 Desktop.prototype.showDesktopIcons = function showDesktopIcons() {
     this.shortCutsContainer.style.display = 'flex';
+
+    if (this.bp.isMobile()) {
+        this.shortCutsContainer.style.position = 'absolute';
+        this.shortCutsContainer.style.left = '0px';
+        this.shortCutsContainer.style.bottom = '0px';
+    }   
+
+
 }
 
 class Shortcut {
