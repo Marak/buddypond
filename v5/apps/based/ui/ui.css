@@ -194,7 +194,7 @@ button.largest {
 }
 
 /* mobile support */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
   .ui-button {
     width: 100%;
     font-size: 14px;

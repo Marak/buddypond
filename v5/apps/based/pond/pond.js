@@ -140,7 +140,7 @@ export default class Pond {
             x: 100,
             y: 100,
             width: 400,
-            height: 400,
+            height: 170,
             minWidth: 200,
             minHeight: 200,
             parent: $('#desktop')[0],

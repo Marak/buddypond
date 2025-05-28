@@ -75,7 +75,7 @@ export default function buddylistUIEvents() {
   // Send a buddy request form
   $('.sendBuddyRequest').on('click', (ev) => {
     ev.preventDefault();
-    let buddyName = $('.buddy_request_name').val() || $(this).html();
+    let buddyName = $('.buddy_request_name').val();
     if (!buddyName) {
       $('.buddy_request_name').addClass('error');
       return;

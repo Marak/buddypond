@@ -1,7 +1,7 @@
 /* General styles for the main container */
 
 .pondsContainer {
-    display: flex;
+    /* display: flex; */
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
@@ -117,7 +117,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
     .window_main.pond_main {
         width: 100%;
         max-width: none;

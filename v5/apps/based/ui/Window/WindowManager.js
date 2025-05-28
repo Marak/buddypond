@@ -49,7 +49,7 @@ export default class WindowManager {
                     });
                     // console.log('lastPositionsBeforeArranged', this.lastPositionsBeforeArranged);
                     this.state = 'maximized';
-                } 
+                }
 
 
                 if (this.state === 'minimized') {
@@ -78,7 +78,7 @@ export default class WindowManager {
                         w.setSize(this.lastPositionsBeforeArranged[i].width + 'px', this.lastPositionsBeforeArranged[i].height + 'px');
                     });
                     this.state = 'maximized';
-                    
+
                 } else {
                     this.minimizeAllWindows(true);
                     this.windows.forEach((w, i) => {
@@ -119,7 +119,6 @@ export default class WindowManager {
             });
         }
 
-
     }
 
     createWindow(options) {
@@ -159,27 +158,22 @@ export default class WindowManager {
             title: window.title,
             icon: window.icon,
             onClick: () => {
-
-
                 // toggle window minimize / restore state
                 if (this.isMobile()) {
-                    this.minimizeAllWindows(true);
+                    // this.minimizeAllWindows(true);
+                    this.arrangeVerticalStacked();
                     // we could minimize all other windows here
                     // minimizeAllWindows();
                     // hide all legacy BP windows ( TODO remove this )
-                    $('.window').hide();
-                    $('.window').removeClass('window_stack');
+                    //$('.window').hide();
+                    //$('.window').removeClass('window_stack');
                 }
-
                 window.minimize();
-
-
             }
         });
-        
+
         return window;
     }
-
 
     isMobile() {
         return window.innerWidth < 1000;
@@ -265,6 +259,7 @@ export default class WindowManager {
         }
     }
 
+    /* legacy, may need to be replaced
     openWindow(name, config) {
         // TODO: remove JQDX reference ( legacy windows might triger this )
         JQDX.hideLoadingProgressIndicator(); // for now
@@ -272,22 +267,43 @@ export default class WindowManager {
             this._openWindow(name, config);
         }
     }
+    */
 
     arrangeVerticalStacked() {
-        let containerHeight = document.body.clientHeight; // Adjust to your specific container if not the body
-        containerHeight -= 100;
-        const numWindows = this.windows.length;
-        let windowHeight = containerHeight / numWindows;
-        windowHeight -= 10; // Adjust to your desired offset
+        let containerHeight = document.body.clientHeight - 100; // Adjust for container and offset
+        let windowWidth = document.body.clientWidth - 10; // Adjust for container and offset
+        const defaultWindowHeight = containerHeight * 0.8; // Default height for non-minimized windows
+        const minimizedHeight = 120; // Height for minimized windows
+        const gap = 10; // Optional gap between windows for better spacing
+        let totalY = 0; // Initialize Y position
 
+        console.log('window count', this.windows.length, 'defaultWindowHeight', defaultWindowHeight, 'windowWidth', windowWidth);
+        console.log(this.windows);
 
-        this.windows.forEach((window, index) => {
-            let yPos = windowHeight * index;
-            yPos += 30;
-            yPos += 10 * index; // Adjust to your desired offset
-            window.setSize('100%', windowHeight + 'px'); // Assuming you have a resize method
-            window.move(0, yPos); // Assuming you have a move method
+        this.windows.reverse().forEach((window, index) => {
+            // Determine the height for the current window
+            let currentWindowHeight = window.isMinimized ? minimizedHeight : defaultWindowHeight;
+
+            console.log("index", index, window.title, 'isMinimized', window.isMinimized, 'currentWindowHeight', currentWindowHeight, 'windowWidth', windowWidth);
+
+            // Set window size and position
+            window.setSize(windowWidth + 'px', currentWindowHeight + 'px'); // Set size
+            window.move(0, totalY); // Move to calculated Y position
+
+            // Increment totalY for the next window
+            totalY += currentWindowHeight + gap; // Add current window's height and gap
+
+            console.log("totalY", totalY, "currentWindowHeight", currentWindowHeight, "windowWidth", windowWidth);
         });
+
+        // Position the shortCutsContainer below the last window
+        console.log('setting shortCutsContainer top to', totalY);
+        if (this.bp.apps.desktop.shortCutsContainer) {
+            this.bp.apps.desktop.shortCutsContainer.style.position = 'absolute';
+            this.bp.apps.desktop.shortCutsContainer.style.left = '0px';
+            this.bp.apps.desktop.shortCutsContainer.style.top = totalY + 'px';
+
+        }
     }
 
     arrangeHorizontalStacked() {
@@ -302,6 +318,7 @@ export default class WindowManager {
             window.setSize(windowWidth + 'px', 'calc(100% - 80px)'); // Assuming you have a resize method
             window.move(xPos, 30); // Assuming you have a move method
         });
+
     }
 
     arrangeCascadeFromTopLeft() {
@@ -318,7 +335,7 @@ export default class WindowManager {
     restoreWindows(serializedWindows, inflate = false) {
         const windowsData = JSON.parse(serializedWindows);
         // console.log("Restoring windows", windowsData);
-
+        // alert("Restoring windows from storage, this will be removed in the future, please use the settings app to manage windows");
         this._windows = windowsData;
 
         if (!inflate) {
@@ -335,7 +352,7 @@ export default class WindowManager {
             }
             data.parent = document.querySelector(data.parent);
             // console.log("hydrating window", data);
-            this.openWindow(data.app, data);
+            // this.openWindow(data.app, data);
             //const window = this.createWindow(data);
             //window.hydrate(data);
         });

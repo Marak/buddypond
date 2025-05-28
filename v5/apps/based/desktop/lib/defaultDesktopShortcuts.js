@@ -44,6 +44,8 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
+    if (!bp.isMobile()) {
+
     bp.apps.desktop.addShortCut({
         name: 'file-explorer',
         icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
@@ -54,6 +56,7 @@ export default function defaultDesktopShortcuts() {
             bp.open('file-explorer');
         }
     });
+}
 
     bp.apps.desktop.addShortCut({
         name: 'paint',
@@ -66,16 +69,19 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-    bp.apps.desktop.addShortCut({
-        name: 'sound-recorder',
-        icon: `desktop/assets/images/icons/icon_soundrecorder_64.png`,
-        label: 'Sound Recorder',
-        description: 'Record and save audio clips'
-    }, {
-        onClick: () => {
-            bp.open('soundrecorder');
-        }
-    });
+    if (!bp.isMobile()) {
+
+        bp.apps.desktop.addShortCut({
+            name: 'sound-recorder',
+            icon: `desktop/assets/images/icons/icon_soundrecorder_64.png`,
+            label: 'Sound Recorder',
+            description: 'Record and save audio clips'
+        }, {
+            onClick: () => {
+                bp.open('soundrecorder');
+            }
+        });
+    }
 
     bp.apps.desktop.addShortCut({
         name: 'youtube',
@@ -99,16 +105,18 @@ export default function defaultDesktopShortcuts() {
         },
     });
 
-    bp.apps.desktop.addShortCut({
-        name: 'piano',
-        icon: `desktop/assets/images/icons/icon_piano_64.png`,
-        label: 'Piano',
-        description: 'Play a virtual piano keyboard'
-    }, {
-        onClick: () => {
-            bp.open('piano');
-        }
-    });
+    if (!bp.isMobile()) {
+        bp.apps.desktop.addShortCut({
+            name: 'piano',
+            icon: `desktop/assets/images/icons/icon_piano_64.png`,
+            label: 'Piano',
+            description: 'Play a virtual piano keyboard'
+        }, {
+            onClick: () => {
+                bp.open('piano');
+            }
+        });
+    }
 
     bp.apps.desktop.addShortCut({
         name: 'fluid-simulation',
@@ -143,7 +151,7 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
-    function coinBeta () {
+    function coinBeta() {
         /*
         bp.apps.desktop.addShortCut({
             name: 'orderbook',
@@ -166,7 +174,7 @@ export default function defaultDesktopShortcuts() {
                 bp.open('coin');
             }
         });
-        
+
 
         bp.apps.desktop.addShortCut({
             name: 'portfolio',
@@ -178,7 +186,7 @@ export default function defaultDesktopShortcuts() {
                 bp.open('portfolio');
             }
         });
-    
+
         /*
         bp.apps.desktop.addShortCut({
             name: 'buddybux',

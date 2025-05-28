@@ -216,6 +216,7 @@ function insertChatMessage(chatWindow, message, chatMessage) {
 }
 
 // Create a simple in-memory cache
+// TODO: move to a separate file
 const avatarCache = new Map();
 
 function defaultAvatarSvg(username) {

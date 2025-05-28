@@ -3,6 +3,7 @@ export default class Youtube {
         this.bp = bp;
         this.youtubeWindow = null;
         this.player = null;
+        // default video static to start rZhbnty03U4
         return this;
     }
 
@@ -102,7 +103,7 @@ export default class Youtube {
 
         // Handle different error types
         const errorCodes = [100, 101, 150]; // Common unavailable video errors
-        if (errorCodes.includes(event.data)) {
+        if (errorCodes.includes(event.data) || event.data === 2) {
             console.warn('Video unavailable, selecting a new one...');
             this.playRandomVideo();
         }

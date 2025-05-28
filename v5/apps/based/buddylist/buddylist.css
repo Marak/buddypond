@@ -128,7 +128,10 @@
     justify-content: flex-start;
     gap: 5px;
 }
-@media (max-width: 1000px) {
+.buddy-message-sender {
+    cursor: pointer;
+}
+@media (pointer: coarse) {
     .app-buddylist>p,
     .app-buddylist>input,
     .app-buddylist>i,
@@ -156,8 +159,8 @@
         height: 200px;
     }
     .loginForm input {
-        font-size: 42px;
-        height: 96px;
+        font-size: 64px;
+        height: 128px;
     }
     #tosAgree {
         width: 96px;
@@ -166,4 +169,27 @@
     .loginMessage {
         font-size: 42px;
     }
+    .onlineStatusSelect {
+        font-size: 52px;
+    }
+    .buddy-message-sender {
+        font-size: 52px;
+    }
+    .desktopButton {
+        width: 100% !important;
+        height: 128px;
+        font-size: 42px;
+    }
+    .positiveAffirmation {
+        font-size: 42px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+    }
+    .addBuddyForm {
+        align-items: center;
+    }
+    .tos-checkbox {
+        font-size: 42px;
+    }
+
 }

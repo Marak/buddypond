@@ -113,11 +113,11 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
 
       } catch (error) {
         console.error('Error uploading file:', error);
-        statusDiv.text('Failed!')
+        statusDiv.text('Failed: ' + error.message)
           .css('background', 'rgba(255, 0, 0, 0.7)');
 
         // Keep failed uploads visible for 2 seconds then fade out
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 8000));
         await $(element).fadeOut(300);
         $(element).remove();
       }

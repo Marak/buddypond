@@ -119,6 +119,7 @@ export default class BuddyList {
 
         if (config.type === 'buddylist-profile') {
 
+            // TODO: have the ability to close and re-open the buddylist gracefully
 
             if (this.opened) {
                 this.buddyListWindow.open();

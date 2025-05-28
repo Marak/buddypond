@@ -98,7 +98,7 @@
 }
 
 /* Responsive adjustments for smaller screens */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
     .card-apps-card {
         margin: 10px;
         padding: 15px;

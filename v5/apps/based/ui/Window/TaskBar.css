@@ -40,7 +40,7 @@
 }
 
 .taskbar-item:hover {
-    transform: scale(1.5); /* Icon enlargement factor */
+    transform: scale(1.2); /* Icon enlargement factor */
 }
 
 .taskbar-item-text {
@@ -73,7 +73,7 @@
 
 
 /* Media query for mobile devices */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
     .taskbar-container {
         padding: 12px 20px !important; /* Larger padding for better touch interaction */
         font-size: 16px !important; /* Larger font size for readability */
@@ -90,9 +90,11 @@
 
     .taskbar-item:hover {
         background-color: #666 !important; /* Slightly darker for hover effect, considering touch devices don't use hover, this is for consistency */
+        transform: scale(1.1) !important; /* Icon enlargement factor */
     }
     /* make the items and text larger */
     .taskbar-item-text {
+        display: none !important; /* Hide text by default */
         font-size: 24px !important;
         padding: 10px 20px !important;
         border-radius: 8px !important;
@@ -105,4 +107,8 @@
         width: 128px !important;
         height: 128px !important;
     }
+     .taskbar-container {
+        display: none !important; /* Hide taskbar on small screens */
+    }
+
 }

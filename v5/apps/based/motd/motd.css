@@ -109,3 +109,13 @@
 .patch-notes::-webkit-scrollbar-thumb:hover {
     background: #f1fa8c;
 }
+
+/* touch course media query for better mobile experience */
+@media (pointer: coarse) {
+   
+    .nav-links button {
+        font-size: 1.5em;
+        padding: 24px;
+        margin: 14px 0;
+    }
+}

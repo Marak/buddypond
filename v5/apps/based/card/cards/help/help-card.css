@@ -99,7 +99,7 @@
 }
 
 /* CSS section for mobile to make fonts larger */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
     .card-help-content h2 {
         font-size: 3.25rem;
     }

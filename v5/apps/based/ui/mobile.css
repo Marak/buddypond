@@ -1,7 +1,13 @@
 /* Base styles for desktop are assumed to be defined elsewhere */
 
 /* Media query for mobile devices */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
+
+
+    #desktop {
+        overflow: auto !important; /* Allow scrolling on mobile */
+    }
+
     /* General styles for mobile view */
     .bp-window-content {
         padding: 5px; /* Less padding for mobile */
@@ -14,17 +20,24 @@
         height: 64px !important; /* Larger touch targets */
         font-size: 64px !important; /* Larger icons */
         margin-left: 32px !important;
+        margin-right: 16px !important;
     }
 
+    /*
     .maximize-button {
-        display: none !important; /* Hide maximize button */
+        display: none !important; 
     }
+    */
 
     .window-container, .window {
+        /*
         left: 5px !important;
         top: 7px !important;
-        width: calc(100% - 10px) !important; /* Full width for mobile */
-        height: calc(100vh - 120px) !important; /* Full height for mobile */
+        */
+        /*
+        width: calc(100vw - 10px) !important; 
+        height: calc(70vh - 220px) !important;
+        */
     }
 
     .window-content {
@@ -83,7 +96,7 @@
     .addBuddyForm input[type="text"] {
         width: 100%;
         margin-bottom: 10px; 
-        font-size: 32px;
+        font-size: 64px;
     }
 
     button {

@@ -30,10 +30,24 @@ export default function openChatWindow(data) {
 
     let iconImagePath = windowType === 'buddy' ? '' : 'desktop/assets/images/icons/icon_pond_64.png';
 
+    if( windowType === 'buddy') {
+
+        if (
+            this.bp.apps.buddylist.data.profileState &&
+            this.bp.apps.buddylist.data.profileState.buddylist &&
+            this.bp.apps.buddylist.data.profileState.buddylist[contextName] && 
+            this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture) {
+                iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
+            }
+
+
+    }
+
     chatWindow = this.bp.apps.ui.windowManager.createWindow({
         app: 'buddylist',
         id: windowIdPrefix + contextName,
         title: contextName + ' ' + windowTitle,
+        // title: '<img src="' + iconImagePath + '" class="window-icon" /> ' + contextName + ' ' + windowTitle,
         icon: iconImagePath,
         type: windowType,
         context: contextName,

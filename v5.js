@@ -125,7 +125,10 @@ function bindUIEvents() {
     });
 
     $(window).on('resize', function () {
-        bp.apps.desktop.arrangeShortcuts()
+        //bp.apps.desktop.showDesktopIcons();
+        //bp.apps.desktop.arrangeShortcuts();
+        arrangeDesktop();
+        console.log('Window resized, rearranging desktop shortcuts');
     });
 
     d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
@@ -221,12 +224,18 @@ function arrangeDesktop() {
             rowWidth: 256,
             rowHeight: 256
         });
+        bp.apps.ui.windowManager.arrangeVerticalStacked()
+            bp.apps.desktop.showDesktopIcons();
+
     } else {
         bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
+        // bp.apps.ui.windowManager.restoreWindows();
     }
-    setTimeout(() => {
-        bp.apps.desktop.showDesktopIcons();
-    }, 300);
+
+        setTimeout(() => {
+            bp.apps.desktop.showDesktopIcons();
+
+        }, 300);
 
 }
 window.arrangeDesktop = arrangeDesktop;

@@ -175,7 +175,7 @@
 }
 
 /* Responsive adjustments for mobile (up to 768px) */
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
   .card-spell-card {
     width: 100%; /* Full width for mobile */
     width: 768px; /* Slightly larger max-width for flexibility */

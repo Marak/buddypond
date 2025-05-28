@@ -178,7 +178,7 @@ class Window {
                 32
             );
         }
-        
+
 
         // Apply adjusted position
         this.x = adjustedPosition.x;
@@ -204,6 +204,19 @@ class Window {
         this.titleBar = document.createElement("div");
         this.titleBar.classList.add("window-title-bar");
 
+        if (this.bp.isMobile()) {
+            this.titleBar.onclick = () => {
+                console.log('titleBar clicked on mobile');
+                this.minimize();
+                return;
+                if (!this.isMinimized) {
+                    this.minimize(true); // force minimize on mobile
+                } else {
+                    this.restore(); // restore on mobile
+                }
+            }
+        }
+
         // on double click maximize
         this.titleBar.ondblclick = () => this.maximize();
 
@@ -228,17 +241,27 @@ class Window {
         const controls = document.createElement("div");
         controls.classList.add("window-controls");
 
+        if (!this.bp.isMobile()) {
         this.minimizeButton = document.createElement("button");
         this.minimizeButton.innerHTML = "&#x1F7E1;"; // Yellow circle
         this.minimizeButton.classList.add("minimize-button");
         this.minimizeButton.title = "Minimize";
         this.minimizeButton.onclick = () => this.minimize();
 
-        this.maximizeButton = document.createElement("button");
+        controls.appendChild(this.minimizeButton);
+
+
+    }
+
+
+            this.maximizeButton = document.createElement("button");
         this.maximizeButton.innerHTML = "&#x1F7E2;"; // Green circle
         this.maximizeButton.classList.add("maximize-button");
         this.maximizeButton.title = "Maximize";
         this.maximizeButton.onclick = () => this.maximize();
+
+        controls.appendChild(this.maximizeButton);
+
 
         this.closeButton = document.createElement("button");
         this.closeButton.innerHTML = "&#x1F534;"; // Red circle
@@ -246,8 +269,6 @@ class Window {
         this.closeButton.title = "Close";
         this.closeButton.onclick = () => this.close();
 
-        controls.appendChild(this.minimizeButton);
-        controls.appendChild(this.maximizeButton);
         controls.appendChild(this.closeButton);
 
         this.titleBar.appendChild(titleBarSpan);
@@ -314,7 +335,7 @@ class Window {
         // iframe is loaded by now
         this.onLoad(this);
         const iframeWindow = this.content.contentWindow;
-    
+
         // Inject a script into the iframe to listen for the ESC key
         const iframeDoc = this.content.contentDocument || this.content.contentWindow.document;
         const script = iframeDoc.createElement("script");
@@ -328,11 +349,11 @@ class Window {
         `;
         //alert(script.textContent)
         iframeDoc.body.appendChild(script);
-    
+
         // Set the message event listener on the iframe's window
         window.addEventListener('message', this.receiveMessage.bind(this), false);
     }
-    
+
 
     sendMessage(message) {
         if (this.content && this.content.contentWindow) {
@@ -351,7 +372,7 @@ class Window {
             }
         }
     }
-    
+
     handleReceivedMessage(data) {
         //console.log('Handled Received message:', data, this.onMessage);
         if (this.onMessage) {
@@ -360,7 +381,7 @@ class Window {
     }
 
 
-    move (x, y) {
+    move(x, y) {
         this.x = x;
         this.y = y;
         this.container.style.top = `${this.y}px`;
@@ -525,12 +546,35 @@ class Window {
 
     minimize(force = false) {
         // console.log('minimize', this.isMinimized);
-        if (this.isMinimized && !force) {
-            this.restore();
+        if (this.bp.isMobile()) {
+
+            if (this.isMinimized && !force) {
+                this.restore();
+                        // this.content.style.display = "block"; // Show content area
+            } else {
+                // Minimize the window
+                // this.container.style.display = "none";  // Hide content area
+                // hides the `bp-window-content` area
+                        //this.content.style.display = "none";  // Hide content area
+                // set the window-container height to 50px
+                this.container.style.height = "120px"; // Set height to 50px
+                console.log('setting content area');
+
+                this.isMinimized = true;
+            }
+
+            this.windowManager.arrangeVerticalStacked();
+
+
         } else {
-            // Minimize the window
-            this.container.style.display = "none";  // Hide content area
-            this.isMinimized = true;
+            if (this.isMinimized && !force) {
+                this.restore();
+            } else {
+                // Minimize the window
+                console.log('hiding content area');
+                this.container.style.display = "none";  // Hide content area
+                this.isMinimized = true;
+            }
         }
 
         // TODO: save the window state
@@ -551,20 +595,44 @@ class Window {
         this.isMinimized = false;
         // TODO: save the window state
 
+        if (this.bp.isMobile()) {
+            this.windowManager.arrangeVerticalStacked();
+        }
+
+
     }
 
     maximize() {
         if (this.isMaximized) {
-            this.container.style.width = `${this.width}px`;
-            this.container.style.height = `${this.height}px`;
-            this.container.style.top = "50px";
-            this.container.style.left = "50px";
-            this.isMaximized = false;
+            if (this.bp.isMobile()) {
+                //this.container.style.width = "100vw";
+                //this.container.style.height = "100vh";
+                //this.container.style.top = "0";
+                //this.container.style.left = "0";
+                this.windowManager.arrangeVerticalStacked();
+
+            } else {
+                this.container.style.width = `${this.width}px`;
+                this.container.style.height = `${this.height}px`;
+                this.container.style.top = "50px";
+                this.container.style.left = "50px";
+                this.isMaximized = false;
+
+            }
         } else {
-            this.container.style.width = "100vw";
-            this.container.style.height = "calc(100vh - 75px)";
-            this.container.style.top = "23px";
-            this.container.style.left = "0";
+            if (this.bp.isMobile()) {
+                this.container.style.width = "100vw";
+                this.container.style.height = "100vh";
+                this.container.style.top = "0";
+                this.container.style.left = "0";
+
+            } else {
+                this.container.style.width = "100vw";
+                this.container.style.height = "calc(100vh - 75px)";
+                this.container.style.top = "23px";
+                this.container.style.left = "0";
+
+            }
             this.isMaximized = true;
         }
         // TODO: save the window state
@@ -595,6 +663,16 @@ class Window {
         }
         // TODO: save the window state ???
         // ???? this.parent.appendChild(this.container);
+
+        if (this.bp.isMobile()) {
+            // this.minimizeAllWindows(true);
+            // alert('opening window on mobile');
+            setTimeout(() => {
+                this.windowManager.arrangeVerticalStacked();
+            }, 100);
+        }
+
+
         this.bp.emit('window::open', this);
         // console.log('callling focus from open');
     }
@@ -650,6 +728,14 @@ class Window {
         this.onClose();
         this.bp.emit('window::close', this);
 
+        if (this.bp.isMobile()) {
+            // this.minimizeAllWindows(true);
+            //this.windowManager.arrangeVerticalStacked();
+            setTimeout(() => {
+                this.windowManager.arrangeVerticalStacked();
+            }, 100);
+        }
+
     }
 
     addResizeHandles() {
@@ -659,10 +745,11 @@ class Window {
 
         resizeHandle.onmousedown = (e) => this.startResize(e);
         document.onmouseup = () => this.stopResize();
+        // can we remove this?
         document.onmousemove = (e) => this.resize(e);
     }
 
-    setSize (width, height) {
+    setSize(width, height) {
         this.width = width;
         this.height = height;
         this.container.style.width = `${this.width}`;

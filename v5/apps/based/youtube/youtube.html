@@ -2,6 +2,10 @@
     .orb-holder {
         cursor: pointer;
         text-align: center;
+        position: absolute;
+        bottom: 5px;
+        left: 175px;
+        color: white;
     }
 
     .orb-holder span {
@@ -12,11 +16,23 @@
     }
     .orb-left {
         position: relative;
-        left: 10px;
     }
-    .orb-right {
-        position: relative;
-        right: 10px;
+ 
+
+    /* mobile responsive */
+    @media (pointer: coarse) {
+        .orb-holder {
+            left: 175px;
+            bottom: 128px;
+            display: none;
+        }
+        .orb-left {
+            width: 128px !important;
+            height: 128px !important;
+        }
+        .orb-holder span {
+            font-size: 64px;
+        }
     }
 </style>
 
@@ -26,7 +42,5 @@
 
 <div align="center" class="orb-holder">
      <img class="orb-left" src="desktop/assets/images/misc/orb.jpeg" width="32" height="32" title="Ponder the orb..."/>
-
-      <span>Ponder the orb for next video</span>
-      <img class="orb-right"  src="desktop/assets/images/misc/orb.jpeg" width="32" height="32" title="Ponder the orb..."/>
+      <span>Next video</span>
   </div>

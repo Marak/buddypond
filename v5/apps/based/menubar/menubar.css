@@ -165,7 +165,7 @@
   color: #fff;
 }
 
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
   .menu-bar {
     display: none;
   }

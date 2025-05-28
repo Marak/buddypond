@@ -161,11 +161,11 @@
     resize: none !important;
 }
 
-@media (max-width: 1000px) {
+@media (pointer: coarse) {
     .window-title-bar {
         height: 64px;
-        font-size: 32px;
-        padding-left: 32px;
+        font-size: 48px;
+        padding: 32px;
     }
     .window-title-bar img {
         width: 64px;
