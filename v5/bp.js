@@ -5,6 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
+bp.version = '6.0.0';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -181,6 +182,8 @@ bp.appendCSS = async function appendCSS(url, forceReload = false) {
         fullUrl = `${bp.config.host}${url}`;
     }
 
+    fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
+
     if (bp._cache.css[fullUrl]) {
         if (!forceReload) {
             return 'cached';
@@ -337,6 +340,7 @@ bp.focus = function noop() { };
 bp.isMobile = function isMobile() {
     return window.innerWidth < 1000;
 }
+
 
 // Identify the current user
 bp.me = 'Guest'; // Guest user by default // TODO: auth / login

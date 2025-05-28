@@ -277,14 +277,14 @@ export default class WindowManager {
         const gap = 10; // Optional gap between windows for better spacing
         let totalY = 0; // Initialize Y position
 
-        console.log('window count', this.windows.length, 'defaultWindowHeight', defaultWindowHeight, 'windowWidth', windowWidth);
-        console.log(this.windows);
+        // console.log('window count', this.windows.length, 'defaultWindowHeight', defaultWindowHeight, 'windowWidth', windowWidth);
+        // console.log(this.windows);
 
         this.windows.reverse().forEach((window, index) => {
             // Determine the height for the current window
             let currentWindowHeight = window.isMinimized ? minimizedHeight : defaultWindowHeight;
 
-            console.log("index", index, window.title, 'isMinimized', window.isMinimized, 'currentWindowHeight', currentWindowHeight, 'windowWidth', windowWidth);
+            // console.log("index", index, window.title, 'isMinimized', window.isMinimized, 'currentWindowHeight', currentWindowHeight, 'windowWidth', windowWidth);
 
             // Set window size and position
             window.setSize(windowWidth + 'px', currentWindowHeight + 'px'); // Set size
@@ -293,16 +293,15 @@ export default class WindowManager {
             // Increment totalY for the next window
             totalY += currentWindowHeight + gap; // Add current window's height and gap
 
-            console.log("totalY", totalY, "currentWindowHeight", currentWindowHeight, "windowWidth", windowWidth);
+            // console.log("totalY", totalY, "currentWindowHeight", currentWindowHeight, "windowWidth", windowWidth);
         });
 
         // Position the shortCutsContainer below the last window
-        console.log('setting shortCutsContainer top to', totalY);
-        if (this.bp.apps.desktop.shortCutsContainer) {
+        // console.log('setting shortCutsContainer top to', totalY);
+        if (this.bp.apps.desktop && this.bp.apps.desktop.shortCutsContainer) {
             this.bp.apps.desktop.shortCutsContainer.style.position = 'absolute';
             this.bp.apps.desktop.shortCutsContainer.style.left = '0px';
             this.bp.apps.desktop.shortCutsContainer.style.top = totalY + 'px';
-
         }
     }
 
