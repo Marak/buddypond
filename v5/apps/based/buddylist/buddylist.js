@@ -51,6 +51,7 @@ export default class BuddyList {
         this.subscribedBuddies = [];
         this.subscribedPonds = [];
         this.options = options;
+        this.showedHelp = false;
 
         // alias global logout to the buddylist logout
         // buddylist logout will handle both buddylist and message logout
@@ -592,6 +593,26 @@ export default class BuddyList {
                 this.scrollToBottom(chatWindow.content);
             }
         }
+
+        // show help card if local storage does not have the card shown
+        // TODO: remove false
+        // if (true || !this.bp.settings['viewed-help-card']) {
+        if (!this.showedHelp) {
+            let chatWindow = windowsToUpdate.values().next().value;
+            this.showCard({
+                chatWindow,
+                cardName: 'help'
+            });
+            console.log('showing help card', chatWindow);
+            this.showedHelp = true;
+        }
+
+        /*
+        if (!localStorage.getItem('buddylist-help-card-shown')) {
+            localStorage.setItem('buddylist-help-card-shown', true);
+        }
+        */
+
     }
 
     sendMessageToServer(data, emitLocal = false) {
@@ -711,7 +732,9 @@ export default class BuddyList {
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond) {
             setTimeout(() => {
-                this.openChatWindow({ pondname: this.defaultPond });
+                let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
+
+               
             }, 100);
         }
 

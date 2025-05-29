@@ -7,6 +7,10 @@ export default async function showCard({chatWindow, cardName, context = {}}) {
     let container = document.createElement('div');
     container.classList.add('cardContainer');
     let d = await _card.render(container, chatWindow);
+    if (!chatWindow) {
+      console.error('chatWindow not found. user most likely not in the chat window');
+      return;
+    }
     const aimMessages = chatWindow.content.querySelector('.aim-messages');
     if (!aimMessages) {
       console.error('aim-messages not found. user most likely not in the chat window');

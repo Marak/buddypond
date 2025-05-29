@@ -10,6 +10,31 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+
+.card-md-close-btn {
+    z-index: 888;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4a5568;
+    transition: background 0.2s;
+}
+
+.card-md-close-btn:hover {
+    background: #cbd5e0;
+}
+
+
 .card-md-help:hover {
     transform: scale(1.01);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2), inset 0 0 4px rgba(32, 201, 151, 0.3);

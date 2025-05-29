@@ -5,12 +5,14 @@ const commandSet = [
         helpText: 'Lists all installed apps',
         card: 'apps'
     },
+    /*
     {
         command: '/bs',
         additional: '',
         helpText: 'Lists all available BuddyScript Commands',
         card: 'bs-commands'
     },
+    */
     /*
     {
         command: '/console',

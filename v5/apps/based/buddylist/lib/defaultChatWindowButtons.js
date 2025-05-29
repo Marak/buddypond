@@ -165,7 +165,21 @@ export default function defaultChatWindowButtons(bp) {
             // console.log('opening chat window ', windowId)
             let chatWindow = bp.apps.ui.windowManager.findWindow(windowId);
             console.log('chatWindow', chatWindow);
-            bp.apps.buddylist.showCard({ chatWindow, cardName: 'help' });
+            // bp.apps.buddylist.showCard({ chatWindow, cardName: 'help' });
+
+            let aimInput = chatWindow.content.querySelector('.aim-input');
+            let sendButton = chatWindow.content.querySelector('.aim-send-btn');
+            if (aimInput) {
+                aimInput.value = '/help';
+                aimInput.dispatchEvent(new Event('input', { bubbles: true })); // Trigger input event
+            }
+            if (sendButton) {
+                sendButton.click(); // Simulate button click
+            }
+
+
+
+
         }
     }
     ]

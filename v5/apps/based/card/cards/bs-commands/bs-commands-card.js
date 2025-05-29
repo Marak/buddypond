@@ -13,7 +13,7 @@ export default function applyData(el, data, cardClass, parent) {
     console.log('commandSet', commandSet);
 
     const $el = $(el);
-    const appsCommands = $el.find('.card-apps-commands');
+    const appsCommands = $el.find('.card-bs-commands-commands');
 
     let action = data.context.action || 'list-all';
     let bsInput = data.context.input || '';
@@ -27,30 +27,30 @@ export default function applyData(el, data, cardClass, parent) {
         const commandText = `${command}`;
         //const appsText = command.appsText;
         const commandDiv = document.createElement('div');
-        commandDiv.className = 'card-apps-command';
+        commandDiv.className = 'card-bs-commands-command';
         commandDiv.innerHTML = `
-            <span class="card-apps-command-text">/${commandText}</span>
+            <span class="card-bs-commands-command-text">/${commandText}</span>
         `;
 
-        // <span class="card-apps-command-apps">${appsText}</span>
+        // <span class="card-bs-commands-command-apps">${appsText}</span>
         // Add click handler for commands
         commandDiv.addEventListener('click', () => {
             // Stub action: Log command execution (replace with actual command execution logic)
             console.log(`Executing command: ${commandText}`);
             // Optional: Trigger a visual feedback
-            commandDiv.classList.add('card-apps-clicked');
+            commandDiv.classList.add('card-bs-commands-clicked');
 
             // TODO: run bs command with chatWindow as context?
             this.bp.apps.buddyscript.executeCommand(command, { chatWindow: this.bp.apps.buddyscript.chatWindow });
             //this.bp.open(command);
-            setTimeout(() => commandDiv.classList.remove('card-apps-clicked'), 200);
+            setTimeout(() => commandDiv.classList.remove('card-bs-commands-clicked'), 200);
         });
         console.log('commandDiv', commandDiv);
         appsCommands.append(commandDiv);
     });
 
     // Add close button functionality
-    $el.find('.card-apps-close-btn').on('click', () => {
+    $el.find('.card-bs-commands-close-btn').on('click', () => {
         $el.hide(); // Hide the apps card (replace with your preferred close logic)
     });
 
