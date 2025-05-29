@@ -131,7 +131,7 @@
 .buddy-message-sender {
     cursor: pointer;
 }
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .app-buddylist>p,
     .app-buddylist>input,
     .app-buddylist>i,

@@ -1363,8 +1363,7 @@ iframe {
   margin-left: 2px;
 }
 
-
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
   .window_top {
       height: 128px;
       font-size: 48px;
@@ -1376,7 +1375,6 @@ iframe {
       margin-right: 16px;
   }
 }
-
 
 .openApp td {
   cursor: pointer;

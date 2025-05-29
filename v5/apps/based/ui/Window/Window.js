@@ -81,6 +81,10 @@ class Window {
         this.onLoad = onLoad;
         this.onMessage = onMessage;
 
+        this.startDrag = this.startDrag.bind(this);
+        this.drag = this.drag.bind(this);
+        this.stopDrag = this.stopDrag.bind(this);
+
 
         this.createWindow();
         this.open();
@@ -200,6 +204,18 @@ class Window {
             this.isActive = true;
         });
 
+        // same for touchstart
+        this.container.addEventListener('touchstart', () => {
+            // set all windows to inactive
+            document.querySelectorAll('.window-container').forEach((window) => {
+                window.classList.remove('window-active');
+                window.isActive = false;
+            });
+            // set this window to active
+            this.container.classList.add('window-active');
+            this.isActive = true;
+        });
+
         // Create the title bar
         this.titleBar = document.createElement("div");
         this.titleBar.classList.add("window-title-bar");
@@ -233,28 +249,31 @@ class Window {
         this.titleBarSpan = titleBarSpan;
 
         // Drag functionality
-        this.titleBar.onmousedown = (e) => this.startDrag(e);
-        document.onmouseup = () => this.stopDrag();
-        document.onmousemove = (e) => this.drag(e);
+        // Add mouse and touch event listeners to the titleBar
+        this.titleBar.addEventListener('mousedown', this.startDrag);
+        this.titleBar.addEventListener('touchstart', this.startDrag, { passive: false });
+
+        // Touch events for mobile
+
 
         // Create control buttons (Minimize, Maximize, Close)
         const controls = document.createElement("div");
         controls.classList.add("window-controls");
 
         if (!this.bp.isMobile()) {
-        this.minimizeButton = document.createElement("button");
-        this.minimizeButton.innerHTML = "&#x1F7E1;"; // Yellow circle
-        this.minimizeButton.classList.add("minimize-button");
-        this.minimizeButton.title = "Minimize";
-        this.minimizeButton.onclick = () => this.minimize();
+            this.minimizeButton = document.createElement("button");
+            this.minimizeButton.innerHTML = "&#x1F7E1;"; // Yellow circle
+            this.minimizeButton.classList.add("minimize-button");
+            this.minimizeButton.title = "Minimize";
+            this.minimizeButton.onclick = () => this.minimize();
 
-        controls.appendChild(this.minimizeButton);
-
-
-    }
+            controls.appendChild(this.minimizeButton);
 
 
-            this.maximizeButton = document.createElement("button");
+        }
+
+
+        this.maximizeButton = document.createElement("button");
         this.maximizeButton.innerHTML = "&#x1F7E2;"; // Green circle
         this.maximizeButton.classList.add("maximize-button");
         this.maximizeButton.title = "Maximize";
@@ -506,43 +525,72 @@ class Window {
 
     startDrag(e) {
         this.isDragging = true;
-        this.offsetX = e.clientX - this.container.offsetLeft;
-        this.offsetY = e.clientY - this.container.offsetTop;
         this.container.style.cursor = "grabbing";
-        // Prevent default behavior to avoid browser actions interfering with drag
-        e.preventDefault();
 
-        // Add mousemove and mouseup events to the document
-        document.addEventListener('mousemove', this.drag.bind(this));
-        document.addEventListener('mouseup', this.stopDrag.bind(this));
+        // Get coordinates from mouse or touch event
+        const { clientX, clientY } = this.getEventCoordinates(e);
+        this.offsetX = clientX - this.container.offsetLeft;
+        this.offsetY = clientY - this.container.offsetTop;
+
+        // Prevent default behavior to avoid browser actions (e.g., scrolling, text selection)
+        // e.preventDefault();
+
+        // Add move and end event listeners for both mouse and touch to document
+        document.addEventListener('mousemove', this.drag);
+        document.addEventListener('touchmove', this.drag, { passive: false });
+        document.addEventListener('mouseup', this.stopDrag);
+        document.addEventListener('touchend', this.stopDrag);
     }
 
     drag(e) {
         if (!this.isDragging) return;
-        this.container.style.left = `${e.clientX - this.offsetX}px`;
-        this.container.style.top = `${e.clientY - this.offsetY}px`;
+
+        // Get coordinates from mouse or touch event
+        const { clientX, clientY } = this.getEventCoordinates(e);
+
+        // Update container position
+        this.container.style.left = `${clientX - this.offsetX}px`;
+        this.container.style.top = `${clientY - this.offsetY}px`;
+
+        // Prevent default behavior for touchmove to avoid scrolling
+        e.preventDefault();
     }
 
     stopDrag() {
         this.isDragging = false;
         this.container.style.cursor = "default";
 
-        // Remove the mousemove and mouseup event listeners from the document
-        document.removeEventListener('mousemove', this.drag.bind(this));
-        document.removeEventListener('mouseup', this.stopDrag.bind(this));
+        // Remove event listeners
+        document.removeEventListener('mousemove', this.drag);
+        document.removeEventListener('touchmove', this.drag);
+        document.removeEventListener('mouseup', this.stopDrag);
+        document.removeEventListener('touchend', this.stopDrag);
 
+        // Save window state
         this.x = this.container.offsetLeft;
         this.y = this.container.offsetTop;
-        // console.log('saving window state', this.x, this.y);
         this.z = Number(this.container.style.zIndex);
-        // TODO: save the window state
-        // needs a reference to windowsmanager??? cannot save locally??/
-        this.windowManager.saveWindowsState();
-
-
-
+        if (this.windowManager) {
+            this.windowManager.saveWindowsState();
+        } else {
+            console.warn('windowManager is not defined');
+        }
     }
 
+    getEventCoordinates(e) {
+        let clientX, clientY;
+        if (e.type.startsWith('touch')) {
+            // Use the first touch point for dragging
+            const touch = e.touches[0] || e.changedTouches[0];
+            clientX = touch.clientX;
+            clientY = touch.clientY;
+        } else {
+            // Mouse event
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        return { clientX, clientY };
+    }
 
     minimize(force = false) {
         // console.log('minimize', this.isMinimized);
@@ -550,12 +598,12 @@ class Window {
 
             if (this.isMinimized && !force) {
                 this.restore();
-                        // this.content.style.display = "block"; // Show content area
+                // this.content.style.display = "block"; // Show content area
             } else {
                 // Minimize the window
                 // this.container.style.display = "none";  // Hide content area
                 // hides the `bp-window-content` area
-                        //this.content.style.display = "none";  // Hide content area
+                //this.content.style.display = "none";  // Hide content area
                 // set the window-container height to 50px
                 this.container.style.height = "120px"; // Set height to 50px
                 console.log('setting content area');
@@ -747,6 +795,17 @@ class Window {
         document.onmouseup = () => this.stopResize();
         // can we remove this?
         document.onmousemove = (e) => this.resize(e);
+
+        // same for touch events
+        resizeHandle.ontouchstart = (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            this.startResize(e.touches[0]);
+        };
+        document.ontouchend = () => this.stopResize();
+        document.ontouchmove = (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            this.resize(e.touches[0]);
+        };
     }
 
     setSize(width, height) {

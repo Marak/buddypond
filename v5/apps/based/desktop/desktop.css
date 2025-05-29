@@ -52,7 +52,7 @@
     position: relative;
 }
 
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .desktop-shortcuts-container {
         top: 0px;
         height: calc(100vh - 128px);

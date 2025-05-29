@@ -338,13 +338,16 @@ bp.play = async function lazyLoadPlayModule() {
 bp.focus = function noop() { };
 
 bp.isMobile = function isTouchDevice() {
+    const maxMobileWidth = 767; // Common mobile breakpoint (in pixels)
     return (
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.msMaxTouchPoints > 0
+        (window.innerWidth <= maxMobileWidth) &&
+        (
+            "ontouchstart" in window ||
+            navigator.maxTouchPoints > 0 ||
+            navigator.msMaxTouchPoints > 0
+        )
     );
 }
-
 
 // Identify the current user
 bp.me = 'Guest'; // Guest user by default // TODO: auth / login

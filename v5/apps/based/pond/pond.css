@@ -117,7 +117,7 @@
 }
 
 /* Responsive adjustments */
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .window_main.pond_main {
         width: 100%;
         max-width: none;

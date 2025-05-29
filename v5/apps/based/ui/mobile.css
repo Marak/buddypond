@@ -1,7 +1,7 @@
 /* Base styles for desktop are assumed to be defined elsewhere */
 
 /* Media query for mobile devices */
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
 
 
     #desktop {

@@ -111,7 +111,7 @@
 }
 
 /* touch course media query for better mobile experience */
-@media (pointer: coarse), (hover: none) and (pointer: fine) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
    
     .nav-links button {
         font-size: 1.5em;
