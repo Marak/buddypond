@@ -1,0 +1,262 @@
+/* Markdown Help Card Styles */
+.card-md-help {
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+    overflow: hidden;
+    color: #333;
+    font-family: 'Inter', Arial, sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-md-help:hover {
+    transform: scale(1.01);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2), inset 0 0 4px rgba(32, 201, 151, 0.3);
+}
+
+.card-md-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-md-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+.card-md-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #E9ECEF;
+}
+
+.card-md-example {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+    background: #F8F9FA;
+    border-radius: 4px;
+}
+
+.card-md-syntax {
+    font-size: 13px;
+    color: #495057;
+    font-family: 'Fira Code', monospace;
+    background: #E9ECEF;
+    padding: 3px 5px;
+    border-radius: 3px;
+    white-space: pre-wrap; /* Preserve line breaks for lists */
+}
+
+.card-md-output {
+    font-size: 13px;
+    color: #333;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+/* Style adjustments for output elements */
+.card-md-output h1,
+.card-md-output h2,
+.card-md-output h3 {
+    margin: 0;
+}
+
+.card-md-output ul,
+.card-md-output ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.card-md-output li {
+    font-size: 13px;
+}
+
+.card-md-output blockquote {
+    margin: 0;
+    padding-left: 10px;
+    border-left: 2px solid #20C997;
+}
+
+.card-md-output code {
+    background: #E9ECEF;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.card-md-output pre {
+    margin: 0;
+    background: #E9ECEF;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+.card-md-output table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.card-md-output th,
+.card-md-output td {
+    border: 1px solid #E9ECEF;
+    padding: 4px;
+    font-size: 12px;
+}
+
+.card-md-output img {
+    max-width: 50px; /* Small for demo */
+}
+
+.card-md-output dl {
+    margin: 0;
+}
+
+.card-md-output dt {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.card-md-output dd {
+    margin: 0 0 0 20px;
+    font-size: 13px;
+}
+
+.card-md-output sup {
+    font-size: 10px;
+}
+
+.card-md-output small {
+    font-size: 10px;
+    color: #6C757D;
+}
+
+.card-md-note {
+    font-size: 12px;
+    color: #6C757D;
+    padding: 4px 5px;
+    background: #F8F9FA;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+/* Blink animation for consistency with parser */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Decorative overlay */
+.card-md-help::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.card-md-help h1,
+.card-md-content,
+.card-md-section,
+.card-md-examples,
+.card-md-example,
+.card-md-note,
+.card-md-syntax,
+.card-md-output {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 768px) {
+    .card-md-help {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px; /* Doubled */
+        margin: 8px 0;
+    }
+
+    .card-md-help h1 {
+        font-size: 36px; /* Doubled */
+        margin-bottom: 16px;
+    }
+
+    .card-md-content {
+        gap: 20px; /* Doubled */
+    }
+
+    .card-md-section h2 {
+        font-size: 28px; /* Doubled */
+        margin-bottom: 8px;
+    }
+
+    .card-md-examples {
+        gap: 12px; /* Doubled */
+        padding: 12px;
+    }
+
+    .card-md-example {
+        padding: 8px; /* Doubled */
+        gap: 6px;
+    }
+
+    .card-md-syntax {
+        font-size: 26px; /* Doubled */
+        padding: 6px 10px;
+    }
+
+    .card-md-output {
+        font-size: 26px; /* Doubled */
+        padding: 6px 10px;
+    }
+
+    .card-md-output h1,
+    .card-md-output h2,
+    .card-md-output h3 {
+        font-size: 32px; /* Doubled */
+    }
+
+    .card-md-output li {
+        font-size: 26px;
+    }
+
+    .card-md-output th,
+    .card-md-output td {
+        font-size: 24px; /* Doubled */
+        padding: 8px;
+    }
+
+    .card-md-output dt,
+    .card-md-output dd {
+        font-size: 26px;
+    }
+
+    .card-md-output sup,
+    .card-md-output small {
+        font-size: 20px; /* Doubled */
+    }
+
+    .card-md-note {
+        font-size: 24px; /* Doubled */
+        padding: 8px 10px;
+    }
+
+    .card-md-help:hover {
+        transform: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+    }
+}

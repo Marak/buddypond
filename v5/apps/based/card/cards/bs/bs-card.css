@@ -1,119 +1,166 @@
-.card-apps-card {
-    background: #f8fafc;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.card-apps-content {
+/* BuddyScript Card Styles */
+.card-bs-app {
     position: relative;
+    width: 320px;
+    min-height: 90px; /* Ensures a minimum height */
+    padding: 8px; /* Reduced padding */
+    border: 2px solid #FFD700; /* Gold border */
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2b1a3f 0%, #4b2e6b 100%); /* Mystical purple gradient */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 215, 0, 0.3);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex; /* Use flexbox to control layout */
+    flex-direction: column; /* Stack header, image, and form vertically */
+    justify-content: space-between; /* Push form to bottom */
 }
 
-.card-apps-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #e2e8f0;
+.card-bs-app:hover {
+    transform: scale(1.02); /* Subtle zoom on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), inset 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.card-bs-app h1 {
+    font-size: 18px; /* Slightly smaller to save space */
+    color: #FFD700; /* Gold title */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    margin: 0 0 6px; /* Reduced margin */
+    text-align: center;
+}
+
+.card-bs-app-image {
+    width: 32px; /* Smaller size to fit layout */
+    height: 32px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #FFD700; /* Gold border */
+    background: #3a2c5f; /* Darker purple background */
+    cursor: pointer; /* Indicate clickability */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: absolute !important; /* Keep top-left positioning */
+    top: 8px;
+    left: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-bs-app-image:hover {
+    transform: scale(1.1); /* Subtle zoom on hover */
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.card-bs-app-form {
+    display: flex;
+    flex-direction: row; /* Horizontal layout for command and button */
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+    flex-wrap: wrap; /* Allow wrapping if content overflows */
+    margin-top: auto; /* Push form to bottom in flex context */
+    padding: 4px 8px; /* Minimal padding to save space */
+}
+
+.card-bs-app-text-command {
+    font-size: 14px; /* Slightly smaller to save space */
+    color: #E0E0E0; /* Light gray for readability */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 6px; /* Reduced padding */
+    border-radius: 4px;
+    border: 1px solid #4682B4; /* Blue accent */
+    flex: 1; /* Grow to fill available space */
+    min-width: 100px; /* Ensure readability */
+    text-align: center;
+    word-break: break-all; /* Handle long commands */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.card-bs-app-submit {
+    padding: 6px 12px; /* Reduced padding */
+    background: #FFD700; /* Gold button */
+    color: #2b1a3f; /* Dark purple text */
     border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 14px;
-    color: #4a5568;
-    transition: background 0.2s;
-}
-
-.card-apps-close-btn:hover {
-    background: #cbd5e0;
-}
-
-.card-apps-content h2 {
-    color: #2d3748;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 12px;
-}
-
-.card-apps-intro-text {
-    color: #4a5568;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.card-apps-hint {
-    color: #718096;
-    font-style: italic;
-}
-
-.card-apps-hint code {
-    background: #edf2f7;
-    padding: 2px 6px;
     border-radius: 4px;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-}
-
-.card-apps-commands {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.card-apps-command {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 4px;
-    border: 1px solid #e2e8f0;
+    font-size: 13px; /* Slightly smaller to save space */
+    font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.card-apps-command:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.card-bs-app-submit:hover {
+    background: #FFEFBF; /* Lighter gold on hover */
+    transform: scale(1.05); /* Subtle zoom */
 }
 
-.card-apps-command.card-apps-clicked {
-    background: #e6fffa;
+/* Decorative overlay for mystical effect */
+.card-bs-app::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: 0;
+    pointer-events: none;
 }
 
-.card-apps-command-text {
-    flex: 0 0 180px;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    color: #2b6cb0;
-    font-size: 0.95rem;
-    font-weight: 500;
+/* Ensure content is above overlay */
+.card-bs-app h1,
+.card-bs-app-image,
+.card-bs-app-form {
+    position: relative;
+    z-index: 1;
 }
 
-.card-apps-command-apps {
-    flex: 1;
-    color: #4a5568;
-    font-size: 0.95rem;
-}
-
-/* mobile styles to make font larger */
+/* Responsive adjustments for mobile (up to 768px) */
 @media (max-width: 768px) {
-    
-    .card-apps-card {
-        padding: 10px;
+    .card-bs-app {
+        width: 100%; /* Full width */
+        max-width: 400px; /* Cap for larger phones */
+        padding: 16px; /* Doubled from 8px */
+        margin: 8px 0; /* Reduced but sufficient spacing */
+        min-height: 120px; /* Adjusted for larger content */
     }
 
-    .card-apps-content h2 {
-        font-size: 3.25rem;
+    .card-bs-app h1 {
+        font-size: 36px; /* Doubled from 18px */
+        margin-bottom: 12px; /* Doubled from 6px */
     }
 
-    .card-apps-intro-text,
-    .card-apps-hint,
-    .card-apps-command-text,
-    .card-apps-command-apps {
-        font-size: 0.9rem;
+    .card-bs-app-image {
+        width: 64px; /* Doubled from 32px */
+        height: 64px; /* Doubled from 32px */
+        top: 16px; /* Doubled from 8px */
+        left: 16px; /* Doubled from 8px */
+    }
+
+    .card-bs-app-form {
+        gap: 16px; /* Doubled from 8px */
+        flex-direction: row; /* Maintain horizontal layout */
+        flex-wrap: wrap; /* Allow wrapping for long content */
+        padding: 8px 16px; /* Doubled from 4px 8px */
+    }
+
+    .card-bs-app-text-command {
+        font-size: 28px; /* Doubled from 14px */
+        padding: 12px; /* Doubled from 6px */
+        min-width: 120px; /* Slightly larger for readability */
+    }
+
+    .card-bs-app-submit {
+        font-size: 26px; /* Doubled from 13px */
+        padding: 12px 24px; /* Doubled from 6px 12px */
+        width: auto; /* Allow button to size naturally */
+        min-width: 120px; /* Ensure touch-friendly size */
+    }
+
+    .card-bs-app:hover {
+        transform: none; /* Disable hover effect on mobile */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 215, 0, 0.3); /* Default shadow */
+    }
+
+    .card-bs-app-submit:hover {
+        transform: none; /* Disable hover effect on mobile */
+        background: #FFD700; /* Revert to default gold */
     }
 }

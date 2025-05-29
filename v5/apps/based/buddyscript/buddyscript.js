@@ -20,11 +20,11 @@ export default class BuddyScript {
 
     }
 
-    init () {
+    init() {
         let defaultCommands = new Commands(this.bp);
         // merge defaultCommands onto this.commandActions
         Object.assign(this.commands, defaultCommands.commands);
-        // console.log("Merged commands", this.commands);
+        console.log("Merged commands", this.commands);
 
     }
 
@@ -44,9 +44,16 @@ export default class BuddyScript {
         commands[0] = commands[0].substr(1); // Remove the first slash or backslash
         // console.log('Parsing command', input, firstChar, commands);
         if (firstChar === '\\') {
+            // alert('reverse command')
             if (this.isValidBuddyScript(commands[0])) {
                 console.log('running command', commands);
-                return { command: commands.join(' '), type: 'execute' };
+                let commandData = this.commands[commands[0]];
+
+                // reverse shell commands will show the bs-card such that users can click on the command
+                // TODO: allow marak / admins to open apps remotely 
+
+
+                return { command: commands.join(' '), type: 'show-card', input: input, commandData };
             } else {
                 this.alertInvalidCommand();
                 return { type: 'invalid' };
@@ -55,17 +62,28 @@ export default class BuddyScript {
 
         if (firstChar === '/') {
             // console.log('Handling pipes');
-            return this.handlePipes(input);
+            let commandData = this.commands[commands[0]];
+
+            // instead of running handlePipes here, return an object that indicates the command is a pipable command
+            return { pipe: () => {
+                return this.handlePipes(input);
+            }, command: commands.join(' '), type: 'execute', input: input, commandData };
+            // return this.handlePipes(input);
         }
 
         return false; // If no valid starting character, ignore
     }
 
     executeCommand(command, context) {
-       // console.log('Executing command', command, context);
+        // console.log('Executing command', command, context);
         if (this.commandActions[command]) {
+            console.log("Executing command action", command, context, this.commandActions[command]);
+            context.data = this.commandActions[command]; // maybe?
             //console.log("Executing command action", command, context, this.commandActions[command].toString());
-            return this.commandActions[command](context);
+            if (this.commandActions[command].fn) {
+                return this.commandActions[command].fn.call(this, context);
+            }
+            return this.commandActions[command].call(this, context);
         } else {
             // console.log(`Executing command: ${command}`);
             console.log(command, context);
@@ -99,7 +117,11 @@ export default class BuddyScript {
     }
 
     addCommand(name, action) {
-        this.commandActions[name] = action;
+        console.log('Adding command', name, action);
+        this.commandActions[name] = {
+            fn: action,
+            //            object: { command: name }
+        };
     }
 
     removeCommand(name) {

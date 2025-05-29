@@ -1,0 +1,93 @@
+<div class="card-md-help">
+    <h1>Markdown Formatting Guide</h1>
+    <div class="card-md-content">
+        <div class="card-md-section">
+            <h2>Text Formatting</h2>
+            <div class="card-md-examples">
+                <div class="card-md-example">
+                    <span class="card-md-syntax"># Heading 1
+## Heading 2
+### Heading 3</span>
+                    <span class="card-md-output">
+                        <h1>Heading 1</h1>
+                        <h2>Heading 2</h2>
+                        <h3>Heading 3</h3>
+                    </span>
+                </div>
+              
+                
+                <div class="card-md-example">
+                    <span class="card-md-syntax">**Bold**</span>
+                    <span class="card-md-output"><strong>Bold</strong></span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">*Italic*</span>
+                    <span class="card-md-output"><em>Italic</em></span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">~~Strikethrough~~</span>
+                    <span class="card-md-output"><s>Strikethrough</s></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-md-section">
+            <h2>Custom Styles</h2>
+            <!-- TODO show ability to chain customs such as blink.green(hello) or # red.underline(no)-->
+            <div class="card-md-examples">
+                <div class="card-md-example">
+                    <span class="card-md-syntax">red(Text)</span>
+                    <span class="card-md-output" style="color: red;">Text</span>
+                </div>
+                <div class="card-md-note">
+                    <span>Supported colors: red, blue, green, yellow, purple, orange, black, white, gray, cyan, magenta, pink</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">underline(Text)</span>
+                    <span class="card-md-output"><u>Text</u></span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">blink(Text)</span>
+                    <span class="card-md-output" style="animation: blink 1s step-start infinite;">Text</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">reverse(Hello)</span>
+                    <span class="card-md-output">olleh</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">hidden(Text)</span>
+                    <span class="card-md-output" style="visibility: hidden;" onmouseover="this.style.visibility='visible'" onmouseout="this.style.visibility='hidden'">Text</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">dim(Text)</span>
+                    <span class="card-md-output" style="opacity: 0.5;">Text</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">rainbow(Text)</span>
+                    <span class="card-md-output">T<span style="color: hsl(0, 100%, 50%);">e</span><span style="color: hsl(60, 100%, 50%);">x</span><span style="color: hsl(120, 100%, 50%);">t</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-md-section">
+            <h2>Combine Styles</h2>
+            <div class="card-md-examples">
+                <div class="card-md-example">
+                    <span class="card-md-syntax">purple.underline(Bold and Underlined)</span>
+                    <span class="card-md-output" style="color: purple; text-decoration: underline;"><strong>Bold and Underlined</strong></span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax">red.blink(Flashing Text)</span>
+                    <span class="card-md-output" style="color: red; animation: blink 1s step-start infinite;">Flashing Text</span>
+                </div>
+                <div class="card-md-example">
+                    <span class="card-md-syntax"># rainbow(BUDDYPOND)</span>
+                    <!-- TODO: better rainbow with larger h1 style for demo-->
+                    <span class="card-md-output">
+                        B<span style="color: hsl(0, 100%, 50%);">U</span><span style="color: hsl(60, 100%, 50%);">D</span><span style="color: hsl(120, 100%, 50%);">D</span><span style="color: hsl(180, 100%, 50%);">Y</span><span style="color: hsl(240, 100%, 50%);">P</span><span style="color: hsl(300, 100%, 50%);">O</span><span style="color: hsl(360, 100%, 50%);">N</span><span style="color: hsl(0, 100%, 50%);">D</span>
+                    </span>
+                    
+                </div>
+        </div>
+
+    </div>
+</div>

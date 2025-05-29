@@ -1,32 +1,6 @@
 // Function to remove outer <p> tags
 export default function parseMarkdownWithoutPTags(markdown) {
   if (!markdown) return ''; // empty text
-    /*
-    const customElementExtension = {
-      extensions: [{
-        name: 'custom-element',
-        level: 'inline', // or 'block' depending on your element
-        start(src) { return src.match(/::custom::/)?.[0].length; },
-        tokenizer(src, tokens) {
-          const match = src.match(/::custom::(.*?)::custom::/);
-          if (match) {
-            return {
-              type: 'custom-element',
-              raw: match[0],
-              text: match[1].trim(),
-            };
-          }
-        },
-        renderer(token) {
-          return `<h1>${token.text}</h1>`;
-        }
-      }], 
-    };
-  
-    // Apply the custom tokenizer and renderer
-    marked.use(customElementExtension);
-    */
-  
   
     // Supported colors and styles
     const supportedColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'black', 'white', 'gray', 'cyan', 'magenta', 'pink'];

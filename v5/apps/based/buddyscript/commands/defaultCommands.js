@@ -36,10 +36,12 @@ export default function Commands(bp) {
 
   // for all the legacy commands, call the legacy command
   for (let command in legacyCommands) {
-    commands[command] = function (context) {
-      let params = context.params;
-      let commandObj = legacyCommands[command];
+
+          let commandObj = legacyCommands[command];
       let commandStr = commandObj.command;
+
+    let evaler = function (context) {
+      let params = context.params;
       console.log('Executing legacy command:', command, commandStr, context);
       if (typeof commandStr === 'function') {
         commandStr(params);
@@ -48,9 +50,17 @@ export default function Commands(bp) {
       } else {
         eval(commandStr)
 
-      }
+      };
 
     };
+    //commands[command] = evaler;
+
+    commands[command] = {
+      fn: evaler,
+      object: commandObj
+    };
+
+    console.log('new commands', command, commands);
   }
 
   return this;
@@ -74,6 +84,13 @@ let legacyCommands = {
     },
     description: 'Use the Microphone Audio to create Cool Visuals',
     icon: 'visuals'
+  },
+  'cast': {
+    command: function (params) {
+      bp.open('spellbook');
+    },
+    description: 'Cast Spells with the Buddy Pond Spellbook',
+    icon: 'spellbook'
   },
   /*
   bs: {
@@ -158,6 +175,7 @@ let legacyCommands = {
     description: 'A.I. Assisted Auto-Hacking Console',
     icon: 'hackertyper'
   },
+
   help: {
     command: function (params) {
       // params is windowId as string, such as `#window_console`
@@ -262,7 +280,9 @@ let legacyCommands = {
     icon: 'paint'
   },
   profile: {
-    command: 'desktop.ui.openWindow("profile");',
+    command: function (params) {
+      bp.open('profile');
+    },
     description: 'Buddy Profile Settings',
     icon: 'profile'
   },
@@ -309,14 +329,12 @@ let legacyCommands = {
     description: 'Sound Recorder App. Record and Edit Audio',
     icon: 'soundrecorder'
   },
-  /*
   say: {
     command: function(params) {
       console.log('say params', params);
-      desktop.say(params);
+      bp.apps.say.speak('params');
     }
   },
-  */
   streamsquad: {
     command: 'desktop.ui.openWindow("streamsquad");',
     description: 'Watch Live Streamers with your Buddies',

@@ -22,7 +22,11 @@ export default function buddylistUIEvents() {
         if (result && result.error) {
           $('.loginForm .error').text(result.error);
         } else {
-          $('.loginForm .error').text('Failed to authenticate buddy');
+          if (err.message === 'Failed to fetch') {
+            $('.loginForm .error').text('Failed to connect to Buddy Pond');
+          } else {
+            $('.loginForm .error').text(err.message || 'Failed to authenticate buddy');
+          }
         }
         $('.loginButton').prop('disabled', false);
         $('.loginButton').removeClass('disabled');

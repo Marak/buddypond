@@ -86,7 +86,6 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
           file.filePath = 'audio/' + file.filePath;
         }
 
-
         console.log('assigning file path', file.filePath);
         let fileUrl = await this.bp.apps.client.api.uploadFile(file, (progress) => {
           statusDiv.text('Uploading: ' + progress + '%');
@@ -159,10 +158,16 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     return;
   }
 
-    // TODO: move to buddyscript processor
+  if (_data.text.startsWith('/markdown')) {
+    // show the help card and do not send the message
+    await this.showCard({ chatWindow, cardName: 'markdown' });
+    return;
+  }
+
+  // TODO: move to buddyscript processor
   if (_data.text.startsWith('/bs')) {
     // show the help card and do not send the message
-    await this.showCard({ chatWindow, cardName: 'bs' });
+    await this.showCard({ chatWindow, cardName: 'bs-commands' });
     return;
   }
 
@@ -173,6 +178,67 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     await this.showCard({ chatWindow, cardName: 'apps' });
     return;
   }
+
+  // if this is a buddyscript command, but not a /say command
+  // say has a special meaning in the context of the chat window
+  // as it should be sent as regular text message ( should be a card later, click to repeat )
+  if (_data.text.startsWith('/') 
+        && !_data.text.startsWith('/say')
+        && !_data.text.startsWith('/roll')
+    ) {
+    // TODO: process the card locall here
+    /*
+    _data.card = {
+     type: 'bs'
+   };
+   */
+    // runs local BS script command
+    // alert('bs card')
+
+    let bs = this.bp.apps.buddyscript.parseCommand(_data.text);
+
+    if (bs.pipe) {
+      //if (now - messageTime < 10000) {
+        // pipeable / immediate run commands should only persist for 10 seconds
+        bs.pipe();
+        // clear the input
+        $('.aim-input', chatWindow.content).val('');
+        return false;
+
+      // }
+    }
+
+    console.log('buddyscript command', bs);
+    if (bs.type === 'show-card') {
+      // show the bs card
+      let cardData = bs.data;
+      this.showCard({
+        chatWindow,
+        cardName: 'bs',
+        context: {
+          ...bs
+        }
+      });
+    }
+    $('.aim-input', chatWindow.content).val('');
+
+    return false;
+  }
+
+  if (_data.text.startsWith('\\')) {
+    // let bs = this.bp.apps.buddyscript.parseCommand(_data.text);
+    // console.log('backwards command', bs);
+    _data.card = {
+      type: 'bs',
+      command: _data.text.replace('\\', '/').trim(),
+      //commandData: bs
+    };
+
+  }
+
+
+  // TODO: check if this is a valid BS command
+  // if so, we need to construct a card to show the command
 
   // TODO: add support for sending /bs commands with \ instead of /
   /*
