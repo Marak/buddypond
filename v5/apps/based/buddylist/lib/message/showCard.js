@@ -29,6 +29,5 @@ export default async function showCard({chatWindow, cardName, context = {}}) {
       behavior: 'instant'
     });
 
-    console.log('container', container);
     return d;
   }

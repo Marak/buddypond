@@ -33,7 +33,7 @@ export default class RestProvider {
                 throw new Error(`${json.error}`);
                 return json;
             } catch (err) {
-                console.log('eeeee', err);
+                console.log('error', err);
                 throw new Error(err);
             }
             throw new Error(`API request failed: ${json.error}`);

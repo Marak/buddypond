@@ -107,7 +107,6 @@ export default function applyData(el, data, cardClass, parent) {
     const $el = $(el);
     const helpCommands = $el.find('.card-help-commands');
     // get the closest .chatWindow
-    console.log('eeeee', cardClass, parent);
     const chatWindow = $el.closest('.chatWindow');
 
     // Add command elements

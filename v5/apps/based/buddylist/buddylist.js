@@ -73,11 +73,15 @@ export default class BuddyList {
             //event.preventDefault();
             //event.returnValue = "Are you sure you want to leave? Your status will be set to offline.";
             // Attempt to set status to offline (you may need a sync alternative)
-            this.client.setStatus(this.bp.me, {
-                status: 'offline'
-            }, function (err, re) {
-                console.log('buddypond.setStatus', err, re);
-            });
+            // if page has quickly refreshed, client might be defined yet or connected
+            if (this.client) {
+                this.client.setStatus(this.bp.me, {
+                    status: 'offline'
+                }, function (err, re) {
+                    console.log('buddypond.setStatus', err, re);
+                });
+
+            }
             //return event.returnValue;
         });
         // this.bp.load('ramblor');
@@ -603,7 +607,7 @@ export default class BuddyList {
                 chatWindow,
                 cardName: 'help'
             });
-            console.log('showing help card', chatWindow);
+            // console.log('showing help card', chatWindow);
             this.showedHelp = true;
         }
 

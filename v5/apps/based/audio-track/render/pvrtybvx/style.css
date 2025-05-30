@@ -2387,12 +2387,12 @@ body {
 
 }
 
-#search-bar-container input,
-select {
+/*
+#search-bar-container input, select {
     background-color: #333;
     color: white;
 }
-
+*/
 
 
 /* CUSTOM style for #search-bar-container input checkbox, custom checkbox color and style*/

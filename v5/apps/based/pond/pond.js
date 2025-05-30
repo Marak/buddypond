@@ -15,8 +15,6 @@ export default class Pond {
         // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
 
-        // should be automatic? why didn't bp.load() pick up on this?
-        this.open();
 
         // this.bp.on('ponds::hotPonds', 'update-hotponds-list', data => this.updateHotPonds(data));
 

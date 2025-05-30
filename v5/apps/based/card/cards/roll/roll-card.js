@@ -1,7 +1,7 @@
 export default function applyData(el, data) {
     const $el = $(el);
     const roll = data || {};
-    console.log('Roll card data', roll);
+    // console.log('Roll card data', roll);
     /* Example data: 
         {"generation":1,"min":1,"max":20,"value":7,"userSeeds":[],"systemSeed":8069203912237819}
     */

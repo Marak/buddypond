@@ -41,8 +41,24 @@ window.bp_v_5 = async function bp_v_5() {
     bp.load('droparea');
     bp.load('file-viewer');
 
-    /*
-    */
+    // deffer loading of apps that are not essential for the initial experience
+    // but will be clicked or loaded from chat window or other places
+    // this is used to increase responsiveness of user experience ( i.e. clicking on buttons )
+    // TODO: ensure this starts *after* app is ready. this should be OK for now, but we could tighten the timing
+    function deferLoad () {
+        setTimeout(async () => {
+            console.log('Defer loading additional apps...');
+            // bp.apps.desktop.apps is an object, needs to be iteerable
+            let apps = Object.keys(bp.apps.desktop.apps);
+            for (let appId of apps) {
+                let app = bp.apps.desktop.apps[appId];
+                await bp.load(app.name);
+
+            }
+        }, 7000);
+    }
+
+    deferLoad();
 
     //bp.open('file-explorer');
 
