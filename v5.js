@@ -48,8 +48,18 @@ window.bp_v_5 = async function bp_v_5() {
     function deferLoad () {
         setTimeout(async () => {
             console.log('Defer loading additional apps...');
-            // bp.apps.desktop.apps is an object, needs to be iteerable
+
+            // load apps from the chat button bar
+            await bp.load('ramblor');
+            await bp.load('emojipicker');
+            await bp.load('dictate');
+
+            // from the top menu bar
+            await bp.load('soundcloud');
+
+            // all desktop apps
             let apps = Object.keys(bp.apps.desktop.apps);
+
             for (let appId of apps) {
                 let app = bp.apps.desktop.apps[appId];
                 await bp.load(app.name);
