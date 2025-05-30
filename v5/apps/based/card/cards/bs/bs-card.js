@@ -13,7 +13,11 @@ export default function applyData(el, data, cardClass, parent) {
     /*
     console.log('icon', icon);
     */
-    let commandData = bs.commandData.object || {};
+
+    if (bs.commandData) {
+        
+    }
+    let commandData = bs.commandData?.object || {};
     console.log('commandData', commandData);
     let icon = commandData.icon || 'fa fa-terminal';
     let iconPath = `/desktop/assets/images/icons/icon_${icon}_64.png`

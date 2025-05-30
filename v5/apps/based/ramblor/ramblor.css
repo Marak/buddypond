@@ -1,0 +1,187 @@
+/* Ramblor App Styles */
+.ramblor-app {
+    position: relative;
+    padding: 8px;
+    background: #FFFFFF; /* White for modal */
+    color: #333;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.ramblor-app h1 {
+    font-size: 16px;
+    color: #20C997; /* Teal */
+    margin: 0 0 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.ramblor-result {
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.ramblor-result p {
+    margin: 0;
+    font-size: 12px;
+    color: #495057;
+}
+
+.ramblor-result-text {
+    font-weight: 500;
+    color: #333; /* Default color, overridden by JS for valid/invalid */
+}
+
+.ramblor-verify-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ramblor-verify-btn {
+    padding: 5px 10px;
+    background: #20C997; /* Teal */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ramblor-verify-btn:hover {
+    background: #2DD4BF; /* Lighter teal */
+    transform: scale(1.05);
+}
+
+.ramblor-field-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ramblor-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.ramblor-field-small {
+    flex: 0 0 30%;
+    min-width: 80px;
+}
+
+.ramblor-field label {
+    font-size: 12px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.ramblor-input {
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #E9ECEF;
+    border-radius: 4px;
+    background: #F8F9FA;
+    color: #333;
+}
+
+.ramblor-explanation {
+    margin-top: 8px;
+    padding: 6px;
+    background: #F8F9FA; /* Soft white */
+    border-radius: 4px;
+    border: 1px solid #E9ECEF;
+}
+
+.ramblor-explanation h2 {
+    font-size: 13px;
+    color: #20C997; /* Teal */
+    margin: 0 0 4px;
+    font-weight: 500;
+}
+
+.ramblor-explanation p {
+    font-size: 11px;
+    color: #495057;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ramblor-explanation strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 768px) {
+    .ramblor-app {
+        padding: 16px; /* Doubled */
+    }
+
+    .ramblor-app h1 {
+        font-size: 32px; /* Doubled */
+        margin-bottom: 12px; /* Doubled */
+    }
+
+    .ramblor-result {
+        margin-bottom: 12px; /* Doubled */
+    }
+
+    .ramblor-result p {
+        font-size: 24px; /* Doubled */
+    }
+
+    .ramblor-verify-form {
+        gap: 12px; /* Doubled */
+    }
+
+    .ramblor-verify-btn {
+        font-size: 24px; /* Doubled */
+        padding: 10px 20px; /* Doubled */
+    }
+
+    .ramblor-field-group {
+        gap: 16px; /* Doubled */
+        flex-direction: column; /* Stack vertically */
+    }
+
+    .ramblor-field,
+    .ramblor-field-small {
+        gap: 6px; /* Doubled */
+        flex: 1;
+        min-width: 100%; /* Full width */
+    }
+
+    .ramblor-field label {
+        font-size: 24px; /* Doubled */
+    }
+
+    .ramblor-input {
+        padding: 10px; /* Doubled */
+        font-size: 24px; /* Doubled */
+    }
+
+    .ramblor-explanation {
+        margin-top: 16px; /* Doubled */
+        padding: 12px; /* Doubled */
+    }
+
+    .ramblor-explanation h2 {
+        font-size: 26px; /* Doubled */
+        margin-bottom: 8px; /* Doubled */
+    }
+
+    .ramblor-explanation p {
+        font-size: 22px; /* Doubled */
+        line-height: 1.5;
+    }
+
+    .ramblor-verify-btn:hover {
+        transform: none; /* Disable hover */
+        background: #20C997; /* Revert to default teal */
+    }
+}

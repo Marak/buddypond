@@ -1,0 +1,135 @@
+/* Roll Card Styles */
+.card-roll {
+    position: relative;
+    width: 100px;
+    padding: 8px; /* Reduced from 10px */
+    border: 1px solid #20C997; /* Teal border */
+    border-radius: 10px;
+    background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%); /* Soft white to light gray */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+    overflow: hidden;
+    color: #333;
+    font-family: 'Inter', Arial, sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-roll:hover {
+    transform: scale(1.01);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2), inset 0 0 4px rgba(32, 201, 151, 0.3);
+}
+
+.card-roll h1 {
+    font-size: 16px; /* Reduced from 18px */
+    color: #20C997; /* Teal */
+    margin: 0 0 6px; /* Reduced from 8px */
+    text-align: center;
+    font-weight: 600;
+}
+
+.card-roll-info {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Reduced from 6px */
+    padding: 4px; /* Reduced from 6px */
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #E9ECEF;
+    align-items: center;
+}
+
+
+.card-roll-info p {
+    margin: 0;
+    font-size: 12px; /* Reduced from 13px */
+    color: #495057;
+}
+
+.card-roll-info span {
+    font-weight: bold;
+    color: #333;
+}
+
+.card-roll-verify-form {
+    margin-top: 6px; /* Reduced from 8px */
+    text-align: center;
+}
+
+.card-roll-verify-btn {
+    padding: 5px 10px; /* Reduced from 6px 12px */
+    background: #20C997; /* Teal */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px; /* Reduced from 13px */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-roll-verify-btn:hover {
+    background: #2DD4BF; /* Lighter teal */
+    transform: scale(1.05);
+}
+
+/* Decorative overlay */
+.card-roll::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.card-roll h1,
+.card-roll-info,
+.card-roll-verify-form {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 768px) {
+    .card-roll {
+        width: 100%;
+        max-width: 400px;
+        padding: 16px; /* Doubled */
+        margin: 8px 0;
+    }
+
+    .card-roll h1 {
+        font-size: 32px; /* Doubled */
+        margin-bottom: 12px; /* Doubled */
+    }
+
+    .card-roll-info {
+        gap: 8px; /* Doubled */
+        padding: 8px; /* Doubled */
+    }
+
+    .card-roll-info p {
+        font-size: 24px; /* Doubled */
+    }
+
+    .card-roll-verify-form {
+        margin-top: 12px; /* Doubled */
+    }
+
+    .card-roll-verify-btn {
+        font-size: 24px; /* Doubled */
+        padding: 10px 20px; /* Doubled */
+        width: 100%; /* Full width for touch */
+    }
+
+    .card-roll:hover,
+    .card-roll-verify-btn:hover {
+        transform: none; /* Disable hover effects */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+        background: #20C997; /* Revert to default teal */
+    }
+}

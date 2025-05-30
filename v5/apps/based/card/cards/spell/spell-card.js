@@ -45,7 +45,7 @@ export default async function applyData(el, data) {
 
     $el.find('.card-spell-target').text(`I cast ${spellTypeLabel} on ` + targetName);
     $el.find('.card-spell-name').text(data.spellLabel);
-    
+
 
     if (data.spellType !== 'curses') {
         // remove .card-spell-duration
@@ -128,8 +128,13 @@ export default async function applyData(el, data) {
 
 async function runSpell(data) {
     // dynamically import the spell
-    let spellModule =  await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
-    spellModule.default.call(this);
+    try {
+        let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
+        spellModule.default.call(this);
+    }
+    catch (error) {
+        console.log('Error importing spell module:', error);
+    }
 }
 
 
@@ -138,7 +143,7 @@ const countdownManager = (() => {
     let intervalId = null;
 
     const updateCountdowns = () => {
-        const countdownEls = $('.countdown-date').filter(function() {
+        const countdownEls = $('.countdown-date').filter(function () {
             return $(this).data('expired') !== true;
         });
 
@@ -151,7 +156,7 @@ const countdownManager = (() => {
             return;
         }
 
-        countdownEls.each(function() {
+        countdownEls.each(function () {
             const $el = $(this);
 
             const expiry = new Date($el.data('expiry')).getTime();
@@ -180,14 +185,28 @@ const countdownManager = (() => {
                 $el.parent().text('Curse has Expired.');
                 return;
             }
+           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            const remainingDuration = `${hours.toString().padStart(2, '0')}:${minutes
-                .toString()
-                .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            $el.text(remainingDuration);
+// Build the time string
+let prefix = '';
+let timeParts = [];
+
+if (days > 0) {
+    prefix = `${days} Day${days > 1 ? 's' : ''} `;
+    timeParts.push(hours.toString().padStart(2, '0'));
+} else if (hours > 0) {
+    timeParts.push(hours.toString());
+}
+
+timeParts.push(minutes.toString().padStart(2, '0'));
+timeParts.push(seconds.toString().padStart(2, '0'));
+
+const remainingDuration = prefix + timeParts.join(':');
+$el.text(remainingDuration);
+
 
         });
     };

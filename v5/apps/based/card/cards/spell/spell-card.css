@@ -68,7 +68,7 @@
   position: relative;
   z-index: 3;
   padding: 8px; /* Reduced padding */
-  width: calc(100% - 80px); /* Content takes remaining space */
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;

@@ -1,5 +1,15 @@
-
-  <code class="card-roll-info"></code>
-  <!-- todo this button we re-run the roll locally using the exact same seed data + ramblor -->
-   <!-- this ensures a way for the users to know the result was fair -->
-  <button>Verify Results</button>
+<div class="card-roll">
+    <h1>Roll Result</h1>
+    <div class="card-roll-info">
+        <p class="card-roll-result">Rolled: <span class="card-roll-value"></span></p>
+    </div>
+    <form class="card-roll-verify-form">
+        <input type="hidden" name="generation" class="card-roll-input-gen">
+        <input type="hidden" name="min" class="card-roll-input-min">
+        <input type="hidden" name="max" class="card-roll-input-max">
+        <input type="hidden" name="value" class="card-roll-input-value">
+        <input type="hidden" name="userSeeds" class="card-roll-input-user-seeds">
+        <input type="hidden" name="systemSeed" class="card-roll-input-system-seed">
+        <button type="submit" class="card-roll-verify-btn">Verify Roll</button>
+    </form>
+</div>
