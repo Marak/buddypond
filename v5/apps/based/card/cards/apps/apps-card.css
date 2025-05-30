@@ -1,5 +1,4 @@
 .card-apps-card {
-    background: #f8fafc;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
@@ -34,26 +33,22 @@
 }
 
 .card-apps-content h2 {
-    color: #2d3748;
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 12px;
 }
 
 .card-apps-intro-text {
-    color: #4a5568;
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 20px;
 }
 
 .card-apps-hint {
-    color: #718096;
     font-style: italic;
 }
 
 .card-apps-hint code {
-    background: #edf2f7;
     padding: 2px 6px;
     border-radius: 4px;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
@@ -72,7 +67,6 @@
     align-items: center;
     padding-left: 4px;
     padding-right: 4px;
-    background: #ffffff;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
     cursor: pointer;

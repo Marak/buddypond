@@ -1,5 +1,4 @@
 .card-help-card {
-    background: #f8fafc;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
@@ -34,14 +33,12 @@
 }
 
 .card-help-content h2 {
-    color: #2d3748;
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 12px;
 }
 
 .card-help-intro-text {
-    color: #4a5568;
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 20px;
@@ -68,7 +65,6 @@
 .card-help-command {
     display: flex;
     align-items: center;
-    background: #ffffff;
     border-radius: 4px;
     border: 1px solid #e2e8f0;
     cursor: pointer;
@@ -94,7 +90,6 @@
 
 .card-help-command-help {
     flex: 1;
-    color: #4a5568;
     font-size: 0.95rem;
 }
 

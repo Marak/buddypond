@@ -137,7 +137,6 @@
 
 /* Pad Editor Holder */
 .pad-editor-holder {
-    background: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     min-height: 100px;
@@ -168,7 +167,6 @@
     gap: 12px; /* Space between container and status */
     margin: 16px 0;
     padding: 12px;
-    background: #f9fafb;
     border-radius: 8px;
 }
 

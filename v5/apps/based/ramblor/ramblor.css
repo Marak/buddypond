@@ -2,8 +2,6 @@
 .ramblor-app {
     position: relative;
     padding: 8px;
-    background: #FFFFFF; /* White for modal */
-    color: #333;
     font-family: 'Inter', Arial, sans-serif;
 }
 
@@ -22,13 +20,11 @@
 
 .ramblor-result p {
     margin: 0;
-    font-size: 12px;
-    color: #495057;
+    font-size: 22px;
 }
 
 .ramblor-result-text {
     font-weight: 500;
-    color: #333; /* Default color, overridden by JS for valid/invalid */
 }
 
 .ramblor-verify-form {
@@ -76,7 +72,6 @@
 
 .ramblor-field label {
     font-size: 12px;
-    color: #495057;
     font-weight: 500;
 }
 
@@ -85,14 +80,11 @@
     font-size: 12px;
     border: 1px solid #E9ECEF;
     border-radius: 4px;
-    background: #F8F9FA;
-    color: #333;
 }
 
 .ramblor-explanation {
     margin-top: 8px;
     padding: 6px;
-    background: #F8F9FA; /* Soft white */
     border-radius: 4px;
     border: 1px solid #E9ECEF;
 }
@@ -106,13 +98,11 @@
 
 .ramblor-explanation p {
     font-size: 11px;
-    color: #495057;
     margin: 0;
     line-height: 1.4;
 }
 
 .ramblor-explanation strong {
-    color: #333;
     font-weight: 600;
 }
 
