@@ -162,6 +162,18 @@ export default async function renderChatMessage(message, _chatWindow) {
         return; // Message is already rendered
     }
 
+    // check to see if this command is less than 10 seconds old
+    // TODO: split local and remote commands
+    // TODO: should probably go through card codepath
+    // this means we create the bs-card on the client
+    // we should only run local commands on the client
+    let now = new Date().getTime();
+    let messageTime = new Date(message.ctime).getTime();
+    // needs to determine if this command should be run locally or remotely
+    // for now, only run locally
+    // check to see  if message.from is bp.me
+
+
     // console.log('checking this.data.processedMessages[context]', this.data.processedMessages[context]);
     // Check if message has been processed to avoid duplication
     for (let i = 0; i < this.data.processedMessages[context].length; i++) {

@@ -172,7 +172,8 @@ export default class Motd {
             button.addEventListener('click', () => {
                 const app = button.dataset.app;
                 if (app) {
-                    this.bp.apps.ui.openApp(app);
+                    // not needed, handled by open-app class on buttons
+                    // this.bp.apps.ui.openApp(app);
                 } else if (button.dataset.url) {
                     window.open(button.dataset.url, '_blank');
                 }
