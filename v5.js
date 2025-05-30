@@ -51,7 +51,7 @@ window.bp_v_5 = async function bp_v_5() {
 
             // load apps from the chat button bar
             await bp.load('ramblor');
-            await bp.load('emojipicker');
+            await bp.load('emoji-picker');
             await bp.load('dictate');
 
             // from the top menu bar

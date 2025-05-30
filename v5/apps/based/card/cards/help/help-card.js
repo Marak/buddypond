@@ -123,10 +123,9 @@ export default function applyData(el, data, cardClass, parent) {
         // Add click handler for commands
         commandDiv.addEventListener('click', () => {
             // Stub action: Log command execution (replace with actual command execution logic)
-            console.log(`Executing command: ${commandText}`);
+            // console.log(`Executing command: ${commandText}`);
             // Optional: Trigger a visual feedback
             commandDiv.classList.add('card-help-clicked');
-            console.log('pppp', parent);
 
             if (command.onClick) {
                 // not really needed, let bs handle it

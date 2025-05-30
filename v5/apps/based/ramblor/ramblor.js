@@ -31,9 +31,7 @@ export default class Ramblor {
                 x: 50,
                 y: 100,
                 width: 400,
-                height: 400, /* Adjusted for form */
-                minWidth: 200,
-                minHeight: 300,
+                height: 460,
                 parent: $('#desktop')[0],
                 onClose: () => {
                     this.ramblorWindow = null; // Clear reference on close
