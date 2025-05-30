@@ -1,0 +1,16 @@
+<div class="image-search-ui">
+  <form id="image-search-form">
+    <select id="image-search-provider">
+        <option value="google">Google</option>
+        <option value="giphy">GIPHY</option>
+    </select>
+    <input type="text" id="image-search-input" placeholder="Search for images..." />
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="image-search-results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 1em;">
+    <!-- Images will be injected here -->
+  </div>
+  <button id="send-selected-images">Send Images</button>
+
+</div>
