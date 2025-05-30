@@ -72,7 +72,7 @@ export default function defaultDesktopShortcuts() {
     if (!bp.isMobile()) {
 
         bp.apps.desktop.addShortCut({
-            name: 'sound-recorder',
+            name: 'soundrecorder',
             icon: `desktop/assets/images/icons/icon_soundrecorder_64.png`,
             label: 'Sound Recorder',
             description: 'Record and save audio clips'
@@ -235,6 +235,9 @@ export default function defaultDesktopShortcuts() {
             {
                 id: 'emulator',
                 label: 'NES',
+                options: {
+                    context: 'nes',
+                },
                 icon: 'desktop/assets/images/icons/icon_nes_64.png',
                 description: 'Play Nintendo Entertainment System games'
             },

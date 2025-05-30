@@ -5,11 +5,9 @@
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
     overflow: hidden;
-    color: #333;
     font-family: 'Inter', Arial, sans-serif;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 .card-md-close-btn {
     z-index: 888;
@@ -52,13 +50,11 @@
     gap: 6px;
 }
 
-
 .card-md-examples {
     display: flex;
     flex-direction: column;
     gap: 6px;
     padding: 6px;
-    background: #FFFFFF;
     border-radius: 6px;
     border: 1px solid #E9ECEF;
 }
@@ -68,7 +64,6 @@
     flex-direction: column;
     gap: 3px;
     padding: 4px;
-    background: #F8F9FA;
     border-radius: 4px;
 }
 
@@ -84,7 +79,6 @@
 
 .card-md-output {
     font-size: 13px;
-    color: #333;
     padding: 3px 5px;
     border-radius: 3px;
 }

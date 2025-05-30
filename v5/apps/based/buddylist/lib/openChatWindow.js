@@ -30,15 +30,15 @@ export default function openChatWindow(data) {
 
     let iconImagePath = windowType === 'buddy' ? '' : 'desktop/assets/images/icons/icon_pond_64.png';
 
-    if( windowType === 'buddy') {
+    if (windowType === 'buddy') {
 
         if (
             this.bp.apps.buddylist.data.profileState &&
             this.bp.apps.buddylist.data.profileState.buddylist &&
-            this.bp.apps.buddylist.data.profileState.buddylist[contextName] && 
+            this.bp.apps.buddylist.data.profileState.buddylist[contextName] &&
             this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture) {
-                iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
-            }
+            iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
+        }
 
 
     }
@@ -174,6 +174,19 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             // filter out any this.options.chatWindowButtons that are buddy specific
             chatWindowButtons = chatWindowButtons.filter((button) => {
                 return button.type !== 'buddy-only';
+            });
+        }
+
+        // check if env is iOS, if so, remove any 'desktop-only' buttons
+
+        function isIOS() {
+            return (
+                /iPad|iPhone|iPod/.test(navigator.userAgent) && ('ontouchend' in document)
+            );
+        }
+        if (isIOS()) {
+            chatWindowButtons = chatWindowButtons.filter((button) => {
+                return button.env !== 'desktop-only';
             });
         }
 

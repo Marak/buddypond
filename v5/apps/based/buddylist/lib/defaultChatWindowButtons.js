@@ -140,9 +140,10 @@ export default function defaultChatWindowButtons(bp) {
             bp.open('portfolio', { type: type || 'buddy', output: context, context: '#portfolio-transfer' });
         }
     },
-    /* // TODO: add Dictate with improved UX
+    /* // TODO: add Dictate with improved UX */
     {
         text: 'Dictate',
+        env: 'desktop-only',
         image: 'desktop/assets/images/icons/icon_dictate_64.png',
         onclick: async (ev) => {
             let context = ev.target.dataset.context;
@@ -151,7 +152,6 @@ export default function defaultChatWindowButtons(bp) {
             await bp.open('dictate', { type: type || 'buddy', output: type || 'buddy', context: context, targetEl: targetEl });
         }
     },
-    */
     {
         text: 'BuddyHelp',
         image: 'desktop/assets/images/icons/icon_help_64.png',
