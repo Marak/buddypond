@@ -50,12 +50,14 @@ window.bp_v_5 = async function bp_v_5() {
             console.log('Defer loading additional apps...');
 
             // load apps from the chat button bar
+            await bp.load('image-search');
             await bp.load('ramblor');
             await bp.load('emoji-picker');
             await bp.load('dictate');
 
             // from the top menu bar
             await bp.load('soundcloud');
+
 
             // all desktop apps
             let apps = Object.keys(bp.apps.desktop.apps);

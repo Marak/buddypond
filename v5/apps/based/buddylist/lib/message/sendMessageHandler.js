@@ -141,16 +141,6 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     _data.type = 'buddy';
   }
 
-  // TODO: move all message preprocessing to a separate function
-  if (_data.text.startsWith('/image')) {
-    _data.text = await this.bp.searchImage(_data.text.replace('/image', ''));
-    _data.card = {
-      type: 'image',
-      url: _data.text
-    };
-  }
-
-
   // TODO: move to buddyscript processor
   if (_data.text.startsWith('/help')) {
     // show the help card and do not send the message
@@ -171,7 +161,6 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     return;
   }
 
-
   // shows all apps
   if (_data.text.startsWith('/apps')) {
     // show the help card and do not send the message
@@ -179,13 +168,96 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     return;
   }
 
+
+  if (_data.text.startsWith('/gif')) {
+    // split text to parts on space
+    let params = _data.text.split(' ').slice(1);
+    await bp.load('image-search');
+    console.log('pppp', params)
+
+    if (params.length === 0) {
+      await bp.open('image-search', { query: params[0], provider: 'giphy' });
+      // clear the input
+      $('.aim-input', chatWindow.content).val('');
+      return;
+    }
+
+    let result = await bp.apps['image-search'].fetchImages(params[0], 6, 'giphy');
+    // pick a random image from the result
+    if (result.error) {
+      console.error('Image search error:', result.error);
+      // show an error message in the chat window
+      await this.showCard({ chatWindow, cardName: 'error', context: { message: result.error } });
+
+      // $('.aim-input', chatWindow.content).val('Error fetching images: ' + result.error);
+      console.error('Error fetching images:', result.error);
+      return;
+    }
+    if (result.length === 0) {
+      console.error('No images found for query:', params[0]);
+      return;
+    }
+    let randomImage = result[Math.floor(Math.random() * result.length)];
+    console.log('Random image selected:', randomImage);
+    // _data.text = randomImage; // set the text to the image URL
+    _data.card = {
+      type: 'image',
+      url: randomImage
+    };
+  }
+
+  // TODO: merge back params to query string, just pop the first one off
+  if (_data.text.startsWith('/image')) {
+    // split text to parts on space
+    let params = _data.text.split(' ').slice(1);
+    console.log('/image params', params);
+    if (params.length === 0) {
+      // if only one parameter is provided, open the image search app
+      await bp.open('image-search', { query: params[0], provider: 'pexels' });
+      // clear the input
+      $('.aim-input', chatWindow.content).val('');
+      return;
+    }
+
+    await bp.load('image-search');
+    console.log('pppp', params)
+    let result = await bp.apps['image-search'].fetchImages(params[0], 6, 'pexels');
+    // pick a random image from the result
+    if (result.error) {
+      console.error('Image search error:', result.error);
+      // show an error message in the chat window
+      await this.showCard({ chatWindow, cardName: 'error', context: { message: result.error } });
+
+      // $('.aim-input', chatWindow.content).val('Error fetching images: ' + result.error);
+      console.error('Error fetching images:', result.error);
+      return;
+    }
+    if (result.length === 0) {
+      console.error('No images found for query:', params[0]);
+      return;
+    }
+    let randomImage = result[Math.floor(Math.random() * result.length)];
+    console.log('Random image selected:', randomImage);
+    // _data.text = randomImage; // set the text to the image URL
+    _data.card = {
+      type: 'image',
+      url: randomImage
+    };
+  }
+
+
+
+
   // if this is a buddyscript command, but not a /say command
   // say has a special meaning in the context of the chat window
   // as it should be sent as regular text message ( should be a card later, click to repeat )
-  if (_data.text.startsWith('/') 
-        && !_data.text.startsWith('/say')
-        && !_data.text.startsWith('/roll')
-    ) {
+  // TODO: needs to rebuild bs system to support local transform commands
+  if (_data.text.startsWith('/')
+    && !_data.text.startsWith('/say')
+    && !_data.text.startsWith('/roll')
+    && !_data.text.startsWith('/gif')
+    && !_data.text.startsWith('/image')
+  ) {
     // TODO: process the card locall here
     /*
     _data.card = {
@@ -196,14 +268,14 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     // alert('bs card')
 
     let bs = this.bp.apps.buddyscript.parseCommand(_data.text);
-
+    console.log('got back buddyscript command', bs);
     if (bs.pipe) {
       //if (now - messageTime < 10000) {
-        // pipeable / immediate run commands should only persist for 10 seconds
-        bs.pipe();
-        // clear the input
-        $('.aim-input', chatWindow.content).val('');
-        return false;
+      // pipeable / immediate run commands should only persist for 10 seconds
+      bs.pipe();
+      // clear the input
+      $('.aim-input', chatWindow.content).val('');
+      return false;
 
       // }
     }

@@ -15,7 +15,7 @@ export default class Play {
     async play(mediaPath, {
         tryHard = 0,
         repeat = false,
-        duration = 9999, onEnd = () => {}, onError = () => {} } = {}) {
+        duration = 999999, onEnd = () => {}, onError = () => {} } = {}) {
         if (this.bp.settings.audio_enabled === false) {
             return;
         }

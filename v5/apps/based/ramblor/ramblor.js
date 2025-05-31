@@ -58,11 +58,26 @@ export default class Ramblor {
                     generation: parseInt($form.find('#ramblor-gen').val(), 10),
                     min: parseInt($form.find('#ramblor-min').val(), 10),
                     max: parseInt($form.find('#ramblor-max').val(), 10),
-                    value: parseInt($form.find('#ramblor-value').val(), 10),
+                    value: parseInt($form.find('#ramblor-value').html(), 10),
                     userSeeds: JSON.parse($form.find('#ramblor-user-seeds').val() || '[]'),
                     systemSeed: parseInt($form.find('#ramblor-system-seed').val(), 10)
                 };
 
+                const isValid = this.ramblor.prove(rollData);
+                $resultText.text(isValid ? 'Roll is valid!' : 'Roll is invalid.').css('color', isValid ? '#20C997' : '#DC3545');
+            });
+
+            // add event that if any inputs change, reroll the verification
+            $form.find('input').on('input', () => {
+                const rollData = {
+                    generation: parseInt($form.find('#ramblor-gen').val(), 10),
+                    min: parseInt($form.find('#ramblor-min').val(), 10),
+                    max: parseInt($form.find('#ramblor-max').val(), 10),
+                    value: parseInt($form.find('#ramblor-value').html(), 10),
+                    userSeeds: JSON.parse($form.find('#ramblor-user-seeds').val() || '[]'),
+                    systemSeed: parseInt($form.find('#ramblor-system-seed').val(), 10)
+                };
+                console.log('proving rollData:', rollData);
                 const isValid = this.ramblor.prove(rollData);
                 $resultText.text(isValid ? 'Roll is valid!' : 'Roll is invalid.').css('color', isValid ? '#20C997' : '#DC3545');
             });
@@ -79,7 +94,7 @@ export default class Ramblor {
             $window.find('#ramblor-gen').val(roll.generation);
             $window.find('#ramblor-min').val(roll.min);
             $window.find('#ramblor-max').val(roll.max);
-            $window.find('#ramblor-value').val(roll.value);
+            $window.find('#ramblor-value').html(roll.value);
             $window.find('#ramblor-user-seeds').val(JSON.stringify(roll.userSeeds || []));
             $window.find('#ramblor-system-seed').val(roll.systemSeed);
 
@@ -87,8 +102,10 @@ export default class Ramblor {
             const isValid = this.ramblor.prove(roll);
             $resultText.text(isValid ? 'Roll is valid!' : 'Roll is invalid.').css('color', isValid ? '#20C997' : '#DC3545');
         }
+        return this.ramblorWindow;
 
     }
+
 
 }
 

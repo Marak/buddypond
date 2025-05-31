@@ -1,16 +1,23 @@
 <div class="image-search-ui">
   <form id="image-search-form">
     <select id="image-search-provider">
+        <!-- 
+        Remark: Google imags would require we use a server-side proxy to fetch images due to CORS issues
         <option value="google">Google</option>
-        <option value="giphy">GIPHY</option>
+        -->
+        <option value="giphy">Animated GIFs</option>
+        <option value="pexels">Images</option>
     </select>
     <input type="text" id="image-search-input" placeholder="Search for images..." />
     <button type="submit">Search</button>
   </form>
-
+  <div id="image-search-error" class="error" style="display: none;"></div>
   <div id="image-search-results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 1em;">
     <!-- Images will be injected here -->
   </div>
+  <!-- 
+  Remark: Clicking the image will send it now
   <button id="send-selected-images">Send Images</button>
+  -->
 
 </div>

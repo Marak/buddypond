@@ -1,0 +1,59 @@
+.image-search-ui {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: system-ui, sans-serif;
+  margin: 24px;
+}
+
+#image-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#image-search-form select,
+#image-search-form input[type="text"],
+#image-search-form button {
+  padding: 0.4em 0.6em;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  font-size: 0.9em;
+  flex: 1;
+  min-width: 120px;
+}
+
+#image-search-form button {
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+#image-search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+#image-search-results img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#image-search-results img:hover {
+  transform: scale(1.05);
+}
+
+#send-selected-images {
+  align-self: flex-start;
+  padding: 0.5em 1em;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+}

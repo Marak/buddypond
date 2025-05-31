@@ -28,11 +28,22 @@ const commandSet = [
         onClick: function () {
             // TODO: why this is undefined here
             console.log('this', this);
-            this.bp.open('spellbook');            
+            this.bp.open('spellbook');
         },
         helpText: 'Opens the Spellbook to cast spells',
         card: 'spellbook'
     },
+    {
+        command: '/gif',
+        additional: 'doge',
+        helpText: 'Searches for a GIF, keyword is optional',
+    },
+    {
+        command: '/image',
+        additional: 'cat',
+        helpText: 'Searches for an image, keyword is optional',
+    },
+
     {
         command: '/markdown',
         helpText: 'Shows markdown and color formatting options',

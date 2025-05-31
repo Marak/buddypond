@@ -48,7 +48,7 @@ export default function createWebSocketClient(chatId) {
   }
 
   // Named function for message event
-  function handleMessage(event) {
+  async function handleMessage(event) {
     try {
       const parseData = JSON.parse(event.data);
 
@@ -56,6 +56,54 @@ export default function createWebSocketClient(chatId) {
         case 'message':
           console.log('WebSocket message received:', parseData);
           bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
+          break;
+
+        case 'rate-limit':
+          console.log('Rate limit exceeded:', parseData);
+          bp.emit('buddy::messages', { result: { messages: [parseData.message], retryAfter: parseData.retryAfter, severity: parseData.severity } });
+          console.error(parseData.severity, parseData.message.text);
+          if (parseData.severity == 3) {
+            alert('Please chill out.');
+          }
+
+          if (parseData.severity == 4) {
+
+            try {
+              let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/forbiddenRickRoll/forbiddenRickRoll.js`, {}, false);
+              spellModule.default.call(this);
+            }
+            catch (error) {
+              console.log('Error importing spell module:', error);
+            }
+
+          }
+
+
+          if (parseData.severity >= 5) {
+
+
+            /*
+            try {
+              let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/hamster-dance/hamster-dance.js`, {}, false);
+              spellModule.default.call(this);
+            }
+            catch (error) {
+              console.log('Error importing spell module:', error);
+            }
+            */
+
+            try {
+              let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/vortex/vortex.js`, {}, false);
+              spellModule.default.call(this);
+            }
+            catch (error) {
+              console.log('Error importing spell module:', error);
+            }
+
+
+            // logout
+            // this.bp.logout();
+          }
           break;
 
         case 'getHistory':

@@ -185,27 +185,27 @@ const countdownManager = (() => {
                 $el.parent().text('Curse has Expired.');
                 return;
             }
-           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-// Build the time string
-let prefix = '';
-let timeParts = [];
+            // Build the time string
+            let prefix = '';
+            let timeParts = [];
 
-if (days > 0) {
-    prefix = `${days} Day${days > 1 ? 's' : ''} `;
-    timeParts.push(hours.toString().padStart(2, '0'));
-} else if (hours > 0) {
-    timeParts.push(hours.toString());
-}
+            if (days > 0) {
+                prefix = `${days} Day${days > 1 ? 's' : ''} `;
+                timeParts.push(hours.toString().padStart(2, '0'));
+            } else if (hours > 0) {
+                timeParts.push(hours.toString());
+            }
 
-timeParts.push(minutes.toString().padStart(2, '0'));
-timeParts.push(seconds.toString().padStart(2, '0'));
+            timeParts.push(minutes.toString().padStart(2, '0'));
+            timeParts.push(seconds.toString().padStart(2, '0'));
 
-const remainingDuration = prefix + timeParts.join(':');
-$el.text(remainingDuration);
+            const remainingDuration = prefix + timeParts.join(':');
+            $el.text(remainingDuration);
 
 
         });

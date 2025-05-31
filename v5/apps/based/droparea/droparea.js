@@ -43,7 +43,6 @@ export default class DropArea {
     handleDragOver(event) {
         event.preventDefault(); // Prevent default behavior (prevent file from being opened)
         this.dropInfoBar.style.display = 'flex'; // Show the info bar
-
         let targetElement = event.target;
         // Traverse up the DOM
         while (targetElement && !targetElement.classList.contains('has-droparea')) {
@@ -96,8 +95,8 @@ export default class DropArea {
             ${dataAttributes}`;
     }
 
-
     async handleDrop(event) {
+        console.log('DropArea: handleDrop called', event);
         event.preventDefault();
         if (this.dropTarget && event.target === this.dropTarget) {
             this.triggerDropAreaHandler(event);
@@ -135,16 +134,15 @@ export default class DropArea {
                 // set opacity to 1
                 aimSendButton.css('opacity', '1');
 
-
                 // insert a div above the .aim-input div
                 // this should be a preview of the file
                 let preview = document.createElement('div');
                 preview.innerHTML = 'File Preview';
                 preview.classList.add('file-preview');
-                preview.style.border = '1px solid #f0f';
+                //preview.style.border = '1px solid #f0f';
                 //preview.style.padding = '10px';
                 //preview.style.margin = '10px';
-                preview.style.backgroundColor = '#f0f';
+                //preview.style.backgroundColor = '#f0f';
                 preview.style.color = '#fff';
                 preview.style.fontWeight = 'bold';
                 preview.style.textAlign = 'center';

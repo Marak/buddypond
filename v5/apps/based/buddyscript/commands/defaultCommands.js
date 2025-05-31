@@ -44,7 +44,7 @@ export default function Commands(bp) {
       let params = context.params;
       console.log('Executing legacy command:', command, commandStr, context);
       if (typeof commandStr === 'function') {
-        commandStr(params);
+        commandStr(context);
         //eval(commandStr)
 
       } else {
@@ -109,6 +109,7 @@ let legacyCommands = {
     description: 'Buddy Pond Console Terminal ( For Hackers )',
     icon: 'lofi'
   },
+ 
   /*
   faq: {
     command: 'desktop.ui.openWindow("faq");',
