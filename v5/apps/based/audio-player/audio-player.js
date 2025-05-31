@@ -3,6 +3,7 @@ import PlayerKeyboardBindings from './lib/PlayerKeyboardBindings.js';
 
 import menuBarConfig from './lib/menuBarConfig.js';
 
+
 export default class AudioPlayer {
   constructor(bp) {
     this.bp = bp;
@@ -25,7 +26,7 @@ export default class AudioPlayer {
 
 
     // window.aubio = aubio.default;
-    PlayerKeyboardBindings.bindKeys(this.bp);
+
 
 
     // adds a document click handler that will revert the menuBar to default if clicked
@@ -74,7 +75,7 @@ export default class AudioPlayer {
 
   async open(config) {
     console.log("AudioPlayer open", config);
-
+    PlayerKeyboardBindings.bindKeys(this.bp);
     let playerId = 'audio-player-' + this.audioPlayers.length;
     let menuBar = this.bp.apps.menubar;
 
@@ -109,6 +110,7 @@ export default class AudioPlayer {
         let menuBar = this.bp.apps.menubar;
 
         menuBar.setDefaultMenu();
+        PlayerKeyboardBindings.unbindKeys(this.bp);
       }
     });
     console.log('new win', this.audioPlayerWindow)
@@ -123,7 +125,7 @@ export default class AudioPlayer {
     // TODO: audioPlayer.load()
     // TODO: audioPlayer.unload()
     await audioPlayer.init();
-    await audioPlayer.load(config.url);
+    await audioPlayer.load(config.url, {});
 
     this.audioPlayers.push(audioPlayer);
 
