@@ -43,8 +43,8 @@ export default class Motd {
                         {
                 date: '5/28/25',
                 notes: [
+                    'Image Search Added',
                     'Improved Mobile Support',
-                    'Buddy Pond Desktop now works on mobile devices',
                     'Improved Chat Performance for all devices',
                 ]
             },
