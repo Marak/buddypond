@@ -115,7 +115,7 @@ window.top.location = 'ie.html';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
       let _randolphEndpoint = 'https://randolph.buddypond.com/api/v6';
-      let _imageSearchEndpoint = 'https://images.buddypond.com';
+      let _imageSearchEndpoint = 'https://image-search.buddypond.com';
 
       let devmode = false;
 
@@ -144,8 +144,8 @@ window.top.location = 'ie.html';
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
-      //_host = 'http://' + localIp;
-      //_errorsEndpoint = `https://${localIp}:8787/error`;
+      // _host = 'http://' + localIp;
+      // _errorsEndpoint = `https://${localIp}:8787/error`;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
