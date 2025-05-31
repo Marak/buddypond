@@ -2,7 +2,6 @@
 export default class ImageSearch {
     constructor(bp, config = {}) {
         this.bp = bp;
-        this.apiEndpoint = config.imageSearchEndpoint || this.bp.imageSearchEndpoint;
     }
 
     async init() {
@@ -159,9 +158,7 @@ export default class ImageSearch {
     async fetchImages(query, numResults = 6, provider = 'pexels') {
         try {
             const _provider = provider || $('#image-search-provider').val() || 'google';
-            const url = `${this.apiEndpoint}/image-search?q=${encodeURIComponent(query)}&num=${numResults}&provider=${_provider}`;
-            console.log('ImageSearch: fetching from', url);
-
+            const url = `${buddypond.imageSearchEndpoint}/image-search?q=${encodeURIComponent(query)}&num=${numResults}&provider=${_provider}`;
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -172,10 +169,7 @@ export default class ImageSearch {
             if (!response.ok) {
                 throw new Error(`Image search failed: ${response.status} ${response.statusText}`);
             }
-
             const data = await response.json();
-
-
             return data;
         } catch (err) {
             console.warn("ImageSearch error:", err);
