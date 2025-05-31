@@ -1,12 +1,8 @@
 /* image-search.js - Marak Squires 2025 - BuddyPond */
-
-
-let defaultImageSearchEndpoint = ' http://192.168.200.59:9005';
-
 export default class ImageSearch {
     constructor(bp, config = {}) {
         this.bp = bp;
-        this.apiEndpoint = config.imageSearchEndpoint || defaultImageSearchEndpoint;
+        this.apiEndpoint = config.imageSearchEndpoint || this.bp.imageSearchEndpoint;
     }
 
     async init() {

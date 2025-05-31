@@ -115,6 +115,7 @@ window.top.location = 'ie.html';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
       let _randolphEndpoint = 'https://randolph.buddypond.com/api/v6';
+      let _imageSearchEndpoint = 'https://images.buddypond.com';
 
       let devmode = false;
 
@@ -139,10 +140,12 @@ window.top.location = 'ie.html';
         _admin = `http://${localIp}:8789`;
         _errorsEndpoint = `https://${localIp}:8787/error`;
         _randolphEndpoint = `http://${localIp}:8889/api/v6`;
+        _imageSearchEndpoint = `http://${localIp}:9005`;
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
-      // _host = 'https://' + localIp;
+      //_host = 'http://' + localIp;
+      //_errorsEndpoint = `https://${localIp}:8787/error`;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
@@ -154,6 +157,7 @@ window.top.location = 'ie.html';
       buddypond.portfolioEndpoint = _portfolioEndpoint;
       buddypond.coinEndpoint = _coinEndpoint;
       buddypond.randolphEndpoint = _randolphEndpoint;
+      buddypond.imageSearchEndpoint = _imageSearchEndpoint;
 
       let renderBpApp = true;
 
@@ -184,7 +188,6 @@ window.top.location = 'ie.html';
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`
         $(document).ready(async function () {
-
 
           bp.on('bp::loading', 'update-loading-text', function (resource) {
             // desktop.log('Buddy Pond Cloud OS Loading');
