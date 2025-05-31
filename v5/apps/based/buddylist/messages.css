@@ -83,6 +83,7 @@
     gap: 10px;
 }
 .file-preview {
+    position: relative;
     width: 100%;
 }
 .aim-chat-message {
