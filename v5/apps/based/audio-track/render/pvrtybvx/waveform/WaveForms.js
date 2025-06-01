@@ -4,6 +4,7 @@ import RegionsPlugin from '../../vendor/wavesurfer.js/dist/plugins/regions.esm.j
 import HoverPlugin from '../../vendor/wavesurfer.js/dist/plugins/hover.esm.js';
 import TimelinePlugin from '../../vendor/wavesurfer.js/dist/plugins/timeline.esm.js';
 
+
 let WaveSurferClass = WaveSurfer;
 let RegionsPluginClass = RegionsPlugin;
 
@@ -125,8 +126,15 @@ export default async function createWaveform(track, trackId, index, trackContain
         return { detailedWaveform: null, overviewWaveform: null, overviewContainer, detailedContainer };
     }
 
-    let channelData = track.audioBuffer.getChannelData(0);
-    console.log("channelData", channelData);
+    let peaksData =  null;
+
+    if (!peaksData) {
+        console.log('No peaks data available, generating from audioBuffer...slow in main process. Use worker...');
+        let channelData = track.audioBuffer.getChannelData(0);
+        console.log('track.arrayBuffer', track.arrayBuffer);
+        peaksData = channelData;
+    }
+
     let overviewRegions = RegionsPluginClass.create();
     // Initialize the overview waveform (zoomed-out)
     const overviewWaveform = WaveSurferClass.create({
@@ -139,25 +147,18 @@ export default async function createWaveform(track, trackId, index, trackContain
         autoCenterImmediately: true, // fake?
         progressColor: 'purple',
         cursorColor: 'red',  // Hide the cursor on the overview
-        
         height: 55,
-        // width: 560,
-        barWidth: 0.005,
-        normalize: false,
-        responsive: true,
+        barGap: 1,
+        barWidth: 1,
+        normalize: true,
+        partialRender: true,
+        responsive: false,
         cursorWidth: 1,
-        peaks: channelData,
+        peaks: peaksData, // Use the first channel data for overview
         duration: track.metadata.duration,
         minPxPerSec: 1,  // Lower resolution for full-track view
         scrollParent: false,
         plugins: [
-            /*
-            CustomWaveformPlugin.create({
-                peaks: channelData,
-                audioBuffer: track.audioBuffer,
-                fftSize: 1024, // Adjust FFT size for frequency resolution
-            }),
-            */
             overviewRegions,
             HoverPlugin.create({
                 lineColor: '#ff0000',
@@ -172,9 +173,9 @@ export default async function createWaveform(track, trackId, index, trackContain
     overviewWaveform.regions = overviewRegions;
     const detailedRegions = RegionsPluginClass.create();
     // Initialize the detailed waveform (zoomed-in)
+    
     const detailedWaveform = WaveSurferClass.create({
         showWaveform: false,
-
         container: detailedContainer,
         waveColor: 'purple',
         autoCenter: true,
@@ -185,40 +186,27 @@ export default async function createWaveform(track, trackId, index, trackContain
         height: 140,
         // width: 560,
         interact: true,
-        barWidth: 0.1,
+        barWidth: 1,
+        barGap: 1,
+        pixelRatio: 1,
+        partialRender: true,
         normalize: false,
         dragToSeek: false,
-        peaks: channelData,
+        peaks: peaksData,
+        // peaks: channelData,
         duration: track.metadata.duration,
         cursorWidth: 1,
-        responsive: true,
+        responsive: false,
         hideScrollbar: true,
         minPxPerSec: 130,  // Higher resolution for detailed view
         scrollParent: false,
         isScrollable: false,
         plugins: [
             detailedRegions,
-            /*
-            CustomWaveformPlugin.create({
-                peaks: channelData,
-                audioBuffer: track.audioBuffer,
-                fftSize: 1024, // Adjust FFT size for frequency resolution
-            }),
-            */
-            
-
         ]
     });
     detailedWaveform.regions = detailedRegions;
 
-    /*
-    // Wait for both waveforms to be ready
-    await Promise.all([
-        new Promise(resolve => overviewWaveform.on('ready', resolve)),
-        new Promise(resolve => detailedWaveform.on('ready', resolve))
-    ]);
-    */
-   
     // console.log("tttt", transport.tracks)
     track.waveform = detailedWaveform;
     track.detailedWaveform = detailedWaveform;
@@ -229,7 +217,7 @@ export default async function createWaveform(track, trackId, index, trackContain
         const secs = Math.floor(seconds % 60);
         return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
-  
+
     // Sync overview waveform position to the detailed waveform
     detailedWaveform.on('audioprocess', () => {
         const progress = detailedWaveform.getCurrentTime() / detailedWaveform.getDuration();
@@ -287,7 +275,7 @@ export default async function createWaveform(track, trackId, index, trackContain
     });
 
     overviewWaveform.on('click', (e, ev) => {
-   
+
         // update the detailed waveform to the click position
         let overviewWaveformPosition = overviewWaveform.getCurrentTime();
         console.log('overviewWaveform mousedown', overviewWaveformPosition)
@@ -329,7 +317,7 @@ export default async function createWaveform(track, trackId, index, trackContain
         }
         track.playPause();
         return false;
-    }); 
+    });
 
     detailedWaveform.on('mouseup', () => {
         console.log('detailedWaveform mouseup')
