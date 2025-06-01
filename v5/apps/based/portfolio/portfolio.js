@@ -12,6 +12,7 @@ import PortfolioClass from './lib/Portfolio.js';
 import TransactionClass from './lib/Transaction.js';
 import render from './lib/render.js';
 import eventBind from './lib/eventBind.js';
+import { updateCoinRow } from './lib/render.js';
 
 export default class Portfolio {
 
@@ -142,3 +143,4 @@ export default class Portfolio {
 
 Portfolio.prototype.render = render;
 Portfolio.prototype.eventBind = eventBind;
+Portfolio.prototype.updateCoinRow = updateCoinRow;
