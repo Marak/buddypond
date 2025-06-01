@@ -111,6 +111,7 @@ window.top.location = 'ie.html';
       let _orderbookEndpoint = 'https://orderbook.buddypond.com';
       let _coinEndpoint = 'https://coin.buddypond.com';
       let _messagesWsEndpoint = 'wss://messages.buddypond.com/ws/messages';
+      let _messagesApiEndpoint = 'https://messages.buddypond.com';
       let _buddylistWsEndpoint = 'wss://a.buddypond.com/ws/buddylist';
       let _uploadsEndpoint = 'https://uploads.buddypond.com';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
@@ -134,6 +135,7 @@ window.top.location = 'ie.html';
         _coinEndpoint = `http://${localIp}:9001`;
         _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
         _messagesWsEndpoint = `ws://${localIp}:8788/ws/messages`;
+        _messagesApiEndpoint = `http://${localIp}:8788`;
         _host = `https://${localIp}`;
         _uploadsEndpoint = `http://${localIp}:9004`;
         _api = `http://${localIp}:8787`;
@@ -144,12 +146,13 @@ window.top.location = 'ie.html';
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
-      // _host = 'http://' + localIp;
+      // _host = 'https://' + localIp;
       // _errorsEndpoint = `https://${localIp}:8787/error`;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
       buddypond.messagesWsEndpoint = _messagesWsEndpoint;
+      buddypond.messagesApiEndpoint = _messagesApiEndpoint;
       buddypond.buddylistWsEndpoint = _buddylistWsEndpoint;
       buddypond.adminEndpoint = _admin;
       buddypond.errorsEndpoint = _errorsEndpoint;

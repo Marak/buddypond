@@ -8,52 +8,25 @@ export default class Pond {
 
 
     async init() {
-
         // injects CSS link tag into the head of document
         await this.bp.load('/v5/apps/based/pond/pond.css');
-
         // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
-
-
-        // this.bp.on('ponds::hotPonds', 'update-hotponds-list', data => this.updateHotPonds(data));
-
-
-
-        /*
-        $('.joinPondTable').on('click', (e) => {
-            e.preventDefault();
-            // check if target is a button
-
-            let pondName;
-            // check to see if has class joinPondButton
-            if (e.target.classList.contains('joinPondButton')) {
-                // get the pond value from the data-pond attribute
-                pondName = e.target.getAttribute('data-pond');
-                // open the pond window
-                // this.bp.open('buddylist', { pondName: pond });
-                this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
-            } 
-            return false;
-        });
-        */
-
-        // await imports the module and returns it
-        // let module = await this.bp.load('/v5/apps/based/pond/pond.js');
-
         return 'loaded pond';
     }
 
     updateHotPonds(data) {
-        let hotPonds = data.result;
+        let hotPonds = data;
+        console.log('updateHotPonds called with data:', hotPonds);
         let html = '';
         const $joinPondTable = $('.joinPondTable');
 
         // Clear existing entries in the HTML representation (optional, based on whether you want to append or replace)
         $joinPondTable.empty();
 
+        console.log('Processed hotPonds:', hotPonds);
         // order hotPonds by score
-        hotPonds.sort((a, b) => b.score - a.score);
+        hotPonds.sort((a, b) => b.connection_count - a.connection_count);
 
         // Iterate through the hot ponds data
         for (let i = 0; i < hotPonds.length; i++) {
@@ -66,10 +39,11 @@ export default class Pond {
             // Check if the row already exists
             if ($existingRow.length > 0) {
                 // Update the existing row if needed
-                $existingRow.find('td').eq(1).text(pond.score); // Update the score column
+                $existingRow.find('td').eq(1).text(pond.connection_count); // Update the score column
             } else {
+                let pondName = pond.pond_id.replace('pond/', '');
                 // If the row does not exist, append a new row to the table
-                $joinPondTable.append(`<tr data-pond="${pond.value}"><td>#${pond.value}</td><td>${pond.score}</td><td><button class="joinPondButton" data-pond="${pond.value}">Join</button></td></tr>`);
+                $joinPondTable.append(`<tr data-pond="${pond.pond_id}"><td>#${pondName}</td><td>${pond.connection_count}</td><td><button class="joinPondButton open-app" data-app="buddylist" data-type="pond" data-context="${pondName}">Join</button></td></tr>`);
             }
         }
 
@@ -79,20 +53,6 @@ export default class Pond {
 
 
     open() {
-
-        // we now need to indicate that the profile should subscribe to get updates about the most popular ponds
-        // the easiest way seems to create timer on client that sends ws message "getHotPonds" every 5 seconds
-        /*
-        this.bp.emit('client::requestWebsocketConnection', 'ponds');
-
-        this.updatePondsTimer = setInterval(() => {
-            this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
-        }, 5000);
-
-        // immediately get the hot ponds
-        this.bp.apps.client.sendMessage({ id: new Date().getTime(), method: 'getHotPonds' });
-        */
-
 
         let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
 
@@ -106,7 +66,7 @@ export default class Pond {
                 x: 100,
                 y: 100,
                 width: 400,
-                height: 170,
+                height: 470,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -122,8 +82,7 @@ export default class Pond {
                 onClose: () => {
                     console.log('pond window closed');
                     this.pondWindow = null;
-                    // clearInterval(this.updatePondsTimer);
-                    // this.bp.apps.client.releaseWebsocketConnection('ponds');
+                    clearInterval(this.updatePondsTimer);
                 }
             });
 
@@ -151,7 +110,7 @@ export default class Pond {
                 // get value from #customPondName
                 let pondName = $('#customPondName').val();
                 if (pondName) {
-                    this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+                    this.bp.apps.buddylist.openChatWindow({ pondname: pondName, type: 'pond', context: pondName });
                 }
             };
 
@@ -162,6 +121,38 @@ export default class Pond {
             });
 
         }
+
+        // TODO: switch to websocket connection?
+        function fetchPondData() {
+            // make initial fetch API request to buddypond.messagesApiEndpoint
+            let url = buddypond.messagesApiEndpoint + '/hotponds';
+            console.log('Fetching hot ponds from:', url);
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.bp.qtokenid}`, // Use Authorization header
+                    'x-me': this.bp.me
+                }
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch hot ponds');
+                }
+            }).then(data => {
+                console.log('Hot ponds data:', data);
+                this.updateHotPonds(data);
+            }).catch(error => {
+                console.error('Error fetching hot ponds:', error);
+            });
+
+        }
+
+        fetchPondData.call(this);
+        this.updatePondsTimer = setInterval(() => {
+           fetchPondData.call(this);
+        }, 5000);
 
         return this.pondWindow;
 

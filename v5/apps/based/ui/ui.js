@@ -72,10 +72,12 @@ export default class UI {
         $(d).on('click', '.open-app', function (e) {
             let appName = $(this).data('app');
             let context = $(e.target).data('context');
+            let type = $(this).data('type');
+            // let output = $(this).data('output');
 
             console.log('open-app ' + appName);
             // check to see if legacy app ( for now)
-            bp.open(appName, { context });
+            bp.open(appName, { context, type });
         
           });
 

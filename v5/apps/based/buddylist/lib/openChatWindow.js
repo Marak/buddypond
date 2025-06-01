@@ -1,5 +1,7 @@
 // import AutoComplete from '../../ui/AutoComplete/AutoComplete.js'; // using jquery autocomplete ( for now )
 import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
+import forbiddenNotes from './forbiddenNotes.js';
+
 export default function openChatWindow(data) {
     // this.bp.emit('client::requestWebsocketConnection', 'buddylist');
 
@@ -15,6 +17,16 @@ export default function openChatWindow(data) {
 
     if (data.type) {
         windowType = data.type;
+    }
+
+    let pondName = contextName.replace('pond/', '');
+
+    // ensure that context does not contain forbidden characters or bad words
+    // TODO: add client-side check for invalid characters in pondName
+    if (forbiddenNotes.containsBadWord(pondName)) {
+        console.error('Forbidden context name:', contextName);
+        alert('Pond name not allowed, please choose a different name.');
+        return;
     }
 
     let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
