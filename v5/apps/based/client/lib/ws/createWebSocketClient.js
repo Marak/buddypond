@@ -58,6 +58,10 @@ export default function createWebSocketClient(chatId) {
           bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
           break;
 
+        case 'typing' :
+          // console.log('Typing message received:', parseData);
+          bp.emit('buddy::isTyping', parseData.message);
+          break;
         case 'rate-limit':
           console.log('Rate limit exceeded:', parseData);
           bp.emit('buddy::messages', { result: { messages: [parseData.message], retryAfter: parseData.retryAfter, severity: parseData.severity } });

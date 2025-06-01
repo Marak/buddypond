@@ -17,14 +17,14 @@ export default class Pond {
 
     updateHotPonds(data) {
         let hotPonds = data;
-        console.log('updateHotPonds called with data:', hotPonds);
+        // console.log('updateHotPonds called with data:', hotPonds);
         let html = '';
         const $joinPondTable = $('.joinPondTable');
 
         // Clear existing entries in the HTML representation (optional, based on whether you want to append or replace)
         $joinPondTable.empty();
 
-        console.log('Processed hotPonds:', hotPonds);
+        // console.log('Processed hotPonds:', hotPonds);
         // order hotPonds by score
         hotPonds.sort((a, b) => b.connection_count - a.connection_count);
 
@@ -126,7 +126,7 @@ export default class Pond {
         function fetchPondData() {
             // make initial fetch API request to buddypond.messagesApiEndpoint
             let url = buddypond.messagesApiEndpoint + '/hotponds';
-            console.log('Fetching hot ponds from:', url);
+            // console.log('Fetching hot ponds from:', url);
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -141,7 +141,7 @@ export default class Pond {
                     throw new Error('Failed to fetch hot ponds');
                 }
             }).then(data => {
-                console.log('Hot ponds data:', data);
+                // console.log('Hot ponds data:', data);
                 this.updateHotPonds(data);
             }).catch(error => {
                 console.error('Error fetching hot ponds:', error);
@@ -151,7 +151,7 @@ export default class Pond {
 
         fetchPondData.call(this);
         this.updatePondsTimer = setInterval(() => {
-           fetchPondData.call(this);
+            fetchPondData.call(this);
         }, 5000);
 
         return this.pondWindow;

@@ -251,8 +251,8 @@ function setupChatWindow(windowType, contextName, chatWindow) {
         }
     });
 
-    // Buddy "is typing" event on message_text input
-    $('.aim-input').on('keyup', (e) => {
+    // Active / inactive send button for empty input field
+    $('.aim-input', chatWindow.content).on('keyup', (e) => {
         // check value of the input field, if not empty, set opacity to 1
         let inputValue = $(e.target).val();
         let $sendButton = $('.aim-send-btn', chatWindow.content);
@@ -264,9 +264,8 @@ function setupChatWindow(windowType, contextName, chatWindow) {
     });
 
     // Buddy "is typing" event on message_text input
-    $('.aim-input').on('keypress', (e) => {
+    $('.aim-input', chatWindow.content).on('keydown', (e) => {
 
-        return;
         let buddyName = this.bp.me;
         let context = contextName;
         // console.log('typing', buddyName, context);

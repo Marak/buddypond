@@ -207,13 +207,6 @@ export default async function renderChatMessage(message, _chatWindow) {
     // Add the processed message UUID to prevent reprocessing
     this.data.processedMessages[context].push(message);
 
-    if (message.isTyping) {
-        // emit buddy::isTyping
-        console.log('buddy::isTyping', message);
-        this.bp.emit('buddy::isTyping', message);
-        return;
-    }
-
     // check if this is an Agent message which gets processed first
     if (message.type === 'agent') {
 

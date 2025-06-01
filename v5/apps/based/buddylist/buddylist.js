@@ -24,6 +24,7 @@ import showCard from "./lib/message/showCard.js";
 import scrollToBottom from "./lib/message/scrollToBottom.js";
 
 
+
 // new ws api
 import Client from './lib/ws/Client.js';
 
@@ -116,7 +117,7 @@ export default class BuddyList {
         // buddylist supports (2) window types for bp.open('buddylist, { type: 'buddylist-profile' })
         // 'buddylist-profile' - the default buddylist window
         // 'buddylist-chat' - a chat window
-
+        // console.log('BuddyList open config', config)
 
         if (typeof config.type !== 'string') {
             config.type = 'buddylist-profile';
@@ -161,6 +162,7 @@ export default class BuddyList {
         // Remark: is this code still used? can we remove? handled by openChatWindow
         // called from elsewhere?
         if (config.type === 'pond') {
+            console.log('BuddyList open config.type is pond', config);
             // the type of window is a chat window
             // we *don't* need to re-render the buddylist-profile 
             this.openChatWindow(config);
@@ -415,7 +417,7 @@ export default class BuddyList {
         // remote isTyping event from server
         // TODO: move to separate file
         this.bp.on("buddy::isTyping", "show-is-typing-message", message => {
-
+            // console.log('show-is-typing-message', message);
             // TODO: move to separate file
             // TODO: move this to a separate file / function
             // Handling typing message display
@@ -431,12 +433,24 @@ export default class BuddyList {
                 let messageTime = new Date(message.ctime);
                 // console.log("messageTime", messageTime.getTime());
                 let now = new Date().getTime();
-                let selector = `#${message.type}_message_-${message.from}`;
-                let chatWindow = $(selector);
+                let windowId;
+                if (message.type === 'buddy') {
+                    if (message.to === this.bp.me) {
+                        windowId = `buddy_message_-${message.from}`;
+                    } else {
+                        windowId = `buddy_message_-${message.to}`;
+                    }
+                }
+
+                if (message.type === 'pond') {
+                    windowId = `pond_message_-${message.to}`;
+                }
+
+                let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
                 // don't process isTyping messages over 3 seconds old
                 if (now - messageTime.getTime() > 3000) {
                     // console.log("isTyping message too old", message);
-                    return;
+                    // return;
                 }
 
                 let typingIndicatorId = `typing-${message.from}`;
@@ -444,6 +458,8 @@ export default class BuddyList {
 
                 // Check if the typing indicator for this user already exists
                 let typingIndicator = $(`.aim-typing span[data-user="${message.from}"]`, chatWindow.content);
+                // console.log('typingIndicator', typingIndicator);
+                // console.log('typingMessage', typingMessage);
                 if (typingIndicator.length === 0) {
                     // If it does not exist, create a new span and append it to the .aim-typing area
                     typingIndicator = $('<span></span>')
@@ -480,13 +496,37 @@ export default class BuddyList {
                 // return;
             }
             this.lastTypingMessage = new Date().getTime();
+            // console.log('buddy::typing', data);
 
+            let chatId = '';
 
+            if (data.type === 'buddy') {
+                let buddyNames = [data.from, data.to].sort();
+                chatId = 'buddy/' + buddyNames.join('/');
+            }
+
+            if (data.type === 'pond') {
+                chatId = 'pond/' + data.to;
+            }
+
+            bp.apps.client.sendWsMessage(chatId, {
+                action: 'send',
+                chatId: chatId,
+                buddyname: buddypond.me,
+                qtokenid: buddypond.qtokenid,
+                message: {
+                    ...data,
+                    chatId,
+                    isTyping: true
+                }
+            });
+            /*
             if (data.type === 'pond') {
                 this.sendPondMessageToServer(data, false);
             } else {
                 this.sendMessageToServer(data, false);
             }
+            */
             // this.bp.apps.client.sendMessage({ id: uuid(), method: 'sendMessage', data: data });
 
 
@@ -738,7 +778,7 @@ export default class BuddyList {
             setTimeout(() => {
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
 
-               
+
             }, 100);
         }
 
