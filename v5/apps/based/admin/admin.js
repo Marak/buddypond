@@ -54,6 +54,30 @@ export default class Admin {
         await this.render(this.adminWindow);
         this.eventBind(this.adminWindow);
     }
+
+ resetAllPondCounts() {
+        // reset all ponds to 0 connections
+        let url = buddypond.messagesApiEndpoint + '/reset-hotpond-counts';
+        console.log('Resetting all pond counts at:', url);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.bp.qtokenid}`, // Use Authorization header
+                'x-me': this.bp.me
+            }
+        }).then(response => {
+            if (response.ok) {
+                console.log('All pond counts reset successfully');
+            } else {
+                throw new Error('Failed to reset pond counts');
+            }
+        }).catch(error => {
+            console.error('Error resetting pond counts:', error);
+        });
+    }
+
+
 }
 
 Admin.prototype.render = render;
