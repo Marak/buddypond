@@ -52,14 +52,16 @@ export default async function applyData(el, data) {
         $el.find('.card-spell-duration').remove();
     }
 
-    // Initialize countdown
-    const countDownEl = $el.find('.card-spell-duration .countdown-date');
-    // set data-ctime to the data.ctime
-    countDownEl.data('ctime', data.message.ctime);
-    // console.log('Setting countdown for spell card', data.expiry, countDownEl);
-    this.bp.apps.desktop.countdownManager.startCountdown(countDownEl, data.expiry, function onExpire($el) {
-        $el.parent().text('Curse has Expired.');
-    });
+    if (data.expiry) {
+        // Initialize countdown
+        const countDownEl = $el.find('.card-spell-duration .countdown-date');
+        // set data-ctime to the data.ctime
+        countDownEl.data('ctime', data.message.ctime);
+        // console.log('Setting countdown for spell card', data.expiry, countDownEl);
+        this.bp.apps.desktop.countdownManager.startCountdown(countDownEl, data.expiry, function onExpire($el) {
+            $el.parent().text('Curse has Expired.');
+        });
+    }
     // console.log('Spell card countdown expired', $el);
 
     if (data.spellType === 'curses' && data.castedBy === this.bp.me) {
