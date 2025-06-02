@@ -596,7 +596,7 @@ export default class BuddyList {
             }
             window.rollToNumber($('#menu-bar-coin-balance'), data.message.newBalance)
 
-            if (this.bp.apps.portfolio) {
+            if (this.bp.apps.portfolio && this.bp.apps.portfolio.portfolioData) {
 
                 this.bp.apps.portfolio.updateCoinRow(data.message.symbol, {
                     symbol: data.message.symbol,
