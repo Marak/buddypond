@@ -65,6 +65,8 @@ export default class BuddyList {
 
         this.activeMessageContextMenu = null;
 
+        this.faucetAttempts = 0;
+
     }
 
     async init() {
@@ -277,12 +279,6 @@ export default class BuddyList {
                 }
             }, 6000);
 
-            // TODO: should first check if user profile has a balance of coins
-            // if so, we know that default coins allocation has been set
-            setTimeout(() => {
-                this.requestDefaultCoinAllocations();
-            }, 4000);
-
         });
 
         this.bp.on('buddylist-websocket::connected', 'update-buddylist-connected', ws => {
@@ -290,6 +286,13 @@ export default class BuddyList {
             $('.onlineStatusSelect').val('online');
             $('.loggedOut').flexHide();
             $('.loggedIn').flexShow();
+
+            this.bp.apps.buddylist.client.wsClient.send(JSON.stringify({
+                action: 'getCoinBalance',
+                buddyname: this.bp.me,
+                qtokenid: this.bp.qtokenid,
+            }));
+
             //$('.loggedIn').addClass('show');
         });
 
@@ -584,7 +587,60 @@ export default class BuddyList {
             }
         });
         */
+        this.bp.on('buddylist-websocket::reward', 'update-local-coin-balance', data => {
+            // TODO: move this into rewards app
+            //$('#menu-bar-coin-balance').text(data.message.newBalance);
+            window.rollToNumber($('#menu-bar-coin-balance'), data.message.newBalance)
 
+            if (this.bp.apps.portfolio) {
+
+                this.bp.apps.portfolio.updateCoinRow(data.message.symbol, {
+                    symbol: data.message.symbol,
+                    amount: data.message.newBalance,
+                    available: data.message.newBalance,
+                    price: 0.001,
+                    cost: 0.001 * data.message.newBalance
+                });
+
+                let coinSendSelector = $('#coin-send-name');
+                let coinSendBalance = $('#current-balance');
+
+                // if coinSendSelector value is "GBP"
+                if (coinSendSelector.val() === 'GBP') {
+                    // set the coin balance to the new balance
+                    // window.rollToNumber(coinSendBalance, data.message.newBalance)
+                      const formattedValue = data.message.newBalance.toLocaleString('en-US');
+
+                    coinSendBalance.text(formattedValue);
+                }
+            }
+        });
+
+        this.bp.on('buddylist-websocket::coinBalance', 'update-local-coin-balance', async (data) => {
+            console.log('buddylist-websocket::coinBalance', data);
+            if (typeof data.message.balance === 'number') {
+                window.rollToNumber($('#menu-bar-coin-balance'), data.message.balance)
+            } else {
+                this.faucetAttempts++;
+                // should work on 1, adds safe guard in case service is down
+                // we don't want to spam the faucet service or getCoinBalance
+                if (this.faucetAttempts < 3) {
+                    // request initial coin balance, null indicates no portfolio entry for GBP
+                    // if no portfolio entry, request the default coin allocations
+                    await this.requestDefaultCoinAllocations();
+                    // make another request to get the coin balance
+                    this.bp.apps.buddylist.client.wsClient.send(JSON.stringify({
+                        action: 'getCoinBalance',
+                        buddyname: this.bp.me,
+                        qtokenid: this.bp.qtokenid,
+                    }));
+                } else {
+                    console.warn('BuddyList: Too many faucet attempts, not requesting balance again this session');
+                }
+
+            }
+
+        })
     }
 
     createHTMLContent(htmlStr) {
@@ -814,7 +870,7 @@ BuddyList.prototype.logout = function () {
 
     $('.loginButton').prop('disabled', false);
     $('.loginButton').removeClass('disabled');
-
+    $('#menu-bar-coin-balance').text('0');
 
     this.client.setStatus(this.bp.me, {
         status: 'offline'

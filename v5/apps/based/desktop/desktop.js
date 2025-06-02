@@ -20,6 +20,9 @@ import setWallpaper from "./lib/setWallpaper.js";
 import removeWallpaper from "./lib/removeWallpaper.js";
 import viewSource from "./lib/viewSource.js";
 
+import CountdownManager from "../ui/CountdownManager.js";
+
+
 // default data
 import defaultDesktopShortcuts from "./lib/defaultDesktopShortcuts.js";
 
@@ -78,6 +81,11 @@ export default class Desktop {
             // alert(this.bp.settings.active_theme);
             this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
         }
+
+        this.countdownManager = new CountdownManager(this.bp);
+        this.countdownManager.updateCountdowns();
+
+
 
         // if (this.bp.settings.wallpaper) {
 

@@ -1,6 +1,8 @@
 export default function applyData(el, data) {
     const $el = $(el);
   
+    console.log('incoming transfer card data', data);
+
     // Ensure data exists and provide defaults
     const safeData = {
       from: data.from || 'Unknown',
@@ -40,5 +42,16 @@ export default function applyData(el, data) {
       $el.find('.card-error').hide();
     }
 
+    // check if message.ctime is less than 10 seconds ago
+    const now = Date.now();
+    const messageCtime = new Date(data.message.ctime).getTime();
+    if (now - messageCtime < 10000) {
+      // updates local coin balance
+      this.bp.apps.buddylist.client.wsClient.send(JSON.stringify({
+          action: 'getCoinBalance',
+          buddyname: this.bp.me,
+          qtokenid: this.bp.qtokenid,
+      }));
+    }
 
   }

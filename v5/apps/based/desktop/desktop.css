@@ -52,6 +52,34 @@
     position: relative;
 }
 
+.odometer {
+  display: inline-flex;
+  /*font-family: monospace;*/
+  overflow: hidden;
+  color: #00CED1;
+  font-weight: bold;
+  height: 1em;
+}
+
+.odometer-digit {
+  position: relative;
+  width: 0.6em;
+  height: 1em;
+  overflow: hidden;
+}
+
+.odometer-digit-inner {
+  position: absolute;
+  top: 0;
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+.odometer-digit-inner span {
+  display: block;
+  height: 1em;
+}
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .desktop-shortcuts-container {
         top: 0px;

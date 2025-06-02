@@ -60,7 +60,7 @@ export default function Commands(bp) {
       object: commandObj
     };
 
-    console.log('new commands', command, commands);
+    //console.log('new commands', command, commands);
   }
 
   return this;

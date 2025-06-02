@@ -80,10 +80,10 @@ export default class Motd {
             {
                 date: '4/20/25',
                 notes: [
-                    'User Experience Improvements',
                     'Adds Theme Support',
                     'Buddy Pond User Interface updated',
-                    'Consolidation of User Interface elements',
+                    'User Experience Improvements',
+                    `Game Emulators added`
                 ]
             },
 

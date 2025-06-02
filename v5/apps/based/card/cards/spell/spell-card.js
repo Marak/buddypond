@@ -56,8 +56,11 @@ export default async function applyData(el, data) {
     const countDownEl = $el.find('.card-spell-duration .countdown-date');
     // set data-ctime to the data.ctime
     countDownEl.data('ctime', data.message.ctime);
-
-    countdownManager.startCountdown(countDownEl, data.expiry);
+    // console.log('Setting countdown for spell card', data.expiry, countDownEl);
+    this.bp.apps.desktop.countdownManager.startCountdown(countDownEl, data.expiry, function onExpire($el) {
+        $el.parent().text('Curse has Expired.');
+    });
+    // console.log('Spell card countdown expired', $el);
 
     if (data.spellType === 'curses' && data.castedBy === this.bp.me) {
         // console.log('Cursed by me', data);
@@ -136,89 +139,3 @@ async function runSpell(data) {
         console.log('Error importing spell module:', error);
     }
 }
-
-
-// Encapsulated countdown manager
-const countdownManager = (() => {
-    let intervalId = null;
-
-    const updateCountdowns = () => {
-        const countdownEls = $('.countdown-date').filter(function () {
-            return $(this).data('expired') !== true;
-        });
-
-        if (countdownEls.length === 0) {
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-                bp.apps.ui.countdownTimer = null;
-            }
-            return;
-        }
-
-        countdownEls.each(function () {
-            const $el = $(this);
-
-            const expiry = new Date($el.data('expiry')).getTime();
-            const now = new Date().getTime();
-            const distance = expiry - now;
-
-            // check if data-duration has not been set
-            // if so, set it to the formatted duration
-            if (!$el.data('duration')) {
-                // calculate the duration using diff of data-ctime and expiry
-                let totalDuration = expiry - new Date($el.data('ctime')).getTime();
-                $el.data('duration', totalDuration);
-            }
-
-            if (distance < 0) {
-                $el.text('00:00:00').data('expired', true);
-                // set the parent element text to "Expired"
-                let duration = $el.data('duration');
-                let days = Math.floor(duration / (1000 * 60 * 60 * 24));
-                let hours = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((duration % (1000 * 60)) / 1000);
-                // TODO: formattedDuration should not show the leading zeroes values if days, hours, or minutes are 0
-                // let formattedDuration = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
-                // $el.parent().text('Curse has Expired. Lasted for ' + formattedDuration);
-                $el.parent().text('Curse has Expired.');
-                return;
-            }
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Build the time string
-            let prefix = '';
-            let timeParts = [];
-
-            if (days > 0) {
-                prefix = `${days} Day${days > 1 ? 's' : ''} `;
-                timeParts.push(hours.toString().padStart(2, '0'));
-            } else if (hours > 0) {
-                timeParts.push(hours.toString());
-            }
-
-            timeParts.push(minutes.toString().padStart(2, '0'));
-            timeParts.push(seconds.toString().padStart(2, '0'));
-
-            const remainingDuration = prefix + timeParts.join(':');
-            $el.text(remainingDuration);
-
-
-        });
-    };
-
-    return {
-        startCountdown: ($el, expiry) => {
-            $el.data('expiry', expiry).data('expired', false);
-            if (!intervalId) {
-                intervalId = setInterval(updateCountdowns, 1000);
-                bp.apps.ui.countdownTimer = intervalId;
-            }
-            updateCountdowns(); // Immediate update
-        }
-    };
-})();

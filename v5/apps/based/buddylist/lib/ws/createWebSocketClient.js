@@ -12,6 +12,9 @@ export default function createWebSocketClient() {
     const handleOpen = () => {
       console.log('WebSocket connection opened to buddylist');
       this.reconnectAttempts = 0; // Reset reconnect attempts
+
+      this.wsClient = wsClient; // Store the WebSocket instance
+
       wsClient.send(
         JSON.stringify({
           action: 'getProfile',
@@ -37,7 +40,7 @@ export default function createWebSocketClient() {
     const handleMessage = (event) => {
       try {
         const parseData = JSON.parse(event.data);
-        console.log('Got back from server:', parseData);
+        // console.log('Got back from server:', parseData);
         switch (parseData.action) {
           case 'buddy_added':
             // console.log('buddy_added WebSocket message received:', parseData);
@@ -62,6 +65,30 @@ export default function createWebSocketClient() {
             alert('buddy_removed WebSocket message received:', parseData);
             console.log('buddy_removed WebSocket message received:', parseData);
             this.bp.emit('profile::buddy::out', { name: parseData.buddyname });
+            break;
+          case 'rewards:response':
+            console.log('rewards:response message received:', parseData);
+            if (parseData.success) {
+              bp.emit('buddylist-websocket::reward', {
+                success: true,
+                message: parseData.message,
+                reward: parseData.reward,
+              });
+              
+            } else {
+              bp.emit('buddylist-websocket::reward', {
+                success: false,
+                message: parseData.message,
+              });
+            }
+            break;
+          case 'getCoinBalance':
+            console.log('getCoinBalance message received:', parseData);
+            if (parseData.success) {
+              bp.emit('buddylist-websocket::coinBalance', parseData);
+            } else {
+              bp.emit('buddylist-websocket::coinBalance', parseData);
+            }
             break;
           default:
             console.log('Last message:', event.data);

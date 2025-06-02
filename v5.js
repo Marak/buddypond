@@ -40,6 +40,9 @@ window.bp_v_5 = async function bp_v_5() {
     bp.load('say');
     bp.load('droparea');
     bp.load('file-viewer');
+    bp.load('rewards');
+
+    // await bp.open('audio-player');
 
     // deffer loading of apps that are not essential for the initial experience
     // but will be clicked or loaded from chat window or other places
@@ -235,12 +238,12 @@ async function loadCoreApps() {
     });
     console.log("ui imported")
 
-    bp.load('menubar');
 
     bp.importModule({
         name: 'desktop',
         parent: $('#desktop').get(0),
     }, {}, true, function () {
+        bp.load('menubar');
         arrangeDesktop();
     });
 

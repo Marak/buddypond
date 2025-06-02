@@ -135,18 +135,18 @@ export default class MenuBar {
             // Handle the selected value (e.g., perform an action)
             console.log('Selected:', value);
 
-        $('#soundcloudiframe').remove();
-        $('#soundcloudplayer').html('');
-        /*
-        if (desktop.app.soundcloud) {
-            desktop.app.soundcloud.embeded = false;
-        }
-        desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
-        */
-        if (bp.apps.soundcloud) {
-            bp.apps.soundcloud.soundCloudEmbeded = false; // reload
-        }
-        bp.open('soundcloud', { playlistID: value });
+            $('#soundcloudiframe').remove();
+            $('#soundcloudplayer').html('');
+            /*
+            if (desktop.app.soundcloud) {
+                desktop.app.soundcloud.embeded = false;
+            }
+            desktop.ui.openWindow('soundcloud', { playlistID: $(this).val() });
+            */
+            if (bp.apps.soundcloud) {
+                bp.apps.soundcloud.soundCloudEmbeded = false; // reload
+            }
+            bp.open('soundcloud', { playlistID: value });
 
 
             return;
@@ -173,6 +173,27 @@ export default class MenuBar {
             }
         });
 
+        // TODO: could move this elsewhere
+        let countDownEl = $('#menu-bar-coin-reward-coindown');
+        // expires 60 seconds from now
+        let rewardPeriod = 60 * 1000; // 60 seconds
+        let expiry = new Date(Date.now() + rewardPeriod);
+        // console.log('Setting countdown for menu bar coin reward', expiry, countDownEl.length);
+        // set data-ctime to the current time
+        function startCountdown() {
+            bp.apps.desktop.countdownManager.startCountdown(countDownEl, expiry, function onExpire($el) {
+                bp.apps.rewards.requestReward();
+                // Defer the restart until the next event loop tick
+                setTimeout(() => {
+                    // $el.text('0:05');
+                    let newExpiry = new Date(Date.now() + rewardPeriod);
+                    bp.apps.desktop.countdownManager.startCountdown($el, newExpiry, startCountdown);
+                }, 10); // slight delay to avoid race condition
+            });
+        }
+
+        startCountdown();
+        $('.loggedIn').flexHide();
 
     }
 }

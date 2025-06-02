@@ -165,6 +165,10 @@
   color: #fff;
 }
 
+#menu-bar-coin-balance {
+  padding-left: 2px;
+}
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
   .menu-bar {
     display: none;

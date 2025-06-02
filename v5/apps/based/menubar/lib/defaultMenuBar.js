@@ -154,6 +154,31 @@ export default function defaultMenuBar(bp) {
 
       ]
     },
+    {
+      label: '<span style="display:flex;">$GBP Coin Balance: <span id="menu-bar-coin-balance" class="odometer">0</span></span>',
+      submenu: [
+        {
+          label: 'View Coin Balance',
+          click: () => bp.open('portfolio')
+        },
+        /*
+        {
+          label: 'Buy Coins',
+          click: () => bp.open('buycoins')
+        },
+        */
+        {
+          label: 'Send Coins',
+          click: () => bp.open('portfolio', { context: '#portfolio-transfer' })
+        }
+      ]
+    },
+    {
+      label: `
+              <span class="loggedIn">Next Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
+              <!-- <span class="loggedOut">Login to get Coin Rewards</span> -->
+            `,
+    },
     /*
     {
       label: 'Help',
