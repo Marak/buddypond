@@ -24,9 +24,10 @@ export default function eventBind(parent) {
     $('#coin-send-name', parent).change(async () => {
         // fetch users balance and display it
         let currentCoin = $('#coin-send-name').val();
-        let coinBalance = $('#coin-balance', parent);
+        let coinBalance = $('#current-balance', parent);
 
         console.log('currentCoin', currentCoin);
+        console.log('coinBalance', coinBalance);
 
         const result = await this.resource.search(this.bp.me, {
             owner: this.bp.me,
@@ -39,7 +40,7 @@ export default function eventBind(parent) {
         let amount = asset.amount;
 
         // update coinBalance
-        coinBalance.html(`Your Balance: ${amount.toLocaleString('en-US')}`);
+        coinBalance.html(`${amount.toLocaleString('en-US')}`);
     });
 
     $('.user-portfolio', parent).on('click', async () => {

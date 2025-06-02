@@ -590,6 +590,10 @@ export default class BuddyList {
         this.bp.on('buddylist-websocket::reward', 'update-local-coin-balance', data => {
             // TODO: move this into rewards app
             //$('#menu-bar-coin-balance').text(data.message.newBalance);
+            if (!data.success) {
+                console.log(data.message);
+                return;
+            }
             window.rollToNumber($('#menu-bar-coin-balance'), data.message.newBalance)
 
             if (this.bp.apps.portfolio) {
