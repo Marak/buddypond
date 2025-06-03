@@ -183,7 +183,19 @@ export default class Desktop {
             }
         }
     }
-    
+
+    toggleMute () {
+        if (this.bp.settings.audio_enabled === false) {
+          this.bp.set('audio_enabled', true);
+          $('.volumeFull').show();
+          $('.volumeMuted').hide();
+          this.bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
+        } else {
+          this.bp.set('audio_enabled', false);
+          $('.volumeFull').hide();
+          $('.volumeMuted').show();
+        }
+    }
 
 }
 

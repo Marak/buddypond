@@ -26,7 +26,7 @@ export default function defaultDesktopShortcuts() {
         name: 'pad',
         icon: `desktop/assets/images/icons/icon_pad_64.png`,
         label: 'Pads',
-        description: 'Create and edit notes or documents'
+        description: 'Create hosted Apps for Buddy Pond'
     }, {
         onClick: () => {
             bp.open('pad');

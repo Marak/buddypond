@@ -4,16 +4,7 @@ export default class BuddyScript {
     constructor(bp, options = {}) {
 
         this.bp = bp;
-        this.commandActions = {
-            give: (context) => {
-                console.log('Giving:', context);
-                return false;
-            },
-            points: (context) => {
-                console.log('Points:', context);
-                return true;
-            }
-        };
+        this.commandActions = {};
 
         this.commands = this.commandActions;
 

@@ -7,9 +7,7 @@ export default function applyData(el, data, cardClass, parent) {
 
     // this is bs-card, no apps-card
     const apps = this.bp.apps.desktop.apps;
-    console.log('dddd card', data)
     let bs = this.bp.apps.buddyscript.parseCommand(data.command);
-    console.log('bs', bs);
     /*
     console.log('icon', icon);
     */

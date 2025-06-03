@@ -218,18 +218,7 @@ export default function defaultMenuBar(bp) {
       label: volumeStr,
       click: () => {
         console.log('Volume toggle clicked');
-
-        if (bp.settings.audio_enabled === false) {
-          bp.set('audio_enabled', true);
-          $('.volumeFull').show();
-          $('.volumeMuted').hide();
-          bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
-        } else {
-          bp.set('audio_enabled', false);
-          $('.volumeFull').hide();
-          $('.volumeMuted').show();
-        }
-        // alert(bp.settings.audio_enabled)
+        bp.apps.desktop.toggleMute();
       }
 
     },

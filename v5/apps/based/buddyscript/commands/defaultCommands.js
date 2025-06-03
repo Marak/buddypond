@@ -12,6 +12,7 @@ export default function Commands(bp) {
   };
   */
 
+  /*
   commands.give = async function (context) {
     console.log('Giving:', context);
     // load the portfolio app
@@ -24,6 +25,7 @@ export default function Commands(bp) {
       amount: context[1]
     });
   }
+  */
 
 
   /*
@@ -85,6 +87,18 @@ let legacyCommands = {
     description: 'Use the Microphone Audio to create Cool Visuals',
     icon: 'visuals'
   },
+  balance: {
+    command: function (params) {
+      console.log('balance command', params);
+      if (params.length > 0) {
+        bp.open('portfolio', { context: '#portfolio-balance', type: params[0] });
+      } else {
+        bp.open('portfolio', { context: '#portfolio-balance' });
+      }
+    },
+    description: 'View your Buddy Coin Balances',
+    icon: 'coin'
+  },
   'cast': {
     command: function (params) {
       bp.open('spellbook');
@@ -102,6 +116,7 @@ let legacyCommands = {
     icon: 'folder'
   },
   */
+ /*
   console: {
     command: function (params) {
       bp.open('console');
@@ -109,6 +124,7 @@ let legacyCommands = {
     description: 'Buddy Pond Console Terminal ( For Hackers )',
     icon: 'lofi'
   },
+  */
   coin: {
     command: function (params) {
       console.log('coin command', params);
@@ -118,7 +134,7 @@ let legacyCommands = {
         bp.open('coin');
       }
     },
-    description: 'Buddy Pond Coin Wallet',
+    description: 'View available Buddy Coins',
     icon: 'coin'
   },
  
@@ -134,6 +150,25 @@ let legacyCommands = {
     icon: 'lofi'
   },
   */
+  give: {
+    command: function (params) {
+      console.log('give command', params);
+      if (params.length > 0) {
+        bp.open('portfolio', { context: '#portfolio-transfer', type: params[0] });
+      } else {
+        bp.open('portfolio', { context: '#portfolio-transfer' });
+      }
+    },
+    description: 'Give Buddy Pond Coins to Buddies',
+    icon: 'give'
+  },
+  leaderboard: {
+    command: function (params) {
+        bp.open('portfolio', { context: '#portfolio-leaderboard' });
+    },
+    description: 'View the Buddy Coins Leaderboards',
+    icon: 'leaderboard'
+  },
   logout: {
     command: function (params) {
       bp.logout();
@@ -205,11 +240,13 @@ let legacyCommands = {
     description: 'Interdimensional Cable',
     icon: 'interdimensionalcable'
   },
+  /*
   instruments: {
     command: 'desktop.ui.openWindow("midifighter");',
     description: 'Opens Musical Instruments',
     icon: 'midifighter'
   },
+  */
   /*
   midi: {
     command: 'desktop.ui.openWindow("midi");',
@@ -269,20 +306,79 @@ let legacyCommands = {
   */
   nes: {
     command: function (params) {
-      bp.open('emulator');
-      //let str = `desktop.ui.openWindow("paint", { output: '${params.output}', context: '${params.context}' });`
-      //return str;
+      bp.open('emulator', {
+        context: 'nes'
+      });
     },
     description: 'Nintendo Entertainment System',
     icon: 'nes'
   },
-  /*
   n64: {
-    command: 'desktop.ui.openWindow("n64");',
-    description: 'NINTENDO SIXTY FOOOOOOUUUUURRRR!!!!',
-    icon: 'n64'
+    command: function (params) {
+      bp.open('emulator', {
+        context: 'n64'
+      });
+    },
+    description: 'Nintendo 64',
+    icon: 'nes'
   },
-  */
+  snes: {
+    command: function (params) {
+      bp.open('emulator', {
+        context: 'snes'
+      });
+    },
+    description: 'Super Nintendo Entertainment System',
+    icon: 'snes'
+  },
+  sega: {
+    command: function (params) {
+      bp.open('emulator', {
+        context: 'sega'
+      });
+    },
+    description: 'Sega Genesis',
+    icon: 'sega'
+  },
+  atari2600: {
+    command: function (params) {
+      bp.open('emulator', {
+        context: 'atari2600'
+      });
+    },
+    description: 'Atari 2600',
+    icon: 'atari2600'
+  },
+  minesweeper: {
+    command: function (params) {
+      bp.open('minesweeper');
+    },
+    description: 'Classic Minesweeper Puzzle Game',
+    icon: 'minesweeper'
+  },
+  pad: {
+    command: function (params) {
+      bp.open('pad');
+    },
+    description: 'Create hosted Apps for Buddy Pond',
+    icon: 'pad'
+  },
+  sampler: {
+    command: function (params) {
+      bp.open('sampler');
+    },
+    description: 'Audio Sampler. Create and Remix Audio',
+    icon: 'sampler'
+  },
+  solitaire: {
+    command: function (params) {
+      bp.open('solitaire');
+    },
+    description: 'Classic Solitaire Card Game',
+    icon: 'solitaire'
+  },
+  /*
+
   paint: {
     command: function (params) {
       bp.open('paint');
@@ -303,14 +399,6 @@ let legacyCommands = {
     description: 'Buddy Profile Settings',
     icon: 'profile'
   },
-  camera: {
-    command: function (params) {
-      bp.open('camera');
-    },
-
-    description: 'Camera with Visual Effects',
-    icon: 'mirror'
-  },
   /*
   mtv: {
     command: 'desktop.ui.openWindow("mtv");',
@@ -318,9 +406,36 @@ let legacyCommands = {
     icon: 'mtv'
   },
   */
+   camera: {
+    command: function (params) {
+      bp.open('camera');
+    },
+
+    description: 'Camera with Visual Effects',
+    icon: 'mirror'
+  },
+  gif: {
+    command: function (params) {
+      bp.open('image-search');
+    },
+    description: 'Search and Create Animated GIFs',
+    icon: 'gifstudio'
+  },
+  image: {
+    command: function (params) {
+      bp.open('image-search');
+    },
+    description: 'Search and Create Images',
+    icon: 'image'
+  },
+
   mute: {
-    command: `desktop.set('audio_enabled', false);`,
-    description: 'Mute Desktop Audio'
+    command: function (params) {
+      console.log('mute command', params);
+      bp.apps.desktop.toggleMute();
+    },
+    description: 'Mute the Audio',
+    icon: 'mute'
   },
   piano: {
     command: function (params) {
@@ -350,13 +465,17 @@ let legacyCommands = {
     command: function(params) {
       console.log('say params', params);
       bp.apps.say.speak('params');
-    }
+    },
+    description: 'Text to Speech. Speak with Buddies',
+    icon: 'say'
   },
+  /*
   streamsquad: {
     command: 'desktop.ui.openWindow("streamsquad");',
     description: 'Watch Live Streamers with your Buddies',
     icon: 'soundrecorder'
   },
+  */
   /* TODO: > settings audio_tts_enabled false
            // click to disable tts settings
   settings: {
@@ -367,13 +486,17 @@ let legacyCommands = {
   },
   */
   spellbook: {
-    command: 'desktop.ui.openWindow("spellbook");',
-    description: 'Forbidden Spellbook. Matrix Agents Only.',
+    command: function (params) {
+      bp.open('spellbook');
+    },
+    description: 'Spellbook. Cast Spells with Buddies',
     icon: 'spellbook'
   },
   visuals: {
-    command: 'desktop.ui.openWindow("visuals");',
-    description: 'Use the Microphone Audio to create Cool Visuals',
+    command: function (params) {
+      bp.open('audio-visual');
+    },
+    description: 'Audio Visualizer. Create Cool Visuals with Music',
     icon: 'visuals'
   }
 }

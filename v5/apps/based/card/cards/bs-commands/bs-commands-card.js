@@ -6,30 +6,33 @@
 export default function applyData(el, data, cardClass, parent) {
 
     // this is bs-card, no apps-card
-    const apps = this.bp.apps.desktop.apps;
-    console.log('dddd card', data)
+    //const apps = this.bp.apps.desktop.apps;
     //const commandSet = Object.keys(apps).sort();
-    const commandSet = Object.keys(this.bp.apps.buddyscript.commands);
-    console.log('commandSet', commandSet);
+    let bsCommands = this.bp.apps.buddyscript.commands;
+    const commandSet = Object.keys(bsCommands);
 
     const $el = $(el);
     const appsCommands = $el.find('.card-bs-commands-commands');
-
-    let action = data.context.action || 'list-all';
-    let bsInput = data.context.input || '';
+    console.log('commandSet', commandSet);
+    //console.log('apps', apps);
+    //let action = data.context.action || 'list-all';
+    //let bsInput = data.context.input || '';
     // alert(action)
 
-
+    commandSet.sort();
     $el.find('.card-bs-app').remove();
     // Add command elements
     commandSet.forEach(command => {
         //let app = apps[command];
         const commandText = `${command}`;
+        let commandDescription = bsCommands[command]?.object?.description || '';
+        console.log('commandText', commandText, 'commandDescription', commandDescription, bsCommands[command]);
         //const appsText = command.appsText;
         const commandDiv = document.createElement('div');
         commandDiv.className = 'card-bs-commands-command';
         commandDiv.innerHTML = `
             <span class="card-bs-commands-command-text">/${commandText}</span>
+            <span class="card-bs-commands-command-description">${commandDescription}</span>
         `;
 
         // <span class="card-bs-commands-command-apps">${appsText}</span>
@@ -45,7 +48,7 @@ export default function applyData(el, data, cardClass, parent) {
             //this.bp.open(command);
             setTimeout(() => commandDiv.classList.remove('card-bs-commands-clicked'), 200);
         });
-        console.log('commandDiv', commandDiv);
+        // console.log('commandDiv', commandDiv);
         appsCommands.append(commandDiv);
     });
 

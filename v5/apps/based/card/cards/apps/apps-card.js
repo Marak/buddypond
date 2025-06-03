@@ -29,8 +29,8 @@ export default function applyData(el, data) {
     const commandDiv = document.createElement('div');
     commandDiv.className = 'card-apps-command';
     commandDiv.innerHTML = `
-            <span class="card-apps-command-text">${commandText}</span>
-        `;
+      <span class="card-apps-command-text">${commandText}</span>
+    `;
 
     // Add click handler for commands
     commandDiv.addEventListener('click', () => {
