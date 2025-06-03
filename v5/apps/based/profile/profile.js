@@ -37,6 +37,7 @@ export default class Profile {
         let buddyProfile = {};
         buddyProfile.localState = {};
 
+        /* Remark: Now handled by websocket getProfile action
         try {
             buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
             if (buddyname == this.bp.me) {
@@ -45,6 +46,7 @@ export default class Profile {
         } catch (err) {
             console.log('error getting profile', err);
         }
+        */
 
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
@@ -55,7 +57,7 @@ export default class Profile {
         profileContent.innerHTML = this.html;
         //contentDiv.append($(buddyProfilePad.content).html());
         //$(contentDiv).html(buddyProfilePad.content);
-        $('.myProfile', profileContent).html(contentDiv);
+        // $('.myProfile', profileContent).html(contentDiv);
         //profileContent.append(contentDiv);
 
         // Initialize tabs
@@ -228,7 +230,10 @@ export default class Profile {
             profileUrl = profileUrl + '/index.html';
         }
 
-        this.browser = new this.bp.apps.browser.BrowserWindow(this.bp, padEditorHolder, profileUrl);
+        if (!this.browser) {
+            this.browser = new this.bp.apps.browser.BrowserWindow(this.bp, padEditorHolder, profileUrl);
+
+        }
 
         let yourProfile = $('#your-profile', this.profileWindow.content);
         this.bp.on('file-explorer::update', 'update-profile-preview-if-profile-index', (data) => {
@@ -245,6 +250,8 @@ export default class Profile {
         }
 
         $('.me').html(this.bp.me);
+
+        return this.profileWindow;
 
 
     }

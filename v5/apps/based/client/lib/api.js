@@ -199,11 +199,12 @@ buddypond.removeMessage = async function removeMessage({ from, to, type, uuid })
 
 }
 
-buddypond.passwordChange = async function passwordChange({ buddyname, password }) {
+buddypond.updateAccount = async function updateAccount({ buddyname, password, email }) {
   return new Promise((resolve, reject) => {
-    apiRequest('/buddylist/' + buddyname + '/password-change', 'POST', {
+    apiRequest('/buddylist/' + buddyname + '/update-account', 'POST', {
       buddyname: buddyname,
-      password: password
+      password: password,
+      email: email
     }, function (err, data) {
       if (err) {
         reject(err);

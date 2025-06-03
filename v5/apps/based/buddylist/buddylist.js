@@ -312,12 +312,12 @@ export default class BuddyList {
         });
 
         this.bp.on('profile::fullBuddyList', 'render-or-update-buddy-in-buddylist', data => {
-
+            let buddylist = data.buddylist || {};
             console.log('profile::buddy::full_profile', data);
-            for (let b in data) {
+            for (let b in buddylist) {
                 let buddy = {
                     name: b,
-                    profile: data[b]
+                    profile: buddylist[b]
                 }
                 this.data.profileState = this.data.profileState || {};
                 this.data.profileState.buddylist = this.data.profileState.buddylist || {};
@@ -327,16 +327,22 @@ export default class BuddyList {
                 this.renderOrUpdateBuddyInBuddyList(buddy);
             }
 
-            if (data[this.bp.me]) {
+            if (buddylist[this.bp.me]) {
                 // for now...needs to change shape of server response to include root fields?
-                if (data[this.bp.me].profile_picture) {
-                    console.log('setting profilePicture', data[this.bp.me].profile_picture);
-                    this.data.profileState.profilePicture = data[this.bp.me].profile_picture;
+                if (buddylist[this.bp.me].profile_picture) {
+                    console.log('setting profilePicture', buddylist[this.bp.me].profile_picture);
+                    this.data.profileState.profilePicture = buddylist[this.bp.me].profile_picture;
                 }
-                if (data[this.bp.me].status) {
-                    console.log('setting status', data[this.bp.me].status);
-                    this.data.profileState.status = data[this.bp.me].status;
+                if (buddylist[this.bp.me].status) {
+                    console.log('setting status', buddylist[this.bp.me].status);
+                    this.data.profileState.status = buddylist[this.bp.me].status;
                 }
+            }
+
+            if (data.email) {
+                this.data.profileState.email = data.email;
+                // update the email input field
+                $('.buddy_email').val(data.email);
             }
 
             // iterate through all buddies and call renderOrUpdateBuddyInBuddylist

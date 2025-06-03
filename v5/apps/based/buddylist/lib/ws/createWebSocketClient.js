@@ -52,8 +52,9 @@ export default function createWebSocketClient() {
 
           case 'getProfile':
             console.log('getProfile message received:', parseData);
+
             if (parseData.profile && parseData.profile.buddylist) {
-              bp.emit('profile::fullBuddyList', parseData.profile.buddylist);
+              bp.emit('profile::fullBuddyList', parseData.profile);
             } else {
               console.error('getProfile message received but no buddylist:', parseData);
             }

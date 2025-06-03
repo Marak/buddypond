@@ -12,13 +12,14 @@ export default async function legacyUserSettings(bp) {
                 return;
             }
         }
+        console.log('Updating profile with', updates);
         $('.updateProfileResponse').removeClass('error');
         try {
-            let passwordChanged = await buddypond.passwordChange({ buddyname: bp.me, password: updates.password });
+            let passwordChanged = await buddypond.updateAccount({ buddyname: bp.me, password: updates.password, email: updates.email });
             console.log('password changed', passwordChanged);
             // update successful
             if (passwordChanged) {
-                $('.updateProfileResponse').html('Password changed');
+                $('.updateProfileResponse').html('Account updated successfully');
             }
         } catch (e) {
             $('.updateProfileResponse').addClass('error');
