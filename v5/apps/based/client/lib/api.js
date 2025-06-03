@@ -268,7 +268,8 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
     type: 'buddy',
     geoflag: desktop.settings.geo_flag_hidden,
     card: {
-      voiceIndex: desktop.settings.tts_voice_index
+      voiceIndex: desktop.settings.tts_voice_index,
+      ...data.card
     }
   };
 

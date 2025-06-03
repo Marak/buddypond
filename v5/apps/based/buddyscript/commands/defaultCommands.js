@@ -450,6 +450,7 @@ let legacyCommands = {
       bp.open('mantra');
     },
     description: 'Mantra Gaming Engine Demo',
+    icon: 'mantra'
   },
 
   mute: {
