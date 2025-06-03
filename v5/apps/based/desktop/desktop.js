@@ -197,6 +197,18 @@ export default class Desktop {
         }
     }
 
+    openFolder(folderId) {
+        console.log('openFolder', folderId);
+        // Find the folder by ID
+        const folder = this.folders.find(f => f.data.name === folderId);
+        if (folder) {
+            // Open the folder (this could be a method in the Folder class)
+            folder.open();
+        } else {
+            console.error(`Folder with ID ${folderId} not found.`);
+        }
+    }
+
 }
 
 Desktop.prototype.Folder = Folder;
