@@ -167,6 +167,15 @@ class Window {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
 
+        /*
+        // Remark: We could perform a general zoom scale for mobile devices
+        if (screenWidth <= 980) {
+            // this.container.style.zoom = 1.5; // Adjust zoom for mobile
+        } else {
+            // do nothing
+        }
+        */
+
         // Adjust position to prevent overlap
         let adjustedPosition = {
             x: this.x,
@@ -545,15 +554,24 @@ class Window {
     drag(e) {
         if (!this.isDragging) return;
 
+        // Prevent default behavior for touchmove to avoid scrolling
+        e.preventDefault();
+
         // Get coordinates from mouse or touch event
         const { clientX, clientY } = this.getEventCoordinates(e);
 
         // Update container position
-        this.container.style.left = `${clientX - this.offsetX}px`;
-        this.container.style.top = `${clientY - this.offsetY}px`;
-
-        // Prevent default behavior for touchmove to avoid scrolling
-        e.preventDefault();
+        // Ensure window does not drag off the screen
+        let menuBarHeight = 42;
+        let bottomLimit = window.innerHeight - 52; // 50px from bottom
+        if (clientY > menuBarHeight && clientY < bottomLimit) {
+            this.container.style.top = `${clientY - this.offsetY}px`;
+        }
+        let leftLimit = 52; // 0px from left
+        let rightLimit = window.innerWidth - 52; // 0px from right
+        if (clientX > leftLimit && clientX < rightLimit) {
+            this.container.style.left = `${clientX - this.offsetX}px`;
+        }
     }
 
     stopDrag() {
