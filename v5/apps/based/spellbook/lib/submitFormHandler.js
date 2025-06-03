@@ -1,8 +1,12 @@
-export default async function submitFormHandler(e, $content) {
+export default async function submitFormHandler(e, content, spell) {
+  let $content = $(content);
     e.preventDefault();
+    // console.log('Submitting spell form...', content, spell);
     const spellType = $('#spellType', $content).val();
-    const spellName = $('#spellName', $content).val();
+    //const spellName = $('#spellName', $content).val();
+    let spellName = spell.name;
     let targetType = $('#spellTargetType', $content).val();
+    // console.log(`Submitting spell form for type: ${spellType}, name: ${spellName} and target type: ${targetType}`);
     const spellDuration = $('#spellDuration', $content).val();
     const _spellData = this.data[spellType].find((s) => s.name === spellName);
     let target = null;
@@ -56,6 +60,7 @@ export default async function submitFormHandler(e, $content) {
           $('.spell-message', $content).removeClass('error');
           $('.spell-message', $content).text('Spell cast successfully!').show();
         }
+        // this.applyCooldown(spellType, spellName, targetType, target);
         console.log('Spell cast result:', result);
       } catch (error) {
         throw new Error(`Error casting spell: ${error.message}`);

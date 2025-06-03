@@ -1,82 +1,38 @@
 <div class="spellbook-content">
   <form id="castSpellForm" class="castSpellForm">
-    <div class="spellbook-header">
-      <h2>Cast a Spell</h2>
+    <div class="spellbook-action-bar">
+      <div class="spellbook-spell-types">
+        <button type="button" class="spellbook-tab" data-type="spells">Invocations</button>
+        <button type="button" class="spellbook-tab" data-type="memes">Memes</button>
+        <button type="button" class="spellbook-tab" data-type="curses">Curses</button>
+      </div>
+
+      <div class="spellbook-targeting">
+        <label for="spellTargetType">Target:</label>
+        <select id="spellTargetType" name="spellTargetType">
+          <option value="self">Self</option>
+          <option value="buddy">Buddy</option>
+          <option value="pond">Pond</option>
+        </select>
+
+        <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
+          <option value="">Select buddy…</option>
+        </select>
+
+        <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">
+          <option value="">Select pond…</option>
+        </select>
+      </div>
+
+      <input type="hidden" id="spellType" name="spellType" value="spells" />
+
+      <div class="spellbook-spells">
+      </div>
     </div>
+    <span class="spell-message"></span>
 
-    <div class="spellbook-selection">
-      <label for="spellType">Spell Type:</label>
-      <select id="spellType" name="spellType">
-        <option value="spells">Invocations</option>
-        <option value="memes">Memes</option>
-        <option value="curses">Curses</option>
-      </select>
-
-      <label for="spellName">Spell Name:</label>
-      <select id="spellName" name="spellName" class="spells">
-        <option value="">Choose your spell wisely...</option>
-      </select>
-
-      <label for="spellTargetType">Target Type:</label>
-      <select id="spellTargetType" name="spellTargetType">
-        <option value="self">Self</option>
-        <option value="buddy">Buddy</option>
-        <option value="pond">Pond</option>
-      </select>
-
-      <label for="spellTargetName" class="spellTargetNameLabel">Target Buddy:</label>
-      <select id="spellTargetName" name="spellTargetName" class="spellbook-active-users">
-        <option value="">Select target...</option>
-      </select>
-
-      <label for="spellTargetPond" class="spellTargetPondLabel">Target Pond:</label>
-      <select id="spellTargetPond" name="spellTargetPond" class="spellbook-active-ponds">
-        <option value="">Select target...</option>
-      </select>
-
-      <!--
-      <input type="text" id="spellTargetInput" name="spellTargetInput" placeholder="Enter target name..." />
-      <button type="button" id="toggleTargetInput">Choose name not on list</button>
-      -->
-
-
-      <span class="spellTargetSelf"></span>
-
-      <!-- spellDuration 
-        <label for="spellDuration">Duration:</label>
-        <input type="range" id="spellDuration" name="spellDuration" min="1" max="30" value="1" />
-      -->
-      <!-- total calculated cost of spell -->
-      <span id="spellCost">Cost: 1</span>
-
+    <div class="spellbook-hint">
+      <!-- Spells are free to cast (1 per minute cooldown). -->
     </div>
-    <!--
-    <div id="spellConfig" class="spellbook-config">
-    </div>
-    -->
-    <button type="submit" class="castSpellButton">Cast Spell</button>
-    <!--
-    <a class="ponderSpellbook orb" href="#" title="Cast spell...">
-      <img src="desktop/assets/images/misc/orb.jpeg" width="80" height="80" alt="Cast Spell" />
-    </a>
-    -->
-
-    <div>
-      <span class="spell-message"></span>
-    </div>
-    <div class="spell-hint">
-        Spells are currently free to cast and limited to 1 per minute.<br />
-    </div>
-    <!--
-    <div>
-      Spell configuration parameters are coming soon! 
-    </div>
-    -->
-    <!--
-    <div>
-      Spell casting costs will be in Good Buddy Points (GBP) and will be based on spell type, target type, and duration. 
-    </div>
-    -->
-
   </form>
 </div>

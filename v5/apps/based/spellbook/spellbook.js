@@ -5,6 +5,131 @@ import calculateCost from './lib/calculateCost.js';
 import submitFormHandler from './lib/submitFormHandler.js';
 import updateConfigForm from './lib/updateConfigForm.js';
 
+function updateSpellButtons(spellType, container) {
+  const currentTargetType = $('#spellTargetType').val() || 'buddy'; // fallback
+  const spells = spellData[spellType];
+  // console.log('updateSpellButtons', spellType, currentTargetType, spells);
+
+  const buttons = Array.from(container.querySelectorAll('.spellbook-spell-button'));
+
+  buttons.forEach(button => {
+    const spellName = button.dataset.name;
+    const spell = spells.find(s => s.name === spellName);
+
+    if (!spell || !spell.config || !spell.config.targets) {
+      button.disabled = true;
+      button.classList.remove('valid-target');
+      button.classList.add('invalid-target');
+      button.title = `Spell ${spellName} has no allowed targets for you.`;
+      return;
+    }
+
+    if (spell.config.targets.includes(currentTargetType)) {
+      button.disabled = false;
+      button.classList.add('valid-target');
+      button.classList.remove('invalid-target');
+      button.title = ''; // optional: add a helpful hint here
+    } else {
+      button.disabled = true;
+      button.classList.remove('valid-target');
+      button.classList.add('invalid-target');
+      button.title = `Valid targets: ${spell.config.targets.join(', ')}`;
+    }
+  });
+
+  // Now sort buttons: enabled first, then alphabetically
+  buttons.sort((a, b) => {
+    const aDisabled = a.disabled ? 1 : 0;
+    const bDisabled = b.disabled ? 1 : 0;
+
+    if (aDisabled !== bDisabled) {
+      return aDisabled - bDisabled;
+    }
+
+    const aLabel = a.querySelector('.spell-label').textContent.toLowerCase();
+    const bLabel = b.querySelector('.spell-label').textContent.toLowerCase();
+    return aLabel.localeCompare(bLabel);
+  });
+
+  // Re-append sorted buttons
+  buttons.forEach(button => container.appendChild(button));
+}
+
+
+function renderSpellButtons(spellType, container, onSelect) {
+  container.innerHTML = '';
+  const spells = spellData[spellType];
+  spells.forEach(spell => {
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'spellbook-spell-button';
+    btn.dataset.name = spell.name;
+
+    const icon = document.createElement('div');
+    icon.className = 'spell-icon';
+    icon.textContent = spell.icon || '✨'; // fallback icon
+
+    const label = document.createElement('div');
+    label.className = 'spell-label';
+    label.textContent = `${spell.label || spell.name}`;
+
+    btn.appendChild(icon);
+    btn.appendChild(label);
+
+    if (!spell.config || !spell.config.targets) btn.disabled = true;
+    btn.addEventListener('click', () => {
+      onSelect(spell);
+      this.applyCooldown(btn, spell.cooldown || 10000); // default cooldown of 1 second
+    });
+    container.appendChild(btn);
+
+
+  });
+
+  // ['self', 'buddy', 'pond'], etc
+  // may contain any combination of 'self', 'buddy', 'pond'
+  let currentTargetType = $('#spellTargetType').val() || 'buddy'; // default to buddy if not set
+  // console.log('currentTargetType', currentTargetType);
+  // TODO: we need to disable the button if currentTargetType is not in spell.config.targets
+  updateSpellButtons.call(this, spellType, container);
+
+}
+
+function initSpellbookUI($content, context) {
+  const spellButtonsContainer = $content.querySelector('.spellbook-spells');
+  const tabButtons = $content.querySelectorAll('.spellbook-tab');
+
+  function handleSpellSelection(spell) {
+    const $spellTargetType = $content.querySelector('#spellTargetType');
+    //const $spellCost = $content.querySelector('#spellCost');
+    //$spellCost.textContent = `Cost: ${spell.cost}`;
+    // console.log('Selected spell:', spell);
+    if (spell.config?.targets) {
+      const availableTargets = spell.config.targets;
+      [...$spellTargetType.options].forEach(opt => {
+        opt.disabled = !availableTargets.includes(opt.value);
+      });
+      if (!availableTargets.includes($spellTargetType.value)) {
+        $spellTargetType.value = availableTargets[0];
+      }
+    }
+    let e = new Event('change');
+    this.submitFormHandler(e, $content, spell);
+  }
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.type;
+      $('#spellType', $content).val(type);
+      renderSpellButtons.call(this, type, spellButtonsContainer, handleSpellSelection.bind(this));
+    });
+  });
+
+  // Default to first type
+  tabButtons[0].click();
+}
+
 export default class Spellbook {
   constructor(bp, options = {}) {
     this.bp = bp;
@@ -26,7 +151,7 @@ export default class Spellbook {
     let context = null;
     let output = null;
 
-    if (options.output) { // could be a buddy or a pond
+    if (options.output) { // could be a buddy or a pond or self
       output = options.output;
     }
 
@@ -41,8 +166,8 @@ export default class Spellbook {
         icon: 'desktop/assets/images/icons/icon_spellbook_64.png',
         x: 250,
         y: 75,
-        width: 400,
-        height: 420,
+        width: 360,
+        height: 440,
         minWidth: 200,
         minHeight: 200,
         parent: $('#desktop')[0],
@@ -59,12 +184,11 @@ export default class Spellbook {
         },
       });
 
-
       //
       // Spellbook eventBind listeners
       //
-      const $content = $(this.spellbookWindow.content);
-
+      const $content = this.spellbookWindow.content;
+      initSpellbookUI.call(this, $content, context);
       // Initialize dropdowns and events
       $('#spellType', $content).on('change', (e) => {
         updateSpellsDropdown.call(this, $content);
@@ -75,6 +199,7 @@ export default class Spellbook {
       // $('#spellName', $content).on('change', updateConfigForm);
       $('#spellTargetType', $content).on('change', (e) => {
         updateTargetVisibility.call(this, $content);
+        updateSpellButtons.call(this, $('#spellType', $content).val(), $content.querySelector('.spellbook-spells'));
       });
       // spellDuration is a slider, needs to update on slide
       $('#spellDuration', $content).on('input', (e) => {
@@ -142,7 +267,7 @@ export default class Spellbook {
       // select the targetType using the output value
       $('#spellTargetType', this.spellbookWindow.content).val(output);
       // trigger change event to update target visibility
-      // $('#spellTargetType', this.spellbookWindow.content).trigger('change');
+      $('#spellTargetType', this.spellbookWindow.content).trigger('change');
     }
     if (context) {
       if (output === 'buddy') {
@@ -187,8 +312,6 @@ function updateTargetVisibility($content) {
     $('#spellTargetName', $content).hide();
     $('.spellTargetSelf', $content).hide();
     $('#toggleTargetInput', $content).show();
-    $('.spellTargetNameLabel').hide();
-    $('.spellTargetPondLabel').show();
   }
 
   if (targetType === 'buddy') {
@@ -197,8 +320,6 @@ function updateTargetVisibility($content) {
     $('#spellTargetPond', $content).hide();
     $('.spellTargetSelf', $content).hide();
     $('#toggleTargetInput', $content).show();
-    $('.spellTargetNameLabel').show();
-    $('.spellTargetPondLabel').hide();
   }
 
   if (targetType === 'self') {
@@ -208,7 +329,6 @@ function updateTargetVisibility($content) {
     $('.spellTargetSelf', $content).html(this.bp.me).show();
     $('#toggleTargetInput', $content).hide();
     $('.spellTargetNameLabel').show();
-    $('.spellTargetPondLabel').hide();
   }
 };
 
@@ -217,7 +337,9 @@ function updateSpellsDropdown($content) {
   const spellType = $('#spellType', $content).val();
   const spellsList = this.data[spellType];
   const $spellName = $('#spellName', $content);
-  console.log('updateSpellsDropdown', spellType, spellsList);
+
+
+  // console.log('updateSpellsDropdown', spellType, spellsList);
   $spellName.empty();
   spellsList.forEach((spell) => {
 
@@ -281,7 +403,7 @@ function updateValidTargets($content) {
 
   // check the spellConfig.targets and then update the targetType dropdown with disabled options such that any values
   // not found in the spellConfig.targets are disabled
-  console.log('updateValidTargets', spellName, spellType, spell);
+  // console.log('updateValidTargets', spellName, spellType, spell);
   const $targetType = $('#spellTargetType', $content);
   $targetType.empty().append('<option value="">Choose your target wisely...</option>');
   if (spellConfig && spellConfig.targets) {
@@ -306,7 +428,7 @@ function updateValidTargets($content) {
     // if only one targetType, select it
     if (Object.keys(spellConfig.targets).length === 1) {
       const targetType = spellConfig.targets[0];
-      console.log('updateValidTargets - only one targetType', targetType);
+      // console.log('updateValidTargets - only one targetType', targetType);
       $targetType.val(targetType);
       if (targetType === 'self') {
         // hide the spellTargetName
@@ -340,6 +462,26 @@ function updateValidTargets($content) {
   }
 
 }
+function applyCooldown(button, durationMs) {
+  button.classList.add('cooldown', 'cooldown-active'); // cooldown-active blocks pointer events
+  button.style.setProperty('--cooldown-time', `${durationMs}ms`);
+
+  const cooldownOverlay = document.createElement('div');
+  cooldownOverlay.className = 'cooldown-overlay';
+  cooldownOverlay.style.animationDuration = `${durationMs}ms`;
+
+  button.appendChild(cooldownOverlay);
+
+  setTimeout(() => {
+    button.classList.remove('cooldown', 'cooldown-active');
+    if (cooldownOverlay.parentElement) {
+      cooldownOverlay.remove();
+    }
+  }, durationMs);
+}
+
+
+Spellbook.prototype.applyCooldown = applyCooldown;
 
 Spellbook.prototype.castSpell = castSpell;
 Spellbook.prototype.client = client;
