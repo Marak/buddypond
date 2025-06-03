@@ -237,7 +237,7 @@ let legacyCommands = {
     description: 'Stay Entertained with Hacking Tools',
     icon: 'hackertyper'
   },
-
+  /* // TODO needs to show card, will need the chat windowId context
   help: {
     command: function (params) {
       // params is windowId as string, such as `#window_console`
@@ -247,6 +247,7 @@ let legacyCommands = {
     description: 'Shows basic Help commands',
     img: '/desktop/assets/images/icons/svg/1f9ae.svg'
   },
+  */
   youtube: {
     command: function (params) {
       bp.open('youtube');
