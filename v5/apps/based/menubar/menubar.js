@@ -55,6 +55,7 @@ export default class MenuBar {
 
         this.menuBarElement = new MenuBarClass(menuData).createMenu();
         // console.log('new menuBarElement', parent, this.menuBarElement);
+        parent.appendChild(this.menuBarElement);
 
         // update the default values based on local storage settings
         // TODO: we may want to move this somewhere else
@@ -66,15 +67,14 @@ export default class MenuBar {
         }
         console.log('setting audio', this.bp.settings.audio_enabled);
         if (this.bp.settings.audio_enabled === false) {
-            $('.volumeFull', this.menuBarElement).hide();
-            $('.volumeMuted', this.menuBarElement).show();
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
         } else {
-            $('.volumeFull', this.menuBarElement).show();
-            $('.volumeMuted', this.menuBarElement).hide();
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
         }
         // alert(this.bp.settings.audio_enabled);
 
-        parent.appendChild(this.menuBarElement);
 
         $('.selectLightMode i', this.menuBarElement).on('click', function (e) {
             let mode = $(e.target).data('mode');
@@ -191,9 +191,12 @@ export default class MenuBar {
                 }, 10); // slight delay to avoid race condition
             });
         }
+        if (this.bp.qtokenid) {
+            startCountdown();
 
-        startCountdown();
-        $('.loggedIn').flexHide();
+        } else {
+            $('.loggedIn').flexHide();
+        }
 
     }
 }

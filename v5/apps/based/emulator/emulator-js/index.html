@@ -241,7 +241,11 @@
 
             const top = document.getElementById("top");
             top.remove();
-            box.remove()
+            try {
+                box.remove()
+            } catch (e) {
+                //console.warn("No top element found, continuing without it.")
+            }
             div.appendChild(sub)
             document.body.appendChild(div)
 
@@ -274,7 +278,12 @@
             sub.id = "game"
             div.id = "display"
 
-            box.remove()
+            try {
+                box.remove()
+
+            } catch(err) {
+                
+            }
             div.appendChild(sub)
             document.body.appendChild(div)
 

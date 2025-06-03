@@ -38,6 +38,11 @@ export default class Say {
       return;
     }
 
+    if (!this.bp.settings.audio_enabled) {
+      console.log('Audio is disabled in settings.');
+      return;
+    }
+
     const speech = new SpeechSynthesisUtterance(text);
     speech.voice = this.voices[this.settings.ttsVoiceIndex] || this.voices[0];
     speech.lang = this.settings.language;
@@ -102,7 +107,6 @@ export default class Say {
       // store processedCards in local storage
       bp.set('processedCards', processedCards);
 
-
       const parts = message.text.split(' ');
       parts.shift(); // Remove '/say'
       const textToSpeak = parts.join(' ');
@@ -110,10 +114,10 @@ export default class Say {
       if (message.card && typeof message.card.voiceIndex !== 'undefined') {
         const originalVoiceIndex = this.settings.ttsVoiceIndex;
         this.setVoice(message.card.voiceIndex);
-        this.speak(textToSpeak || 'no text provided');
+        this.speak(textToSpeak || 'I have nothing to say');
         this.setVoice(originalVoiceIndex); // Restore original voice index
       } else {
-        this.speak(textToSpeak || 'no text provided');
+        this.speak(textToSpeak || 'I have nothing to say');
       }
     }
   }

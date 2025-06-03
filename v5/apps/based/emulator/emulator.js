@@ -3,8 +3,9 @@ export default class Emulator {
         this.bp = bp;
         this.emulator = null;
         this.romData = null;
-        this.gameUrl = '';
-        this.gameIsRunning = false;
+        // this.gameUrl = '';
+        // this.gameIsRunning = false;
+        this.emulatorWindows = {}; // Track open windows per context
 
         this.emulatorIcons = {
             nes: '/desktop/assets/images/icons/icon_nes_64.png',
@@ -17,12 +18,27 @@ export default class Emulator {
         return this;
     }
 
-    // TODO: needs to be scoped per context, separate windows for each
     async open({ context = 'nes' }) {
 
-        // TODO: needs to cache windows if already open
-        const emulatorWindow = this.createEmulatorWindow(context);
-        //alert(context); // Debugging purpose to check the context
+
+        if (!this.emulatorWindows[context]) {
+            this.emulatorWindows[context] = [];
+        }
+
+        // Find an unused window slot or create a new one
+        const windowIndex = this.emulatorWindows[context].length;
+        const windowId = `emulators-${context}-${windowIndex + 1}`;
+
+        // Prevent duplicates: check if a window with this ID exists and is still open
+        if (this.emulatorWindows[context].some(w => w.id === windowId)) {
+            console.log(`Emulator window already exists: ${windowId}`);
+            return;
+        }
+
+        const emulatorWindow = this.createEmulatorWindow(context, windowId);
+        this.emulatorWindows[context].push({ id: windowId, win: emulatorWindow });
+
+
 
 
         const content = emulatorWindow.content;
@@ -41,17 +57,19 @@ export default class Emulator {
 
         // on click logo trigger randomGameButton click
         logo.onclick = () => {
-            if (this.randomGameButton) {
-                this.randomGameButton.click();
+            if (emulatorWindow.randomGameButton) {
+                emulatorWindow.randomGameButton.click();
+                logo.style.display = 'none'; // Hide after first click
             } else {
                 console.warn('Random game button not found');
             }
         };
+
         logo.style.cursor = 'pointer'; // Change cursor to pointer for better UX
         console.log('Adding logo to emulator window:', logo);
-        this.logo = logo; // Store reference to logo for later use
+        emulatorWindow.logo = logo; // Store reference to logo for later use
         // content.parentNode.style.position = 'relative'; // Ensure parent can position the logo
-        content.parentNode.appendChild(logo);
+        content.parentNode.appendChild(emulatorWindow.logo);
 
         // Load game list based on context
         const games = await this.bp.load(`${cdnUrl}/${context}.json`);
@@ -60,15 +78,18 @@ export default class Emulator {
         this.setupRandomGameButton(emulatorWindow, games, context);
     }
 
-    createEmulatorWindow(context) {
+    createEmulatorWindow(context, windowId) {
         const emulatorTitles = {
             nes: 'NES',
-            sega: 'Sega Genesis'
+            sega: 'Sega Genesis',
+            n64: 'Nintendo 64',
+            snes: 'Super Nintendo',
+            atari2600: 'Atari 2600'
         };
 
 
         return this.bp.apps.ui.windowManager.createWindow({
-            id: `emulators-${context}`,
+            id: windowId, // Use passed-in ID
             title: emulatorTitles[context] || 'Emulator',
             x: 50,
             y: 100,
@@ -86,29 +107,28 @@ export default class Emulator {
             focusable: true,
             maximized: false,
             minimized: false,
-            onclose: () => { },
+            onClose: () => {
+                // on close we need to set this.emulatorWindows context to null
+                this.emulatorWindows[context] = this.emulatorWindows[context]
+                    .filter(w => w.id !== windowId);
+            },
             onMessage: message => {
                 console.log('Emulator Message:', message);
                 if (message.event === 'ready') {
                     console.log('Emulator is ready');
-                    this.logo.style.display = 'block'; // Show logo when emulator is ready
+                    //this.logo.style.display = 'block'; // Show logo when emulator is ready
                 }
             },
             onLoad: win => {
-
-
-                /*
-                */
-
-                if (this.gameUrl) {
+                if (win.gameUrl) {
                     win.sendMessage({
                         event: 'startGame',
                         message: 'Hello from Emulator',
                         gameSystem: context, // Dynamically assign game system
-                        gameUrl: this.gameUrl
+                        gameUrl: win.gameUrl
                     });
-                    this.gameIsRunning = true;
-                    this.logo.style.display = 'none'; // Show logo when emulator is ready
+                    win.gameIsRunning = true;
+                    win.logo.style.display = 'none'; // Show logo when emulator is ready
 
                 }
             }
@@ -140,8 +160,8 @@ export default class Emulator {
                 gameSystem: context,
                 gameUrl: e.target.value
             });
-            this.gameUrl = e.target.value;
-            this.gameIsRunning = false;
+            emulatorWindow.gameUrl = e.target.value;
+            emulatorWindow.gameIsRunning = false;
         });
     }
 
@@ -173,7 +193,9 @@ export default class Emulator {
         randomGameButton.classList.add('button');
         randomGameButton.style.width = '100%';
         randomGameButton.onclick = () => this.handleRandomGame(games, emulatorWindow, context);
-        this.randomGameButton = randomGameButton; // Store reference for later use
+
+        emulatorWindow.randomGameButton = randomGameButton; // Store reference for later use
+
         content.parentNode.insertBefore(randomGameButton, content);
     }
 
@@ -182,23 +204,25 @@ export default class Emulator {
         if (context === 'sega') {
             gameUrl = `${cdnUrl}/${context}/${gameName}`;
         }
-        this.gameUrl = gameUrl;
-        this.gameIsRunning = false;
+        emulatorWindow.gameUrl = gameUrl;
+        emulatorWindow.gameIsRunning = false;
 
         emulatorWindow.sendMessage({
             event: 'unloadGame',
             gameSystem: context,
             gameUrl: gameUrl
         });
-
+        // emulatorWindow.randomGameButton.style.display = 'none'; // Hide random game button when a game is selected
+        emulatorWindow.logo.style.display = 'block'; // Show logo while loading game
         setTimeout(() => {
             emulatorWindow.sendMessage({
                 event: 'startGame',
                 message: 'Hello from Emulator',
                 gameSystem: context,
-                gameUrl: this.gameUrl
+                gameUrl: emulatorWindow.gameUrl
             });
-            this.gameIsRunning = true;
+            emulatorWindow.gameIsRunning = true;
+
         }, 200);
 
         this.logo.style.display = 'none'; // Show logo when emulator is ready
@@ -207,6 +231,7 @@ export default class Emulator {
 
     handleRandomGame(games, emulatorWindow, context) {
         const randomGame = games[Math.floor(Math.random() * games.length)];
+        emulatorWindow.logo.style.display = 'none'; // Show logo while loading game
         this.handleGameSelection(randomGame, emulatorWindow, context);
     }
 

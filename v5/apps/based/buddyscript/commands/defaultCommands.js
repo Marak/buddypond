@@ -160,14 +160,14 @@ let legacyCommands = {
       }
     },
     description: 'Give Buddy Pond Coins to Buddies',
-    icon: 'give'
+    icon: 'coin'
   },
   leaderboard: {
     command: function (params) {
         bp.open('portfolio', { context: '#portfolio-leaderboard' });
     },
     description: 'View the Buddy Coins Leaderboards',
-    icon: 'leaderboard'
+    icon: 'coin'
   },
   logout: {
     command: function (params) {
@@ -183,14 +183,14 @@ let legacyCommands = {
     description: 'Fluid Simulations ( Trippy )',
     icon: 'fluidsimulation'
   },
-  /*
   games: {
     command: function(params) {
-      bp.open('games');
+      bp.apps.desktop.openFolder('Games');
     },
     description: 'Stay Entertained with Buddy Pond Games',
     icon: 'folder'
   },
+  /*
   */
   /*
   gbp: {
@@ -216,11 +216,25 @@ let legacyCommands = {
     description: '3-D Geo Map of World.',
     icon: 'globe'
   },
+  hex: {
+    command: function (params) {
+      bp.open('hex-editor');
+    },
+    description: 'Hex Editor. Write and Compile Hex Code',
+    icon: 'hex-editor'
+  },
   hack: {
     command: function (params) {
       bp.open('hacker-typer');
     },
     description: 'A.I. Assisted Auto-Hacking Console',
+    icon: 'hackertyper'
+  },
+  hacks: {
+    command: function (params) {
+      bp.apps.desktop.openFolder('Hacking Tools');
+    },
+    description: 'Stay Entertained with Hacking Tools',
     icon: 'hackertyper'
   },
 
@@ -320,7 +334,7 @@ let legacyCommands = {
       });
     },
     description: 'Nintendo 64',
-    icon: 'nes'
+    icon: 'n64'
   },
   snes: {
     command: function (params) {
@@ -347,6 +361,7 @@ let legacyCommands = {
       });
     },
     description: 'Atari 2600',
+    display: false,
     icon: 'atari2600'
   },
   minesweeper: {
@@ -427,6 +442,13 @@ let legacyCommands = {
     },
     description: 'Search and Create Images',
     icon: 'image'
+  },
+
+  mantra: {
+    command: function (params) {
+      bp.open('mantra');
+    },
+    description: 'Mantra Gaming Engine Demo',
   },
 
   mute: {

@@ -5,12 +5,10 @@ export default async function renderChatMessage(message, _chatWindow) {
     // console.log('renderChatMessage', message, _chatWindow);
     let context = 'default';
 
-    // profanity filter ( removed, is now server side )
-    /*
+    // profanity filter, could also be done in the backend
     if (message.text && message.text.length > 0) {
       message.text = forbiddenNotes.filter(message.text);
     }
-    */
 
     // TODO: needs to check for links inside the message, not just entire links
     checkForLinksInMessage(message);

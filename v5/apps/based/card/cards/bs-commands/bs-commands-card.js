@@ -25,6 +25,11 @@ export default function applyData(el, data, cardClass, parent) {
     commandSet.forEach(command => {
         //let app = apps[command];
         const commandText = `${command}`;
+        let _command = bsCommands[command];
+        if (!_command || _command?.object.display === false) {
+            //console.warn(`Command ${command} not found in bsCommands`);
+            return; // Skip if command is not found
+        }
         let commandDescription = bsCommands[command]?.object?.description || '';
         console.log('commandText', commandText, 'commandDescription', commandDescription, bsCommands[command]);
         //const appsText = command.appsText;
