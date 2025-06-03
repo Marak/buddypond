@@ -53,6 +53,7 @@ export default class Admin {
 
         await this.render(this.adminWindow);
         this.eventBind(this.adminWindow);
+        return this.adminWindow;
     }
 
  resetAllPondCounts() {

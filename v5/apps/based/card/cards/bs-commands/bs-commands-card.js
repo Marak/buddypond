@@ -26,7 +26,7 @@ export default function applyData(el, data, cardClass, parent) {
         //let app = apps[command];
         const commandText = `${command}`;
         let _command = bsCommands[command];
-        if (!_command || _command?.object.display === false) {
+        if (!_command || _command?.object?.display === false) {
             //console.warn(`Command ${command} not found in bsCommands`);
             return; // Skip if command is not found
         }
