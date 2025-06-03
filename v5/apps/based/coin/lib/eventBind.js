@@ -1,12 +1,66 @@
 
 export default function eventBind(coinWindow) {
     console.log('this.coinWindow.content', coinWindow.content);
-    
+
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', coinWindow.content);
 
-    this.tabs.onTab((tabId) => {
+    this.tabs.onTab(async (tabId) => {
         $('.coin-error').text('');
+
+        console.log('tabId', tabId);
+        if (tabId === '#coin-leaders') {
+
+            await fetchLeaderboard.call(this);
+
+        }
+
     });
+
+     $('#coin-leaders-symbol', coinWindow.content).change(async () => {
+        // fetch the top coins for the selected symbol
+        $('.loading-leaderboard', coinWindow.content).show();
+        await fetchLeaderboard.call(this);
+    });
+
+
+
+    async function fetchLeaderboard() {
+        // fetch the /top coins from portfolio
+        console.log('Fetching top coins', this.portfolio);
+        let symbol = $('#coin-leaders-symbol', coinWindow.content).val();
+        let res = await this.portfolio.apiRequest('POST', `portfolio/top`, { symbol: symbol });
+        console.log('top coins', res);
+        let leadersList = $('.leaderboard-list', coinWindow.content);
+        // iterate over the results and append them to the leadersList table body
+        leadersList.empty();
+        res.results.forEach((coin, i) => {
+            console.log('coin', coin, i);
+            let value = coin.total_amount * coin.price;
+            // format value as dollars with 2 decimal places
+            value = `$${value.toFixed(2)}`;
+            // use currency formatting for value with commas
+            value = value.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            // format amount as number with commas
+            coin.total_amount = coin.total_amount.toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+            leadersList.append(`
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${coin.owner}</td>
+                        <td>${coin.symbol}</td>
+                        <td>${coin.total_amount}</td>
+                        <td>${value}</td>
+                    </tr>
+                `);
+        });
+        $('.loading-leaderboard', coinWindow.content).hide();
+    }
+
 
     $('.mint-coin', coinWindow.content).click(async () => {
         // Retrieve values from the form
@@ -26,7 +80,7 @@ export default function eventBind(coinWindow) {
             supply: coinSupply,
             price: coinPrice
         })
-     
+
     });
 
     $('.send-coin', coinWindow.content).click(async () => {
@@ -70,7 +124,7 @@ export default function eventBind(coinWindow) {
             }
         });
 
-       
+
     });
 
     $('#coin-send-name', coinWindow.content).change();

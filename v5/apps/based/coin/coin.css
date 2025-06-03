@@ -187,6 +187,57 @@
 }
 
 
+.portfolio-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.portfolio-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+}
+
+.portfolio-table th, .portfolio-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.portfolio-table th {
+    background: #333;
+}
+
+/* Portfolio Actions */
+.portfolio-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+/* Alternating row colors */
+.portfolio-table tr:nth-child(even), .all-coins tr:nth-child(even) {
+    background: #2a2a2a;
+}
+
+.portfolio-table tr:nth-child(odd), .all-coins tr:nth-child(odd) {
+    background: #1f1f1f;
+}
+
+/* Hover effects */
+.portfolio-table tr:hover, .all-coins tr:hover {
+    background: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Highlighting active rows */
+.portfolio-table tr.active, .all-coins tr.active {
+    background: #555;
+    color: #ffcc00;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .user-coins th, .all-coins th, .user-coins td, .all-coins td {

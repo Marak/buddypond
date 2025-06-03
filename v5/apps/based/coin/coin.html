@@ -6,6 +6,8 @@
             <!-- <li><a href="#coin-send">Send</a></li> -->
             <li><a class="open-app" data-app="portfolio" href="#" draggable="false">Portfolio</a></li>
             <li><a href="#coin-mint" draggable="false">Mint</a></li>
+            <li><a href="#coin-leaders" draggable="false">Leaderboard</a></li>
+
         </ul>
 
         <!-- Coin Minting Form -->
@@ -24,6 +26,31 @@
             <label for="coin-price">Initial Price (BUX):</label>
             <input type="number" id="coin-price" placeholder="Initial Price" value="0.001">
             <button id="mint-coin" class="mint-coin action-button">Mint Coin</button>
+        </div>
+
+        <div id="coin-leaders" class="coin-leaderboard tab-content">
+            <h1 class="coin-title">COIN LEADERBOARD <select id="coin-leaders-symbol" class="leaderboard-symbol">
+                <option value="GBP">GBP</option>
+                <option value="MEGA">MEGA</option>
+            </select></h1>
+           
+            <span class="coin-error error"></span>
+            <span class="coin-leaderboard-message"></span>
+            <img src="desktop/assets/images/gui/loading.gif" class="loading-leaderboard" />
+            <table class="portfolio-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Symbol</th>
+                        <th>Amount</th>
+                        <th>Value (BUX)</th>
+                    </tr>
+                </thead>
+                <tbody class="leaderboard-list">
+                    <!-- Leaderboard entries will be inserted here -->
+                </tbody>
+            </table>
         </div>
 
         <!--

@@ -4,8 +4,9 @@ import eventBind from './lib/eventBind.js';
 import updateCoinList from './lib/updateCoinList.js';
 import render from './lib/render.js';
 import CoinClass from './lib/Coin.js';
-import PortfolioClass from '../portfolio/lib/Portfolio.js';
+//import PortfolioClass from '../portfolio/lib/Portfolio.js';
 import createInitialCoins from './lib/createInitialCoins.js';
+import RestProvider from '../resource/lib/RestProvider.js';
 
 export default class Coin {
 
@@ -34,6 +35,10 @@ export default class Coin {
 
         this.coin = new CoinClass({ resource: this.resource, me: this.bp.me });
         // this.portfolio = new PortfolioClass({ resource: this.resource, me: this.bp.me });
+        this.portfolio = new RestProvider('portfolio', {
+            apiEndpoint: buddypond.portfolioEndpoint || '/',
+            bp: this.bp
+        });
 
     }
 

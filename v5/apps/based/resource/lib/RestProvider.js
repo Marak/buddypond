@@ -1,11 +1,15 @@
 export default class RestProvider {
     constructor(resourceName, options = {}) {
-        console.log('RestProvider', resourceName, options);
+        // console.log('RestProvider', resourceName, options);
         this.resourceName = resourceName;
         this.apiEndpoint = options.apiEndpoint;
+        if (options.bp) {
+            this.bp = options.bp;
+        }
     }
 
-    async apiRequest(method, path, body = null, urlparams = {}) {
+    async apiRequest(method, path, body = null, urlparams = null) {
+        // console.log('apiRequest', method, path, body, urlparams);
         const options = { method, headers: { 'Content-Type': 'application/json' } };
         if (body) options.body = JSON.stringify(body);
 
@@ -21,7 +25,7 @@ export default class RestProvider {
             const params = new URLSearchParams(urlparams);
             url += `?${params.toString()}`;
         }
-        console.log('apiRequest', method, url, options);
+        // console.log('apiRequest', method, url, options);
 
         const response = await fetch(url, options);
         if (!response.ok) {
