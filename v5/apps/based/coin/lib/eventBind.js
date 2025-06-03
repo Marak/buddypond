@@ -8,7 +8,7 @@ export default function eventBind(coinWindow) {
         $('.coin-error').text('');
 
         console.log('tabId', tabId);
-        if (tabId === '#coin-leaders') {
+        if (tabId === '#coin-leaderboard') {
 
             await fetchLeaderboard.call(this);
 
@@ -16,7 +16,7 @@ export default function eventBind(coinWindow) {
 
     });
 
-     $('#coin-leaders-symbol', coinWindow.content).change(async () => {
+     $('#coin-leaderboard-symbol', coinWindow.content).change(async () => {
         // fetch the top coins for the selected symbol
         $('.loading-leaderboard', coinWindow.content).show();
         await fetchLeaderboard.call(this);
@@ -27,7 +27,7 @@ export default function eventBind(coinWindow) {
     async function fetchLeaderboard() {
         // fetch the /top coins from portfolio
         console.log('Fetching top coins', this.portfolio);
-        let symbol = $('#coin-leaders-symbol', coinWindow.content).val();
+        let symbol = $('#coin-leaderboard-symbol', coinWindow.content).val();
         let res = await this.portfolio.apiRequest('POST', `portfolio/top`, { symbol: symbol });
         console.log('top coins', res);
         let leadersList = $('.leaderboard-list', coinWindow.content);

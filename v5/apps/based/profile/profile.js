@@ -251,6 +251,16 @@ export default class Profile {
 
         $('.me').html(this.bp.me);
 
+        if (options && options.type === 'settings') {
+            // if type is user-settings, show the user settings tab
+            this.tabs.showTab('#tabs-3');
+        }
+
+        if (options && options.type === 'themes') {
+            // if type is user-settings, show the user settings tab
+            this.tabs.showTab('#tabs-2');
+        }
+
         return this.profileWindow;
 
 

@@ -87,7 +87,7 @@ export default class Coin {
             this.eventBind(coinWindow);
 
             if (type) {
-                this.tabs.navigateToTab('#' + type);
+                this.tabs.navigateToTab('#coin-' + type);
             }
 
             if (this.bp.me !== 'Marak') {

@@ -109,6 +109,18 @@ let legacyCommands = {
     description: 'Buddy Pond Console Terminal ( For Hackers )',
     icon: 'lofi'
   },
+  coin: {
+    command: function (params) {
+      console.log('coin command', params);
+      if (params.length > 0) {
+        bp.open('coin', { type: params[0] });
+      } else {
+        bp.open('coin');
+      }
+    },
+    description: 'Buddy Pond Coin Wallet',
+    icon: 'coin'
+  },
  
   /*
   faq: {
@@ -282,7 +294,11 @@ let legacyCommands = {
   },
   profile: {
     command: function (params) {
-      bp.open('profile');
+      if (params && params.length > 0) {
+        bp.open('profile', { type: params[0] });
+      } else {
+        bp.open('profile');
+      }
     },
     description: 'Buddy Profile Settings',
     icon: 'profile'
