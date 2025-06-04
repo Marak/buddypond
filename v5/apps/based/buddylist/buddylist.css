@@ -147,7 +147,7 @@
 }
 
 .forgot-password-modal {
-    display: none;;
+    display: none;
 }
 
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {

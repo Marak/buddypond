@@ -161,6 +161,43 @@ export default function eventBind(adminWindow) {
         }
     });
 
+    // #login-as-user-button
+    // #super-admin-token
+    // if click on login-as-user-button, make fetch request to '/api/v6/auth' setting x-admin-token from input
+    $('#login-as-user-button').on('click', async () => {
+        let token = $('#super-admin-token').val().trim();
+        let buddyname = $('#profile-input').val().trim();
+        if (!token) {
+            alert('No token provided');
+            return;
+        }
+        console.log('Logging in as user with token:', buddyname, token);
+        try { 
+            let response = await fetch(buddypond.endpoint + '/auth', {
+                method: 'POST',
+                body: JSON.stringify({ buddyname }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-admin-token': token
+                }
+            });
+            let data = await response.json();
+            if (data.success) {
+                alert('Logged in as user successfully');
+                // set the qtoken to localStorage
 
+                localStorage.setItem('qtokenid', data.qtokenid);
+                localStorage.setItem('me', buddyname);
+
+                // Optionally, you can redirect or refresh the page
+                window.location.reload();
+            } else {
+                alert('Failed to log in as user: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error logging in as user:', error);
+            alert('Error logging in as user: ' + error.message);
+        }
+    });
     
 }
