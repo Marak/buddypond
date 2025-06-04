@@ -95,14 +95,16 @@ export default class ImageSearch {
 
             this.selectedImages = new Set(); // inside constructor or open()
 
-            let activeWindow = null;
-            this.bp.windows.forEach((win) => {
-                if (win.type === options.type && win.context === options.context) {
-                    activeWindow = win.container; // use the content of the window
-                }
-            });
+
 
             async function sendImageToChat() {
+
+                let activeWindow = null;
+                this.bp.windows.forEach((win) => {
+                    if (win.type === options.type && win.context === options.context) {
+                        activeWindow = win.container; // use the content of the window
+                    }
+                });
 
                 const files = [];
 
