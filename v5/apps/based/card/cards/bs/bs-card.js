@@ -16,17 +16,16 @@ export default function applyData(el, data, cardClass, parent) {
         
     }
     let commandData = bs.commandData?.object || {};
-    console.log('commandData', commandData);
+
+    //console.log('commandData', commandData);
     let icon = commandData.icon || 'fa fa-terminal';
     let iconPath = `/desktop/assets/images/icons/icon_${icon}_64.png`
     
-
-    //const commandSet = Object.keys(apps).sort();
     const commands = this.bp.apps.buddyscript.commands;
 
     const commandSet = Object.keys(commands);
-    console.log("commands", commands);
-    console.log('commandSet', commandSet);
+    // console.log("commands", commands);
+    // console.log('commandSet', commandSet);
 
     const $el = $(el);
 

@@ -190,7 +190,9 @@ let legacyCommands = {
       } else {
         bp.open('portfolio');
       }
-    }
+    },
+    description: 'View your Buddy Coins Portfolio',
+    icon: 'portfolio'
   },
   logout: {
     command: function (params) {
