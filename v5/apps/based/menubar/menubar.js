@@ -178,20 +178,22 @@ export default class MenuBar {
         // console.log('Setting countdown for menu bar coin reward', expiry, countDownEl.length);
         // set data-ctime to the current time
         function startCountdown() {
-            // expires 60 seconds from now
-            let rewardPeriod = 60 * 1000; // 60 seconds
-            let expiry = new Date(Date.now() + rewardPeriod);
+            const rewardPeriod = 60 * 1000; // 60 seconds
+            const expiry = new Date(Date.now() + rewardPeriod);
             console.log("Starting countdown for menu bar coin reward", expiry, countDownEl.length);
-            bp.apps.desktop.countdownManager.startCountdown(countDownEl, expiry, function onExpire($el) {
+
+            function restartCountdown($el) {
                 bp.apps.rewards.requestReward();
-                // Defer the restart until the next event loop tick
+
                 setTimeout(() => {
-                    // $el.text('0:05');
-                    let newExpiry = new Date(Date.now() + rewardPeriod);
-                    bp.apps.desktop.countdownManager.startCountdown($el, newExpiry, startCountdown);
-                }, 10); // slight delay to avoid race condition
-            });
+                    const newExpiry = new Date(Date.now() + rewardPeriod);
+                    bp.apps.desktop.countdownManager.startCountdown($el, newExpiry, restartCountdown);
+                }, 10);
+            }
+
+            bp.apps.desktop.countdownManager.startCountdown(countDownEl, expiry, restartCountdown);
         }
+
         if (this.bp.qtokenid) {
             // will most likely not hit this case, since the menu bar is loaded before login completes
             startCountdown();
