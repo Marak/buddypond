@@ -137,6 +137,19 @@ let legacyCommands = {
     description: 'View available Buddy Coins',
     icon: 'coin'
   },
+
+  files: {
+    command: function (params) {
+      console.log('files command', params);
+      if (params.length > 0) {
+        bp.open('file-explorer', { context: params[0] });
+      } else {
+        bp.open('file-explorer');
+      }
+    },
+    description: 'View and Manage your Files',
+    icon: 'folder'
+  },
  
   /*
   faq: {
