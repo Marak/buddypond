@@ -1,0 +1,95 @@
+.password-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.password-dialog {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 24px;
+  width: 340px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.password-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.password-form label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.password-input.error {
+  border-color: red;
+}
+
+.input-error {
+  color: red;
+  font-size: 12px;
+  height: 14px;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.password-action {
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+  margin: 0 4px;
+  transition: background-color 0.2s ease;
+}
+
+.password-action:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  background-color: #aaa;
+}
+
+.cancel-btn:hover {
+  background-color: #888;
+}
+
+.form-status {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: red;
+}

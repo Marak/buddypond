@@ -80,7 +80,7 @@ export default class CountdownManager {
         const now = Date.now();
         const duration = expiryTime - now;
 
-        console.log('Starting countdown for', $el, expiry);
+        // console.log('Starting countdown for', $el, expiry);
 
         $el
             .data('expiry', expiryTime)

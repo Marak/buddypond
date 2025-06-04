@@ -1,0 +1,29 @@
+<div class="password-overlay dialog">
+  <div class="password-dialog">
+    <div class="password-title">Secure Your Account</div>
+
+    <form class="password-form" novalidate>
+      <label>Email (optional)
+        <input type="email" class="password-input email-input" placeholder="your@email.com" />
+        <div class="input-error email-error"></div>
+      </label>
+
+      <label>Password <span class="required">*</span>
+        <input type="password" class="password-input password-main" placeholder="Enter password" required />
+        <div class="input-error password-error"></div>
+      </label>
+
+      <label>Confirm Password <span class="required">*</span>
+        <input type="password" class="password-input password-confirm" placeholder="Confirm password" required />
+        <div class="input-error confirm-error"></div>
+      </label>
+
+      <div class="form-actions">
+        <button type="button" class="password-action save-btn">Save</button>
+        <button type="button" class="password-action cancel-btn">Later</button>
+      </div>
+
+      <div class="form-status">Email is optional and needed to reset passwords.</div>
+     </form>
+  </div>
+</div>

@@ -5,6 +5,8 @@ import banList from './commands/banList.js';
 import banBuddy from './commands/banBuddy.js';
 import unbanBuddy from './commands/unbanBuddy.js';
 import destroyBuddy from './commands/destroyBuddy.js';
+import addAdmin from './commands/addAdmin.js';
+import listAdmins from './commands/listAdmins.js';
 
 export default function eventBind(adminWindow) {
     // Tab manager handles tab switching
@@ -33,6 +35,12 @@ export default function eventBind(adminWindow) {
                 console.log('admin-banlist');
                 banList.call(this);
                 break;
+            case '#admin-add-admin':
+                console.log('admin-add-admin');
+                let adminName = document.querySelector('#admin-username').value.trim();
+                let ip = document.querySelector('#admin-ip').value.trim();
+                listAdmins.call(this);
+                // addAdmin.call(this, adminName, ip);
             default:
                 console.warn('Unknown tabId:', tabId);
         }
@@ -46,6 +54,19 @@ export default function eventBind(adminWindow) {
         const ip = document.querySelector('#ip-input').value.trim();
         if (ip) {
             userByIP.call(this, ip);
+        }
+    });
+
+    // add admin button handler
+    document.querySelector('#add-admin-button').addEventListener('click', () => {
+        let buddyname = document.querySelector('#admin-username').value.trim();
+        let ip = document.querySelector('#admin-ip').value.trim();
+        if (!buddyname) {
+            alert('No buddyname provided');
+            return;
+        }
+        if (buddyname) {
+            addAdmin.call(this, buddyname, ip);
         }
     });
 

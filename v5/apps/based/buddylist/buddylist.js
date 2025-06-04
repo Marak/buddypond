@@ -619,7 +619,7 @@ export default class BuddyList {
                 if (coinSendSelector.val() === 'GBP') {
                     // set the coin balance to the new balance
                     // window.rollToNumber(coinSendBalance, data.message.newBalance)
-                      const formattedValue = data.message.newBalance.toLocaleString('en-US');
+                    const formattedValue = data.message.newBalance.toLocaleString('en-US');
 
                     coinSendBalance.text(formattedValue);
                 }
@@ -796,12 +796,15 @@ export default class BuddyList {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 return;
             }
-            this.bp.log('verified token', data);
+            console.log('verified token', data);
             if (data.success) {
                 // A pre-existing token was found and verified, emit the auth event
-                this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me });
+                this.bp.emit('auth::qtoken', { qtokenid: localToken, me: me, hasPassword: data.user.hasPassword });
                 $('.loggedIn').flexShow();
                 $('.loggedOut').flexHide();
+                if (!data.user.hasPassword) {
+                    this.bp.open('pincode');
+                }
 
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
@@ -817,7 +820,7 @@ export default class BuddyList {
     // maybe also could connect to the websocket server for buddylist?
     // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
-
+        console.log('handleAuthSuccess', qtoken);
         if (this.client) {
             console.error('buddylist websocket client already exists and has not been closed. This should not happen');
             return;
@@ -838,6 +841,11 @@ export default class BuddyList {
         // this will eventually trigger the buddylist::connected event
         this.client = new this.Client(bp);
         let connected = await this.client.connect();
+
+        if (!qtoken.hasPassword){
+            // if the user does not have a password, open the pincode window
+            this.bp.open('pincode');
+        }
 
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond) {
@@ -911,6 +919,9 @@ BuddyList.prototype.logout = function () {
         };
         // empty the buddylist
         $('.buddylist').empty();
+
+        // hide any .dialog
+        $('.dialog').remove();
 
     });
 }

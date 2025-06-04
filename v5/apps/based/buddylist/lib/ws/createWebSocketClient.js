@@ -63,7 +63,7 @@ export default function createWebSocketClient() {
             // console.log('pong message received:', parseData);
           break;
           case 'buddy_removed':
-            alert('buddy_removed WebSocket message received:', parseData);
+            // alert('buddy_removed WebSocket message received:', parseData);
             console.log('buddy_removed WebSocket message received:', parseData);
             this.bp.emit('profile::buddy::out', { name: parseData.buddyname });
             break;

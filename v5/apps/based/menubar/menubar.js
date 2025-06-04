@@ -175,12 +175,13 @@ export default class MenuBar {
 
         // TODO: could move this elsewhere
         let countDownEl = $('#menu-bar-coin-reward-coindown');
-        // expires 60 seconds from now
-        let rewardPeriod = 60 * 1000; // 60 seconds
-        let expiry = new Date(Date.now() + rewardPeriod);
         // console.log('Setting countdown for menu bar coin reward', expiry, countDownEl.length);
         // set data-ctime to the current time
         function startCountdown() {
+            // expires 60 seconds from now
+            let rewardPeriod = 60 * 1000; // 60 seconds
+            let expiry = new Date(Date.now() + rewardPeriod);
+            console.log("Starting countdown for menu bar coin reward", expiry, countDownEl.length);
             bp.apps.desktop.countdownManager.startCountdown(countDownEl, expiry, function onExpire($el) {
                 bp.apps.rewards.requestReward();
                 // Defer the restart until the next event loop tick
@@ -192,10 +193,16 @@ export default class MenuBar {
             });
         }
         if (this.bp.qtokenid) {
+            // will most likely not hit this case, since the menu bar is loaded before login completes
             startCountdown();
-
         } else {
+            // in most cases we will hit this case, where login token is received after menu bar is loaded
             $('.loggedIn').flexHide();
+            // create event listen for 'auth::login' to start the countdown
+            this.bp.on('auth::qtoken', 'start-rewards-timer', () => {
+                console.log('Starting rewards timer after login');
+                startCountdown();
+            });
         }
 
     }

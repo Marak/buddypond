@@ -67,19 +67,6 @@
     border-color: #8352fd; /* Example of a more vibrant focus color */
 }
 
-.desktopButton {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.desktopButton:hover {
-    background-color: #45a049;
-}
-
 .welcomePonds {
     text-align: center;
 }
@@ -100,19 +87,6 @@
 
 .joinPondForm {
     margin-top: 5px; /* Reduced spacing above the form */
-}
-
-.desktopButton {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.desktopButton:hover {
-    background-color: #45a049;
 }
 
 /* Responsive adjustments */

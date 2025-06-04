@@ -9,12 +9,15 @@
         <input type="text" name="username" placeholder="Name" />
         <input type="password" name="password" class="password" placeholder="Password" />
         <button type="submit" class="loginButton" >Login</button>
-        <p class="loginStatus error"></p>
       </form>
       <div class="tos-checkbox">
         <input type="checkbox" id="tosAgree" name="tosAgree">
         <label for="tosAgree">I agree to the <a href="tos.html" target="_blank">Terms of Service</a>.</label>
       </div>
+      <p class="loginStatus error"></p>
+      <p class="resetPasswordLink">
+        <a href="#reset-password" class="forgot-password">Forgot Password?</a>
+      </p>
       <br/>
       <p class="loginMessage">If this is your first visit, password is username until you change it.</p>
     </div>
@@ -61,5 +64,19 @@
       <p class="positiveAffirmation"></p>
 
     </div>
+  </div>
+</div>
+
+<div class="forgot-password-modal">
+  <div class="forgot-password-content">
+    <h2>Reset Password</h2>
+    <p class="resetPasswordMessage">Enter your email to reset your password.</p>
+    <form class="resetPasswordForm" method="POST" action="#">
+      <input type="text" name="username" placeholder="Username" required />
+      <button type="submit" class="resetPasswordButton">Reset Password</button>
+    </form>
+    <p class="resetStatus error"></p>
+    <span>If you never set an email please contact accounts@buddypond.com</span>
+    <button class="closeForgotPassword">Close</button>
   </div>
 </div>

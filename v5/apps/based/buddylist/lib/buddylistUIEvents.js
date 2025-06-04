@@ -20,12 +20,15 @@ export default function buddylistUIEvents() {
       console.log('authBuddy', err, result);
       if (err) {
         if (result && result.error) {
-          $('.loginForm .error').text(result.error);
+          $('.loginStatus').html(result.error);
+          if (result.error === 'Incorrect password.') {
+            // $('.resetPasswordLink').show();
+          }
         } else {
           if (err.message === 'Failed to fetch') {
-            $('.loginForm .error').text('Failed to connect to Buddy Pond');
+            $('.loginStatus').text('Failed to connect to Buddy Pond');
           } else {
-            $('.loginForm .error').text(err.message || 'Failed to authenticate buddy');
+            $('.loginStatus').html(err.message || 'Failed to authenticate buddy');
           }
         }
         $('.loginButton').prop('disabled', false);
@@ -33,6 +36,7 @@ export default function buddylistUIEvents() {
 
         $('.password').show();
         console.error('Failed to authenticate buddy:', err);
+
         return;
       }
       if (result.success) {
@@ -43,6 +47,7 @@ export default function buddylistUIEvents() {
         bp.emit('auth::qtoken', result);
         // $('.loggedIn').flexShow();
         $('.loginForm .error').text('');
+
       } else {
         // re-enable the login button
         $('.loginButton').prop('disabled', false);
@@ -64,6 +69,14 @@ export default function buddylistUIEvents() {
     let status = $(e.target).val();
     console.log('status', status);
     bp.emit('profile::status', status);
+  });
+
+  $('.forgot-password').on('click', (ev) => {
+    $('.forgot-password-modal').flexShow();
+  });
+
+  $('.closeForgotPassword').on('click', (ev) => {
+    $('.forgot-password-modal').flexHide();
   });
 
   $('.buddylist').click((e) => {

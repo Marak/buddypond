@@ -131,6 +131,25 @@
 .buddy-message-sender {
     cursor: pointer;
 }
+
+.resetPasswordLink {
+    color: #0078D7 !important;
+    text-decoration: none;
+    font-size: 14px;
+    display: none;
+    text-align: center;
+}
+
+.resetPasswordLink a {
+    color: #0078D7 !important;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password-modal {
+    display: none;;
+}
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .app-buddylist>p,
     .app-buddylist>input,
@@ -193,3 +212,4 @@
     }
 
 }
+

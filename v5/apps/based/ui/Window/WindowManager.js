@@ -34,9 +34,6 @@ export default class WindowManager {
         this.taskBar = new TaskBar({
             homeCallback: () => {
 
-                // TODO: we could toggle through states here
-                // including: arrangeVerticalStacked()
-
                 if (!this.state) {
                     // save current window positions
                     this.lastPositionsBeforeArranged = this.windows.map(w => {
@@ -94,7 +91,7 @@ export default class WindowManager {
                 // this.minimizeAllWindows();
                 // this.windowsClosed = true;
 
-                // hide all legacy BP windows ( TODO remove this )
+                // hide all legacy BP windows
                 $('.window').hide();
                 $('.window').removeClass('window_stack');
 
@@ -111,6 +108,14 @@ export default class WindowManager {
                 if (e.key === "Escape" && !this.bp.ignoreUIControlKeys) {
                     // alert("Escape key pressed");
                     // find the window with the highest depth and close it
+
+                    // first check to see if there is a dialog open, close that first
+                    const dialog = document.querySelector('.dialog');
+                    if (dialog) {
+                        dialog.remove();
+                        return;
+                    }
+
                     const window = this.windows[0]; // no sort needed, windows are already sorted by depth
                     if (window) {
                         window.close();
@@ -164,9 +169,6 @@ export default class WindowManager {
                     this.arrangeVerticalStacked();
                     // we could minimize all other windows here
                     // minimizeAllWindows();
-                    // hide all legacy BP windows ( TODO remove this )
-                    //$('.window').hide();
-                    //$('.window').removeClass('window_stack');
                 }
                 window.minimize();
             }
@@ -198,15 +200,34 @@ export default class WindowManager {
         if (typeof window === 'string') {
             window = this.findWindow(window);
         }
+
+        // console.log("Focusing window", window);
+
+        // TODO: this isn't working consistenly?  there seems to be an issue with index
         // console.log("Focusing window", window.id);
         const index = this.windows.indexOf(window);
         if (index !== -1) {
             this.windows.splice(index, 1);
             this.windows.unshift(window);
+            // console.log('Focusing window', window.id, 'at index', index);
             this.updateFocus();
             window.focus(false);
             this.saveWindowsState(); // Save state when focus changes
         }
+        // iterate through all windows and set isFocused to false
+        // set this window isFocused to true
+        this.windows.forEach(w => {
+            if (w.id !== window) {
+                w.isFocused = false;
+
+            } else {
+                window.isFocused = true;
+
+            }
+        });
+
+
+
     }
 
     updateFocus() {
@@ -258,16 +279,6 @@ export default class WindowManager {
             this.restoreWindows(serializedWindows);
         }
     }
-
-    /* legacy, may need to be replaced
-    openWindow(name, config) {
-        // TODO: remove JQDX reference ( legacy windows might triger this )
-        JQDX.hideLoadingProgressIndicator(); // for now
-        if (this._openWindow) {
-            this._openWindow(name, config);
-        }
-    }
-    */
 
     arrangeVerticalStacked() {
         let containerHeight = document.body.clientHeight - 100; // Adjust for container and offset

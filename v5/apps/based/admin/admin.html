@@ -7,6 +7,7 @@
     <li><a href="#admin-userbyIP">User By IP</a></li>
     <li><a href="#admin-buddyProfile">Buddy Profile</a></li>
     <li><a href="#admin-banlist">Ban List</a></li>
+    <li><a href="#admin-add-admin">Add Admins</a></li>
 </ul>
 
 <div id="admin-recent-logins" class="tab-content admin-tab-content">
@@ -107,4 +108,30 @@
             <!-- Populated by JavaScript -->
         </tbody>
     </table>
+</div>
+
+<div id="admin-add-admin" class="tab-content admin-tab-content">
+    <h2>Add Admin</h2>
+    <span class="api-response"></span>
+    <div class="admin-input-group">
+        <input type="text" id="admin-username" class="admin-input" placeholder="Enter Username">
+        <input type="text" id="admin-ip" class="admin-input" placeholder="Enter IP Address">
+        <button id="add-admin-button" class="admin-button">Add Admin</button>
+    </div>
+    <div id="admin-list" class="admin-json-display">
+        <h2>Current Admins</h2>
+        <span class="api-response"></span>
+        <table class="admin-table" id="admin-list-table">
+            <thead>
+                <tr>
+                    <th>Buddyname</th>
+                    <th>IP Address</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
 </div>
