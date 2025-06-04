@@ -177,10 +177,20 @@ let legacyCommands = {
   },
   leaderboard: {
     command: function (params) {
-        bp.open('portfolio', { context: '#portfolio-leaderboard' });
+        bp.open('coin', { context: '#coin-leaderboard' });
     },
     description: 'View the Buddy Coins Leaderboards',
     icon: 'coin'
+  },
+  portfolio: {
+    command: function (params) {
+      console.log('portfolio command', params);
+      if (params.length > 0) {
+        bp.open('portfolio', { context: params[0] });
+      } else {
+        bp.open('portfolio');
+      }
+    }
   },
   logout: {
     command: function (params) {
