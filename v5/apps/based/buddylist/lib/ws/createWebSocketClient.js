@@ -25,6 +25,16 @@ export default function createWebSocketClient() {
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
 
+      this.updateStatusInterval = setInterval(() => {
+        let status = 'online'; // Default status
+        try {
+          status = bp.apps.buddylist.data.profileState.status;
+        } catch (error) {
+          console.log('Error retrieving profile state status for updateStatusInterval:', error);
+        }
+        // console.log('Sending status update to buddylist:', status);
+        this.bp.emit('profile::status', status);
+      }, 1000 * 60 * 5); // Refresh status every 5 minutes
       /*
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
@@ -58,6 +68,10 @@ export default function createWebSocketClient() {
             } else {
               console.error('getProfile message received but no buddylist:', parseData);
             }
+            // TODO: after getting profile, create a new call that wil fetch all buddies DO's to get
+            // most updated state ( a reverse of setStatus() call )
+            // this will ensure we always get the most recent updates for all buddies in case our DO
+            // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
             break;
           case 'ping':
             // console.log('pong message received:', parseData);
@@ -108,6 +122,7 @@ export default function createWebSocketClient() {
       console.log('WebSocket connection closed to', 'buddylist', 'Code:', event.code, 'Reason:', event.reason);
 
       // clearInterval(this.pingInterval);
+      clearInterval(this.updateStatusInterval);
 
       bp.emit('buddylist-websocket::disconnected', { code: event.code, reason: event.reason });
 

@@ -1,6 +1,7 @@
 // Timeout is for legacy API before websocket connections
 // We should now have a reliable way to track buddy status via websocket disconnect events
-let buddyTimeoutsInterval = 60000 * 60 * 24 * 3; // 3 days
+// 15 minute hard-code timeout ( if setStatus() was missed )
+let buddyTimeoutsInterval = 1000 * 60 * 15; // 15 minutes in milliseconds
 
 export default function renderOrUpdateBuddyInBuddyList(data) {
   let bp = this.bp;
