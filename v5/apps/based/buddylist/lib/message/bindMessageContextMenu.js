@@ -317,6 +317,7 @@ async function saveEdit(messageContent, messageData) {
   console.log('Edit saved', newMessageText);
 
   await buddypond.editInstantMessage({
+    from: messageData.from,
     chatId: messageData.chatId,
     uuid: messageData.uuid,
     text: newMessageText,
