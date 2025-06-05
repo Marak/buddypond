@@ -76,6 +76,7 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
         // the file to the appropriate directory such as images, audio, videos, etc
         let supportedImageTypesExt = ['jpeg', 'png', 'gif', 'webp', 'svg']; // same as server ( for now )
         let supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'];
+        let supportedVideoTypesExt = ['mp4', 'webm', 'ogg', 'avi', 'mov', 'mkv'];
 
         // check to see if the file.name has an extension included in the supportedImageTypesExt array
         let fileExt = file.name.split('.').pop().toLowerCase();
@@ -85,11 +86,16 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
         if (supportedAudioTypesExt.includes(fileExt)) {
           file.filePath = 'audio/' + file.filePath;
         }
+        if (supportedVideoTypesExt.includes(fileExt)) {
+          file.filePath = 'videos/' + file.filePath;
+        }
+
+        // make file.filePath url encoded
+        file.filePath = encodeURIComponent(file.filePath);
 
         console.log('assigning file path', file.filePath);
         let fileUrl = await this.bp.apps.client.api.uploadFile(file, (progress) => {
           statusDiv.text('Uploading: ' + progress + '%');
-
         });
 
         // now that we have the url, just send a regular message with the url
@@ -245,9 +251,6 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     };
   }
 
-
-
-
   // if this is a buddyscript command, but not a /say command
   // say has a special meaning in the context of the chat window
   // as it should be sent as regular text message ( should be a card later, click to repeat )
@@ -297,7 +300,10 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     return false;
   }
 
+  console.log(`Sending message to ${_data.to} from ${_data.from} of type ${_data.type}:`, _data.text);
+  console.log(_data.text.startsWith('\\'));
   if (_data.text.startsWith('\\')) {
+   
     // let bs = this.bp.apps.buddyscript.parseCommand(_data.text);
     // console.log('backwards command', bs);
     _data.card = {

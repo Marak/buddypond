@@ -1,0 +1,200 @@
+/* Website Card Styles */
+.card-website {
+    position: relative;
+    width: 320px;
+    padding: 8px;
+    border: 1px solid #20C997; /* Teal border */
+    border-radius: 10px;
+    background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+    overflow: hidden;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+}
+
+.card-website-loading {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 12px auto;
+    position: relative;
+}
+
+.card-website-loading::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: transparent;
+    animation: spin-docs 1s linear infinite;
+    position: relative;
+    box-shadow: 
+        0 -4px 0 0 #20C997,
+        2.83px -2.83px 0 0 #20C997,
+        4px 0 0 0 #20C997,
+        2.83px 2.83px 0 0 #20C997,
+        0 4px 0 0 #20C997,
+        -2.83px 2.83px 0 0 #20C997,
+        -4px 0 0 0 #20C997,
+        -2.83px -2.83px 0 0 #20C997;
+}
+
+.card-website-content,
+.card-website-error,
+.card-website-fallback {
+    display: block;
+}
+
+.card-website-hidden {
+    display: none !important;
+}
+
+.card-website-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-website-fallback-link {
+    display: block;
+    font-size: 14px;
+    color: #20C997; /* Teal */
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px;
+    transition: color 0.2s ease;
+}
+
+.card-website-fallback-link:hover {
+    color: #2DD4BF; /* Lighter teal */
+}
+
+.card-website-image {
+    display: block;
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.card-website-title {
+    font-size: 14px;
+    color: #20C997; /* Teal */
+    margin: 0 0 4px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-website-description {
+    font-size: 12px;
+    color: #495057;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-website-error h2 {
+    font-size: 16px;
+    color: #DC3545; /* Red */
+    margin: 0 0 6px;
+    font-weight: 600;
+}
+
+.card-website-error-message {
+    font-size: 12px;
+    color: #495057;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Decorative overlay */
+.card-website::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.card-website-loading,
+.card-website-content,
+.card-website-error,
+.card-website-fallback {
+    position: relative;
+    z-index: 1;
+}
+
+/* Animation for loading */
+@keyframes spin-dots {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 768px) {
+    .card-website {
+        width: 100%;
+        max-width: 400px;
+        padding: 16px;
+        margin: 8px 0;
+    }
+
+    .card-website-loading {
+        width: 24px;
+        height: 24px;
+        margin: 24px auto;
+    }
+
+    .card-website-loading::before {
+        width: 24px;
+        height: 24px;
+        box-shadow: 
+            0 -8px 0 0 #20C997,
+            5.66px -5.66px 0 0 #20C997,
+            8px 0 0 0 #20C997,
+            5.66px 5.66px 0 0 #20C997,
+            0 8px 0 0 #20C997,
+            -5.66px 5.66px 0 0 #20C997,
+            -8px 0 0 0 #20C997,
+            -5.66px -5.66px 0 0 #20C997;
+    }
+
+    .card-website-image {
+        max-height: 240px;
+    }
+
+    .card-website-fallback-link {
+        font-size: 28px;
+        padding: 16px;
+    }
+
+    .card-website-title {
+        font-size: 28px;
+    }
+
+    .card-website-description {
+        font-size: 24px;
+    }
+
+    .card-website-error h2 {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .card-website-error-message {
+        font-size: 24px;
+    }
+}

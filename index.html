@@ -117,6 +117,8 @@ window.top.location = 'ie.html';
       let _errorsEndpoint = 'https://errors.buddypond.com/error';
       let _randolphEndpoint = 'https://randolph.buddypond.com/api/v6';
       let _imageSearchEndpoint = 'https://image-search.buddypond.com';
+      let _buddyProxy = 'http://proxy.buddypond.com';
+
 
       let devmode = false;
 
@@ -143,6 +145,7 @@ window.top.location = 'ie.html';
         _errorsEndpoint = `https://${localIp}:8787/error`;
         _randolphEndpoint = `http://${localIp}:8889/api/v6`;
         _imageSearchEndpoint = `http://${localIp}:9005`;
+        _buddyProxy = `http://${localIp}:9007`;
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
@@ -161,6 +164,7 @@ window.top.location = 'ie.html';
       buddypond.coinEndpoint = _coinEndpoint;
       buddypond.randolphEndpoint = _randolphEndpoint;
       buddypond.imageSearchEndpoint = _imageSearchEndpoint;
+      buddypond.buddyProxy = _buddyProxy;
 
       let renderBpApp = true;
 

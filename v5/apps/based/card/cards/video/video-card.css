@@ -1,0 +1,141 @@
+/* Video Card Styles */
+.card-video {
+    position: relative;
+    width: 320px;
+    padding: 8px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(32, 201, 151, 0.2);
+    overflow: hidden;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.card-video-loading {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 12px auto;
+    position: relative;
+}
+
+.card-video-loading::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: transparent;
+    animation: spin-dots 1s linear infinite;
+    position: relative;
+    box-shadow: 
+        0 -4px 0 0 #20C997,
+        2.83px -2.83px 0 0 #20C997,
+        4px 0 0 0 #20C997,
+        2.83px 2.83px 0 0 #20C997,
+        0 4px 0 0 #20C997,
+        -2.83px 2.83px 0 0 #20C997,
+        -4px 0 0 0 #20C997,
+        -2.83px -2.83px 0 0 #20C997; /* 8 teal dots */
+}
+
+.card-video-content,
+.card-video-error {
+    display: block;
+}
+
+.card-video-hidden {
+    display: none !important;
+}
+
+.card-video-player {
+    display: block;
+    width: 100%;
+    max-height: 180px; /* Limit height to keep card compact */
+    border-radius: 6px;
+}
+
+.card-video-error h2 {
+    font-size: 16px;
+    color: #DC3545; /* Red for error */
+    margin: 0 0 6px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.card-video-error-message {
+    font-size: 12px;
+    color: #495057;
+    margin: 0;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Decorative overlay */
+.card-video::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.card-video-loading,
+.card-video-content,
+.card-video-error {
+    position: relative;
+    z-index: 1;
+}
+
+/* Animation for loading */
+@keyframes spin-dots {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for mobile (up to 768px) */
+@media (max-width: 768px) {
+    .card-video {
+        width: 100%;
+        max-width: 400px;
+        padding: 16px;
+        margin: 8px 0;
+    }
+
+    .card-video-loading {
+        width: 24px;
+        height: 24px;
+        margin: 24px auto;
+    }
+
+    .card-video-loading::before {
+        width: 24px;
+        height: 24px;
+        box-shadow: 
+            0 -8px 0 0 #20C997,
+            5.66px -5.66px 0 0 #20C997,
+            8px 0 0 0 #20C997,
+            5.66px 5.66px 0 0 #20C997,
+            0 8px 0 0 #20C997,
+            -5.66px 5.66px 0 0 #20C997,
+            -8px 0 0 0 #20C997,
+            -5.66px -5.66px 0 0 #20C997;
+    }
+
+    .card-video-player {
+        max-height: 360px; /* Doubled */
+    }
+
+    .card-video-error h2 {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .card-video-error-message {
+        font-size: 24px;
+    }
+}

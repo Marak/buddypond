@@ -19,9 +19,10 @@ export default function openChatWindow(data) {
         windowType = data.type;
     }
 
+    contextName = contextName.toString();
+
     let pondName = contextName.replace('pond/', '');
 
-    contextName = contextName.toString();
 
     // ensure that context does not contain forbidden characters or bad words
     // TODO: add client-side check for invalid characters in pondName
