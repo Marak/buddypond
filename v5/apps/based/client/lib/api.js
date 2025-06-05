@@ -19,6 +19,8 @@ buddypond.supportedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 buddypond.supportedImageTypesExt = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
 buddypond.supportedAudioTypesExt = ['mp3', 'wav', 'ogg', 'flac'];
+buddypond.supportedVideoTypesExt = ['mp4', 'webm', 'ogg', 'avi', 'mov', 'mkv'];
+
 
 // legacy v4 API
 let desktop = { settings: {} };
@@ -306,12 +308,13 @@ buddypond.sendMessage = function sendMessage(buddyName, text, data, cb) {
 
 }
 
-buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid, text }) {
+buddypond.editInstantMessage = async function editInstantMessage({ chatId, uuid, text, from }) {
 
   console.log('sending request to editInstantMessage', chatId, uuid, text);
 
   bp.apps.client.sendWsMessage(chatId, {
     action: 'editInstantMessage',
+    from: from,
     chatId: chatId,
     buddyname: buddypond.me,
     qtokenid: buddypond.qtokenid,
