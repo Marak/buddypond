@@ -10,17 +10,20 @@ const config = {
 // New function to create hover menu
 // TODO: remove buttons, just use icons
 // TODO: update bindMessageContextMenu() method to bind to the icons instead of buttons
-function createHoverMenu() {
+function createHoverMenu(message) {
   const hoverMenu = document.createElement('div');
-  hoverMenu.className = 'aim-hover-menu';
+  hoverMenu.className = 
+  'aim-hover-menu';
 
-  const menuItems = [
-    // TODO: add reaction
-    // { text: 'Add Reaction', action: 'add-reaction' },
-    { text: 'Edit Message', action: 'edit-message',  icon: 'fa-duotone fa-regular fa-pencil' },
-    { text: 'Reply Message', action: 'reply-message', icon: 'fa-duotone fa-regular fa-reply' },
-    { text: '...', action: 'more-options', icon: 'fa-solid fa-regular fa-ellipsis' },
-  ];
+  const menuItems = [];
+
+  if (message.from === this.bp.me || this.bp.me === 'Marak') { // TODO: admin rbac
+    menuItems.push({ text: 'Edit Message', action: 'edit-message',  icon: 'fa-duotone fa-regular fa-pencil' });
+  }
+
+  menuItems.push({ text: 'Reply Message', action: 'reply-message', icon: 'fa-duotone fa-regular fa-reply' });
+  menuItems.push({ text: '...', action: 'more-options', icon: 'fa-solid fa-regular fa-ellipsis' });
+
 
   menuItems.forEach(item => {
     const button = document.createElement('button');
@@ -162,7 +165,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
   }
 
   // Hover menu
-  const hoverMenu = createHoverMenu();
+  const hoverMenu = createHoverMenu.call(this, message)
 
   // Assemble message
   contentWrapper.appendChild(messageHeader);
