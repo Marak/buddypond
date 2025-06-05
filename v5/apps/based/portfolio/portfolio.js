@@ -52,7 +52,7 @@ export default class Portfolio {
 
         this.transactionResource = new Resource("transactions", {
             provider: 'rest',
-            apiEndpoint: this.bp.config.portfolioEndpoint || '/',
+            apiEndpoint: buddypond.portfolioEndpoint || '/',
             schema: {
                 id: { type: "string", key: true }, // Unique transaction ID
                 sender: { type: "string" },

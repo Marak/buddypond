@@ -25,6 +25,7 @@ export default function createWebSocketClient() {
       // Emit connected event
       bp.emit('buddylist-websocket::connected');
 
+      /*
       this.updateStatusInterval = setInterval(() => {
         let status = 'online'; // Default status
         try {
@@ -35,6 +36,7 @@ export default function createWebSocketClient() {
         // console.log('Sending status update to buddylist:', status);
         this.bp.emit('profile::status', status);
       }, 1000 * 60 * 5); // Refresh status every 5 minutes
+      */  
       /*
       this.pingInterval = setInterval(() => {
         if (wsClient.readyState === WebSocket.OPEN) {
@@ -60,6 +62,15 @@ export default function createWebSocketClient() {
             });
             break;
 
+          case 'getRemoteProfiles':
+            console.log('getRemoteProfiles message received:', parseData);
+            if (parseData.profile && parseData.profile.buddylist) {
+              bp.emit('profile::fullBuddyList', parseData.profile);
+            } else {
+              console.error('getProfile message received but no buddylist:', parseData);
+            }
+
+            break;
           case 'getProfile':
             console.log('getProfile message received:', parseData);
 
@@ -72,10 +83,24 @@ export default function createWebSocketClient() {
             // most updated state ( a reverse of setStatus() call )
             // this will ensure we always get the most recent updates for all buddies in case our DO
             // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
+            // send a message now to getRemoteProfiles
+            console.log('Requesting remote profiles for all buddies');
+            // After getting the initial profile ( single DO state, quick load ),
+            // we can request remote profiles for all buddies
+            // This will fetch all buddies DO's and get their most recent state
+            // This is useful for getting the most recent updates for all buddies in case our DO
+            // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
+            wsClient.send(
+              JSON.stringify({
+                action: 'getRemoteProfiles',
+                buddyname: buddypond.me,
+                qtokenid: buddypond.qtokenid,
+              })
+            );
             break;
           case 'ping':
             // console.log('pong message received:', parseData);
-          break;
+            break;
           case 'buddy_removed':
             // alert('buddy_removed WebSocket message received:', parseData);
             console.log('buddy_removed WebSocket message received:', parseData);
@@ -89,7 +114,7 @@ export default function createWebSocketClient() {
                 message: parseData.message,
                 reward: parseData.reward,
               });
-              
+
             } else {
               bp.emit('buddylist-websocket::reward', {
                 success: false,

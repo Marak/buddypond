@@ -14,7 +14,7 @@ export default class Resource {
             throw new Error(`Schema definition is required for resource: ${name}`);
         }
         
-        console.log('Initializing provider with options:', options);
+        // console.log('Initializing provider with options:', options);
         schemaRegistry[this.name] = this.schema; // Register the resource schema
 
         this.provider = this._createProvider(this.providerType, options);

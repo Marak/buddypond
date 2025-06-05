@@ -1,7 +1,7 @@
 // Timeout is for legacy API before websocket connections
 // We should now have a reliable way to track buddy status via websocket disconnect events
 // 15 minute hard-code timeout ( if setStatus() was missed )
-let buddyTimeoutsInterval = 1000 * 60 * 15; // 15 minutes in milliseconds
+let buddyTimeoutsInterval = 1000 * 60 * 60 * 5; // 5 hours, shoudn't be needed unless unknown error on server
 
 export default function renderOrUpdateBuddyInBuddyList(data) {
   let bp = this.bp;
@@ -37,7 +37,9 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     // This may still stay in as CF worker could miss disconnect events
     // TODO: consider re-implementing a keepAlive ping each 30 minutes
     let now = new Date().getTime();
+    //console.log('BuddyList: buddydata.utime', buddyname, buddydata.utime, 'now', now);
     let diff = now - buddydata.utime;
+    //console.log('BuddyList: diff', buddyname, buddydata.utime, diff, buddyTimeoutsInterval);  
     // console.log('buddydata.utime', buddydata.utime, 'now', now, 'diff', diff);
     // console.log('BuddyList: diff', buddyname, buddydata.utime, diff, buddyTimeoutsInterval);
     // If buddy hasn't been online for a while, set them to offline

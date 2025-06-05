@@ -9,6 +9,7 @@ export default function openChatWindow(data) {
 
     let windowType = data.pondname ? 'pond' : 'buddy';
     let contextName = data.pondname || data.name;
+    contextName = contextName.toString();
     let windowTitle = windowType === 'pond' ? 'Pond' : '';
 
     if (data.context) {
