@@ -2,7 +2,7 @@ export default function applyData(el, data) {
 
     // Helper to show content
     const showContent = ($el, metadata) => {
-        console.log('showContent Website metadata:', metadata);
+        // console.log('showContent Website metadata:', metadata);
         $el.find('.card-website-loading').hide();
         const $content = $el.find('.card-website-content');
         $content.find('.card-website-link').attr('href', url);
@@ -22,7 +22,7 @@ export default function applyData(el, data) {
     buddypond.websiteCardCache = buddypond.websiteCardCache || {};
     const $el = $(el);
     const { url } = data || {};
-    console.log('Website card data', { url });
+    // console.log('Website card data', { url });
 
     if (!url || !/^https?:\/\//i.test(url)) {
         showError($el, 'Invalid URL');
@@ -91,7 +91,7 @@ export default function applyData(el, data) {
 
 // Helper to show fallback link
 const showFallback = ($el, url) => {
-    console.log('Showing fallback link for:', url);
+    //console.log('Showing fallback link for:', url);
     $el.find('.card-website-loading').hide();
     const $fallback = $el.find('.card-website-fallback');
     $fallback.find('.card-website-fallback-link')
@@ -101,9 +101,9 @@ const showFallback = ($el, url) => {
 };
 
 function fetchProxy($el, url, parseMetadata, showContent, showError) {
-    console.log('Fetching via proxy:', url);
+    //console.log('Fetching via proxy:', url);
     let proxyUrl = `${buddypond.buddyProxy}/api/fetch-metadata?url=${encodeURIComponent(url)}`;
-    console.log('Proxy URL:', proxyUrl);
+    //console.log('Proxy URL:', proxyUrl);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 6000); // 6 seconds

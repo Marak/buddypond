@@ -16,7 +16,7 @@ function updateSpellButtons(spellType, container) {
     const spellName = button.dataset.name;
     const spell = spells.find(s => s.name === spellName);
 
-    if (!spell || !spell.config || !spell.config.targets) {
+    if (!spell || !spell.config || !spell.config.targets && this.bp.me !== 'Marak') { // TODO: admin rbac check
       button.disabled = true;
       button.classList.remove('valid-target');
       button.classList.add('invalid-target');
@@ -24,7 +24,7 @@ function updateSpellButtons(spellType, container) {
       return;
     }
 
-    if (spell.config.targets.includes(currentTargetType)) {
+    if (spell.config?.targets?.includes(currentTargetType) || this.bp.me === 'Marak') { // TODO: admin rbac check
       button.disabled = false;
       button.classList.add('valid-target');
       button.classList.remove('invalid-target');
@@ -77,7 +77,9 @@ function renderSpellButtons(spellType, container, onSelect) {
     btn.appendChild(icon);
     btn.appendChild(label);
 
-    if (!spell.config || !spell.config.targets) btn.disabled = true;
+    if (!spell.config || !spell.config.targets && this.bp.me !== 'Marak') { // TODO: admin rbac check
+      btn.disabled = true;
+    }
     btn.addEventListener('click', () => {
       onSelect(spell);
       this.applyCooldown(btn, spell.cooldown || 10000); // default cooldown of 1 second

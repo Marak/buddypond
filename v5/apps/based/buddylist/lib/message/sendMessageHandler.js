@@ -179,7 +179,6 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     // split text to parts on space
     let params = _data.text.split(' ').slice(1);
     await bp.load('image-search');
-    console.log('pppp', params)
 
     if (params.length === 0) {
       await bp.open('image-search', { query: params[0], provider: 'giphy' });
