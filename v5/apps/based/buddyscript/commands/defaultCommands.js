@@ -215,6 +215,18 @@ let legacyCommands = {
     description: 'Stay Entertained with Buddy Pond Games',
     icon: 'folder'
   },
+  pond: {
+    command: function (params) {
+      console.log('ponds command', params);
+      if (params.length > 0) {
+        bp.open('pond', { context: params[0] });
+      } else {
+        bp.open('pond');
+      }
+    },
+    description: 'View or Join a Buddy Pond',
+    icon: 'pond'
+  },
   /*
   */
   /*
