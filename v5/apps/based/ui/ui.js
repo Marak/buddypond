@@ -1,11 +1,14 @@
+// Remark: We may be able to remove UI and put all this logic in the desktop app
 import WindowManager from "./Window/WindowManager.js";
+import CountdownManager from "../ui/CountdownManager.js";
+
 export default class UI {
     constructor(bp, options = {}) {
         this.bp = bp;
 
         let windowManagerOptions = {};
         windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
-        windowManagerOptions.window = options.window || {};
+            windowManagerOptions.window = options.window || {};
         windowManagerOptions.hideTaskBar = options.hideTaskBar;
         this.windowManager = new WindowManager(this, windowManagerOptions);
         this.bp.windows = this.windowManager.windows;
@@ -24,6 +27,11 @@ export default class UI {
         }
 
         this.parent = options.parent;
+
+        this.countdownManager = new CountdownManager(this.bp);
+        // this.countdownManager.updateCountdowns();
+
+
         return this;
     }
 
@@ -52,9 +60,9 @@ export default class UI {
 
         }
 
-       // await this.bp.appendScript('/desktop/assets/js/jquery.js');
+        // await this.bp.appendScript('/desktop/assets/js/jquery.js');
 
-       
+
         if (!this.options.noTabs) {
             // what happened here with config? we shouldn't need to reference host here,
             // TODO: check implementation of importModule with options
@@ -78,10 +86,8 @@ export default class UI {
             console.log('open-app ' + appName);
             // check to see if legacy app ( for now)
             bp.open(appName, { context, type });
-        
-          });
 
-
+        });
 
         return 'loaded ui';
     }
@@ -94,7 +100,7 @@ export default class UI {
         return 'hello ui';
     }
 
-    async loadDocumentBody () {
+    async loadDocumentBody() {
         console.log('loadDocumentBody', this);
         let html = await this.bp.fetchHTMLFragment('/v5/apps/based/ui/ui.html'); // TODO: might need root
         console.log(html);
