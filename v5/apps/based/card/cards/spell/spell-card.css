@@ -80,7 +80,7 @@
 
 .card-spell-target {
   display: block;
-  color: #FFD700;
+  color: #FFD700 !important;
   font-size: 14px; /* Smaller font */
   font-weight: bold;
   text-align: left;
@@ -93,13 +93,13 @@
 }
 
 .card-spell-target:hover {
-  color: #FFEFBF;
-  text-decoration: none;
+  color: #FFEFBF !important;
+  text-decoration: none !important;
 }
 
 .card-spell-name {
   display: block;
-  color: #E0E0E0;
+  color: #E0E0E0 !important;
   font-size: 18px; /* Smaller font */
   font-style: italic;
   text-align: left;
@@ -112,8 +112,8 @@
 }
 
 .card-spell-name:hover {
-  color: #FFFFFF;
-  text-decoration: none;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
 }
 
 .card-spell-flavor {

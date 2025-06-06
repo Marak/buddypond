@@ -38,6 +38,14 @@ export default class Themes {
             'color': '#181818',
             'text-shadow': 'none'
           },
+          'desktop_links': {
+            'color': '#181818',
+            'text-decoration': 'none'
+          },
+          'desktop_links_hover': {
+            'color': '#181818',
+            'text-decoration': 'underline'
+          }
         }
       },
       'Dark': {
@@ -83,6 +91,14 @@ export default class Themes {
             'color': '#E3E3E3',
             'text-shadow': 'none'
           },
+          'desktop_links': {
+            'color': '#E3E3E3',
+            'text-decoration': 'none'
+          },
+          'desktop_links_hover': {
+            'color': '#E3E3E3',
+            'text-decoration': 'underline'
+          }
 
         }
       },
@@ -145,7 +161,9 @@ export default class Themes {
       'desktop_headers': 'h1, h2, h3, h4, h5, h6',
       'desktop_element_hover': '.aim-chat-message:hover',
       'desktop_section': '.desktop-section',
-      'inputs_text': 'input[type="text"]'
+      'inputs_text': 'input[type="text"]',
+      'desktop_links': 'a',
+      'desktop_links_hover': 'a:hover'
     };
 
   }

@@ -80,7 +80,7 @@ export default class AudioPlayer {
     let menuBar = this.bp.apps.menubar;
 
     // TODO: this should trigger on open and unload on close / onfocus
-    menuBar.setMenu("customMenu", menuBarConfig);
+    // menuBar.setMenu("customMenu", menuBarConfig);
 
     let audioPlayerWindow = this.bp.apps.ui.windowManager.createWindow({
       id: playerId,

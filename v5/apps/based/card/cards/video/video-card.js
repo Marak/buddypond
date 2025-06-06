@@ -3,6 +3,10 @@ export default function applyData(el, data) {
     const { url } = data || {};
     console.log('Video card data', { url });
 
+    // replace the URL in the message text since the video card will handle it as embed
+    // this allows a message with a video URL to be sent without the URL showing up in the chat
+    data.message.text = data.message.text.replace(url, '');
+
     // Show loading state
     $el.find('.card-video-loading').show();
     $el.find('.card-video-content, .card-video-error').addClass('card-video-hidden');
