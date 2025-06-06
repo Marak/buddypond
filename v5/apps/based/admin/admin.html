@@ -8,6 +8,7 @@
     <li><a href="#admin-buddyProfile">Buddy Profile</a></li>
     <li><a href="#admin-banlist">Ban List</a></li>
     <li><a href="#admin-add-admin">Add Admins</a></li>
+    <li><a href="#admin-firewall">Firewall Rules</a></li>
 </ul>
 
 <div id="admin-recent-logins" class="tab-content admin-tab-content">
@@ -137,3 +138,26 @@
         </table>
     </div>
 </div>
+<div id="admin-firewall" class="tab-content admin-tab-content">
+    <h2>Firewall Rules</h2>
+    <span class="api-response"></span>
+
+    <!-- add rule form, can add ip address -->
+        <form id="firewall-rule-form" class="admin-input-group">
+        <input type="text" id="firewall-rule-ip" class="admin-input" placeholder="Enter IP Address">
+        <button id="add-firewall-rule-button" class="admin-button">Ban IP</button>
+    </form>
+
+    <table class="admin-table" id="firewall-rules-table">
+        <thead>
+            <tr>
+                <th>Rule</th>
+                <th>Action</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populated by JavaScript -->
+        </tbody>
+    </table>
+</div> 

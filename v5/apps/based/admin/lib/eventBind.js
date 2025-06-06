@@ -8,6 +8,9 @@ import destroyBuddy from './commands/destroyBuddy.js';
 import addAdmin from './commands/addAdmin.js';
 import listAdmins from './commands/listAdmins.js';
 
+import listRules from './commands/firewall/listRules.js';
+import addRule from './commands/firewall/addRule.js';
+
 export default function eventBind(adminWindow) {
     // Tab manager handles tab switching
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', adminWindow.content);
@@ -41,6 +44,11 @@ export default function eventBind(adminWindow) {
                 let ip = document.querySelector('#admin-ip').value.trim();
                 listAdmins.call(this);
                 // addAdmin.call(this, adminName, ip);
+            case '#admin-firewall':
+                console.log('admin-firewall');
+                // list firewall rules
+                listRules.call(this);
+            break;
             default:
                 console.warn('Unknown tabId:', tabId);
         }
@@ -199,5 +207,21 @@ export default function eventBind(adminWindow) {
             alert('Error logging in as user: ' + error.message);
         }
     });
-    
+
+    $('#firewall-rule-form').on('submit', async (e) => {
+        e.preventDefault();
+        let ruleAction = $('#firewall-rule-action').val();
+        let ruleIP = $('#firewall-rule-ip').val().trim();
+        console.log('Adding firewall rule:', ruleAction, ruleIP);
+
+        if (!ruleIP) {
+            alert('No IP address provided');
+            return;
+        }
+
+        // TODO: swap action to delete if ruleAction is not add
+        await addRule.call(this, ruleIP);
+
+    });
+        
 }
