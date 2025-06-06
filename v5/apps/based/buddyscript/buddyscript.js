@@ -15,16 +15,16 @@ export default class BuddyScript {
         let defaultCommands = new Commands(this.bp);
         // merge defaultCommands onto this.commandActions
         Object.assign(this.commands, defaultCommands.commands);
-        console.log("Merged commands", this.commands);
+        // console.log("Merged commands", this.commands);
 
     }
 
     isValidBuddyScript(command) {
-        console.log("Checking if valid command", command, this.commands);
+        // console.log("Checking if valid command", command, this.commands);
         return this.commands[command];
     }
 
-    parseCommand(input) {
+    parseCommand(input, options = {}) {
         if (!input || input.length < 2) {
             // console.log('Invalid command length');
             return false; // Ignore empty or too short commands
@@ -37,14 +37,11 @@ export default class BuddyScript {
         if (firstChar === '\\') {
             // alert('reverse command')
             if (this.isValidBuddyScript(commands[0])) {
-                console.log('running command', commands);
+                // console.log('running command', commands);
                 let commandData = this.commands[commands[0]];
-
                 // reverse shell commands will show the bs-card such that users can click on the command
                 // TODO: allow marak / admins to open apps remotely 
-
-
-                return { command: commands.join(' '), type: 'show-card', input: input, commandData };
+                return { command: commands.join(' '), type: 'show-card', input: input, commandData, options };
             } else {
                 this.alertInvalidCommand();
                 return { type: 'invalid' };
@@ -54,27 +51,26 @@ export default class BuddyScript {
         if (firstChar === '/') {
             // console.log('Handling pipes');
             let commandData = this.commands[commands[0]];
-
+            // console.log('return pipe Running command', commands, commandData, options);
             // instead of running handlePipes here, return an object that indicates the command is a pipable command
-            return { pipe: () => {
-                return this.handlePipes(input);
-            }, command: commands.join(' '), type: 'execute', input: input, commandData };
+            return { pipe: (options) => {
+                // console.log('pipe options', options);
+                return this.handlePipes(input, options);
+            }, command: commands.join(' '), type: 'execute', input: input, commandData, options };
             // return this.handlePipes(input);
         }
 
         return false; // If no valid starting character, ignore
     }
 
-    executeCommand(command, context) {
-        // console.log('Executing command', command, context);
+    executeCommand(command, context, options = {}) {
         if (this.commandActions[command]) {
-            console.log("Executing command action", command, context, this.commandActions[command]);
+            // console.log("Executing command action", command, context, this.commandActions[command]);
             context.data = this.commandActions[command]; // maybe?
-            //console.log("Executing command action", command, context, this.commandActions[command].toString());
             if (this.commandActions[command].fn) {
-                return this.commandActions[command].fn.call(this, context);
+                return this.commandActions[command].fn.call(this, context, options);
             }
-            return this.commandActions[command].call(this, context);
+            return this.commandActions[command].call(this, context, options);
         } else {
             // console.log(`Executing command: ${command}`);
             console.log(command, context);
@@ -82,7 +78,7 @@ export default class BuddyScript {
         }
     }
 
-    handlePipes(input) {
+    handlePipes(input, options = {}) {
         let parts = input.split('|');
         let results = [];
         let context = {}; // could also build a context object here
@@ -93,7 +89,7 @@ export default class BuddyScript {
             let commandArgs = commandParts.slice(1);
             // console.log("aaCommand parts", command, commandParts, commandArgs);
             if (this.isValidBuddyScript(command)) {
-                results.push(this.executeCommand(command, commandArgs));
+                results.push(this.executeCommand(command, commandArgs, options));
             } else {
                 this.alertInvalidCommand();
                 return { type: 'invalid' };

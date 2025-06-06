@@ -42,11 +42,11 @@ export default function Commands(bp) {
           let commandObj = legacyCommands[command];
       let commandStr = commandObj.command;
 
-    let evaler = function (context) {
+    let evaler = function (context, options) {
       let params = context.params;
       console.log('Executing legacy command:', command, commandStr, context);
       if (typeof commandStr === 'function') {
-        commandStr(context);
+        commandStr(context, options);
         //eval(commandStr)
 
       } else {
@@ -87,6 +87,16 @@ let legacyCommands = {
     description: 'Use the Microphone Audio to create Cool Visuals',
     icon: 'visuals'
   },
+  // show card
+  apps: {
+    command: function (params, context) {
+      console.log('apps command', params, context);
+      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'apps' });
+      return;
+    },
+    description: 'Lists all Buddy Pond Apps',
+    icon: 'merlin'
+  },
   balance: {
     command: function (params) {
       console.log('balance command', params);
@@ -106,16 +116,16 @@ let legacyCommands = {
     description: 'Cast Spells with the Buddy Pond Spellbook',
     icon: 'spellbook'
   },
-  /*
+  // TODO: add bs command to list BuddyScript commands
   bs: {
-    command: function(params) {
-      let str = `desktop.app.console.listBuddyScriptCommands({ windowId: '${params.windowId}'});`
-      return str;
+    command: function(params, context) {
+      console.log('bs command', params, context);
+      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'bs-commands' });
+      return;
     },
     description: 'Lists all BuddyScript Commands',
-    icon: 'folder'
+    icon: 'buddyscript'
   },
-  */
  /*
   console: {
     command: function (params) {
@@ -181,6 +191,16 @@ let legacyCommands = {
     },
     description: 'View the Buddy Coins Leaderboards',
     icon: 'coin'
+  },
+  // similiar to bs, use showCard to show the markdown card
+  markdown: {
+    command: function (params, context) {
+      console.log('markdown command', params, context);
+      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'markdown' });
+      return;
+    },
+    description: 'Lists all Markdown Commands',
+    icon: 'markdown'
   },
   portfolio: {
     command: function (params) {
@@ -274,17 +294,16 @@ let legacyCommands = {
     description: 'Stay Entertained with Hacking Tools',
     icon: 'hackertyper'
   },
-  /* // TODO needs to show card, will need the chat windowId context
   help: {
-    command: function (params) {
-      // params is windowId as string, such as `#window_console`
-      let str = `desktop.commands.chat.help({ windowId: '${params.windowId}'});`
-      return str;
+    // show card
+    command: function (params, context) {
+      console.log('help command', params, context);
+      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'help' });
+      return;
     },
-    description: 'Shows basic Help commands',
-    img: '/desktop/assets/images/icons/svg/1f9ae.svg'
+    description: 'Buddy Pond Help and Support',
+    icon: 'help'
   },
-  */
   youtube: {
     command: function (params) {
       bp.open('youtube');

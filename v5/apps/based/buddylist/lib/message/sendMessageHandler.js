@@ -147,34 +147,7 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     _data.type = 'buddy';
   }
 
-  // TODO: move to buddyscript processor
-  if (_data.text.startsWith('/help')) {
-    // show the help card and do not send the message
-    await this.showCard({ chatWindow, cardName: 'help' });
-    return;
-  }
-
-  if (_data.text.startsWith('/markdown')) {
-    // show the help card and do not send the message
-    await this.showCard({ chatWindow, cardName: 'markdown' });
-    return;
-  }
-
-  // TODO: move to buddyscript processor
-  if (_data.text.startsWith('/bs')) {
-    // show the help card and do not send the message
-    await this.showCard({ chatWindow, cardName: 'bs-commands' });
-    return;
-  }
-
-  // shows all apps
-  if (_data.text.startsWith('/apps')) {
-    // show the help card and do not send the message
-    await this.showCard({ chatWindow, cardName: 'apps' });
-    return;
-  }
-
-
+  // TODO: move these commands to defaultCommands in buddyscript
   if (_data.text.startsWith('/gif')) {
     // split text to parts on space
     let params = _data.text.split(' ').slice(1);
@@ -274,7 +247,11 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     if (bs.pipe) {
       //if (now - messageTime < 10000) {
       // pipeable / immediate run commands should only persist for 10 seconds
-      bs.pipe();
+      bs.pipe({
+      chatWindow,
+      contextName,
+      windowType
+    });
       // clear the input
       $('.aim-input', chatWindow.content).val('');
       return false;

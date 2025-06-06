@@ -49,7 +49,7 @@ export default function applyData(el, data, cardClass, parent) {
             commandDiv.classList.add('card-bs-commands-clicked');
 
             // TODO: run bs command with chatWindow as context?
-            this.bp.apps.buddyscript.executeCommand(command, { chatWindow: this.bp.apps.buddyscript.chatWindow });
+            this.bp.apps.buddyscript.executeCommand(command, {}, { chatWindow: parent });
             //this.bp.open(command);
             setTimeout(() => commandDiv.classList.remove('card-bs-commands-clicked'), 200);
         });

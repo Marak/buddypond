@@ -2,7 +2,6 @@
 .card-bs-app {
     position: relative;
     width: 320px;
-    min-height: 90px; /* Ensures a minimum height */
     padding: 8px; /* Reduced padding */
     border: 2px solid #FFD700; /* Gold border */
     border-radius: 8px;
@@ -39,9 +38,6 @@
     background: #3a2c5f; /* Darker purple background */
     cursor: pointer; /* Indicate clickability */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: absolute !important; /* Keep top-left positioning */
-    top: 8px;
-    left: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -119,7 +115,6 @@
         max-width: 400px; /* Cap for larger phones */
         padding: 16px; /* Doubled from 8px */
         margin: 8px 0; /* Reduced but sufficient spacing */
-        min-height: 120px; /* Adjusted for larger content */
     }
 
     .card-bs-app h1 {
