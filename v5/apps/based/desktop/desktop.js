@@ -16,11 +16,7 @@ import showContextMenu from "./lib/contextmenu/showContextMenu.js";
 
 // utils
 import buildJsTreeData from "../file-explorer/lib/buildJsTreeData.js";
-import setWallpaper from "./lib/setWallpaper.js";
-import removeWallpaper from "./lib/removeWallpaper.js";
 import viewSource from "./lib/viewSource.js";
-
-import CountdownManager from "../ui/CountdownManager.js";
 
 
 // default data
@@ -71,19 +67,30 @@ export default class Desktop {
         // Render the default shortcuts
         defaultDesktopShortcuts();
 
+        /*
+        if (this.bp.settings.wallpaper_url) {
+            // won't work unless desktop is already loaded
+            this.bp.apps.desktop.setWallpaper(this.bp.settings.wallpaper_url);
+        } else {
+            this.bp.apps.wallpaper.wallpaperManager.active = this.bp.settings.wallpaper_name || 'solid';
+            this.bp.apps.wallpaper.wallpaperManager.start();
+        }
+        */
+
         // check if there is a wallpaper_url
+        /*
         if (this.bp.settings.wallpaper_url) {
             this.setWallpaper(this.bp.settings.wallpaper_url);
         }
+        */
 
         console.log('this.bp.settings.active_theme', this.bp.settings.active_theme)
+        /*
         if (this.bp.settings.active_theme) {
             // alert(this.bp.settings.active_theme);
             this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
         }
-
-        this.countdownManager = new CountdownManager(this.bp);
-        this.countdownManager.updateCountdowns();
+        */
 
 
 
@@ -220,21 +227,15 @@ Desktop.prototype.arrangeShortcuts = arrangeShortcuts;
 Desktop.prototype.setupContextMenu = setupContextMenu;
 Desktop.prototype.showContextMenu = showContextMenu;
 // Desktop.prototype.buildJsTreeData = buildJsTreeData;
-Desktop.prototype.setWallpaper = setWallpaper;
-Desktop.prototype.removeWallpaper = removeWallpaper
 Desktop.prototype.viewSource = viewSource;
-
 
 Desktop.prototype.showDesktopIcons = function showDesktopIcons() {
     this.shortCutsContainer.style.display = 'flex';
-
     if (this.bp.isMobile()) {
         this.shortCutsContainer.style.position = 'absolute';
         this.shortCutsContainer.style.left = '0px';
         this.shortCutsContainer.style.bottom = '0px';
-    }   
-
-
+    }
 }
 
 class Shortcut {

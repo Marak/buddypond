@@ -2,7 +2,7 @@
 
 .window-container {
     /* border: 1px solid #FFF; */
-    background-color: #1e1e1e; /* Deep dark background for the main container */
+    background-color: white; /* Deep dark background for the main container */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
     display: flex;
     flex-direction: column;
@@ -102,7 +102,7 @@
     font-size: 14px;
     line-height: 1.6;
     border-radius: 0 0 8px 8px; /* Matches the overall rounded corners */
-    background: white;
+    /* background: white; */
 }
 
 /* Resize Handle */
@@ -161,7 +161,11 @@
     resize: none !important;
 }
 
-@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+@media (max-width: 767px)  {
+    .window-container {
+        zoom: 1.5; /* Slightly zoom in for better touch interaction */
+    }
+
     .window-title-bar {
         height: 64px;
         font-size: 48px;

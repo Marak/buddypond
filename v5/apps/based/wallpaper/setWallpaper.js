@@ -19,8 +19,6 @@ export default function setWallpaper (url) {
     // save the wallpaper setting in local storage
     this.bp.set('wallpaper_url', url);
 
-    if (this.bp.apps.wallpaper && this.bp.apps.wallpaper.wallpaperManager) {
-        this.bp.apps.wallpaper.wallpaperManager.stop();
-    }
+    this.wallpaperManager.stop();
 
 }

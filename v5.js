@@ -14,7 +14,7 @@ window.bp_v_5 = async function bp_v_5() {
         bp.load('buddyscript')
     ]);
 
-    loadCoreApps();
+    await loadCoreApps();
 
     // desktop is loaded at this stage, continue with other apps
     // load what is required for buddylist and login
@@ -48,7 +48,7 @@ window.bp_v_5 = async function bp_v_5() {
     // but will be clicked or loaded from chat window or other places
     // this is used to increase responsiveness of user experience ( i.e. clicking on buttons )
     // TODO: ensure this starts *after* app is ready. this should be OK for now, but we could tighten the timing
-    function deferLoad () {
+    function deferLoad() {
         setTimeout(async () => {
             console.log('Defer loading additional apps...');
 
@@ -75,28 +75,7 @@ window.bp_v_5 = async function bp_v_5() {
 
     deferLoad();
 
-    //bp.open('file-explorer');
-
-    // await bp.load('spellbook');
-    // bp.open('spellbook');
-
-    // bp.open('piano')
-    // bp.open('hacker-typer');
-    // bp.open('globe');
-    // bp.open('maps');
-
-    //bp.open('minesweeper');
-    //bp.open('solitaire');
-    //bp.open('mantra');
-
-    // await bp.load('youtube');
-    // await bp.load('soundrecorder');
-    // await bp.open('camera');
-    // bp.apps.buddylist.openChatWindow({ context: 'Buddy', type: 'pond', x: 500 });
-    // await this.bp.load('markup');
-
 };
-
 
 function setConfig() {
     bp.setConfig({
@@ -202,10 +181,13 @@ async function loadCoreApps() {
 
     console.log("start ui import")
 
+    // wallpaper and themes can be fire-and-forget loaded ( no other apps depend on them )
     bp.load('wallpaper');
     bp.load('themes');
 
-    bp.importModule({
+    // we *must* wait for the UI since it contains openWindow() method
+    // and other methods that are used by apps
+    await bp.importModule({
         name: 'ui',
         parent: $('#desktop').get(0),
         window: {
@@ -238,18 +220,26 @@ async function loadCoreApps() {
     });
     console.log("ui imported")
 
-
+    // desktop can be fire-and-forget loaded, as long as we don't call arrangeDesktop()
+    // before it the desktop is ready
     bp.importModule({
         name: 'desktop',
         parent: $('#desktop').get(0),
     }, {}, true, function () {
-        bp.load('menubar');
         arrangeDesktop();
     });
+
+    // menubar can be fire-and-forget loaded, as long as UI is ready
+    bp.load('menubar');
 
 }
 
 function arrangeDesktop() {
+    if (!bp.apps.desktop || !bp.apps.ui) {
+        console.log('bp.apps', bp.apps)
+        console.error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
+        // throw new Error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
+    }
     if (bp.isMobile()) {
         bp.apps.desktop.arrangeShortcuts(4, {
             rowWidth: 256,
@@ -263,10 +253,9 @@ function arrangeDesktop() {
         // bp.apps.ui.windowManager.restoreWindows();
     }
 
-        setTimeout(() => {
-            bp.apps.desktop.showDesktopIcons();
-
-        }, 300);
+    setTimeout(() => {
+        bp.apps.desktop.showDesktopIcons();
+    }, 300);
 
 }
 window.arrangeDesktop = arrangeDesktop;

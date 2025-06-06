@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     /* border: 2px solid #ffffff; */
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     font-family: Arial, sans-serif;
 }
 .aim-chat-area {
@@ -27,7 +27,6 @@
     padding-left: 8px;
     padding-top: 8px;
     padding-bottom: 8px;
-    background: #f0f0f0;
     border-top: 1px solid #d3d3d3;
     box-sizing: border-box;
 }

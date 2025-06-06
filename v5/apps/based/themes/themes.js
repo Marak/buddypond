@@ -150,6 +150,12 @@ export default class Themes {
 
   }
 
+  init () {
+      if (this.bp.settings.active_theme) {
+        this.applyTheme(this.bp.settings.active_theme);
+      }
+  }
+
   createGradientStyles(gradientName, color) {
     return {
       'window_bar_top': {
@@ -213,7 +219,9 @@ export default class Themes {
       }
 
       // all styleString should be !important
-      // styleString = styleString.replace(/;/g, ' !important;');
+      // this is important since theme CSS may be injected *before* the app CSS
+      // this would mean the default app CSS would override the theme styles, which is not desired
+      styleString = styleString.replace(/;/g, ' !important;');
 
       // Add regular selector styles
       cssRules += `${selector} { ${styleString} }\n`;
@@ -225,6 +233,8 @@ export default class Themes {
     }
 
     // Apply wallpaper styles if present
+    // Remark: Jun 5th, 2025 - Wallpapers are not part of theme styles anymore
+    /*
     if (theme.wallpaper) {
       let wallPaperUrl = this.bp.get('wallpaper_url');
       if (!wallPaperUrl) {
@@ -235,6 +245,7 @@ export default class Themes {
         }
       }
     }
+    */
 
     // Inject CSS rules into the style element
     styleElement.textContent = cssRules;

@@ -58,7 +58,7 @@ export default async function applyData(el, data) {
         // set data-ctime to the data.ctime
         countDownEl.data('ctime', data.message.ctime);
         // console.log('Setting countdown for spell card', data.expiry, countDownEl);
-        this.bp.apps.desktop.countdownManager.startCountdown(countDownEl, data.expiry, function onExpire($el) {
+        this.bp.apps.ui.countdownManager.startCountdown(countDownEl, data.expiry, function onExpire($el) {
             $el.parent().text('Curse has Expired.');
         });
     }

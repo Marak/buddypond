@@ -106,7 +106,7 @@ export default class MenuBar {
                 return;
             }
             if (value === 'urlWallpaper') {
-                bp.apps.desktop.setWallpaper();
+                bp.apps.wallpaper.setWallpaper();
                 return;
             }
             if (value === 'open') {
@@ -117,9 +117,7 @@ export default class MenuBar {
             // clear wallpaper_url if exists
             bp.set('wallpaper_url', null);
             bp.set('wallpaper_name', value);
-
         });
-
 
         $('.select-playlist-dropdown-menu li').on('click', function () {
             const value = $(this).data('value');
@@ -187,11 +185,11 @@ export default class MenuBar {
 
                 setTimeout(() => {
                     const newExpiry = new Date(Date.now() + rewardPeriod);
-                    bp.apps.desktop.countdownManager.startCountdown($el, newExpiry, restartCountdown);
+                    bp.apps.ui.countdownManager.startCountdown($el, newExpiry, restartCountdown);
                 }, 10);
             }
 
-            bp.apps.desktop.countdownManager.startCountdown(countDownEl, expiry, restartCountdown);
+            bp.apps.ui.countdownManager.startCountdown(countDownEl, expiry, restartCountdown);
         }
 
         if (this.bp.qtokenid) {

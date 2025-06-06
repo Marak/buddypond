@@ -6,7 +6,7 @@
 .window-main {
     flex-grow: 1;
     overflow-y: auto;
-    background-color: #FFF;
+    /* background-color: #FFF; */
     padding: 10px;
     border-top: 1px solid #000;
 }

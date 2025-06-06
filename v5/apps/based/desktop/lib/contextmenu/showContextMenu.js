@@ -8,8 +8,8 @@ export default function  showContextMenu(x, y) {
     menu.style.zIndex = '9999';
     menu.innerHTML = `
         <ul>
-            <li onclick="bp.apps.desktop.setWallpaper()">Set Wallpaper to Url</li>
-            <li onclick="bp.apps.desktop.removeWallpaper()">Remove Wallpaper</li>
+            <li onclick="bp.apps.wallpaper.setWallpaper()">Set Wallpaper to Url</li>
+            <li onclick="bp.apps.wallpaper.removeWallpaper()">Remove Wallpaper</li>
             <li onclick="bp.apps.desktop.viewSource()">View Source</li>
         </ul>
     `;

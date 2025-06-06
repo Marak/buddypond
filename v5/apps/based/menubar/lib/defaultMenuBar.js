@@ -64,7 +64,7 @@ export default function defaultMenuBar(bp) {
     <i class="fa-duotone fa-regular fa-code"></i> Source Code
   </span>`;
   // use fonr-awesome sun and moon icons
-  let selectLightMode = '<span class="selectLightMode float_right"><i class="fa-duotone fa-regular fa-moon" data-mode="Dark" title="Dark Mode"></i><i class="fa-duotone fa-regular fa-sun" data-mode="Light" title="Light Mode"></i></span>';
+  let selectLightMode = '<span class="selectLightMode float_right"><i class="fa-duotone fa-regular fa-sun" data-mode="Light" title="Light Mode"></i><i class="fa-duotone fa-regular fa-moon" data-mode="Dark" title="Dark Mode"></i></span>';
 
   let networkStatsStr = `
       <span class="totalConnected loggedIn">
