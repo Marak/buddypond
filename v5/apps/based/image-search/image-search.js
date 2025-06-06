@@ -2,6 +2,8 @@
 export default class ImageSearch {
     constructor(bp, config = {}) {
         this.bp = bp;
+        this.context = null;
+        this.output = null;
     }
 
     async init() {
@@ -18,6 +20,12 @@ export default class ImageSearch {
     }
 
     async open(options = {}) {
+        if (options.context) {
+            this.context = options.context;
+        }
+        if (options.output) {
+            this.output = options.output;
+        }
         // console.log("Opening image search window with options:", options);
         if (!this.imageSearchWindow) {
 
@@ -57,7 +65,7 @@ export default class ImageSearch {
                 $results.empty(); // Clear previous results
                 console.log("Searching for images with query:", query);
                 // Fetch images from the API
-                const images = await this.fetchImages(query, 6, options.provider);
+                const images = await this.fetchImages(query, 12, options.provider);
 
                 if (images.error) {
                     $('#image-search-error').html(`<p>${images.error}</p>`);
@@ -95,17 +103,17 @@ export default class ImageSearch {
 
             this.selectedImages = new Set(); // inside constructor or open()
 
-
-
             async function sendImageToChat() {
 
-                let activeWindow = null;
-                this.bp.windows.forEach((win) => {
-                    if (win.type === options.type && win.context === options.context) {
-                        activeWindow = win.container; // use the content of the window
-                    }
-                });
+                let windowIdPrefix = this.output === 'pond' ? 'pond_message_-' : 'buddy_message_-';
 
+                let windowId = windowIdPrefix + this.context;
+                // console.log('opening chat window ', windowId)
+                let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+
+
+                console.log(`context: ${this.context}, type: ${this.type}`);
+                console.log('chatWindow', chatWindow);
                 const files = [];
 
                 for (let url of this.selectedImages) {
@@ -124,7 +132,7 @@ export default class ImageSearch {
                 const dt = new DataTransfer();
                 files.forEach(file => dt.items.add(file));
 
-                this.bp.apps.droparea.dropTarget = activeWindow; // set the drop target to the active window
+                this.bp.apps.droparea.dropTarget = chatWindow.container; // set the drop target to the active window
                 const event = new DragEvent('drop', {
                     dataTransfer: dt,
                     bubbles: true,
@@ -132,11 +140,11 @@ export default class ImageSearch {
                     // target: activeWindow // not working?
                 });
 
-                activeWindow.dispatchEvent(event);
+                chatWindow.container.dispatchEvent(event);
                 // focus the active chat window
-                if (activeWindow) {
+                if (chatWindow) {
 
-                    let id = $(activeWindow).attr('id');
+                    let id = $(chatWindow).attr('id');
                     this.bp.apps.ui.windowManager.focusWindow(id);
 
 
@@ -157,7 +165,7 @@ export default class ImageSearch {
         return this.imageSearchWindow;
     }
 
-    async fetchImages(query, numResults = 6, provider = 'pexels') {
+    async fetchImages(query, numResults = 12, provider = 'pexels') {
         try {
             const _provider = provider || $('#image-search-provider').val() || 'google';
             const url = `${buddypond.imageSearchEndpoint}/image-search?q=${encodeURIComponent(query)}&num=${numResults}&provider=${_provider}`;

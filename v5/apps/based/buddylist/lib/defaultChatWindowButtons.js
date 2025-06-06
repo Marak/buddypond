@@ -9,7 +9,11 @@ export default function defaultChatWindowButtons(bp) {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
                 // Open the image search window
-                bp.open('image-search', { type: type || 'buddy', output: type || 'buddy', context: context, provider: 'giphy' });
+                bp.open('image-search', {
+                    output: type || 'buddy',
+                    context: context,
+                    provider: 'giphy'
+                });
                 return false;
             }
         },
