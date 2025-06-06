@@ -34,8 +34,8 @@
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
 }
 
-.summary-item h3 {
-    color: #00d1b2;
+.summary-item > h3 {
+    color: #00d1b2 !important;
     margin-bottom: 10px;
 }
 
@@ -185,7 +185,13 @@
 }
 
 .coin-balance:hover {
-    background: #444;
+    background: #444 !important ;
+}
+
+.coin-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #00d1b2 !important;
 }
 
 /* Responsive Design */

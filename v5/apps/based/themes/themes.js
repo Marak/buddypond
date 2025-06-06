@@ -31,6 +31,18 @@ export default class Themes {
             'color': '#181818',
             'text-shadow': 'none'
           },
+          'desktop_divider': {
+            'background': '#e0e0e0',
+          },
+          'desktop_input': {
+            'background': '#f0f0f0',
+            'color': '#181818'
+          },
+          'desktop_button': {
+            'background': '#e0e0e0',
+            'color': '#181818',
+            'border': '1px solid #cccccc'
+          },
           'desktop_section': {
             'background': '#f9f9f9'
           },
@@ -76,6 +88,11 @@ export default class Themes {
           'desktop_input': {
             'background': '#222327',
             'color': '#E3E3E3'
+          },
+          'desktop_button': {
+            'background': '#242428',
+            'color': '#E3E3E3',
+            'border': '1px solid #333333'
           },
           'desktop_text': {
             'color': '#ececed'
@@ -156,6 +173,7 @@ export default class Themes {
       'desktop_top_bar': '#bar_top',
       'desktop_bottom_bar': '#bar_bottom',
       'desktop_input': 'input, textarea, select, label',
+      'desktop_button': 'button',
       'desktop_divider': '.aim-message-controls', // TODO: .desktop_divider
       'desktop_text': 'p .desktop-shortcuts-container span.title, .desktop-shortcuts-container-folder a, .buddyListHolder a',
       'desktop_headers': 'h1, h2, h3, h4, h5, h6',

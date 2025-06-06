@@ -1,5 +1,5 @@
 .coin-window-content .bp-window-content {
-    background-color: #121212;
+    background-color: #121212 !important;
 }
 
 .coin-container {
@@ -40,7 +40,7 @@
 .coin-title {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #00d1b2;
+    color: #00d1b2 !important;
 }
 
 /* Coin Minting Form */
@@ -104,9 +104,9 @@
     color: #ddd;
 }
 
-.user-coins h2, h3, .all-coins h2 {
-    color: #ffcc00;
-    text-transform: uppercase;
+.user-coins > h2, .user-coins > h3, .all-coins > h2 {
+    color: #ffcc00 !important;
+    text-transform: uppercase !important;
     letter-spacing: 1px;
     margin-bottom: 10px;
 }

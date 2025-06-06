@@ -89,10 +89,10 @@ ul {
 
 
 .action-button {
-  background: #00d1b2;
-  color: #121212;
+  background: #00d1b2 !important;
+  color: #121212 !important;
   padding: 10px 20px;
-  border: none;
+  border: none !important;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
@@ -100,7 +100,7 @@ ul {
 }
 
 .action-button:hover {
-  background: #008c7e;
+  background: #008c7e !important;
 }
 
 

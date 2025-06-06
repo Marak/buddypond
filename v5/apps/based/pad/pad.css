@@ -67,8 +67,8 @@ hr {
 }
 
 .bp-pad-button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4CAF50 !important;
+    color: white !important;
     padding: 10px 15px;
     margin: 10px 0;
     border: none;
@@ -77,7 +77,7 @@ hr {
 }
 
 .bp-pad-button:hover {
-    background-color: #45a049;
+    background-color: #45a049 !important;
 }
 
 .pad-code-editor {
@@ -245,7 +245,7 @@ hr {
 /* Subheadings */
 .pads-faq h4 {
     font-size: 1.5em;
-    color: #34495e;
+    /* color: #34495e !important; */
     margin-bottom: 10px;
 }
 

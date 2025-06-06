@@ -71,8 +71,8 @@
 }
 
 .nav-button {
-    background: #3b3b4f;
-    color: #ffffff;
+    background: #3b3b4f !important;
+    color: #ffffff !important;
     border: none;
     padding: 10px;
     font-size: 1em;
@@ -83,8 +83,8 @@
 }
 
 .nav-button:hover {
-    background: #50fa7b;
-    color: #1e1e2e;
+    background: #50fa7b !important;
+    color: #1e1e2e !important;
     transform: translateX(5px);
 }
 

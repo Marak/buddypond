@@ -40,11 +40,22 @@ export default class Motd {
         // Dynamically populate patch notes
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
-                        {
+            {
+                date: '6/6/25',
+                notes: [
+                    'Buddy Coin Rewards every 60 seconds',
+                    'BuddyScript Commands',
+                    'Drag and Drop Video Uploads',
+                    'Website Embeds in Chats',
+                    'Increased Chat History Size',
+                ],
+            },
+            {
                 date: '5/28/25',
                 notes: [
-                    'Image Search Added',
-                    `Voice Dictation Added`,
+                    'Image Search',
+                    `Voice Dictation`,
+                    'Improved Spellbook',
                     'Improved Mobile Support',
                     'Improved Chat Performance for all devices',
                 ]
@@ -53,9 +64,9 @@ export default class Motd {
             {
                 date: '5/15/25',
                 notes: [
-                    'Spellbook Added - Cast Spells with your Buddies',
+                    'Spellbook - Cast Spells with your Buddies',
                     `Buddy Files storage now backed by Buddy Coins`,
-                    'Personal Profile Pictures added',
+                    'Personal Profile Pictures',
                     'Numerous User Experience Improvements',
                 ]
             },
@@ -63,13 +74,13 @@ export default class Motd {
                 date: '5/03/25',
                 notes: [
                     'Buddy Coins system implemented',
-                    'Portfolio App added with Coin Tracking',
-                    `Added $MEGA and $GBP Buddy Coins`,
                     'Send and receive Buddy Coins with Buddies',
+                    'Portfolio App with Coin Tracking',
+                    `Adds $MEGA and $GBP Buddy Coins`,
                     `Randolph Coin Faucet Bot launched`
                 ]
             },
-                        {
+            {
                 date: '4/30/25',
                 notes: [
                     'Enchanced Chat Performance',
@@ -80,10 +91,10 @@ export default class Motd {
             {
                 date: '4/20/25',
                 notes: [
-                    'Adds Theme Support',
+                    'Theme Support',
                     'Buddy Pond User Interface updated',
                     'User Experience Improvements',
-                    `Game Emulators added`
+                    `Game Emulators`
                 ]
             },
 
@@ -140,7 +151,7 @@ export default class Motd {
 
                 ]
             },
-                        {
+            {
                 date: '1/22/25',
                 notes: [
                     'Ported all legacy apps to new Buddy Pond',
