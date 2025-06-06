@@ -18,7 +18,7 @@
 .patch-notes h2 {
     font-size: 1.8em;
     margin-bottom: 15px;
-    color: #50fa7b;
+    color: #50fa7b !important;
     text-transform: uppercase;
 }
 
@@ -33,7 +33,7 @@
 
 .patch-item h3 {
     font-size: 1.3em;
-    color: #f1fa8c;
+    color: #f1fa8c !important;
     margin-bottom: 10px;
 }
 
@@ -59,7 +59,7 @@
 .sidebar h2 {
     font-size: 1.5em;
     margin-bottom: 15px;
-    color: #50fa7b;
+    color: #50fa7b !important;
     text-transform: uppercase;
 }
 
