@@ -9,7 +9,7 @@
     "build:apps": "npm run gen:rollup && rollup -c rollup.config.apps.js",
     "gen:cards": "node scripts/gen-rollup-cards.js",
     "build:cards": "npm run gen:cards && rollup -c rollup.config.cards.js",
-    "build:bp": "sh script/update-bp.sh",
+    "build:bp": "sh ./scripts/update-bp.sh",
     "build": "npm run build:apps && npm run build:cards && npm run build:bp"
   },
   "keywords": [],

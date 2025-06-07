@@ -66,7 +66,7 @@ export default class Themes {
       'desktop_top_bar': '#bar_top',
       'desktop_bottom_bar': '#bar_bottom',
       'desktop_input': 'input, textarea, select, label',
-      'desktop_button': 'button',
+      // 'desktop_button': 'button',
       'desktop_divider': '.aim-message-controls', // TODO: .desktop_divider
       'desktop_text': 'p .desktop-shortcuts-container span.title, .desktop-shortcuts-container-folder a, .buddyListHolder a',
       'desktop_headers': 'h1, h2, h3, h4, h5, h6',
@@ -161,7 +161,7 @@ export default class Themes {
       // all styleString should be !important
       // this is important since theme CSS may be injected *before* the app CSS
       // this would mean the default app CSS would override the theme styles, which is not desired
-      // styleString = styleString.replace(/;/g, ' !important;');
+      styleString = styleString.replace(/;/g, ' !important;');
 
       // Add regular selector styles
       cssRules += `${selector} { ${styleString} }\n`;
