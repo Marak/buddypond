@@ -33,21 +33,6 @@ export default class Profile {
         buddyname = buddyname.replace(":", ""); // remove any colons for now
         buddyname = buddyname.replace(" ", ""); // remove any spaces for now
 
-
-        let buddyProfile = {};
-        buddyProfile.localState = {};
-
-        /* Remark: Now handled by websocket getProfile action
-        try {
-            buddyProfile = await this.bp.apps.client.api.getProfile(buddyname);
-            if (buddyname == this.bp.me) {
-                buddyProfile.localState = this.bp.apps.buddylist.data.profileState;
-            }
-        } catch (err) {
-            console.log('error getting profile', err);
-        }
-        */
-
         // Create main content div and setup for tabs
         let contentDiv = document.createElement('div');
         contentDiv.classList.add('customProfile');
@@ -125,9 +110,7 @@ export default class Profile {
             */
 
             // check if user profile has a profilePicture
-            let profilePicture = buddyProfile.localState.profilePicture || buddyProfile.profilePicture;
-            console.log('localState', buddyProfile.localState);
-            console.log('profilePicture', profilePicture);
+            let profilePicture = this.bp.apps.buddylist.data.profileState.profilePicture;
             let profilePicturePreview = $('.aim-profile-picture-preview');
 
             if (profilePicture) {
