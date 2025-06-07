@@ -39,17 +39,7 @@ export default defineConfig({
       name: 'BP',
       formats: ['umd'], // Output format as IIFE
     },
-    rollupOptions: {
-      // further Rollup options can go here
-      output: {
-        // set custom output dir
-        dir: 'dist',
-        // Additional output options
-        extend: true, // Extend global variable
-        globals: {
-          BP: 'BP'
-        }
-      }
-    }
+    emptyOutDir: false
+
   }
 });

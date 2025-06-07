@@ -1,3 +1,8 @@
+import dark from './themes/dark.js';
+import light from './themes/light.js';
+
+console.log('Themes module loaded', dark);
+
 export default class Themes {
   constructor(bp, options = {}) {
     this.bp = bp;
@@ -5,122 +10,8 @@ export default class Themes {
     // TODO: complete nyan and matrix themes
     // TODO: complete water theme
     this.themes = {
-      'Light': {
-        'wallpaper': {
-          'name': 'solid',
-          'color': '#000000'
-        },
-        'styles': {
-          'window_top': {
-            'background': 'linear-gradient(180deg, #666666, #353535)', /* Mac-like gradient */
-            'color': '#e0e0e0'
-          },
-          'window_main': {
-            'background': 'white',
-            'color': '#181818'
-          },
-          'window_content': {
-            'background': 'white',
-            'color': '#181818'
-          },
-          'window_bottom': {
-            'background': 'white',
-            'color': '#181818'
-          },
-          'desktop_text': {
-            'color': '#181818',
-            'text-shadow': 'none'
-          },
-          'desktop_divider': {
-            'background': '#e0e0e0',
-          },
-          /*
-          'desktop_input': {
-            'background': '#f0f0f0',
-            'color': '#181818'
-          },
-          */
-          'desktop_button': {
-            'background': '#e0e0e0',
-            'color': '#181818',
-            'border': '1px solid #cccccc'
-          },
-          'desktop_section': {
-            'background': '#f9f9f9'
-          },
-          'desktop_headers': {
-            'color': '#181818',
-            'text-shadow': 'none'
-          },
-          'desktop_links': {
-            'color': '#181818',
-            'text-decoration': 'none'
-          },
-          'desktop_links_hover': {
-            'color': '#181818',
-            'text-decoration': 'underline'
-          }
-        }
-      },
-      'Dark': {
-        'wallpaper': {
-          'name': 'solid',
-          'color': '#070709'
-        },
-        'styles': {
-          'window_top': {
-            'background': '#231c2f',
-            'color': '#E3E3E3'
-          },
-          'window_main': {
-            'background': '#1a1a1e',
-            'color': '#E3E3E3'
-          },
-          'window_content': {
-            'background': '#1a1a1e',
-            'color': '#E3E3E3'
-          },
-          'window_bottom': {
-            'background': '#181818',
-            'color': '#E3E3E3'
-          },
-          'desktop_divider': {
-            'background': '#242429',
-          },
-          'desktop_input': {
-            'background': '#222327',
-            'color': '#E3E3E3'
-          },
-          'desktop_button': {
-            'background': '#242428',
-            'color': '#E3E3E3',
-            'border': '1px solid #333333'
-          },
-          'desktop_text': {
-            'color': '#ececed'
-          },
-          "desktop_element_hover": {
-            'background': '#242428'
-          },
-          'desktop_section': {
-            'background': '#242429',
-            'color': '#E3E3E3'
-          },
-          'desktop_headers': {
-            'color': '#E3E3E3',
-            'text-shadow': 'none'
-          },
-          'desktop_links': {
-            'color': '#E3E3E3',
-            'text-decoration': 'none'
-          },
-          'desktop_links_hover': {
-            'color': '#E3E3E3',
-            'text-decoration': 'underline'
-          }
-
-        }
-      },
+      'Light': dark,
+      'Dark': light,
       'Nyan': {
         'wallpaper': {
           'name': 'nyancat'
@@ -175,7 +66,7 @@ export default class Themes {
       'desktop_top_bar': '#bar_top',
       'desktop_bottom_bar': '#bar_bottom',
       'desktop_input': 'input, textarea, select, label',
-      //'desktop_button': 'button',
+      'desktop_button': 'button',
       'desktop_divider': '.aim-message-controls', // TODO: .desktop_divider
       'desktop_text': 'p .desktop-shortcuts-container span.title, .desktop-shortcuts-container-folder a, .buddyListHolder a',
       'desktop_headers': 'h1, h2, h3, h4, h5, h6',
@@ -188,10 +79,10 @@ export default class Themes {
 
   }
 
-  init () {
-      if (this.bp.settings.active_theme) {
-        this.applyTheme(this.bp.settings.active_theme);
-      }
+  init() {
+    if (this.bp.settings.active_theme) {
+      this.applyTheme(this.bp.settings.active_theme);
+    }
   }
 
   createGradientStyles(gradientName, color) {
@@ -226,7 +117,18 @@ export default class Themes {
   }
 
   applyTheme(themeName) {
-    const theme = this.themes[themeName];
+    let theme;
+
+
+    if (typeof themeName === 'object') {
+      // If themeName is an object, use it directly
+      theme = themeName;
+      themeName = theme.name || 'Custom';
+
+    } else {
+      theme = this.themes[themeName];
+
+    }
     if (!theme) return;
 
     // Remove any existing theme styles to prevent duplication
@@ -259,7 +161,7 @@ export default class Themes {
       // all styleString should be !important
       // this is important since theme CSS may be injected *before* the app CSS
       // this would mean the default app CSS would override the theme styles, which is not desired
-      styleString = styleString.replace(/;/g, ' !important;');
+      // styleString = styleString.replace(/;/g, ' !important;');
 
       // Add regular selector styles
       cssRules += `${selector} { ${styleString} }\n`;

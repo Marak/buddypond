@@ -12,7 +12,7 @@ export default class AudioPlayer {
 
   async init() {
     console.log("AudioPlayer init");
-    await this.bp.appendCSS('/v5/apps/based/audio-track/render/pvrtybvx/style.css');
+    await this.bp.appendCSS('/v5/apps/based/audio-track/render/pvrtybvx/style.css', false, true);
 
     // window.webAudioBeatDetector = {};
     // TODO: move this to audio-stripe.js

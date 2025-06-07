@@ -1,0 +1,1 @@
+import './bs-card.css';

@@ -10,6 +10,12 @@ bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
 bp.reportError = function noop() { }
+bp.mode = 'dev';
+
+// check if current url is buddypond or has ?prod=true
+if (window.location.href.includes('buddypond') || window.location.href.includes('?prod=true')) {
+    bp.mode = 'prod';
+}
 
 bp.config = {
     host: ""
@@ -26,7 +32,7 @@ bp._cache.html = {};
 bp._cache.js = {};
 
 bp.setConfig = function setConfig(config, softApply = false) {
-    console.log('setConfig', config, softApply);
+    // console.log('setConfig', config, softApply);
     if (softApply) {
         bp.config = { ...bp.config, ...config };
     } else {
@@ -96,6 +102,17 @@ bp.load = async function load(resource, config = {}) {
 bp.importModule = async function importModule(app, config, buddypond = true, cb) {
     // console.log('importModule', app, config, buddypond);
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
+
+    if (bp.mode === 'prod') {
+        // TODO: will need map of other nested-style apps ( currently only cards )
+        if (modulePath.includes('/card/cards')) {
+            modulePath = bp.config.host + `/v5/dist/apps/based/${app}`;
+            modulePath = modulePath.replace('apps/based//v5', '');
+        } else {
+            modulePath = bp.config.host + `/v5/dist/apps/based/${app}.js`;
+        }
+    }
+
     let appName = app;
 
     if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
@@ -173,13 +190,31 @@ bp.fetchJSON = async function fetchJSON(url) {
     return fetch(url).then(response => response.json());
 }
 
-bp.appendCSS = async function appendCSS(url, forceReload = false) {
-    // TODO: cache request, do not reload unless forced
+bp.appendCSS = async function appendCSS(url, forceReload = false, forceRemote = false) {
+
     let fullUrl = url;
 
-    // check if there is no protocol in the URL
-    if (!url.includes('http') && !url.includes('blob')) {
-        fullUrl = `${bp.config.host}${url}`;
+    // If it's not absolute or blob, it's local
+    if (!url.startsWith('http') && !url.startsWith('blob:')) {
+        if (bp.mode === 'prod' && forceRemote !== true) {
+            const trimmedUrl = url.replace(/^\.\//, '').replace(/\.css$/, '');
+            let cssPath = trimmedUrl;
+            // TODO: will need map of other nested-style apps ( currently only cards )
+            if (trimmedUrl.includes('/card/')) {
+                cssPath = `${trimmedUrl}`;
+            } else {
+                // If it doesn't include /card/, assume it's a regular app
+                const lastSlashIndex = trimmedUrl.lastIndexOf('/');
+                if (lastSlashIndex !== -1) {
+                    cssPath = trimmedUrl.substring(0, lastSlashIndex);
+                }
+            }
+            cssPath = cssPath.replace('/v5', ''); // remove v5 from the path if present
+            fullUrl = `${bp.config.host}/v5/dist/${cssPath}.css`;
+        } else {
+            // in dev mode, we use the local path directly
+            fullUrl = `${bp.config.host}${url}`;
+        }
     }
 
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues

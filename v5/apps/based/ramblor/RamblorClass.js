@@ -1,6 +1,6 @@
 export default class Ramblor {
     constructor(options = {}) {
-        console.log('New Ramblor instance created with options:', options);
+        // console.log('New Ramblor instance created with options:', options);
         this.algo = options.algo || 'default';
         this.history = [];
         this.userSeed = [];

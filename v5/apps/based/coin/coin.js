@@ -8,6 +8,7 @@ import CoinClass from './lib/Coin.js';
 import createInitialCoins from './lib/createInitialCoins.js';
 import RestProvider from '../resource/lib/RestProvider.js';
 
+
 export default class Coin {
 
     constructor(bp, options = {}) {

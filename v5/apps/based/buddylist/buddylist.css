@@ -40,14 +40,6 @@
     color: #000;
     font-size: 18px;
 }
-.buddyListButton {
-    background-color: #48d1cc;
-    border: none;
-    padding: 5px 10px;
-    margin-top: 5px;
-    cursor: pointer;
-    border-radius: 3px;
-}
 .addBuddyForm {
     gap: 10px;
     display: flex;

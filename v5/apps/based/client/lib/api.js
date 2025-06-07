@@ -50,7 +50,7 @@ buddypond.verifyToken = function verifyToken(me, qtokenid, cb) {
     if (data && data.banned) {
       alert(data.error);
     }
-    console.log('verifyTokenresult', err, data);
+    // console.log('verifyTokenresult', err, data);
     cb(err, data);
   })
 }

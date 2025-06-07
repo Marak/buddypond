@@ -2,13 +2,9 @@ import Commands from './commands/defaultCommands.js';
 
 export default class BuddyScript {
     constructor(bp, options = {}) {
-
         this.bp = bp;
         this.commandActions = {};
-
         this.commands = this.commandActions;
-
-
     }
 
     init() {

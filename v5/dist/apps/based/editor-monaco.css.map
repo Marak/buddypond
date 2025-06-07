@@ -1,0 +1,1 @@
+{"version":3,"sources":["editor-monaco.css"],"names":[],"mappings":"AAAA,eAEI,eAAgB,CAChB,4BAA6B,CAF7B,iBAGJ","file":"editor-monaco.css","sourcesContent":[".editor-holder {\n    position: relative;\n    background: none;\n    background-color: transparent;\n}"]}

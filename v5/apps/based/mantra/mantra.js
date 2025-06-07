@@ -51,6 +51,7 @@ export default class Example {
         }
 
         this.bp.apps.ui.windowManager.focusWindow(this.mantraWindow);
+        this.mantraWindow.maximize();
 
     }
 }

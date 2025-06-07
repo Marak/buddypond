@@ -82,7 +82,6 @@
 .wallpaperSettings {
     display: flex;
     gap: 40px;
-    min-height: 500px;
     justify-content: center;
 }
 
@@ -312,4 +311,118 @@
 
 .aim-profile-picture-upload-status.hidden {
     display: none;
+}
+
+#tab-themes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    align-items: center;
+}
+
+.theme-styles {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: sans-serif;
+  font-size: 14px;
+  border: 1px solid #333;
+}
+
+.theme-styles tr {
+  border-bottom: 1px solid #333;
+}
+
+.theme-styles td {
+  padding: 12px;
+  vertical-align: top;
+}
+
+.theme-styles strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.theme-styles input[type="text"] {
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+
+.theme-styles input[type="text"]::placeholder {
+}
+
+.theme-styles button {
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 3px 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.theme-styles button:hover {
+}
+
+.theme-styles .remove-prop-btn {
+  color: #ff6666;
+  border: none;
+  background: none;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 6px;
+}
+
+.theme-styles .remove-prop-btn:hover {
+  color: #ff4444;
+}
+
+.theme-styles .add-prop-btn {
+  margin-top: 4px;
+}
+
+.theme-styles .style-block {
+  padding: 4px;
+  border-bottom: 1px solid #333;
+}
+
+.theme-styles .style-title {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.theme-styles .prop-row {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.theme-styles .prop-name {
+  width: 140px;
+  text-align: right;
+  padding-right: 8px;
+  flex-shrink: 0;
+}
+
+.theme-styles .prop-row input[type="text"] {
+  width: 150px;
+  margin-right: 8px;
+}
+
+.theme-styles input[type="color"] {
+  width: 40px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: none;
+  margin-right: 8px;
+}
+
+.theme-styles .add-prop-btn {
+  margin-left: 4px;
 }

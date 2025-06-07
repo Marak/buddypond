@@ -7,8 +7,6 @@ export default class Wallpaper {
     }
 
     async init() {
-        console.log('Hello from Wallpaper');
-        // Usage:
         const wallpaperManager = new WallpaperManager(this.bp);
         wallpaperManager.load({}, () => console.log('Wallpapers loaded'));
         this.wallpaperManager = wallpaperManager;

@@ -1,0 +1,1 @@
+import './transfer-card.css';

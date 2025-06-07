@@ -821,7 +821,7 @@ export default class BuddyList {
     // maybe also could connect to the websocket server for buddylist?
     // opening the default window initializes the messages client
     async handleAuthSuccess(qtoken) {
-        console.log('handleAuthSuccess', qtoken);
+        // console.log('handleAuthSuccess', qtoken);
         if (this.client) {
             console.error('buddylist websocket client already exists and has not been closed. This should not happen');
             return;
@@ -852,8 +852,6 @@ export default class BuddyList {
         if (this.defaultPond) {
             setTimeout(() => {
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
-
-
             }, 100);
         }
 

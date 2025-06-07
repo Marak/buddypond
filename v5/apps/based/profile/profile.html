@@ -3,7 +3,7 @@
         <ul class="tab-list">
             <li><a href="#your-profile">Your Profile</a></li>
             <!-- <li><a href="#your-apps">Apps</a></li> -->
-            <li><a class="themesLink" href="#tabs-2">Themes</a></li>
+            <li><a class="themesLink" href="#tab-themes">Themes</a></li>
             <li><a href="#tabs-3">Settings</a></li>
             <!--
             <li><a href="#tabs-4">Audio</a></li>
@@ -11,13 +11,13 @@
             <!--
                         <li><a href="#tabs-5">Camera</a></li>
 
-              <li><a href="#tabs-2">App Store</a></li>
+              <li><a href="#tab-themes">App Store</a></li>
               -->
         </ul>
         <div id="your-profile" class="tab-content">
             <div class="userProfile">
                 <span class="ctime"></span>
-            
+
                 <!-- First Row: Three Columns -->
                 <div class="aim-profile-row">
                     <!-- Column 1: Profile Picture Section -->
@@ -25,11 +25,14 @@
                         <div class="aim-profile-picture-section">
                             <div class="aim-profile-picture-container">
                                 <div class="aim-profile-picture-preview">
-                                    <img src="/default-avatar.png" alt="Profile Picture" class="aim-profile-picture-img">
+                                    <img src="/default-avatar.png" alt="Profile Picture"
+                                        class="aim-profile-picture-img">
                                 </div>
                                 <div class="aim-profile-picture-actions">
-                                    <label class="aim-profile-picture-upload" for="profile-picture-input">Upload Picture</label>
-                                    <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+                                    <label class="aim-profile-picture-upload" for="profile-picture-input">Upload
+                                        Picture</label>
+                                    <input type="file" id="profile-picture-input" accept="image/*"
+                                        style="display: none;">
                                     <!-- TODO: requires update to backend <button class="aim-profile-picture-remove">Remove Picture</button> -->
                                 </div>
                             </div>
@@ -38,18 +41,19 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Column 2: Edit Your Profile Button -->
                     <div class="aim-profile-column aim-edit-profile-column">
-                        <button class="open-app profile-button" data-app="file-explorer" data-context="/index.html">Edit Profile Page</button>
+                        <button class="open-app profile-button" data-app="file-explorer" data-context="/index.html">Edit
+                            Profile Page</button>
                     </div>
-            
+
                     <!-- Column 3: Set Password and Email Button -->
                     <div class="aim-profile-column aim-password-email-column">
                         <button class="aim-set-password-email profile-button">Set Password</button>
                     </div>
                 </div>
-            
+
                 <!-- Second Row: Single Column -->
                 <div class="aim-profile-row">
                     <div class="aim-profile-column aim-pad-editor-column">
@@ -66,13 +70,13 @@
                     You can Install or Unstall Apps using <a href="#" class="openApp" data-app="appstore"
                         class="desktopLink">The App Store</a><br /><br />
 
-                    
+
                     <!-- <button class="openApp" data-app="appstore">Install / Uninstall Apps</button> -->
-    
+
                     <!-- TODO: list all available apps with checkboxes that persist to localstorage and toggle desktop.foo.load() triggers -->
-    
+
                 </p>
-    
+
                 <table class="data table yourApps">
                     <!--
                 <tr>
@@ -105,7 +109,7 @@
                 </p>
               -->
         </div>
-        <div id="tabs-2" class="tab-content">
+        <div id="tab-themes" class="tab-content">
             <div class="wallpaperSettings">
                 <div class="wallpaperTypes">
                     <h2>Wallpaper Type</h2>
@@ -120,6 +124,18 @@
                     </div>
                 </div>
             </div>
+            <div class="theme-settings">
+                <h2>Theme Settings</h2>
+                <select class="themeSelect">
+                    <option value="Dark">Dark Theme</option>
+                    <option value="Light">Light Theme</option>
+                    <option value="Custom">Custom Theme</option>
+                </select>
+                <table class="theme-styles">
+                    
+                </table>
+            </div>
+
         </div>
         <div id="tabs-3" align="left" class="tab-content">
             <span class="updateProfileResponse"></span>
@@ -181,7 +197,7 @@
                     </td>
                   </tr>
                   -->
-                  <!--
+                    <!--
                     <tr>
                         <td>Enable Web Notifications</td>
                         <td>
@@ -211,7 +227,7 @@
             </form>
         </div>
         <div id="tabs-4" class="tab-content">
-            <div id="tabs-2">
+            <div id="tab-themes">
                 <div class="wallpaperSettings">
                     <table class="data table">
                         <tr>
@@ -243,7 +259,7 @@
             </a>
         </div>
         <!-- BUDDY PROFILE
-            <div id="tabs-2">
+            <div id="tab-themes">
               <h2>Your current Buddy Profile:</h2>
               <br/>
               <div class="publicProfilePreviewHolder desktopButton">

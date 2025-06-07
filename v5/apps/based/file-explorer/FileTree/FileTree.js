@@ -8,7 +8,7 @@ export default class FileTree {
     }
 
     async init() {
-        await this.bp.appendCSS('/v5/apps/based/file-explorer/FileTree/FileTree.css');
+        await this.bp.appendCSS('/v5/apps/based/file-explorer/FileTree/FileTree.css', false, true);
 
     }
 

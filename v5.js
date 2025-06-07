@@ -61,7 +61,6 @@ window.bp_v_5 = async function bp_v_5() {
             // from the top menu bar
             await bp.load('soundcloud');
 
-
             // all desktop apps
             let apps = Object.keys(bp.apps.desktop.apps);
 
@@ -179,8 +178,6 @@ function bindUIEvents() {
 
 async function loadCoreApps() {
 
-    console.log("start ui import")
-
     // wallpaper and themes can be fire-and-forget loaded ( no other apps depend on them )
     bp.load('wallpaper');
     bp.load('themes');
@@ -218,7 +215,6 @@ async function loadCoreApps() {
             },
         }
     });
-    console.log("ui imported")
 
     // desktop can be fire-and-forget loaded, as long as we don't call arrangeDesktop()
     // before it the desktop is ready

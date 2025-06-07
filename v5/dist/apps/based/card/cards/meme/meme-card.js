@@ -1,0 +1,2 @@
+function t(t,e){const i=$(t);i.find(".meme-title").text(e.title),i.find(".meme-details").html(`Levenshtein: ${e.levenshtein} Jaro Winkler: ${e.winkler}`),i.find(".meme-image").attr("src",`/memes/${e.filename}`),i.find(".remixGif").attr({"data-output":e.type,"data-context":e.to,title:"Remix in GIF Studio"}),i.find(".remixPaint").attr({"data-output":e.type,"data-context":e.to,title:"Remix in Paint"})}export{t as default};
+//# sourceMappingURL=meme-card.js.map

@@ -198,8 +198,14 @@ window.top.location = 'ie.html';
 
           bp.on('bp::loading', 'update-loading-text', function (resource) {
             // desktop.log('Buddy Pond Cloud OS Loading');
-            console.log('Loading ' + resource + '...');
-            $('.loaderText').text('Loading ' + resource + '...');
+            if (typeof resource === 'object') {
+              // if resource is an object, stringify it
+              console.log('Loading ' + resource.name +  '...');
+            $('.loaderText').text('Loading ' + resource.name + '...');
+            } else {
+              console.log('Loading ' + resource + '...');
+              $('.loaderText').text('Loading ' + resource + '...');
+            }
           });
 
           /*

@@ -1,0 +1,1 @@
+import './pincode.css';

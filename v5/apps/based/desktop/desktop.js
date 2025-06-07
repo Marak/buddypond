@@ -84,7 +84,7 @@ export default class Desktop {
         }
         */
 
-        console.log('this.bp.settings.active_theme', this.bp.settings.active_theme)
+        // console.log('this.bp.settings.active_theme', this.bp.settings.active_theme)
         /*
         if (this.bp.settings.active_theme) {
             // alert(this.bp.settings.active_theme);

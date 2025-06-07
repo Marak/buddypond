@@ -1,0 +1,2 @@
+function t(t,e){const a=$(t);let i=`${e.snapURL}`;i=this.bp.config.api+i;let s=i.split(".");s[s.length-1],a.find(".snap-image").attr("src",i),a.find(".remixGif").show().attr({"data-output":e.message.type,"data-context":e.message.context||e.message.to,title:"Remix in GIF Studio"}),a.find(".remixPaint").show().attr({"data-output":e.message.type,"data-context":e.message.context||e.message.to,title:"Remix in Paint"})}export{t as default};
+//# sourceMappingURL=snaps-card.js.map

@@ -40,14 +40,16 @@ export default class UI {
         // base CSS for ui, this can be themed in the future
         if (!this.options.noCSS) {
             this.bp.appendCSS('/v5/apps/based/ui/ui.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v5/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v5/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
-            this.bp.appendCSS('/v5/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
+            if (this.bp.mode !== 'prod') {
+                this.bp.appendCSS('/v5/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
+                this.bp.appendCSS('/v5/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
+                this.bp.appendCSS('/v5/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
+            }
         }
 
         if (this.options.fontAwesome) {
-            this.bp.appendCSS('/v5/vendor/font-awesome/css/fontawesome.css');
-            this.bp.appendCSS('/v5/vendor/font-awesome/css/all.min.css');
+            this.bp.appendCSS('/v5/vendor/font-awesome/css/fontawesome.css', false, true);
+            this.bp.appendCSS('/v5/vendor/font-awesome/css/all.min.css', false, true);
         }
 
         // TODO: add these lines back after removing v4 completely ( as jQuery is already loaded in v4)

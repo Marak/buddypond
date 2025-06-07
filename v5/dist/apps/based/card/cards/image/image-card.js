@@ -1,0 +1,2 @@
+function t(t,a,e,i){const n=$(t);n.find(".image-image").on("load",(function(){$(".aim-chat-area",i.content).scrollTop(99999999)})),n.find(".image-image").attr("src",a.url),n.find(".remixGif").data("output",a.message.type),n.find(".remixGif").data("context",a.message.to),n.find(".remixPaint").data("output",a.message.type),n.find(".remixPaint").data("context",a.message.to)}export{t as default};
+//# sourceMappingURL=image-card.js.map

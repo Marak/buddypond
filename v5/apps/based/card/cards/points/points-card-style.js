@@ -1,0 +1,1 @@
+import './points-card.css';

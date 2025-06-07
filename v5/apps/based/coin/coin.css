@@ -184,6 +184,7 @@
 
 .coin-container .tab-list li a:hover {
     background: #008c7e;
+    text-decoration: none;
 }
 
 

@@ -1,0 +1,1 @@
+{"version":3,"sources":["dictate.css"],"names":[],"mappings":"AAAA,gBACI,kBAAmB,CACnB,yBACJ","file":"dictate.css","sourcesContent":[".dictate-active {\n    background: #50fa7b;\n    transform: translateX(5px);\n}"]}

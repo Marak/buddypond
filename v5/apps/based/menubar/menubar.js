@@ -75,7 +75,6 @@ export default class MenuBar {
         }
         // alert(this.bp.settings.audio_enabled);
 
-
         $('.selectLightMode i', this.menuBarElement).on('click', function (e) {
             let mode = $(e.target).data('mode');
             //alert('set the mode to ' + mode);
@@ -178,7 +177,7 @@ export default class MenuBar {
         function startCountdown() {
             const rewardPeriod = 60 * 1000; // 60 seconds
             const expiry = new Date(Date.now() + rewardPeriod);
-            console.log("Starting countdown for menu bar coin reward", expiry, countDownEl.length);
+            // console.log("Starting countdown for menu bar coin reward", expiry, countDownEl.length);
 
             function restartCountdown($el) {
                 bp.apps.rewards.requestReward();
@@ -200,7 +199,7 @@ export default class MenuBar {
             $('.loggedIn').flexHide();
             // create event listen for 'auth::login' to start the countdown
             this.bp.on('auth::qtoken', 'start-rewards-timer', () => {
-                console.log('Starting rewards timer after login');
+                // console.log('Starting rewards timer after login');
                 startCountdown();
             });
         }

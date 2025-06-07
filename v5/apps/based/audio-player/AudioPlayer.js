@@ -63,13 +63,13 @@ export default class AudioPlayer {
   async unload() {
     console.log("AudioPlayer unload");
     await this.track.unload();
-    KeyboardBindings.unbindKeys(this.track);
+    DeckKeyboardBindings.unbindKeys(this.track);
   }
 
   // close the AudioPlayer and unload all tracks
   async close() {
     console.log("AudioPlayer close");
     await this.track.unload();
-    KeyboardBindings.unbindKeys(this.track);
+    DeckKeyboardBindings.unbindKeys(this.track);
   }
 }
