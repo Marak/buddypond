@@ -1,5 +1,10 @@
 export default function applyData(el, data, cardClass, parentWindow) {
     const $el = $(el);
+
+    // replace the URL in the message text since the image card will handle it as embed
+    // this allows a message with an image URL to be sent without the URL showing up in the chat
+    data.message.text = data.message.text.replace(data.url, '');
+
     // add onload event to image
     $el.find('.image-image').on('load', function () {
         // remove loading class

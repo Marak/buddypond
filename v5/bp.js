@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.0.0';
+bp.version = '6.0.1';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -129,11 +129,14 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
         modulePath = app;
     }
 
+    modulePath += '?v=' + bp.version; // append version to URL to prevent caching issues
+
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
         // console.log('module already loaded', app);
         return bp._modules[modulePath];
     }
+
     try {
         // console.log('attempting to load module', modulePath);
         let module = await import(/* @vite-ignore */modulePath);
@@ -176,6 +179,9 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     // TODO: might be best to default to host if no protocol is present
     // TODO: cache request, do not reload unless forced
     let fullUrl = `${bp.config.host}${url}`;
+
+    fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
+    
     // console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];
