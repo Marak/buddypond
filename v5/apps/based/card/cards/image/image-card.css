@@ -1,8 +1,6 @@
 .image-card {
-    border: 1px solid #ccc;
     padding: 15px;
     margin-bottom: 10px;
-    background-color: #fff;
     border-radius: 5px;
     position: relative;
   }
