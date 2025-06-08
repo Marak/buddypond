@@ -2,6 +2,7 @@ import wallpapers from './lib/wallpapers.js';
 import audioSettings from './lib/audio-settings.js';
 import userSettings from './lib/user-settings.js';
 import PadEditor from '../pad/PadEditor.js';
+import themeEditor from './lib/theme-editor.js';
 // import LoadingContainer from '../ui/LoadingContainer/LoadingContainer.js';
 import updateProfilePicture from './lib/updateProfilePicture.js';
 let defaultFileContent = {};
@@ -244,107 +245,17 @@ export default class Profile {
             this.tabs.showTab('#tabs-2');
         }
 
-
         $('.themeSelect', this.profileWindow.content).on('change', (e) => {
             let val = $(e.target).val();
             if (val === 'Custom') {
+                // get the custom theme styles
+                //let customTheme = this.bp.settings.custom_theme;
+                //this.bp.apps.themes.applyTheme(customTheme); // Apply selected theme
                 // do nothing
                 return;
             }
             this.bp.apps.themes.applyTheme(val); // Apply selected theme
-
-            let themeData = this.bp.apps.themes.themes[val];
-            let themeStyles = themeData.styles || {};
-            let themeStylesTable = $('.theme-styles', this.profileWindow.content);
-            themeStylesTable.html(''); // clear table
-
-            // Create a deep copy so edits don't mutate original
-            let editableTheme = JSON.parse(JSON.stringify(themeData));
-
-            for (let styleName in themeStyles) {
-                let styleValue = themeStyles[styleName];
-                let row = $('<tr></tr>');
-                let propsCell = $('<td colspan="2"></td>');
-
-               propsCell.append(`<div class="style-block"><div class="style-title">${styleName}</div>`);
-
-for (let prop in styleValue) {
-    let val = styleValue[prop];
-    let inputId = `input_${styleName}_${prop}`.replace(/\W+/g, '_');
-
-    let colorInput = '';
-    if (isColorProperty(prop, val)) {
-        let safeColor = val.startsWith('#') ? val : '#ffffff';
-        colorInput = `<input type="color" value="${safeColor}" data-style="${styleName}" data-prop="${prop}" class="color-picker" />`;
-    }
-
-    propsCell.append(`
-        <div class="prop-row">
-            <label class="prop-name">${prop}:</label>
-            <input type="text" id="${inputId}" value="${val}" data-style="${styleName}" data-prop="${prop}" />
-            ${colorInput}
-        </div>
-    `);
-    //  <button class="remove-prop-btn" data-style="${styleName}" data-prop="${prop}">✕</button>
-
-}
-
-/*
-propsCell.append(`
-    <div class="prop-row">
-        <label class="prop-name">+</label>
-        <input type="text" class="new-prop-name" placeholder="property" data-style="${styleName}" />
-        <input type="text" class="new-prop-value" placeholder="value" data-style="${styleName}" />
-        <button class="add-prop-btn" data-style="${styleName}">Add</button>
-    </div>
-</div>`);
-*/
-
-
-                row.append(propsCell);
-                themeStylesTable.append(row);
-            }
-
-            // 🔁 Listen to changes and update theme live
-            themeStylesTable.on('input', 'input[type="text"], input.color-picker', function (e) {
-                // set dropdown to Custom
-                $('.themeSelect', this.profileWindow.content).val('Custom');
-                let style = $(e.target).data('style');
-                let prop = $(e.target).data('prop');
-                console.log('style', style, 'prop', prop);
-                if (!style || !prop) return;
-
-                let newValue = $(e.target).val();
-                editableTheme.styles[style][prop] = newValue;
-                console.log('editableTheme.styles', editableTheme);
-                this.bp.apps.themes.applyTheme(editableTheme); // re-apply updated theme
-            }.bind(this));
-
-            // ➕ Add new property
-            themeStylesTable.on('click', '.add-prop-btn', function (e) {
-                let style = $(e.target).data('style');
-                let row = $(e.target).closest('div');
-                let propInput = row.find('.new-prop-name');
-                let valInput = row.find('.new-prop-value');
-
-                let newProp = propInput.val().trim();
-                let newVal = valInput.val().trim();
-
-                if (newProp && newVal) {
-                    editableTheme.styles[style][newProp] = newVal;
-                    $('.themeSelect', this.profileWindow.content).trigger('change'); // re-render
-                }
-            }.bind(this));
-
-            // ❌ Remove property
-            themeStylesTable.on('click', '.remove-prop-btn', function (e) {
-                let style = $(e.target).data('style');
-                let prop = $(e.target).data('prop');
-                delete editableTheme.styles[style][prop];
-                $('.themeSelect', this.profileWindow.content).trigger('change'); // re-render
-            }.bind(this));
-
-            console.log('themeData', themeData);
+            this.themeEditor(val);
         });
 
         // set value of themeSelect to current theme
@@ -361,7 +272,6 @@ propsCell.append(`
         });
 
         return this.profileWindow;
-
 
     }
 }
@@ -393,21 +303,5 @@ function renderProfileApp(appName, container) {
     return str;
 }
 
-function isColorProperty(prop, value) {
-    const colorProps = [
-        'color', 'background', 'background-color', 'border-color',
-        'outline-color', 'text-decoration-color', 'column-rule-color',
-        'fill', 'stroke'
-    ];
 
-    const isColorKey = colorProps.includes(prop.toLowerCase());
-
-    const colorRegex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i
-        || /^rgba?\(.+\)$/i
-        || /^hsla?\(.+\)$/i
-        || /^[a-z]+$/i; // named colors
-
-    const isColorValue = colorRegex.test(value);
-
-    return isColorKey || isColorValue;
-}
+Profile.prototype.themeEditor = themeEditor;

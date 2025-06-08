@@ -82,24 +82,26 @@ export default class Pad {
 
             });
 
+            this.myPads = await updateMyPads.call(this);
+
+
         }
 
         async function updateMyPads() {
 
             // TODO: refactor this to separate function
             // will show myPads by default
-            let myPads = await this.bp.apps.client.api.getPads();
-            console.log('myPadsmyPads', myPads)
-            this.renderPadRows(myPads.results);
+            this.myPads = await this.bp.apps.client.api.getPads();
+            console.log('myPadsmyPads', this.myPads)
+            this.renderPadRows(this.myPads.results);
         }
 
-        let myPads = await updateMyPads.call(this);
 
         // show the first .tab-content
         //$('.tab-content').show();
         $('.tab-content:first', this.padWindow.content).show();
 
-        console.log(myPads);
+        console.log(this.myPads);
         if (this.bp.me && this.bp.me !== 'Guest') {
             $('.loggedOut', this.padWindow.content).flexHide();
             $('.loggedIn', this.padWindow.content).flexShow();
@@ -225,9 +227,9 @@ export default class Pad {
 
                 // Reloads the My Pads list
                 console.log('getting the pads again');
-                let myPads = await this.bp.apps.client.api.getPads();
+                this.myPads = await this.bp.apps.client.api.getPads();
                 console.log('got the pads again', myPads);
-                this.renderPadRows(myPads);
+                this.renderPadRows(this.myPads);
                 // set the .bp-pad-container to visible
                 $('.bp-pad-container', this.padWindow.content).flexShow();
 
@@ -262,12 +264,15 @@ export default class Pad {
             this.tabs.navigateToTab('#pads-editor');
         });
 
+        return this.padWindow;
+
     }
 
     editPad(pad) {
         $('.tab-content', this.padWindow.content).flexHide();
         $('.pad-code-editor', this.padWindow.content).flexShow();
     }
+
 
 }
 
