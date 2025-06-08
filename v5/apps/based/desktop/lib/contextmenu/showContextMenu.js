@@ -1,11 +1,5 @@
 export default function  showContextMenu(x, y) {
 
-    // find any existing context menu and remove it
-    const existingMenu = document.querySelector('.desktop-context-menu');
-    if (existingMenu) {
-        existingMenu.remove();
-    }
-
     const menu = document.createElement('div');
     menu.className = 'desktop-context-menu';
     menu.style.top = `${y}px`;
@@ -15,6 +9,14 @@ export default function  showContextMenu(x, y) {
     menu.style.zIndex = '9999';
     menu.innerHTML = `
         <ul>
+            <!-- <li onclick="bp.apps.desktop.createShortCut()">New Shortcut...</li> -->
+            <li onclick="bp.apps.desktop.arrangeShortcuts(3, {
+    rowWidth: 80,
+    rowHeight: 100,
+    x: 0,
+    y: 0,
+    ignoreSavedPosition: true
+            })">Arrange Icons</li>
             <li onclick="bp.apps.wallpaper.setWallpaper()">Set Wallpaper to Url</li>
             <li onclick="bp.apps.wallpaper.removeWallpaper()">Remove Wallpaper</li>
             <li onclick="bp.apps.desktop.viewSource()">View Source</li>

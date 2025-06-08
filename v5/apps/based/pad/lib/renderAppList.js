@@ -75,8 +75,12 @@ export default function renderAppList() {
         let appsToRender = Object.entries(appList);
 
         // Filter apps by category
-        if (selectedCategory !== 'all') {
+        if (selectedCategory !== 'all' && selectedCategory !== 'installed') {
             appsToRender = appsToRender.filter(([_, app]) => app.categories && app.categories.includes(selectedCategory));
+        }
+
+        if (selectedCategory === 'installed') {
+            appsToRender = appsToRender.filter(([name]) => appsInstalled[name]);
         }
 
         // Filter out desktop-only apps on mobile
@@ -85,6 +89,8 @@ export default function renderAppList() {
         }
 
         // Render apps
+        // sort appsToRender by label
+        appsToRender.sort((a, b) => a[1].label.localeCompare(b[1].label));
         appsToRender.forEach(([name, app]) => {
             appContainer.append(renderAppCard(name, app));
         });
@@ -128,14 +134,25 @@ export default function renderAppList() {
         } else if (button.hasClass('bp-pads-btn-open')) {
             // Open action
             console.log(`Stub: Opening app ${appName}`);
-            if (app.onClick) {
-                try {
-                    eval(app.onClick); // Note: eval is used for simplicity; replace with safer execution
-                } catch (e) {
-                    console.error(`Error executing onClick for ${appName}:`, e);
+            //if (app.onClick) {
+            try {
+                // eval(app.onClick); // Note: eval is used for simplicity; replace with safer execution
+                console.log(`Executing onClick for ${appName}`, app);
+
+                if (app.app) {
+                    // may have custom defined app name with context
+                    // for example, emulator app uses this to open with context of system
+                    this.bp.open(app.app, {
+                        context: app.context || {},
+                    });
+
+                } else {
+
+                    this.bp.open(appName);
                 }
-            } else {
-                console.warn(`No onClick defined for ${appName}`);
+
+            } catch (e) {
+                console.error(`Error executing onClick for ${appName}:`, e);
             }
         } else if (button.hasClass('bp-pads-btn-uninstall')) {
             // Uninstall action
@@ -143,7 +160,12 @@ export default function renderAppList() {
             setButtonLoading(button, 'uninstall');
             // this.bp.apps.desktop.showLoadingProgressIndicator();
             // Simulate async operation (replace with actual removeApp implementation)
-            await this.removeApp(appName, app);
+            // remove the open button immediately
+            // $(`.bp-pads-app[data-app="${appName}"]`).replaceWith(renderAppCard(appName, app)); // Update UI to show loading state
+            let closestOpenButton = button.parent().find('.bp-pads-btn-open');
+            console.log(closestOpenButton)
+            closestOpenButton.remove();
+            await this.bp.apps.desktop.removeApp(appName, app);
             delete appsInstalled[appName]; // Update local state
             resetButtonState(button, false);
             // this.bp.apps.desktop.hideLoadingProgressIndicator();

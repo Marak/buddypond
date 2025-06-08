@@ -185,6 +185,18 @@ let legacyCommands = {
     description: 'Give Buddy Pond Coins to Buddies',
     icon: 'coin'
   },
+  install: {
+    command: function (params) {
+      console.log('install command', params);
+      if (params.length > 0) {
+        bp.open('pad', { context: params[0] });
+      } else {
+        bp.open('pad');
+      }
+    },
+    description: 'Install Buddy Pond Apps',
+    icon: 'install'
+  },
   leaderboard: {
     command: function (params) {
         bp.open('coin', { context: '#coin-leaderboard' });

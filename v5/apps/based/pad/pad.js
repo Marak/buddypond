@@ -5,7 +5,6 @@ import savePad from './lib/savePad.js';
 import buildPad from './lib/buildPad.js';
 import renderAppList from './lib/renderAppList.js';
 import addApp from './lib/addApp.js';
-import removeApp from './lib/removeApp.js';
 
 export default class Pad {
     constructor(bp, options = {}) {
@@ -84,10 +83,14 @@ export default class Pad {
                 }
                 if (tabId === '#buddy-pads') {
                     this.renderAppList();
+                    $('.bp-pads-search-input', this.padWindow.content).focus();
                 }
 
             });
 
+            $('.bp-pads-search-input', this.padWindow.content).on('input', (e) => {
+              // TODO: search for apps
+            });
 
 
         }
@@ -264,7 +267,7 @@ export default class Pad {
         });
 
         this.tabs.showTab('#buddy-pads');
-
+        this.padWindow.maximize();
         return this.padWindow;
 
     }
@@ -282,4 +285,3 @@ Pad.prototype.savePad = savePad;
 Pad.prototype.buildPad = buildPad;
 Pad.prototype.renderAppList = renderAppList;
 Pad.prototype.addApp = addApp;
-Pad.prototype.removeApp = removeApp;

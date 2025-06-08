@@ -11,6 +11,17 @@
     height: 100%;
 }
 
+.portfolio-container h3 {
+    font-size: 1.5rem;
+    color: #00d1b2;
+    margin-bottom: 10px;
+}
+
+.portfolio-container label {
+    color: #fff;
+    background-color: #222;
+}
+
 .portfolio-title {
     font-size: 2rem;
     text-align: center;
@@ -60,6 +71,7 @@
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #444;
+    color: #ddd;
 }
 
 .portfolio-table th {
@@ -212,6 +224,17 @@
     }
 }
 
+#user-portfolio > p {
+    color: #ddd !important;
+}
+
+.total-value {
+    color: #fff !important;
+}
+
+.profit-loss {
+    color: #fff;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {

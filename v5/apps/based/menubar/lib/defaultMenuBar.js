@@ -94,6 +94,11 @@ export default function defaultMenuBar(bp) {
           label: 'We are stoked to be your Buddy'
           // click: () => api.ui.toggleDeviceSettings() 
         },
+              {
+          label: 'Buddy Apps',
+          click: () => bp.open('pad')
+        },
+
         {
           label: 'Edit Profile',
           click: () => bp.open('profile')

@@ -368,7 +368,7 @@ hr {
 .bp-pads-app {
     max-width: 220px;
     flex: 1 1 calc(33.333% - 20px); /* Aim for ~3 columns */
-    min-width: 200px;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
     padding: 15px;

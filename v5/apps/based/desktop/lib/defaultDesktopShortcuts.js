@@ -1,5 +1,37 @@
 export default function defaultDesktopShortcuts() {
 
+    // check if we have default apps, if not initialize them
+    let installeApps = this.bp.settings.apps_installed || {};
+    if (Object.keys(installeApps).length === 0) {
+        let defaultAppList = [
+            'profile',
+            'buddylist',
+            'pad',
+            'pond',
+            'file-explorer',
+            'youtube',
+            'coin',
+            'portfolio',
+        ];
+
+        defaultAppList.forEach(appName => {
+            let app = this.bp.apps.desktop.appList[appName];
+            if (app) {
+                console.log(`Adding default app shortcut: ${appName}`);
+                console.log(app);
+                installeApps[appName] = app;
+
+                // this.bp.apps.desktop.addShortCut(app);
+            } else {
+                console.warn(`App ${appName} not found in desktop app list.`);
+            }
+        });
+
+        this.bp.set('apps_installed', installeApps);
+
+    }
+
+    /*
     bp.apps.desktop.addShortCut({
         name: 'profile',
         icon: `desktop/assets/images/icons/icon_profile_64.png`,
@@ -58,6 +90,7 @@ export default function defaultDesktopShortcuts() {
         });
     }
 
+    */
     /*
     bp.apps.desktop.addShortCut({
         name: 'paint',
@@ -86,16 +119,7 @@ export default function defaultDesktopShortcuts() {
         */
        
 
-    bp.apps.desktop.addShortCut({
-        name: 'youtube',
-        icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
-        label: 'Interdimensional Cable',
-        description: 'Watch and browse YouTube videos'
-    }, {
-        onClick: () => {
-            bp.open('youtube');
-        }
-    });
+    
 
     /*
     bp.apps.desktop.addShortCut({
@@ -160,8 +184,8 @@ export default function defaultDesktopShortcuts() {
     });
     */
 
+    /*
     function coinBeta() {
-        /*
         bp.apps.desktop.addShortCut({
             name: 'orderbook',
             icon: `desktop/assets/images/icons/icon_orderbook_64.png`,
@@ -172,7 +196,6 @@ export default function defaultDesktopShortcuts() {
                 bp.open('orderbook');
             }
         });
-        */
         bp.apps.desktop.addShortCut({
             name: 'coin',
             icon: `desktop/assets/images/icons/icon_coin_64.png`,
@@ -196,7 +219,6 @@ export default function defaultDesktopShortcuts() {
             }
         });
 
-        /*
         bp.apps.desktop.addShortCut({
             name: 'buddybux',
             icon: `desktop/assets/images/icons/icon_buddybux_64.png`,
@@ -207,12 +229,12 @@ export default function defaultDesktopShortcuts() {
                 bp.open('buddybux');
             }
         });
-        */
 
         bp.apps.desktop.arrangeShortcuts(3);
     }
 
     window.coinBeta = coinBeta;
+    */
 
     /*
     bp.apps.desktop.addShortCut({
@@ -227,6 +249,8 @@ export default function defaultDesktopShortcuts() {
     });
     */
 
+
+    /*
     bp.apps.desktop.addFolder({
         name: 'Games',
         height: 250,
@@ -294,6 +318,21 @@ export default function defaultDesktopShortcuts() {
         ]
     });
 
+    */
+
+    /*
+    bp.apps.desktop.addShortCut({
+        name: 'youtube',
+        icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
+        label: 'Inter- Dimensional Cable',
+        description: 'Watch and browse YouTube videos'
+    }, {
+        onClick: () => {
+            bp.open('youtube');
+        }
+    });
+    */
+
     /*
     bp.apps.desktop.addFolder({
         name: 'Hacking Tools',
@@ -342,6 +381,26 @@ export default function defaultDesktopShortcuts() {
     });
     */
 
-    coinBeta();
+    // coinBeta();
+
+    let installedApps = bp.settings.apps_installed || {};
+    if (Object.keys(installedApps).length > 0) {
+        Object.keys(installedApps).forEach(appName => {
+            let app = installedApps[appName];
+            if (app) {
+                bp.apps.desktop.addShortCut({
+                    name: appName,
+                    icon: app.icon || `desktop/assets/images/icons/icon_app_64.png`,
+                    label: app.label || appName,
+                    description: app.description || 'No description available'
+                }, {
+                    onClick: () => {
+                        bp.open(appName);
+                    }
+                });
+            }
+        });
+
+    }
 
 }

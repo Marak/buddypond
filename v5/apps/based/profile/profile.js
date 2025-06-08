@@ -155,7 +155,7 @@ export default class Profile {
 
         $('.yourApps tbody', this.profileWindow.content).html('');
         for (let appName in bp.settings.apps_installed) {
-            renderProfileApp(appName, $('.yourApps')[0]);
+            // renderProfileApp(appName, $('.yourApps')[0]);
         }
 
         //$('.profileContent .ctime', this.profileWindow.content).html(buddyProfile.ctime);
@@ -278,7 +278,7 @@ export default class Profile {
 
 function renderProfileApp(appName, container) {
     //app = desktop.app.appstore.apps[appName]
-    let app = bp.apps.appstore.apps[appName];
+    let app = bp.apps.desktop.appsList[appName];
     //console.log('renderProfileApp', appName, app);
 
     //console.log('renderProfileApp', appName, app);

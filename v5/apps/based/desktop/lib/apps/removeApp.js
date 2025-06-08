@@ -14,13 +14,7 @@ export default async function removeApp(appName, app) {
     this.bp.apps.desktop.removeShortCut(appName);
 
     // desktop.ui.hideLoadingProgressIndicator();
-    this.bp.apps.desktop.arrangeShortcuts(3, {
-        rowWidth: 80,
-        rowHeight: 100,
-        x: 0,
-        y: 0,
-        ignoreSavedPosition: false
-    });
+    this.bp.apps.desktop.arrangeShortcuts();
     await sleep(777); // Simulate delay for UI update
 
 }

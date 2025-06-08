@@ -2,7 +2,7 @@ const commandSet = [
     {
         command: '/apps',
         additional: '',
-        helpText: 'Lists all installed apps',
+        helpText: 'Lists all availble apps',
         card: 'apps'
     },
     {
@@ -40,6 +40,15 @@ const commandSet = [
         command: '/image',
         additional: 'cat',
         helpText: 'Searches for an image, keyword is optional',
+    },
+    {
+        command: '/install',
+        // additional: ' app-name',
+        helpText: 'Install apps from the Buddy Apps Store',
+          onClick: function () {
+            // TODO: why this is undefined here
+            this.bp.open('pad');
+        },
     },
 
     {

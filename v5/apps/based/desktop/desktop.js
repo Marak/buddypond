@@ -8,7 +8,13 @@ import File from "./lib/File.js";
 import addShortCut from "./lib/shortcuts/addShortCut.js";
 import addFolder from "./lib/addFolder.js";
 import removeShortCut from "./lib/shortcuts/removeShortCut.js";
+import createShortCut from "./lib/shortcuts/createShortCut.js";
+import renameShortCut from "./lib/shortcuts/renameShortCut.js";
 import arrangeShortcuts from "./lib/shortcuts/arrangeShortCuts.js";
+
+// apps
+import appList from "./lib/appList.js";
+import removeApp from "./lib/apps/removeApp.js";
 
 // context menu(s)
 import setupContextMenu from "./lib/contextmenu/setupContextMenu.js";
@@ -41,8 +47,6 @@ export default class Desktop {
         this.shortCutsContainer.className = 'desktop-shortcuts-container';
         this.container.appendChild(this.shortCutsContainer);
 
-
-
         // Set parent container
         this.parent = options.parent || document.body;
         this.parent.appendChild(this.container);
@@ -65,7 +69,7 @@ export default class Desktop {
         //this.yaml = yaml.jsYamlDefault;
 
         // Render the default shortcuts
-        defaultDesktopShortcuts();
+        defaultDesktopShortcuts.call(this);
 
         /*
         if (this.bp.settings.wallpaper_url) {
@@ -254,3 +258,8 @@ class Shortcut {
         this.parentElement.appendChild(shortcutElement);
     }
 }
+
+Desktop.prototype.appList = appList;
+Desktop.prototype.createShortCut = createShortCut;
+Desktop.prototype.renameShortCut = renameShortCut;
+Desktop.prototype.removeApp = removeApp;

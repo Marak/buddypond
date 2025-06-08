@@ -16,6 +16,11 @@
     padding: 20px;
 }
 
+.coin-container label {
+    color: #fff;
+    background-color: #222;
+}
+
 .coin-container .tabs-container ul {
     display: flex;
     justify-content: center;
@@ -57,6 +62,10 @@
 }
 
 .coin-mint-form h2 {
+    color: #ffcc00;
+}
+
+.coin-mint-form h3 {
     color: #ffcc00;
 }
 
@@ -119,6 +128,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     overflow: hidden;
+    color: #ddd;
 }
 
 .user-coins th, .all-coins th, .user-coins td, .all-coins td {
@@ -152,10 +162,12 @@
 /* Alternating row colors */
 .user-coins tr:nth-child(even), .all-coins tr:nth-child(even) {
     background: #2a2a2a;
+    color: #ddd;
 }
 
 .user-coins tr:nth-child(odd), .all-coins tr:nth-child(odd) {
     background: #1f1f1f;
+    color: #ddd;
 }
 
 /* Hover effects */
