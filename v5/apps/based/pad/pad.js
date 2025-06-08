@@ -3,6 +3,9 @@
 import renderPadRows from './lib/renderPadRows.js';
 import savePad from './lib/savePad.js';
 import buildPad from './lib/buildPad.js';
+import renderAppList from './lib/renderAppList.js';
+import addApp from './lib/addApp.js';
+import removeApp from './lib/removeApp.js';
 
 export default class Pad {
     constructor(bp, options = {}) {
@@ -49,7 +52,7 @@ export default class Pad {
         if (!this.padWindow) {
             this.padWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'pad',
-                title: 'Pads',
+                title: 'Buddy Apps',
                 x: 50,
                 y: 60,
                 width: 1000,
@@ -73,16 +76,18 @@ export default class Pad {
 
             this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', this.padWindow.content);
 
-            this.tabs.onTab((tabId) => {
+            this.tabs.onTab(async (tabId) => {
                 // TODO: on tab if tabId = "pads-home", 
                 // we do need to re-run getPads();....
-                if (tabId === 'pads-home') {
+                if (tabId === '#pads-home') {
+                    this.myPads = await updateMyPads.call(this);
                 }
-                updateMyPads.call(this);
+                if (tabId === '#buddy-pads') {
+                    this.renderAppList();
+                }
 
             });
 
-            this.myPads = await updateMyPads.call(this);
 
 
         }
@@ -96,7 +101,6 @@ export default class Pad {
             this.renderPadRows(this.myPads.results);
         }
 
-
         // show the first .tab-content
         //$('.tab-content').show();
         $('.tab-content:first', this.padWindow.content).show();
@@ -105,12 +109,9 @@ export default class Pad {
         if (this.bp.me && this.bp.me !== 'Guest') {
             $('.loggedOut', this.padWindow.content).flexHide();
             $('.loggedIn', this.padWindow.content).flexShow();
-
-
         } else {
             $('.loggedOut', this.padWindow.content).flexShow();
             $('.loggedIn', this.padWindow.content).flexHide();
-
         }
 
         let userFilesCDN = 'https://files.buddypond.com' + '/' + this.bp.me;
@@ -248,8 +249,6 @@ export default class Pad {
                 }
             }
 
-
-
             // re-enable the save-pad-button to prevent double clicks
             $('.save-pad-button', this.padWindow.content).prop('disabled', false);
             // remove disabled class to button
@@ -263,6 +262,8 @@ export default class Pad {
         $('.create-pad-button', this.padWindow.content).on('click', () => {
             this.tabs.navigateToTab('#pads-editor');
         });
+
+        this.tabs.showTab('#buddy-pads');
 
         return this.padWindow;
 
@@ -279,3 +280,6 @@ export default class Pad {
 Pad.prototype.renderPadRows = renderPadRows;
 Pad.prototype.savePad = savePad;
 Pad.prototype.buildPad = buildPad;
+Pad.prototype.renderAppList = renderAppList;
+Pad.prototype.addApp = addApp;
+Pad.prototype.removeApp = removeApp;

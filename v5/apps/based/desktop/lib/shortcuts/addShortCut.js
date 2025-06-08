@@ -7,7 +7,8 @@ export default function addShortCut(app, options = {}, parent) {
     // Create the shortcut element
     const el = document.createElement('div');
     el.className = `icon shortcut ${app.class || ''} bp-desktop-shortcut`;
-
+    // add data-app attribute for easy identification
+    el.setAttribute('data-app', app.name);
     const anchor = document.createElement('a');
     anchor.href = app.href || `#icon_dock_${app.name}`;
 

@@ -25,7 +25,7 @@ export default function defaultDesktopShortcuts() {
     bp.apps.desktop.addShortCut({
         name: 'pad',
         icon: `desktop/assets/images/icons/icon_pad_64.png`,
-        label: 'Pads',
+        label: 'Buddy Apps',
         description: 'Create hosted Apps for Buddy Pond'
     }, {
         onClick: () => {
@@ -46,18 +46,19 @@ export default function defaultDesktopShortcuts() {
 
     if (!bp.isMobile()) {
 
-    bp.apps.desktop.addShortCut({
-        name: 'file-explorer',
-        icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
-        label: 'Buddy Files',
-        description: 'Browse and manage your files'
-    }, {
-        onClick: () => {
-            bp.open('file-explorer');
-        }
-    });
-}
+        bp.apps.desktop.addShortCut({
+            name: 'file-explorer',
+            icon: `desktop/assets/images/icons/icon_file-explorer_64.png`,
+            label: 'Buddy Files',
+            description: 'Browse and manage your files'
+        }, {
+            onClick: () => {
+                bp.open('file-explorer');
+            }
+        });
+    }
 
+    /*
     bp.apps.desktop.addShortCut({
         name: 'paint',
         icon: `desktop/assets/images/icons/icon_paint_64.png`,
@@ -82,11 +83,13 @@ export default function defaultDesktopShortcuts() {
             }
         });
     }
+        */
+       
 
     bp.apps.desktop.addShortCut({
         name: 'youtube',
         icon: `desktop/assets/images/icons/icon_interdimensionalcable_64.png`,
-        label: 'Youtube',
+        label: 'Interdimensional Cable',
         description: 'Watch and browse YouTube videos'
     }, {
         onClick: () => {
@@ -94,6 +97,7 @@ export default function defaultDesktopShortcuts() {
         }
     });
 
+    /*
     bp.apps.desktop.addShortCut({
         name: 'camera',
         icon: `desktop/assets/images/icons/icon_camera_64.png`,
@@ -117,7 +121,9 @@ export default function defaultDesktopShortcuts() {
             }
         });
     }
+    */
 
+    /*
     bp.apps.desktop.addShortCut({
         name: 'fluid-simulation',
         icon: `desktop/assets/images/icons/icon_fluidsimulation_64.png`,
@@ -128,7 +134,9 @@ export default function defaultDesktopShortcuts() {
             bp.open('fluid-simulation');
         }
     });
+    */
 
+    /*
     bp.apps.desktop.addShortCut({
         name: 'sampler',
         icon: `desktop/assets/images/icons/icon_midifighter_64.png`,
@@ -150,6 +158,7 @@ export default function defaultDesktopShortcuts() {
             bp.open('audio-visual');
         }
     });
+    */
 
     function coinBeta() {
         /*
@@ -285,6 +294,7 @@ export default function defaultDesktopShortcuts() {
         ]
     });
 
+    /*
     bp.apps.desktop.addFolder({
         name: 'Hacking Tools',
         width: 320,
@@ -317,7 +327,9 @@ export default function defaultDesktopShortcuts() {
             }
         ],
     });
+    */
 
+    /*
     bp.apps.desktop.addShortCut({
         name: 'audio-player',
         icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
@@ -328,6 +340,7 @@ export default function defaultDesktopShortcuts() {
             bp.open('audio-player');
         }
     });
+    */
 
     coinBeta();
 

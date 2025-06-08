@@ -25,6 +25,7 @@ hr {
     text-align: left;
 }
 
+/*
 .bp-pad-table th {
     background-color: #e9e9e9;
 }
@@ -32,10 +33,10 @@ hr {
 .bp-pad-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-/* hover row highlight */
 .bp-pad-table tr:hover {
-    /* background-color: #f1f1f1; */
+    background-color: #f1f1f1;
 }
+*/
 
 .bp-pad-editor {
     margin: 20px;
@@ -44,8 +45,7 @@ hr {
     border-radius: 5px;
 }
 
-.pad-editor {
-}
+.pad-editor {}
 
 .pad-editor-holder {
     height: 500px !important;
@@ -111,8 +111,13 @@ hr {
 
 /* Adding animations for visual feedback */
 @keyframes fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .status-indicator {
@@ -136,17 +141,18 @@ hr {
     font-weight: bold;
     color: #2F855A;
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 
 }
 
 #buddy-pads {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 50px;
-    padding: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
 
 }
 
@@ -302,5 +308,176 @@ hr {
     .pads-faq button.open-app {
         padding: 8px 16px;
         font-size: 0.9em;
+    }
+}
+
+/* app list / buddy pads install screen */
+.bp-pads-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.bp-pads-sidebar {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.bp-pads-sidebar-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.bp-pads-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bp-pads-category-btn {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.bp-pads-category-btn:hover,
+.bp-pads-category-active {
+    opacity: 0.8;
+}
+
+.bp-pads-content {
+    flex-grow: 1;
+}
+
+.bp-pads-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.bp-pads-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.bp-pads-app {
+    max-width: 220px;
+    flex: 1 1 calc(33.333% - 20px); /* Aim for ~3 columns */
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bp-pads-app-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+    align-self: center;
+}
+
+.bp-pads-app-info {
+    flex-grow: 1;
+}
+
+.bp-pads-app-label {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.bp-pads-app-description {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
+.bp-pads-app-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.bp-pads-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 80px;
+    text-align: center;
+    position: relative;
+}
+
+.bp-pads-btn:hover:not(.bp-pads-btn-loading) {
+    opacity: 0.8;
+}
+
+.bp-pads-btn-loading {
+    cursor: wait;
+    opacity: 0.7;
+    pointer-events: none; /* Prevent clicks during loading */
+}
+
+/* Optional spinner (pure CSS) */
+.bp-pads-btn-loading::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: bp-pads-spin 1s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes bp-pads-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bp-pads-container {
+        flex-direction: column;
+    }
+
+    .bp-pads-sidebar {
+        width: 100%;
+    }
+
+    .bp-pads-category-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .bp-pads-app {
+        flex: 1 1 calc(50% - 20px); /* 2 columns */
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bp-pads-app {
+        flex: 1 1 100%; /* 1 column */
+    }
+
+    .bp-pads-app-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .bp-pads-btn {
+        width: 100%;
     }
 }

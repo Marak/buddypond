@@ -64,7 +64,7 @@ export default function renderPadRows(myPads) {
             td = document.createElement('td');
             td.style.textAlign = 'right';
             let editButton = document.createElement('button');
-            editButton.classList.add('edit-button', 'ui-button');
+            editButton.classList.add('edit-button');
             editButton.innerHTML = 'Edit';
             editButton.onclick = () => {
                 // console.log('edit', pad);
@@ -73,13 +73,13 @@ export default function renderPadRows(myPads) {
 
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = 'Delete';
-            deleteButton.classList.add('delete-button', 'ui-button');
+            deleteButton.classList.add('delete-button');
 
             td.appendChild(deleteButton);
 
             let viewButton = document.createElement('button');
             viewButton.innerHTML = 'View';
-            viewButton.classList.add('view-button', 'ui-button');
+            viewButton.classList.add('view-button');
 
             td.appendChild(viewButton);
             tr.appendChild(td);

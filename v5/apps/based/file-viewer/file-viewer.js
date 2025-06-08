@@ -28,6 +28,7 @@ export default class FileViewer {
             height: 600,
             minWidth: 400,
             minHeight: 300,
+            icon: 'desktop/assets/images/icons/icon_file-viewer_64.png',
             parent: $('#desktop')[0],
             content: this.html,
             resizable: true,

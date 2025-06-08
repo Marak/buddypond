@@ -1,0 +1,154 @@
+import appList from '../../desktop/lib/appList.js';
+
+export default function renderAppList() {
+    const appContainer = $('.bp-pads-grid');
+    const categoryContainer = $('.bp-pads-category-list');
+    const isMobile = typeof bp !== 'undefined' && bp.isMobile && bp.isMobile();
+
+    // appsInstalled is an object that holds installed apps
+    let appsInstalled = this.bp?.settings?.apps_installed || {};
+
+    // Get unique categories from appList
+    let categories = new Set();
+    Object.values(appList).forEach(app => {
+        if (app.categories) {
+            app.categories.forEach(category => categories.add(category));
+        }
+    });
+
+    // Populate category buttons
+    // TODO: sort categories alphabetically
+    categories = Array.from(categories).sort();
+    categories.forEach(category => {
+        categoryContainer.append(`
+            <button class="bp-pads-category-btn" data-category="${category}">
+                ${category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+        `);
+    });
+
+    // Function to render a single app card
+    function renderAppCard(name, app) {
+        const isInstalled = !!appsInstalled[name];
+        const primaryButtonText = isInstalled ? 'Open' : 'Install';
+        const primaryButtonClass = isInstalled ? 'bp-pads-btn-open' : 'bp-pads-btn-install';
+        const uninstallButton = isInstalled
+            ? `<button class="bp-pads-btn bp-pads-btn-uninstall" data-app="${name}">Uninstall</button>`
+            : '';
+        return `
+            <div class="bp-pads-app" data-app="${name}">
+                <img src="${app.icon}" alt="${app.label} icon" class="bp-pads-app-icon">
+                <div class="bp-pads-app-info">
+                    <h4 class="bp-pads-app-label">${app.label}</h4>
+                    <p class="bp-pads-app-description">${app.description}</p>
+                    <div class="bp-pads-app-actions">
+                        <button class="bp-pads-btn ${primaryButtonClass}" data-app="${name}">${primaryButtonText}</button>
+                        ${uninstallButton}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Function to update button to loading state
+    function setButtonLoading(button, action) {
+        const isInstall = action === 'install';
+        button.addClass('bp-pads-btn-loading');
+        button.text(isInstall ? 'Installing...' : 'Uninstalling...');
+        button.css('cursor', 'wait');
+        // Force repaint to ensure cursor updates
+        button[0].offsetHeight; // Accessing offsetHeight triggers reflow
+    }
+
+    // Function to reset button state
+    function resetButtonState(button, isInstalled) {
+        button.removeClass('bp-pads-btn-loading');
+        button.text(isInstalled ? 'Open' : 'Install');
+        button.removeClass('bp-pads-btn-install bp-pads-btn-open');
+        button.addClass(isInstalled ? 'bp-pads-btn-open' : 'bp-pads-btn-install');
+        button.css('cursor', '');
+    }
+
+    // Function to render apps based on selected category
+    function renderApps(selectedCategory = 'all') {
+        appContainer.empty(); // Clear existing apps
+        let appsToRender = Object.entries(appList);
+
+        // Filter apps by category
+        if (selectedCategory !== 'all') {
+            appsToRender = appsToRender.filter(([_, app]) => app.categories && app.categories.includes(selectedCategory));
+        }
+
+        // Filter out desktop-only apps on mobile
+        if (isMobile) {
+            appsToRender = appsToRender.filter(([_, app]) => !app.desktopOnly);
+        }
+
+        // Render apps
+        appsToRender.forEach(([name, app]) => {
+            appContainer.append(renderAppCard(name, app));
+        });
+    }
+
+    // Initial render
+    let currentCategory = 'all';
+    renderApps(currentCategory);
+
+    // Handle category button clicks
+    categoryContainer.on('click', '.bp-pads-category-btn', function () {
+        $('.bp-pads-category-btn').removeClass('bp-pads-category-active');
+        $(this).addClass('bp-pads-category-active');
+        currentCategory = $(this).data('category');
+        renderApps(currentCategory);
+    });
+
+    // Handle app action button clicks
+    appContainer.on('click', '.bp-pads-btn', async (ev) => {
+        const button = $(ev.target);
+        const appName = button.data('app');
+        const app = appList[appName];
+        if (!app) {
+            console.warn(`App ${appName} not found in appList`);
+            return;
+        }
+
+        const isInstalled = !!appsInstalled[appName];
+        if (button.hasClass('bp-pads-btn-install')) {
+            // Install action
+            console.log(`Stub: Installing app ${appName}`);
+            setButtonLoading(button, 'install');
+            // this.bp.apps.desktop.showLoadingProgressIndicator(); // Use existing method
+            // Simulate async operation (replace with actual addApp implementation)
+            await this.addApp(appName, app);
+            appsInstalled[appName] = app; // Update local state
+            resetButtonState(button, true);
+            // this.bp.apps.desktop.hideLoadingProgressIndicator();
+            // Re-render app card to show Uninstall button
+            $(`.bp-pads-app[data-app="${appName}"]`).replaceWith(renderAppCard(appName, app));
+        } else if (button.hasClass('bp-pads-btn-open')) {
+            // Open action
+            console.log(`Stub: Opening app ${appName}`);
+            if (app.onClick) {
+                try {
+                    eval(app.onClick); // Note: eval is used for simplicity; replace with safer execution
+                } catch (e) {
+                    console.error(`Error executing onClick for ${appName}:`, e);
+                }
+            } else {
+                console.warn(`No onClick defined for ${appName}`);
+            }
+        } else if (button.hasClass('bp-pads-btn-uninstall')) {
+            // Uninstall action
+            console.log(`Stub: Uninstalling app ${appName}`);
+            setButtonLoading(button, 'uninstall');
+            // this.bp.apps.desktop.showLoadingProgressIndicator();
+            // Simulate async operation (replace with actual removeApp implementation)
+            await this.removeApp(appName, app);
+            delete appsInstalled[appName]; // Update local state
+            resetButtonState(button, false);
+            // this.bp.apps.desktop.hideLoadingProgressIndicator();
+            // Re-render app card to hide Uninstall button
+            $(`.bp-pads-app[data-app="${appName}"]`).replaceWith(renderAppCard(appName, app));
+        }
+    });
+}
