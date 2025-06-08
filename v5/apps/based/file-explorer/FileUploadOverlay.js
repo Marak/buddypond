@@ -9,6 +9,7 @@ export default class FileUploadOverlay {
         this.initializeElements();
         this.bindEvents();
         this.uploadFn = uploadFn;
+        this.bp = fileExplorer.bp;
     }
 
     initializeElements() {
@@ -34,6 +35,10 @@ export default class FileUploadOverlay {
         this.overlay.style.display = 'flex';
         this.renderFiles();
         this.updateTotalSize();
+        if (this.bp.me === "Guest") {
+            $('.bp-file-explorer-upload-controls').html('<h2>Guest account may not upload files.</hr><br/>Please  <button class="open-app action-button" data-app="buddylist">log in</button> to BuddyPond.');
+        }
+
     }
 
     hide() {

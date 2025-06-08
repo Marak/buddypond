@@ -457,7 +457,7 @@ export default class FileExplorer {
         }
     }
 
-    async open({ context }) {
+    async open({ context } = {}) {
         // console.log(`Opening file explorer with context ${context}`);
         this.options.context = context;
         if (!this.fileExplorer) {
@@ -507,6 +507,21 @@ export default class FileExplorer {
             this.fileExplorerWindow.container.style.userSelect = 'none';
             this.create();
 
+             this.bp.on('auth::qtoken', 'reload-file-explorer', async (data) => {
+                // console.log('auth::qtoken event received, reloading file explorer');
+                // reload the file explorer
+                // just close and re-open the file explorer window ( for now )
+                // TODO: make it easier to refresh the file explorer session without closing it
+                if (this.fileExplorerWindow) {
+                    await this.remove();
+                    this.fileExplorerWindow.close();
+                }
+                this.fileExplorerWindow = null;
+                this.fileExplorer = null;
+                this.open();
+                
+             });
+
         } else {
             // jsTree should be ready at this point ( as file-explorer was already created )
             // this could have race condition if spammed opened on first load
@@ -520,6 +535,12 @@ export default class FileExplorer {
 
         }
         this.fileExplorerWindow.maximize();
+
+        if (this.bp.me === "Guest") {
+            $('.upload-message', '.bp-file-explorer-drag-upload').html('Guest account may not upload files.<br/>Please  <button class="open-app action-button" data-app="buddylist">log in</button> to BuddyPond.');
+        }
+        
+
         return this.fileExplorerWindow;
     }
 
