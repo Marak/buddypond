@@ -27,18 +27,18 @@ export default class FileExplorer {
         this.fileExplorerInstance = new FileExplorerClass(this.bp, {
             fileTree: {
                 onFileSelect: (filePath, target) => {
+                    $('.bp-file-explorer-drag-upload').hide();
                     console.log('File selected:', filePath);
                 },
                 onFolderToggle: async (folderPath, isExpanded) => {
+                    $('.bp-file-explorer-drag-upload').hide();
                     // display the contents of the folder in the main window
                     console.log("Folder toggled:", folderPath, isExpanded);
                     return;
-
                 },
                 onFolderSelect: async (folderPath, target) => {
+                    $('.bp-file-explorer-drag-upload').hide();
                     console.log('Folder selected:', folderPath);
-
-
                 }
             }
         });
@@ -262,6 +262,8 @@ export default class FileExplorer {
                 this.fileExplorer.currentSelectedNode = node;
                 instance.toggle_node(node);
             }
+            $('.bp-file-explorer-drag-upload').hide();
+
         });
 
         $('.bp-file-explorer-drag-upload').flexShow();
@@ -517,7 +519,8 @@ export default class FileExplorer {
             }
 
         }
-
+        this.fileExplorerWindow.maximize();
+        return this.fileExplorerWindow;
     }
 
 }

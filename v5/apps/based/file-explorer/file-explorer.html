@@ -3,9 +3,12 @@
   <!-- Top toolbar -->
   <div class="bp-file-explorer-toolbar">
     <div class="bp-file-explorer-toolbar-buttons">
-      <button title="Upload Files" class="bp-file-explorer-btn upload-files"><i class="fa-duotone fa-regular fa-upload"></i></button>
-      <button title="Upload Directory" class="bp-file-explorer-btn upload-directory"><i class="fa-duotone fa-regular fa-folder-arrow-up"></i></button>
-      <button title="Refresh File Tree" class="bp-file-explorer-btn refresh-files"><i class="fa-duotone fa-regular fa-arrows-rotate"></i></button>
+      <button title="Upload Files" class="bp-file-explorer-btn upload-files"><i
+          class="fa-duotone fa-regular fa-upload"></i></button>
+      <button title="Upload Directory" class="bp-file-explorer-btn upload-directory"><i
+          class="fa-duotone fa-regular fa-folder-arrow-up"></i></button>
+      <button title="Refresh File Tree" class="bp-file-explorer-btn refresh-files"><i
+          class="fa-duotone fa-regular fa-arrows-rotate"></i></button>
 
       <!--
       <button class="bp-file-explorer-btn">Back</button>
@@ -44,13 +47,14 @@
         <div class="spinner"></div>
       </div>
       <!-- Content area -->
-        <!-- Drag to Upload Indicator (initially hidden) -->
-        <div class="bp-file-explorer-drag-upload">
-          <p>Drop files here to upload</p>
-          <br/>
-          <p>Storage Used: <span class="storageUsed">loading...</span></p>
-          <p>Remaining: <span class="storageRemaining">loading...</span></p>
-        </div>
+      <!-- Drag to Upload Indicator (initially hidden) -->
+      <div class="bp-file-explorer-drag-upload desktop-overlay">
+        <p>Drag and Dropping to Upload files or folders</p>
+        
+        <br />
+        <p>Storage Used: <span class="storageUsed">loading...</span></p>
+        <p>Remaining: <span class="storageRemaining">loading...</span></p>
+      </div>
 
       <div class="bp-file-explorer-files">
 
@@ -73,13 +77,27 @@
     </div>
 
     <!-- Status bar -->
-    <div class="bp-file-explorer-statusbar">
-      <span>2 items</span>
-    </div>
   </div>
 
+  <div class="bp-file-explorer-statusbar">
+    <!--TODO: file metadata in bottom status bar
+      <span>
+        1 file selected
+      </span>
+      <span>
+        2 mb
+      </span>
+    -->
+    <div class="float_right usage-stats">
+      <span>Storage Used: </span>
+      <span class="bp-file-explorer-quota-used storageUsed">2.1 GB</span>
+      <span> of </span>
+      <span class="bp-file-explorer-quota-total storageRemaining">10 GB</span>
+    </div>
 
-  <div class="bp-file-explorer-upload-overlay">
+  </div>
+
+  <div class="bp-file-explorer-upload-overlay desktop-overlay">
     <div class="bp-file-explorer-upload-container">
       <!-- Header -->
       <div class="bp-file-explorer-upload-header">
@@ -96,7 +114,7 @@
       <div class="bp-file-explorer-upload-errors">
       </div>
 
-    
+
 
       <!-- File List -->
       <div class="bp-file-explorer-upload-files">
@@ -112,21 +130,22 @@
 
       <!-- Total Size -->
       <div class="bp-file-explorer-upload-total">
-        Total Size: <span class="bp-file-explorer-total-size">0 MB</span><br/>
+        Total Size: <span class="bp-file-explorer-total-size">0 MB</span><br />
         Available Storage: <span class="bp-file-explorer-total-size storageRemaining">0 MB</span>
         <div class="bp-file-explorer-storage-warning error">Warning: This upload will exceed your storage limit.</div>
       </div>
 
       <!-- Controls -->
-   <!-- Controls -->
-<div class="bp-file-explorer-upload-controls">
-  <div class="bp-file-explorer-tos">
-      <label for="bp-tos-agreement" title="You clicked the checkbox during account registration.">I have previously agreed to and read BuddyPond's <a href="tos">Terms of Service</a>.</label>
-      <input type="checkbox" id="bp-tos-agreement" class="bp-tos-agreement" checked disabled>
-  </div>
-  <button class="bp-file-explorer-btn bp-file-explorer-upload-cancel">Cancel</button>
-  <button class="bp-file-explorer-btn bp-file-explorer-upload-start">Upload</button>
-</div>
+      <!-- Controls -->
+      <div class="bp-file-explorer-upload-controls">
+        <div class="bp-file-explorer-tos">
+          <label for="bp-tos-agreement" title="You clicked the checkbox during account registration.">I have previously
+            agreed to and read BuddyPond's <a href="tos" target="_blank">Terms of Service</a>.</label>
+          <input type="checkbox" id="bp-tos-agreement" class="bp-tos-agreement" checked disabled>
+        </div>
+        <button class="bp-file-explorer-btn bp-file-explorer-upload-cancel">Cancel</button>
+        <button class="bp-file-explorer-btn bp-file-explorer-upload-start">Upload</button>
+      </div>
 
 
       <!-- Progress Bar (hidden initially) -->

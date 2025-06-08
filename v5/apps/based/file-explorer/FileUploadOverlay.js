@@ -98,6 +98,8 @@ export default class FileUploadOverlay {
                     this.updateProgress(totalProgress);
                 });
                 $(`.bp-file-explorer-upload-file-item[data-file-id="${uploadedFiles - 1}"] .bp-file-explorer-upload-column-status`).text('Completed');
+                this.uploadButton.disabled = false;
+
             } catch (error) {
                 uploadedAllFiles = false;
                 errors.push(error);

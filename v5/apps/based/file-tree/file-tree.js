@@ -37,6 +37,8 @@ export default class FileTree {
     }
 
     handleClick(event) {
+        $('.bp-file-explorer-drag-upload').hide();
+
         const target = event.target.closest('.bp-filetree-item');
         if (!target) return;
 
@@ -51,6 +53,7 @@ export default class FileTree {
         } else {
             this.options.onFileSelect(path, target);
         }
+
     }
 
     getFileIcon(filename) {

@@ -1,4 +1,11 @@
 export default function  showContextMenu(x, y) {
+
+    // find any existing context menu and remove it
+    const existingMenu = document.querySelector('.desktop-context-menu');
+    if (existingMenu) {
+        existingMenu.remove();
+    }
+
     const menu = document.createElement('div');
     menu.className = 'desktop-context-menu';
     menu.style.top = `${y}px`;

@@ -24,8 +24,8 @@ export default async function showFile(root, file, showEditor = false) {
 
         let fileViewerIframe = $('.bp-file-explorer-file-viewer-iframe', this.container);
         // set height and width of iframe
-        fileViewerIframe.css('height', '500px');
-        fileViewerIframe.css('width', '500px');
+        //fileViewerIframe.css('height', '100%');
+        //fileViewerIframe.css('width', '500px');
         let src = root + '/' + file;
         console.log('loading src', src);
         fileViewerIframe.attr('src', src);

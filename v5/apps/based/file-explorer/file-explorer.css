@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: #fff;
+    /* background: #fff; */
     border: 1px solid #999;
     font-family: "MS Sans Serif", Arial, sans-serif;
     font-size: 12px;
@@ -15,7 +15,7 @@
   
   .bp-file-explorer-toolbar {
     padding: 4px 8px;
-    background: #ece9d8;
+    /* background: #ece9d8; */
     border-bottom: 1px solid #999;
     display: flex;
     gap: 8px;
@@ -32,7 +32,7 @@
   
   .bp-file-explorer-btn {
     padding: 2px 8px;
-    background: #ece9d8;
+    /* background: #ece9d8;*/
     border: 1px solid #999;
     border-radius: 3px;
     cursor: pointer;
@@ -66,7 +66,9 @@
     width: 30%; /* TODO: calc() */
     min-width: 100px;
     border-right: 1px solid #999;
+    /*
     background: #fff;
+    */
     overflow: auto;
   }
   
@@ -74,8 +76,10 @@
     padding-left: 10px;
     padding-top: 5px;
     height: 100%;
+    /*
     background: #f5f5f5;
     color: #666;
+    */
   }
   
   .bp-file-explorer-main {
@@ -90,7 +94,7 @@
   .bp-file-explorer-header {
     display: flex;
     padding: 4px 8px;
-    background: #ece9d8;
+    /* background: #ece9d8; */
     border-bottom: 1px solid #999;
     font-weight: bold;
   }
@@ -106,13 +110,17 @@
     cursor: pointer;
   }
   
+  /*
   .bp-file-explorer-item:nth-child(odd) {
     background: #f5f5f5;
   }
+  */
   
+  /*
   .bp-file-explorer-item:hover {
     background: #e8e8e8;
   }
+  */
   
   .bp-file-explorer-column {
     flex: 1;
@@ -128,8 +136,12 @@
   
   .bp-file-explorer-statusbar {
     padding: 2px 8px;
-    background: #ece9d8;
+    /* background: #ece9d8; */
     border-top: 1px solid #999;
+  }
+
+  .bp-file-explorer-statusbar .usage-stats {
+   margin-right: 20px;
   }
 
   .bp-file-explorer-upload-overlay {
@@ -138,7 +150,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.95);
     display: flex;
     justify-content: center;
     align-items: start;
@@ -149,7 +160,7 @@
   .bp-file-explorer-upload-container {
     width: 100%;
     max-width: 800px;
-    background: #fff;
+    /* background: #fff; */
     border: 1px solid #999;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 16px;
@@ -184,7 +195,7 @@
   
   .bp-file-explorer-upload-files-header {
     display: flex;
-    background: #ece9d8;
+    /* background: #ece9d8; */
     padding: 8px;
     font-weight: bold;
     border-bottom: 1px solid #ddd;
@@ -236,7 +247,6 @@
   .bp-file-explorer-upload-progress-container {
     border: 1px solid #ddd;
     padding: 12px;
-    background: #f5f5f5;
   }
   
   .bp-file-explorer-upload-progress-info {
@@ -247,14 +257,14 @@
   
   .bp-file-explorer-upload-progress-bar-container {
     height: 20px;
-    background: #ddd;
+    /* background: #ddd; */
     border: 1px solid #999;
     margin-bottom: 4px;
   }
   
   .bp-file-explorer-upload-progress-bar {
     height: 100%;
-    background: #0078d4;
+    /* background: #0078d4; */
     transition: width 0.3s ease;
   }
   
@@ -266,6 +276,7 @@
 
   .bp-file-explorer-file-viewer {
     display: none;
+    height: 100%;
   }
   
   .bp-file-explorer-drag-upload {
@@ -275,13 +286,15 @@
     transform: translate(-50%, -50%); /* Center the element in both axes */
     width: 50%;
     height: 200px;
+    /*
     background-color: rgba(255, 255, 255, 0.8);
+    */
     z-index: 10;
     display: flex; /* Updated to be displayed on drag-over event */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #333;
+    /* color: #333; */
     font-size: 16px;
     border: 2px dashed #007BFF;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Adds a slight shadow for a 'pop' effect */
@@ -291,6 +304,10 @@
 /* Display the drag upload indicator on file drag-over */
 .bp-file-explorer-files.drag-over .bp-file-explorer-drag-upload {
     display: flex;
+}
+
+.bp-file-explorer-file-viewer-content {
+  height: 100%;
 }
 
 
@@ -350,10 +367,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: black;
   z-index: 1000;
   height: 100%;
-  opacity: 0.9;
+  opacity: 1;
   font-size: 48px;
 }
 
