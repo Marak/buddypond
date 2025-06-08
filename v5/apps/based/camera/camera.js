@@ -19,7 +19,6 @@ export default class Camera {
             audiooutput: {}
         };
 
-
         // "local" mode indicates the mirror will save photos locally to file-system
         // This could also be "snap" which indicates photos will be sent out as Snaps ( multimedia chat messages )
         this.mode = 'local';
@@ -29,8 +28,6 @@ export default class Camera {
 
         // Three view modes available for Mirror: Normal, Half, Full
         this.viewMode = 'Normal';
-
-
         this.selectedCameraIndex = 0;
 
         // starts photo record
@@ -76,7 +73,7 @@ export default class Camera {
                 x: 50,
                 y: 100,
                 width: 640,
-                height: 580,
+                height: 550,
                 minWidth: 200,
                 minHeight: 200,
                 parent: $('#desktop')[0],
@@ -110,14 +107,14 @@ export default class Camera {
                 }
             });
 
-            $('#mirrorCanvasMe', this.cameraWindow.content).css('width', 640);
-            $('#mirrorCanvasMe', this.cameraWindow.content).css('height', 480);
+            $('#mirrorCanvasMe', this.cameraWindow.content).css('width', '100%');
+            $('#mirrorCanvasMe', this.cameraWindow.content).css('height', '100%');
+            //$('#mirrorCanvasMe', this.cameraWindow.content).css('object-fit', 'cover');
 
             $('#snapDelaySlider', this.cameraWindow.content).show();
             this.bindUIEvents();
 
         }
-
 
         this.snapContext = options.context;
         this.snapType = options.type;

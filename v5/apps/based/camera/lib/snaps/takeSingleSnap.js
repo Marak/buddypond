@@ -5,17 +5,16 @@ export default function takeSingleSnap () {
     //$('#mirrorCanvasMe').css('height', 480);
     $('.recordSnap').hide();
   
-    /*
-    if (!desktop.settings.mirror_snaps_camera_countdown_enabled) {
-      if (currentFrame === 0) {
-        desktop.play('CAMERA_SNAP.wav');
+    if (!this.bp.settings.mirror_snaps_camera_countdown_enabled) {
+      if (that.currentFrame === 0) {
+        this.bp.play('desktop/assets/audio/CAMERA_SNAP.wav');
         setTimeout(function () {
-          desktop.app.mirror.recordSnaps(1);
+          that.recordSnaps(1);
         }, 44);
         return;
       }
     }
-    */
+
     bp.play('desktop/assets/audio/CAMERA_COUNTDOWN.wav');
     $('.snapCountDown').show();
     setTimeout(function () {

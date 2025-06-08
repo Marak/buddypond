@@ -12,10 +12,12 @@ export default function bindUIEvents() {
         min: 1,
         max: 2222,
         change: function (event, ui) {
-            that.snapDelay = ui.value;
-            $('#snapsPreview').data('delay', ui.value);
-            let delay = ui.value;
-            that.createGif(delay);
+ 
+           let inversedValue = 2222 - ui.value;      
+            that.snapDelay = inversedValue;
+            $('#snapsPreview').data('delay', inversedValue);
+            let delay = inversedValue;
+            that.createGif(inversedValue);
         }
     });
 
@@ -75,8 +77,8 @@ export default function bindUIEvents() {
             return;
         }
         if (that.viewMode === 'Full') {
-            $('#mirrorCanvasMe').css('width', 640);
-            $('#mirrorCanvasMe').css('height', 480);
+            $('#mirrorCanvasMe').css('width', '100%');
+            $('#mirrorCanvasMe').css('height', '100%');
             $('#snapsPreview').css('width', 640);
             $('#snapsPreview').css('height', 480);
             $('#mirrorCanvasMe').css('padding-top', 0);
@@ -101,9 +103,9 @@ export default function bindUIEvents() {
     }
 
 
-    $('.selectMirrorCamera').on('change', function () {
+    $('.selectMirrorCamera').on('change', () => {
         let newDeviceLabel = $(this).val();
-        desktop.set('mirror_selected_camera_device_label', newDeviceLabel);
+        this.bp.set('mirror_selected_camera_device_label', newDeviceLabel);
         // TODO: use localstorage to set device preference
         that.startCamera(newDeviceLabel);
     });
@@ -228,15 +230,16 @@ export default function bindUIEvents() {
         //that.takeSingleSnap();
     });
 
-    if (desktop.settings.mirror_snaps_camera_countdown_enabled) {
+    if (bp.settings.mirror_snaps_camera_countdown_enabled) {
         $('.cameraCountdownEnabled').prop('checked', 'checked');
     }
 
-    $('.cameraCountdownEnabled').on('change', function () {
+    $('.cameraCountdownEnabled').on('change', () => {
+        alert('change')
         if ($(this).prop('checked')) {
-            desktop.set('mirror_snaps_camera_countdown_enabled', true);
+            this.bp.set('mirror_snaps_camera_countdown_enabled', true);
         } else {
-            desktop.set('mirror_snaps_camera_countdown_enabled', false);
+            this.bp.set('mirror_snaps_camera_countdown_enabled', false);
         }
     });
 
