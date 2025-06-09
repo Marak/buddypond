@@ -631,8 +631,12 @@ a:hover {
 }
 
 .error {
-  border-color: red;
+  border-color: red !important;
   color: red;
+}
+.success {
+  color: green;
+  border-color: green;
 }
 .danger {
   color: red;

@@ -79,7 +79,8 @@ export default class WallpaperManager {
 
         if (!this.wallpapers[this.active]) {
             let remoteScript = this._wallpapers[this.active].src;
-            let wp = await this.bp.importModule(remoteScript, {}, false);
+            // console.log('Loading wallpaper:', this.active, remoteScript);
+            let wp = await this.bp.importModule(remoteScript[0], {}, false);
             this.wallpapers[this.active] = new wp.default('c');
             // check for load function, call if required
             // Remark: This is a bit of a "sub-app" pattern,

@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.1.0';
+bp.version = '6.1.1';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -102,9 +102,15 @@ bp.load = async function load(resource, config = {}) {
 bp.importModule = async function importModule(app, config, buddypond = true, cb) {
     // console.log('importModule', app, config, buddypond);
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
+    let appName = app;
+
+    if (typeof app === 'object') {
+        config = app;
+        appName = app.name;
+        app = appName;
+    }
 
     if (bp.mode === 'prod') {
-        // TODO: will need map of other nested-style apps ( currently only cards )
         if (modulePath.includes('/card/cards')) {
             modulePath = bp.config.host + `/v5/dist/apps/based/${app}`;
             modulePath = modulePath.replace('apps/based//v5', '');
@@ -113,16 +119,8 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
         }
     }
 
-    let appName = app;
-
     if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
         bp.emit('bp::loading', appName);
-    }
-
-    if (typeof app === 'object') {
-        modulePath = bp.config.host + `/v5/apps/based/${app.name}/${app.name}.js`;
-        config = app;
-        appName = app.name;
     }
 
     if (!buddypond) {
@@ -130,6 +128,7 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     }
 
     modulePath += '?v=' + bp.version; // append version to URL to prevent caching issues
+    // console.log('importModule', modulePath, app, config, buddypond);
 
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {
@@ -181,7 +180,7 @@ bp.fetchHTMLFragment = async function fetchHTMLFragment(url) {
     let fullUrl = `${bp.config.host}${url}`;
 
     fullUrl += '?v=' + bp.version; // append version to URL to prevent caching issues
-    
+
     // console.log('fetchHTMLFragment', fullUrl);
     if (bp._cache.html[fullUrl]) {
         return bp._cache.html[fullUrl];

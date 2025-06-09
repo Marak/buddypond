@@ -65,7 +65,7 @@ export default class Themes {
 
     // Create and inject CSS variables as :root
     const css = this.generateThemeCSSVariables(theme);
-    console.log('Generated CSS for theme:', themeName, css);
+    // console.log('Generated CSS for theme:', themeName, css);
     const styleEl = document.createElement('style');
     styleEl.id = 'dynamic-theme';
     styleEl.textContent = css;

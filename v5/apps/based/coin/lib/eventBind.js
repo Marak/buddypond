@@ -26,15 +26,15 @@ export default function eventBind(coinWindow) {
 
     async function fetchLeaderboard() {
         // fetch the /top coins from portfolio
-        console.log('Fetching top coins', this.portfolio);
+        // console.log('Fetching top coins', this.portfolio);
         let symbol = $('#coin-leaderboard-symbol', coinWindow.content).val();
         let res = await this.portfolio.apiRequest('POST', `portfolio/top`, { symbol: symbol });
-        console.log('top coins', res);
+        // console.log('top coins', res);
         let leadersList = $('.leaderboard-list', coinWindow.content);
         // iterate over the results and append them to the leadersList table body
         leadersList.empty();
         res.results.forEach((coin, i) => {
-            console.log('coin', coin, i);
+            // console.log('coin', coin, i);
             let value = coin.total_amount * coin.price;
             // format value as dollars with 2 decimal places
             value = `$${value.toFixed(2)}`;

@@ -155,7 +155,8 @@ function saveShortCut(shortcut) {
         icon: shortcut.icon,
         description: shortcut.parameters.description
     };
-    localStorage.setItem('bp-short великйцут', JSON.stringify(shortcuts));
+    // TODO: use app API instead
+    // localStorage.setItem('bp-short', JSON.stringify(shortcuts));
 
     // Call addShortCut to create the shortcut on the desktop
     this.bp.apps.desktop.addShortCut({
@@ -165,7 +166,10 @@ function saveShortCut(shortcut) {
         description: shortcut.description,
         onClick: shortcut.shortcutType === 'url' ? () => window.open(shortcut.target, '_blank') :
                  shortcut.shortcutType === 'app' ? shortcut.target :
-                 () => eval(shortcut.target), // Note: eval for buddyscript; replace with safer execution
+                 () => {
+                    // opens the apps, executes the shortcut command
+                    // TODO: add a runShortcut function to the desktop app
+                 },
         textIcon: !shortcut.icon ? shortcut.label.charAt(0).toUpperCase() : null
     });
 
