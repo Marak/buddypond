@@ -44,7 +44,7 @@ export default function defaultDesktopShortcuts() {
                     description: app.description || 'No description available'
                 }, {
                     onClick: () => {
-                        bp.open(appName);
+                        bp.open(app.app || appName, { context: app.context });
                     }
                 });
             }

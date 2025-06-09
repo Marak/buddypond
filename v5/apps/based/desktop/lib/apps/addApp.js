@@ -29,7 +29,8 @@ export default async function addApp(appName, app) {
         label: app.label || appName,
     }, {
         onClick: () => {
-            this.bp.open(appName);
+            // console.log(`Opening app: ${appName}`, app);
+            this.bp.open(app.app || appName, { context: app.context });
         }
     });
     // this.bp.apps.desktop.hideLoadingProgressIndicator();

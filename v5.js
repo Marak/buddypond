@@ -54,6 +54,7 @@ window.bp_v_5 = async function bp_v_5() {
 
             // load apps from the chat button bar
             // try adding a small sleep between deferred loads to prevent potential lag to the UI thread
+            // These are services used in the chat window, better to preload them so there is no lag when the user clicks on them
             await bp.load('image-search');
             await sleep(100);
             await bp.load('ramblor');
@@ -66,15 +67,17 @@ window.bp_v_5 = async function bp_v_5() {
             // from the top menu bar
             await bp.load('soundcloud');
 
-            // all desktop apps
-            let apps = Object.keys(bp.apps.desktop.apps);
+            // preload all installed desktop apps
+            let apps = Object.keys(bp.settings.apps_installed || {});
 
             for (let appId of apps) {
-                let app = bp.apps.desktop.apps[appId];
-                await bp.load(app.name);
+                let app =  bp.settings.apps_installed[appId];
+                // console.log('Defer loading app:', appId, app);
+                await bp.load(app.app || appId);
                 await sleep(100);
             }
-        }, 7000);
+            console.log('Deferred loading of additional apps completed.');
+        }, 1000);
     }
 
     deferLoad();
