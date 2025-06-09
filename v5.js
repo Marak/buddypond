@@ -248,7 +248,7 @@ function arrangeDesktop() {
         bp.apps.ui.windowManager.arrangeVerticalStacked()
 
     } else {
-        bp.apps.desktop.arrangeShortcuts(3, {
+        bp.apps.desktop.arrangeShortcuts(2, {
             rowWidth: 80,
             rowHeight: 100,
             x: 0, // TODO: we should start from the x and y position in our calculations

@@ -40,6 +40,9 @@ export default class SimpleTabs {
             this.navigateToTab(tabId);
         });
 
+        // remove the border-right from the last tab
+        this.container.find('.tab-list li:last-child a').css('border-right', 'none');
+
         // always navigate to the first tab
         //alert('navigating to first tab');
         let tabId = this.container.find('.tab-list li a').first();

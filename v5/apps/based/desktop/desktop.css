@@ -129,7 +129,13 @@
 .desktop-context-menu div {
     padding: 10px;
     font-size: 14px;
-    color: #333;
+    color: var(--desktop_element-color);
+    cursor: pointer;
+}
+
+.desktop-context-menu div:hover {
+    background-color: var(--desktop_element_hover-background);
+    color: var(--desktop_element_hover-color);
 }
 
 .desktop-section {

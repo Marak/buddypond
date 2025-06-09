@@ -2,6 +2,11 @@ export default function renameShortCut(appName, titleElement) {
     
     const newName = prompt('Enter new shortcut name:', titleElement.textContent);
 
+    if (!newName || newName.trim() === '') {
+        // console.warn('Renaming cancelled or invalid name provided.');
+        return;
+    }
+
     // TODO: forbidden Note check goes here ( no bad names in shortcuts )
     let shortcut = $(`.bp-desktop-shortcut[data-app="${appName}"]`);
     console.log(`Renaming shortcut ${shortcut} to ${newName}`);

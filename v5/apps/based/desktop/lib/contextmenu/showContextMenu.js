@@ -10,7 +10,7 @@ export default function  showContextMenu(x, y) {
     menu.innerHTML = `
         <ul>
             <!-- <li onclick="bp.apps.desktop.createShortCut()">New Shortcut...</li> -->
-            <li onclick="bp.apps.desktop.arrangeShortcuts(3, {
+            <li onclick="bp.apps.desktop.arrangeShortcuts(2, {
     rowWidth: 80,
     rowHeight: 100,
     x: 0,

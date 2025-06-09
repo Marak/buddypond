@@ -110,11 +110,13 @@ export default function renderAppList() {
     renderApps(currentCategory);
 
     // Handle category button clicks
-    categoryContainer.on('click', '.bp-pads-category-btn', function () {
+    categoryContainer.on('click', '.bp-pads-category-btn', (ev) => {
         $('.bp-pads-category-btn').removeClass('bp-pads-category-active');
-        $(this).addClass('bp-pads-category-active');
-        currentCategory = $(this).data('category');
+        $(ev.target).addClass('bp-pads-category-active');
+        currentCategory = $(ev.target).data('category');
         renderApps(currentCategory);
+        // scroll to top of app container
+        $(this.padWindow.content).scrollTop(0);
     });
 
     // Handle app action button clicks

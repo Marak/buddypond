@@ -94,10 +94,9 @@ export default function addShortCut(app, options = {}, parent) {
             y: el.offsetTop
         }
 
-        console.log('saving appsInstalled', appsInstalled)
+        // console.log('saving appsInstalled', appsInstalled)
         this.bp.set('apps_installed', appsInstalled);
 
-        console.log('apppp', app);
         return false;
 
     });

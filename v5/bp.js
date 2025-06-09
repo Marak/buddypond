@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.1.1';
+bp.version = '6.1.2';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -117,6 +117,9 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
         } else {
             modulePath = bp.config.host + `/v5/dist/apps/based/${app}.js`;
         }
+    } else {
+        // in dev mode, we use the local path directly
+        modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     }
 
     if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
@@ -128,7 +131,7 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     }
 
     modulePath += '?v=' + bp.version; // append version to URL to prevent caching issues
-    // console.log('importModule', modulePath, app, config, buddypond);
+    // console.log('importModule modulePath', modulePath, app, config, buddypond);
 
     // Check if the module has already been loaded
     if (bp._modules[modulePath]) {

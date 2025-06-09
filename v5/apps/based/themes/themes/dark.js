@@ -49,7 +49,7 @@ export default {
             'color': '#E3E3E3',
         },
         "desktop_element_hover": {
-            'background': '#242428'
+            'background': '#333333',
         },
         'desktop_section': {
             'background': '#242429',

@@ -26,32 +26,6 @@
     border-bottom: 1px solid #ddd;
 }
 
-.tab-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.tab-list li {
-    margin: 0;
-}
-
-.tab-list a {
-    display: block;
-    padding: 0.75rem 1.5rem;
-    color: #666;
-    text-decoration: none;
-    border-right: 1px solid #ddd;
-}
-
-.tab-list a.active {
-    background: #fff;
-    color: #333;
-    border-bottom: 2px solid #007bff;
-    margin-bottom: -1px;
-}
-
 .fileviewer-target {
     display: flex;
     align-items: center;

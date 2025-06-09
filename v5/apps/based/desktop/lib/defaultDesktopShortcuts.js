@@ -19,7 +19,7 @@ export default function defaultDesktopShortcuts() {
             let app = this.bp.apps.desktop.appList[appName];
             if (app) {
                 console.log(`Adding default app shortcut: ${appName}`);
-                console.log(app);
+                // console.log(app);
                 installeApps[appName] = app;
 
                 // this.bp.apps.desktop.addShortCut(app);
