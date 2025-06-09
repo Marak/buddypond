@@ -3,6 +3,7 @@ export default {
     name: 'admin',
     icon: `desktop/assets/images/icons/icon_profile_64.png`,
     label: 'Admin',
+    "onClick": "bp.open('admin')",
     adminOnly: true,
   },
   "profile": {

@@ -142,6 +142,31 @@
     display: none;
 }
 
+.forgot-password-modal {
+    padding-bottom: 10px;
+}
+.forgot-password-modal input[type="text"],
+.forgot-password-modal input[type="password"] {
+    margin: 5px 0;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #888;
+    border-radius: 3px;
+}
+.forgot-password-modal button {
+    padding: 10px 15px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.forgot-password-modal button:hover {
+    background-color: #0056b3;
+}
+
+
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .app-buddylist>p,
     .app-buddylist>input,

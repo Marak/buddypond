@@ -5,6 +5,22 @@
         Tell us your name to get started.
       </p>
       <div class="login-frog"><i class="fa-duotone fa-solid fa-frog"></i></div>
+
+<div class="forgot-password-modal">
+  <div class="forgot-password-content">
+    <h2>Reset Password</h2>
+    <p class="resetPasswordMessage">Enter your email to reset your password.</p>
+    <form class="resetPasswordForm" method="POST" action="#">
+      <input type="text" class="resetPasswordEmail" name="account_email" placeholder="email address" required />
+      <button type="submit" class="resetPasswordButton">Reset Password</button>
+      <button class="closeForgotPassword">Close</button>
+
+    </form>
+    <p class="resetStatus error"></p>
+    <span>If you never set an email please contact accounts@buddypond.com</span>
+  </div>
+</div>
+
       <form class="loginForm" method="POST" action="#">
         <input type="text" name="username" placeholder="Name" />
         <input type="password" name="password" class="password" placeholder="Password" />
@@ -67,16 +83,3 @@
   </div>
 </div>
 
-<div class="forgot-password-modal">
-  <div class="forgot-password-content">
-    <h2>Reset Password</h2>
-    <p class="resetPasswordMessage">Enter your email to reset your password.</p>
-    <form class="resetPasswordForm" method="POST" action="#">
-      <input type="text" name="username" placeholder="Username" required />
-      <button type="submit" class="resetPasswordButton">Reset Password</button>
-    </form>
-    <p class="resetStatus error"></p>
-    <span>If you never set an email please contact accounts@buddypond.com</span>
-    <button class="closeForgotPassword">Close</button>
-  </div>
-</div>

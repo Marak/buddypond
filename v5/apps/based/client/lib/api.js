@@ -459,9 +459,9 @@ buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, sou
     parts = parts.substring(0, parts.length - 1);
   }
   const byteString = atob(parts);
-  console.log('byteString', byteString)
+  // console.log('byteString', byteString)
   const mimeString = snapsJSON.split(',')[0].split(':')[1].split(';')[0];
-  console.log('mimeString', mimeString)
+  // console.log('mimeString', mimeString)
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
   for (let i = 0; i < byteString.length; i++) {
@@ -800,6 +800,12 @@ buddypond.lastResponseTime = function averageResponseTime() {
   let perf = buddypond.recentResponseTimes[buddypond.recentResponseTimes.length - 1];
   let elapsed = perf.end.getTime() - perf.start.getTime();
   return elapsed + 'ms';
+}
+
+buddypond.sendPasswordResetEmail = function sendPasswordResetEmail(email, cb) {
+    apiRequest('/auth/forgot-password', 'POST', { email: email }, (err, data) => {
+      cb(err, data);
+    });
 }
 
 //

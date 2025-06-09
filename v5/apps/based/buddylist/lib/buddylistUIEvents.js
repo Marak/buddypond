@@ -22,7 +22,7 @@ export default function buddylistUIEvents() {
         if (result && result.error) {
           $('.loginStatus').html(result.error);
           if (result.error === 'Incorrect password.') {
-            // $('.resetPasswordLink').show();
+            $('.resetPasswordLink').show();
           }
         } else {
           if (err.message === 'Failed to fetch') {
@@ -72,11 +72,39 @@ export default function buddylistUIEvents() {
   });
 
   $('.forgot-password').on('click', (ev) => {
+    $('.loginForm').flexHide();
     $('.forgot-password-modal').flexShow();
+    $('.tos-checkbox').flexHide();
+    $('.loginStatus').html('');
+    $('.resetPasswordLink').flexHide();
   });
 
   $('.closeForgotPassword').on('click', (ev) => {
     $('.forgot-password-modal').flexHide();
+    $('.loginForm').flexShow();
+    $('.tos-checkbox').flexShow();
+    $('.resetPasswordLink').flexShow();
+  });
+
+  $('.resetPasswordButton').on('click', (ev) => {
+    ev.preventDefault();
+    let email = $('.resetPasswordEmail').val();
+    if (!email) {
+      $('.resetPasswordEmail').addClass('error');
+      return;
+    }
+    $('.resetPasswordEmail').removeClass('error');
+    $('.loginStatus').html('Sending password reset email...');
+
+    api.sendPasswordResetEmail(email, (err, data) => {
+      console.log('sendPasswordResetEmail', err, data);
+      if (err || !data.success) {
+        $('.loginStatus').html('Failed to send password reset email.');
+        console.error(err || data);
+        return;
+      }
+      $('.loginStatus').removeClass('error').html(data.message);
+    });
   });
 
   $('.buddylist').click((e) => {

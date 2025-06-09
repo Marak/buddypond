@@ -345,6 +345,17 @@ export default class BuddyList {
                 $('.buddy_email').val(data.email);
             }
 
+            if (typeof data.emailVerified === 'boolean') {
+                this.data.profileState.emailVerified = data.emailVerified;
+                // update the email verified checkbox
+                // $('.buddy_email_verified').prop('checked', data.emailVerified);
+                if (data.emailVerified) {
+                    $('.buddy_email_verified_text').html('Email Verified');
+                } else {
+                    $('.buddy_email_verified_text').html('Email Not Verified');
+                }
+            }
+
             // iterate through all buddies and call renderOrUpdateBuddyInBuddylist
 
         });

@@ -29,7 +29,7 @@ export default async function addApp(appName, app) {
         label: app.label || appName,
     }, {
         onClick: () => {
-            desktop.ui.openWindow(appName);
+            this.bp.open(appName);
         }
     });
     // this.bp.apps.desktop.hideLoadingProgressIndicator();

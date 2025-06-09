@@ -200,8 +200,8 @@ window.top.location = 'ie.html';
             // desktop.log('Buddy Pond Cloud OS Loading');
             if (typeof resource === 'object') {
               // if resource is an object, stringify it
-              console.log('Loading ' + resource.name +  '...');
-            $('.loaderText').text('Loading ' + resource.name + '...');
+              console.log('Loading ' + resource.name + '...');
+              $('.loaderText').text('Loading ' + resource.name + '...');
             } else {
               console.log('Loading ' + resource + '...');
               $('.loaderText').text('Loading ' + resource + '...');
@@ -286,10 +286,48 @@ window.top.location = 'ie.html';
             easing: 'linear',
             duration: fadeInDelay,
             complete: function () {
-                            $('#mainOverlay').fadeIn({
+              $('#mainOverlay').fadeIn({
                 easing: 'linear',
                 duration: 333
               });
+
+              // check if we have a query param named rtoken
+              let urlParams = new URLSearchParams(window.location.search);
+              let rtoken = urlParams.get('rtoken');
+              let buddyname = urlParams.get('buddyname');
+              if (rtoken && buddyname) {
+                // if we have a rtoken, apply password reset logic
+                // alert('You have a rtoken: ' + rtoken);
+                console.log('You have a rtoken: ' + rtoken);
+                buddypond.apiRequest(`/auth/reset-password?rtoken=${rtoken}&buddyname=${buddyname}`, 'GET', {
+                }, (err, data) => {
+                  // TODO: consolidate login logic to new API client
+                  if (err || !data.success) {
+                    if (data.message) {
+                      alert(data.message);
+                    } else {
+                      alert(err.message);
+                    }
+                  }
+
+                  console.log('Password reset response:', err, data);
+                  if (data.success) {
+                    let qtoken = data;
+                    data.me = buddyname;
+                    buddypond.me = buddyname;
+                    buddypond.qtokenid = data.qtokenid;
+                    localStorage.setItem('qtokenid', data.qtokenid);
+                    localStorage.setItem('me', buddypond.me);
+                    bp.emit('auth::qtoken', data);
+                    bp.open('pincode');
+                    // remove all query params from the URL
+                    let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                    // TODO: Add back
+                    // window.history.pushState({ path: newUrl }, '', newUrl);
+                  }
+                });
+              }
+
             }
           });
         });
