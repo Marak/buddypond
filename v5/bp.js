@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.1.2';
+bp.version = '6.1.3';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -122,10 +122,6 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
         modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     }
 
-    if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
-        bp.emit('bp::loading', appName);
-    }
-
     if (!buddypond) {
         modulePath = app;
     }
@@ -137,6 +133,11 @@ bp.importModule = async function importModule(app, config, buddypond = true, cb)
     if (bp._modules[modulePath]) {
         // console.log('module already loaded', app);
         return bp._modules[modulePath];
+    }
+
+    // The app is not cached / has not yet been loaded, so we will attempt to load it
+    if (buddypond) { // only show loading if we are loading a buddypond app ( not all remote apps )
+        bp.emit('bp::loading', appName);
     }
 
     try {

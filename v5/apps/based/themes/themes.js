@@ -1,7 +1,6 @@
 import dark from './themes/dark.js';
 import light from './themes/light.js';
 
-console.log('Themes module loaded', dark);
 export default class Themes {
   constructor(bp, options = {}) {
     this.bp = bp;
@@ -42,7 +41,7 @@ export default class Themes {
       const customTheme = this.bp.settings.custom_theme;
       const theme = themePref === 'Custom' ? customTheme : this.themes[themePref];
       if (theme) {
-        console.log('Applying theme:', theme.name || themePref);
+        console.log('Applying theme "' + theme.name || themePref + '"');
         this.applyTheme(theme);
       }
     }
@@ -71,7 +70,7 @@ export default class Themes {
     styleEl.textContent = css;
     document.head.appendChild(styleEl);
 
-    console.log(`Applied theme "${themeName}" using CSS variables.`);
+    console.log(`Applied theme "${themeName}"`);
   }
 
   generateThemeCSSVariables(theme) {

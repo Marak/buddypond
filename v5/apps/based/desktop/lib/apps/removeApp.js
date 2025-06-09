@@ -1,7 +1,6 @@
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default async function removeApp(appName, app) {
-    console.log(`Stub: Adding app ${app} to desktop`);
 
     this.bp.play('desktop/assets/audio/APP-REMOVE.wav');
 

@@ -322,8 +322,7 @@ window.top.location = 'ie.html';
                     bp.open('pincode');
                     // remove all query params from the URL
                     let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-                    // TODO: Add back
-                    // window.history.pushState({ path: newUrl }, '', newUrl);
+                    window.history.pushState({ path: newUrl }, '', newUrl);
                   }
                 });
               }

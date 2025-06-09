@@ -17,7 +17,7 @@ export default async function addApp(appName, app) {
         console.error(`App ${appName} not found in appstore`);
         return;
     }
-    console.log(`Stub: Adding app ${app} to desktop`);
+    // console.log(`Stub: Adding app ${app} to desktop`);
     this.bp.play('desktop/assets/audio/APP-ADD.wav');
     let installedApps = this.bp.settings.apps_installed || {};
     // TODO: lookup actual app object from appstore.apps
@@ -25,7 +25,7 @@ export default async function addApp(appName, app) {
     this.bp.set('apps_installed', installedApps);
     this.bp.apps.desktop.addShortCut({
         name: appName,
-        icon: `desktop/assets/images/icons/icon_${appName}_64.png`,
+        icon: app.icon,
         label: app.label || appName,
     }, {
         onClick: () => {

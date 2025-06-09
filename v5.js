@@ -34,15 +34,13 @@ window.bp_v_5 = async function bp_v_5() {
     // load any other apps that are non-essential but still useful
     // bp.load('console');
     bp.load('clock');
-    bp.load('appstore');
-    //await bp.load('motd');
+    // bp.load('appstore'); // replaced with pads
     bp.open('motd');
     bp.load('say');
     bp.load('droparea');
     bp.load('file-viewer');
     bp.load('rewards');
-    // bp.open('file-explorer');
-    // bp.open('pad');
+    bp.load('pad');
 
     // await bp.open('audio-player');
 
@@ -52,13 +50,18 @@ window.bp_v_5 = async function bp_v_5() {
     // TODO: ensure this starts *after* app is ready. this should be OK for now, but we could tighten the timing
     function deferLoad() {
         setTimeout(async () => {
-            console.log('Defer loading additional apps...');
+            console.log('Now defer loading additional apps...');
 
             // load apps from the chat button bar
+            // try adding a small sleep between deferred loads to prevent potential lag to the UI thread
             await bp.load('image-search');
+            await sleep(100);
             await bp.load('ramblor');
+            await sleep(100);
             await bp.load('emoji-picker');
+            await sleep(100);
             await bp.load('dictate');
+            await sleep(100);
 
             // from the top menu bar
             await bp.load('soundcloud');
@@ -69,7 +72,7 @@ window.bp_v_5 = async function bp_v_5() {
             for (let appId of apps) {
                 let app = bp.apps.desktop.apps[appId];
                 await bp.load(app.name);
-
+                await sleep(100);
             }
         }, 7000);
     }
@@ -264,4 +267,6 @@ function arrangeDesktop() {
     }, 300);
 
 }
+let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 window.arrangeDesktop = arrangeDesktop;

@@ -59,13 +59,13 @@ export default class MenuBar {
 
         // update the default values based on local storage settings
         // TODO: we may want to move this somewhere else
-        console.log('setting current theme', this.bp.settings.active_theme);
+        // console.log('setting current theme', this.bp.settings.active_theme);
         if (this.bp.settings.active_theme) {
             $('.selectTheme', this.menuBarElement).val(this.bp.settings.active_theme);
         } else {
             $('.selectTheme', this.menuBarElement).val('Dark');
         }
-        console.log('setting audio', this.bp.settings.audio_enabled);
+        // console.log('setting audio', this.bp.settings.audio_enabled);
         if (this.bp.settings.audio_enabled === false) {
             $('.volumeFull').hide();
             $('.volumeMuted').show();

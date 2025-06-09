@@ -225,7 +225,7 @@ export default class Emulator {
 
         }, 200);
 
-        this.logo.style.display = 'none'; // Show logo when emulator is ready
+        // this.logo.style.display = 'none'; // Show logo when emulator is ready
 
     }
 

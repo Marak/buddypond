@@ -1,4 +1,4 @@
-export default function arrangeShortcuts(cols = 4, options = {
+export default function arrangeShortcuts(cols = 2, options = {
     rowWidth: 80,
     rowHeight: 100,
     x: 0, // TODO: we should start from the x and y position in our calculations

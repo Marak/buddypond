@@ -8,7 +8,9 @@ export default class Wallpaper {
 
     async init() {
         const wallpaperManager = new WallpaperManager(this.bp);
-        wallpaperManager.load({}, () => console.log('Wallpapers loaded'));
+        wallpaperManager.load({}, () => {
+            //console.log('Wallpapers loaded')
+        });
         this.wallpaperManager = wallpaperManager;
         this.bp.on('settings::wallpaper_name', 'update-wallpaper', function (data) {
             wallpaperManager.stop();
