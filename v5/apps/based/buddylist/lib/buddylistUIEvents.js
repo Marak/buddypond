@@ -95,7 +95,8 @@ export default function buddylistUIEvents() {
     }
     $('.resetPasswordEmail').removeClass('error');
     $('.loginStatus').html('Sending password reset email...');
-
+    $('.resetPasswordForm').flexHide();
+    $('.resetPasswordMessage').flexHide();
     api.sendPasswordResetEmail(email, (err, data) => {
       console.log('sendPasswordResetEmail', err, data);
       if (err || !data.success) {
@@ -103,7 +104,7 @@ export default function buddylistUIEvents() {
         console.error(err || data);
         return;
       }
-      $('.loginStatus').removeClass('error').html(data.message);
+      $('.loginStatus').removeClass('error').addClass('success').html(data.message);
     });
   });
 
