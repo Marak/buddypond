@@ -10,6 +10,6 @@ export default function removeWallpaper () {
     // save the wallpaper setting in local storage
     this.bp.set('wallpaper_url', null);
 
-    this.wallpaperManager.stop();
+    this.bp.apps.wallpaper.wallpaperManager.stop();
 
 }

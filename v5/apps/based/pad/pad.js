@@ -4,7 +4,6 @@ import renderPadRows from './lib/renderPadRows.js';
 import savePad from './lib/savePad.js';
 import buildPad from './lib/buildPad.js';
 import renderAppList from './lib/renderAppList.js';
-import addApp from './lib/addApp.js';
 
 export default class Pad {
     constructor(bp, options = {}) {
@@ -284,4 +283,3 @@ Pad.prototype.renderPadRows = renderPadRows;
 Pad.prototype.savePad = savePad;
 Pad.prototype.buildPad = buildPad;
 Pad.prototype.renderAppList = renderAppList;
-Pad.prototype.addApp = addApp;

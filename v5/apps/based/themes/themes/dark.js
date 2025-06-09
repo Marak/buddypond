@@ -9,10 +9,12 @@ export default {
             'background': '#231c2f',
             'color': '#E3E3E3'
         },
+        /*
         'window_main': {
             'background': '#1a1a1e',
             'color': '#E3E3E3'
         },
+        */
         'window_content': {
             'background': '#1a1a1e',
             'color': '#E3E3E3'
@@ -27,7 +29,10 @@ export default {
         'desktop_button': {
             'background': '#242428',
             'color': '#E3E3E3',
-            'border': '1px solid #333333'
+            'border': '1px solid #333333',
+            'border-radius': '4px',
+            'padding': '8px 16px',
+            'cursor': 'pointer',
         },
         'desktop_button_hover': {
             'background': '#333333',
@@ -61,6 +66,11 @@ export default {
         'desktop_links_hover': {
             'color': '#E3E3E3',
             'text-decoration': 'underline'
+        },
+        'desktop_overlay': {
+            'background': '#231c2f',
+            'color': '#181818',
+            'border': '1px solid #cccccc'
         },
         'ui_table': {
             'background': '#1a1a1e',

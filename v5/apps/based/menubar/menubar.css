@@ -31,7 +31,11 @@
   z-index: 13000;
   border-radius: 4px 4px 0 0;
   background: none;
-  color: #ddd;
+  color: var(--desktop_menu_bar-color);
+}
+
+.menu-item > div {
+  color: var(--desktop_menu_bar-color);
 }
 
 .menu-item select {
@@ -81,6 +85,7 @@
   padding: 8px 15px;
   cursor: pointer;
   width: 220px;
+  color: var(--desktop_menu_bar-color);
 }
 
 .submenu-item:hover {

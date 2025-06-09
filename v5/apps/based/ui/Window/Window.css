@@ -23,8 +23,8 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(180deg, #666666, #353535); /* Mac-like gradient */
-    color: #e0e0e0;
+    /* background: linear-gradient(180deg, #666666, #353535); */
+    /* color: #e0e0e0; */
     padding-top: 8px;
     padding-left: 8px;
     padding-bottom: 4px;
@@ -38,6 +38,25 @@
     cursor: grab;
 
     
+}
+
+.window-title-bar {
+  background: var(--window_top-background);
+  color: var(--window_top-color);
+}
+
+.bp-window-content,
+.window-main,
+.buddyListHolder {
+  background: var(--window_content-background);
+  color: var(--window_content-color);
+}
+
+button {
+  background: var(--desktop_button-background);
+  color: var(--desktop_button-color);
+  border-radius: var(--desktop_button-border-radius);
+  padding: var(--desktop_button-padding);
 }
 
 .window-icon {

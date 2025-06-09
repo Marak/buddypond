@@ -7,6 +7,12 @@
     /* background-color: #ffffff; */
     font-family: Arial, sans-serif;
 }
+
+.aim-window {
+  background: var(--window_main-background);
+  color: var(--window_main-color);
+}
+
 .aim-chat-area {
     flex: 1;
     overflow-y: auto;
@@ -30,6 +36,11 @@
     border-top: 1px solid #d3d3d3;
     box-sizing: border-box;
 }
+
+.aim-message-controls {
+  background: var(--desktop_divider-background);
+}
+
 .aim-message-form {
     display: flex;
     align-items: start;
@@ -102,7 +113,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .aim-chat-message:hover {
-    background: #f8f9fa;
+    /* background: #f8f9fa; */
 }
 .aim-profile-picture {
     cursor: pointer;
@@ -137,23 +148,35 @@
     position: absolute;
     right: 0px;
     top: 0px;
-    background: #fff;
+    /* background: #fff; */
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.aim-hover-menu,
+.desktop-element {
+  background: var(--desktop_element-background);
+  color: var(--desktop_element-color);
+}
+
+.aim-chat-message:hover,
+.aim-hover-menu:hover {
+  background: var(--desktop_element_hover-background);
+  color: var(--desktop_element_hover-color);
+}
+
 .aim-chat-message:hover .aim-hover-menu {
     display: flex;
 }
 .aim-hover-menu button {
     padding: 6px 12px;
     border: none;
-    background: none;
     cursor: pointer;
     font-size: 19px;
 }
 .aim-hover-menu button:hover {
-    background: #f3f4f6;
+    /* background: #f3f4f6; */
 }
 .aim-message-content {
     font-size: 14px;
@@ -162,7 +185,7 @@
 }
 .aim-context-menu {
     position: absolute;
-    background: #fff;
+    /* background: #fff; */
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -177,7 +200,7 @@
     align-items: center;
 }
 .aim-context-menu-item:hover {
-    background: #f3f4f6;
+    /* background: #f3f4f6; */
 }
 .aim-editable-container {
     position: relative;

@@ -32,7 +32,7 @@ body {
 /* default styles */
 a {
   text-decoration: none;
-  color: #000;
+  /* color: #000; */
 }
 
 a:hover {
@@ -208,4 +208,17 @@ button.largest {
     margin-right: 0;
     margin-bottom: 10px;
   }
+}
+
+table {
+  background: var(--ui_table-background);
+  color: var(--ui_table-color);
+  border: var(--ui_table-border);
+}
+
+/* ui_table_row_even */
+table tr:nth-child(even) {
+  background: var(--ui_table_row_even-background);
+  color: var(--ui_table_row_even-color);
+  border: var(--ui_table_row_even-border);
 }

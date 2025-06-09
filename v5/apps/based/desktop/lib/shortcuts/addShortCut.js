@@ -9,7 +9,7 @@ export default function addShortCut(app, options = {}, parent) {
     el.className = `icon shortcut ${app.class || ''} bp-desktop-shortcut`;
     el.setAttribute('data-app', app.name);
     const anchor = document.createElement('a');
-    anchor.href = app.href || `#icon_dock_${app.name}`;
+    // anchor.href = app.href || `#${app.name}`;
 
     if (!app.textIcon) {
         const image = document.createElement('img');
@@ -98,6 +98,7 @@ export default function addShortCut(app, options = {}, parent) {
         this.bp.set('apps_installed', appsInstalled);
 
         console.log('apppp', app);
+        return false;
 
     });
 

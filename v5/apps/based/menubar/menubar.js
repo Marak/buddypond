@@ -217,6 +217,7 @@ class MenuBarClass {
     createMenu() {
         this.menuBarElement = document.createElement("div");
         this.menuBarElement.classList.add("menu-bar");
+        this.menuBarElement.classList.add("desktop-menu-bar");
         this.menuBarElement.id = this.id;
 
         this.menuTemplate.forEach(menuItem => this.createMenuItem(menuItem));

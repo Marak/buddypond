@@ -1,6 +1,22 @@
 let sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default async function addApp(appName, app) {
+
+    if (!appName) {
+        console.error('No app name provided');
+        return;
+    }
+
+    if (!app) {
+        console.log('this.bp.apps.desktop', this.bp.apps.desktop)
+        // if no app is provided, look up the app in the appstore
+        app = this.bp.apps.desktop.appList[appName];
+    }
+
+    if (!app) {
+        console.error(`App ${appName} not found in appstore`);
+        return;
+    }
     console.log(`Stub: Adding app ${app} to desktop`);
     this.bp.play('desktop/assets/audio/APP-ADD.wav');
     let installedApps = this.bp.settings.apps_installed || {};

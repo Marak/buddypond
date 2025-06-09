@@ -62,6 +62,7 @@
 }
 
 .odometer-digit {
+  color: #00CED1;
   position: relative;
   width: 0.6em;
   height: 1em;
@@ -78,6 +79,7 @@
 .odometer-digit-inner span {
   display: block;
   height: 1em;
+  color: #00CED1;
 }
 
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
@@ -110,7 +112,8 @@
     display: none;
     position: absolute;
     z-index: 9999;
-    background-color: #f9f9f9;
+    background-color: var(--desktop_section-background);
+    color: var(--desktop_section-color);
     border: 1px solid #a9a9a9;
     width: 200px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -123,6 +126,121 @@
     cursor: pointer;
 }
 
+.desktop-context-menu div {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
 .desktop-section {
     /* background-color: #f9f9f9; */
+}
+
+p,
+.desktop-shortcuts-container-folder a,
+.buddyListHolder a {
+  color: var(--desktop_text-color);
+  text-shadow: var(--desktop_text-text-shadow);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--desktop_headers-color);
+  text-shadow: var(--desktop_headers-text-shadow);
+}
+
+.desktop-section {
+  background: var(--desktop_section-background);
+  color: var(--desktop_section-color);
+}
+
+.desktop-overlay {
+    background: var(--desktop_overlay-background);
+    color: var(--desktop_overlay-color);
+}
+
+div {
+    color: var(--window_content-color);
+    text-shadow: var(--window_content-text-shadow);
+}
+
+button {
+    user-select: none;
+}
+
+
+.bp-create-shortcut-container {
+    padding: 20px;
+}
+
+.bp-create-shortcut-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.bp-form-group {
+    margin-bottom: 15px;
+}
+
+.bp-form-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.bp-shortcut-type {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.bp-shortcut-type label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.bp-shortcut-type input[type="radio"] {
+    margin: 0;
+}
+
+.bp-form-group input,
+.bp-form-group select,
+.bp-form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.bp-form-group textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.bp-form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.bp-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.bp-btn:hover {
+    opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .bp-shortcut-type {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

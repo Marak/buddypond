@@ -1,4 +1,10 @@
 export default {
+  "admin": {
+    name: 'admin',
+    icon: `desktop/assets/images/icons/icon_profile_64.png`,
+    label: 'Admin',
+    adminOnly: true,
+  },
   "profile": {
     "icon": "desktop/assets/images/icons/icon_profile_64.png",
     "label": "My Profile",
@@ -18,7 +24,7 @@ export default {
     "label": "Buddy Apps",
     "description": "Create hosted Apps for Buddy Pond",
     "onClick": "bp.open('pad')",
-    "categories": ["productivity", "creative"]
+    "categories": ["productivity", "creative", "community"]
   },
   "pond": {
     "icon": "desktop/assets/images/icons/icon_pond_64.png",

@@ -92,18 +92,16 @@ function renderCoinRow(asset, coinInfo = {}) {
 
 // Updates or inserts a single coin row and refreshes summary
 export function updateCoinRow(symbol, newAsset) {
-    console.log('Updating coin row for symbol:', symbol, 'with asset:', newAsset);
+    // console.log('Updating coin row for symbol:', symbol, 'with asset:', newAsset);
     this.portfolioData.assets[symbol] = newAsset;
     const coinInfo = this.portfolioData.coins[symbol];
     const row = renderCoinRow(newAsset, coinInfo);
-
     const existingRow = $(`.portfolio-entries tr[data-symbol="${symbol}"]`);
     if (existingRow.length) {
         existingRow.replaceWith(row);
     } else {
         $('.portfolio-entries').append(row);
     }
-
     updatePortfolioSummary.call(this, this.portfolioWindow.content);
 }
 

@@ -657,7 +657,7 @@ export default class BuddyList {
     createHTMLContent(htmlStr) {
         const html = document.createElement('div');
         html.innerHTML = htmlStr;
-        // $('.loginForm input[name="username"]').focus();
+        $('.loginForm input[name="username"]').focus();
         return html;
     }
 

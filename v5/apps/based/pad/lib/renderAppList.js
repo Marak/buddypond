@@ -8,6 +8,15 @@ export default function renderAppList() {
     // appsInstalled is an object that holds installed apps
     let appsInstalled = this.bp?.settings?.apps_installed || {};
 
+    // filter out any adminOnly: true apps if not admin
+    if (!this.bp?.me?.isAdmin) {
+        Object.keys(appList).forEach(appName => {
+            if (appList[appName].adminOnly) {
+                delete appList[appName];
+            }
+        });
+    }
+
     // Get unique categories from appList
     let categories = new Set();
     Object.values(appList).forEach(app => {
@@ -125,7 +134,7 @@ export default function renderAppList() {
             setButtonLoading(button, 'install');
             // this.bp.apps.desktop.showLoadingProgressIndicator(); // Use existing method
             // Simulate async operation (replace with actual addApp implementation)
-            await this.addApp(appName, app);
+            await this.bp.apps.desktop.addApp(appName, app);
             appsInstalled[appName] = app; // Update local state
             resetButtonState(button, true);
             // this.bp.apps.desktop.hideLoadingProgressIndicator();

@@ -358,6 +358,7 @@ table.data img {
   display: block;
 }
 
+/*
 table.data tbody tr:nth-child(even) td {
   background: #def;
 }
@@ -366,6 +367,7 @@ table.data tbody tr.active td {
   background: #06c url(../images/gui/bar_top_link.png) repeat-x;
   color: #fff;
 }
+*/
 
 th.shrink {
   width: 1%;
@@ -381,6 +383,17 @@ th.shrink {
   padding: 0 10px;
   left: 0;
   right: 0;
+}
+
+#bar_top {
+  background: var(--desktop_top_bar-background);
+  color: var(--desktop_top_bar-color);
+}
+
+/* desktop_bottom_bar */
+#bar_bottom {
+  background: var(--desktop_bottom_bar-background);
+  color: var(--desktop_bottom_bar-color);
 }
 
 #bar_top {
@@ -1473,4 +1486,43 @@ img.button-bar-button:hover {
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
+}
+
+input,
+textarea,
+select,
+label {
+  background: var(--desktop_input-background);
+  color: var(--desktop_input-color);
+}
+
+button {
+  background: var(--desktop_button-background);
+  color: var(--desktop_button-color);
+  border-color: var(--desktop_button-border-color);
+  /* border-radius: var(--desktop_button-border-radius); */
+  cursor: var(--desktop_button-cursor);
+  display: var(--desktop_button-display);
+  font-size: var(--desktop_button-font-size);
+  text-align: var(--desktop_button-text-align, center);
+  transition: var(--desktop_button-transition);
+  padding-left:  8px;
+  padding-right: 8px;
+}
+button:hover {
+  background: var(--desktop_button_hover-background);
+  color: var(--desktop_button_hover-color);
+  border-color: var(--desktop_button_hover-border-color);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+a {
+  color: var(--desktop_links-color);
+  text-decoration: var(--desktop_links-text-decoration);
+}
+
+a:hover {
+  color: var(--desktop_links_hover-color);
+  text-decoration: var(--desktop_links_hover-text-decoration);
 }

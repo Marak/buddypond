@@ -43,7 +43,7 @@ export default class Youtube {
 
         this.youtubeWindow = this.bp.apps.ui.windowManager.createWindow({
             id: 'youtube-window',
-            title: 'YouTube',
+            title: 'Interdimensional Cable',
             x: 50,
             y: 100,
             width: 600,

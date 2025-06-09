@@ -26,17 +26,18 @@ export default class Themes {
       'desktop_element': '.aim-hover-menu, .desktop-element',
       'desktop_element_hover': '.aim-chat-message:hover, .aim-hover-menu:hover',
       'desktop_section': '.desktop-section',
+      'desktop_menu_bar': '.desktop-menu-bar',
       'inputs_text': 'input[type="text"]',
       'desktop_links': 'a',
       'desktop_links_hover': 'a:hover',
-      'desktop_overlay': '.desktop-overlay',
+      'desktop_overlay': '.desktop-overlay, .bp-file-explorer-drag-upload',
       'ui_table': 'table',
       'ui_table_row_even': 'table tr:nth-child(even)'
     };
   }
 
   init() {
-    const themePref = this.bp.settings.active_theme;
+    const themePref = this.bp.settings.active_theme || 'Light';
     if (themePref) {
       const customTheme = this.bp.settings.custom_theme;
       const theme = themePref === 'Custom' ? customTheme : this.themes[themePref];

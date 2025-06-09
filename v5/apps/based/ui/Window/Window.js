@@ -631,7 +631,6 @@ class Window {
 
             this.windowManager.arrangeVerticalStacked();
 
-
         } else {
             if (this.isMinimized && !force) {
                 this.restore();
@@ -642,11 +641,8 @@ class Window {
                 this.isMinimized = true;
             }
         }
-
         // TODO: save the window state
-
     }
-
 
     // Restore the window
     restore() {
@@ -664,8 +660,6 @@ class Window {
         if (this.bp.isMobile()) {
             this.windowManager.arrangeVerticalStacked();
         }
-
-
     }
 
     maximize() {
@@ -714,18 +708,14 @@ class Window {
     }
 
     open() {
-
         // set focus to this window ( first )
         this.focus();
-
 
         try {
             // onOpen may have additional focus events
             this.onOpen(this);
         } catch (err) {
             console.error(err);
-
-
         }
         // TODO: save the window state ???
         // ???? this.parent.appendChild(this.container);
@@ -748,14 +738,10 @@ class Window {
             // check first to see if child is in parent
             if (this.container.parentElement && this.container.parentElement === this.parent) {
                 this.parent.removeChild(this.container);
-
             }
-
         } else {
             this.container.parentElement.removeChild(this.container);
-
         }
-
 
         // check to see if this is an iframe and remove event listener
         if (this.content && this.content.contentWindow) {
@@ -767,8 +753,6 @@ class Window {
             }
             this.content = null;
         }
-
-
 
         // check to see if no more windows
         // TODO: remove this code from Window.js class ( it should not know about menubar )

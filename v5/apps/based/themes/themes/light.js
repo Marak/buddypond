@@ -9,10 +9,12 @@ export default {
             'background': 'linear-gradient(180deg, #666666, #353535)', /* Mac-like gradient */
             'color': '#e0e0e0'
         },
+        /*
         'window_main': {
             'background': 'white',
             'color': '#181818'
         },
+        */
         'window_content': {
             'background': 'white',
             'color': '#181818'
@@ -43,6 +45,9 @@ export default {
             'background': '#f3f4f6',
             'color': '#000',
             'border-color': '#3b82f6',
+            'border-radius': '4px',
+            'padding': '8px 16px',
+            'cursor': 'pointer',
         },
         'desktop_button_hover': {
             'background': '#3b82f6',
@@ -52,6 +57,11 @@ export default {
         },
         'desktop_button_alt': {
 
+        },
+        'desktop_menu_bar': {
+            'background': '#f3f4f6',
+            'color': '#cccccc',
+            'border-bottom': '1px solid #cccccc'
         },
         'desktop_section': {
             'background': '#f9f9f9'
@@ -69,7 +79,7 @@ export default {
             'text-decoration': 'underline'
         },
         'desktop_overlay': {
-            'background': 'black',
+            'background': 'white',
             'color': '#181818',
             'border': '1px solid #cccccc'
         },

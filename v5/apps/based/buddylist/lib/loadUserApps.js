@@ -1,20 +1,12 @@
 export default function loadUserApps() {
     // TODO: load from saved profile
-    if (this.bp.me === 'Marak') {
-        this.bp.apps.desktop.addShortCut({
-            name: 'admin',
-            icon: `desktop/assets/images/icons/icon_audio-player_64.png`,
-            label: 'Admin',
-        }, {
-            onClick: () => {
-                bp.open('admin', {
-                    context: null
-                });
-            }
-        });
-
+    if (this.bp.me === 'Marak') { // TODO: admin rbac checks
+        // install Admin if not already installed
+        let installedApps = this.bp.settings.apps_installed || {};
+        console.log('installedApps', installedApps);
+        if (!installedApps['admin']) {
+            this.bp.apps.desktop.addApp('admin');
+        }
         window.arrangeDesktop();
-    
     }
-
 }
