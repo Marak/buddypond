@@ -21,6 +21,11 @@ export default class PasswordDialog {
       const $confirm = $('.password-confirm');
       const $status = $('.form-status');
 
+      if (bp.apps.buddylist && bp.apps.buddylist.data.profileState && bp.apps.buddylist.data.profileState.email) {
+        $email.val(bp.apps.buddylist.data.profileState.email);
+      }
+
+
       const $errors = {
         email: $('.email-error'),
         password: $('.password-error'),
@@ -61,11 +66,11 @@ export default class PasswordDialog {
           console.log('Password set successfully', result);
           $('.password-overlay').hide();
 
-        if (bp.apps.buddylist && bp.apps.buddylist.data.profileState && bp.apps.buddylist.data.profileState.email) {
+          if (bp.apps.buddylist && bp.apps.buddylist.data.profileState && bp.apps.buddylist.data.profileState.email) {
             // Update the email in buddylist if it exists
             bp.apps.buddylist.data.profileState.email = email;
             // bp.apps.buddylist.updateProfileState();
-        }
+          }
 
         } catch (err) {
           console.error('Failed to save password:', err);
@@ -79,8 +84,14 @@ export default class PasswordDialog {
 
       window.showPasswordDialog = () => $('.password-overlay').show();
       // focus the email input
-      $email.focus();
+      // if email is set, focus on .password-input
       showPasswordDialog();
+      if ($email.val().trim()) {
+        $password.focus();
+      } else {
+        $email.focus();
+      }
+
     }
   }
 }

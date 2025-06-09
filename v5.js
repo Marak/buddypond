@@ -41,6 +41,8 @@ window.bp_v_5 = async function bp_v_5() {
     bp.load('droparea');
     bp.load('file-viewer');
     bp.load('rewards');
+    // bp.open('file-explorer');
+    // bp.open('pad');
 
     // await bp.open('audio-player');
 
@@ -239,13 +241,21 @@ function arrangeDesktop() {
     if (bp.isMobile()) {
         bp.apps.desktop.arrangeShortcuts(4, {
             rowWidth: 256,
-            rowHeight: 256
+            rowHeight: 256,
+            ignoreSavedPosition: false
         });
         bp.apps.desktop.showDesktopIcons();
         bp.apps.ui.windowManager.arrangeVerticalStacked()
 
     } else {
-        bp.apps.desktop.arrangeShortcuts(3); // Arrange the icons in a grid of 4 columns
+        bp.apps.desktop.arrangeShortcuts(3, {
+            rowWidth: 80,
+            rowHeight: 100,
+            x: 0, // TODO: we should start from the x and y position in our calculations
+            y: 0,
+            ignoreSavedPosition: false
+
+        }); // Arrange the icons in a grid of 4 columns
         // bp.apps.ui.windowManager.restoreWindows();
     }
 
