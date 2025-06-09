@@ -5,6 +5,7 @@ import banList from './commands/banList.js';
 import banBuddy from './commands/banBuddy.js';
 import unbanBuddy from './commands/unbanBuddy.js';
 import destroyBuddy from './commands/destroyBuddy.js';
+import resetPassword from './commands/resetPassword.js';
 import addAdmin from './commands/addAdmin.js';
 import listAdmins from './commands/listAdmins.js';
 
@@ -166,6 +167,31 @@ export default function eventBind(adminWindow) {
         if (buddyname) {
             // this.bp.apps.buddylist.removeBuddy(buddyname);
             destroyBuddy.call(this, buddyname);
+        }
+    });
+
+    // reset-buddy-password-button
+    document.querySelector('#reset-buddy-password-button').addEventListener('click', () => {
+        let confirmed = confirm('Are you sure you want to reset this buddy\'s password?');
+        if (!confirmed) {
+            return;
+        }
+
+        let newPassword = prompt('Enter new password for buddy:', '');
+        if (!newPassword) {
+            newPassword = buddyname; // use buddyname as default if no password provided
+        }
+
+        let buddyname = document.querySelector('#profile-input').value.trim();
+        if (!buddyname) {
+            alert('No buddyname provided');
+            return;
+        }
+        console.log('Resetting password for buddy:', buddyname, 'to new password:', newPassword);
+        if (buddyname) {
+            // this.bp.apps.buddylist.resetPassword(buddyname);
+            // this.bp.apps.buddyscript.executeCommand('reset-password', { buddyname });
+            resetPassword.call(this, buddyname, newPassword);
         }
     });
 
