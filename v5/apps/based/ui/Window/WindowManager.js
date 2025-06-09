@@ -170,7 +170,12 @@ export default class WindowManager {
                     // we could minimize all other windows here
                     // minimizeAllWindows();
                 }
-                window.minimize();
+                if (window.isMinimized) {
+                    window.restore();
+                    window.focus();
+                } else {
+                    window.minimize();
+                }
             }
         });
 
@@ -225,9 +230,6 @@ export default class WindowManager {
 
             }
         });
-
-
-
     }
 
     updateFocus() {

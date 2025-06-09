@@ -17,7 +17,7 @@ export default function  showContextMenu(x, y) {
     y: 0,
     ignoreSavedPosition: true
             })">Arrange Icons</li>
-            <li onclick="bp.apps.wallpaper.setWallpaper()">Set Wallpaper to Url</li>
+            <li onclick="bp.open('profile', { context: 'themes' })">Desktop Settings</li>
             <li onclick="bp.apps.wallpaper.removeWallpaper()">Remove Wallpaper</li>
             <li onclick="bp.apps.desktop.viewSource()">View Source</li>
         </ul>

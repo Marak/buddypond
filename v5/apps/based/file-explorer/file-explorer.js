@@ -537,7 +537,9 @@ export default class FileExplorer {
         this.fileExplorerWindow.maximize();
 
         if (this.bp.me === "Guest") {
-            $('.upload-message', '.bp-file-explorer-drag-upload').html('Guest account may not upload files.<br/>Please  <button class="open-app action-button" data-app="buddylist">log in</button> to BuddyPond.');
+            $('.upload-message', '.bp-file-explorer-drag-upload').html('Guest account files are read-only.<br/>Please  <button class="open-app action-button" data-app="buddylist">log in</button> to BuddyPond.');
+            $('.storage-used', '.bp-file-explorer-drag-upload').remove();
+
         }
         
 
