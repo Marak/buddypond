@@ -454,7 +454,6 @@ hr {
     justify-content: center;
     align-items: center;
     font-size: 13px;
-    color: var(--text-subtle, #666);
 }
 
 .bp-pads-app-author-label {
@@ -463,7 +462,6 @@ hr {
 }
 
 .bp-pads-app-author-value {
-    color: var(--text-strong, #222);
 }
 
 .bp-pads-app-install-count {
@@ -471,7 +469,6 @@ hr {
     justify-content: center;
     align-items: center;
     font-size: 13px;
-    color: var(--text-subtle, #666); /* fallback color if no variable */
 }
 
 .bp-pads-app-install-count-label {
@@ -481,7 +478,6 @@ hr {
 
 .bp-pads-app-install-count-value {
     font-weight: bold;
-    color: var(--text-strong, #222); /* fallback color if no variable */
 }
 
 @keyframes bp-pads-spin {
