@@ -426,3 +426,117 @@
 .theme-styles .add-prop-btn {
   margin-left: 4px;
 }
+
+.bp-api-keys-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 1.5em;
+}
+
+.bp-api-keys-label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  gap: 0.25em;
+}
+
+.bp-api-keys-input,
+.bp-api-keys-select {
+  padding: 0.5em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font: inherit;
+  width: 100%;
+}
+
+.bp-api-keys-select {
+  height: 6em;
+}
+
+.bp-api-keys-button {
+  align-self: flex-start;
+  padding: 0.5em 1em;
+  font-weight: bold;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bp-api-keys-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.bp-api-keys-list-item {
+  list-style: none;
+  margin-bottom: 1em;
+}
+
+.bp-api-keys-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 1em;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+}
+
+.bp-api-keys-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bp-api-keys-name {
+  font-size: 1.1em;
+}
+
+.bp-api-keys-keybox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75em;
+  font-family: monospace;
+  border: 1px dashed currentColor;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+
+.bp-api-keys-code {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.bp-api-keys-buttons {
+  display: flex;
+  gap: 0.5em;
+}
+
+.bp-api-keys-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: 0.9em;
+}
+
+.bp-api-keys-revoke,
+.bp-api-keys-reveal,
+.bp-api-keys-copy {
+  padding: 0.25em 0.75em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.bp-api-keys-status {
+  margin-top: 0.25em;
+  font-weight: bold;
+  font-size: 0.9em;
+}

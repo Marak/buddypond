@@ -5,6 +5,8 @@
             <!-- <li><a href="#your-apps">Apps</a></li> -->
             <li><a class="themesLink" href="#tab-themes">Themes</a></li>
             <li><a href="#tabs-3">Settings</a></li>
+            <li><a href="#api-keys">API Keys</a></li>
+
             <li><a href="#" class="open-app" data-app="pad">Apps</a></li>
 
             <!--
@@ -134,7 +136,7 @@
                     <option value="Custom">Custom Theme</option>
                 </select>
                 <table class="theme-styles">
-                    
+
                 </table>
             </div>
 
@@ -256,6 +258,40 @@
                 </div>
             </div>
         </div>
+
+        <div id="api-keys" class="tab-content">
+            <h3>Create new API Key</h3>
+
+            <form id="bp-api-keys-form" class="bp-api-keys-form" action="#" method="POST">
+                <label class="bp-api-keys-label">
+                    Key Name:
+                    <input type="text" name="name" class="bp-api-keys-input" required placeholder="Enter a name for your API Key..."/>
+                </label>
+
+                <!-- TODO: each role should be a checkbox, the roles checkboxes should be dynamically generated from data -->
+                <label class="bp-api-keys-label">
+                    Roles:
+                    <div id="bp-api-keys-roles" class="bp-api-keys-role-boxes">
+                        <!-- Dynamically inserted checkboxes -->
+                    </div>
+                </label>
+
+                <label class="bp-api-keys-label">
+                    Expiry (optional):
+                    <input type="date" name="expiry" class="bp-api-keys-input" />
+                </label>
+
+                <button type="submit" class="bp-api-keys-button">Create API Key</button>
+            </form>
+
+            <ul id="bp-api-keys-list" class="bp-api-keys-list">
+                <!-- Dynamically populated -->
+            </ul>
+        </div>
+
+
+
+
         <div id="tabs-5" align="center" class="tab-content">
             To Adjust Default Camera Settings <a href="#mirror" class="desktopLink openApp" data-app="mirror">Click Open
                 Mirror App</a>

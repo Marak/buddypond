@@ -3,6 +3,7 @@ import audioSettings from './lib/audio-settings.js';
 import userSettings from './lib/user-settings.js';
 import PadEditor from '../pad/PadEditor.js';
 import themeEditor from './lib/theme-editor.js';
+import apiKeys from './lib/api-keys.js';
 // import LoadingContainer from '../ui/LoadingContainer/LoadingContainer.js';
 import updateProfilePicture from './lib/updateProfilePicture.js';
 let defaultFileContent = {};
@@ -271,6 +272,9 @@ export default class Profile {
             //$('.themeSelect', this.profileWindow.content).trigger('change');
         });
 
+        this.apiKeys();
+
+
         return this.profileWindow;
 
     }
@@ -305,3 +309,4 @@ function renderProfileApp(appName, container) {
 
 
 Profile.prototype.themeEditor = themeEditor;
+Profile.prototype.apiKeys = apiKeys;
