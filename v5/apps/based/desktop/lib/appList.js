@@ -107,6 +107,13 @@ export default {
     "onClick": "bp.open('audio-visual')",
     "categories": ["creative", "entertainment", "audio"]
   },
+  "chalkboard": {
+    "icon": "desktop/assets/images/icons/icon_chalkboard_64.png",
+    "label": "Chalkboard",
+    "description": "Draw and write on a virtual chalkboard",
+    "onClick": "bp.open('chalkboard')",
+    "categories": ["art", "creative"]
+  },
   "coin": {
     "icon": "desktop/assets/images/icons/icon_coin_64.png",
     "label": "Buddy Coins",
