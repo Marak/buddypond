@@ -142,6 +142,14 @@
     /* background-color: #f9f9f9; */
 }
 
+.bp-shortcut-examples-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
 p,
 .desktop-shortcuts-container-folder a,
 .buddyListHolder a {

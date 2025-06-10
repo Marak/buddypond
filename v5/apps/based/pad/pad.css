@@ -426,6 +426,15 @@ hr {
     pointer-events: none; /* Prevent clicks during loading */
 }
 
+.bp-pads-app-metadata {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;
+    gap: 15px;
+}
+
 /* Optional spinner (pure CSS) */
 .bp-pads-btn-loading::before {
     content: '';
@@ -438,6 +447,41 @@ hr {
     animation: bp-pads-spin 1s linear infinite;
     margin-right: 8px;
     vertical-align: middle;
+}
+
+.bp-pads-app-author {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-subtle, #666);
+}
+
+.bp-pads-app-author-label {
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.bp-pads-app-author-value {
+    color: var(--text-strong, #222);
+}
+
+.bp-pads-app-install-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-subtle, #666); /* fallback color if no variable */
+}
+
+.bp-pads-app-install-count-label {
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.bp-pads-app-install-count-value {
+    font-weight: bold;
+    color: var(--text-strong, #222); /* fallback color if no variable */
 }
 
 @keyframes bp-pads-spin {

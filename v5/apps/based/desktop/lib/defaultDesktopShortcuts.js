@@ -30,6 +30,9 @@ export default function defaultDesktopShortcuts() {
 
         this.bp.set('apps_installed', installeApps);
 
+        // update the count of installed apps
+        this.client.incrementAppInstallCount(Object.keys(installeApps));
+
     }
 
     let installedApps = bp.settings.apps_installed || {};

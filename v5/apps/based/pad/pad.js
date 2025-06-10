@@ -9,6 +9,7 @@ export default class Pad {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.icon = '/desktop/assets/images/icons/icon_pad_64.png';
+        this.data = {};
         return this;
     }
 
@@ -31,6 +32,17 @@ export default class Pad {
 
         let slugify = await this.bp.importModule('/v5/apps/based/pad/vendor/slugify.min.js', {}, false);
         this.slugify = slugify.slugifyDefault;
+
+        // TODO: put an abort timeout on this so it won't block the app if not available
+        try {
+            this.data.appStats = await this.bp.apps.desktop.client.getAppsStats();
+        } catch (err) {
+            this.data.appStats = {};
+        }
+        if (!this.data.appStats) {
+            this.data.appStats = {};
+        }
+        console.log('appStats', this.data.appStats);
 
         this.html = html;
 
@@ -81,7 +93,8 @@ export default class Pad {
                     this.myPads = await updateMyPads.call(this);
                 }
                 if (tabId === '#buddy-pads') {
-                    this.renderAppList();
+                    // console.log('appStats', this.data.appStats);
+                    this.renderAppList(this.data.appStats);
                     $('.bp-pads-search-input', this.padWindow.content).focus();
                 }
 

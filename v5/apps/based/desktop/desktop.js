@@ -26,6 +26,7 @@ import showContextMenu from "./lib/contextmenu/showContextMenu.js";
 import buildJsTreeData from "../file-explorer/lib/buildJsTreeData.js";
 import viewSource from "./lib/viewSource.js";
 
+import client from './lib/client.js'; // client api for desktop
 
 // default data
 import defaultDesktopShortcuts from "./lib/defaultDesktopShortcuts.js";
@@ -266,3 +267,4 @@ Desktop.prototype.createShortCut = createShortCut;
 Desktop.prototype.renameShortCut = renameShortCut;
 Desktop.prototype.addApp = addApp;
 Desktop.prototype.removeApp = removeApp;
+Desktop.prototype.client = client; // client api for desktop

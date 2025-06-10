@@ -17,6 +17,15 @@ export default async function addApp(appName, app) {
         console.error(`App ${appName} not found in appstore`);
         return;
     }
+
+    // perform a fire-and-forget operation to increment the app install count
+    this.client.incrementAppInstallCount(appName);
+
+    // update the local app count immediately
+    // find element with data-app attribute matching appName
+    this.bp.apps.pad.data.appStats[appName] = this.bp.apps.pad.data.appStats[appName] || {};
+    this.bp.apps.pad.data.appStats[appName].installCount = (this.bp.apps.pad.data.appStats[appName]?.installCount || 0) + 1;
+
     // console.log(`Stub: Adding app ${app} to desktop`);
     this.bp.play('desktop/assets/audio/APP-ADD.wav');
     let installedApps = this.bp.settings.apps_installed || {};
