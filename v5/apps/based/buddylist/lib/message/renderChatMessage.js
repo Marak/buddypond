@@ -143,7 +143,7 @@ export default async function renderChatMessage(message, _chatWindow) {
         return;
     }
 
-    let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+    let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
 
     if (_chatWindow) {
         chatWindow = _chatWindow;

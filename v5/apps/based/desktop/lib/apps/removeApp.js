@@ -10,7 +10,7 @@ export default async function removeApp(appName, app) {
     //desktop.ui.renderDesktopShortCuts();
 
     // alert('removing ' + appName);
-    this.bp.apps.desktop.removeShortCut(appName);
+    this.bp.apps.desktop.removeShortCut(appName, app);
 
     // desktop.ui.hideLoadingProgressIndicator();
     this.bp.apps.desktop.arrangeShortcuts();

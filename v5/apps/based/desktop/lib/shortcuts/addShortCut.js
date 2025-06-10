@@ -4,6 +4,8 @@ export default function addShortCut(app, options = {}, parent) {
         options.onClick = () => console.log('desktop app - Missing options.onClick function', app.name);
     }
 
+    console.log('Adding shortcut for app:', app, 'with options:', options);
+
     // Create the shortcut element
     const el = document.createElement('div');
     el.className = `icon shortcut ${app.class || ''} bp-desktop-shortcut`;
@@ -163,6 +165,51 @@ export default function addShortCut(app, options = {}, parent) {
         $(el).draggable({
             containment: 'parent' // Confine dragging within the parent container
         });
+    }
+
+
+    // install app into chatWindow buttons if property exists
+    if (app.chatWindowButton) {
+        let chatWindows = this.bp.apps.ui.windowManager.findWindows({
+            app: 'buddylist',
+            type: app.chatWindowButton
+        });
+        console.log('chatWindows', chatWindows);
+
+
+        let chatButton = {
+            text: 'Chalkboard',
+            image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+            onclick: async (ev) => {
+                let context = ev.target.dataset.context;
+                let type = ev.target.dataset.type;
+                // Open the image search window
+                bp.open('chalkboard', {
+                    output: type || 'buddy',
+                    context: context,
+                });
+                return false;
+            }
+        };
+
+        // adds to default chat window buttons
+        if (this.bp.apps.desktop.enabledChatWindowButtons) {
+            this.bp.apps.desktop.enabledChatWindowButtons.push(chatButton);
+        }
+        if (this.bp.apps.buddylist.options.chatWindowButtons) {
+            this.bp.apps.buddylist.options.chatWindowButtons.push(chatButton);
+        }
+
+        // adds to any open windows
+        chatWindows.forEach((chatWindow) => {
+            if (chatWindow.buttonBar) {
+                chatWindow.buttonBar.addButton(chatButton);
+            } else {
+                console.warn('No buttonBar found for pond chat window', chatWindow);
+            }
+        });
+
+
     }
 
     // Register the app with desktop.apps

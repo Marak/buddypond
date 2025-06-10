@@ -184,7 +184,7 @@ export default function defaultChatWindowButtons(bp) {
                 let windowIdPrefix = type === 'pond' ? 'pond_message_-' : 'buddy_message_-';
                 let windowId = windowIdPrefix + context;
                 // console.log('opening chat window ', windowId)
-                let chatWindow = bp.apps.ui.windowManager.findWindow(windowId);
+                let chatWindow = bp.apps.ui.windowManager.getWindow(windowId);
                 console.log('chatWindow', chatWindow);
                 // bp.apps.buddylist.showCard({ chatWindow, cardName: 'help' });
 

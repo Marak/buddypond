@@ -60,6 +60,9 @@ export default class BuddyList {
 
         this.options.chatWindowButtons = this.options.chatWindowButtons || defaultChatWindowButtons(this.bp);
 
+        // add the this.bp.apps.desktop.enabledChatWindowButtons array to this.options.chatWindowButtons
+        this.options.chatWindowButtons = this.options.chatWindowButtons.concat(this.bp.apps.desktop.enabledChatWindowButtons || []);
+
         this.opened = false;
         this.showingIsTyping = this.showingIsTyping || {};
 
@@ -389,7 +392,7 @@ export default class BuddyList {
         this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => {
             // open the new chat window only if not already open
             let windowId = `buddy_message_-` + data.name;
-            let win = this.bp.apps.ui.windowManager.findWindow(windowId);
+            let win = this.bp.apps.ui.windowManager.getWindow(windowId);
             if (!win) {
                 this.openChatWindow(data)
             }
@@ -466,7 +469,7 @@ export default class BuddyList {
                     windowId = `pond_message_-${message.to}`;
                 }
 
-                let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+                let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
                 // don't process isTyping messages over 3 seconds old
                 if (now - messageTime.getTime() > 3000) {
                     // console.log("isTyping message too old", message);

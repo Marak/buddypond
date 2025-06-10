@@ -37,7 +37,7 @@ export default function openChatWindow(data) {
 
     let windowId = windowIdPrefix + contextName;
     // console.log('opening chat window ', windowId)
-    let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+    let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
     if (chatWindow) {
         chatWindow.focus();
         return chatWindow;
@@ -205,12 +205,14 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             });
         }
 
-        const chatWindowButtonBar = new ChatWindowButtonBar(this.bp, {
+        // TODO: this needs to be public on class so we can modify it later
+        // via chatWindowButtonBar.addButton() or removeButton()
+        chatWindow.buttonBar = new ChatWindowButtonBar(this.bp, {
             context: contextName,
             type: windowType,
             buttons: chatWindowButtons
         });
-        $('.aim-message-controls', chatWindow.content).prepend(chatWindowButtonBar.container);
+        $('.aim-message-controls', chatWindow.content).prepend(chatWindow.buttonBar.container);
 
     }
 

@@ -141,7 +141,7 @@ export default class WindowManager {
         }
 
         // check to see if window already exists with id
-        const existingWindow = this.findWindow(options.id);
+        const existingWindow = this.getWindow(options.id);
         let window;
 
         if (existingWindow) {
@@ -203,7 +203,7 @@ export default class WindowManager {
     focusWindow(window) {
         // window can be the window instance or the window id
         if (typeof window === 'string') {
-            window = this.findWindow(window);
+            window = this.getWindow(window);
         }
 
         // console.log("Focusing window", window);
@@ -263,9 +263,26 @@ export default class WindowManager {
         });
     }
 
-    findWindow(id) {
+    getWindow(id) {
         // console.log('searching for', id, 'in', this.windows)
         return this.windows.find(w => w.id === id);
+    }
+
+    findWindows({ app, type }) {
+        if (!app) {
+            console.warn("No app provided to findWindows");
+            return [];
+        }
+
+        // Normalize app and type to arrays for unified matching
+        const apps = Array.isArray(app) ? app : [app];
+        const types = type ? (Array.isArray(type) ? type : [type]) : null;
+
+        return this.windows.filter(w => {
+            const appMatch = apps.includes(w.app);
+            const typeMatch = types ? types.includes(w.type) : true;
+            return appMatch && typeMatch;
+        });
     }
 
     saveWindowsState() {
@@ -356,7 +373,7 @@ export default class WindowManager {
         }
         windowsData.forEach(data => {
             // check to see if window already exists with id
-            const existingWindow = this.findWindow(data.id);
+            const existingWindow = this.getWindow(data.id);
             if (existingWindow) {
                 console.log("WARNING: Window with id", data.id, "already exists, hydrating instead of creating new window");
                 existingWindow.hydrate(data);

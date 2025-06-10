@@ -34,8 +34,9 @@ export default async function addApp(appName, app) {
     this.bp.set('apps_installed', installedApps);
     this.bp.apps.desktop.addShortCut({
         name: appName,
-        icon: app.icon,
-        label: app.label || appName,
+        ...app
+        //icon: app.icon,
+        //label: app.label || appName,
     }, {
         onClick: () => {
             // console.log(`Opening app: ${appName}`, app);

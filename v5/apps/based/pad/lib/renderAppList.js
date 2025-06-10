@@ -1,6 +1,6 @@
 import appList from '../../desktop/lib/appList.js';
 
-export default function renderAppList() {
+export default function renderAppList(appStats = {}) {
     const appContainer = $('.bp-pads-grid');
     const categoryContainer = $('.bp-pads-category-list');
     const isMobile = typeof bp !== 'undefined' && bp.isMobile && bp.isMobile();
@@ -53,6 +53,16 @@ export default function renderAppList() {
                     <div class="bp-pads-app-actions">
                         <button class="bp-pads-btn ${primaryButtonClass}" data-app="${name}">${primaryButtonText}</button>
                         ${uninstallButton}
+                    </div>
+                    <div class="bp-pads-app-metadata">
+                        <div class="bp-pads-app-author">
+                            <span class="bp-pads-app-author-label">Author:</span>
+                            <span class="bp-pads-app-author-value">${app.author || 'BuddyPond'}</span>
+                        </div>
+                        <div class="bp-pads-app-install-count">
+                            <span class="bp-pads-app-install-count-label">Downloads:</span>
+                            <span class="bp-pads-app-install-count-value">${appStats[name]?.installCount || 0}</span>
+                        </div>
                     </div>
                 </div>
             </div>

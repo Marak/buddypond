@@ -109,7 +109,7 @@ export default class ImageSearch {
 
                 let windowId = windowIdPrefix + this.context;
                 // console.log('opening chat window ', windowId)
-                let chatWindow = this.bp.apps.ui.windowManager.findWindow(windowId);
+                let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
 
 
                 console.log(`context: ${this.context}, type: ${this.type}`);
