@@ -44,7 +44,7 @@ window.bp_v_5 = async function bp_v_5() {
 
     // await bp.open('audio-player');
 
-    // deffer loading of apps that are not essential for the initial experience
+    // defer loading of apps that are not essential for the initial experience
     // but will be clicked or loaded from chat window or other places
     // this is used to increase responsiveness of user experience ( i.e. clicking on buttons )
     // TODO: ensure this starts *after* app is ready. this should be OK for now, but we could tighten the timing
@@ -77,7 +77,7 @@ window.bp_v_5 = async function bp_v_5() {
                 await sleep(100);
             }
             console.log('Deferred loading of additional apps completed.');
-        }, 1000);
+        }, 7000);
     }
 
     deferLoad();
@@ -260,7 +260,6 @@ function arrangeDesktop() {
             x: 0, // TODO: we should start from the x and y position in our calculations
             y: 0,
             ignoreSavedPosition: false
-
         }); // Arrange the icons in a grid of 4 columns
         // bp.apps.ui.windowManager.restoreWindows();
     }

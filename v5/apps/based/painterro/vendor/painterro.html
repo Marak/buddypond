@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painterro Example</title>
+</head>
+<body>
+    <script src="./painterro-1.2.87.min.js"></script>
+    <script>
+
+        const channel = new BroadcastChannel("buddypond-desktop");
+        channel.postMessage({ type: "app", app: "painterro", action: "open" });
+        channel.onmessage = (event) => console.log("painterro received:", event.data);
+
+
+        Painterro({
+            defaultTool: 'brush', // Select brush tool by default
+            saveHandler: function(image, doneCallback) {
+                alert('Image saved!'); // Notify user that the image is saved
+                // Create a download link for the image
+                let dataUrl = image.asDataURL('image/png');
+                const link = dataUrl;
+                link.href = image.asDataURL('image/png');
+                link.download = image.suggestedFileName('image/png') || 'edited-image.png';
+                link.click();
+
+                channel.postMessage({
+                    type: "app",
+                    app: "painterro",
+                    action: "save",
+                    image: dataUrl,
+                    timestamp: Date.now()
+                });
+
+
+
+                // Signal that saving is complete
+                doneCallback(true);
+            }
+        }).show();
+    </script>
+</body>
+</html>

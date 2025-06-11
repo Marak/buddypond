@@ -49,15 +49,14 @@ export default {
     "onClick": "bp.open('file-viewer')",
     "categories": ["files", "productivity"]
   },
-  /*
   "minipaint": {
     "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
     "label": "miniPaint",
+    "author": "ViliusL",
     "description": "Advanced image editor to create and edit images",
     "onClick": "bp.open('minipaint')",
     "categories": ["art", "creative"]
   },
-  */
   "paint": {
     "icon": "desktop/assets/images/icons/icon_paint_64.png",
     "label": "Paint",
@@ -66,17 +65,15 @@ export default {
     "onClick": "bp.open('paint')",
     "categories": ["art", "creative"],
     "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
-
   },
-  /*
   "painterro": {
     "icon": "desktop/assets/images/icons/icon_painterro_64.png",
     "label": "Painterro",
+    "author": "Ivan Borshchov",
     "description": "Easy to use image editing tool",
     "onClick": "bp.open('painterro')",
     "categories": ["art", "creative"]
   },
-  */
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
