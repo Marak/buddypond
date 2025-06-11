@@ -2,7 +2,7 @@
 
 // import Folder from '../file-explorer/Folder/Folder.js';
 import Folder from "./lib/Folder.js";
-import File from "./lib/File.js";
+import BPFile from "./lib/File.js";
 
 // shortcuts
 import addShortCut from "./lib/shortcuts/addShortCut.js";
@@ -56,6 +56,8 @@ export default class Desktop {
 
         this.enableShortcutDragging = true;
 
+        this.enabledChatWindowButtons = [];
+
         if (typeof options.enableShortcutDragging === 'boolean') {
             this.enableShortcutDragging = options.enableShortcutDragging;
         }
@@ -98,6 +100,8 @@ export default class Desktop {
             this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
         }
         */
+
+        //alert(`BroadcastChannel message received: ${event.data}`);
 
 
 
@@ -166,7 +170,7 @@ export default class Desktop {
         // or change the way folders are rendered
         // render the userRoot
         this.renderNode(desktopRoot, this.shortCutsContainer, 0, true);
-       // arrangeDesktop(); // global ( for now remove later )
+        // arrangeDesktop(); // global ( for now remove later )
 
         return;
 
@@ -198,16 +202,16 @@ export default class Desktop {
         }
     }
 
-    toggleMute () {
+    toggleMute() {
         if (this.bp.settings.audio_enabled === false) {
-          this.bp.set('audio_enabled', true);
-          $('.volumeFull').show();
-          $('.volumeMuted').hide();
-          this.bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
+            this.bp.set('audio_enabled', true);
+            $('.volumeFull').show();
+            $('.volumeMuted').hide();
+            this.bp.play('desktop/assets/audio/VOLUME-ON.mp3', { tryHard: Infinity });
         } else {
-          this.bp.set('audio_enabled', false);
-          $('.volumeFull').hide();
-          $('.volumeMuted').show();
+            this.bp.set('audio_enabled', false);
+            $('.volumeFull').hide();
+            $('.volumeMuted').show();
         }
     }
 
@@ -226,7 +230,7 @@ export default class Desktop {
 }
 
 Desktop.prototype.Folder = Folder;
-Desktop.prototype.File = File;
+Desktop.prototype.File = BPFile;
 Desktop.prototype.addShortCut = addShortCut;
 Desktop.prototype.addFolder = addFolder;
 Desktop.prototype.removeShortCut = removeShortCut;
@@ -256,7 +260,7 @@ class Shortcut {
         shortcutElement.textContent = this.data.text || this.data.id;
         shortcutElement.className = 'shortcut';
 
-        shortcutElement.classList.add('icon', 'shortcut', 'bp-desktop-iconp');   
+        shortcutElement.classList.add('icon', 'shortcut', 'bp-desktop-iconp');
 
         this.parentElement.appendChild(shortcutElement);
     }

@@ -1,8 +1,8 @@
 export default function defaultDesktopShortcuts() {
 
     // check if we have default apps, if not initialize them
-    let installeApps = this.bp.settings.apps_installed || {};
-    if (Object.keys(installeApps).length === 0) {
+    let installedApps = this.bp.settings.apps_installed || {};
+    if (Object.keys(installedApps).length === 0) {
         let defaultAppList = [
             'profile',
             'buddylist',
@@ -20,7 +20,7 @@ export default function defaultDesktopShortcuts() {
             if (app) {
                 console.log(`Adding default app shortcut: ${appName}`);
                 // console.log(app);
-                installeApps[appName] = app;
+                installedApps[appName] = app;
 
                 // this.bp.apps.desktop.addShortCut(app);
             } else {
@@ -28,23 +28,22 @@ export default function defaultDesktopShortcuts() {
             }
         });
 
-        this.bp.set('apps_installed', installeApps);
+        this.bp.set('apps_installed', installedApps);
 
         // update the count of installed apps
-        this.client.incrementAppInstallCount(Object.keys(installeApps));
+        this.client.incrementAppInstallCount(Object.keys(installedApps));
 
     }
 
-    let installedApps = bp.settings.apps_installed || {};
+    // let installedApps = bp.settings.apps_installed || {};
     if (Object.keys(installedApps).length > 0) {
         Object.keys(installedApps).forEach(appName => {
             let app = installedApps[appName];
             if (app) {
+                console.log(`Adding shortcut for installed app: ${appName}`, app);
                 bp.apps.desktop.addShortCut({
                     name: appName,
-                    icon: app.icon || `desktop/assets/images/icons/icon_app_64.png`,
-                    label: app.label || appName,
-                    description: app.description || 'No description available'
+                    ...app
                 }, {
                     onClick: () => {
                         bp.open(app.app || appName, { context: app.context });

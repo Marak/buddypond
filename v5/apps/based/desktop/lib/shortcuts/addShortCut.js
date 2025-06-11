@@ -167,7 +167,6 @@ export default function addShortCut(app, options = {}, parent) {
         });
     }
 
-
     // install app into chatWindow buttons if property exists
     if (app.chatWindowButton) {
         let chatWindows = this.bp.apps.ui.windowManager.findWindows({
@@ -176,27 +175,37 @@ export default function addShortCut(app, options = {}, parent) {
         });
         console.log('chatWindows', chatWindows);
 
-
+        // these may need to be custom based on the app itself...
+        /*
         let chatButton = {
-            text: 'Chalkboard',
-            image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+            text: app.label || app.name,
+            image: app.icon || 'desktop/assets/images/icons/icon_console_64.png',
             onclick: async (ev) => {
                 let context = ev.target.dataset.context;
                 let type = ev.target.dataset.type;
                 // Open the image search window
-                bp.open('chalkboard', {
+                bp.open(app.name, {
                     output: type || 'buddy',
                     context: context,
                 });
                 return false;
             }
         };
+        */
 
+        let chatButton = app.chatButton;
+
+        if (!chatButton) {
+            console.warn('No chatButton defined for app:', app.name);
+            return;
+        }
+        chatButton.name = app.name; // add name to button for reference
         // adds to default chat window buttons
         if (this.bp.apps.desktop.enabledChatWindowButtons) {
+            console.log('Adding chat button to desktop enabledChatWindowButtons', chatButton);
             this.bp.apps.desktop.enabledChatWindowButtons.push(chatButton);
         }
-        if (this.bp.apps.buddylist.options.chatWindowButtons) {
+        if (this.bp.apps.buddylist && this.bp.apps.buddylist.options.chatWindowButtons) {
             this.bp.apps.buddylist.options.chatWindowButtons.push(chatButton);
         }
 

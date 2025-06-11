@@ -49,12 +49,46 @@ export default {
     "onClick": "bp.open('file-viewer')",
     "categories": ["files", "productivity"]
   },
+  /*
+  "minipaint": {
+    "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
+    "label": "miniPaint",
+    "description": "Advanced image editor to create and edit images",
+    "onClick": "bp.open('minipaint')",
+    "categories": ["art", "creative"]
+  },
+  */
   "paint": {
     "icon": "desktop/assets/images/icons/icon_paint_64.png",
     "label": "Paint",
-    "description": "Create and edit digital artwork",
+    "description": "A Classic Retro Style Image Editor",
     "onClick": "bp.open('paint')",
+    "categories": ["art", "creative"],
+    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
+
+  },
+  /*
+  "painterro": {
+    "icon": "desktop/assets/images/icons/icon_painterro_64.png",
+    "label": "Painterro",
+    "description": "Easy to use image editing tool",
+    "onClick": "bp.open('painterro')",
     "categories": ["art", "creative"]
+  },
+  */
+  "patatap": {
+    "icon": "desktop/assets/images/icons/icon_patatap_64.png",
+    "label": "Patatap",
+    "description": "Create music and animations with keyboard input",
+    "onClick": "bp.open('patatap')",
+    "categories": ["audio", "music", "creative"]
+  },
+  "sandspiel": {
+    "icon": "desktop/assets/images/icons/icon_sandspiel_64.png",
+    "label": "Sandspiel",
+    "description": "A creative sandbox game with sand and physics",
+    "onClick": "bp.open('sandspiel')",
+    "categories": ["games", "creative"]
   },
   "soundrecorder": {
     "icon": "desktop/assets/images/icons/icon_soundrecorder_64.png",
@@ -112,7 +146,22 @@ export default {
     "label": "Chalkboard",
     "description": "Draw and write on a virtual chalkboard",
     "onClick": "bp.open('chalkboard')",
-    "categories": ["art", "creative"]
+    "categories": ["art", "creative"],
+    "chatWindowButton": ['buddy', 'pond'], // adds this app as a button in the chat window, array is types of windows to add it to
+    "chatButton": {
+        text: 'Chalkboard',
+        image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+        onclick: async (ev) => {
+            let context = ev.target.dataset.context;
+            let type = ev.target.dataset.type;
+            // Open the image search window
+            bp.open('chalkboard', {
+                output: type || 'buddy',
+                context: context,
+            });
+            return false;
+        }
+    }    
   },
   "coin": {
     "icon": "desktop/assets/images/icons/icon_coin_64.png",

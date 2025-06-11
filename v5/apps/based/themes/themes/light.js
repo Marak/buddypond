@@ -23,6 +23,11 @@ export default {
             'color': '#181818',
             'text-shadow': 'none'
         },
+        'desktop_element': {
+            'background': '#f3f4f6',
+            'color': '#181818',
+        },
+
         "desktop_element_hover": {
             'background': '#f3f4f6',
         },

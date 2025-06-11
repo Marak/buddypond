@@ -7,7 +7,10 @@ export default function removeShortCut(appName, app) {
         this.shortCutsContainer.removeChild(shortcut);
     }
 
-
+    // TODO: add config option when removing to either target desktop or chatWindowButtons, or both
+    // deleting a shortcut from the desktop should not remove it from chat windows
+    // deleting a shortcut from chat windows should not remove it from the desktop
+    // uninstalling from appstore should remove it from both
     if (app.chatWindowButton) {
         // removes the shortcut from chat windows
         if (this.bp.apps.desktop.enabledChatWindowButtons) {
