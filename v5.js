@@ -63,9 +63,15 @@ window.bp_v_5 = async function bp_v_5() {
             await sleep(100);
             await bp.load('dictate');
             await sleep(100);
+            //await bp.load('markdown');
+            //await sleep(100);
 
             // from the top menu bar
             await bp.load('soundcloud');
+            await sleep(100);
+
+            await bp.load('videochat');
+            await sleep(100);
 
             // preload all installed desktop apps
             let apps = Object.keys(bp.settings.apps_installed || {});
