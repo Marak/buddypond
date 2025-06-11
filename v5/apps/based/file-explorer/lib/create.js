@@ -3,6 +3,11 @@ import FileUploadOverlay from "../FileUploadOverlay.js";
 
 export default function create(options = {}) {
 
+    if (!options.onUploadComplete) {
+        options.onUploadComplete = () => {
+            // console.log("File Explorer created");
+        };
+    }
     let container = document.createElement('div');
     container.innerHTML = this.html;
     container.classList.add('bp-file-explorer');
@@ -40,8 +45,7 @@ export default function create(options = {}) {
         }
     ]);
     */
-
-    this.uploadOverlay = new FileUploadOverlay({ parent: container, fileExplorer: this }, async (file, onProgress) => {
+    this.uploadOverlay = new FileUploadOverlay({ parent: container, fileExplorer: this, onUploadComplete: this.onUploadComplete }, async (file, onProgress) => {
         // upload file here
         // console.log("uploading file", file);
         await this.bp.apps.client.api.uploadFile(file.file, onProgress);

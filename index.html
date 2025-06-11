@@ -119,7 +119,7 @@ window.top.location = 'ie.html';
       let _imageSearchEndpoint = 'https://image-search.buddypond.com';
       let _buddyProxy = 'https://proxy.buddypond.com';
       let _appsEndpoint = 'https://apps.buddypond.com';
-
+      let _apiKeysEndpoint = 'https://api.buddypond.com';
 
       let devmode = false;
 
@@ -148,6 +148,7 @@ window.top.location = 'ie.html';
         _imageSearchEndpoint = `http://${localIp}:9005`;
         _buddyProxy = `http://${localIp}:9007`;
         _appsEndpoint = `http://${localIp}:9008`;
+        _apiKeysEndpoint = `http://${localIp}:9009`;
         console.log('Running in development mode. All services are pointing to local sources.');
       }
 
@@ -168,6 +169,7 @@ window.top.location = 'ie.html';
       buddypond.imageSearchEndpoint = _imageSearchEndpoint;
       buddypond.buddyProxy = _buddyProxy;
       buddypond.appsEndpoint = _appsEndpoint;
+      buddypond.apiKeysEndpoint = _apiKeysEndpoint;
 
       let renderBpApp = true;
 

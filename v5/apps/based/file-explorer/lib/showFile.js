@@ -9,6 +9,10 @@ export default async function showFile(root, file, showEditor = false) {
     $('.bp-file-explorer-files').hide();
     $('.bp-file-explorer-header').flexHide();
 
+    // if file does not start with a slash, prepend the slash
+    if (!file.startsWith('/')) {
+        // file = '/' + file;
+    }
 
     let supportedEditorTypes = ['js', 'json', 'html', 'css', 'txt', 'yml', 'md'];
 
@@ -26,8 +30,8 @@ export default async function showFile(root, file, showEditor = false) {
         // set height and width of iframe
         //fileViewerIframe.css('height', '100%');
         //fileViewerIframe.css('width', '500px');
-        let src = root + '/' + file;
-        console.log('loading src', src);
+        // let src = root + '/' + file;
+        let src = '/' + file;
         fileViewerIframe.attr('src', src);
 
         $('.bp-file-explorer-file-viewer-iframe').show();
@@ -39,9 +43,11 @@ export default async function showFile(root, file, showEditor = false) {
         // instead of loading the file in iframe, we will display its contents in the code editor
 
         // first we fetch the file contents using fetch
-        let filePath = '/' + root + '/' + file;
+        // let filePath = '/' + root + '/' + file;
+        let filePath = '/' + file; // root is not needed here, as file is already a full path
         let fileCDN = 'https://files.buddypond.com';
         filePath = fileCDN + filePath;
+        // filePath = filePath.replace(this.bp.me + '/', ''); // remove the /me/ part from the path
         // console.log("fetching filePath", filePath);
         let fileContents = await fetch(filePath);
 
@@ -73,8 +79,12 @@ export default async function showFile(root, file, showEditor = false) {
         $('.bp-file-explorer-drag-upload').hide();
         // for now, ensure that editor state resets to editor showing code ( not preview or upload )
         // this is in case the user has previous entered preview mode and then clicked new file on file tree
-        $('.pad-editor-button-edit').click();
-
+        if (ext === 'html') {
+          // show html preview by default
+          $('.pad-editor-button-preview').click();
+        } else {
+          $('.pad-editor-button-edit').click();
+        }
     }
 
 }

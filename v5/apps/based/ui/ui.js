@@ -31,14 +31,7 @@ export default class UI {
         this.countdownManager = new CountdownManager(this.bp);
         // this.countdownManager.updateCountdowns();
         let that = this;
-        this.bp.window = function createEmptyWindow(options = {}) {
-            // create a new window with the window manager
-            options.height = options.height || 400;
-            options.width = options.width || 600;
-            //options.content = 'Fudge';
-            //options.iframeContent = 'http://192.168.200.59/Bobby/pads/test'
-            return that.windowManager.createWindow(options);
-        }
+        this.bp.window = that.windowManager.createWindow.bind(that.windowManager);
         return this;
     }
 

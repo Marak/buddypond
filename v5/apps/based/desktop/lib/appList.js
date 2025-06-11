@@ -79,7 +79,7 @@ export default {
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
-    "description": "Create music and animations with keyboard input",
+    "description": "Create music and animations with touch and keyboard input",
     "onClick": "bp.open('patatap')",
     "categories": ["audio", "music", "creative"]
   },

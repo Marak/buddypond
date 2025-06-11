@@ -202,7 +202,7 @@ export default function addShortCut(app, options = {}, parent) {
         chatButton.name = app.name; // add name to button for reference
         // adds to default chat window buttons
         if (this.bp.apps.desktop.enabledChatWindowButtons) {
-            console.log('Adding chat button to desktop enabledChatWindowButtons', chatButton);
+            // console.log('Adding chat button to desktop enabledChatWindowButtons', chatButton);
             this.bp.apps.desktop.enabledChatWindowButtons.push(chatButton);
         }
         if (this.bp.apps.buddylist && this.bp.apps.buddylist.options.chatWindowButtons) {

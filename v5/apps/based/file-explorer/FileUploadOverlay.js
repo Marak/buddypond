@@ -1,13 +1,15 @@
 export default class FileUploadOverlay {
     constructor({
         parent,
-        fileExplorer
+        fileExplorer,
+        onUploadComplete = () => {}
     }, uploadFn) {
         this.parent = parent;
         this.fileExplorer = fileExplorer;
         this.files = [];
         this.initializeElements();
         this.bindEvents();
+        this.onUploadComplete = onUploadComplete;
         this.uploadFn = uploadFn;
         this.bp = fileExplorer.bp;
     }
@@ -26,7 +28,7 @@ export default class FileUploadOverlay {
     }
 
     bindEvents() {
-        this.uploadButton.addEventListener('click', () => this.startUpload());
+        this.uploadButton.addEventListener('click', () => this.startUpload(this.onUploadComplete));
         this.cancelButton.addEventListener('click', () => this.hide());
     }
 
@@ -83,10 +85,9 @@ export default class FileUploadOverlay {
 
     }
 
-    async startUpload() {
+    async startUpload(onUploadComplete = () => {}) {
         this.uploadButton.disabled = true;
         this.progressContainer.style.display = 'block';
-        console.log('FileUploadOverlay.startUpload() called');
 
         let uploadedFiles = 0;
         let uploadedAllFiles = true;
@@ -121,6 +122,7 @@ export default class FileUploadOverlay {
                 // should show final status
                 $('.bp-file-explorer-upload-status').text('Upload completed');
                 this.hide();
+                onUploadComplete();
             }, 2200);
 
             // wait just a moment until attempting to get files
@@ -145,20 +147,16 @@ export default class FileUploadOverlay {
     // TODO: is this no longer being called/
     // Remark: Remove this FN?  
     async uploadFile(file, onProgress) {
-        console.log("calling uploadFn", file, onProgress);
         // This is a placeholder for your actual upload implementation
         // Replace this with your actual upload logic
 
-        alert('FileUploadOverlay.uploadFile() called');
         try {
             await this.uploadFn(file, onProgress);
         } catch (error) {
             // show the error in the UI, could be out of space, etc
-            console.error('Upload failed:', error);
             alert(error.message)
             //$('.bp-file-explorer-upload-column-status').textContent = 'Failed'; // should be more specific
         }
-
 
         /*
         return new Promise((resolve) => {

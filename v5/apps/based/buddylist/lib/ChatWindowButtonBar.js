@@ -72,6 +72,7 @@ export default class ChatWindowButtonBar {
             console.warn(`Button with text "${button.text}" already exists.`);
             return;
         }
+        
 
         this.buttons.push(button);
         const newButtonElement = this.createButtonElement(button);
@@ -139,7 +140,6 @@ export default class ChatWindowButtonBar {
             }
         });
     }
-
 
     //reRenderButtons() is only used when making a remote change to the button order from an outside source
     // drag and drop does not use this method and instead uses syncButtonOrder

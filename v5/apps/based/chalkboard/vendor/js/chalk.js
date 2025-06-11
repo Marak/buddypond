@@ -3,9 +3,31 @@
 document.addEventListener("DOMContentLoaded", chalkboard);
 
 function chalkboard() {
+
+  // app will broadcast to the desktop channel itself
   const channel = new BroadcastChannel("buddypond-desktop");
   channel.postMessage({ type: "app", app: "chalkboard", action: "open" });
-  channel.onmessage = (event) => console.log("chalkboard received:", event.data);
+  
+  // app doesn't need to listen for desktop messages, but can if needed
+  //channel.onmessage = (event) => console.log("chalkboard received:", event.data);
+
+  // TODO: we could have better control of saving instead of using the timer
+  // this implies an additional broadcast channel with specific app namespace
+  // probably better than having each app listen for all desktop messages by default...
+  const reciever = new BroadcastChannel("buddypond-chalkboard");
+  reciever.onmessage = (event) => {
+
+    if (event.data.action = 'saved') {
+      // re-enable the save button
+      const saveButton = document.querySelector(".save-button");
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.innerHTML = "Save";
+      }
+      console.log("chalkboard received save confirmation:", event.data);
+    }
+
+  };
 
   cleanupExistingElements();
   createUI();
@@ -39,7 +61,7 @@ function chalkboard() {
   document.addEventListener("keyup", handleKeyUp);
   document.oncontextmenu = () => false;
 
-  document.querySelector(".link").addEventListener("click", saveImage);
+  document.querySelector(".save-button").addEventListener("click", saveImage);
   document.getElementById("clearBtn").addEventListener("click", () => ctx.clearRect(0, 0, width, height));
   document.getElementById("colorPicker").addEventListener("change", (e) => (chalkColor = hexToRGBA(e.target.value)));
 
@@ -130,9 +152,36 @@ function chalkboard() {
   }
 
   function saveImage() {
+    const saveButton = document.querySelector(".save-button");
+
+    if (saveButton) {
+      // Store original content to restore later
+      const originalText = saveButton.innerHTML;
+
+      // Set visual feedback
+      saveButton.disabled = true;
+      saveButton.innerHTML = `<span class="spinner" style="
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      border: 2px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5em;"></span>Saving…`;
+
+      // Re-enable button after delay
+      setTimeout(() => {
+        saveButton.disabled = false;
+        saveButton.innerHTML = originalText;
+      }, 5000); // 5 seconds debounce
+    }
+
+    // Remove old download preview
     const downloadEl = document.querySelector(".download");
     if (downloadEl) downloadEl.remove();
 
+    // Setup drawing canvas
     const imgCanvas = document.createElement("canvas");
     const imgCtx = imgCanvas.getContext("2d");
     imgCanvas.width = width;
@@ -140,9 +189,9 @@ function chalkboard() {
     imgCtx.fillStyle = imgCtx.createPattern(patImg, "repeat");
     imgCtx.fillRect(0, 0, width, height);
 
+    // Layer image
     const layimage = new Image();
-    layimage.src = canvas.toDataURL("image/png");
-    setTimeout(() => {
+    layimage.onload = () => {
       imgCtx.drawImage(layimage, 0, 0);
       const compimage = imgCanvas.toDataURL("image/png");
       channel.postMessage({
@@ -152,8 +201,10 @@ function chalkboard() {
         image: compimage,
         timestamp: Date.now()
       });
-    }, 500);
+    };
+    layimage.src = canvas.toDataURL("image/png");
   }
+
 
   function changeLink() {
     // Placeholder for existing logic
@@ -174,11 +225,12 @@ function chalkboard() {
   function createUI() {
     const panel = document.createElement("div");
     panel.className = "panel";
-    panel.innerHTML = `
-      <a class="link" target="_blank">Save</a>
-      <button id="clearBtn">Clear</button>
-      <input type="color" id="colorPicker" value="#ffffff" title="Pick Chalk Color">
-    `;
+ panel.innerHTML = `
+  <a class="save-button" target="_blank">Save</a>
+  <button id="clearBtn">Clear</button>
+  <input type="color" id="colorPicker" class="colorPicker" value="#ffffff" title="Pick Chalk Color">
+`;
+
     document.body.prepend(panel);
 
     const pattern = document.createElement("img");

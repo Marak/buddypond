@@ -58,10 +58,22 @@ export default class BuddyList {
         // buddylist logout will handle both buddylist and message logout
         this.bp.logout = this.logout.bind(this);
 
+        // pull in the default button
         this.options.chatWindowButtons = this.options.chatWindowButtons || defaultChatWindowButtons(this.bp);
 
+        // add any active buttons that have been added in this session
         // add the this.bp.apps.desktop.enabledChatWindowButtons array to this.options.chatWindowButtons
-        this.options.chatWindowButtons = this.options.chatWindowButtons.concat(this.bp.apps.desktop.enabledChatWindowButtons || []);
+
+        let enabledChatWindowButtons = this.bp.apps.desktop.enabledChatWindowButtons;
+        // iterate through each button and fetch the appList data.chatButton data ( hydrate the button )
+        if (enabledChatWindowButtons && Array.isArray(enabledChatWindowButtons)) {
+            enabledChatWindowButtons.forEach(buttonMeta => {
+                let app = this.bp.apps.desktop.appList[buttonMeta.name];
+                if (app && app.chatButton) {
+                    this.options.chatWindowButtons.push(app.chatButton);
+                }
+            });
+        }
 
         this.opened = false;
         this.showingIsTyping = this.showingIsTyping || {};

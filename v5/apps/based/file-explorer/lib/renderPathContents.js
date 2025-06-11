@@ -1,7 +1,10 @@
 export default function renderPathContents(path) {
+
     // $('.bp-file-explorer-address-input').val(path); // maybe no slash?
 
-    this.setPreviewAddressBar(path);
+    let previewPath = path.replace(this.bp.me + '/', ''); // remove the /me/ part from the path
+
+    this.setPreviewAddressBar(previewPath);
 
     path = path.replace('/', '');
     let instance = $('#jtree').jstree(true);
@@ -25,7 +28,6 @@ export default function renderPathContents(path) {
         this.currentSelectedNode = node;
 
         let contents = node.children;
-        // console.log('444 showing contents of folder', node.id, contents);
 
         // check this.cloudFiles.metadata[node.id] for the contents of the folder
         // it *should* always exist, if not show error
@@ -41,15 +43,19 @@ export default function renderPathContents(path) {
             let childNode = instance.get_node(child);
 
             let metadata = {};
-            // console.log('this.cloudFiles', this.cloudFiles.metadata);
-            if (!this.cloudFiles.metadata[childNode.id]) {
+            let childPath = childNode.id.replace(this.bp.me + '/', ''); // remove the /me/ part from the path
+            childPath = childNode.id;
+
+            if (!this.cloudFiles.metadata[childPath]) {
                 // Remark: Folders are not returning metadata?
                 // TODO: should server return folder metadata?
                 //console.error(`No metadata found for ${childNode.id} cannot show metadata`);
                 //console.error(`This should *not* happen and indicates that the metadata and Object Store are out of sync`);
+                // console.warn(`No metadata found for ${childPath}, assuming empty folder`);
             } else {
                 // we found the metadata ( as expected )
-                metadata = this.cloudFiles.metadata[childNode.id];
+                // console.log('found metadata for', childPath, this.cloudFiles.metadata[childPath]);
+                metadata = this.cloudFiles.metadata[childPath];
             }
 
             return {
