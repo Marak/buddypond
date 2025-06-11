@@ -1,7 +1,7 @@
 /* BuddyScript Card Styles */
 .card-bs-app {
     position: relative;
-    width: 320px;
+    /* width: 320px; */
     padding: 8px; /* Reduced padding */
     border: 2px solid #FFD700; /* Gold border */
     border-radius: 8px;

@@ -135,6 +135,14 @@ let legacyCommands = {
     icon: 'lofi'
   },
   */
+  chalkboard: {
+    command: function (params, context) {
+      bp.open('chalkboard', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Chalkboard. Draw and Share with Buddies',
+    icon: 'chalkboard'
+  },
+
   coin: {
     command: function (params) {
       console.log('coin command', params);
@@ -186,10 +194,28 @@ let legacyCommands = {
     icon: 'coin'
   },
   install: {
-    command: function (params) {
-      console.log('install command', params);
+    command: function (params, context) {
       if (params.length > 0) {
-        bp.open('pad', { context: params[0] });
+        let appName = params[0];
+        let app = bp.apps.desktop.appList[appName];
+        if (!app) {
+          console.log(`App ${appName} not found in appList`);
+          return;
+        }
+        // check if app is installed
+        // TODO: move isInstalled check to helper function
+        let appsInstalled = bp?.settings?.apps_installed || {};
+        const isInstalled = !!appsInstalled[appName];
+        if (isInstalled) {
+          // if installed, open the app
+          console.log(`App ${appName} is already installed`);
+          console.log('Opening app with context', context);
+          bp.open(appName, { context: context.contextName, output: context.windowType });
+          return;
+        }
+        // if not installed, install the app
+        bp.apps.desktop.addApp(appName, app);
+        // bp.open('pad', { context: params[0] });
       } else {
         bp.open('pad');
       }
@@ -197,6 +223,35 @@ let legacyCommands = {
     description: 'Install Buddy Pond Apps',
     icon: 'install'
   },
+
+  uninstall: {
+    command: function (params) {
+      if (params.length > 0) {  
+        let appName = params[0];
+        let app = bp.apps.desktop.appList[appName];
+        if (!app) {
+          console.log(`App ${appName} not found in appList`);
+          bp.open('pad');
+          return;
+        }
+        // check if app is installed 
+        let appsInstalled = bp?.settings?.apps_installed || {};
+        const isInstalled = !!appsInstalled[appName];
+        if (!isInstalled) {
+          // if not installed
+          console.log(`App ${appName} is not installed`);
+          bp.open('pad');
+          return;
+        }
+        // if installed, uninstall the app
+        bp.apps.desktop.removeApp(appName, app);
+        return;
+        // bp.open('pad', { context: params[0] });
+      }
+      bp.open('pad');
+    }
+  },
+
   leaderboard: {
     command: function (params) {
         bp.open('coin', { context: '#coin-leaderboard' });
