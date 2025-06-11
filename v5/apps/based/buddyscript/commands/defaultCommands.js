@@ -220,8 +220,7 @@ let legacyCommands = {
         bp.open('pad');
       }
     },
-    description: 'Install Buddy Pond Apps',
-    icon: 'install'
+    description: 'Install Buddy Pond Apps'
   },
 
   uninstall: {
@@ -249,7 +248,8 @@ let legacyCommands = {
         // bp.open('pad', { context: params[0] });
       }
       bp.open('pad');
-    }
+    },
+    description: 'Uninstall Buddy Pond Apps'
   },
 
   leaderboard: {

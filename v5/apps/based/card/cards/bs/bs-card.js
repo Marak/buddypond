@@ -18,7 +18,11 @@ export default function applyData(el, data, cardClass, parent) {
     let commandData = bs.commandData?.object || {};
 
     //console.log('commandData', commandData);
-    let icon = commandData.icon || 'fa fa-terminal';
+    let icon = commandData.icon;
+    if (!icon) {
+        // if no icon, use the default icon
+        icon = 'buddyscript';
+    }
     let iconPath = `/desktop/assets/images/icons/icon_${icon}_64.png`
     
     const commands = this.bp.apps.buddyscript.commands;
