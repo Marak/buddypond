@@ -162,7 +162,7 @@ async function renderTransactions(page = 1, limit = 8) {
                     <td>${tx.sender}</td>
                     <td>${tx.receiver}</td>
                     <td>${tx.symbol}</td>
-                    <td>${tx.amount}</td>
+                    <td>${tx.amount.toLocaleString('en-US')}</td>
                     <td>${formatCurrency(tx.value)}</td>
                     <td>${DateFormat.format.date(tx.timestamp, 'E MMMM dd, hh:mm:ss a')}</td>
                 </tr>

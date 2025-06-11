@@ -15,7 +15,8 @@
                 <h4 class="bp-pads-sidebar-title">Categories</h4>
                 <div class="bp-pads-category-list">
                     <button class="bp-pads-category-btn bp-pads-category-active" data-category="all">All Apps</button>
-                    <button class="bp-pads-category-btn bp-pads-category-active" data-category="installed">Installed Apps</button>
+                    <button class="bp-pads-category-btn bp-pads-category-active" data-category="installed">Installed
+                        Apps</button>
                     <!-- Categories will be dynamically populated -->
                 </div>
             </div>
@@ -66,6 +67,10 @@
         </div>
         <hr />
 
+        <!-- TODO: add section for deploying app code via Github and github action -->
+        <!-- example repo: https://github.com/Marak/buddypond-example-app -->
+        <!-- github action: https://github.com/Marak/buddypond-example-app/blob/main/.github/workflows/upload.yml -->
+        <!-- required github secret: BP_API_KEY -->
         <div class="pads-faq desktop-section">
             <h1>Frequently Asked Questions</h1>
             <hr />
@@ -79,6 +84,48 @@
             <p><strong>Yes.</strong> Anything that runs in the browser will work in a BuddyPond Pad. <br />Pads are
                 backed by a standard Content Delivery Network which serves all your files as expected.</p>
             <hr />
+
+
+            <h4>How can I deploy my app code using GitHub?</h4>
+            <p>
+                You can publish your Pad directly from a GitHub repository using a GitHub Action. This allows you to
+                automatically upload your app files to your BuddyPond Pad every time you push to your repo.
+            </p>
+
+            <p>
+                ✅ <strong>Step 1:</strong> Set up your project with an <code>index.html</code> at the root (or any valid
+                browser app).<br />
+                ✅ <strong>Step 2:</strong> Add the BuddyPond upload GitHub Action to your repo.<br />
+                ✅ <strong>Step 3:</strong> Add a GitHub secret named <code>BP_API_KEY</code> (you can find this in your
+                BuddyPond profile settings).
+            </p>
+
+            <p>
+                Here's a working example: <br />
+                📁 Template you can Clone: <a href="https://github.com/buddypond/app-template"
+                    target="_blank">buddypond/app-template</a><br />
+                ⚙️ GitHub Action: <a
+                    href="https://github.com/buddypond/upload-action"
+                    target="_blank">buddypond/upload-action</a>
+            </p>
+
+            <p>
+                Once configured, your app will automatically deploy to:<br />
+                <code>https://files.buddypond.com/YOUR_USERNAME/YOUR_UPLOAD_FOLDER/index.html</code>
+            </p>
+
+            <p>
+                The default upload folder is specified in the GitHub Action under the <code>UPLOAD_FOLDER</code>
+                variable.
+                You can structure your uploads however you like.
+            </p>
+
+            <p>
+                BuddyPond will serve your app using standard browser MIME types and full CDN delivery.
+            </p>
+
+            <hr />
+
 
             <h4>Where are my files hosted? How do I link to my files?</h4>
 
@@ -109,7 +156,8 @@
         <!-- Pads Editing Section -->
         <div class="loggedOut" align="center">
             <h2>Log in to BuddyPond to create a Pad</h2>
-            <h3 class="portfolio-message"><button class="open-app action-button" data-app="buddylist">Log In</button></h3>
+            <h3 class="portfolio-message"><button class="open-app action-button" data-app="buddylist">Log In</button>
+            </h3>
 
         </div>
         <div class="bp-pad-editor loggedIn">

@@ -18,6 +18,7 @@ export default async function savePad() {
     if (!thePad) {
         console.log('pad is available, creating pad');
         let padData = {
+            pad_key: padTitle,
             title: padTitle,
             description: padDescription
         };

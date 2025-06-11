@@ -27,6 +27,7 @@
     margin-bottom: 20px;
     border-radius: 8px;
     color: #fff;
+    gap: 30px;
 }
 
 .coin-container .tabs-container li {
@@ -199,7 +200,6 @@
     text-decoration: none;
 }
 
-
 .portfolio-table {
     width: 100%;
     overflow-x: auto;
@@ -215,6 +215,7 @@
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #444;
+    color: #ddd;
 }
 
 .portfolio-table th {
@@ -224,8 +225,9 @@
 /* Portfolio Actions */
 .portfolio-actions {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin-bottom: 20px;
+    gap: 30px;
 }
 
 /* Alternating row colors */
@@ -242,12 +244,6 @@
     background: #444;
     color: #fff;
     cursor: pointer;
-}
-
-/* Highlighting active rows */
-.portfolio-table tr.active, .all-coins tr.active {
-    background: #555;
-    color: #ffcc00;
 }
 
 

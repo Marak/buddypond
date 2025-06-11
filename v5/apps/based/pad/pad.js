@@ -242,9 +242,7 @@ export default class Pad {
                 $('#pads-editor', this.padWindow.content).flexHide();
 
                 // Reloads the My Pads list
-                console.log('getting the pads again');
                 this.myPads = await this.bp.apps.client.api.getPads();
-                console.log('got the pads again', myPads);
                 this.renderPadRows(this.myPads);
                 // set the .bp-pad-container to visible
                 $('.bp-pad-container', this.padWindow.content).flexShow();

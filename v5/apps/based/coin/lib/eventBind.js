@@ -37,12 +37,10 @@ export default function eventBind(coinWindow) {
             // console.log('coin', coin, i);
             let value = coin.total_amount * coin.price;
             // format value as dollars with 2 decimal places
-            value = `$${value.toFixed(2)}`;
+            //value = `$${value.toFixed(2)}`;
             // use currency formatting for value with commas
-            value = value.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            value = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
             // format amount as number with commas
             coin.total_amount = coin.total_amount.toLocaleString('en-US', {
                 minimumFractionDigits: 0,
