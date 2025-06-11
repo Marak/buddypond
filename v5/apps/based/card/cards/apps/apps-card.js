@@ -7,6 +7,7 @@ export default function applyData(el, data) {
   // iterate through all the desktop.apps and index by .name property
   Object.keys(apps).forEach(appName => {
     const app = apps[appName];
+    app.name = appName; // Ensure app has a name property
     commandSet.push(app);
   });
 
@@ -22,7 +23,6 @@ export default function applyData(el, data) {
 
   // Add command elements
   commandSet.forEach(app => {
-
     let command = app.name;
     const commandText = `${app.label || command}`;
     const appsText = app.label;
@@ -40,7 +40,7 @@ export default function applyData(el, data) {
       commandDiv.classList.add('card-apps-clicked');
       // console.log('binding command', command, app);
       // TODO: run bs command with chatWindow as context?
-      this.bp.open(command, { context: app.options.context });
+      this.bp.open(command, { context: app.options?.context });
       setTimeout(() => commandDiv.classList.remove('card-apps-clicked'), 200);
     });
     appsCommands.append(commandDiv);

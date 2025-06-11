@@ -105,7 +105,7 @@ export default {
   },
   "youtube": {
     "icon": "desktop/assets/images/icons/icon_interdimensionalcable_64.png",
-    "label": "Inter Dimensional Cable",
+    "label": "IDC Cable",
     "description": "Watch and browse YouTube videos",
     "onClick": "bp.open('youtube')",
     "categories": ["entertainment", "media"]
