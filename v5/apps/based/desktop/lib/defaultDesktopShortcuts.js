@@ -40,7 +40,7 @@ export default function defaultDesktopShortcuts() {
         Object.keys(installedApps).forEach(appName => {
             let app = installedApps[appName];
             if (app) {
-                console.log(`Adding shortcut for installed app: ${appName}`, app);
+                // console.log(`Adding shortcut for installed app: ${appName}`, app);
                 bp.apps.desktop.addShortCut({
                     name: appName,
                     ...app

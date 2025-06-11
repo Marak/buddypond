@@ -6,8 +6,6 @@ export default class FluidSimulation {
 
     async init() {
         this.bp.log('Hello from FluidSimulation');
-
-    
         return 'loaded Piano';
     }
 
@@ -32,6 +30,7 @@ export default class FluidSimulation {
                 focusable: true,
                 maximized: false,
                 minimized: false,
+                canBeBackground: true,
                 onClose: () => {
                     this.fluidsWindow = null;
                 }

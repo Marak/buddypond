@@ -13,7 +13,7 @@ export default function buildJsTreeData(id, paths) {
     const root = { id, text: id, state: { opened: true }, children: [] };
 
     paths.forEach(path => {
-        console.log('Processing path:', path);
+        // console.log('Processing path:', path);
         const parts = path.split('/').filter(part => part.length);
         if (parts.length === 0) return; // Skip empty paths
 
@@ -23,7 +23,7 @@ export default function buildJsTreeData(id, paths) {
             const part = parts[i];
             const isFile = i === parts.length - 1 && part.includes('.');
             const newPath = id + '/' + parts.slice(0, i + 1).join('/');
-            console.log('newPath', newPath, 'isFile', isFile);
+            // console.log('newPath', newPath, 'isFile', isFile);
             // Use id (full path) to find existing node, not text
             let node = current.children.find(child => child.id === newPath);
             if (!node) {

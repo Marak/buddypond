@@ -4,7 +4,7 @@ export default function addShortCut(app, options = {}, parent) {
         options.onClick = () => console.log('desktop app - Missing options.onClick function', app.name);
     }
 
-    console.log('Adding shortcut for app:', app, 'with options:', options);
+    // console.log('Adding shortcut for app:', app, 'with options:', options);
 
     // Create the shortcut element
     const el = document.createElement('div');
@@ -173,7 +173,7 @@ export default function addShortCut(app, options = {}, parent) {
             app: 'buddylist',
             type: app.chatWindowButton
         });
-        console.log('chatWindows', chatWindows);
+        // console.log('chatWindows', chatWindows);
 
         // these may need to be custom based on the app itself...
         /*

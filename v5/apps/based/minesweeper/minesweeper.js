@@ -53,4 +53,5 @@ export default class Minesweeper {
         this.bp.apps.ui.windowManager.focusWindow(this.minesweeperWindow);
 
     }
+
 }

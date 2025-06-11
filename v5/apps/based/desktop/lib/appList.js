@@ -61,6 +61,7 @@ export default {
   "paint": {
     "icon": "desktop/assets/images/icons/icon_paint_64.png",
     "label": "Paint",
+    "author": "Isaiah Odhner",
     "description": "A Classic Retro Style Image Editor",
     "onClick": "bp.open('paint')",
     "categories": ["art", "creative"],
@@ -81,8 +82,10 @@ export default {
     "label": "Patatap",
     "description": "Create music and animations with touch and keyboard input",
     "onClick": "bp.open('patatap')",
-    "categories": ["audio", "music", "creative"]
+    "categories": ["audio", "music", "creative"],
+    "author": "Jono Brandel"
   },
+  /*
   "sandspiel": {
     "icon": "desktop/assets/images/icons/icon_sandspiel_64.png",
     "label": "Sandspiel",
@@ -90,9 +93,11 @@ export default {
     "onClick": "bp.open('sandspiel')",
     "categories": ["games", "creative"]
   },
+  */
   "soundrecorder": {
     "icon": "desktop/assets/images/icons/icon_soundrecorder_64.png",
     "label": "Sound Recorder",
+    "author": "Isaiah Odhner",
     "description": "Record and save audio clips",
     "onClick": "bp.open('soundrecorder')",
     "desktopOnly": true,
@@ -122,6 +127,7 @@ export default {
   },
   "fluid-simulation": {
     "icon": "desktop/assets/images/icons/icon_fluidsimulation_64.png",
+    "author": "Pavel Dobryakov",
     "label": "Fluid Simulation",
     "description": "Interact with a fluid dynamics simulation",
     "onClick": "bp.open('fluid-simulation')",
@@ -136,6 +142,7 @@ export default {
   },
   "audio-visual": {
     "icon": "desktop/assets/images/icons/icon_visuals_64.png",
+    "author": "lachlanmaclean",
     "label": "Audio Visuals",
     "description": "Experience audio-responsive visuals",
     "onClick": "bp.open('audio-visual')",

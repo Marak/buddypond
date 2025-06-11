@@ -1,0 +1,38 @@
+{
+  "name": "patatap",
+  "version": "2.0.0",
+  "description": "A collection of two dimensional animations that are triggered by sound.",
+  "main": "index.js",
+  "scripts": {
+    "less": "less-watch-compiler styles styles --source-map",
+    "serve": "esbuild --bundle src/index.js --sourcemap --outfile=main.js --servedir=. --serve=8080",
+    "dev": "concurrently --kill-others \"npm run less\" \"npm run serve\"",
+    "build": "node ./utils/build",
+    "predeploy": "npm run build",
+    "deploy": "gcloud app deploy app.yaml --project=pat-a-tap",
+    "lint": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonobr1/Patatap.git"
+  },
+  "author": "jonobr1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonobr1/Patatap/issues"
+  },
+  "homepage": "https://github.com/jonobr1/Patatap#readme",
+  "dependencies": {
+    "@tweenjs/tween.js": "^21.0.0",
+    "jquery": "^3.7.1",
+    "two.js": "^0.8.12"
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^8.18.0",
+    "less": "^4.1.2",
+    "less-watch-compiler": "^1.16.3",
+    "mpe": "^1.0.4"
+  }
+}

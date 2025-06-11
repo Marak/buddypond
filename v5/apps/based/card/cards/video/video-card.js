@@ -1,7 +1,7 @@
 export default function applyData(el, data) {
     const $el = $(el);
     const { url } = data || {};
-    console.log('Video card data', { url });
+    // console.log('Video card data', { url });
 
     // replace the URL in the message text since the video card will handle it as embed
     // this allows a message with a video URL to be sent without the URL showing up in the chat

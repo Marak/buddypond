@@ -31,7 +31,8 @@ export default class AudioVisual {
             closable: true,
             focusable: true,
             maximized: false,
-            minimized: false
+            minimized: false,
+            canBeBackground: true,
         });
 
 
