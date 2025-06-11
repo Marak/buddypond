@@ -63,6 +63,101 @@ export default function renderPadRows(myPads) {
             // actions ( edit, delete, view )
             td = document.createElement('td');
             td.style.textAlign = 'right';
+
+            let viewButton = document.createElement('button');
+            viewButton.innerHTML = 'View';
+            viewButton.classList.add('view-button');
+
+
+            /* 
+            let submitToAppStoreButton = document.createElement('button');
+            submitToAppStoreButton.classList.add('submit-to-app-store-button');
+            submitToAppStoreButton.innerHTML = 'Submit to App Store';
+            submitToAppStoreButton.onclick = () => {
+                alert('Submit to App Store not implemented yet');
+            }
+            td.appendChild(submitToAppStoreButton);
+            */
+
+            /*
+            let deployViaGithubActionButton = document.createElement('button');
+            deployViaGithubActionButton.classList.add('deploy-via-github-action-button');
+            deployViaGithubActionButton.innerHTML = 'Deploy via GitHub Action';
+            deployViaGithubActionButton.onclick = () => {
+                alert('Deploy via GitHub Action not implemented yet');
+            }
+            td.appendChild(deployViaGithubActionButton);
+            */
+
+            //       <button title="Upload Directory" class="bp-file-explorer-btn upload-directory"><i
+            //          class="fa-duotone fa-regular fa-folder-arrow-up"></i></button>
+
+            /*
+            let uploadFolderButton = document.createElement('button');
+            uploadFolderButton.classList.add('upload-folder-button');
+            uploadFolderButton.innerHTML = 'Upload Folder';
+            uploadFolderButton.onclick = () => {
+                // alert('Upload Folder not implemented yet');
+
+                // console.log('upload directory clicked');
+                let input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.webkitdirectory = true;
+                input.directory = true;
+                input.click();
+
+                input.onchange = async (e) => {
+                    console.log('ppppppad', pad)
+                    // console.log('files selected', e.target.files);
+                    let items = e.target.files;
+                    //await this.bp.apps['file-explorer'].handleUpload(e);
+                    await this.bp.open('file-explorer', {
+                        // context: '/pads/' + pad.title,
+                        onUploadComplete: async () => {
+
+                            alert('Upload complete');
+                            // close the file explorer window
+                            await this.bp.apps['file-explorer'].close();
+                            // click the view button
+                            viewButton.click();
+                        }
+                    });
+                    alert('open complete');
+                    await this.bp.apps['file-explorer'].fileExplorerInstance.handleUpload(e, {
+                        includeRootDirectory: false,
+                        path: 'pads/' + pad.title + '/',
+                    });
+                };
+
+
+            }
+            td.appendChild(uploadFolderButton);
+            */
+
+            /*
+            let installButton = document.createElement('button');
+            installButton.classList.add('install-button');
+            installButton.innerHTML = 'Install';
+            installButton.onclick = () => {
+                // console.log('install', pad);
+                let padUrl = '/' + pad.owner + '/pads/' + pad.title;
+                // open a new window browser window
+                // create a new shortCut using an empty shell app that manages window state
+                let windowId = 'pad-' + pad.owner + '-' + pad.title;
+                let options = {
+                    title: pad.title,
+                    content: padUrl,
+                    width: 800,
+                    height: 600,
+                    id: windowId
+                }
+                bp.window(options);
+            };
+
+            td.appendChild(installButton);
+            */
+
             let editButton = document.createElement('button');
             editButton.classList.add('edit-button');
             editButton.innerHTML = 'Edit';
@@ -76,10 +171,6 @@ export default function renderPadRows(myPads) {
             deleteButton.classList.add('delete-button');
 
             td.appendChild(deleteButton);
-
-            let viewButton = document.createElement('button');
-            viewButton.innerHTML = 'View';
-            viewButton.classList.add('view-button');
 
             td.appendChild(viewButton);
             tr.appendChild(td);

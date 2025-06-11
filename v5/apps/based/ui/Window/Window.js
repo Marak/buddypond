@@ -359,6 +359,7 @@ class Window {
         }
     }
 
+    // TODO: migrate away from iframe messages and use BroadcastChannel instead
     setupMessageHandling() {
         // iframe is loaded by now
         this.onLoad(this);

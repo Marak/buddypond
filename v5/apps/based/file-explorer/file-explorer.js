@@ -177,7 +177,7 @@ export default class FileExplorer {
         // get the latest cloud files to populate the file explorer
         let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 ( for now )
         const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
-        console.log(JSON.stringify(treeData, true, 2));
+        // console.log(JSON.stringify(treeData, true, 2));
         this.fileExplorer.cloudFiles = cloudFiles;
 
         // TODO: connect tree to AJAX backend for granular loading ( not just loading the whole tree at once )

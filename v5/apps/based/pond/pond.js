@@ -52,7 +52,12 @@ export default class Pond {
     }
 
 
-    open() {
+    open(options = {}) {
+
+        if (options.context) {
+            this.bp.apps.buddylist.openChatWindow({ pondname: options.context })
+            return;
+        }
 
         let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
 

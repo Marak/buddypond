@@ -42,7 +42,7 @@ export default class Pad {
         if (!this.data.appStats) {
             this.data.appStats = {};
         }
-        console.log('appStats', this.data.appStats);
+        // console.log('appStats', this.data.appStats);
 
         this.html = html;
 
