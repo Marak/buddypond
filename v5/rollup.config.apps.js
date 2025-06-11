@@ -349,6 +349,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/chalkboard/chalkboard.js',
+    output: {
+      file: 'dist/apps/based/chalkboard.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/client/client.js',
     output: {
       file: 'dist/apps/based/client.js',
@@ -962,6 +976,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/minipaint/minipaint.js',
+    output: {
+      file: 'dist/apps/based/minipaint.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/motd/motd.js',
     output: {
       file: 'dist/apps/based/motd.js',
@@ -1052,6 +1080,34 @@ export default [
     input: 'apps/based/paint/paint.js',
     output: {
       file: 'dist/apps/based/paint.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/painterro/painterro.js',
+    output: {
+      file: 'dist/apps/based/painterro.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/patatap/patatap.js',
+    output: {
+      file: 'dist/apps/based/patatap.js',
       format: 'es',
       sourcemap: true,
     },
@@ -1318,6 +1374,20 @@ export default [
         minimize: true,
         sourceMap: true
       })
+    ]
+  }
+,
+  {
+    input: 'apps/based/sandspiel/sandspiel.js',
+    output: {
+      file: 'dist/apps/based/sandspiel.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
     ]
   }
 ,

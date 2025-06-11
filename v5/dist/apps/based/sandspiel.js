@@ -1,0 +1,2 @@
+class i{constructor(i,e={}){return this.bp=i,this.options=e,this}async init(){return"loaded Sandspiel"}async open(){this.bp.window(this.window())}window(){return{id:"sandspiel",title:"Sandspiel",icon:"desktop/assets/images/icons/icon_console_64.png",x:250,y:75,width:600,height:400,minWidth:400,minHeight:300,parent:$("#desktop")[0],iframeContent:"/v5/apps/based/sandspiel/vendor/sandspiel.html",resizable:!0,minimizable:!0,maximizable:!0,closable:!0,focusable:!0,maximized:!1,minimized:!1,onclose:()=>{}}}}export{i as default};
+//# sourceMappingURL=sandspiel.js.map
