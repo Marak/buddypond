@@ -123,7 +123,9 @@ export default class ImageSearch {
                 for (let url of this.selectedImages) {
                     const response = await fetch(url);
                     const blob = await response.blob();
-                    const filename = url.split('/').pop().split('?')[0]; // crude filename
+                    let filename = url.split('/').pop().split('?')[0]; // crude filename
+                    // create new file name as timestamp + original filename
+                    filename = `${Date.now()}_${filename}`;
                     const file = new File([blob], filename, { type: blob.type });
                     files.push(file);
                     // remove the image from the selectedImages set
