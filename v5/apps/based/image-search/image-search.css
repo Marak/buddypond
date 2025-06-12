@@ -1,3 +1,46 @@
+.image-search-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.image-search-footer {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  position: relative;
+  bottom: 0;
+}
+
+.image-attribution-giphy-top {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+}
+
+.image-attribution-giphy-bottom-right {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: auto;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+}
+
+.image-attribution-giphy-bottom-left {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: auto;
+  left: 0px;
+  bottom: 0px;
+  position: absolute;
+}
+
+
 .image-search-ui {
   display: flex;
   flex-direction: column;

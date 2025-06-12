@@ -64,8 +64,9 @@ export default class ImageSearch {
                 if (!query) return;
                 $results.empty(); // Clear previous results
                 console.log("Searching for images with query:", query);
+
                 // Fetch images from the API
-                const images = await this.fetchImages(query, 12, options.provider);
+                const images = await this.fetchImages(query, 12, $('#image-search-provider').val());
 
                 if (images.error) {
                     $('#image-search-error').html(`<p>${images.error}</p>`);
@@ -83,6 +84,8 @@ export default class ImageSearch {
                 $('#image-search-error').hide();
                 $('#image-search-error').html('');
 
+                // $('.pexels-logo', this.imageSearchWindow.content).hide();
+                
                 images.forEach((url) => {
                     const $img = $(`<img src="${url}" style="width: 100%; cursor: pointer; border-radius: 4px;" />`);
                     $img.on('click', () => {
@@ -99,6 +102,7 @@ export default class ImageSearch {
                     });
                     $results.append($img);
                 });
+
             });
 
             this.selectedImages = new Set(); // inside constructor or open()
@@ -158,10 +162,37 @@ export default class ImageSearch {
 
         if (options.provider) {
             $('#image-search-provider', this.imageSearchWindow.content).val(options.provider);
+
+            if (options.provider === 'pexels') {
+                $('.pexels-logo', this.imageSearchWindow.content).flexShow();
+                $('.giphy-logo', this.imageSearchWindow.content).hide();
+
+            } else {
+                $('.pexels-logo', this.imageSearchWindow.content).hide();
+                $('.giphy-logo', this.imageSearchWindow.content).flexShow();
+            }
         }
 
         // focus the input field
         $('#image-search-input', this.imageSearchWindow.content).focus();
+
+        $('#image-search-provider', this.imageSearchWindow.content).on('change', (e) => {
+            // toggle the logos
+            const provider = e.target.value;
+            if (provider === 'pexels') {
+                $('.pexels-logo', this.imageSearchWindow.content).show();
+                $('.giphy-logo', this.imageSearchWindow.content).hide();
+            } else {
+                $('.pexels-logo', this.imageSearchWindow.content).hide();
+                $('.giphy-logo', this.imageSearchWindow.content).show();
+            }
+
+            // if search bar is not empty, re-fetch images
+            const query = $('#image-search-input', this.imageSearchWindow.content).val().trim();
+            if (query) {
+                $('#image-search-form', this.imageSearchWindow.content).trigger('submit');
+            }
+        });
         return this.imageSearchWindow;
     }
 

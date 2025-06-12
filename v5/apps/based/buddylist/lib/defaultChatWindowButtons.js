@@ -12,7 +12,7 @@ export default function defaultChatWindowButtons(bp) {
                 bp.open('image-search', {
                     output: type || 'buddy',
                     context: context,
-                    provider: 'giphy'
+                    provider: 'giphy-stickers'
                 });
                 return false;
             }
