@@ -2,6 +2,18 @@ export default function defaultDesktopShortcuts() {
 
     // check if we have default apps, if not initialize them
     let installedApps = this.bp.settings.apps_installed || {};
+
+    // check for legacy v4 versions, may have malformed data for new UI
+    // best way to check is if all .icon fields are missing from every entry
+    let isLegacySettings = false;
+    if (Object.keys(installedApps).length > 0) {
+        console.log('Checking for legacy settings...', installedApps);
+        isLegacySettings = Object.values(installedApps).every(app => !app.icon);
+    }
+    if (isLegacySettings) {
+        installedApps = {};
+    }
+
     if (Object.keys(installedApps).length === 0) {
         let defaultAppList = [
             'profile',
