@@ -12,32 +12,47 @@ export default class Pond {
     async init() {
         await this.bp.load('/v5/apps/based/pond/pond.css');
         this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
-
-        this.client = new HotPondsWebSocketClient({ bp: this.bp });
-        await this.client.connect();
-
-        this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
-            console.log('Received hotpond::activePonds event with data:', data);
-            this.data.hotPonds = data;
-
-            const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
-            if (!chatWindow) {
-                console.warn('Pond message main window not found, cannot update room list');
-                return;
-            }
-
-            this.bp.apps.buddylist.populateRoomList(data, chatWindow);
-            if (this.pondWindow?.content) {
-                this.updateHotPonds(data);
-            }
+        
+        this.bp.on('auth::qtoken', 'ponds-connect-client', async (data) => {
+            $('.loggedIn', this.pondWindow.content).show();
+            $('.loggedOut', this.pondWindow.content).hide();
+            connectPonds.call(this);
         });
 
-        this.bp.on('pond::connectedUsers', 'update-pond-connected-users', (data) => {
-            console.log('Received pond::connectedUsers event with data:', data);
-            this.bp.apps.buddylist.updatePondConnectedUsers(data);
-        });
+        if (this.bp.qtokenid) {
+            connectPonds.call(this);
+        }
 
-        this.client.listActivePonds();
+        async function connectPonds() {
+
+            this.client = new HotPondsWebSocketClient({ bp: this.bp });
+            await this.client.connect();
+
+            this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
+                console.log('Received hotpond::activePonds event with data:', data);
+                this.data.hotPonds = data;
+
+                const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+                if (!chatWindow) {
+                    console.warn('Pond message main window not found, cannot update room list');
+                    return;
+                }
+
+                this.bp.apps.buddylist.populateRoomList(data, chatWindow);
+                if (this.pondWindow?.content) {
+                    this.updateHotPonds(data);
+                }
+            });
+
+            this.bp.on('pond::connectedUsers', 'update-pond-connected-users', (data) => {
+                console.log('Received pond::connectedUsers event with data:', data);
+                this.bp.apps.buddylist.updatePondConnectedUsers(data);
+            });
+
+            this.client.listActivePonds();
+
+        }
+
         return 'loaded pond';
     }
 
@@ -67,7 +82,6 @@ export default class Pond {
 
     joinPondByName(pondName) {
         if (!pondName) return;
-
         const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
         if (pondMainWindow) {
             this.bp.apps.buddylist.joinPond(pondName);
@@ -109,8 +123,15 @@ export default class Pond {
                 }
             });
 
+            if (this.bp.qtokenid) {
             $('.loggedIn', this.pondWindow.content).show();
             $('.loggedOut', this.pondWindow.content).hide();
+
+            } else {
+                $('.loggedIn', this.pondWindow.content).hide();
+                $('.loggedOut', this.pondWindow.content).show();
+            }
+
 
             // Manual pond join via input
             const $form = $('.joinCustomPondForm', this.pondWindow.content);
