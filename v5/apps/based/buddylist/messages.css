@@ -239,7 +239,7 @@
     align-items: center;
     padding: 8px;
     padding-left: 20px;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee; */
     cursor: pointer;
 }
 
