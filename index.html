@@ -120,6 +120,7 @@ window.top.location = 'ie.html';
       let _buddyProxy = 'https://proxy.buddypond.com';
       let _appsEndpoint = 'https://apps.buddypond.com';
       let _apiKeysEndpoint = 'https://api.buddypond.com';
+      let _pondsWsEndpoint = 'wss://messages.buddypond.com/ws/ponds';
 
       let devmode = false;
 
@@ -138,6 +139,7 @@ window.top.location = 'ie.html';
         _coinEndpoint = `http://${localIp}:9001`;
         _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
         _messagesWsEndpoint = `ws://${localIp}:8788/ws/messages`;
+        _pondsWsEndpoint = `ws://${localIp}:8788/ws/ponds`;
         _messagesApiEndpoint = `http://${localIp}:8788`;
         _host = `https://${localIp}`;
         _uploadsEndpoint = `http://${localIp}:9004`;
@@ -158,6 +160,7 @@ window.top.location = 'ie.html';
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
       buddypond.messagesWsEndpoint = _messagesWsEndpoint;
+      buddypond.pondsWsEndpoint = _pondsWsEndpoint;
       buddypond.messagesApiEndpoint = _messagesApiEndpoint;
       buddypond.buddylistWsEndpoint = _buddylistWsEndpoint;
       buddypond.adminEndpoint = _admin;
@@ -188,7 +191,6 @@ window.top.location = 'ie.html';
       // alert(`currentPath: ${currentPath}`);
       // document.write currentPath
 
-      // alert(`currentPath: ${currentPath}`);
       if (currentPath !== '/') {
         renderBpApp = false;
 
@@ -263,8 +265,6 @@ window.top.location = 'ie.html';
             console.log('Setting BuddyPad src to', filesSrc);
             console.log(`You may visit ${filesSrc} directly in your browser.`);
             $('#buddypad').attr('src', filesSrc);
-
-
             return;
 
           }

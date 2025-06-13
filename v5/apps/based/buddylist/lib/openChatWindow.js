@@ -1,15 +1,181 @@
-// import AutoComplete from '../../ui/AutoComplete/AutoComplete.js'; // using jquery autocomplete ( for now )
-import ChatWindowButtonBar from "./ChatWindowButtonBar.js";
-import forbiddenNotes from './forbiddenNotes.js';
+import forbiddenNotes from "./forbiddenNotes.js";
+import setupInputEvents from "./message/setupInputEvents.js";
+import setupAutocomplete from "./message/setupAutocomplete.js";
+import setupChatWindowButtons from "./message/setupChatWindowButtons.js";
+import scrollToBottom from "./message/scrollToBottom.js";
+
+// this is now handled in the pond.js file
+import populateRoomList from "./message/populateRoomList.js";
+import updateRoomList from "./message/updateRoomList.js";
+// Updates the list of connected users for a specific pond chat
+// data.chatId specifies the pond context (e.g., "pond/general")
+
+// Updates the list of connected users for a specific pond chat
+// data.chatId specifies the pond context (e.g., "pond/general")
+function updatePondConnectedUsers(data) {
+    const chatId = data.chatId;
+    if (!chatId) {
+        console.log("No chatId provided for updating pond connected users");
+        return;
+    }
+
+    let context = chatId.replace("pond/", "");
+
+    // Select the user list for the specific pond
+    const userList = $(`.aim-user-list[data-context="${context}"][data-type="pond"] .aim-user-list-items`);
+
+    console.log('found userList:', userList.length, 'for chatId:', chatId, userList);
+    if (!userList.length) {
+        console.log(`No .aim-user-list-items found for chatId: ${chatId}`);
+        return;
+    }
+
+    console.log("Updating pond connected users for chatId:", chatId, data);
+
+    // Track existing users to identify disconnected ones
+    const existingUserIds = new Set();
+    userList.find(".aim-user-item").each((_, item) => {
+        const userId = $(item).data("username");
+        if (userId) {
+            existingUserIds.add(userId);
+        } else {
+            console.log("Found invalid .aim-user-item without data-username, removing:", item);
+            $(item).remove(); // Remove empty/invalid items
+        }
+    });
+
+    // Update or add user items
+    (data.users || []).forEach((user) => {
+        const { userId, profilePicture } = user;
+        if (!userId || typeof userId !== "string") {
+            console.log("Skipping invalid user with missing or non-string userId:", user);
+            return; // Skip invalid users
+        }
+
+        const userItem = $(`.aim-user-item[data-username="${userId}"]`, userList);
+
+        if (userItem.length) {
+            // Update existing user only if data has changed
+            const $textElement = userItem.find(".aim-user-item-text");
+            if ($textElement.text() !== userId) {
+                console.log(`Updating userId text for ${userId}`);
+                $textElement.text(userId);
+            }
+
+            const $profileContainer = userItem.find(".aim-profile-picture");
+            const $newProfileElement = createProfilePictureElement.call(this, userId, profilePicture, $profileContainer);
+            if ($newProfileElement) {
+                console.log(`Updating profile picture for ${userId}`);
+                $profileContainer.empty().append($newProfileElement.html());
+            } else {
+                console.log(`No profile picture update needed for ${userId}`);
+            }
+
+            existingUserIds.delete(userId); // Mark as processed
+        } else {
+            // Create new user item
+            console.log("Adding user to aim-user-list-items:", user);
+            const $userItem = $("<li>", {
+                class: "aim-user-item",
+                "data-username": userId,
+            });
+            const $profilePicture = createProfilePictureElement.call(this, userId, profilePicture);
+            const $userText = $("<span>", {
+                class: "aim-user-item-text",
+                text: userId,
+            });
+            //console.log('$profilePicture', $profilePicture.html())
+            //console.log('$userItem', $userItem.html())
+            $userItem.append($profilePicture, $userText);
+            userList.append($userItem);
+        }
+    });
+
+    // Remove disconnected users
+    console.log('checking existingUserIds for removal:', existingUserIds);
+    existingUserIds.forEach((userId) => {
+        $(`.aim-user-item[data-username="${userId}"]`, userList).remove();
+    });
+}
+
+// Creates a profile picture element for a user
+// Returns null if no update is needed for existing users
+function createProfilePictureElement(userId, profilePicture, $existingContainer = null) {
+    const $profilePicture = $("<div>", { class: "aim-profile-picture" });
+
+    if (profilePicture) {
+        const $img = $("<img>", {
+            class: "aim-chat-message-profile-picture-img",
+            src: profilePicture,
+            alt: `${userId}'s avatar`,
+        });
+        $img.attr('draggable', 'false');
+        $profilePicture.append($img);
+
+        // For existing users, check if update is needed
+        if ($existingContainer) {
+            const $currentImg = $existingContainer.find(".aim-chat-message-profile-picture-img");
+            if ($currentImg.length && $currentImg.attr("src") === profilePicture) {
+                return null; // No update needed
+            }
+        }
+    } else {
+        const defaultAvatarSvg = this.defaultAvatarSvg(userId);
+        $profilePicture.html(defaultAvatarSvg);
+
+        // For existing users, check if SVG content is unchanged
+        if ($existingContainer) {
+            const currentHtml = $existingContainer.html().trim();
+            if (currentHtml === defaultAvatarSvg.trim()) {
+                return null; // No update needed
+            }
+        }
+    }
+
+    return $profilePicture;
+}
 
 export default function openChatWindow(data) {
-    // this.bp.emit('client::requestWebsocketConnection', 'buddylist');
+    const { windowType, contextName, windowTitle } = determineWindowParameters(data);
+    if (!isValidContextName(contextName)) {
+        return;
+    }
 
-    // attempt to subscribe / open websocket connection to messages ws server
+    if (!this.populateRoomList) {
+        this.populateRoomList = populateRoomList.bind(this);
+    }
 
-    let windowType = data.pondname ? 'pond' : 'buddy';
+    if (!this.updatePondConnectedUsers) {
+        this.updatePondConnectedUsers = updatePondConnectedUsers.bind(this);
+    }
+
+    if (!this.joinPond) {
+        this.joinPond = joinPond.bind(this);
+    }
+
+    const client = this.bp.apps.client;
+    const windowId = generateWindowId(windowType, contextName);
+    const existingWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
+
+    if (existingWindow) {
+        handleExistingWindow(existingWindow, windowType, contextName, client, this);
+        return existingWindow;
+    }
+
+    return createNewChatWindow.call(this, {
+        windowType,
+        contextName,
+        windowTitle,
+        windowId,
+        client,
+        data,
+    });
+}
+
+function determineWindowParameters(data) {
+    let windowType = data.pondname ? "pond" : "buddy";
     let contextName = data.pondname || data.name;
-    let windowTitle = windowType === 'pond' ? 'Pond' : '';
+    let windowTitle = windowType === "pond" ? "Pond Chat" : "";
 
     if (data.context) {
         contextName = data.context;
@@ -21,269 +187,455 @@ export default function openChatWindow(data) {
 
     contextName = contextName.toString();
 
-    let pondName = contextName.replace('pond/', '');
+    return { windowType, contextName, windowTitle };
+}
 
-
-    // ensure that context does not contain forbidden characters or bad words
-    // TODO: add client-side check for invalid characters in pondName
+function isValidContextName(contextName) {
+    const pondName = contextName.replace("pond/", "");
     if (forbiddenNotes.containsBadWord(pondName)) {
-        console.error('Forbidden context name:', contextName);
-        alert('Pond name not allowed, please choose a different name.');
-        return;
+        console.error("Forbidden context name:", contextName);
+        alert("Pond name not allowed, please choose a different name.");
+        return false;
+    }
+    return true;
+}
+
+function generateWindowId(windowType, contextName) {
+    return windowType === "pond"
+        ? "pond_message_main"
+        : `buddy_message_-${contextName}`;
+}
+
+function handleExistingWindow(chatWindow, windowType, contextName, client, context) {
+    if (windowType === "pond") {
+        console.log("Opening pond window", windowType, contextName);
+        // Use context.data.hotPonds if available, otherwise skip population
+        //const hotPonds = context.data.hotPonds || [];
+        //populateRoomList.call(context, hotPonds, chatWindow, contextName);
+        // Ensure the messages container exists and is subscribed
+        ensureMessagesContainer.call(context, contextName, chatWindow, client);
+        toggleMessagesContainer(contextName, chatWindow);
+    }
+    chatWindow.focus();
+}
+
+function createNewChatWindow({ windowType, contextName, windowTitle, windowId, client, data }) {
+    const windowConfig = buildWindowConfig.call(this, windowType, contextName, windowTitle, windowId, data);
+    const chatWindow = this.bp.apps.ui.windowManager.createWindow({
+        ...windowConfig,
+        onOpen: async (_window) => {
+            await initializeChatWindow.call(this, windowType, contextName, _window, client);
+        },
+        onClose: () => {
+            if (windowType === "pond") {
+                const roomList = $(".aim-room-list-items", chatWindow.content);
+                roomList.find(".aim-room-item").each((_, item) => {
+                    const context = $(item).data("context");
+                    client.removeSubscription("pond", context);
+                });
+                this.data.activePonds = [];
+                // might be better in joinPond() function
+
+            } else {
+                client.removeSubscription(windowType, contextName);
+            }
+        },
+    });
+
+    if (windowType === "pond") {
+        setupCloseButtonHandler.call(this, chatWindow, client);
+        $(".no-open-ponds", chatWindow.content).hide();
+        $('.aim-message-controls', chatWindow.content).flexShow();
+
     }
 
-    let windowIdPrefix = windowType === 'pond' ? 'pond_message_-' : 'buddy_message_-';
-    let client = this.bp.apps.client;
+    chatWindow.loggedIn = true;
+    return chatWindow;
+}
 
-    let windowId = windowIdPrefix + contextName;
-    // console.log('opening chat window ', windowId)
-    let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
-    if (chatWindow) {
-        chatWindow.focus();
-        return chatWindow;
+function buildWindowConfig(windowType, contextName, windowTitle, windowId, data) {
+    const isBuddy = windowType === "buddy";
+    let iconImagePath = isBuddy ? "" : "desktop/assets/images/icons/icon_pond_64.png";
+
+    if (isBuddy && this.bp.apps.buddylist.data.profileState?.buddylist?.[contextName]?.profile_picture) {
+        iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
     }
 
-    let iconImagePath = windowType === 'buddy' ? '' : 'desktop/assets/images/icons/icon_pond_64.png';
-
-    if (windowType === 'buddy') {
-
-        if (
-            this.bp.apps.buddylist.data.profileState &&
-            this.bp.apps.buddylist.data.profileState.buddylist &&
-            this.bp.apps.buddylist.data.profileState.buddylist[contextName] &&
-            this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture) {
-            iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
-        }
-
-
-    }
-
-    chatWindow = this.bp.apps.ui.windowManager.createWindow({
-        app: 'buddylist',
-        id: windowIdPrefix + contextName,
-        title: contextName + ' ' + windowTitle,
-        // title: '<img src="' + iconImagePath + '" class="window-icon" /> ' + contextName + ' ' + windowTitle,
+    return {
+        app: "buddylist",
+        id: windowId,
+        title: isBuddy ? contextName : windowTitle,
         icon: iconImagePath,
         type: windowType,
         context: contextName,
         parent: this.bp.apps.ui.parent,
-        className: 'chatWindow',
-        x: data.x || 175,
-        y: 75,
-        width: 600,
-        height: 500,
-        onOpen: async (_window) => {
-
-            // console.log('calling onOpen for new chat window', _window);
-            setupChatWindow.call(this, windowType, contextName, _window);
-
-            client.addSubscription(windowType, contextName);
-
-            // If when the buddy chat window is opened, the buddy has new messages, we need to set the newMessages flag to false
-            if (windowType === 'buddy') {
-                // check to see if we have newMessages state for this buddy, if so set newMessages to false
-                if (this.data.profileState && this.data.profileState.buddylist && this.data.profileState.buddylist[contextName] && this.data.profileState.buddylist[contextName].newMessages) {
-                    this.data.profileState.buddylist[contextName].newMessages = false;
-                    this.client.receivedInstantMessage(contextName, function (err, re) {
-                        // console.log('receivedInstantMessage', err, re);
-                    });
-                }
-            }
-
-
-            const _data = { me: this.bp.me };
-            if (windowType === 'pond') {
-                _data.pondname = contextName;
-            } else {
-                _data.buddyname = contextName;
-            }
-
-            this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
-            // await this.bp.load('emoji-picker');
-
-            let rerenderMessages = [...this.data.processedMessages[contextName]];
-            this.data.processedMessages[contextName] = [];
-
-            for (const message of rerenderMessages) {
-                try {
-                    await this.renderChatMessage(message, _window, true);
-                } catch (err) {
-                    console.error('Error rendering message', message, err, _window);
-                }
-            }
-
-            // now focus on the .aim-input field
-            // console.log('focus on input', $('.aim-input', _window.content).length);
-            // console.log('_window.content', _window.content);
-
-            function focusOnInput() {
-                let aimInput = $('.aim-input', _window.content);
-                if (aimInput.length === 0) {
-                    setTimeout(() => {
-                        console.log('focus on input', $('.aim-input', _window.content).length);
-                        console.log('_window.content', _window.content);
-                        focusOnInput();
-                    }
-                        , 100);
-                }
-                $('.aim-input', _window.content).focus();
-            }
-
-            focusOnInput();
-
-
-        },
-        onClose: () => {
-            client.removeSubscription(windowType, contextName);
-        }
-    });
-
-    chatWindow.loggedIn = true;
-
-    // this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
-
-
-    return chatWindow;
+        className: "chatWindow",
+        x: data.x || 50,
+        y: 50,
+        width: isBuddy ? 600 : 1000,
+        height: isBuddy ? 500 : 600,
+    };
 }
 
-// TODO: move to separate file, rename bindChatWindowEvents
+async function initializeChatWindow(windowType, contextName, chatWindow, client) {
+    setupChatWindow.call(this, windowType, contextName, chatWindow);
+    client.addSubscription(windowType, contextName);
+
+    if (windowType === "buddy") {
+        clearBuddyNewMessages.call(this, contextName);
+    }
+
+    if (windowType === "pond") {
+        // Populate room list with hot ponds if available
+        // const hotPonds = this.data.hotPonds || [];
+        let hotPonds = this.bp.apps?.pond?.data?.hotPonds || [];
+        populateRoomList.call(this, hotPonds, chatWindow, contextName);
+        // send getConnectedUsers message to the pond
+        toggleMessagesContainer(contextName, chatWindow);
+    }
+
+    await renderMessages.call(this, contextName, chatWindow);
+    focusInputField(chatWindow);
+}
+
+function clearBuddyNewMessages(contextName) {
+    if (
+        this.data.profileState?.buddylist?.[contextName]?.newMessages
+    ) {
+        this.data.profileState.buddylist[contextName].newMessages = false;
+        this.client.receivedInstantMessage(contextName, (err, re) => {
+            // console.log("receivedInstantMessage", err, re);
+        });
+    }
+}
+
+async function renderMessages(contextName, chatWindow) {
+    this.data.processedMessages[contextName] = this.data.processedMessages[contextName] || [];
+    const messagesToRender = [...this.data.processedMessages[contextName]];
+    this.data.processedMessages[contextName] = [];
+
+    for (const message of messagesToRender) {
+        try {
+            await this.renderChatMessage(message, chatWindow, true);
+        } catch (err) {
+            console.error("Error rendering message", message, err, chatWindow);
+        }
+    }
+}
+
+function focusInputField(chatWindow) {
+    function attemptFocus() {
+        const aimInput = $(".aim-input", chatWindow.content);
+        if (aimInput.length === 0) {
+            setTimeout(attemptFocus, 100);
+            return;
+        }
+        aimInput.focus();
+    }
+    attemptFocus();
+}
+
+
+function ensureMessagesContainer(contextName, chatWindow, client) {
+    const chatArea = $(".aim-chat-area", chatWindow.content);
+    const userListArea = $(".aim-user-list-area", chatWindow.content);
+    if (!chatArea.length || !userListArea.length) {
+        console.log("Missing chatArea or userListArea for context:", contextName);
+        return;
+    }
+
+    // Normalize context for user list (e.g., "pond/general" -> "general")
+    const userListContext = contextName.replace("pond/", "");
+
+    // Create message container if missing
+    let existingContainer = $(`.aim-messages-container[data-context="${contextName}"]`, chatArea);
+    if (!existingContainer.length) {
+        console.log("Creating new messages container for context:", contextName);
+        const newContainer = document.createElement("div");
+        newContainer.className = "aim-messages-container";
+        newContainer.setAttribute("data-context", contextName);
+        newContainer.setAttribute("data-type", "pond");
+        newContainer.style.display = "none";
+        newContainer.innerHTML = `
+            <div class="aim-messages-header">
+                <h2 class="aim-chat-title"><span class="aim-chat-username">#${userListContext}</span></h2>
+                <button class="aim-close-chat-btn">Close</button>
+            </div>
+            <div class="aim-no-messages">
+                Your conversation has just started. You can send a message using the form below.
+            </div>
+            <div class="aim-messages"></div>
+        `;
+        chatArea.append(newContainer);
+
+        client.addSubscription("pond", contextName);
+        this.data.activePonds = this.data.activePonds || [];
+        if (!this.data.activePonds.includes(contextName)) {
+            this.data.activePonds.push(contextName);
+        }
+        $(".no-open-ponds", chatWindow.content).hide();
+        $(".aim-message-controls", chatWindow.content).flexShow();
+    }
+
+    // Create user list if missing
+    let existingUserList = $(`.aim-user-list[data-context="${userListContext}"][data-type="pond"]`, userListArea);
+    if (!existingUserList.length) {
+        console.log("Creating new user list for context:", userListContext);
+        const newUserList = document.createElement("div");
+        newUserList.className = "aim-user-list";
+        newUserList.setAttribute("data-context", userListContext);
+        newUserList.setAttribute("data-type", "pond");
+        newUserList.style.display = "none";
+        newUserList.innerHTML = `
+            <div class="aim-user-list-header">
+                <h3>Buddies</h3>
+            </div>
+            <ul class="aim-user-list-items"></ul>
+        `;
+        userListArea.append(newUserList);
+    }
+}
+
+function toggleMessagesContainer(contextName, chatWindow) {
+    const chatArea = $(".aim-chat-area", chatWindow.content);
+    const userListArea = $(".aim-user-list-area", chatWindow.content);
+    if (!chatArea.length || !userListArea.length) {
+        console.log("Missing chatArea or userListArea for context:", contextName);
+        return;
+    }
+
+    // Hide all message containers and user lists
+    $(".aim-messages-container", chatArea).hide();
+    $(".aim-user-list", userListArea).hide();
+
+    // Normalize context for user list (e.g., "pond/general" -> "general")
+    const userListContext = contextName.replace("pond/", "");
+
+    // Select target elements
+    const targetContainer = $(`.aim-messages-container[data-context="${contextName}"][data-type="pond"]`, chatArea);
+    const targetUserList = $(`.aim-user-list[data-context="${userListContext}"][data-type="pond"]`, userListArea);
+
+    if (!targetContainer.length) {
+        console.log("Creating messages container for context:", contextName);
+        ensureMessagesContainer.call(this, contextName, chatWindow, this.bp.apps.client);
+        // Re-select after creation
+        targetContainer = $(`.aim-messages-container[data-context="${contextName}"][data-type="pond"]`, chatArea);
+    }
+
+    // Show target elements
+    if (targetContainer.length) {
+        console.log("Showing messages container for context:", contextName);
+        targetContainer.show();
+    }
+    if (targetUserList.length) {
+        console.log("Showing user list for context:", userListContext);
+        targetUserList.show();
+    }
+
+    // Fallback: Show first available context if target is missing
+    if (!targetContainer.length || !targetUserList.length) {
+        const availableContainers = $(".aim-messages-container", chatArea);
+        if (availableContainers.length > 0) {
+            const firstContext = availableContainers.first().data("context");
+            const firstUserListContext = firstContext.replace("pond/", "");
+            console.log("Falling back to first context:", firstContext);
+
+            $(`.aim-messages-container[data-context="${firstContext}"]`, chatArea).show();
+            $(`.aim-user-list[data-context="${firstUserListContext}"][data-type="pond"]`, userListArea).show();
+
+            $(".aim-room-item", chatWindow.content).removeClass("aim-room-active");
+            $(`.aim-room-item[data-context="${firstContext}"]`, chatWindow.content).addClass("aim-room-active");
+            $(".message_form .aim-to", chatWindow.content).val(firstContext);
+        } else {
+            console.log("No available message containers or user lists");
+        }
+    }
+
+    scrollToBottom(chatWindow.content);
+}
+
 function setupChatWindow(windowType, contextName, chatWindow) {
-
     const chatWindowTemplate = this.messageTemplateString;
-
-    const cloned = document.createElement('div');
+    const cloned = document.createElement("div");
     cloned.innerHTML = chatWindowTemplate;
 
-    // console.log('setupChatWindow', chatWindow, this.options);
-    chatWindow.container.classList.add('has-droparea');
-    chatWindow.content.appendChild($('.aim-window', cloned)[0]);
+    const aimMessagesContainer = $(".aim-messages-container", cloned)[0];
+    aimMessagesContainer.setAttribute("data-context", contextName);
+    aimMessagesContainer.setAttribute("data-type", windowType);
+    
 
-    if (this.options.autocomplete) {
-        let keys = Object.keys(this.options.autocomplete);
+    if (windowType === "buddy") {
+        $(".aim-user-list-area", cloned).remove();
+        $(".aim-room-list", cloned).remove();
+        $('.aim-messages-header', cloned).remove();
+    } else {
 
-        // add a "/" to each command for consistency
-        let sourceCommands = keys.map((command) => {
-            return '/' + command;
-        });
 
-        // new AutoComplete('.aim-input', chatWindow.content, this.options.autocomplete);
-        // alert(JSON.stringify(this.options.autocomplete));
-        $('.aim-input', chatWindow.content).autocomplete({
-            source: sourceCommands,
-            search: function (event, ui) {
-                // only trigger autocomplete searches if user has started message with oper code ( / or \ )
-                let opers = ['/', '\\'];
-                let firstChar = event.target.value.substr(0, 1);
-                if (opers.indexOf(firstChar) === -1) {
-                    return false;
-                }
-                return true;
+        const aimUserListContainer = $(".aim-user-list", cloned)[0];
+        aimUserListContainer.setAttribute("data-context", contextName);        
+        aimUserListContainer.setAttribute("data-type", windowType);
+
+        $('.aim-chat-title', cloned).text(`#${contextName.replace("pond/", "")}`);
+
+        $('.joinPondForm', cloned).on('submit', (e) => {
+            e.preventDefault();
+            // get value from #customPondName
+            try {
+                let pondName = $('.customPondName').val();
+                joinPond.call(this, pondName);
+
+            } catch (err) {
+                console.error("Error joining pond:", err);
             }
+            return false;
         });
-    }
 
-    if (this.options.chatWindowButtons) {
-        // copy the options
-        let chatWindowButtons = this.options.chatWindowButtons.slice();
-        if (windowType === 'pond') {
-            // filter out any this.options.chatWindowButtons that are buddy specific
-            chatWindowButtons = chatWindowButtons.filter((button) => {
-                return button.type !== 'buddy-only';
-            });
-        }
-
-        // check if env is iOS, if so, remove any 'desktop-only' buttons
-
-        function isIOS() {
-            return (
-                /iPad|iPhone|iPod/.test(navigator.userAgent) && ('ontouchend' in document)
-            );
-        }
-        if (isIOS()) {
-            chatWindowButtons = chatWindowButtons.filter((button) => {
-                return button.env !== 'desktop-only';
-            });
-        }
-
-        // TODO: this needs to be public on class so we can modify it later
-        // via chatWindowButtonBar.addButton() or removeButton()
-        chatWindow.buttonBar = new ChatWindowButtonBar(this.bp, {
-            context: contextName,
-            type: windowType,
-            buttons: chatWindowButtons
-        });
-        $('.aim-message-controls', chatWindow.content).prepend(chatWindow.buttonBar.container);
 
     }
 
-    $('.message_form .aim-to', chatWindow.content).val(contextName);
+    chatWindow.container.classList.add("has-droparea");
+    chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
-    // TODO: move this to sendMessage.js()
-    $('.message_form', chatWindow.content).submit(async (e) => {
+    setupAutocomplete.call(this, chatWindow);
+    setupChatWindowButtons.call(this, windowType, contextName, chatWindow);
+    setupMessageForm.call(this, windowType, contextName, chatWindow);
+    setupInputEvents.call(this, windowType, contextName, chatWindow);
+
+    if (windowType === "pond") {
+        $(".aim-user-list-items").on("click", (e) => {
+            const username = $(e.target).closest('.aim-user-item').data("username");
+
+            if (!username) {
+                console.error("No username found in clicked element");
+                return;
+            }
+
+            this.openChatWindow({ name: username });
+
+
+        });
+
+        setupRoomListClickHandler.call(this, chatWindow);
+
+    }
+}
+
+function setupMessageForm(windowType, contextName, chatWindow) {
+    $(".message_form .aim-to", chatWindow.content).val(contextName);
+
+    $(".message_form", chatWindow.content).submit(async (e) => {
         e.preventDefault();
         await this.sendMessageHandler(e, chatWindow, windowType, contextName);
     });
+}
 
-    // Hitting enter key will send the message
-    $('.aim-input', chatWindow.content).keydown((e) => {
-
-        // allow shift + enter to add a new line
-        if (e.which === 13 && e.shiftKey) {
-            // insert new line to the textarea
-            let $input = $(e.target);
-            let inputValue = $input.val();
-            let cursorPosition = $input[0].selectionStart;
-            let newValue = inputValue.slice(0, cursorPosition) + '\n' + inputValue.slice(cursorPosition);
-            $input.val(newValue);
-            $input[0].setSelectionRange(cursorPosition + 1, cursorPosition + 1);
-
-            // check if the message is empty
-            return false;
+function setupRoomListClickHandler(chatWindow) {
+    $(".aim-room-list-items", chatWindow.content).on("click", ".aim-room-item", (e) => {
+        let selectedContext = $(e.target).parent().data("context");
+        if (!selectedContext) {
+            console.warn("No context found for clicked room item target", e.target);
+            return;
         }
-
-        if (e.which === 13) {
-            // this.bp.ignoreUIControlKeys = true;
-            if (this.bp.ignoreUIControlKeys) {
-                // return false;
-            }
-            // replace /n with <br>
-            let message = $(e.target).val();
-            message = message.replace(/\n/g, '<br>');
-            $(e.target).val(message);
-            $('.message_form', chatWindow.content).submit();
-            e.preventDefault();
-            return false;
-        }
+        selectedContext = selectedContext.replace("pond/", "");
+        //console.log("Selected context:", selectedContext);
+        $(".aim-room-item", chatWindow.content).removeClass("aim-room-active");
+        $(e.target).addClass("aim-room-active");
+        ensureMessagesContainer.call(this, selectedContext, chatWindow, this.bp.apps.client);
+        $(".message_form .aim-to", chatWindow.content).val(selectedContext);
+        toggleMessagesContainer(selectedContext, chatWindow);
+        // TODO: Implement logic to load messages for selectedContext
     });
+}
 
-    // Active / inactive send button for empty input field
-    $('.aim-input', chatWindow.content).on('keyup', (e) => {
-        // check value of the input field, if not empty, set opacity to 1
-        let inputValue = $(e.target).val();
-        let $sendButton = $('.aim-send-btn', chatWindow.content);
-        if (inputValue.length > 0) {
-            $sendButton.css('opacity', 1);
+function setupCloseButtonHandler(chatWindow, client) {
+    // Handle both .aim-close-chat-btn (in .aim-messages-container) and .aim-room-close-btn (in room list)
+    $(".aim-chat-area, .aim-room-list-items", chatWindow.content).on("click", ".aim-close-chat-btn, .aim-room-close-btn", (ev) => {
+        ev.stopPropagation();
+        const parentElement = ev.target.closest(".aim-messages-container, .aim-room-item");
+        if (!parentElement) return;
+
+        const context = parentElement.getAttribute("data-context");
+        console.log("Closing pond chat for context:", context);
+
+        // Remove subscription and container
+        client.removeSubscription("pond", context);
+        $(`.aim-messages-container[data-context="${context}"]`, chatWindow.content).remove();
+        $(`.aim-room-item[data-context="${context}"]`, chatWindow.content).remove();
+
+        // Update active ponds
+        this.data.activePonds = this.data.activePonds.filter((pond) => pond !== context);
+
+        // clear out this.data.processedMessages[contextName] = [];
+        if (this.data.processedMessages[context]) {
+            this.data.processedMessages[context] = [];
+        }
+
+        // Switch to another pond or hide all containers
+        const remainingContainers = $(".aim-messages-container", chatWindow.content);
+        if (remainingContainers.length > 0) {
+            const nextContext = remainingContainers.first().data("context");
+            toggleMessagesContainer(nextContext, chatWindow);
+            $(".aim-room-item", chatWindow.content).removeClass("aim-room-active");
+            $(`.aim-room-item[data-context="${nextContext}"]`, chatWindow.content).addClass("aim-room-active");
+            $(".message_form .aim-to", chatWindow.content).val(nextContext);
         } else {
-            $sendButton.css('opacity', 0.5);
+            $(".aim-messages-container", chatWindow.content).hide();
+            $(".message_form .aim-to", chatWindow.content).val("");
         }
+
+        // find the .aim-room-list-item with data-pond matching context
+        const roomItem = $(`.aim-room-item[data-context="pond/${context}"]`, chatWindow.content);
+        // find the .aim-room-list-item and remove active class
+        $(".aim-room-list-item-name", roomItem).removeClass("aim-room-active");
+
+        // get current count of .aim-chat-area, if 2 show .no-open-ponds
+        const chatAreas = $(".aim-chat-area", chatWindow.content);
+        console.log("Current chat areas count:", chatAreas.length);
+        /*
+        if (chatAreas.length <= 1) {
+            $(".no-open-ponds", chatWindow.content).flexShow();
+            $('.aim-message-controls', chatWindow.content).hide();
+        }
+        else {
+            $(".no-open-ponds", chatWindow.content).hide();
+            $('.aim-message-controls', chatWindow.content).flexShow();
+        }
+        */
+
     });
-
-    // Buddy "is typing" event on message_text input
-    $('.aim-input', chatWindow.content).on('keydown', (e) => {
-
-        let buddyName = this.bp.me;
-        let context = contextName;
-        // console.log('typing', buddyName, context);
-        this.bp.emit('buddy::typing', {
-            from: buddyName,
-            to: context,
-            type: windowType,
-            isTyping: true,
-            ctime: Date.now()
-        });
-    });
+}
 
 
+function joinPond(pondName) {
 
+    if (!pondName) {
+        console.error("Pond name is required to join a pond.");
+        return;
+    }
+
+    // currently all ponds exists in the main "server" context, pond_messages_main
+    let chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+
+    if (!chatWindow) {
+        // we may want to open  bp.open('buddylist', { context: pondName, type: 'pond' }); in this case
+        console.error("Pond message main window not found, cannot join pond.");
+        // TODO: might be easier to just open the window here instread of parent API doing it
+        // see: apps/pond/pond.js for example
+        /*
+        const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+        if (pondMainWindow) {
+            this.bp.apps.buddylist.joinPond(pondName);
+            pondMainWindow.focus();
+        } else {
+            this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+        }
+        */
+        return;
+    }
+    // this.openChatWindow({ pondname: pondName });
+    let selectedContext = `${pondName}`;
+    ensureMessagesContainer.call(this, selectedContext, chatWindow, this.bp.apps.client);
+    $(".message_form .aim-to", chatWindow.content).val(selectedContext);
+    toggleMessagesContainer(selectedContext, chatWindow);
 
 }

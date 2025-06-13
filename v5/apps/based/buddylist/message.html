@@ -1,36 +1,90 @@
 <div id="window_buddy_message_0" class="aim-window bp-window-content">
-    <div class="aim-chat-controls">
-        <!-- TODO: add peer video calls back in
-            <img src="desktop/assets/images/icons/icon_phone.png" class="startVideoCall" />
-        -->
+    <!-- Left column: IRC-style room list -->
+    <div class="aim-room-list">
+        <div class="aim-room-list-header">
+            <h3>Ponds</h3>
+        </div>
+        <ul class="aim-room-list-items">
+            <!-- Rooms will be dynamically populated here -->
+            <!--
+            <li class="aim-room-item aim-room-active">General</li>
+            <li class="aim-room-item">Lounge</li>
+            <li class="aim-room-item">Tech Talk</li>
+            -->
+        </ul>
+        <div class="aim-room-list-footer">
+            <span align="center"><em>Create your own Pond</em></span>
+            <form class="joinPondForm" action="#" method="POST">
+                <label for="customPondName">
+                    <input id="customPondName" name="customPondName" class="customPondName rainbow-border"
+                        placeholder="Enter pond name..." type="text" size="16" />
+                </label>
+                <button type="submit" class="joinPond">Go</button>
+            </form>
+        </div>
+
     </div>
-    <div class="aim-chat-area">
-        <div class="aim-messages-container">
-            <div class="aim-no-messages">
-                Your conversation has just started. You can send a message using the form below.
+
+    <!-- Center column: Existing chat area -->
+    <div class="aim-chat-container">
+        <!--
+            <div class="aim-chat-controls"></div>
+        -->
+        <!-- TODO: show this if all chats are closed -->
+        <div class="no-open-ponds">
+            <h2>Welcome to Buddy Pond Chats</h2>
+            <p>Select a pond from the left to start chatting with others.</p>
+            <p>To create a new pond, use the "Create Pond" button in the top right corner.</p>
+            <p>Once you select a pond, you can chat with other users in that pond.</p>
+            <p>To send a message, type in the input box below and hit "SEND".</p>
+            <p>To close a pond, click the "X" button next to the pond name in the list.</p>
+            <p>Enjoy your chat experience!</p>
+        </div>
+
+        <div class="aim-chat-area"> <!-- this will be multiple with data-context attributes -->
+            <div class="aim-messages-container">
+                <div class="aim-messages-header">
+                    <h2 class="aim-chat-title">Chat with <span class="aim-chat-username">User</span></h2>
+                    <button class="aim-close-chat-btn">Close</button>
+                </div>
+                <div class="aim-no-messages">
+                    Your conversation has just started. You can send a message using the form below.
+                </div>
+                <div class="aim-messages">
+                    <!-- Messages will be appended here -->
+                </div>
             </div>
-            <div class="aim-messages">
-                <!-- Messages will be appended here -->
-            </div>
-           
+        </div>
+        <div class="aim-typing">
+            <!-- Typing indicator will be appended here -->
+        </div>
+        <div class="aim-message-controls">
+            <form method="POST" action="#" class="aim-message-form message_form">
+                <div class="aim-message-sender">
+                    <textarea name="message_text" class="aim-input" placeholder="Type your message..."></textarea>
+                    <button type="submit" class="aim-send-btn">SEND</button>
+                </div>
+                <input type="hidden" name="message_replyto" class="aim-replyto" />
+                <input type="hidden" name="message_from" class="aim-from" />
+                <input type="hidden" name="message_to" class="aim-to" />
+            </form>
         </div>
     </div>
-    <div class="aim-typing">
-        <!-- Typing indicator will be appended here -->
-    </div>
 
-    <div class="aim-message-controls">
-        <form method="POST" action="#" class="aim-message-form message_form">
-            <div class="aim-message-sender">
-                <textarea name="message_text" class="aim-input" placeholder="Type your message..."></textarea>
-                <button type="submit" class="aim-send-btn">SEND</button>
+    <!-- Right column: Connected users list -->
+    <div class="aim-user-list-area">
+        <div class="aim-user-list">
+            <div class="aim-user-list-header">
+                <h3>Buddies</h3>
             </div>
-            <input type="hidden" name="message_replyto" class="aim-replyto" />
-            <input type="hidden" name="message_from" class="aim-from" />
-            <input type="hidden" name="message_to" class="aim-to" />
-        </form>
+            <ul class="aim-user-list-items">
+                <!-- Users will be dynamically populated here -->
+                <!--
+            <li class="aim-user-item">User1</li>
+            <li class="aim-user-item">User2</li>
+            <li class="aim-user-item">User3</li>
+            -->
+            </ul>
+        </div>
     </div>
 </div>
-
-
-

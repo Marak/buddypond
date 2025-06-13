@@ -23,6 +23,8 @@ import sendMessageHandler from "./lib/message/sendMessageHandler.js";
 import showCard from "./lib/message/showCard.js";
 import scrollToBottom from "./lib/message/scrollToBottom.js";
 
+import defaultAvatarSvg from "./lib/buddy/defaultAvatarSvg.js";
+
 
 
 // new ws api
@@ -45,7 +47,8 @@ export default class BuddyList {
                 status: null, // are these used?
                 profilePicture: null, // are these used?
                 updates: {}
-            }
+            },
+            avatarCache: new Map()
         };
 
         this.defaultPond = 'Buddy';
@@ -717,6 +720,7 @@ export default class BuddyList {
                         console.log('receivedInstantMessage', err, re);
                     });
                 }
+                // console.log('handleChatMessages message', message);
                 // return the chatWindow which the message was rendered in
                 let chatWindow = await this.renderChatMessage(message);
                 windowsToUpdate.add(chatWindow);
@@ -833,6 +837,11 @@ export default class BuddyList {
                     this.bp.open('pincode');
                 }
 
+                // loads the hotpond client that populates room lists
+                bp.load('pond');
+
+
+
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 $('.password').show();
@@ -902,6 +911,8 @@ BuddyList.prototype.loadUserApps = loadUserApps;
 BuddyList.prototype.sendMessageHandler = sendMessageHandler;
 BuddyList.prototype.showCard = showCard;
 BuddyList.prototype.scrollToBottom = scrollToBottom;
+
+BuddyList.prototype.defaultAvatarSvg = defaultAvatarSvg;
 
 
 // new API

@@ -443,7 +443,12 @@ function bindProfilePictureClick() {
     // console.log(' bindProfilePictureClick target', target, target.tagName);
     if ($(target).parents().hasClass('aim-profile-picture')) {
       //if (target.classList.contains('.aim-avatar')) {
-      const buddyname = target.closest('.aim-chat-message').getAttribute('data-from');
+      const chatMessageElement = target.closest('.aim-chat-message')
+      if (!chatMessageElement) {
+        // console.error('No chat message element found');
+        return;
+      }
+      let buddyname = chatMessageElement.getAttribute('data-from');
       console.log('Profile picture clicked', buddyname);
 
       if (buddyname === this.bp.me) {

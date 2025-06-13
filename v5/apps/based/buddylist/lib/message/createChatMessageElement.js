@@ -83,7 +83,7 @@ export default function createChatMessageElement(message, messageTime, chatWindo
     img.className = 'aim-chat-message-profile-picture-img';
     profilePicture.appendChild(img);
   } else {
-    const defaultAvatar = defaultAvatarSvg.call(this, message.from);
+    const defaultAvatar = this.defaultAvatarSvg(message.from);
     profilePicture.innerHTML = defaultAvatar;
   }
 
@@ -194,7 +194,16 @@ export default function createChatMessageElement(message, messageTime, chatWindo
 }
 
 function insertChatMessage(chatWindow, message, chatMessage) {
-  const aimMessages = chatWindow.content.querySelector('.aim-messages');
+  // console.log('insertChatMessage', chatWindow, message, chatMessage);
+  let aimMessages = chatWindow.content.querySelector('.aim-messages');
+
+  if (message.type === 'pond') {
+    // console.log('Inserting message into pond chat window', message);
+    // TODO: find the specific .aim-messages-container for the pond
+    aimMessages = chatWindow.content.querySelector(`.aim-messages-container[data-context="${message.to}"] .aim-messages`);
+    // console.log('Pond messages container found:', aimMessages);
+  }
+
   if (!aimMessages) {
     console.error('aim-messages not found. user most likely not in the chat window');
     return;
@@ -216,30 +225,4 @@ function insertChatMessage(chatWindow, message, chatMessage) {
   }
 
   return chatMessage;
-}
-
-// Create a simple in-memory cache
-// TODO: move to a separate file
-const avatarCache = new Map();
-
-function defaultAvatarSvg(username) {
-  // Check if avatar is already cached
-  if (avatarCache.has(username)) {
-    return avatarCache.get(username);
-  }
-
-  // Create an identicon avatar using DiceBear
-  const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
-    seed: username, // Username as seed for consistent avatar
-    size: 40, // Avatar size in pixels
-    backgroundColor: ["#f0f0f0"], // Optional: Customize background
-  });
-
-  // Convert avatar to SVG string
-  const svg = avatar.toString();
-
-  // Store in cache
-  avatarCache.set(username, svg);
-
-  return svg;
 }

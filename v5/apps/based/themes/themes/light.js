@@ -29,7 +29,7 @@ export default {
         },
 
         "desktop_element_hover": {
-            'background': '#f3f4f6',
+            'background': '#e0e0e0',
         },
 
         'desktop_divider': {

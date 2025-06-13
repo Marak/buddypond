@@ -41,10 +41,22 @@ export default function createWebSocketClient(chatId) {
       JSON.stringify({
         action: 'getHistory',
         chatId: chatId,
+        profilePicture: this.bp.apps.buddylist.data.profileState.profilePicture,
         buddyname: buddypond.me,
         qtokenid: buddypond.qtokenid,
       })
     );
+
+    chatConnection.wsClient.send(
+      JSON.stringify({
+        action: 'getConnectedUsers',
+        chatId: chatId,
+        buddyname: buddypond.me,
+        qtokenid: buddypond.qtokenid,
+      })
+    );
+
+
   }
 
   // Named function for message event
@@ -57,7 +69,10 @@ export default function createWebSocketClient(chatId) {
           console.log('WebSocket message received:', parseData);
           bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
           break;
-
+        case 'connectedUsers':
+          console.log('Connected users message received:', parseData);
+          bp.emit('pond::connectedUsers', parseData);
+          break;
         case 'typing' :
           // console.log('Typing message received:', parseData);
           bp.emit('buddy::isTyping', parseData.message);

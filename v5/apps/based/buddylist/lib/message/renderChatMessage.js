@@ -3,6 +3,7 @@ import checkForLinksInMessage from './checkForLinksInMessage.js';
 
 export default async function renderChatMessage(message, _chatWindow) {
     // console.log('renderChatMessage', message, _chatWindow);
+    // console.log('renderChatMessage', message, _chatWindow);
     let context = 'default';
 
     // profanity filter, could also be done in the backend
@@ -64,7 +65,8 @@ export default async function renderChatMessage(message, _chatWindow) {
 
     if (message.type === 'pond') {
         context = message.to;
-        windowId = `pond_message_-${message.to}`;
+        // windowId = `pond_message_-${message.to}`;
+        windowId = "pond_message_main";
     }
     // console.log('windowIdwindowId', windowId)
     // TODO: scope on processedMessages needs to be keyed by type in addition to context
@@ -143,6 +145,8 @@ export default async function renderChatMessage(message, _chatWindow) {
         return;
     }
 
+    // console.log('current windows', this.bp.windows);
+    // console.log('renderChatMessage windowId', windowId, message);
     let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
 
     if (_chatWindow) {

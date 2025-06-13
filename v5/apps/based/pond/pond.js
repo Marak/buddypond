@@ -1,68 +1,86 @@
+import HotPondsWebSocketClient from './client.js';
+
 export default class Pond {
     constructor(bp, options = {}) {
         this.bp = bp;
-        options.window = options.window || {};
         this.options = options;
-        return this;
+        this.options.window = this.options.window || {};
+        this.data = {};
+        this.pondWindow = null;
     }
 
-
     async init() {
-        // injects CSS link tag into the head of document
         await this.bp.load('/v5/apps/based/pond/pond.css');
-        // fetches html from the fragment and returns it as a string
         this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
+
+        this.client = new HotPondsWebSocketClient({ bp: this.bp });
+        await this.client.connect();
+
+        this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
+            console.log('Received hotpond::activePonds event with data:', data);
+            this.data.hotPonds = data;
+
+            const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+            if (!chatWindow) {
+                console.warn('Pond message main window not found, cannot update room list');
+                return;
+            }
+
+            this.bp.apps.buddylist.populateRoomList(data, chatWindow);
+            if (this.pondWindow?.content) {
+                this.updateHotPonds(data);
+            }
+        });
+
+        this.bp.on('pond::connectedUsers', 'update-pond-connected-users', (data) => {
+            console.log('Received pond::connectedUsers event with data:', data);
+            this.bp.apps.buddylist.updatePondConnectedUsers(data);
+        });
+
+        this.client.listActivePonds();
         return 'loaded pond';
     }
 
     updateHotPonds(data) {
-        let hotPonds = data;
-        // console.log('updateHotPonds called with data:', hotPonds);
-        let html = '';
         const $joinPondTable = $('.joinPondTable');
-
-        // Clear existing entries in the HTML representation (optional, based on whether you want to append or replace)
         $joinPondTable.empty();
 
-        // console.log('Processed hotPonds:', hotPonds);
-        // order hotPonds by score
-        hotPonds.sort((a, b) => b.connection_count - a.connection_count);
+        data.sort((a, b) => b.connection_count - a.connection_count);
 
-        // Iterate through the hot ponds data
-        for (let i = 0; i < hotPonds.length; i++) {
-            let pond = hotPonds[i];
-            // pond has value and score properties
+        for (let pond of data) {
+            const pondName = pond.pond_id.replace('pond/', '');
+            const $existingRow = $joinPondTable.find(`tr[data-pond="${pond.pond_id}"]`);
 
-            // Create a selector for the specific pond row based on the data-pond attribute
-            let $existingRow = $joinPondTable.find(`tr[data-pond="${pond.value}"]`);
-
-            // Check if the row already exists
             if ($existingRow.length > 0) {
-                // Update the existing row if needed
-                $existingRow.find('td').eq(1).text(pond.connection_count); // Update the score column
+                $existingRow.find('td').eq(1).text(pond.connection_count);
             } else {
-                let pondName = pond.pond_id.replace('pond/', '');
-                // If the row does not exist, append a new row to the table
-                $joinPondTable.append(`<tr data-pond="${pond.pond_id}"><td>#${pondName}</td><td>${pond.connection_count}</td><td><button class="joinPondButton open-app" data-app="buddylist" data-type="pond" data-context="${pondName}">Join</button></td></tr>`);
+                $joinPondTable.append(`
+                    <tr data-pond="${pond.pond_id}">
+                        <td>#${pondName}</td>
+                        <td>${pond.connection_count}</td>
+                        <td><button class="joinPondButton" data-context="${pondName}">Join</button></td>
+                    </tr>
+                `);
             }
         }
-
-        // Update the HTML representation in the pond list
-        $('.pond-list', this.pondWindow.content).html(html);
     }
 
+    joinPondByName(pondName) {
+        if (!pondName) return;
+
+        const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+        if (pondMainWindow) {
+            this.bp.apps.buddylist.joinPond(pondName);
+            pondMainWindow.focus();
+        } else {
+            this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
+        }
+    }
 
     open(options = {}) {
-
-        if (options.context) {
-            this.bp.apps.buddylist.openChatWindow({ pondname: options.context })
-            return;
-        }
-
-        let iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
+        const iconImagePath = 'desktop/assets/images/icons/icon_pond_64.png';
 
         if (!this.pondWindow) {
-
             this.pondWindow = this.bp.apps.ui.windowManager.createWindow({
                 id: 'pond',
                 title: 'Ponds',
@@ -94,73 +112,33 @@ export default class Pond {
             $('.loggedIn', this.pondWindow.content).show();
             $('.loggedOut', this.pondWindow.content).hide();
 
-            // joinPondForm cancel submission ( for now )
-            // should not hijack joinPond, use proper submit handler
-            $('.joinPondForm').on('submit', (e) => {
+            // Manual pond join via input
+            const $form = $('.joinCustomPondForm', this.pondWindow.content);
+            const $input = $('#customPondName', this.pondWindow.content);
+
+            $form.on('submit', (e) => {
                 e.preventDefault();
-                /*
-                // get value from #customPondName
-                let pondName = $('#customPondName').val();
-                if (pondName) {
-                    this.bp.apps.buddylist.openChatWindow({ pondname: pondName });
-                } else {
-                    alert('Please enter a pond name');
-                }
-                */
-                joinPond.call(this);
-                return false;
+                const pondName = $input.val();
+                this.joinPondByName(pondName);
             });
 
-            function joinPond() {
-                // get value from #customPondName
-                let pondName = $('#customPondName').val();
-                if (pondName) {
-                    this.bp.apps.buddylist.openChatWindow({ pondname: pondName, type: 'pond', context: pondName });
-                }
-            };
-
-            $('.joinPond').on('click', (e) => {
+            // Table-based join buttons
+            const $joinPondTable = $('.joinPondTable', this.pondWindow.content);
+            $joinPondTable.on('click', '.joinPondButton', (e) => {
                 e.preventDefault();
-                joinPond.call(this);
-                return false;
+                const pondName = $(e.currentTarget).data('context');
+                this.joinPondByName(pondName);
             });
 
+            // Legacy "Join Pond" button (if needed)
+            $('.joinPond', this.pondWindow.content).on('click', (e) => {
+                e.preventDefault();
+                const pondName = $input.val();
+                this.joinPondByName(pondName);
+            });
         }
 
-        // TODO: switch to websocket connection?
-        function fetchPondData() {
-            // make initial fetch API request to buddypond.messagesApiEndpoint
-            let url = buddypond.messagesApiEndpoint + '/hotponds';
-            // console.log('Fetching hot ponds from:', url);
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.bp.qtokenid}`, // Use Authorization header
-                    'x-me': this.bp.me
-                }
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Failed to fetch hot ponds');
-                }
-            }).then(data => {
-                // console.log('Hot ponds data:', data);
-                this.updateHotPonds(data);
-            }).catch(error => {
-                console.error('Error fetching hot ponds:', error);
-            });
-
-        }
-
-        fetchPondData.call(this);
-        this.updatePondsTimer = setInterval(() => {
-            fetchPondData.call(this);
-        }, 5000);
-
+        this.client.listActivePonds();
         return this.pondWindow;
-
     }
-
 }

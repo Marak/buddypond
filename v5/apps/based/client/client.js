@@ -71,6 +71,25 @@ export default class Client {
         // Send the message via ws connection
         chatConnection.wsClient.send(JSON.stringify(message));
     }
+    
+    getConnectedUsers(chatId) {
+        alert('getConnectedUsers called for ' + chatId);
+        // sends a getConnectedUsers webscket message to the server
+        this.bp.log('getConnectedUsers called');
+        if (this.messagesWsClients.has(chatId)) {
+            let chatConnection = this.messagesWsClients.get(chatId);
+            if (chatConnection && chatConnection.wsClient) {
+                this.bp.log('buddypond.messagesWsClients has', chatId, 'sending getConnectedUsers message');
+                chatConnection.wsClient.send(JSON.stringify({ action: 'getConnectedUsers' }));
+            } else {
+                this.bp.log('No WebSocket client found for', chatId);
+            }
+        }
+        else {
+            this.bp.log('No WebSocket client found for', chatId, 'unable to send getConnectedUsers message');
+        }
+
+    }
 
     addSubscription(type, context) {
         let chatId = type + '/' + context;
