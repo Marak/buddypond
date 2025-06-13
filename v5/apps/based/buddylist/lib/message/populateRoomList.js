@@ -1,5 +1,5 @@
 // Populates or updates the pond room list in the chat window
-// Does not clear existing entries; updates connection counts and adds/removes rooms as needed
+// Maintains sort order by connection_count (descending) without full re-render
 // Manages .aim-room-active class only when an activeContext is specified
 export default function populateRoomList(hotPonds, chatWindow, activeContext = null) {
     // console.log('populateRoomList called with hotPonds:', hotPonds, 'chatWindow:', chatWindow, 'activeContext:', activeContext);
@@ -10,15 +10,20 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
 
     // Sort ponds by connection count (descending)
     const sortedPonds = [...hotPonds].sort((a, b) => b.connection_count - a.connection_count);
+    // console.log('Sorted ponds:', sortedPonds);
 
     // Track user-opened ponds
     const userOpenedPonds = this.data.activePonds || [];
 
-    // Track existing room items to determine which to remove
+    // Track existing room items by pond_id
+    const existingItems = new Map();
     const existingPondIds = new Set();
     roomList.find(".aim-room-item").each((_, item) => {
         const pondId = $(item).data("pond");
-        if (pondId) existingPondIds.add(pondId);
+        if (pondId) {
+            existingItems.set(pondId, $(item));
+            existingPondIds.add(pondId);
+        }
     });
 
     // Update or add room items
@@ -28,36 +33,51 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
         const isUserOpened = userOpenedPonds.includes(pondId);
         const isActive = pondId === activeContext;
 
-        // Check for existing room item
-        const existingItem = $(`.aim-room-item[data-pond="${pondId}"]`, roomList);
-        if (existingItem.length) {
-            // Update existing item
-            existingItem.find(".aim-room-list-item-score").text(pond.connection_count);
-            const closeButton = existingItem.find(".aim-room-close-btn");
+        const existingItem = existingItems.get(pondId);
+        if (existingItem) {
+            // Update existing item only if data has changed
+            const $scoreElement = existingItem.find(".aim-room-list-item-score");
+            if ($scoreElement.text() !== String(pond.connection_count)) {
+                console.log(`Updating connection_count for ${pondId}: ${pond.connection_count}`);
+                $scoreElement.text(pond.connection_count);
+            }
+
+            const $closeButton = existingItem.find(".aim-room-close-btn");
             if (isUserOpened) {
-                if (!closeButton.length) {
+                if (!$closeButton.length) {
+                    console.log(`Adding close button for ${pondId}`);
                     existingItem.append(`<button class="aim-room-close-btn" data-context="${pondId}">X</button>`);
                 }
-            } else {
-                closeButton.remove();
+            } else if ($closeButton.length) {
+                console.log(`Removing close button for ${pondId}`);
+                $closeButton.remove();
             }
+
             // Update active class only if activeContext is specified
             if (activeContext !== null) {
-                existingItem.toggleClass("aim-room-active", isActive);
+                const shouldBeActive = isActive;
+                if (existingItem.hasClass("aim-room-active") !== shouldBeActive) {
+                    console.log(`Updating active class for ${pondId}: ${shouldBeActive}`);
+                    existingItem.toggleClass("aim-room-active", shouldBeActive);
+                }
             }
+
             existingPondIds.delete(pondId); // Mark as processed
         } else {
             // Create new room item
+            console.log(`Adding new room item for ${pondId}`);
             const closeButton = isUserOpened
                 ? `<button class="aim-room-close-btn" data-context="${pondId}">X</button>`
                 : "";
-            roomList.append(`
-                <li class="aim-room-item aim-room-list-item ${isActive && activeContext !== null ? "aim-room-active" : ""}" data-pond="${pondId}" data-context="${pondId}">
+            const $newItem = $(`
+                <li class="aim-room-item aim-room-list-item${isActive && activeContext !== null ? " aim-room-active" : ""}" data-pond="${pondId}" data-context="${pondId}">
                     <span class="aim-room-list-item-name">#${pondName}</span>
                     <span class="aim-room-list-item-score">${pond.connection_count}</span>
                     ${closeButton}
                 </li>
             `);
+            roomList.append($newItem); // Append temporarily; will reorder later
+            existingItems.set(pondId, $newItem); // Track for reordering
         }
 
         // Ensure messages container exists for active or opened ponds
@@ -68,11 +88,42 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
 
     // Remove room items for ponds no longer in hotPonds
     existingPondIds.forEach((pondId) => {
-        $(`.aim-room-item[data-pond="${pondId}"]`, roomList).remove();
+        console.log(`Removing room item for ${pondId}`);
+        existingItems.get(pondId)?.remove();
+        existingItems.delete(pondId);
     });
 
-    // If activeContext is specified, ensure only the active room has .aim-room-active
+    // Reorder room items to match sortedPonds
+    console.log('Reordering room items to match sortedPonds');
+    let previousItem = null;
+    sortedPonds.forEach((pond) => {
+        const $item = existingItems.get(pond.pond_id);
+        if ($item) {
+            if (previousItem) {
+                // Insert after the previous item
+                const $nextSibling = previousItem.next();
+                if (!$nextSibling.length || $nextSibling.data("pond") !== pond.pond_id) {
+                    console.log(`Moving ${pond.pond_id} after ${previousItem.data("pond")}`);
+                    $item.insertAfter(previousItem);
+                }
+            } else {
+                // Move to the top if it's the first item
+                const $firstItem = roomList.children().first();
+                if (!$firstItem.length || $firstItem.data("pond") !== pond.pond_id) {
+                    console.log(`Moving ${pond.pond_id} to top`);
+                    $item.prependTo(roomList);
+                }
+            }
+            previousItem = $item;
+        }
+    });
+
+    // Ensure only the active room has .aim-room-active if activeContext is specified
     if (activeContext !== null) {
+        console.log(`Ensuring only ${activeContext} has .aim-room-active`);
         roomList.find(".aim-room-item").not(`[data-pond="${activeContext}"]`).removeClass("aim-room-active");
+        if (existingItems.get(activeContext)) {
+            existingItems.get(activeContext).addClass("aim-room-active");
+        }
     }
 }

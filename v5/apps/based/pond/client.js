@@ -13,7 +13,7 @@ export default class HotPondsWebSocketClient {
 
   async connect() {
     const url = `${this.endpoint}?me=${buddypond.me}&qtokenid=${buddypond.qtokenid}`;
-    console.log(`🔌 Connecting to HotPond ${url}`);
+    console.log(`🔌 Connecting to HotPonds...`);
 
     return new Promise((resolve, reject) => {
       const ws = new WebSocket(url);
@@ -44,7 +44,7 @@ export default class HotPondsWebSocketClient {
 
         switch (action) {
             case 'activePonds':
-                console.log('Active ponds:', data.ponds);
+                // console.log('Active ponds:', data.ponds);
                 this.bp?.emit('hotpond::activePonds', data.ponds);
                 break;
         }
