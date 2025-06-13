@@ -66,11 +66,11 @@ export default function createWebSocketClient(chatId) {
 
       switch (parseData.action) {
         case 'message':
-          console.log('WebSocket message received:', parseData);
+          // console.log('WebSocket message received:', parseData);
           bp.emit('buddy::messages', { result: { messages: [parseData.message] } });
           break;
         case 'connectedUsers':
-          console.log('Connected users message received:', parseData);
+          // console.log('Connected users message received:', parseData);
           bp.emit('pond::connectedUsers', parseData);
           break;
         case 'typing' :

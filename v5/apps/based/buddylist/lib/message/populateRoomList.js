@@ -2,7 +2,7 @@
 // Does not clear existing entries; updates connection counts and adds/removes rooms as needed
 // Manages .aim-room-active class only when an activeContext is specified
 export default function populateRoomList(hotPonds, chatWindow, activeContext = null) {
-    console.log('populateRoomList called with hotPonds:', hotPonds, 'chatWindow:', chatWindow, 'activeContext:', activeContext);
+    // console.log('populateRoomList called with hotPonds:', hotPonds, 'chatWindow:', chatWindow, 'activeContext:', activeContext);
     const roomList = $(".aim-room-list-items", chatWindow.content);
     if (!roomList.length) return;
 

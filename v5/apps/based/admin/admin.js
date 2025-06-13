@@ -11,9 +11,6 @@ export default class Admin {
     }
 
     async init() {
-
-        console.log('admin is: under construction');
-
         this.html = await this.bp.load('/v5/apps/based/admin/admin.html');
         await this.bp.load('/v5/apps/based/admin/admin.css');
         return 'loaded admin window';

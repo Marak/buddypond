@@ -348,11 +348,11 @@ export default class BuddyList {
             if (buddylist[this.bp.me]) {
                 // for now...needs to change shape of server response to include root fields?
                 if (buddylist[this.bp.me].profile_picture) {
-                    console.log('setting profilePicture', buddylist[this.bp.me].profile_picture);
+                    // console.log('setting profilePicture', buddylist[this.bp.me].profile_picture);
                     this.data.profileState.profilePicture = buddylist[this.bp.me].profile_picture;
                 }
                 if (buddylist[this.bp.me].status) {
-                    console.log('setting status', buddylist[this.bp.me].status);
+                    // console.log('setting status', buddylist[this.bp.me].status);
                     this.data.profileState.status = buddylist[this.bp.me].status;
                 }
             }
@@ -878,7 +878,7 @@ export default class BuddyList {
         this.client = new this.Client(bp);
         let connected = await this.client.connect();
 
-        if (!qtoken.hasPassword){
+        if (!qtoken.hasPassword) {
             // if the user does not have a password, open the pincode window
             this.bp.open('pincode');
         }
@@ -945,13 +945,15 @@ BuddyList.prototype.logout = function () {
         this.client.disconnect();
         this.client = null;
         // clear out the local .data scope
+        // TODO: only declare this once ( code is repeated in constructor )
         this.data = {
             processedMessages: {},
             profileState: {
             },
             activeUsersInContext: {},
             activeUsers: [],
-            activePonds: []
+            activePonds: [],
+            avatarCache: new Map()
         };
         // empty the buddylist
         $('.buddylist').empty();

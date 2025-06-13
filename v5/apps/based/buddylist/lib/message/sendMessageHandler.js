@@ -1,5 +1,5 @@
 export default async function sendMessageHandler(e, chatWindow, windowType, contextName) {
-
+  console.log('sendMessageHandler called', e, chatWindow, windowType, contextName);
   const message = $('.aim-input', chatWindow.content).val();
 
   const _data = {
@@ -12,6 +12,8 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     text: message,
     files: [],
   };
+
+  console.log('sendMessageHandler _data', _data);
 
   // TODO: move file upload code to separate function
   // Get file previews
@@ -249,7 +251,7 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
       // pipeable / immediate run commands should only persist for 10 seconds
       bs.pipe({
       chatWindow,
-      contextName,
+      contextName: _data.to,
       windowType
     });
       // clear the input
@@ -259,15 +261,18 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
       // }
     }
 
-    console.log('buddyscript command', bs);
+    console.log(' ', bs);
     if (bs.type === 'show-card') {
       // show the bs card
+      // console.log('showing bs card', message, bs);
       let cardData = bs.data;
       this.showCard({
         chatWindow,
         cardName: 'bs',
         context: {
-          ...bs
+          ...bs,
+          context: message.to,
+          type: windowType
         }
       });
     }

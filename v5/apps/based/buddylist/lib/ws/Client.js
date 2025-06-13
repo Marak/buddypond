@@ -22,7 +22,7 @@ export default class Client {
 Client.prototype.connect = async function connectBuddyListWs() {
   console.log("Connecting to BuddyList WebSocket...");
   this.wsClient = await this.createWebSocketClient();
-  console.log("Connected to BuddyList WebSocket:", this.wsClient);
+  console.log("Connected to BuddyList WebSocket!");
   // TODO: needs to return / await the connection event
   // TODO: should emit buddylist::connected event ( not auth::qtokenid event )
   this.bp.emit('buddylist::connected', this.wsClient);
@@ -59,7 +59,7 @@ Client.prototype.receivedInstantMessage = async function receivedInstantMessage(
 
 Client.prototype.setStatus = async function setStatus(buddyName, update, cb = function noop () {}) {
   // use wsClient to send the status update
-  console.log('calling setStatus', buddyName, update);
+  // console.log('calling setStatus', buddyName, update);
   this.wsClient.send(JSON.stringify({
     action: "setStatus",
     buddyname: buddyName,

@@ -72,7 +72,7 @@ export default function createWebSocketClient() {
 
             break;
           case 'getProfile':
-            console.log('getProfile message received:', parseData);
+            // console.log('getProfile message received:', parseData);
 
             if (parseData.profile && parseData.profile.buddylist) {
               bp.emit('profile::fullBuddyList', parseData.profile);
@@ -84,7 +84,7 @@ export default function createWebSocketClient() {
             // this will ensure we always get the most recent updates for all buddies in case our DO
             // wasn't updated or missed an update or setStatus() truncation limit for users not recently active
             // send a message now to getRemoteProfiles
-            console.log('Requesting remote profiles for all buddies');
+            console.log('Requesting remote profile backfill for all buddies');
             // After getting the initial profile ( single DO state, quick load ),
             // we can request remote profiles for all buddies
             // This will fetch all buddies DO's and get their most recent state
@@ -123,7 +123,7 @@ export default function createWebSocketClient() {
             }
             break;
           case 'getCoinBalance':
-            console.log('getCoinBalance message received:', parseData);
+            // console.log('getCoinBalance message received:', parseData);
             if (parseData.success) {
               bp.emit('buddylist-websocket::coinBalance', parseData);
             } else {

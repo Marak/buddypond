@@ -67,7 +67,7 @@ export default function buddylistUIEvents() {
 
   $('.onlineStatusSelect').change((e) => {
     let status = $(e.target).val();
-    console.log('status', status);
+    // console.log('status', status);
     bp.emit('profile::status', status);
   });
 
@@ -98,7 +98,7 @@ export default function buddylistUIEvents() {
     $('.resetPasswordForm').flexHide();
     $('.resetPasswordMessage').flexHide();
     api.sendPasswordResetEmail(email, (err, data) => {
-      console.log('sendPasswordResetEmail', err, data);
+      // console.log('sendPasswordResetEmail', err, data);
       if (err || !data.success) {
         $('.loginStatus').html('Failed to send password reset email.');
         console.error(err || data);
@@ -114,7 +114,7 @@ export default function buddylistUIEvents() {
       return
     }
     let buddyname = $(e.target).closest('.buddy-message-sender').data('buddy');
-    console.log('message-buddy', buddyname);
+    // console.log('message-buddy', buddyname);
     this.openChatWindow({ name: buddyname });
   });
 

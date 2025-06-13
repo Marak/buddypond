@@ -154,6 +154,7 @@ export default class Client {
         this.api.me = 'Guest';
         this.me = 'Guest';
         this.bp.me = 'Guest';
+        this.bp.qtokenid = null;
 
         localStorage.removeItem('qtokenid');
         localStorage.removeItem('me');

@@ -91,7 +91,14 @@ let legacyCommands = {
   apps: {
     command: function (params, context) {
       console.log('apps command', params, context);
-      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'apps' });
+      bp.apps.buddylist.showCard({
+        chatWindow: context.chatWindow,
+        cardName: 'apps',
+        context: {
+          context: context.contextName,
+          type: context.windowType
+        }
+      });
       return;
     },
     description: 'Lists all Buddy Pond Apps',
@@ -120,7 +127,14 @@ let legacyCommands = {
   bs: {
     command: function(params, context) {
       console.log('bs command', params, context);
-      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'bs-commands' });
+      bp.apps.buddylist.showCard({
+        chatWindow: context.chatWindow,
+        cardName: 'bs-commands',
+        context: {
+          context: context.contextName,
+          type: context.windowType
+        }
+      });
       return;
     },
     description: 'Lists all BuddyScript Commands',
@@ -263,7 +277,14 @@ let legacyCommands = {
   markdown: {
     command: function (params, context) {
       console.log('markdown command', params, context);
-      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'markdown' });
+      bp.apps.buddylist.showCard({
+        chatWindow: context.chatWindow,
+        cardName: 'markdown',
+        context: {
+          context: context.contextName,
+          type: context.windowType
+        }
+      });
       return;
     },
     description: 'Lists all Markdown Commands',
@@ -365,7 +386,14 @@ let legacyCommands = {
     // show card
     command: function (params, context) {
       console.log('help command', params, context);
-      bp.apps.buddylist.showCard({ chatWindow: context.chatWindow, cardName: 'help' });
+      bp.apps.buddylist.showCard({
+        chatWindow: context.chatWindow,
+        cardName: 'help',
+        context: {
+          context: context.contextName,
+          type: context.windowType
+        }
+      });
       return;
     },
     description: 'Buddy Pond Help and Support',

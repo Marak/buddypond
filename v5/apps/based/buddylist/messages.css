@@ -207,7 +207,7 @@
 }
 
 .aim-user-list-area {
-    width: 150px;
+    width: 200px;
     min-width: 150px;
     border-left: 1px solid #d3d3d3;
     background: var(--desktop_element-background);

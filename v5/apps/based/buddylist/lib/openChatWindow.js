@@ -24,7 +24,7 @@ function updatePondConnectedUsers(data) {
     // Select the user list for the specific pond
     const userList = $(`.aim-user-list[data-context="${context}"][data-type="pond"] .aim-user-list-items`);
 
-    console.log('found userList:', userList.length, 'for chatId:', chatId, userList);
+    // console.log('found userList:', userList.length, 'for chatId:', chatId, userList);
     if (!userList.length) {
         console.log(`No .aim-user-list-items found for chatId: ${chatId}`);
         return;
@@ -39,7 +39,7 @@ function updatePondConnectedUsers(data) {
         if (userId) {
             existingUserIds.add(userId);
         } else {
-            console.log("Found invalid .aim-user-item without data-username, removing:", item);
+            // console.log("Found invalid .aim-user-item without data-username, removing:", item);
             $(item).remove(); // Remove empty/invalid items
         }
     });
@@ -58,23 +58,23 @@ function updatePondConnectedUsers(data) {
             // Update existing user only if data has changed
             const $textElement = userItem.find(".aim-user-item-text");
             if ($textElement.text() !== userId) {
-                console.log(`Updating userId text for ${userId}`);
+                // console.log(`Updating userId text for ${userId}`);
                 $textElement.text(userId);
             }
 
             const $profileContainer = userItem.find(".aim-profile-picture");
             const $newProfileElement = createProfilePictureElement.call(this, userId, profilePicture, $profileContainer);
             if ($newProfileElement) {
-                console.log(`Updating profile picture for ${userId}`);
+                // console.log(`Updating profile picture for ${userId}`);
                 $profileContainer.empty().append($newProfileElement.html());
             } else {
-                console.log(`No profile picture update needed for ${userId}`);
+                // console.log(`No profile picture update needed for ${userId}`);
             }
 
             existingUserIds.delete(userId); // Mark as processed
         } else {
             // Create new user item
-            console.log("Adding user to aim-user-list-items:", user);
+            // console.log("Adding user to aim-user-list-items:", user);
             const $userItem = $("<li>", {
                 class: "aim-user-item",
                 "data-username": userId,
@@ -92,7 +92,7 @@ function updatePondConnectedUsers(data) {
     });
 
     // Remove disconnected users
-    console.log('checking existingUserIds for removal:', existingUserIds);
+    // console.log('checking existingUserIds for removal:', existingUserIds);
     existingUserIds.forEach((userId) => {
         $(`.aim-user-item[data-username="${userId}"]`, userList).remove();
     });
@@ -424,11 +424,11 @@ function toggleMessagesContainer(contextName, chatWindow) {
 
     // Show target elements
     if (targetContainer.length) {
-        console.log("Showing messages container for context:", contextName);
+        // console.log("Showing messages container for context:", contextName);
         targetContainer.show();
     }
     if (targetUserList.length) {
-        console.log("Showing user list for context:", userListContext);
+        // console.log("Showing user list for context:", userListContext);
         targetUserList.show();
     }
 
@@ -438,7 +438,7 @@ function toggleMessagesContainer(contextName, chatWindow) {
         if (availableContainers.length > 0) {
             const firstContext = availableContainers.first().data("context");
             const firstUserListContext = firstContext.replace("pond/", "");
-            console.log("Falling back to first context:", firstContext);
+            // console.log("Falling back to first context:", firstContext);
 
             $(`.aim-messages-container[data-context="${firstContext}"]`, chatArea).show();
             $(`.aim-user-list[data-context="${firstUserListContext}"][data-type="pond"]`, userListArea).show();
@@ -449,6 +449,17 @@ function toggleMessagesContainer(contextName, chatWindow) {
         } else {
             console.log("No available message containers or user lists");
         }
+    }
+
+    // find the current .button-bar
+    let buttonBar = $(".button-bar", chatWindow.content);
+    // we need to iterate through all the first level children of the buttonBar
+    // and update the data-context attribute to match the current contextName
+    if (buttonBar.length) {
+        buttonBar.children().each((_, child) => {
+            console.log(`Updating button bar child context for:`, child, contextName);
+            $(child).attr("data-context", contextName);
+        });
     }
 
     scrollToBottom(chatWindow.content);
