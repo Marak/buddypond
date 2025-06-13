@@ -22,7 +22,7 @@
   column-gap: 20px;
   row-gap: 10px;
   box-sizing: border-box;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
 }
 
 /* Top-Level Menu Items */
@@ -143,7 +143,7 @@
   border-radius: 4px;
   display: flex;
   align-items: center;
-  /* gap: 8px; */
+  gap: 8px;
 }
 
 .dropdown-menu {
