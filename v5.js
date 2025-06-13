@@ -28,6 +28,9 @@ window.bp_v_5 = async function bp_v_5() {
         autocomplete: allCommands
     });
 
+    // Remark: Do we need to load the pond here, or can we wait until login is successful?
+    await bp.load('pond');
+
     //await bp.load("card");
     bp.load('card');
 

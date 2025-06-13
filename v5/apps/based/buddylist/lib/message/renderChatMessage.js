@@ -1,4 +1,4 @@
-// import forbiddenNotes from '../forbiddenNotes.js';
+import forbiddenNotes from '../forbiddenNotes.js';
 import checkForLinksInMessage from './checkForLinksInMessage.js';
 
 export default async function renderChatMessage(message, _chatWindow) {

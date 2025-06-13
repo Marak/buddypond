@@ -849,11 +849,6 @@ export default class BuddyList {
                     this.bp.open('pincode');
                 }
 
-                // loads the hotpond client that populates room lists
-                bp.load('pond');
-
-
-
             } else {
                 $('.loginForm .error').text('Failed to authenticate buddy');
                 $('.password').show();
@@ -899,6 +894,10 @@ export default class BuddyList {
         if (this.defaultPond) {
             setTimeout(() => {
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
+                // loads the hotpond client that populates room lists
+                bp.load('pond');
+
+
             }, 100);
         }
 

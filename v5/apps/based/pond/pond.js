@@ -12,10 +12,13 @@ export default class Pond {
     async init() {
         await this.bp.load('/v5/apps/based/pond/pond.css');
         this.html = await this.bp.load('/v5/apps/based/pond/pond.html');
-        
+
+        // this may need to be bound to pond::open event...
         this.bp.on('auth::qtoken', 'ponds-connect-client', async (data) => {
-            $('.loggedIn', this.pondWindow.content).show();
-            $('.loggedOut', this.pondWindow.content).hide();
+            if (this.pondWindow && this.pondWindow.content) {
+                $('.loggedIn', this.pondWindow.content).show();
+                $('.loggedOut', this.pondWindow.content).hide();
+            }
             connectPonds.call(this);
         });
 
@@ -29,7 +32,7 @@ export default class Pond {
             await this.client.connect();
 
             this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
-                console.log('Received hotpond::activePonds event with data:', data);
+                // console.log('Received hotpond::activePonds event with data:', data);
                 this.data.hotPonds = data;
 
                 const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
@@ -45,7 +48,7 @@ export default class Pond {
             });
 
             this.bp.on('pond::connectedUsers', 'update-pond-connected-users', (data) => {
-                console.log('Received pond::connectedUsers event with data:', data);
+                // console.log('Received pond::connectedUsers event with data:', data);
                 this.bp.apps.buddylist.updatePondConnectedUsers(data);
             });
 
@@ -82,6 +85,14 @@ export default class Pond {
 
     joinPondByName(pondName) {
         if (!pondName) return;
+
+        // check for bad names
+        let invalidName = this.bp.apps.buddylist.forbiddenNotes.containsBadWord(pondName);
+        if (invalidName) {
+            alert('Invalid pond name. Please choose a different name.');
+            return;
+        }
+
         const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
         if (pondMainWindow) {
             this.bp.apps.buddylist.joinPond(pondName);

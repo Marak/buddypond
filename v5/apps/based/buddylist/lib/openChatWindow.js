@@ -18,7 +18,7 @@ function updatePondConnectedUsers(data) {
         console.log("No chatId provided for updating pond connected users");
         return;
     }
-
+    console.log('updatePondConnectedUsers called with data:', data);
     let context = chatId.replace("pond/", "");
 
     // Select the user list for the specific pond
@@ -35,8 +35,9 @@ function updatePondConnectedUsers(data) {
     // Track existing users to identify disconnected ones
     const existingUserIds = new Set();
     userList.find(".aim-user-item").each((_, item) => {
-        const userId = $(item).data("username");
+        let userId = $(item).data("username");
         if (userId) {
+            userId = userId.toString();
             existingUserIds.add(userId);
         } else {
             // console.log("Found invalid .aim-user-item without data-username, removing:", item);
@@ -46,7 +47,8 @@ function updatePondConnectedUsers(data) {
 
     // Update or add user items
     (data.users || []).forEach((user) => {
-        const { userId, profilePicture } = user;
+        let { userId, profilePicture } = user;
+        userId = userId ? userId.toString() : null;
         if (!userId || typeof userId !== "string") {
             console.log("Skipping invalid user with missing or non-string userId:", user);
             return; // Skip invalid users
@@ -94,6 +96,7 @@ function updatePondConnectedUsers(data) {
     // Remove disconnected users
     // console.log('checking existingUserIds for removal:', existingUserIds);
     existingUserIds.forEach((userId) => {
+        userId = userId.toString();
         $(`.aim-user-item[data-username="${userId}"]`, userList).remove();
     });
 }
@@ -141,12 +144,17 @@ export default function openChatWindow(data) {
         return;
     }
 
+    // TODO: move these to prototype of buddylist...
     if (!this.populateRoomList) {
         this.populateRoomList = populateRoomList.bind(this);
     }
 
     if (!this.updatePondConnectedUsers) {
         this.updatePondConnectedUsers = updatePondConnectedUsers.bind(this);
+    }
+
+    if (!this.forbiddenNotes) {
+        this.forbiddenNotes = forbiddenNotes;
     }
 
     if (!this.joinPond) {
@@ -459,7 +467,7 @@ function toggleMessagesContainer(contextName, chatWindow) {
     // and update the data-context attribute to match the current contextName
     if (buttonBar.length) {
         buttonBar.children().each((_, child) => {
-            console.log(`Updating button bar child context for:`, child, contextName);
+            // console.log(`Updating button bar child context for:`, child, contextName);
             $(child).attr("data-context", contextName);
         });
     }
@@ -475,7 +483,7 @@ function setupChatWindow(windowType, contextName, chatWindow) {
     const aimMessagesContainer = $(".aim-messages-container", cloned)[0];
     aimMessagesContainer.setAttribute("data-context", contextName);
     aimMessagesContainer.setAttribute("data-type", windowType);
-    
+
 
     if (windowType === "buddy") {
         $(".aim-user-list-area", cloned).remove();
@@ -485,7 +493,7 @@ function setupChatWindow(windowType, contextName, chatWindow) {
 
 
         const aimUserListContainer = $(".aim-user-list", cloned)[0];
-        aimUserListContainer.setAttribute("data-context", contextName);        
+        aimUserListContainer.setAttribute("data-context", contextName);
         aimUserListContainer.setAttribute("data-type", windowType);
 
         $('.aim-chat-title', cloned).text(`#${contextName.replace("pond/", "")}`);
@@ -574,7 +582,8 @@ function setupCloseButtonHandler(chatWindow, client) {
         client.removeSubscription("pond", context);
         $(`.aim-messages-container[data-context="${context}"]`, chatWindow.content).remove();
         $(`.aim-room-item[data-context="${context}"]`, chatWindow.content).remove();
-
+        // remove the associated .aim-user-list
+        $(`.aim-user-list[data-context="${context.replace("pond/", "")}"][data-type="pond"]`, chatWindow.content).remove();
         // Update active ponds
         this.data.activePonds = this.data.activePonds.filter((pond) => pond !== context);
 
@@ -602,10 +611,9 @@ function setupCloseButtonHandler(chatWindow, client) {
         $(".aim-room-list-item-name", roomItem).removeClass("aim-room-active");
 
         // get current count of .aim-chat-area, if 2 show .no-open-ponds
-        const chatAreas = $(".aim-chat-area", chatWindow.content);
+        const chatAreas = $(".aim-messages-container", chatWindow.content);
         console.log("Current chat areas count:", chatAreas.length);
-        /*
-        if (chatAreas.length <= 1) {
+        if (chatAreas.length === 0) {
             $(".no-open-ponds", chatWindow.content).flexShow();
             $('.aim-message-controls', chatWindow.content).hide();
         }
@@ -613,7 +621,6 @@ function setupCloseButtonHandler(chatWindow, client) {
             $(".no-open-ponds", chatWindow.content).hide();
             $('.aim-message-controls', chatWindow.content).flexShow();
         }
-        */
 
     });
 }
@@ -623,6 +630,12 @@ function joinPond(pondName) {
 
     if (!pondName) {
         console.error("Pond name is required to join a pond.");
+        return;
+    }
+
+    let invalidName = forbiddenNotes.containsBadWord(pondName);
+    if (invalidName) {
+        alert('Invalid pond name. Please choose a different name.');
         return;
     }
 
