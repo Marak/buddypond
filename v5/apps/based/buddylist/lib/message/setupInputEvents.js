@@ -21,9 +21,11 @@ export default function setupInputEvents(windowType, contextName, chatWindow) {
             return false;
         }
 
+        let activeContext = chatWindow.currentActiveContext || contextName;
+
         this.bp.emit("buddy::typing", {
             from: this.bp.me,
-            to: contextName,
+            to: activeContext,
             type: windowType,
             isTyping: true,
             ctime: Date.now(),

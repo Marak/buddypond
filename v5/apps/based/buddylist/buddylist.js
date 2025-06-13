@@ -481,7 +481,8 @@ export default class BuddyList {
                 }
 
                 if (message.type === 'pond') {
-                    windowId = `pond_message_-${message.to}`;
+                    // windowId = `pond_message_-${message.to}`;
+                    windowId = 'pond_message_main';
                 }
 
                 let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
@@ -491,8 +492,19 @@ export default class BuddyList {
                     // return;
                 }
 
+                // console.log('typing message', message);
+
                 let typingIndicatorId = `typing-${message.from}`;
                 let typingMessage = `${message.from} is typing...`;
+
+                if (message.type === 'pond') {
+                    // we need to determine if the current open pond aim-messages-container matches the message.to
+                    if (chatWindow.currentActiveContext !== message.to) {
+                        console.log('pond chat window is not active for this pond', message.to);
+                        return;
+                    }
+                }
+
 
                 // Check if the typing indicator for this user already exists
                 let typingIndicator = $(`.aim-typing span[data-user="${message.from}"]`, chatWindow.content);

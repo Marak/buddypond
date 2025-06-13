@@ -411,6 +411,8 @@ function toggleMessagesContainer(contextName, chatWindow) {
     // Normalize context for user list (e.g., "pond/general" -> "general")
     const userListContext = contextName.replace("pond/", "");
 
+    chatWindow.currentActiveContext = userListContext;
+
     // Select target elements
     const targetContainer = $(`.aim-messages-container[data-context="${contextName}"][data-type="pond"]`, chatArea);
     const targetUserList = $(`.aim-user-list[data-context="${userListContext}"][data-type="pond"]`, userListArea);
