@@ -111,9 +111,15 @@ export default class Pad {
 
             // TODO: refactor this to separate function
             // will show myPads by default
+
+            // ensure that user is logged in before fetching pads from API
+            if (!this.bp.me || this.bp.me === 'Guest') {
+                return;
+            }
             this.myPads = await this.bp.apps.client.api.getPads();
             console.log('myPadsmyPads', this.myPads)
             this.renderPadRows(this.myPads.results);
+
         }
 
         // show the first .tab-content
