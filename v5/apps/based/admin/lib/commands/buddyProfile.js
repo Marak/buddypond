@@ -1,6 +1,11 @@
 // get buddy profile from database and durable object
 export default async function buddyProfile(buddyname) {
 
+    if (!buddyname) {
+        console.log('Buddy name is required');
+        return;
+    }
+
     let buddyProfiles = await this.client.apiRequest(`/super-admin/buddy-profile?buddyname=${buddyname}`, 'GET');
     // console.log('buddyProfiles', buddyProfiles);
 
