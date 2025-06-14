@@ -169,8 +169,9 @@ export default class Pond {
                 this.joinPondByName(pondName);
             });
         }
-
-        this.client.listActivePonds();
+        if (this.client) { // only call if client is initialized / connected
+            this.client.listActivePonds();
+        }
         return this.pondWindow;
     }
 }
