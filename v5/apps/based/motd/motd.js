@@ -41,6 +41,16 @@ export default class Motd {
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
             {
+                date: '6/15/25',
+                notes: [
+                    `Brand new Buddy Apps Store`,
+                    'Deploy your Buddy Apps from Github',
+                    'Buddy Pond API Keys for developers',
+                    'New tabbed Pond Chat Interface',
+                    'Customizable Chat Button Bar',
+                ]
+            },
+            {
                 date: '6/6/25',
                 notes: [
                     'Buddy Coin Rewards every 60 seconds',
@@ -78,6 +88,7 @@ export default class Motd {
                     'Portfolio App with Coin Tracking',
                     `Adds $MEGA and $GBP Buddy Coins`,
                     `Randolph Coin Faucet Bot launched`
+
                 ]
             },
             {
