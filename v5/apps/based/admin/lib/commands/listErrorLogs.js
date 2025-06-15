@@ -26,7 +26,7 @@ export default async function listErrorLogs(query = {}) {
     if (listErrorResponse && listErrorResponse.logs && listErrorResponse.logs.length > 0) {
         // Process logs with symbolication if in production mode
         for (const logEntry of listErrorResponse.logs) {
-            if (this.bp.mode === 'prod') {
+            if (false && this.bp.mode === 'prod') {
                 console.log('needs to symbolicate', logEntry);
                 const sourceMapped = await symbolicate(logEntry.stack);
                 console.log('sourceMapped', sourceMapped);
