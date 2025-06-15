@@ -145,10 +145,13 @@
 .aim-chat-area {
     flex: 1;
     overflow-y: auto;
+    bottom: 5px;
+    position: relative;
     /* padding: 8px; */
 }
 
 .aim-typing {
+    height: 20px;
     padding-left: 5px;
 }
 
@@ -157,7 +160,7 @@
 }
 
 .aim-messages {
-    margin-top: 20px;
+    /* margin-bottom: 10px; */
 }
 
 .aim-message-controls {
