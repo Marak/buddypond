@@ -274,6 +274,12 @@ export default class Spellbook {
     if (context) {
       if (output === 'buddy') {
         // select the targetName using the context value
+
+        // ensure that context is in the dropdown, if not add it first
+        if (!$(`#spellTargetName option[value="${context}"]`, this.spellbookWindow.content).length) {
+          $('#spellTargetName', this.spellbookWindow.content).append(`<option value="${context}">${context}</option>`);
+        }
+
         $('#spellTargetName', this.spellbookWindow.content).val(context);
         // trigger change event to update target visibility
         // $('#spellTargetName', this.spellbookWindow.content).trigger('change');

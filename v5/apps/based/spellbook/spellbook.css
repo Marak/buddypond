@@ -58,7 +58,8 @@
 }
 
 .spellbook-targeting label {
-  color: #ccc;
+  background: none;
+  color: #fff;
 }
 
 .spellbook-targeting select {
