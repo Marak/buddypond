@@ -8,6 +8,7 @@ import destroyBuddy from './commands/destroyBuddy.js';
 import resetPassword from './commands/resetPassword.js';
 import addAdmin from './commands/addAdmin.js';
 import listAdmins from './commands/listAdmins.js';
+import listErrorLogs from './commands/listErrorLogs.js';
 
 import listRules from './commands/firewall/listRules.js';
 import addRule from './commands/firewall/addRule.js';
@@ -50,6 +51,10 @@ export default function eventBind(adminWindow) {
                 // list firewall rules
                 listRules.call(this);
             break;
+            case '#admin-error-logs':
+                console.log('admin-error-logs');
+                listErrorLogs.call(this);
+                break;
             default:
                 console.warn('Unknown tabId:', tabId);
         }

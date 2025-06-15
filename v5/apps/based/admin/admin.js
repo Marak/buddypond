@@ -13,6 +13,7 @@ export default class Admin {
     async init() {
         this.html = await this.bp.load('/v5/apps/based/admin/admin.html');
         await this.bp.load('/v5/apps/based/admin/admin.css');
+        await this.bp.appendScript('/v5/apps/based/admin/vendor/source-map.bundle.js');
         return 'loaded admin window';
     }
     

@@ -77,7 +77,7 @@ export default class ErrorTracker {
 
         console.log('sendError', errorData);
         try {
-            await fetch(this.apiEndpoint, {
+            await fetch(this.apiEndpoint + '/error', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(errorData),

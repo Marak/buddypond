@@ -2,135 +2,161 @@
 
 <div class="tabs-container loggedIn admin-tabs-container" id="admin-tabls">
 
-<ul class="tab-list admin-tab-list">
-    <li><a href="#admin-recent-logins">Recent Logins</a></li>
-    <li><a href="#admin-userbyIP">User By IP</a></li>
-    <li><a href="#admin-buddyProfile">Buddy Profile</a></li>
-    <li><a href="#admin-banlist">Ban List</a></li>
-    <li><a href="#admin-add-admin">Add Admins</a></li>
-    <li><a href="#admin-firewall">Firewall Rules</a></li>
-</ul>
+    <ul class="tab-list admin-tab-list">
+        <li><a href="#admin-recent-logins">Recent Logins</a></li>
+        <li><a href="#admin-userbyIP">User By IP</a></li>
+        <li><a href="#admin-buddyProfile">Buddy Profile</a></li>
+        <li><a href="#admin-banlist">Ban List</a></li>
+        <li><a href="#admin-add-admin">Add Admins</a></li>
+        <li><a href="#admin-error-logs">Error Logs</a></li>
 
-<div id="admin-recent-logins" class="tab-content admin-tab-content">
-    <h2>Recent Logins</h2>
-    <table class="admin-table" id="recent-logins-table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>IP Address</th>
-                <th>Login Time</th>
-                <th>Known IPs</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated by JavaScript -->
-        </tbody>
-    </table>
-</div>
+        <li><a href="#admin-firewall">Firewall Rules</a></li>
+    </ul>
 
-<div id="admin-userbyIP" class="tab-content admin-tab-content">
-    <h2>User By IP</h2>
-    <div class="admin-input-group">
-        <input type="text" id="ip-input" class="admin-input" placeholder="Enter IP Address">
-        <button id="ip-search-button" class="admin-button">Search</button>
-
+    <div id="admin-recent-logins" class="tab-content admin-tab-content">
+        <h2>Recent Logins</h2>
+        <table class="admin-table" id="recent-logins-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>IP Address</th>
+                    <th>Login Time</th>
+                    <th>Known IPs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
     </div>
-    <table class="admin-table" id="user-by-ip-table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>IP Address</th>
-                <th>Known IPs</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated by JavaScript -->
-        </tbody>
-    </table>
-</div>
 
-<div id="admin-buddyProfile" class="tab-content admin-tab-content">
-    <h2>Buddy Profile</h2>
-    <span class="api-response"></span>
-    <div class="admin-input-group">
-        <input type="text" id="profile-input" class="admin-input" placeholder="Enter Username">
-        <button id="profile-search-button" class="admin-button">Search</button>
-        <button id="ip-ban-button" class="admin-button">Curse Buddy</button>
-        <select id="ban-type" class="admin-select">
-            <option value="ban" selected>Ban</option>
-            <option value="no-uploads" selected>No Uploads</option>
-            <option value="babel">Babel.js</option>
-            <option value="riddikulus">Riddikulus</option>
-        </select>
-        <select id="ban-length" class="admin-select">
-            <!-- bans by hour length -->
-            <option value="1">1 minute</option>
-            <option value="5">5 minutes</option>
-            <option value="15">15 minutes</option>
-            <option value="30">30 minutes</option>
-            <option value="60">1 hour</option>
-            <option value="1440">1 day</option>            
-            <option value="2880">2 days</option>
-            <option value="4320">3 days</option>
-            <!-- one week -->
-            <option value="10080">1 week</option>
-            <!-- 30 days -->
-            <option value="43200">30 days</option>
-            <!-- 10 years -->
-            <option value="525600">10 years</option>
-        </select>
+    <div id="admin-userbyIP" class="tab-content admin-tab-content">
+        <h2>User By IP</h2>
+        <div class="admin-input-group">
+            <input type="text" id="ip-input" class="admin-input" placeholder="Enter IP Address">
+            <button id="ip-search-button" class="admin-button">Search</button>
 
+        </div>
+        <table class="admin-table" id="user-by-ip-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>IP Address</th>
+                    <th>Known IPs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
     </div>
-    <h2>Durable Object ( curses )</h2>
-    <div id="profile-display-curses" class="admin-json-display"></div>
-    <h2>Database Data</h2>
-    <div id="profile-display-database" class="admin-json-display"></div>
-    <h2>Durable Object ( cachedProfile )</h2>
-    <div id="profile-display-durable" class="admin-json-display"></div>
-    <h4>Login as user using super admin</h4>
-    <input type="text" id="super-admin-token" class="admin-input" placeholder="Enter Super Admin Token">
-    <button id="login-as-user-button" class="admin-button">Login as User</button>
-    <h4 class="danger">Danger Zone</h4>
-    <button id="delete-buddy-button" class="admin-button danger">Delete Profile</button>
-    <button id="reset-buddy-password-button" class="admin-button danger">Reset Password</button>
 
-</div>
-
-<div id="admin-banlist" class="tab-content admin-tab-content">
-    <h2>Ban List</h2>
-    <span class="api-response"></span>
-    <table class="admin-table" id="banlist-table">
-        <thead>
-            <tr>
-                <th>Buddyname</th>
-                <th>IP Address</th>
-                <th>Curses</th>
-                <th>Last updated</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated by JavaScript -->
-        </tbody>
-    </table>
-</div>
-
-<div id="admin-add-admin" class="tab-content admin-tab-content">
-    <h2>Add Admin</h2>
-    <span class="api-response"></span>
-    <div class="admin-input-group">
-        <input type="text" id="admin-username" class="admin-input" placeholder="Enter Username">
-        <input type="text" id="admin-ip" class="admin-input" placeholder="Enter IP Address">
-        <button id="add-admin-button" class="admin-button">Add Admin</button>
-    </div>
-    <div id="admin-list">
-        <h2>Current Admins</h2>
+    <div id="admin-buddyProfile" class="tab-content admin-tab-content">
+        <h2>Buddy Profile</h2>
         <span class="api-response"></span>
-        <table class="admin-table" id="admin-list-table">
+        <div class="admin-input-group">
+            <input type="text" id="profile-input" class="admin-input" placeholder="Enter Username">
+            <button id="profile-search-button" class="admin-button">Search</button>
+            <button id="ip-ban-button" class="admin-button">Curse Buddy</button>
+            <select id="ban-type" class="admin-select">
+                <option value="ban" selected>Ban</option>
+                <option value="no-uploads" selected>No Uploads</option>
+                <option value="babel">Babel.js</option>
+                <option value="riddikulus">Riddikulus</option>
+            </select>
+            <select id="ban-length" class="admin-select">
+                <!-- bans by hour length -->
+                <option value="1">1 minute</option>
+                <option value="5">5 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="1440">1 day</option>
+                <option value="2880">2 days</option>
+                <option value="4320">3 days</option>
+                <!-- one week -->
+                <option value="10080">1 week</option>
+                <!-- 30 days -->
+                <option value="43200">30 days</option>
+                <!-- 10 years -->
+                <option value="525600">10 years</option>
+            </select>
+
+        </div>
+        <h2>Durable Object ( curses )</h2>
+        <div id="profile-display-curses" class="admin-json-display"></div>
+        <h2>Database Data</h2>
+        <div id="profile-display-database" class="admin-json-display"></div>
+        <h2>Durable Object ( cachedProfile )</h2>
+        <div id="profile-display-durable" class="admin-json-display"></div>
+        <h4>Login as user using super admin</h4>
+        <input type="text" id="super-admin-token" class="admin-input" placeholder="Enter Super Admin Token">
+        <button id="login-as-user-button" class="admin-button">Login as User</button>
+        <h4 class="danger">Danger Zone</h4>
+        <button id="delete-buddy-button" class="admin-button danger">Delete Profile</button>
+        <button id="reset-buddy-password-button" class="admin-button danger">Reset Password</button>
+
+    </div>
+
+    <div id="admin-banlist" class="tab-content admin-tab-content">
+        <h2>Ban List</h2>
+        <span class="api-response"></span>
+        <table class="admin-table" id="banlist-table">
             <thead>
                 <tr>
                     <th>Buddyname</th>
                     <th>IP Address</th>
+                    <th>Curses</th>
+                    <th>Last updated</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="admin-add-admin" class="tab-content admin-tab-content">
+        <h2>Add Admin</h2>
+        <span class="api-response"></span>
+        <div class="admin-input-group">
+            <input type="text" id="admin-username" class="admin-input" placeholder="Enter Username">
+            <input type="text" id="admin-ip" class="admin-input" placeholder="Enter IP Address">
+            <button id="add-admin-button" class="admin-button">Add Admin</button>
+        </div>
+        <div id="admin-list">
+            <h2>Current Admins</h2>
+            <span class="api-response"></span>
+            <table class="admin-table" id="admin-list-table">
+                <thead>
+                    <tr>
+                        <th>Buddyname</th>
+                        <th>IP Address</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="admin-firewall" class="tab-content admin-tab-content">
+        <h2>Firewall Rules</h2>
+        <span class="api-response"></span>
+
+        <!-- add rule form, can add ip address -->
+        <form id="firewall-rule-form" class="admin-input-group">
+            <input type="text" id="firewall-rule-ip" class="admin-input" placeholder="Enter IP Address">
+            <button id="add-firewall-rule-button" class="admin-button">Ban IP</button>
+        </form>
+
+        <table class="admin-table" id="firewall-rules-table">
+            <thead>
+                <tr>
+                    <th>Rule</th>
+                    <th>Action</th>
                     <th>Last Updated</th>
                 </tr>
             </thead>
@@ -139,27 +165,32 @@
             </tbody>
         </table>
     </div>
+    <div id="admin-error-logs" class="tab-content admin-tab-content">
+        <h2>Error Logs</h2>
+        <span class="api-response"></span>
+        <table class="admin-table" id="admin-list-error-logs-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Type</th>
+                    <th>Error Message</th>
+                    <th>Stack Trace</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+        <div class="pagination-controls">
+            <button class="prev-page">Previous</button>
+            <span class="page-info">Page 1 of 1</span>
+            <button class="next-page">Next</button>
+            <select class="page-size">
+                <option value="10">10 per page</option>
+                <option value="25">25 per page</option>
+                <option value="50">50 per page</option>
+                <option value="100" selected>100 per page</option>
+            </select>
+        </div>
+    </div>
 </div>
-<div id="admin-firewall" class="tab-content admin-tab-content">
-    <h2>Firewall Rules</h2>
-    <span class="api-response"></span>
-
-    <!-- add rule form, can add ip address -->
-        <form id="firewall-rule-form" class="admin-input-group">
-        <input type="text" id="firewall-rule-ip" class="admin-input" placeholder="Enter IP Address">
-        <button id="add-firewall-rule-button" class="admin-button">Ban IP</button>
-    </form>
-
-    <table class="admin-table" id="firewall-rules-table">
-        <thead>
-            <tr>
-                <th>Rule</th>
-                <th>Action</th>
-                <th>Last Updated</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated by JavaScript -->
-        </tbody>
-    </table>
-</div> 
