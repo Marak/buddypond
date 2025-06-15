@@ -537,15 +537,18 @@ class Window {
         this.isDragging = true;
         this.container.style.cursor = "grabbing";
 
+        // Disable pointer events on iframe
+        const iframes = this.container.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+            iframe.style.pointerEvents = 'none';
+        });
+
         // Get coordinates from mouse or touch event
         const { clientX, clientY } = this.getEventCoordinates(e);
         this.offsetX = clientX - this.container.offsetLeft;
         this.offsetY = clientY - this.container.offsetTop;
 
-        // Prevent default behavior to avoid browser actions (e.g., scrolling, text selection)
-        // e.preventDefault();
-
-        // Add move and end event listeners for both mouse and touch to document
+        // Add event listeners for both mouse and touch events
         document.addEventListener('mousemove', this.drag);
         document.addEventListener('touchmove', this.drag, { passive: false });
         document.addEventListener('mouseup', this.stopDrag);
@@ -578,6 +581,12 @@ class Window {
     stopDrag() {
         this.isDragging = false;
         this.container.style.cursor = "default";
+
+        // Restore pointer events on iframe
+        const iframes = this.container.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+            iframe.style.pointerEvents = 'auto';
+        });
 
         // Remove event listeners
         document.removeEventListener('mousemove', this.drag);
