@@ -113,9 +113,17 @@ export default class ImageSearch {
 
                 let windowId = windowIdPrefix + this.context;
                 // console.log('opening chat window ', windowId)
+
+                if (this.output === 'pond') {
+                    windowId = 'pond_message_main';
+                }
+
                 let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
 
-
+                if (!chatWindow) {
+                    console.error(`No chat window found with ID: ${windowId}`);
+                    return;
+                }
                 console.log(`context: ${this.context}, type: ${this.type}`);
                 console.log('chatWindow', chatWindow);
                 const files = [];
