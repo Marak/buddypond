@@ -641,7 +641,7 @@ export default class BuddyList {
                 console.log(data.message);
                 return;
             }
-            window.rollToNumber($('#menu-bar-coin-balance'), data.message.newBalance)
+            rollToNumber($('#menu-bar-coin-balance'), data.message.newBalance)
 
             // TODO: better condition to check if portfolio app is loaded and ready
             if (this.bp.apps.portfolio && this.bp.apps.portfolio.portfolioWindow && this.bp.apps.portfolio.portfolioWindow.content && this.bp.apps.portfolio.portfolioData) {
@@ -671,7 +671,7 @@ export default class BuddyList {
         this.bp.on('buddylist-websocket::coinBalance', 'update-local-coin-balance', async (data) => {
             console.log('buddylist-websocket::coinBalance', data);
             if (typeof data.message.balance === 'number') {
-                window.rollToNumber($('#menu-bar-coin-balance'), data.message.balance)
+                rollToNumber($('#menu-bar-coin-balance'), data.message.balance)
             } else {
                 this.faucetAttempts++;
                 // should work on 1, adds safe guard in case service is down
@@ -973,4 +973,39 @@ BuddyList.prototype.logout = function () {
         $('.dialog').remove();
 
     });
+}
+
+function rollToNumber($el, value) {
+  // Format number with commas
+  const formattedValue = value.toLocaleString('en-US');
+  const digits = formattedValue.split('');
+
+  // Clear and rebuild digits
+  $el.empty();
+
+  digits.forEach((d, index) => {
+    // Handle comma separately
+    if (d === ',') {
+      $el.append('<span class="odometer-comma">,</span>');
+      return;
+    }
+
+    const digitContainer = $('<div class="odometer-digit"></div>');
+    const inner = $('<div class="odometer-digit-inner"></div>');
+
+    for (let i = 0; i <= 9; i++) {
+      inner.append(`<span>${i}</span>`);
+    }
+
+    digitContainer.append(inner);
+    $el.append(digitContainer);
+
+    // Delay added to force DOM layout flush, staggered for each digit
+    setTimeout(() => {
+      inner.css({
+        'transition': 'transform 0.5s ease-in-out', // Smooth transition
+        'transform': `translateY(-${d * 1}em)`
+      });
+    }, 50 + index * 100); // Base delay + staggered delay per digit
+  });
 }
