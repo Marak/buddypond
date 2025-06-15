@@ -236,7 +236,7 @@ export default function renderPadRows(myPads) {
                 if (action === 'Edit') {
                     // open edit window with the pad data
                     // console.log('edit pad', pad, title);
-                    this.bp.open('file-explorer', { context: '/' + relativePath + '/index.html' });
+                    this.bp.open('file-explorer', { context: '/' + this.bp.me + '/' + relativePath + '/index.html' });
                     // set focus
                     this.bp.apps.ui.windowManager.focusWindow('file-explorer');
                 }
