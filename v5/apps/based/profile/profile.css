@@ -431,7 +431,7 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
-  margin-bottom: 1.5em;
+  margin: 20px;
 }
 
 .bp-api-keys-label {
@@ -447,7 +447,6 @@
   border: 1px solid currentColor;
   border-radius: 4px;
   font: inherit;
-  width: 100%;
 }
 
 .bp-api-keys-select {

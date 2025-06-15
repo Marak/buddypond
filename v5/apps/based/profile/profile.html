@@ -1,6 +1,7 @@
 <div class="profileContent">
     <div id="profileTabs" class="tabs-container">
         <ul class="tab-list">
+
             <li><a href="#your-profile">Your Profile</a></li>
             <!-- <li><a href="#your-apps">Apps</a></li> -->
             <li><a class="themesLink" href="#tab-themes">Themes</a></li>
@@ -13,57 +14,64 @@
             <li><a href="#tabs-4">Audio</a></li>
             -->
             <!--
-                        <li><a href="#tabs-5">Camera</a></li>
+                <li><a href="#tabs-5">Camera</a></li>
 
               <li><a href="#tab-themes">App Store</a></li>
               -->
         </ul>
         <div id="your-profile" class="tab-content">
-            <div class="userProfile">
-                <span class="ctime"></span>
 
-                <!-- First Row: Three Columns -->
-                <div class="aim-profile-row">
-                    <!-- Column 1: Profile Picture Section -->
-                    <div class="aim-profile-column aim-profile-picture-column">
-                        <div class="aim-profile-picture-section">
-                            <div class="aim-profile-picture-container">
-                                <div class="aim-profile-picture-preview">
-                                    <img src="/default-avatar.png" alt="Profile Picture"
-                                        class="aim-profile-picture-img">
+            <div class="loggedOut" align="center">
+                <h2>Log in to BuddyPond to access your profile</h2>
+            </div>
+            <div class="loggedIn">
+                <div class="userProfile">
+                    <span class="ctime"></span>
+
+                    <!-- First Row: Three Columns -->
+                    <div class="aim-profile-row">
+                        <!-- Column 1: Profile Picture Section -->
+                        <div class="aim-profile-column aim-profile-picture-column">
+                            <div class="aim-profile-picture-section">
+                                <div class="aim-profile-picture-container">
+                                    <div class="aim-profile-picture-preview">
+                                        <img src="/default-avatar.png" alt="Profile Picture"
+                                            class="aim-profile-picture-img">
+                                    </div>
+                                    <div class="aim-profile-picture-actions">
+                                        <label class="aim-profile-picture-upload" for="profile-picture-input">Upload
+                                            Picture</label>
+                                        <input type="file" id="profile-picture-input" accept="image/*"
+                                            style="display: none;">
+                                        <!-- TODO: requires update to backend <button class="aim-profile-picture-remove">Remove Picture</button> -->
+                                    </div>
                                 </div>
-                                <div class="aim-profile-picture-actions">
-                                    <label class="aim-profile-picture-upload" for="profile-picture-input">Upload
-                                        Picture</label>
-                                    <input type="file" id="profile-picture-input" accept="image/*"
-                                        style="display: none;">
-                                    <!-- TODO: requires update to backend <button class="aim-profile-picture-remove">Remove Picture</button> -->
+                                <div class="aim-profile-picture-upload-status" style="display: none;">
+                                    <span class="status-text">Uploading...</span>
                                 </div>
                             </div>
-                            <div class="aim-profile-picture-upload-status" style="display: none;">
-                                <span class="status-text">Uploading...</span>
-                            </div>
+                        </div>
+
+                        <!-- Column 2: Edit Your Profile Button -->
+                        <div class="aim-profile-column aim-edit-profile-column">
+                            <button class="open-app profile-button" data-app="file-explorer"
+                                data-context="/index.html">Edit
+                                Profile Page</button>
+                        </div>
+
+                        <!-- Column 3: Set Password and Email Button -->
+                        <div class="aim-profile-column aim-password-email-column">
+                            <button class="aim-set-password-email profile-button">Set Password</button>
                         </div>
                     </div>
 
-                    <!-- Column 2: Edit Your Profile Button -->
-                    <div class="aim-profile-column aim-edit-profile-column">
-                        <button class="open-app profile-button" data-app="file-explorer" data-context="/index.html">Edit
-                            Profile Page</button>
-                    </div>
+                    <!-- Second Row: Single Column -->
+                    <div class="aim-profile-row">
+                        <div class="aim-profile-column aim-pad-editor-column">
+                            <!-- <span class="share-your-pad">Share Your Profile Page: <a href="#" target="_blank" class="liveProfileLink"></a></span> -->
 
-                    <!-- Column 3: Set Password and Email Button -->
-                    <div class="aim-profile-column aim-password-email-column">
-                        <button class="aim-set-password-email profile-button">Set Password</button>
-                    </div>
-                </div>
-
-                <!-- Second Row: Single Column -->
-                <div class="aim-profile-row">
-                    <div class="aim-profile-column aim-pad-editor-column">
-                        <!-- <span class="share-your-pad">Share Your Profile Page: <a href="#" target="_blank" class="liveProfileLink"></a></span> -->
-
-                        <div class="pad-editor-holder"></div>
+                            <div class="pad-editor-holder"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,31 +89,6 @@
 
                 </p>
 
-                <table class="data table yourApps">
-                    <!--
-                <tr>
-                  <th>
-                    Installed
-                  </th>
-                  <th>
-                    App Name
-                  </th>
-                </tr>
-                -->
-                    <tbody>
-                    </tbody>
-
-                    <!-- TODO: hide if no midi support? 
-                <tr class="openApp" data-app="midi">
-                  <td>
-                    <img class="emojiIcon float-left" src="desktop/assets/images/icons/icon_midi_64.png" />
-                  </td>
-                  <td>
-                    Audio MIDI Setup
-                  </td>
-                </tr>
-                -->
-                </table>
             </div>
             <!--
                 <p>
@@ -114,6 +97,7 @@
               -->
         </div>
         <div id="tab-themes" class="tab-content">
+
             <div class="wallpaperSettings">
                 <div class="wallpaperTypes">
                     <h2>Wallpaper Type</h2>
@@ -142,14 +126,20 @@
 
         </div>
         <div id="tabs-3" align="left" class="tab-content">
-            <span class="updateProfileResponse"></span>
-            <form class="updateProfileForm">
-                <table class="profileTable table data">
-                    <tr class="loggedIn">
-                        <td>Username</td>
-                        <td class="me">Guest</td>
-                    </tr>
-                    <!--
+
+            <div class="loggedOut" align="center">
+                <h2>Log in to BuddyPond to change User Settings</h2>
+            </div>
+
+            <div class="loggedIn">
+                <span class="updateProfileResponse"></span>
+                <form class="updateProfileForm">
+                    <table class="profileTable table data">
+                        <tr class="loggedIn">
+                            <td>Username</td>
+                            <td class="me">Guest</td>
+                        </tr>
+                        <!--
                   <tr>
                     <td>Avatar</td>
                     <td class="me">
@@ -157,32 +147,35 @@
                     </td>
                   </tr>
                   -->
-                    <tr class="loggedIn">
-                        <td>Email</td>
-                        <td>
-                            <input type="text" size="32" name="buddy_email" class="buddy_email" value="" />
-                            <span class="buddy_email_verified_text">
-                            </span>
-                            <button type="button" class="buddy_email_verify_button"
-                                title="Click to verify your email address.">Verify Email</button>
-                            <span class="buddy_email_verify_response"></span>
+                        <tr class="loggedIn">
+                            <td>Email</td>
+                            <td>
+                                <input type="text" size="32" name="buddy_email" class="buddy_email" value="" />
+                                <span class="buddy_email_verified_text">
+                                </span>
+                                <!-- Verification emails are sent automatically when you change your email address.
+                                <button type="button" class="buddy_email_verify_button"
+                                    title="Click to verify your email address.">Verify Email</button>
+                                -->
 
-                        </td>
-                    </tr>
-                    <tr class="loggedIn">
-                        <td>Password</td>
-                        <td>
-                            <input type="password" size="32" name="buddy_password" class="buddy_password" />
-                        </td>
-                    </tr>
-                    <tr class="loggedIn">
-                        <td>Confirm Password</td>
-                        <td>
-                            <input type="password" size="32" name="confirm_buddy_password"
-                                class="confirm_buddy_password" />
-                        </td>
-                    </tr>
-                    <!--
+                                <span class="buddy_email_verify_response"></span>
+
+                            </td>
+                        </tr>
+                        <tr class="loggedIn">
+                            <td>Password</td>
+                            <td>
+                                <input type="password" size="32" name="buddy_password" class="buddy_password" />
+                            </td>
+                        </tr>
+                        <tr class="loggedIn">
+                            <td>Confirm Password</td>
+                            <td>
+                                <input type="password" size="32" name="confirm_buddy_password"
+                                    class="confirm_buddy_password" />
+                            </td>
+                        </tr>
+                        <!--
                     <tr>
                         <td>Text To Speech Voice</td>
                         <td>
@@ -196,7 +189,7 @@
                         </td>
                     </tr>
                     -->
-                    <!--
+                        <!--
                   <tr>
                     <td>Geo Flag Country Code</td>
                     <td>
@@ -207,7 +200,7 @@
                     </td>
                   </tr>
                   -->
-                    <!--
+                        <!--
                     <tr>
                         <td>Enable Web Notifications</td>
                         <td>
@@ -217,7 +210,7 @@
                         </td>
                     </tr>
                     -->
-                    <!--
+                        <!--
                     <tr>
                         <td>Enable Audio Notifications</td>
                         <td>
@@ -229,12 +222,13 @@
                                         -->
 
 
-                </table>
-                <button type="submit" class="desktopPanel updateProfileButton loggedIn">Save Profile</button>
-                <!-- TODO logoout button 
+                    </table>
+                    <button type="submit" class="desktopPanel updateProfileButton loggedIn">Save Profile</button>
+                    <!-- TODO logoout button 
                 <button type="submit" class="desktopPanel updateProfileButton">Logout</button>
                   -->
-            </form>
+                </form>
+            </div>
         </div>
         <div id="tabs-4" class="tab-content">
             <div id="tab-themes">
@@ -260,37 +254,40 @@
         </div>
 
         <div id="api-keys" class="tab-content">
-            <h3>Create new API Key</h3>
+            <div class="loggedOut" align="center">
+                <h2>Log in to BuddyPond to access API Keys</h2>
+            </div>
+            <div class="loggedIn">
+                <h3>Create new API Key</h3>
 
-            <form id="bp-api-keys-form" class="bp-api-keys-form" action="#" method="POST">
-                <label class="bp-api-keys-label">
-                    Key Name:
-                    <input type="text" name="name" class="bp-api-keys-input" required placeholder="Enter a name for your API Key..."/>
-                </label>
+                <form id="bp-api-keys-form" class="bp-api-keys-form" action="#" method="POST">
+                    <label class="bp-api-keys-label">
+                        Key Name:
+                        <input type="text" name="name" class="bp-api-keys-input" required
+                            placeholder="Enter a name for your API Key..." />
+                    </label>
 
-                <!-- TODO: each role should be a checkbox, the roles checkboxes should be dynamically generated from data -->
-                <label class="bp-api-keys-label">
-                    Roles:
-                    <div id="bp-api-keys-roles" class="bp-api-keys-role-boxes">
-                        <!-- Dynamically inserted checkboxes -->
-                    </div>
-                </label>
+                    <!-- TODO: each role should be a checkbox, the roles checkboxes should be dynamically generated from data -->
+                    <label class="bp-api-keys-label">
+                        Roles:
+                        <div id="bp-api-keys-roles" class="bp-api-keys-role-boxes">
+                            <!-- Dynamically inserted checkboxes -->
+                        </div>
+                    </label>
 
-                <label class="bp-api-keys-label">
-                    Expiry (optional):
-                    <input type="date" name="expiry" class="bp-api-keys-input" />
-                </label>
+                    <label class="bp-api-keys-label">
+                        Expiry (optional):
+                        <input type="date" name="expiry" class="bp-api-keys-input" />
+                    </label>
 
-                <button type="submit" class="bp-api-keys-button">Create API Key</button>
-            </form>
+                    <button type="submit" class="bp-api-keys-button">Create API Key</button>
+                </form>
 
-            <ul id="bp-api-keys-list" class="bp-api-keys-list">
-                <!-- Dynamically populated -->
-            </ul>
+                <ul id="bp-api-keys-list" class="bp-api-keys-list">
+                    <!-- Dynamically populated -->
+                </ul>
+            </div>
         </div>
-
-
-
 
         <div id="tabs-5" align="center" class="tab-content">
             To Adjust Default Camera Settings <a href="#mirror" class="desktopLink openApp" data-app="mirror">Click Open

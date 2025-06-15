@@ -38,17 +38,16 @@ export default async function legacyUserSettings(bp) {
         */
     });
 
-
     if (bp.apps.buddylist && bp.apps.buddylist.data.profileState && bp.apps.buddylist.data.profileState.email) {
         $('.buddy_email').val(bp.apps.buddylist.data.profileState.email);
     }
     if (bp.apps.buddylist && bp.apps.buddylist.data.profileState && typeof bp.apps.buddylist.data.profileState.emailVerified === 'boolean') {
         if (bp.apps.buddylist.data.profileState.emailVerified) {
             $('.buddy_email_verified_text').html('Email Verified');
-            $('.buddy_email_verify_button').hide();
+            // $('.buddy_email_verify_button').hide();
         } else {
             $('.buddy_email_verified_text').html('Email Not Verified');
-            $('.buddy_email_verify_button').show();
+            // $('.buddy_email_verify_button').show();
         }
     }
 
