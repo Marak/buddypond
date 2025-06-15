@@ -664,6 +664,9 @@ class Window {
     }
 
     maximize() {
+
+        // offset the top position by $('.desktop-menu-bar').height()
+        // so that on smaller devices the window is not hidden behind the menubar
         if (this.isMaximized) {
             if (this.bp.isMobile()) {
                 //this.container.style.width = "100vw";
@@ -681,16 +684,22 @@ class Window {
 
             }
         } else {
+            let normalMenuBarHeight = 21;
+            let currentMenuBarHeight = $('.desktop-menu-bar').height() || normalMenuBarHeight;
+            let diff = currentMenuBarHeight - normalMenuBarHeight;
+            diff += (normalMenuBarHeight + 2); // add 2px for border
+            let pixelOffset = diff + 'px';
+
             if (this.bp.isMobile()) {
                 this.container.style.width = "100vw";
                 this.container.style.height = "100vh";
-                this.container.style.top = "0";
+                this.container.style.top = pixelOffset;
                 this.container.style.left = "0";
 
             } else {
                 this.container.style.width = "100vw";
                 this.container.style.height = "calc(100vh - 75px)";
-                this.container.style.top = "23px";
+                this.container.style.top = pixelOffset;
                 this.container.style.left = "0";
 
             }

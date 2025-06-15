@@ -279,7 +279,7 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
         parent: this.bp.apps.ui.parent,
         className: "chatWindow",
         x: data.x || 50,
-        y: 50,
+        y: 40,
         width: isBuddy ? 600 : 1000,
         height: isBuddy ? 500 : 600,
     };
