@@ -19,7 +19,8 @@ hr {
 }
 
 .bp-pad-table button {
-    margin-right: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .bp-pad-table th,
@@ -27,6 +28,8 @@ hr {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    justify-content: center;
+    align-items: center;
 }
 
 /*
@@ -79,7 +82,6 @@ hr {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 500px;
 }
 
 .pad-editor {}
