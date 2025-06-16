@@ -1,3 +1,9 @@
+/*
+
+We are seeing an error when trying to run pixelate(), error is: Uncaught TypeError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': The provided value is not of type '(CSSImageValue or HTMLCanvasElement or HTMLImageElement or HTMLVideoElement or ImageBitmap or OffscreenCanvas or SVGImageElement or VideoFrame)'.our code is: 
+
+*/
+
 export default function pixelate({
     duration = 3000,
     maxPixelation = 10, // Pixelation intensity (lower = more pixelated)

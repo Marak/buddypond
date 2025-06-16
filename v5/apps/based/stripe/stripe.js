@@ -2,6 +2,8 @@
 
 // Assuming you are using Stripe.js, not the NPM package directly in a client-side file
 const testKey = 'pk_test_51QZ5PDGHoMV8ArsVFfwyeXad8bjroyqlXk5FRknbzny0dlW2VlZzOPFEbuuLAfJKADctxK6rj7ARV8oRANWRkjNS00mNRDgfdt';
+
+// leaked? oops, regen? might be test env anyway
 const liveKey = 'pk_live_51QZ5PDGHoMV8ArsVWCUAseF6dAqUyabaC45CNJ6UoqLAbVNJp1kAC7AWUhE8HfeiJyBrF6gc139BNvV38muOhEzo00emukO4jA';
 
 export default class StripeClass {
@@ -35,6 +37,7 @@ export default class StripeClass {
     }
 
     createCheckoutSession(priceId) {
+        // TODO: replace with cf worker
         return fetch("http://192.168.200.59/create-checkout-session", {
             method: "POST",
             headers: {
@@ -44,11 +47,13 @@ export default class StripeClass {
         }).then(this.handleFetchResult);
     }
 
-    setupPlanButton(buttonId, priceId) {
+    setupPlanButton(parent, buttonId, priceId) {
         let button = document.createElement("button");
         button.id = buttonId;
         button.textContent = "Subscribe";
-        document.body.appendChild(button);
+        console.log('button', button)
+        // document.body.appendChild(button);
+        parent.appendChild(button);
         console.log(buttonId, priceId);
         button.addEventListener("click", evt => {
             this.createCheckoutSession(priceId).then(data => {
@@ -65,18 +70,21 @@ export default class StripeClass {
     async init() {
         // Setup Stripe.js
 
-        await this.bp.importModule('https://js.stripe.com/v3/', false);
+        await this.bp.importModule('https://js.stripe.com/v3/', {}, false);
 
         this.stripe = Stripe(this.isLive ? liveKey : testKey);
 
-        // Fetch and setup buttons
-        fetch("http://192.168.200.59/setup")
-            .then(this.handleFetchResult)
-            .then(json => {
-                console.log(json);
-                this.setupPlanButton("developer-plan-btn", json.developerPrice);
-                this.setupPlanButton("business-plan-btn", json.businessPrice);
-                this.setupPlanButton("enterprise-plan-btn", json.enterprisePrice);
-            });
+        let json = {
+            publishableKey: testKey, // Choose based on environment
+            developerPrice: 'price_1QZ61XGHoMV8ArsVVW1b6WB0', // Replace with actual price ID
+            businessPrice: 'price_456', // Replace with actual price ID
+            enterprisePrice: 'price_789' // Replace with actual price ID
+        };
+
+        let parent = $('#buddybux').get(0);
+        this.setupPlanButton(parent, "developer-plan-btn", json.developerPrice);
+        this.setupPlanButton(parent, "business-plan-btn", json.businessPrice);
+        this.setupPlanButton(parent, "enterprise-plan-btn", json.enterprisePrice);
+
     }
 }
