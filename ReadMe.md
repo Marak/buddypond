@@ -1,6 +1,6 @@
 # Buddy Pond ( Beta )
-## Update 12/31/24 - New v5 Released
-## *Offline First Cloud OS and Instant Messenger*
+
+## *Cloud OS and Instant Messenger*
 [https://buddypond.com](https://buddypond.com)
 
  - Cloud OS
@@ -9,6 +9,11 @@
  - Peer to Peer Instant Messaging
  - Multimedia Pond Chat Rooms
  - Image and Paint Editors 
+ - BuddyApps - Upload and host your own apps
+ - BuddyFiles - Cloud file storage
+ - BuddyCoins - Send and recieve coins
+ - Spellbook - Cast spells on Buddies
+ - API Keys for development
  - Audio MIDI Support
  - Create Media And Send To Buddies
  - Remix and Send Media With Single Click
@@ -16,24 +21,17 @@
  - Interdimensional Cable and Live Streaming
  - Audio Video Visualizations and VFX
  - Integrated Scripting Language ( `BuddyScript` )
+ - Tons of Apps and features
+
 
 ###  Making the Internet Fun Again!
+
+[jun-15-spell-book.webm](https://github.com/user-attachments/assets/7754495f-dd39-42d0-b933-6f5058f7ab0c)
+
 
 ## Quick Start
 
 Buddy Pond is free use at: [https://buddypond.com](https://buddypond.com)
-
-**Screencasts**
-
-<a href="https://www.youtube.com/watch?v=qjrDi1EeMZ4">
-<img src="https://buddypond.com/desktop/assets/images/misc/alpha-youtube.jpeg"/>
-</a>
-
-*April 26th, 2022*
-
-<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/buddypond-demo-april-2022.gif"/></a>
-
-*April 13th, 2022*
 
 ## Built-in Help Commands
 
@@ -49,6 +47,50 @@ Type `/bs` in any chat window to see `BuddyScript` commands.
 
 
 `BuddyScript` is an integrated scripting languge in Buddy Pond that allows you to fully control the Desktop Application and all Apps through chat commands.
+
+## Developers Guide
+
+If you wish to develop a custom application for Buddy Pond, you can use our BuddyApp template located at:
+
+[https://github.com/buddypond/app-template](https://github.com/buddypond/app-template)
+
+This `app-template` will allow you to upload new BuddyApps directly from your Github Repository which are then hosted in your BuddyFiles storage.
+
+## Modifying Buddy Pond Core / Based Applications
+
+The latest version of Buddy Pond can be located in the `/v5` directory.
+
+BuddyPond consists of two main parts:
+
+  - A small core `bp.js` which is responsible for dynamically loading all assets nd apps such as:  `desktop`, `ui`, `buddylist`, etc.
+  - The `v5/apps/based` folder which contains a directory of all Apps
+
+In most cases you will you want to modify an existing app in `v5/apps/based`, as `bp.js` is a thin wrapper only repsonsible for minimal core loading responsiblites.
+
+## Starting a local development server
+
+Run `vite` in the root directory to start a local development server where you can access `http://localhost:5173/`
+
+
+## Screencasts
+
+*June 15, 2025*
+
+[jun-15-nyan-cat-visuals.webm](https://github.com/user-attachments/assets/44870005-62c2-43a1-a8d4-961bcf0925a7)
+
+<img width="1484" alt="june-15-buddyfiles" src="https://github.com/user-attachments/assets/26064549-dbb2-4095-bfe9-ec10113df33c" />
+
+
+![buddy-apps](https://github.com/user-attachments/assets/c5f06d1c-bef4-4ffb-82e1-2e7857689efd)
+
+[generate-api-keys.webm](https://github.com/user-attachments/assets/6294550b-68e8-4483-a3bc-8d825164916f)
+
+
+*April 26th, 2022*
+
+<img src="https://buddypond.com/desktop/assets/images/misc/alpha-youtube.jpeg"/>
+<a href="https://buddypond.com"><img src="https://github.com/Marak/buddypond-assets/raw/master/promo/buddypond-demo-april-2022.gif"/></a>
+
 
 ### License
 Buddy Pond Copyright (C) 2022 Marak Squires
