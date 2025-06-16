@@ -78,6 +78,9 @@ export default function send(params) {
                 // the card type should automatically be detected by the server
                 // the the body of the message will be the url with extension of image, video, etc
 
+                // Remark: It might be safer to send an actual card here...
+                // The current approach requires we parse the image url on the client
+                // We could be brittle if the url has spaces or other characters that break the message format
 
                 // context is buddyname or pondname
                 // output is buddy or pond

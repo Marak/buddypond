@@ -480,12 +480,16 @@ buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, sou
   if (source === 'paint') {
     // Paints are stored in the paints folder
     fileName = `${new Date()}.png`;
+    // replace all spaces with underscores
+    fileName = fileName.replace(/ /g, '_');
     filePath = `paints/${fileName}`;
   }
 
   if (source === 'camera') {
     // need to check if gif or png?
     fileName = `${new Date()}.gif`;
+    // replace all spaces with underscores
+    fileName = fileName.replace(/ /g, '_');
     // Camera shots are stored in the pictures folder
     filePath = `pictures/${fileName}`;
   }
@@ -493,6 +497,8 @@ buddypond.sendSnaps = function sendSnaps(type, name, text, snapsJSON, delay, sou
   if (source === 'gif-studio') {
     // Gifs are stored in the gifs folder
     fileName = `${new Date()}.gif`;
+    // replace all spaces with underscores
+    fileName = fileName.replace(/ /g, '_');
     filePath = `animations/${fileName}`;
   }
   console.log(`constructed new file: ${fileName}`);
@@ -663,7 +669,11 @@ buddypond.uploadFile = async function uploadFile(file, onProgress) {
   // TODO: we may need to add paths here if uploading directories / etc
   //fileName = 'test/' + fileName;
   console.log('fileName', fileName, 'fileSize', fileSize, 'userFolder', userFolder, 'filePath', filePath);
-
+  // console.log('buddypond.uploadsEndpoint', buddypond.uploadsEndpoint, buddypond);
+  if (!buddypond.uploadsEndpoint) {
+    // shouldn't have lost scope here? what happened?
+    buddypond.uploadsEndpoint = 'https://uploads.buddypond.com';
+  }
   const signedUrlRequest = `${buddypond.uploadsEndpoint}/generate-signed-url?v=6&fileName=${filePath}&fileSize=${fileSize}&userFolder=${userFolder}&qtokenid=${buddypond.qtokenid}&me=${buddypond.me}`;
 
   console.log('Requesting signed URL from Worker:', signedUrlRequest);
