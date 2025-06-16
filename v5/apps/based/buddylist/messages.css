@@ -493,6 +493,7 @@
     border-radius: 4px;
     margin-bottom: 4px;
     font-size: 12px;
+    max-width: 300px;
 }
 
 .aim-reply-sender {
