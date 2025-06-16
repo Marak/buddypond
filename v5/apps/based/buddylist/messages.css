@@ -146,7 +146,6 @@
     flex: 1;
     overflow-y: auto;
     bottom: 5px;
-    position: relative;
     /* padding: 8px; */
 }
 

@@ -352,6 +352,7 @@ hr {
 
 .bp-pads-content {
     flex-grow: 1;
+    text-align: center;
 }
 
 .bp-pads-title {
@@ -363,9 +364,11 @@ hr {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
 }
 
 .bp-pads-app {
+    text-align: center;
     max-width: 220px;
     flex: 1 1 calc(33.333% - 20px); /* Aim for ~3 columns */
     min-width: 250px;

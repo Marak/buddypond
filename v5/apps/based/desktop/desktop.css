@@ -251,6 +251,10 @@ button {
     opacity: 0.8;
 }
 
+.logInMessage {
+    text-align: center;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .bp-shortcut-type {

@@ -200,7 +200,7 @@ export default class BuddyList {
     createBuddyListWindow() {
 
         // calculate right side of screen
-        let x = window.innerWidth - 350;
+        let x = window.innerWidth - 250;
 
         return this.bp.apps.ui.windowManager.createWindow({
             app: 'buddylist',

@@ -136,7 +136,7 @@ class Window {
                 if (checkOverlap(adjustedX, adjustedY, newWindow.width, newWindow.height, win.x, win.y, win.width, win.height, buffer)) {
                     // console.log('OVERLAP DETECTED');
                     adjustedX += buffer; // Move slightly to the right
-                    adjustedY += buffer; // Move slightly down
+                    // adjustedY += buffer; // Move slightly down
                 }
             });
 

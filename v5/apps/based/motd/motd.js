@@ -17,7 +17,7 @@ export default class Motd {
             id: 'motd',
             title: 'Updates: ' + today,
             icon: 'desktop/assets/images/icons/icon_console_64.png',
-            x: 250,
+            x: 100,
             y: 75,
             width: 600, // Increased width for two-column layout
             height: 400,
