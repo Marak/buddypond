@@ -3,7 +3,6 @@ import themeEditor from './lib/theme-editor.js';
 import apiKeys from './lib/api-keys.js';
 import bindUIEvents from './lib/bindUIEvents.js';
 // import LoadingContainer from '../ui/LoadingContainer/LoadingContainer.js';
-import updateProfilePicture from './lib/updateProfilePicture.js';
 let defaultFileContent = {};
 
 

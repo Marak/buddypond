@@ -1,4 +1,5 @@
 import userSettings from './user-settings.js';
+import updateProfilePicture from './updateProfilePicture.js';
 //import audioSettings from './audio-settings.js';
 //import PadEditor from '../../pad/PadEditor.js';
 
