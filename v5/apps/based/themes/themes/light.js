@@ -76,7 +76,8 @@ export default {
             'text-shadow': 'none'
         },
         'desktop_links': {
-            'color': '#181818',
+            //  blue
+            'color': '#3b82f6',
             'text-decoration': 'none'
         },
         'desktop_links_hover': {

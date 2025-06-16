@@ -18,6 +18,10 @@ hr {
     border-collapse: collapse;
 }
 
+.bp-pad-table button {
+    margin-right: 20px;
+}
+
 .bp-pad-table th,
 .bp-pad-table td {
     border: 1px solid #ddd;
@@ -39,10 +43,43 @@ hr {
 */
 
 .bp-pad-editor {
+    text-align: left;
     margin: 20px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    max-width: 500px;
+}
+
+#pads-editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.pre-installation-message {
+    width: 100%;
+}
+
+.bp-pad-post-install {
+    text-align: left
+}
+
+#pads-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    min-width: 500px;
+}
+
+.bp-pad-container {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 500px;
 }
 
 .pad-editor {}
@@ -95,7 +132,6 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
 }
 
 .status-indicator {
@@ -130,11 +166,6 @@ hr {
     font-weight: bold;
 }
 
-
-.padUrl {
-    min-width: 400px;
-}
-
 .coming-soon {
     font-size: 250px;
 
@@ -159,7 +190,6 @@ hr {
 /* the new styles */
 /* Pads Upload Files - UI Styling */
 #pads-upload-files {
-    background: #f8f9fa;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -177,16 +207,14 @@ hr {
 .pads-upload-files-pad-info label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
 }
 
 .padUrl {
-    background: #e9ecef;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     font-size: 14px;
-    color: #555;
+    min-width: 400px;
 }
 
 .bp-pad-manage {
@@ -196,13 +224,11 @@ hr {
 
 .bp-pad-manage h2 {
     font-size: 18px;
-    color: #222;
     margin-bottom: 8px;
 }
 
 .bp-pad-manage h3 {
     font-size: 16px;
-    color: #444;
 }
 
 .openPadButton {
@@ -226,7 +252,7 @@ hr {
 /* Container for the FAQ */
 .pads-faq {
     max-width: 800px;
-    margin: 0 auto;
+    margin-top: 10px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

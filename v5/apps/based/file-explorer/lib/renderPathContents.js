@@ -15,9 +15,10 @@ export default function renderPathContents(path) {
 
     // console.log('going to merge metadata from ', this.cloudFiles)
     let node = instance.get_node(path);
-    if (node) {
-        // console.log('found node', node);
 
+    if (node) {
+
+        $('#jtree').jstree('select_node', node.id);
         let type = node.children.length > 0 ? 'folder' : 'file';
 
         if (type === 'file') {

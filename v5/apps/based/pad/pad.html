@@ -58,20 +58,18 @@
             </table>
         </div>
         <div class="pads-intro">
-            <h1>Pads are Apps for BuddyPond.</h1>
             <!--
                 <div class="loggedOut" align="center">
                     <h2>Log in to BuddyPond to create a Pad</h2>
                     <h3><button class="open-app action-button" data-app="buddylist">Log In</button></h3>
                 </div>
             -->
-            <button class="bp-pad-button largest create-pad-button">Create Pad</button>
+            <button class="bp-pad-button largest create-pad-button">Create App</button>
             <h2>Simple to create. Easy to modify.</h2>
-            <h3>Pads can be shared with buddies, added to the Pad Store, or installed to the Desktop</h3>
-            <em>Click "Create Pad" to get started.</em>
+            <h3>Apps can be shared with buddies, added to the Buddy Apps Store, or installed to the Desktop</h3>
+            <em>Click "Create App" to get started.</em>
 
         </div>
-        <hr />
 
         <!-- TODO: add section for deploying app code via Github and github action -->
         <!-- example repo: https://github.com/Marak/buddypond-example-app -->
@@ -110,8 +108,7 @@
                 Here's a working example: <br />
                 📁 Template you can Clone: <a href="https://github.com/buddypond/app-template"
                     target="_blank">buddypond/app-template</a><br />
-                ⚙️ GitHub Action: <a
-                    href="https://github.com/buddypond/upload-action"
+                ⚙️ GitHub Action: <a href="https://github.com/buddypond/upload-action"
                     target="_blank">buddypond/upload-action</a>
             </p>
 
@@ -140,8 +137,8 @@
                 Your BuddyPond files are hosted at: <a target="_blank" class="userFilesCDN"
                     href="https://files.buddypond.com/">https://files.buddypond.com/</a>
                 <br />
-                <br />Your home directory is your username: <a class="userFilesHome"
-                    href="https://buddypond.com/" target="_blank">https://buddypond.com/</a>
+                <br />Your home directory is your username: <a class="userFilesHome" href="https://buddypond.com/"
+                    target="_blank">https://buddypond.com/</a>
                 <br /><br />In most cases, <strong>use relative links</strong> to link assets in your Pad code.
             </p>
             <hr />
@@ -162,14 +159,15 @@
         <!-- Pads Editing Section -->
         <div class="loggedOut" align="center">
             <h2>Log in to BuddyPond to create a Pad</h2>
-            <h3 class="portfolio-message"><button class="open-app action-button" data-app="buddylist">Log In</button></h3>
+            <h3 class="portfolio-message"><button class="open-app action-button" data-app="buddylist">Log In</button>
+            </h3>
         </div>
         <div class="bp-pad-editor loggedIn">
             <h1 align="center">First give your App a name.</h1>
             <form class="bp-pad-form">
                 <label for="padTitle">Name:</label>
                 <input tabindex="1" type="text" id="padTitle" name="padTitle" class="bp-pad-input padTitle"
-                    placeholder="Enter your Pad name...">
+                    placeholder="Enter your App name...">
                 <div id="statusIndicator" class="status-indicator"></div> <!-- Status indicator element -->
 
                 <label for="padUrl">Url:</label>
@@ -183,9 +181,16 @@
                 <button type="submit" class="bp-pad-button save-pad-button">Save App</button>
             </form>
         </div>
+        <div class="pre-installation-message">
+            <h2>Once created, you can edit your App using the BuddyFiles app.</h2>
+            <h2>You may also deploy your App directly from Github using the <a
+                    href="https://github.com/buddypond/app-template" target="_blank">BuddyPond App Template</a>.</h2>
+
+                <em>Apps are stored in your BuddyFiles directory</em>
+        </div>
     </div>
 
-    <div id="pads-upload-files" class="tab-content">
+    <div id="pads-upload-files" class="tab-content desktop-section">
         <!-- Pads File Upload Section -->
         <!-- pad name and url -->
         <div class="pads-upload-files-pad-info">
@@ -196,8 +201,40 @@
 
         <div class="bp-pad-manage">
             <h2>Your Pad is being deployed and will be ready to edit in a few seconds.</h2>
-            <h3>Edit your Pad <button class="open-app openPadButton" data-app="file-explorer"
-                    data-context="mypad/index.html">Click Here</button></h3>
+            <h3> <button class="open-app openPadButton" data-app="file-explorer"
+                    data-context="mypad/index.html">Edit your App</button></h3>
+
+
+            <div class="bp-pad-post-install">
+
+            <h2>Modify your Buddy App using the Buddy Files Explorer</h2>
+
+            <h3>How can I deploy my app code using GitHub?</h3>
+            <p>
+                You can publish your Pad directly from a GitHub repository using a GitHub Action. This allows you to
+                automatically upload your app files to your BuddyPond Pad every time you push to your repo.
+            </p>
+
+            <br/>
+            <p>
+                ✅ <strong>Step 1:</strong> Set up your project with an <code>index.html</code> at the root (or any valid
+                browser app).<br />
+                ✅ <strong>Step 2:</strong> Add the BuddyPond upload GitHub Action to your repo.<br />
+                ✅ <strong>Step 3:</strong> Add a GitHub secret named <code>BP_API_KEY</code> (you can find this in your
+                BuddyPond profile settings).
+            </p>
+            <br/>
+
+            <p>
+                Here's a working example: <br />
+                📁 Template you can Clone: <a href="https://github.com/buddypond/app-template"
+                    target="_blank">buddypond/app-template</a><br />
+                ⚙️ GitHub Action: <a href="https://github.com/buddypond/upload-action"
+                    target="_blank">buddypond/upload-action</a>
+            </p>
+                        </div>
+
+
             <!-- 
            <h4>TODO: Add common pad templates to apply</h4>
            <ul class="bp-pad-templates">

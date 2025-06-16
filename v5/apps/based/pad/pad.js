@@ -255,7 +255,7 @@ export default class Pad {
 
                 let padTitle = $('#padTitle').val();
 
-                $('.openPadButton', this.padWindow.content).attr('data-context', `/pads/${padTitle}/index.html`);
+                $('.openPadButton', this.padWindow.content).attr('data-context', '/' + this.bp.me + `/pads/${padTitle}/index.html`);
                 //alert('set')
 
 

@@ -60,7 +60,7 @@ export default {
             'text-shadow': 'none'
         },
         'desktop_links': {
-            'color': '#E3E3E3',
+            'color': '#3b82f6',
             'text-decoration': 'none'
         },
         'desktop_links_hover': {

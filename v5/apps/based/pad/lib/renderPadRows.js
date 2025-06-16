@@ -226,10 +226,12 @@ export default function renderPadRows(myPads) {
                         // remove the row from the table
                         closestTr.remove();
 
+                        // we need to re-render the table
+                        // this.open({ context: '#pads-home' });
+                        this.tabs.showTab('#pads-home');
+
                     }
 
-                    // we need to re-render the table
-                    this.open();
 
                 }
 
