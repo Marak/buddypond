@@ -1,7 +1,12 @@
 # Buddy Pond ( Beta )
 
 ## *Cloud OS and Instant Messenger*
+
+![buddy-the-frog-256](https://github.com/user-attachments/assets/af99f540-09c4-48c5-a3a2-e2194e3e7c9e)
+
+
 [https://buddypond.com](https://buddypond.com)
+
 
  - Cloud OS
  - Desktop and Mobile Interfaces
