@@ -1,4 +1,3 @@
-import symbolicate from '../symbolicate.js';
 
 export default async function listErrorLogs(query = {}) {
     console.log('listErrorLogs called with query:', query);
@@ -38,7 +37,7 @@ export default async function listErrorLogs(query = {}) {
                     <td>${new Date(logEntry.ctime).toLocaleString()}</td>
                     <td>${logEntry.type}</td> 
                     <td>${logEntry.message}</td>
-                    <td>${logEntry.stack}</td> 
+                    <td><span class="error-stack">${logEntry.stack}</span> <button class="symbolicate-error">symbolicate</button></td> 
                 </tr>
             `);
         }

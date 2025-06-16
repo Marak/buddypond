@@ -36,6 +36,13 @@ export default function eventBind(parent) {
 
         console.log('current result', result);
         let asset = result.results[0];
+
+        if (!asset) {
+            console.error(this.bp.me + ' No asset found for current coin ' + currentCoin);
+            coinBalance.html('0');
+            return;
+        }
+
         console.log('asset', asset);
         let amount = asset.amount;
 

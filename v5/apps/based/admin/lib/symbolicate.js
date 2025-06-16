@@ -28,7 +28,6 @@ export default async function symbolicate(stack, sourceMapUrl = null) {
     return `${pos.name || '(anonymous)'} (${pos.source}:${pos.line}:${pos.column})`;
   });
 
-  consumer.destroy();
   return lines.join('\n');
 }
 

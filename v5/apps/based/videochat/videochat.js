@@ -184,9 +184,11 @@ export default class VideoChat {
             this.callTimer = null;
         }
 
-        $('.startVideoCall').css('opacity', '1');
-        $('.endVideoCall').css('opacity', '0.4');
-        $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to connect to ${buddyName}`);
+        if (this.videocallWindow.content) {
+            $('.startVideoCall').css('opacity', '1');
+            $('.endVideoCall').css('opacity', '0.4');
+            $('.webrtcStatus', this.videocallWindow.content).html(`Click Start Call to connect to ${buddyName}`);
+        }
 
         if (this.remoteStream) {
             this.remoteStream.getTracks().forEach((track) => track.stop());
@@ -274,7 +276,9 @@ export default class VideoChat {
         // TODO: add a reconnection strategy for unexpected closures
         this.websocket.onclose = (event) => {
             console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
-            $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
+            if (this.videocallWindow.content) {
+                $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
+            }
             this.endCall(buddyName);
         };
 

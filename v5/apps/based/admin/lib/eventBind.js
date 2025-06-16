@@ -13,6 +13,9 @@ import listErrorLogs from './commands/listErrorLogs.js';
 import listRules from './commands/firewall/listRules.js';
 import addRule from './commands/firewall/addRule.js';
 
+import symbolicate from './symbolicate.js';
+
+
 export default function eventBind(adminWindow) {
     // Tab manager handles tab switching
     this.tabs = new this.bp.apps.ui.Tabs('.tabs-container', adminWindow.content);
@@ -45,12 +48,12 @@ export default function eventBind(adminWindow) {
                 let adminName = document.querySelector('#admin-username').value.trim();
                 let ip = document.querySelector('#admin-ip').value.trim();
                 listAdmins.call(this);
-                // addAdmin.call(this, adminName, ip);
+            // addAdmin.call(this, adminName, ip);
             case '#admin-firewall':
                 console.log('admin-firewall');
                 // list firewall rules
                 listRules.call(this);
-            break;
+                break;
             case '#admin-error-logs':
                 console.log('admin-error-logs');
                 listErrorLogs.call(this);
@@ -134,8 +137,8 @@ export default function eventBind(adminWindow) {
         }
     });
 
-      // Handle username clicks in user-by-IP table
-      document.querySelector('#admin-banlist').addEventListener('click', (e) => {
+    // Handle username clicks in user-by-IP table
+    document.querySelector('#admin-banlist').addEventListener('click', (e) => {
         const usernameLink = e.target.closest('.admin-username-link');
         if (usernameLink) {
             const username = usernameLink.dataset.username;
@@ -211,7 +214,7 @@ export default function eventBind(adminWindow) {
             return;
         }
         console.log('Logging in as user with token:', buddyname, token);
-        try { 
+        try {
             let response = await fetch(buddypond.endpoint + '/auth', {
                 method: 'POST',
                 body: JSON.stringify({ buddyname }),
@@ -254,5 +257,52 @@ export default function eventBind(adminWindow) {
         await addRule.call(this, ruleIP);
 
     });
-        
+    $('#admin-list-error-logs-table').on('click', async (e) => {
+        if (e.target.classList.contains('symbolicate-error')) {
+
+            try {
+            console.log('Symbolicate error clicked', e.target);
+            const errorStackElement = $(e.target).parent().find('.error-stack');
+            let errorStack = errorStackElement.text().trim();
+            console.log('errorStackElement', errorStackElement);
+            console.log('errorStack', errorStack);
+
+            // Function to infer source map URL from error stack
+            function getSourceMapUrl(errorStack) {
+                // Use regex to extract the URL from the error stack
+                const urlRegex = /https:\/\/buddypond\.com\/v5\/dist\/apps\/based\/[^)]+\.js/g;
+                const match = errorStack.match(urlRegex);
+
+                if (match && match[0]) {
+                    // Take the first matched URL and append .map
+                    const jsUrl = match[0];
+                    // Replace .js with .js.map
+                    return jsUrl.replace(/\.js($|\?)/, '.js.map$1');
+                }
+
+                // Fallback if no URL is found
+                return null;
+            }
+
+            // Get the source map URL
+            const sourceMapUrl = getSourceMapUrl(errorStack);
+
+            if (sourceMapUrl) {
+                let result = await symbolicate(errorStack, sourceMapUrl);
+                console.log('Symbolicated result:', result);
+                // Update the error stack element with the symbolicated result
+                errorStackElement.text(result || 'Could not symbolicate stack trace');
+                // remove the symbolicate button
+                $(e.target).remove();
+            } else {
+                console.error('Could not infer source map URL from error stack');
+            }
+            } catch (error) {
+                // do not log symbolicate errors as errors
+                console.log('Error symbolicating stack trace:', error);
+            }
+
+        }
+    });
+
 }
