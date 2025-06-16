@@ -212,8 +212,8 @@ export default function defaultMenuBar(bp) {
     {
       label: sourceCodeStr,
       click: () => {
-        // open a new window to https://github.com/marak/buddypond
-        let url = 'https://github.com/marak/buddypond';
+        // open a new window to https://github.com/buddypond/buddypond
+        let url = 'https://github.com/buddypond/buddypond';
         window.open(url, '_blank');
       }
     },
