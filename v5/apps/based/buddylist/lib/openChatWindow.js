@@ -54,6 +54,15 @@ function updatePondConnectedUsers(data) {
             return; // Skip invalid users
         }
 
+        // Remark: we could also populate the this.data.activeUsers
+        // Might be better to just allow user to click name and then open spellbook, less clutter in dropdown
+        /*
+        if (message.to && !this.data.activeUsers.includes(message.to)) {
+            this.data.activeUsers.push(message.to);
+            this.bp.emit('buddy::activeUserAdded', message.to);
+        }
+        */
+
         const userItem = $(`.aim-user-item[data-username="${userId}"]`, userList);
 
         if (userItem.length) {
@@ -290,6 +299,10 @@ async function initializeChatWindow(windowType, contextName, chatWindow, client)
     client.addSubscription(windowType, contextName);
 
     if (windowType === "buddy") {
+        // remove the .aim-chat-area margin-top ( its the close button for tabbed ponds )
+        $(".aim-chat-area", chatWindow.content).css("margin-top", "0");
+        // the top to 10
+        $(".aim-chat-area", chatWindow.content).css("top", "10px");
         clearBuddyNewMessages.call(this, contextName);
     }
 

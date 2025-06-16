@@ -175,7 +175,8 @@ export default async function renderChatMessage(message, _chatWindow) {
     // for now, only run locally
     // check to see  if message.from is bp.me
 
-
+    // remove .aim-no-messages el from chat window if it exists
+    $('.aim-no-messages', chatWindow.content).remove();
     // console.log('checking this.data.processedMessages[context]', this.data.processedMessages[context]);
     // Check if message has been processed to avoid duplication
     for (let i = 0; i < this.data.processedMessages[context].length; i++) {
