@@ -813,19 +813,10 @@ class Window {
         this.container.appendChild(resizeHandle);
 
         resizeHandle.onmousedown = (e) => this.startResize(e);
-        document.onmouseup = () => this.stopResize();
-        // can we remove this?
-        document.onmousemove = (e) => this.resize(e);
-
         // same for touch events
         resizeHandle.ontouchstart = (e) => {
             e.preventDefault(); // Prevent default touch behavior
             this.startResize(e.touches[0]);
-        };
-        document.ontouchend = () => this.stopResize();
-        document.ontouchmove = (e) => {
-            e.preventDefault(); // Prevent default touch behavior
-            this.resize(e.touches[0]);
         };
     }
 

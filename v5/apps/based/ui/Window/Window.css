@@ -11,7 +11,7 @@
     z-index: 99;
     border-radius: 8px; /* Rounded corners for a modern feel */
     position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* transition: transform 0.2s ease, box-shadow 0.2s ease; */
 }
 
 .window-container:hover {
