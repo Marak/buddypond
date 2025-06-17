@@ -37,11 +37,10 @@ export default class Pond {
 
                 const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
                 if (!chatWindow) {
-                    console.warn('Pond message main window not found, cannot update room list');
-                    return;
+                    console.log('Pond message main window not found, cannot update room list');
+                } else {
+                    this.bp.apps.buddylist.populateRoomList(data, chatWindow);
                 }
-
-                this.bp.apps.buddylist.populateRoomList(data, chatWindow);
                 if (this.pondWindow?.content) {
                     this.updateHotPonds(data);
                 }
