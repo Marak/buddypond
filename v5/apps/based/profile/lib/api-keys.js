@@ -58,7 +58,7 @@ export default async function apiKeys() {
             const expiry = key.expiry ? new Date(key.expiry).toLocaleDateString() : 'Never';
             const usage = key.usage ? `${key.usage} times` : 'Not used yet';
 
-           const li = $(`
+            const li = $(`
   <li class="bp-api-keys-list-item">
     <div class="bp-api-keys-card">
       <div class="bp-api-keys-header">
@@ -114,33 +114,33 @@ export default async function apiKeys() {
         });
 
         // Handle API key verification
-$('.bp-api-keys-verify').on('click', async function () {
-  const box = $(this).closest('.bp-api-keys-keybox');
-  const fullKey = box.data('full');
-  const statusBox = box.find('.bp-api-keys-status');
+        $('.bp-api-keys-verify').on('click', async function () {
+            const box = $(this).closest('.bp-api-keys-keybox');
+            const fullKey = box.data('full');
+            const statusBox = box.find('.bp-api-keys-status');
 
-  // Get roles from meta block
-  const rolesText = box.closest('.bp-api-keys-card').find('.bp-api-keys-meta')
-    .find('div:contains("Roles:")').text().replace('Roles:', '').trim();
-  const roles = rolesText.split(',').map(r => r.trim()).filter(Boolean);
+            // Get roles from meta block
+            const rolesText = box.closest('.bp-api-keys-card').find('.bp-api-keys-meta')
+                .find('div:contains("Roles:")').text().replace('Roles:', '').trim();
+            const roles = rolesText.split(',').map(r => r.trim()).filter(Boolean);
 
-  statusBox.text('Verifying…');
+            statusBox.text('Verifying…');
 
-  try {
-    const result = await client.validateApiKey(fullKey, roles);
-    if (result.valid) {
-      statusBox.text('✅ Valid').css('color', 'green');
-      // update usage count
-      const usageCount = box.closest('.bp-api-keys-card').find('.usage-count');
-      usageCount.text(result.usage  + ' times'|| '0 times');
-    } else {
-      statusBox.text(`❌ Invalid (${result.reason || 'unknown'})`).css('color', 'red');
-    }
-  } catch (err) {
-    console.error('Validation failed', err);
-    statusBox.text('❌ Error validating key').css('color', 'red');
-  }
-});
+            try {
+                const result = await client.validateApiKey(fullKey, roles);
+                if (result.valid) {
+                    statusBox.text('✅ Valid').css('color', 'green');
+                    // update usage count
+                    const usageCount = box.closest('.bp-api-keys-card').find('.usage-count');
+                    usageCount.text(result.usage + ' times' || '0 times');
+                } else {
+                    statusBox.text(`❌ Invalid (${result.reason || 'unknown'})`).css('color', 'red');
+                }
+            } catch (err) {
+                console.error('Validation failed', err);
+                statusBox.text('❌ Error validating key').css('color', 'red');
+            }
+        });
 
 
         // Handle revoke

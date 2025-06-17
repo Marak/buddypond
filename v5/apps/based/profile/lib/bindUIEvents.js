@@ -170,7 +170,9 @@ export default function bindUIEvents(options = {}) {
         //$('.themeSelect', this.profileWindow.content).trigger('change');
     });
 
-    this.apiKeys();
+    if (this.bp.me !== 'Guest') {
+        this.apiKeys();
+    }
 
     $('.loggedIn', this.profileWindow).hide();
     // $('.loggedIn').hide();
