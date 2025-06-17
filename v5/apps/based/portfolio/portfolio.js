@@ -127,10 +127,12 @@ export default class Portfolio {
         // with the latest data / show the user portfolio
         this.bp.on('auth::qtoken', 'render-portfolio', async(data) => {
             // re-render the portfolio
-            await this.render(this.portfolioWindow.content);
-            await this.eventBind(this.portfolioWindow.content);
-            $('.loggedOut', this.portfolioWindow.content).flexHide();
-            $('.loggedIn', this.portfolioWindow.content).flexShow();
+            if (this.portfolioWindow && this.portfolioWindow.content) {
+                await this.render(this.portfolioWindow.content);
+                await this.eventBind(this.portfolioWindow.content);
+                $('.loggedOut', this.portfolioWindow.content).flexHide();
+                $('.loggedIn', this.portfolioWindow.content).flexShow();
+            }
         });
 
         if (options.context && options.context !== 'default') {

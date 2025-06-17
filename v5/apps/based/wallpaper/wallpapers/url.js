@@ -9,7 +9,7 @@ export default class UrlWallpaper {
         wallpaper.src = url;
 
         // save the wallpaper setting in local storage
-        this.bp.set('wallpaper_url', url);
+        bp.set('wallpaper_url', url);
     }
 
     start(url) {
