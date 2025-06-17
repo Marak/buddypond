@@ -239,7 +239,7 @@ export default function bindUIEvents() {
     }
 
     $('.cameraCountdownEnabled').on('change', () => {
-        alert('change')
+        // alert('change')
         if ($(this).prop('checked')) {
             this.bp.set('mirror_snaps_camera_countdown_enabled', true);
         } else {
