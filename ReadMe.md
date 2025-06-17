@@ -67,7 +67,7 @@ The latest version of Buddy Pond can be located in the `/v5` directory.
 
 BuddyPond consists of two main parts:
 
-  - A small core `bp.js` which is responsible for dynamically loading all assets nd apps such as:  `desktop`, `ui`, `buddylist`, etc.
+  - A small core `bp.js` which is responsible for dynamically loading all assets and apps such as:  `desktop`, `ui`, `buddylist`, etc.
   - The `v5/apps/based` folder which contains a directory of all Apps
 
 In most cases you will you want to modify an existing app in `v5/apps/based`, as `bp.js` is a thin wrapper only repsonsible for minimal core loading responsiblites.
