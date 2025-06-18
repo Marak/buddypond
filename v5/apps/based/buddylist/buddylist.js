@@ -148,6 +148,7 @@ export default class BuddyList {
             // TODO: have the ability to close and re-open the buddylist gracefully
 
             if (this.opened) {
+                // console.log('BuddyList already opened, focusing existing window');
                 this.buddyListWindow.open();
                 this.bp.apps.ui.windowManager.focusWindow(this.buddyListWindow);
                 this.buddyListWindow.restore();
@@ -163,7 +164,6 @@ export default class BuddyList {
             this.bp.appendCSS('/v5/apps/based/buddylist/messages.css');
 
             // this.bp.apps.themes.applyTheme(this.bp.settings.active_theme);
-
 
             // await this.bp.importModule('https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm', {}, false)
 
@@ -188,7 +188,6 @@ export default class BuddyList {
             this.openChatWindow(config);
         }
 
-
         if (config.type === 'chat') {
             // the type of window is a chat window
             // we *don't* need to re-render the buddylist-profile 
@@ -202,7 +201,7 @@ export default class BuddyList {
         // calculate right side of screen
         let x = window.innerWidth - 250;
 
-        return this.bp.apps.ui.windowManager.createWindow({
+        let buddyListWindow = this.bp.apps.ui.windowManager.createWindow({
             app: 'buddylist',
             type: 'buddylist-profile',
             title: 'Buddy List',
@@ -271,13 +270,20 @@ export default class BuddyList {
             },
             onClose: () => {
                 this.opened = false;
+                // disconnect from websocket server
+                if (this.client) {
+                    this.client.disconnect();
+                    this.client = null;
+                }
             }
         });
+
+        return buddyListWindow;
 
     }
 
     registerEventHandlers() {
-
+        // console.log('BuddyList registerEventHandlers');
         this.bp.on('auth::qtoken', 'handle-auth-success', qtoken => this.handleAuthSuccess(qtoken));
 
         // On auth success, load user specific apps ( TODO: should pull from DB )
