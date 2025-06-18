@@ -2,10 +2,24 @@
 
 ## *Cloud OS and Instant Messenger*
 
-![buddy-the-frog-256](https://github.com/user-attachments/assets/af99f540-09c4-48c5-a3a2-e2194e3e7c9e)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://buddypond.com">
+        <img src="https://github.com/user-attachments/assets/af99f540-09c4-48c5-a3a2-e2194e3e7c9e" width="150"/><br/>
+        https://buddypond.com
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://discord.gg/s7vrhN4grW">
+        <img src="https://github.com/user-attachments/assets/3907ff42-1be8-4bec-bae1-a14c694b3ee9" width="150"/><br/>
+        Buddy Pond Discord
+      </a>
+    </td>
+  </tr>
+</table>
 
 
-[https://buddypond.com](https://buddypond.com)
 
 
  - Cloud OS
