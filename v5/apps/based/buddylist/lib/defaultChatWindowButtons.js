@@ -82,6 +82,11 @@ export default function defaultChatWindowButtons(bp) {
 
                 // Immediately show the picker (bypasses internal click)
                 $target.data('emojiPicker_show')?.();
+
+                // focus on .emoji-search input
+                if ($('.emoji-picker-popup').length > 0) {
+                    $('.emoji-search').focus();
+                }
                 return;
 
                 // Replaced: Jun 17, 2025
