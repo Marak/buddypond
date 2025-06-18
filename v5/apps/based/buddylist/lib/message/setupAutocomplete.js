@@ -159,7 +159,7 @@ export default function setupAutocomplete(chatWindow) {
             }
         },
         minLength: 0,
-        position: { my: "left top", at: "left bottom", collision: "flip" },
+        position: { my: "left bottom", at: "left top", collision: "none" },
         open: function () {
             $('.ui-autocomplete').css({
                 'max-height': '200px',
