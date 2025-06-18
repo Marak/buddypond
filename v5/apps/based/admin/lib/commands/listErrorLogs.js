@@ -35,6 +35,7 @@ export default async function listErrorLogs(query = {}) {
             $('#admin-list-error-logs-table tbody').append(`
                 <tr>
                     <td>${new Date(logEntry.ctime).toLocaleString()}</td>
+                    <td>${logEntry.ip || 'unknown ip'}</td>
                     <td>${logEntry.type}</td> 
                     <td>${logEntry.message}</td>
                     <td><span class="error-stack">${logEntry.stack}</span> <button class="symbolicate-error">symbolicate</button></td> 
