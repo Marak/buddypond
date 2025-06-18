@@ -27,7 +27,7 @@ export default async function addApp(appName, app) {
     this.bp.apps.pad.data.appStats[appName].installCount = (this.bp.apps.pad.data.appStats[appName]?.installCount || 0) + 1;
 
     // console.log(`Stub: Adding app ${app} to desktop`);
-    this.bp.play('desktop/assets/audio/APP-ADD.wav');
+    this.bp.play('desktop/assets/audio/APP-ADD.wav', { tryHard: 1 });
     let installedApps = this.bp.settings.apps_installed || {};
     // TODO: lookup actual app object from appstore.apps
     installedApps[appName] = app;
