@@ -794,7 +794,7 @@ class Window {
 
         // TODO: save the window state ??? removeWindow could do it..?
 
-        this.onClose();
+        this.onClose(this);
         this.bp.emit('window::close', this);
 
         if (this.bp.isMobile()) {

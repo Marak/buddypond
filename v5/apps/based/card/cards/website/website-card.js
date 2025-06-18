@@ -31,7 +31,7 @@ export default function applyData(el, data) {
 
     // Check cache
     if (buddypond.websiteCardCache[url]) {
-        console.log('Using cached metadata for:', url);
+        // console.log('Using cached metadata for:', url);
         showContent($el, buddypond.websiteCardCache[url]);
         return;
     }

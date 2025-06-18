@@ -49,7 +49,7 @@ export default function bindUIEvents(options = {}) {
         let img = document.createElement('img');
         img.src = profilePicture;
         img.classList.add('aim-profile-picture-img');
-        profilePicturePreview.append(img);
+        profilePicturePreview.html(img);
 
 
     } else {
