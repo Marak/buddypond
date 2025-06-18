@@ -533,3 +533,19 @@
 .aim-room-item:hover .aim-room-close-btn {
     display: inline-block; /* Show on hover for user-opened ponds */
 }
+
+.emoji-only {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.big-emoji {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+/* override jquery.ui.css for autocomplete */
+.ui-widget-content {
+    background: var(--desktop_element-background) !important;
+}

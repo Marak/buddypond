@@ -45,6 +45,7 @@ window.bp_v_5 = async function bp_v_5() {
     bp.load('rewards');
     bp.load('pad');
 
+
     // await bp.open('audio-player');
 
     // defer loading of apps that are not essential for the initial experience
@@ -61,8 +62,6 @@ window.bp_v_5 = async function bp_v_5() {
             await bp.load('image-search');
             await sleep(100);
             await bp.load('ramblor');
-            await sleep(100);
-            await bp.load('emoji-picker');
             await sleep(100);
             await bp.load('dictate');
             await sleep(100);

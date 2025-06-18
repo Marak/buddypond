@@ -64,6 +64,28 @@ export default function defaultChatWindowButtons(bp) {
             image: 'desktop/assets/images/icons/svg/1f600.svg',
             className: 'emojiPicker',
             onclick: async (ev) => {
+
+                let $target = $(ev.target);
+
+                // ensure that we don't already have an emoji-picker-popup in document
+                if ($('.emoji-picker-popup').length > 0) {
+                    $('.emoji-picker-popup').remove();
+                }
+
+                $target.emojiPicker({
+                    onSelect: (emoji) => {
+                        console.log("Selected:", emoji);
+                        let messageControls = $target.closest('.aim-message-controls');
+                        $('.aim-input', messageControls).val((i, val) => val + emoji).trigger('input').focus();
+                    }
+                });
+
+                // Immediately show the picker (bypasses internal click)
+                $target.data('emojiPicker_show')?.();
+                return;
+
+                // Replaced: Jun 17, 2025
+                // Legacy EmojiPicker code below, can be removed once we confirm new code above works well
                 // EmojiPicker lazy load is a special case
                 // All other BuddyPond deps / lazy imports with await bp.load() are fine to work as expected
                 // We usually don't need to check existence of the app before loading it

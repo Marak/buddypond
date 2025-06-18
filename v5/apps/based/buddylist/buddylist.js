@@ -112,6 +112,8 @@ export default class BuddyList {
         // TODO: we can load this lazier
         this.bp.vendor.dicebear = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.core.js', {}, false);
         this.bp.vendor.dicebearAvatars = await this.bp.importModule('/v5/apps/based/buddylist/vendor/dicebear.identicon.js', {}, false);
+        await bp.load('emoji-picker');
+
         //console.log('LOADED dicebear', this.dicebear);
         //console.log('LOADED dicebearAvatars', this.dicebearAvatars);
 
