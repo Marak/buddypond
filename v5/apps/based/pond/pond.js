@@ -19,18 +19,23 @@ export default class Pond {
                 $('.loggedIn', this.pondWindow.content).show();
                 $('.loggedOut', this.pondWindow.content).hide();
             }
-            connectPonds.call(this);
+            this.connectPonds(this);
         });
 
         if (this.bp.qtokenid) {
-            connectPonds.call(this);
+            this.connectPonds(this);
         }
 
-        async function connectPonds() {
+        return 'loaded pond';
+    }
 
-            this.client = new HotPondsWebSocketClient({ bp: this.bp });
-            await this.client.connect();
+    async connectPonds() {
 
+        this.client = new HotPondsWebSocketClient({ bp: this.bp });
+        console.log('Connecting to HotPonds WebSocket...');
+        await this.client.connect();
+
+        if (this.eventsBound !== true) {
             this.bp.on('hotpond::activePonds', 'update-pond-room-list', (data) => {
                 // console.log('Received hotpond::activePonds event with data:', data);
                 this.data.hotPonds = data;
@@ -50,13 +55,14 @@ export default class Pond {
                 // console.log('Received pond::connectedUsers event with data:', data);
                 this.bp.apps.buddylist.updatePondConnectedUsers(data);
             });
-
-            this.client.listActivePonds();
-
+            this.eventsBound = true;
         }
 
-        return 'loaded pond';
+
+        this.client.listActivePonds();
+
     }
+
 
     updateHotPonds(data) {
         const $joinPondTable = $('.joinPondTable');
@@ -130,12 +136,17 @@ export default class Pond {
                     console.log('pond window closed');
                     this.pondWindow = null;
                     clearInterval(this.updatePondsTimer);
+                    // close the client connection if open
+                    if (this.client) {
+                        this.client.disconnect();
+                        this.client = null;
+                    }
                 }
             });
 
             if (this.bp.qtokenid) {
-            $('.loggedIn', this.pondWindow.content).show();
-            $('.loggedOut', this.pondWindow.content).hide();
+                $('.loggedIn', this.pondWindow.content).show();
+                $('.loggedOut', this.pondWindow.content).hide();
 
             } else {
                 $('.loggedIn', this.pondWindow.content).hide();
@@ -171,6 +182,11 @@ export default class Pond {
         if (this.client) { // only call if client is initialized / connected
             this.client.listActivePonds();
         }
+
+        if (!this.client && this.bp.qtokenid) {
+            this.connectPonds(this);
+        }
+
         return this.pondWindow;
     }
 }

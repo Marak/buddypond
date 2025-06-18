@@ -173,9 +173,18 @@ export default class BuddyList {
             const buddyListWindow = this.createBuddyListWindow();
             buddyListWindow.content.appendChild(this.createHTMLContent(htmlStr));
             this.buddyListWindow = buddyListWindow;
-            this.registerEventHandlers();
-            this.handleAuthentication();
+
+            if (this.eventsBound !== true) {
+              // TODO: it would be better if we unregister events on close
+              // and left this close to re-bind on open
+              this.registerEventHandlers();
+            }
+
             this.buddylistUIEvents();
+            this.handleAuthentication();
+
+            this.eventsBound = true;
+
             return 'hello buddyList';
         }
 
@@ -899,11 +908,10 @@ export default class BuddyList {
         // wait until buddylist is connected and then opens default chat window if defined
         if (this.defaultPond) {
             setTimeout(() => {
+                // console.log('Opening default pond chat window', this.defaultPond);
                 let chatWindow = this.openChatWindow({ pondname: this.defaultPond });
                 // loads the hotpond client that populates room lists
                 bp.load('pond');
-
-
             }, 100);
         }
 

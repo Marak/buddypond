@@ -65,7 +65,7 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
             existingPondIds.delete(pondId); // Mark as processed
         } else {
             // Create new room item
-            console.log(`Adding new room item for ${pondId}`);
+            // console.log(`Adding new room item for ${pondId}`);
             const closeButton = isUserOpened
                 ? `<button class="aim-room-close-btn" data-context="${pondId}">X</button>`
                 : "";
@@ -94,7 +94,7 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
     });
 
     // Reorder room items to match sortedPonds
-    console.log('Reordering room items to match sortedPonds');
+    // console.log('Reordering room items to match sortedPonds');
     let previousItem = null;
     sortedPonds.forEach((pond) => {
         const $item = existingItems.get(pond.pond_id);

@@ -262,7 +262,11 @@ export default function buddylistUIEvents() {
   }
 
   // update the positive affirmation on an interval
-  setInterval(function () {
+  if (this.positiveAffirmationInterval) {
+    clearInterval(this.positiveAffirmationInterval);
+  }
+  
+  this.positiveAffirmationInterval = setInterval(function () {
     $('.positiveAffirmation').fadeOut({
       duration: 4444,
       complete: function () {

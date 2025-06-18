@@ -18,7 +18,7 @@ function updatePondConnectedUsers(data) {
         console.log("No chatId provided for updating pond connected users");
         return;
     }
-    console.log('updatePondConnectedUsers called with data:', data);
+    // console.log('updatePondConnectedUsers called with data:', data);
     let context = chatId.replace("pond/", "");
 
     // Select the user list for the specific pond
@@ -30,7 +30,7 @@ function updatePondConnectedUsers(data) {
         return;
     }
 
-    console.log("Updating pond connected users for chatId:", chatId, data);
+    // console.log("Updating pond connected users for chatId:", chatId, data);
 
     // Track existing users to identify disconnected ones
     const existingUserIds = new Set();
@@ -243,7 +243,7 @@ function createNewChatWindow({ windowType, contextName, windowTitle, windowId, c
         onOpen: async (_window) => {
             await initializeChatWindow.call(this, windowType, contextName, _window, client);
         },
-        onClose: () => {
+        onClose: (_window) => {
             if (windowType === "pond") {
                 const roomList = $(".aim-room-list-items", chatWindow.content);
                 roomList.find(".aim-room-item").each((_, item) => {
@@ -251,8 +251,17 @@ function createNewChatWindow({ windowType, contextName, windowTitle, windowId, c
                     client.removeSubscription("pond", context);
                 });
                 this.data.activePonds = [];
-                // might be better in joinPond() function
-
+                // Remark: This is a special case if the entire pond window is closed at once
+                // It's important we close all active pond subscriptions
+                if (_window.id === 'pond_message_main') {
+                    // alert('main pond window closed')
+                    // iterate through all current subscriptions and close them all
+                    for (let [key, value] of bp.apps.client.messagesWsClients) {
+                        if (key.startsWith("pond/")) {
+                            value.wsClient.closeConnection();
+                        }
+                    }
+                }
             } else {
                 client.removeSubscription(windowType, contextName);
             }

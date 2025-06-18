@@ -141,7 +141,7 @@ export default function createWebSocketClient(chatId) {
           break;
 
         case 'getHistory':
-          console.log('getHistory message received:', parseData);
+          // console.log('getHistory message received:', parseData);
           bp.emit('buddy::messages', { result: { messages: parseData.messages } });
           break;
 

@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.3.10';
+bp.version = '6.3.11';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;

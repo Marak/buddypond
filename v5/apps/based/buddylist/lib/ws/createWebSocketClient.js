@@ -63,7 +63,7 @@ export default function createWebSocketClient() {
             break;
 
           case 'getRemoteProfiles':
-            console.log('getRemoteProfiles message received:', parseData);
+            // console.log('getRemoteProfiles message received:', parseData);
             if (parseData.profile && parseData.profile.buddylist) {
               bp.emit('profile::fullBuddyList', parseData.profile);
             } else {
