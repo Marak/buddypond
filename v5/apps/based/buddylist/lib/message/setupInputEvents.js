@@ -32,6 +32,14 @@ export default function setupInputEvents(windowType, contextName, chatWindow) {
 
         // Prevent form submission on Enter when autocomplete is visible
         if (e.which === 13 && $input.autocomplete("widget").is(":visible")) {
+            // check if this is a BS command, if so we do need to submit the form
+            const inputValue = $input.val();
+            // check if inputValue starts with / or \, if so, run it
+            if (inputValue.startsWith("/") || inputValue.startsWith("\\")) {
+                $form.submit();
+                e.preventDefault();
+                return false;
+            }
             e.preventDefault();
             return false; // Let jQuery UI handle selection
         }
