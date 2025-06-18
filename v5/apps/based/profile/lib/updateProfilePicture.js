@@ -121,10 +121,23 @@ export default function updateProfilePicture(event, profilePictureImg) {
             //let url = 'https://files.buddypond.com/Jane/profile-pics/terry-called.jpg';
             console.log('File uploaded to:', url);
 
+            // update the profile picture for buddylist API
             await this.bp.apps.buddylist.client.setStatus(this.bp.me, {
               profilePicture : url
             });
 
+            // in addition we will update the wsClient metadata for each messages websocket connection
+            // this is to ensure that connected buddies feature immediately reflects the new profile picture
+            this.bp.apps.client.messagesWsClients.forEach((client) => {
+              // console.log('Updating wsClient metadata for', client);
+              // send the updateProfile action
+              client.wsClient.send(JSON.stringify({
+                action: 'updateProfile',
+                profile: {
+                  profilePicture: url
+                }
+              }));
+            });
 
             // set the local profile state ( for use in sending messages)
             this.bp.apps.buddylist.data.profileState.profilePicture = url;
