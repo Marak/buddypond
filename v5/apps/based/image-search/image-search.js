@@ -26,6 +26,8 @@ export default class ImageSearch {
         if (options.output) {
             this.output = options.output;
         }
+        options.provider = options.provider || 'giphy-stickers';
+
         // console.log("Opening image search window with options:", options);
         if (!this.imageSearchWindow) {
 

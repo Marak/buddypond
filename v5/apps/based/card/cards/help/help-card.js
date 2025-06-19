@@ -2,7 +2,7 @@ const commandSet = [
     {
         command: '/apps',
         additional: '',
-        helpText: 'Lists all availble apps',
+        helpText: 'Lists all available apps',
         card: 'apps'
     },
     {

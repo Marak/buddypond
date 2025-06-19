@@ -12,6 +12,7 @@ export default class Chalkboard {
     async open(options = {}) {
         this.output = options.output;
         this.context = options.context;
+        // console.log("Opening Chalkboard with options:", options);
         if (!this.chalkWindow) {
             this.chalkWindow = this.bp.window(this.window(options));
 

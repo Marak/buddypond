@@ -582,15 +582,16 @@ let legacyCommands = {
     icon: 'mirror'
   },
   gif: {
-    command: function (params) {
-      bp.open('image-search');
+    command: function (params, context) {
+      // bp.open('image-search');
+      bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'giphy-stickers' });
     },
     description: 'Search and Create Animated GIFs',
     icon: 'gifstudio'
   },
   image: {
     command: function (params) {
-      bp.open('image-search');
+      bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'pexels' });
     },
     description: 'Search and Create Images',
     icon: 'image'
@@ -611,6 +612,13 @@ let legacyCommands = {
     },
     description: 'Mute the Audio',
     icon: 'mute'
+  },
+  paint: {
+    command: function (params, context) {
+      bp.open('paint', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Paint Editor. Draw cool paintings for Buddies.',
+    icon: 'paint'
   },
   piano: {
     command: function (params) {

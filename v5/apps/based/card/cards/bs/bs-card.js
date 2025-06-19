@@ -68,7 +68,6 @@ export default function applyData(el, data, cardClass, parent) {
         e.stopPropagation(); // Prevent the click from propagating to the card
         e.preventDefault(); // Prevent default action
 
-
         let aimInput = parent.content.querySelector('.aim-input');
         let sendButton = parent.content.querySelector('.aim-send-btn');
         console.log('aimInput', aimInput, sendButton);
@@ -80,9 +79,6 @@ export default function applyData(el, data, cardClass, parent) {
             sendButton.click(); // Simulate button click
         }
 
-
-
     });
-
 
 }

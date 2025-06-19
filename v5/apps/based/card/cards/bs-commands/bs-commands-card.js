@@ -44,12 +44,16 @@ export default function applyData(el, data, cardClass, parent) {
         // Add click handler for commands
         commandDiv.addEventListener('click', () => {
             // Stub action: Log command execution (replace with actual command execution logic)
-            console.log(`Executing command: ${commandText}`);
+            // console.log(`Executing command: ${commandText}`);
             // Optional: Trigger a visual feedback
             commandDiv.classList.add('card-bs-commands-clicked');
-
+            // console.log('running command', command, parent);
             // TODO: run bs command with chatWindow as context?
-            this.bp.apps.buddyscript.executeCommand(command, {}, { chatWindow: parent });
+            this.bp.apps.buddyscript.executeCommand(command, {}, {
+                chatWindow: parent,
+                contextName: parent.currentActiveContext || parent.context,
+                windowType: parent.type
+            });
             //this.bp.open(command);
             setTimeout(() => commandDiv.classList.remove('card-bs-commands-clicked'), 200);
         });

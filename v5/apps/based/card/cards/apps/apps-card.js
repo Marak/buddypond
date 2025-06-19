@@ -41,7 +41,10 @@ export default function applyData(el, data, cardClass, parent) {
       // console.log('binding command', command, app);
       // TODO: run bs command with chatWindow as context?
       // console.log('Opening app', command, 'with context', app.options?.context);
-      this.bp.open(app.app || command, { context: app.options?.context });
+      this.bp.open(app.app || command, {
+        context: parent.currentActiveContext || parent.context || app.options?.context,
+        output: parent.type
+      });
       setTimeout(() => commandDiv.classList.remove('card-apps-clicked'), 200);
     });
     appsCommands.append(commandDiv);

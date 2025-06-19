@@ -156,13 +156,18 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     await bp.load('image-search');
 
     if (params.length === 0) {
-      await bp.open('image-search', { query: params[0], provider: 'giphy' });
+      await bp.open('image-search', {
+        query: params[0],
+        provider: 'giphy-stickers',
+        context: _data.to,
+        output: windowType
+      });
       // clear the input
       $('.aim-input', chatWindow.content).val('');
       return;
     }
 
-    let result = await bp.apps['image-search'].fetchImages(params[0], 6, 'giphy');
+    let result = await bp.apps['image-search'].fetchImages(params[0], 6, 'giphy-stickers');
     // pick a random image from the result
     if (result.error) {
       console.error('Image search error:', result.error);
