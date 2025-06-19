@@ -132,6 +132,7 @@ export default function defaultMenuBar(bp) {
     },
     {
       label: 'Window',
+      className: "desktop-only",
       submenu: [
         { label: 'Full Screen', click: () => bp.apps.ui.toggleFullScreen() },
         {
@@ -191,7 +192,7 @@ export default function defaultMenuBar(bp) {
     },
     */
 
-    { label: '', flex: 1 }, // empty space
+    { label: '', flex: 1, className: "desktop-only" }, // empty space
 
 
     { label: selectMusicPlaylist },

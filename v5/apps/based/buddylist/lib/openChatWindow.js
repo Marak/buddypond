@@ -286,6 +286,10 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
         iconImagePath = this.bp.apps.buddylist.data.profileState.buddylist[contextName].profile_picture;
     }
 
+    // calculate height and width as percent of screen size
+    let height = isBuddy ? 500 : Math.floor(window.innerHeight * 0.8);
+    let width = isBuddy ? 600 : Math.floor(window.innerWidth * 0.75);
+
     return {
         app: "buddylist",
         id: windowId,
@@ -295,10 +299,12 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
         context: contextName,
         parent: this.bp.apps.ui.parent,
         className: "chatWindow",
-        x: data.x || 50,
-        y: 40,
-        width: isBuddy ? 600 : 1000,
-        height: isBuddy ? 500 : 600,
+        //x: 0,
+        //y: 0,
+        x: data.x || 10,
+        y: 75,
+        width: width,
+        height: height,
     };
 }
 
