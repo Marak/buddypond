@@ -55,6 +55,7 @@
     /* background-color: #f9f9f9; */
     border: 1px solid #ccc;
     width: 100%;
+    user-select: none;;
 }
 .positiveAffirmation {
     text-align: center;

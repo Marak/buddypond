@@ -22,6 +22,8 @@ window.bp_v_5 = async function bp_v_5() {
 
     await bp.open('client');
 
+    await bp.load('card');
+
     // if not mobile, open buddylist
     await bp.open({
         name: 'buddylist',
@@ -30,9 +32,6 @@ window.bp_v_5 = async function bp_v_5() {
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
     await bp.load('pond');
-
-    //await bp.load("card");
-    bp.load('card');
 
     // load any other apps that are non-essential but still useful
     // bp.load('console');
@@ -253,6 +252,7 @@ function arrangeDesktop() {
         // throw new Error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
     }
     if (bp.isMobile()) {
+        // $('.desktop-only').hide();
         bp.apps.desktop.arrangeShortcuts(4, {
             rowWidth: 256,
             rowHeight: 256,

@@ -30,6 +30,7 @@
     */
 
     .window-container, .window {
+        user-select: none !important;
         /*
         left: 5px !important;
         top: 7px !important;

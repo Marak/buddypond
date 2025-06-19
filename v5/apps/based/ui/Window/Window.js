@@ -811,13 +811,11 @@ class Window {
         const resizeHandle = document.createElement("div");
         resizeHandle.classList.add("resize-handle");
         this.container.appendChild(resizeHandle);
-
-        resizeHandle.onmousedown = (e) => this.startResize(e);
-        // same for touch events
-        resizeHandle.ontouchstart = (e) => {
+        resizeHandle.addEventListener("mousedown", (e) => this.startResize(e), { passive: false });
+        resizeHandle.addEventListener("touchstart", (e) => {
             e.preventDefault(); // Prevent default touch behavior
             this.startResize(e.touches[0]);
-        };
+        }, { passive: false });
     }
 
     setSize(width, height) {
@@ -830,11 +828,34 @@ class Window {
     }
 
     startResize(e) {
-        this.isResizing = true;
-        this.startWidth = this.container.offsetWidth;
-        this.startHeight = this.container.offsetHeight;
-        this.startX = e.clientX;
-        this.startY = e.clientY;
+        const container = this.container;
+        const startX = e.clientX;
+        const startY = e.clientY;
+        const startWidth = container.offsetWidth;
+        const startHeight = container.offsetHeight;
+
+        const onMove = (moveEvent) => {
+            const clientX = moveEvent.clientX || moveEvent.touches[0].clientX;
+            const clientY = moveEvent.clientY || moveEvent.touches[0].clientY;
+            const newWidth = startWidth + (clientX - startX);
+            const newHeight = startHeight + (clientY - startY);
+
+            // Apply new dimensions, respecting min/max constraints
+            container.style.width = `${Math.max(100, newWidth)}px`; // Example min-width
+            container.style.height = `${Math.max(100, newHeight)}px`; // Example min-height
+        };
+
+        const onUp = () => {
+            document.removeEventListener("mousemove", onMove);
+            document.removeEventListener("mouseup", onUp);
+            document.removeEventListener("touchmove", onMove);
+            document.removeEventListener("touchend", onUp);
+        };
+
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onUp);
+        document.addEventListener("touchmove", onMove, { passive: false });
+        document.addEventListener("touchend", onUp);
     }
 
     resize(e) {
