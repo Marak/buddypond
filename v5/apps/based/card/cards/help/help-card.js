@@ -178,4 +178,9 @@ export default function applyData(el, data, cardClass, parent) {
         // set local storage 'viewed-help-card' to true
         this.bp.set('viewed-help-card', true);
     });
+
+    if (cardClass.bp && cardClass.bp.apps && cardClass.bp.apps.buddylist) {
+        cardClass.bp.apps.buddylist.scrollToBottom(parent.content);
+    }
+
 }

@@ -1,4 +1,4 @@
-import scrollToBottom from "./scrollToBottom.js";
+// import scrollToBottom from "./scrollToBottom.js";
 
 // TODO: add logic for "reply-message" action
 //       reply-message action should open a small "replying to" box above the closest .aim-message-sender element
@@ -226,7 +226,7 @@ function editMessage(messageData) {
   // find the closest chatWindow
   const chatWindow = messageContent.closest('.chatWindow');
 
-  scrollToBottom(chatWindow);
+  this.scrollToBottom(chatWindow);
 
   // Named event handler for keydown
   const handleKeydown = (event) => {
@@ -381,7 +381,7 @@ function replyMessage(messageData, originalMessage) {
   // Find the closest chatWindow and scroll to bottom
   const chatWindow = originalMessage.closest('.chatWindow');
   if (chatWindow) {
-    scrollToBottom(chatWindow);
+    this.scrollToBottom(chatWindow);
   }
 
   const handleKeydown = (event) => {

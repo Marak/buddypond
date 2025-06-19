@@ -1,4 +1,4 @@
-export default function applyData(el, data) {
+export default function applyData(el, data, cardClass, parent) {
 
     // Helper to show content
     const showContent = ($el, metadata) => {
@@ -9,12 +9,39 @@ export default function applyData(el, data) {
         $content.find('.card-website-title').text(metadata.title || new URL(url).hostname);
         $content.find('.card-website-description').text(metadata.description || '');
         const $image = $content.find('.card-website-image');
+
         if (metadata.image) {
-            $image.attr('src', metadata.image).show();
-        } else {
-            $image.hide();
+            $image
+                .one('load', () => {
+                    console.log('Image loaded:', metadata.image);
+                    triggerScroll.call(this);
+                })
+                .one('error', () => {
+                    console.warn('Image failed to load:', metadata.image);
+                    triggerScroll.call(this);
+                })
+                .attr('src', metadata.image)
+                .show();
+
+            // Force load if cached
+            if ($image[0].complete) {
+                $image.trigger('load');
+            }
         }
+
         $content.removeClass('card-website-hidden');
+
+        // ensure we scroll to bottom of chat after rendering image card
+        function triggerScroll() {
+            if (parent && parent.content) {
+                // console.log('Scrolling to bottom of parent content');
+                // Scroll to bottom of parent content
+                if (cardClass.bp && cardClass.bp.apps && cardClass.bp.apps.buddylist) {
+                    cardClass.bp.apps.buddylist.scrollToBottom(parent.content);
+                }
+            }
+        }
+
     };
 
 

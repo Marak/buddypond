@@ -1,5 +1,5 @@
 
-export default function applyData(el, data) {
+export default function applyData(el, data, cardClass, parent) {
 
   const apps = this.bp.apps.desktop.appList;
   let commandSet = [];
@@ -50,5 +50,9 @@ export default function applyData(el, data) {
   $el.find('.card-apps-close-btn').on('click', () => {
     $el.hide(); // Hide the apps card (replace with your preferred close logic)
   });
+
+  if (cardClass.bp && cardClass.bp.apps && cardClass.bp.apps.buddylist) {
+    cardClass.bp.apps.buddylist.scrollToBottom(parent.content);
+  }
 
 }

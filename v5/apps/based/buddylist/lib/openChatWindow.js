@@ -2,7 +2,6 @@ import forbiddenNotes from "./forbiddenNotes.js";
 import setupInputEvents from "./message/setupInputEvents.js";
 import setupAutocomplete from "./message/setupAutocomplete.js";
 import setupChatWindowButtons from "./message/setupChatWindowButtons.js";
-import scrollToBottom from "./message/scrollToBottom.js";
 
 // this is now handled in the pond.js file
 import populateRoomList from "./message/populateRoomList.js";
@@ -173,7 +172,6 @@ export default function openChatWindow(data) {
     const client = this.bp.apps.client;
     const windowId = generateWindowId(windowType, contextName);
     const existingWindow = this.bp.apps.ui.windowManager.getWindow(windowId);
-
     if (existingWindow) {
         handleExistingWindow(existingWindow, windowType, contextName, client, this);
         return existingWindow;
@@ -225,13 +223,14 @@ function generateWindowId(windowType, contextName) {
 
 function handleExistingWindow(chatWindow, windowType, contextName, client, context) {
     if (windowType === "pond") {
+        // Remark: It seems this case never happens?
         console.log("Opening pond window", windowType, contextName);
         // Use context.data.hotPonds if available, otherwise skip population
         //const hotPonds = context.data.hotPonds || [];
         //populateRoomList.call(context, hotPonds, chatWindow, contextName);
         // Ensure the messages container exists and is subscribed
-        ensureMessagesContainer.call(context, contextName, chatWindow, client);
-        toggleMessagesContainer(contextName, chatWindow);
+        ensureMessagesContainer.call(this, context, contextName, chatWindow, client);
+        toggleMessagesContainer.call(this, contextName, chatWindow);
     }
     chatWindow.focus();
 }
@@ -321,7 +320,7 @@ async function initializeChatWindow(windowType, contextName, chatWindow, client)
         let hotPonds = this.bp.apps?.pond?.data?.hotPonds || [];
         populateRoomList.call(this, hotPonds, chatWindow, contextName);
         // send getConnectedUsers message to the pond
-        toggleMessagesContainer(contextName, chatWindow);
+        toggleMessagesContainer.call(this, contextName, chatWindow);
     }
 
     await renderMessages.call(this, contextName, chatWindow);
@@ -494,7 +493,7 @@ function toggleMessagesContainer(contextName, chatWindow) {
         });
     }
 
-    scrollToBottom(chatWindow.content);
+    this.scrollToBottom(chatWindow.content);
 }
 
 function setupChatWindow(windowType, contextName, chatWindow) {
@@ -585,7 +584,7 @@ function setupRoomListClickHandler(chatWindow) {
         $(e.target).addClass("aim-room-active");
         ensureMessagesContainer.call(this, selectedContext, chatWindow, this.bp.apps.client);
         $(".message_form .aim-to", chatWindow.content).val(selectedContext);
-        toggleMessagesContainer(selectedContext, chatWindow);
+        toggleMessagesContainer.call(this, selectedContext, chatWindow);
         // TODO: Implement logic to load messages for selectedContext
     });
 }
@@ -618,7 +617,7 @@ function setupCloseButtonHandler(chatWindow, client) {
         const remainingContainers = $(".aim-messages-container", chatWindow.content);
         if (remainingContainers.length > 0) {
             const nextContext = remainingContainers.first().data("context");
-            toggleMessagesContainer(nextContext, chatWindow);
+            toggleMessagesContainer.call(this, nextContext, chatWindow);
             $(".aim-room-item", chatWindow.content).removeClass("aim-room-active");
             $(`.aim-room-item[data-context="${nextContext}"]`, chatWindow.content).addClass("aim-room-active");
             $(".message_form .aim-to", chatWindow.content).val(nextContext);
@@ -684,6 +683,6 @@ function joinPond(pondName) {
     let selectedContext = `${pondName}`;
     ensureMessagesContainer.call(this, selectedContext, chatWindow, this.bp.apps.client);
     $(".message_form .aim-to", chatWindow.content).val(selectedContext);
-    toggleMessagesContainer(selectedContext, chatWindow);
+    toggleMessagesContainer.call(this, selectedContext, chatWindow);
 
 }

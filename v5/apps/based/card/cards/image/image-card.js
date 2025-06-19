@@ -11,7 +11,9 @@ export default function applyData(el, data, cardClass, parentWindow) {
         // $el.removeClass('loading');
         // remove loading spinner
         // $el.find('.loading-spinner').remove();
-        $('.aim-chat-area', parentWindow.content).scrollTop(99999999)
+        if (cardClass.bp && cardClass.bp.apps && cardClass.bp.apps.buddylist) {
+            cardClass.bp.apps.buddylist.scrollToBottom(parentWindow.content);
+        }
     });
     $el.find('.image-image').attr('src', data.url);
   

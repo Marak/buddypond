@@ -1,25 +1,36 @@
-// Scroll to the bottom of the chat window
 export default function scrollToBottom(parent, retryDelay = 0, retryCount = 0) {
-  // console.log('scrollToBottom', parent, retryDelay, retryCount);
-  if (!parent) {
-    console.log('No parent element provided.');
-    return;
-  }
-  if (retryCount > 5) {
-    console.log('Max retry count reached. Stopping scroll attempt.');
-    return;
-  }
-  $('.aim-chat-area', parent).scrollTop(99999999)
+  if (!parent) return;
+  if (retryCount > 5) return;
 
-  // check if the scroll is still at 0
-  const scrollTop = $('.aim-chat-area', parent).scrollTop();
+  const chatArea = $('.aim-chat-area', parent)[0];
+  if (!chatArea) return;
 
-  if (scrollTop === 0) {
-    // scroll to the bottom
-    retryDelay += 200;
-    retryCount++;
-    setTimeout(() => {
-      scrollToBottom(parent, retryDelay, retryCount);
-    }, retryDelay);
+  if (retryCount === 0 && chatArea._scrollRetryTimer) {
+    clearTimeout(chatArea._scrollRetryTimer);
+    chatArea._scrollRetryTimer = null;
   }
+
+  $(chatArea).scrollTop(chatArea.scrollHeight);
+  
+
+  requestAnimationFrame(() => {
+    const buffer = 10; // tolerate small gap
+    const isAtBottom = (chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight) < buffer;
+
+    if (!isAtBottom) {
+      retryDelay += 200;
+      retryCount++;
+
+      chatArea._scrollRetryTimer = setTimeout(() => {
+        scrollToBottom(parent, retryDelay, retryCount);
+      }, retryDelay);
+    } else {
+      chatArea._scrollRetryTimer = null;
+    }
+
+    // Final fallback if Safari still misbehaves
+    if (retryCount >= 5 && !isAtBottom) {
+      chatArea.lastElementChild?.scrollIntoView({ block: 'end' });
+    }
+  });
 }
