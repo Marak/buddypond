@@ -10,7 +10,7 @@
     z-index: 99;
     border-radius: 8px; /* Rounded corners for a modern feel */
     position: relative;
-    user-select: none;
+    /* user-select: none; */
     resize: both;
 }
 
@@ -50,7 +50,7 @@
 .buddyListHolder {
   background: var(--window_content-background);
   color: var(--window_content-color);
-  user-select: none;
+  /* user-select: none; */
 }
 
 button {
@@ -122,7 +122,7 @@ button {
     font-size: 14px;
     line-height: 1.6;
     border-radius: 0 0 8px 8px; /* Matches the overall rounded corners */
-    user-select: none;
+    /* user-select: none; */
     /* background: white; */
 }
 

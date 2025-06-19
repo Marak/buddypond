@@ -306,6 +306,7 @@ div.ui-resizable-handle {
   padding: 0 0 0 0px;
   /* min-height: 77%; */
   flex-grow: 1;
+  user-select: none;
 }
 
 .window_full .window_top,
