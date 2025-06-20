@@ -87,9 +87,10 @@ export default class SamplerPadComponent {
         this.sliceRecordContainer.classList.add("sampler-slice-record-container");
         this.topSection.appendChild(this.sliceRecordContainer);
 
+        // Remark: Records from global audio bus, removed for now
         // Add Sliced Record Button
-        const slicedRecordButton = this._createSlicedRecordButton();
-        this.sliceRecordContainer.appendChild(slicedRecordButton);
+        //const slicedRecordButton = this._createSlicedRecordButton();
+        //this.sliceRecordContainer.appendChild(slicedRecordButton);
 
         // Add Live Sliced Record Button
         const liveSlicedRecordButton = this._createLiveSlicedRecordButton()

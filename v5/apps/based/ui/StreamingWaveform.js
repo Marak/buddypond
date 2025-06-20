@@ -11,6 +11,9 @@ export default class StreamingWaveform {
         this.ctx = this.canvas.getContext("2d");
         this.canvas.width = width || 800; // Default width
         this.canvas.height = height || 150; // Default height
+
+        // empty the parent container
+        this.parent.innerHTML = '';
         this.parent.appendChild(this.canvas);
 
         this.isDrawing = false;
@@ -54,11 +57,15 @@ export default class StreamingWaveform {
 
             this.analyser.getByteTimeDomainData(this.dataArray);
 
-            // Clear only the next slice area
-            this.ctx.fillStyle = "#222";
-            this.ctx.fillRect(this.currentX, 0, 2, this.canvas.height); // Clear old data slice
+            // Step 1: Scroll everything to the left by 2px
+            const imageData = this.ctx.getImageData(2, 0, this.canvas.width - 2, this.canvas.height);
+            this.ctx.putImageData(imageData, 0, 0);
 
-            // Draw the new waveform slice
+            // Step 2: Clear the rightmost 2px
+            this.ctx.fillStyle = "#222";
+            this.ctx.fillRect(this.canvas.width - 2, 0, 2, this.canvas.height);
+
+            // Step 3: Draw new waveform slice on right edge
             this.ctx.lineWidth = 1;
             this.ctx.strokeStyle = "#00ff00";
             this.ctx.beginPath();
@@ -68,24 +75,16 @@ export default class StreamingWaveform {
             for (let i = 0; i < this.bufferLength; i++) {
                 const value = this.dataArray[i] / 255.0;
                 const y = sliceHeight + (value - 0.5) * sliceHeight;
+                const x = this.canvas.width - 2;
 
                 if (i === 0) {
-                    this.ctx.moveTo(this.currentX, y);
+                    this.ctx.moveTo(x, y);
                 } else {
-                    this.ctx.lineTo(this.currentX, y);
+                    this.ctx.lineTo(x, y);
                 }
             }
 
             this.ctx.stroke();
-
-            // Move the draw position right
-            this.currentX += 2;
-
-            // If we reach the end, reset to the start
-            if (this.currentX >= this.canvas.width) {
-                this.currentX = 0;
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            }
         };
 
         draw();
@@ -105,6 +104,20 @@ export default class StreamingWaveform {
         this.totalSamples = this.rawData.length;
         this.samplesPerPixel = Math.ceil(this.totalSamples / this.canvas.width);
         this._redrawBufferWithPlayhead();
+    }
+
+    renderFinalBuffer(buffer) {
+        this.buffer = buffer;
+        this.stream = null;
+        this.isDrawing = false;
+
+        // Optional: match canvas width to parent (if not already)
+        const targetWidth = this.parent.clientWidth;
+        if (this.canvas.width !== targetWidth) {
+            this.canvas.width = targetWidth;
+        }
+
+        this._drawBuffer(); // Now renders entire waveform to fit width
     }
 
     // Redraw the buffer waveform and playhead

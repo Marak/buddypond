@@ -35,19 +35,27 @@ export default class SamplerPadEffect {
       this.reverseBuffer(padIndex); // Reverse the buffer if the pad is set to reverse
     }
   }
+
+  // TODO: we previously had the waveform generate, where did it go?
   async recordMicrophone(padIndex) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.recorder = new MediaRecorder(stream);
     this.recordedChunks = [];
 
+    let resolveBuffer;
+    const bufferPromise = new Promise((resolve) => (resolveBuffer = resolve));
+
     this.recorder.ondataavailable = (e) => this.recordedChunks.push(e.data);
     this.recorder.onstop = async () => {
       const blob = new Blob(this.recordedChunks, { type: "audio/webm" });
       const arrayBuffer = await blob.arrayBuffer();
-      this.buffers[padIndex] = await this.context.decodeAudioData(arrayBuffer);
+      const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
+      this.buffers[padIndex] = audioBuffer;
+      resolveBuffer(audioBuffer);
     };
 
     this.recorder.start();
+    return { stream, bufferPromise }; // return both
   }
 
   stopMicrophoneRecording() {
@@ -87,7 +95,7 @@ export default class SamplerPadEffect {
     source.buffer = this.buffers[padIndex];
     source.playbackRate.value = pitchRatio; // Adjust pitch
     source.connect(this.gainNode);
-    console.log('confirming this.gainNode', this.gainNode);
+    // console.log('confirming this.gainNode', this.gainNode);
 
     source.start();
     // Store the source and initial pitch ratio for potential modulation
@@ -104,12 +112,12 @@ export default class SamplerPadEffect {
       this.loadSample(originalFile, padIndex); // Ensure `originalFile` is stored or accessible
     }
   }
-  
+
   reverseBuffer(padIndex) {
     const buffer = this.buffers[padIndex];
     const numChannels = buffer.numberOfChannels;
     const reversedBuffer = this.context.createBuffer(numChannels, buffer.length, buffer.sampleRate);
-  
+
     for (let channel = 0; channel < numChannels; channel++) {
       const channelData = buffer.getChannelData(channel);
       const reversedData = reversedBuffer.getChannelData(channel);
@@ -117,7 +125,7 @@ export default class SamplerPadEffect {
         reversedData[i] = channelData[buffer.length - 1 - i];
       }
     }
-  
+
     this.buffers[padIndex] = reversedBuffer; // Replace the original buffer with reversed
   }
 
@@ -218,4 +226,5 @@ export default class SamplerPadEffect {
     const normalizedValue = Math.max(0, Math.min(1, value));
     this.gainNode.gain.setValueAtTime(normalizedValue, this.context.currentTime);
   }
+
 }

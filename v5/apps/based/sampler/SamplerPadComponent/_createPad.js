@@ -48,19 +48,16 @@ export default function _createPad(padIndex, soundFile) {
         label.textContent = fileName;
     } else {
         label.textContent = `Pad ${padIndex + 1}`;
-        // set bg to #333
-        button.style.background = "#333";
     }
 
     label.classList.add("sampler-pad-label");
     button.appendChild(label);
 
-
     // Controls Container
     const controlsContainer = document.createElement("div");
     controlsContainer.classList.add("sampler-pad-controls");
 
-    // TODO: replace default file input with fontawesome icon
+    // Remark: replace default file input with fontawesome icon
 
     const { fileInput, iconButton } = this._createFileInput(button, this.sampler, padIndex);
 
@@ -72,8 +69,8 @@ export default function _createPad(padIndex, soundFile) {
 
     recordMicButton.classList.add("sampler-record-button");
 
-    // TODO: refactor this into SamplerComponent.startPadMicrophoneRecording()
-    recordMicButton.addEventListener("mousedown", () => {
+    // Remark: refactor this into SamplerComponent.startPadMicrophoneRecording()
+    recordMicButton.addEventListener("mousedown", async () => {
         recordingOverlay.style.display = "flex"; // Show the overlay
 
         if (recordMicButton.waveform) {
@@ -84,6 +81,9 @@ export default function _createPad(padIndex, soundFile) {
         if (this.waveform) {
             this.waveform.remove();
         }
+
+        // empty the label
+        label.textContent = "";
 
         button.style.background = 'none';
 
@@ -97,15 +97,33 @@ export default function _createPad(padIndex, soundFile) {
             timer.textContent = `${minutes}:${seconds}:${milliseconds}`;
         }, 10);
 
-        this.sampler.recordMicrophone(padIndex);
+        const { stream, bufferPromise } = await this.sampler.recordMicrophone(padIndex);
+
+        this._recordingBufferPromise = bufferPromise;
+
+        this.waveform = new StreamingWaveform({
+            audioContext: this.audioContext,
+            stream,
+            parent: waveformContainer,
+            width: 196,
+            height: 100,
+        });
+
     });
 
-    // TODO: refactor this into SamplerComponent.stopPadMicrophoneRecording()
-    recordMicButton.addEventListener("mouseup", () => {
+    // Remark: refactor this into SamplerComponent.stopPadMicrophoneRecording()
+    recordMicButton.addEventListener("mouseup", async () => {
         recordingOverlay.style.display = "none"; // Hide the overlay
         clearInterval(timerInterval); // Stop the timer
         timer.textContent = "0:00";
         this.sampler.stopMicrophoneRecording();
+        if (this.waveform) {
+            this.waveform.stop();
+        }
+
+        // TODO: where does finalDecodedAudioBuffer come from?
+        const finalDecodedAudioBuffer = await this._recordingBufferPromise;
+        this.waveform.renderFinalBuffer(finalDecodedAudioBuffer);
     });
 
     const padPlaybackSelector = document.createElement("select");
@@ -120,20 +138,20 @@ export default function _createPad(padIndex, soundFile) {
     {
         value: 'toggle',
         label: 'Toggle'
-    },{
+    }, {
         value: 'loop',
         label: 'Loop'
     },
-    /* TODO: reverse is a flag, not a mode
-    {
-        value: 'reverse',
-        label: 'Reverse'
-    }
-    */
-    
-];
+        /* Remark: reverse is a flag, not a mode
+        {
+            value: 'reverse',
+            label: 'Reverse'
+        }
+        */
 
-    padPlaybackModes.forEach((option) => {
+    ];
+
+    padPlaybackModes.forEach((option, i) => {
         let opt = document.createElement('option');
         opt.value = option.value;
         opt.innerHTML = option.label;
@@ -145,6 +163,8 @@ export default function _createPad(padIndex, soundFile) {
         this.sampler.stopSample(padIndex);
         this.sampler.setMode(padIndex, e.target.value);
     });
+
+    // select the first option by default
 
     controlsContainer.appendChild(padPlaybackSelector);
 
@@ -182,13 +202,12 @@ export default function _createPad(padIndex, soundFile) {
     recordGlobalButton.textContent = "";
     recordGlobalButton.innerHTML = `<i class="fa-duotone fa-solid fa-volume-high"></i> Record`;
     recordGlobalButton.title = "Record audio from global bus";
-
     recordGlobalButton.classList.add("sampler-record-button");
 
     let recordingStartTime = 0;
     let timerInterval = null;
 
-    // TODO: refactor this into SamplerComponent.startPadGlobalRecording()
+    // Remark: refactor this into SamplerComponent.startPadGlobalRecording()
     recordGlobalButton.addEventListener("mousedown", () => {
         let recordingStream = this.sampler.recordGlobalBus(this.globalBus, padIndex);
         recordingOverlay.style.display = "flex"; // Show the overlay
@@ -219,7 +238,7 @@ export default function _createPad(padIndex, soundFile) {
         }, 1000);
     });
 
-    // TODO: refactor this into SamplerComponent.stopPadGlobalRecording()
+    // Remark: refactor this into SamplerComponent.stopPadGlobalRecording()
     recordGlobalButton.addEventListener("mouseup", () => {
         this.sampler.stopGlobalBusRecording();
         if (this.waveform) {
@@ -234,7 +253,7 @@ export default function _createPad(padIndex, soundFile) {
     padContainer.appendChild(recordingOverlay);
 
     // Append controls
-    controlsContainer.appendChild(recordGlobalButton);
+    // controlsContainer.appendChild(recordGlobalButton);
     controlsContainer.appendChild(recordMicButton);
     controlsContainer.appendChild(fileInput);
     controlsContainer.appendChild(iconButton);

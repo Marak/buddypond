@@ -11,7 +11,7 @@ export default function _createFileInput(button, sampler, padIndex) {
     // Create a FontAwesome icon button
     const iconButton = document.createElement("button");
     iconButton.classList.add("sampler-file-icon-button", 'sampler-record-button');
-    iconButton.innerHTML = '<i class="fa-sharp-duotone fa-solid fa-upload"></i>'; // FontAwesome audio file icon
+    iconButton.innerHTML = '<i class="fa-duotone fa-regular fa-upload"></i>'; // FontAwesome audio file icon
     iconButton.title = "Load Audio Sample";
 
     // Event listener for the file input change

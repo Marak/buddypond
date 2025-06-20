@@ -41,6 +41,7 @@
   
   .sampler-pad-button:hover {
     background: #777;
+    opacity: 0.2;
   }
   
   .sampler-pad-button:active {
@@ -296,5 +297,5 @@
   
   .sampler-pad-playback-selector {
     font-size: 14px;
-    max-width: 20px;
+    /* max-width: 20px; */
   }
