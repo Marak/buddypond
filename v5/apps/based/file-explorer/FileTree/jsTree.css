@@ -814,7 +814,7 @@
   background: transparent;
 }
 .jstree-default-dark-large .jstree-disabled.jstree-clicked {
-  background: #efefef;
+  /* background: #efefef; */
 }
 .jstree-default-dark-large .jstree-checkbox {
   background-position: -160px 0px;

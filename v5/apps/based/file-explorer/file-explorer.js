@@ -18,11 +18,13 @@ export default class FileExplorer {
 
         // load jstree from CDN ( for now )
         // TODO: vendor
-        await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js');
+        //await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js');
+        await this.bp.appendScript('/v5/apps/based/file-explorer/vendor/jstree.min.js');
 
         this.bp.log('Hello from File Explorer');
         //await this.bp.load('/v5/apps/based/file-explorer/FileTree/jsTree.css');
-        await this.bp.load('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css');
+        //await this.bp.load('https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css');
+        await this.bp.appendCSS('/v5/apps/based/file-explorer/vendor/style.min.css', false, true);
 
         this.fileExplorerInstance = new FileExplorerClass(this.bp, {
             fileTree: {

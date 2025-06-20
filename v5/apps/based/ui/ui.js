@@ -8,7 +8,7 @@ export default class UI {
 
         let windowManagerOptions = {};
         windowManagerOptions.openWindow = this.bp.open.bind(this.bp),
-            windowManagerOptions.window = options.window || {};
+        windowManagerOptions.window = options.window || {};
         windowManagerOptions.hideTaskBar = options.hideTaskBar;
         this.windowManager = new WindowManager(this, windowManagerOptions);
         this.bp.windows = this.windowManager.windows;

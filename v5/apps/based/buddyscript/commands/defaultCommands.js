@@ -590,7 +590,7 @@ let legacyCommands = {
     icon: 'gifstudio'
   },
   image: {
-    command: function (params) {
+    command: function (params, context) {
       bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'pexels' });
     },
     description: 'Search and Create Images',
