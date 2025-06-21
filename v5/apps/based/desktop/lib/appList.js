@@ -288,5 +288,49 @@ export default {
     "label": "Spellbook",
     "description": "Manage scripts or commands",
     "categories": ["tools", "productivity"]
+  },
+
+  /* FRVR Games */
+  "frvr-basketball": {
+    "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.png",
+    "label": "BasketBall FRVR",
+    "description": "Play Basketball FRVR game",
+    "onClick": "bp.open('frvr-basketball')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
+  },
+  "frvr-kittenforce": {
+    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
+    "label": "Kitten Force FRVR",
+    "description": "Play Kitten Force FRVR game",
+    "onClick": "bp.open('frvr-kittenforce')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
+  },
+  "frvr-bowlingo": {
+    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
+    "label": "Bowlingo FRVR",
+    "description": "Play Bowlingo FRVR game",
+    "onClick": "bp.open('frvr-bowlingo')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
+  },
+  "frvr-greed": {
+    "icon": "desktop/assets/images/icons/icon_frvr-greed_64.png",
+    "label": "Greed FRVR",
+    "description": "Play Greedy FRVR game",
+    "onClick": "bp.open('frvr-greed')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
+  },
+  /*
+  "doodle-jump-extra": {
+    "icon": "desktop/assets/images/icons/icon_doodle-jumo-extra_64.png",
+    "label": "Doodle Jump Extra",
+    "description": "Play Doodle Jump Extra game",
+    "onClick": "bp.open('doodle-jump-extra')",
+    "categories": ["games", "entertainment"],
+    "author": "Plays.org",
   }
+  */
 }
