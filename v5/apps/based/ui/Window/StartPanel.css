@@ -1,0 +1,77 @@
+.start-panel {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: #1c1c1c;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 100000;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    font-family: sans-serif;
+}
+
+.start-panel-search {
+    padding: 10px 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #2e2e2e;
+    color: white;
+}
+
+.start-panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.start-panel-section h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ccc;
+    padding-left: 4px;
+}
+
+.start-panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 12px;
+}
+
+.start-panel-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.start-panel-app:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.start-panel-app img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.start-panel-app div {
+    font-size: 12px;
+    color: #ddd;
+    text-align: center;
+}

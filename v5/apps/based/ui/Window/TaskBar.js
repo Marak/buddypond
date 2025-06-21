@@ -1,3 +1,5 @@
+import StartPanel from "./StartPanel.js";
+
 export default class TaskBar {
     constructor({ homeCallback, bp } = {}) {
         this.taskBarElement = document.createElement("div");
@@ -9,11 +11,20 @@ export default class TaskBar {
         this.items = new Map(); // id -> config
         this.shortcuts = new Set(); // id
 
+
+        function openStartPanel () {
+            if (!this.startPanel) {
+                this.startPanel = new StartPanel({ bp: this.bp });
+            }
+            this.startPanel.open();
+        }
+
         if (homeCallback) {
             this.addItem({
                 id: "home",
                 label: "Home",
-                onClick: homeCallback,
+                // onClick: homeCallback,
+                onClick: openStartPanel,
                 icon: "desktop/assets/images/icons/icon_mantra_64.png",
                 isShortcut: true,
             });
@@ -248,9 +259,6 @@ export default class TaskBar {
         } else {
             console.warn(`No window found with ID: ${id}`);
         }
-
-
-
     }
 
     removeItem(id) {

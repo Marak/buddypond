@@ -758,6 +758,26 @@ class Window {
         };
         this.bp.apps.ui.windowManager.taskBar.openItem(_app);
 
+        // add the items to this.bp.apps.ui.recentApps
+        // TODO: truncate the array to a maximum of 10 items, newest first
+        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps || this.bp.settings.recentApps || [];
+
+        // remove items with the same id if already exists
+        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.filter(app => app.id !== this.id);
+        
+        this.bp.apps.ui.recentApps.unshift({
+            id: this.id,
+            app: this.id,
+            label: this.title,
+            icon: this.icon,
+            type: this.type
+        });
+
+        // update the recentApps localStorage
+        this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.slice(-10); // keep only the last 10 items
+        this.bp.set('recentApps', this.bp.apps.ui.recentApps);
+
+
     }
     close() {
 

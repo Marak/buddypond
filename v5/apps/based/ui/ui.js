@@ -44,6 +44,8 @@ export default class UI {
                 this.bp.appendCSS('/v5/apps/based/ui/mobile.css'); // no need to wait for CSS to load?
                 this.bp.appendCSS('/v5/apps/based/ui/Window/Window.css'); // no need to wait for CSS to load?
                 this.bp.appendCSS('/v5/apps/based/ui/Window/TaskBar.css'); // no need to wait for CSS to load?
+                this.bp.appendCSS('/v5/apps/based/ui/Window/StartPanel.css'); // no need to wait for CSS to load?
+
             }
         }
 
