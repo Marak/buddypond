@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.4.3';
+bp.version = '6.4.5';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -69,6 +69,7 @@ bp.open = async function open(app, config = { context: 'default' }) {
             // TODO: This may be causing focus issues for some windows overriding custom focus logic in onOpen() handlers
             _window.focus();
         }
+        return _window;
     }
 }
 

@@ -51,7 +51,9 @@ export default function setupInputEvents(windowType, contextName, chatWindow) {
         }
 
         if (e.which === 13) {
-            const message = $input.val().replace(/\n/g, "<br>");
+            let message = $input.val().replace(/\n/g, "<br>");
+            message = that.replaceShortcodes(message);
+
             $input.val(message);
             $form.submit();
             e.preventDefault();

@@ -5,12 +5,20 @@ export default function setupAutocomplete(chatWindow) {
     const $form = $(".message_form", chatWindow.content);
     const $sendButton = $(".aim-send-btn", chatWindow.content);
 
+    this.replaceShortcodes = replaceShortcodes.bind(this);
+
     // Create a lookup map for faster emoji shortcode to Unicode conversion
     if (!this.emojiMap) {
+         const usedShortcodes = new Set(); // Track used shortcodes to avoid duplicates
         this.emojiMap = Object.keys(EMOJIS).reduce((map, emoji) => {
             const aliases = EMOJIS[emoji].filter(isValidShortcode);
             aliases.forEach(alias => {
-                map[`:${alias}:`] = emoji; // Map ":skull_and_crossbones:" to "🏴‍☠️"
+                const shortcode = `:${alias}:`;
+                // Only add if shortcode hasn't been used (prioritize first emoji)
+                if (!usedShortcodes.has(shortcode)) {
+                    map[shortcode] = emoji;
+                    usedShortcodes.add(shortcode);
+                }
             });
             return map;
         }, {});
@@ -178,7 +186,7 @@ function isValidShortcode(name) {
 // Function to replace shortcodes in a string with emojis
 function replaceShortcodes(text) {
     const shortcodeRegex = /:[a-z0-9_+]+:/g;
-    return text.replace(shortcodeRegex, match => emojiMap[match] || match);
+    return text.replace(shortcodeRegex, match => this.emojiMap[match] || match);
 }
 
 // Function to handle text area input and replace shortcodes
