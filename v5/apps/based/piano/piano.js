@@ -53,5 +53,7 @@ export default class Example {
 
         this.bp.apps.ui.windowManager.focusWindow(this.pianoWindow);
 
+        return this.pianoWindow;
+
     }
 }

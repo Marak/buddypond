@@ -57,6 +57,14 @@ export default {
     "onClick": "bp.open('minipaint')",
     "categories": ["art", "creative"]
   },
+  "motd": {
+    "icon": "desktop/assets/images/icons/icon_console_64.png",
+    "label": "MOTD",
+    "description": "Message of the Day",
+    "onClick": "bp.open('motd')",
+    "categories": ["social", "community"],
+    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
+  },
   "paint": {
     "icon": "desktop/assets/images/icons/icon_paint_64.png",
     "label": "Paint",

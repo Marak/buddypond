@@ -97,6 +97,11 @@ export default class DropArea {
 
     async handleDrop(event) {
         console.log('DropArea: handleDrop called', event);
+        // ignore drag events for .taskbar-container class
+        if (event.target.classList.contains('taskbar-item') || event.target.classList.contains('taskbar-container')) {
+            console.log('DropArea: handleDrop ignored for taskbar-item');
+            return;
+        }
         event.preventDefault();
         if (this.dropTarget && event.target === this.dropTarget) {
             this.triggerDropAreaHandler(event);

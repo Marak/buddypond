@@ -10,7 +10,7 @@ export default class Painterro {
     }
 
     async open () {
-        this.bp.window(this.window());
+        return this.bp.window(this.window());
 
 
          // TODO: register the chat button
@@ -42,7 +42,7 @@ export default class Painterro {
         return {
             id: 'painterro',
             title: 'Painterro',
-            icon: 'desktop/assets/images/icons/icon_console_64.png',
+            icon: 'desktop/assets/images/icons/icon_painterro_64.png',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

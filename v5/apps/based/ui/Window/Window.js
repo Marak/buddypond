@@ -634,7 +634,6 @@ class Window {
                 //this.content.style.display = "none";  // Hide content area
                 // set the window-container height to 50px
                 this.container.style.height = "120px"; // Set height to 50px
-                console.log('setting content area');
 
                 this.isMinimized = true;
             }
@@ -747,9 +746,18 @@ class Window {
             }, 100);
         }
 
-
         this.bp.emit('window::open', this);
-        // console.log('callling focus from open');
+        // console.log('Window opened:', this);
+        let _app = {
+            id: this.id,
+            app: this.app,
+            label: this.title,
+            icon: this.icon,
+            app: this.app,
+            type: this.type
+        };
+        this.bp.apps.ui.windowManager.taskBar.openItem(_app);
+
     }
     close() {
 
@@ -789,7 +797,7 @@ class Window {
 
         if (this.windowManager.taskBar) {
             // remove the chat window from the taskbar
-            this.windowManager.taskBar.removeItem(this.id);
+            this.windowManager.taskBar.closeItem(this.id);
         }
 
         // TODO: save the window state ??? removeWindow could do it..?

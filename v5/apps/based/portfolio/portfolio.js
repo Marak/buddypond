@@ -139,6 +139,7 @@ export default class Portfolio {
             this.tabs.showTab(options.context);
         }
 
+        return this.portfolioWindow;
     }
 
 }

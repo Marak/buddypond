@@ -56,7 +56,7 @@ export default class Coin {
         this.context = context;
         this.type = type;
 
-        let coinWindowId = 'coin-window';/* + context;*/
+        let coinWindowId = 'coin';/* + context;*/
 
         if (!this.coinWindows[coinWindowId]) {
             let coinWindow = this.coinWindows[coinWindowId] = this.bp.apps.ui.windowManager.createWindow({

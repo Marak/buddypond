@@ -1,62 +1,76 @@
 .taskbar-container {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
     gap: 30px;
 
-    overflow: visible; /* Allow child elements to display outside the container */
-    background: linear-gradient(180deg, #666666, #353535);
-    color: #e0e0e0;
     padding: 8px 16px;
+    width: max-content;
+    max-width: 90%;
+    background: rgba(60, 60, 60, 0.9);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+
+    color: #e0e0e0;
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 0.5px;
     text-shadow: #000 0 1px 1px;
-    border-bottom: 1px solid #444;
-    border-radius: 8px 8px 0 0;
     user-select: none;
-    cursor: grab;
-
-
     z-index: 99999;
 }
 
 .taskbar-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: visible;
     position: relative;
-    /* rounded corners for a modern feel */
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-    width: 48px; /* Adjust based on your icon size */
+    width: 48px;
+    height: 48px;
+    padding: 4px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, background-color 0.2s ease;
     background: none;
+    cursor: pointer;
+}
+
+.taskbar-item img {
+    display: block;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
 }
 
 .taskbar-item:hover {
-    transform: scale(1.2); /* Icon enlargement factor */
+    transform: scale(1.2);
+}
+
+.taskbar-item:active {
+    transform: scale(1.05);
 }
 
 .taskbar-item-text {
     visibility: hidden;
     position: absolute;
-    bottom: 50px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
-    white-space: nowrap; /* Prevent text from wrapping */
-    z-index: 100000; /* Ensure it is above all */
-    padding: 5px 10px;
+    white-space: nowrap;
+    z-index: 100000;
+    padding: 6px 12px;
     background-color: #ffffff;
     color: #333333;
     text-align: center;
-    border-radius: 6px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Optional: Adds a shadow for better visibility */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .taskbar-item:hover .taskbar-item-text {
@@ -67,48 +81,83 @@
     animation: blinker 1s linear infinite;
 }
 
+.taskbar-context-menu {
+  position: fixed;
+  background-color: var(--desktop_element-background);
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  padding: 4px 0;
+  z-index: 100001;
+  min-width: 180px;
+  font-size: 14px;
+  color: white;
+  user-select: none;
+}
+
+.taskbar-context-menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.taskbar-context-menu-item:hover {
+  background-color: var(--desktop_element_hover)
+}
+
 @keyframes blinker {
     50% { background-color: orange; }
 }
 
+.taskbar-item-open::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.5); /* light gray / subtle glow */
+    border-radius: 2px;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3); /* soft glow */
+}
 
-/* Media query for mobile devices */
+/* Drag visuals */
+.taskbar-item[draggable=\"true\"] {
+    user-select: none;
+}
+
+.taskbar-item.dragging {
+    opacity: 0.5;
+}
+
+/* Mobile devices */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .taskbar-container {
-        padding: 12px 20px !important; /* Larger padding for better touch interaction */
-        font-size: 16px !important; /* Larger font size for readability */
-        border-radius: 12px 12px 0 0 !important; /* Slightly larger radius for aesthetic adjustment */
-        gap: 5px;
+        display: none !important;
     }
 
     .taskbar-item {
-        padding: 15px 64px !important; /* Larger padding for easier touch */
-        margin-right: 15px !important; /* Increase spacing between buttons */
-        font-size: 28px !important; /* Increase font size for readability */
-        transition: background-color 0.3s ease !important; /* Ensure smooth color transition */
+        padding: 15px 64px !important;
+        margin-right: 15px !important;
+        font-size: 28px !important;
+        transition: background-color 0.3s ease !important;
     }
 
     .taskbar-item:hover {
-        background-color: #666 !important; /* Slightly darker for hover effect, considering touch devices don't use hover, this is for consistency */
-        transform: scale(1.1) !important; /* Icon enlargement factor */
+        background-color: #666 !important;
+        transform: scale(1.1) !important;
     }
-    /* make the items and text larger */
+
     .taskbar-item-text {
-        display: none !important; /* Hide text by default */
+        display: none !important;
         font-size: 24px !important;
         padding: 10px 20px !important;
         border-radius: 8px !important;
     }
-    .taskbar-item:hover .taskbar-item-text {
-        visibility: visible !important;
-    }
-    /* image size */
+
     .taskbar-item img {
         width: 128px !important;
         height: 128px !important;
     }
-     .taskbar-container {
-        display: none !important; /* Hide taskbar on small screens */
-    }
-
 }

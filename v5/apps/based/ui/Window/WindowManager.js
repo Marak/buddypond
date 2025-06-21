@@ -32,6 +32,7 @@ export default class WindowManager {
         }
 
         this.taskBar = new TaskBar({
+            bp: this.bp,
             homeCallback: () => {
 
                 if (!this.state) {
@@ -51,8 +52,8 @@ export default class WindowManager {
 
                 if (this.state === 'minimized') {
                     this.minimizeAllWindows();
-                    this.arrangeHorizontalStacked();
-                    this.state = 'stacked-horizontal';
+                    // this.arrangeHorizontalStacked();
+                    this.state = 'maximized';
 
                 } else if (this.state === 'stacked-vertical') {
                     // stack-vertical has been removed ( for now )
@@ -158,8 +159,11 @@ export default class WindowManager {
         this.addWindow(window);
         this.focusWindow(window); // Focus the newly created window
 
-        this.taskBar.addItem({
-            id: window.id,
+        // when opening a window, automatically add it to the taskbar
+        //alert(window.id)
+        /*
+        this.taskBar.openItem({
+            id: window.app,
             title: window.title,
             icon: window.icon,
             onClick: () => {
@@ -178,6 +182,7 @@ export default class WindowManager {
                 }
             }
         });
+        */
 
         return window;
     }

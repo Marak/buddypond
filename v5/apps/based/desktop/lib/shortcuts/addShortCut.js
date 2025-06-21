@@ -113,10 +113,20 @@ export default function addShortCut(app, options = {}, parent) {
     // Context menu setup
     const contextMenu = document.createElement('div');
     contextMenu.className = 'desktop-context-menu';
-    contextMenu.innerHTML = `
-        <div class="bp-context-menu-item" data-action="delete">Delete Shortcut</div>
+
+    let menuHTML = ``;
+
+    // don't allow pads / buddyapps to be deleted
+    if (app.name !== 'pad') {
+         menuHTML += `<div class="bp-context-menu-item" data-action="delete">Delete Shortcut</div>`;
+    }
+
+    menuHTML += `
         <div class="bp-context-menu-item" data-action="rename">Rename Shortcut</div>
+        <div class="bp-context-menu-item" data-action="add-taskbar">Add to Taskbar</div>
     `;
+
+    contextMenu.innerHTML = menuHTML;
     document.body.appendChild(contextMenu); // Append to body for positioning
 
     // Hide context menu on click elsewhere
@@ -130,8 +140,6 @@ export default function addShortCut(app, options = {}, parent) {
         const existingMenu = $('.desktop-context-menu');
         // existingMenu.hide();
 
-
-        console.log('Context menu triggered for app:', app.name);
         e.preventDefault();
         // Position menu near cursor, ensuring it stays within viewport
         const menuWidth = 150; // Approximate width of context menu
@@ -152,6 +160,10 @@ export default function addShortCut(app, options = {}, parent) {
             this.deleteShortcut(app.name, app, options.context);
         } else if (action === 'rename') {
             this.renameShortCut(app.name, title, options.context);
+        } else if (action === 'add-taskbar') {
+            // Add to taskbar logic
+            app.id = app.name; // ensure the app has an id for taskbar
+            this.bp.apps.ui.windowManager.taskBar.addItem(app);
         }
         contextMenu.style.display = 'none';
     });
@@ -217,7 +229,6 @@ export default function addShortCut(app, options = {}, parent) {
                 console.warn('No buttonBar found for pond chat window', chatWindow);
             }
         });
-
 
     }
 
