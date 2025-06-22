@@ -39,6 +39,6 @@ export default class FluidSimulation {
         }
 
         this.bp.apps.ui.windowManager.focusWindow(this.fluidsWindow);
-
+        return this.fluidsWindow;
     }
 }

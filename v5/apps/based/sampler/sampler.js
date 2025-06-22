@@ -22,7 +22,7 @@ export default class Sampler {
     async open(options = {}) {
 
         if (!this.samplerHolder) {
-
+            
             // TODO: better options for rendering apps with windows
             if (this.options.window && this.bp.apps.ui && this.bp.apps.ui.windowManager) {
                 let samplerWindow = this.bp.apps.ui.windowManager.createWindow({
@@ -49,6 +49,7 @@ export default class Sampler {
                     }
                 });
                 this.samplerHolder = samplerWindow.content;
+                this.samplerWindow = samplerWindow;
             } else {
                 this.samplerHolder = document.createElement('div');
                 this.samplerHolder.className = 'sampler-window';
@@ -73,6 +74,7 @@ export default class Sampler {
             samplerPadComponent.showPianoRoll.click();
 
         }
+        return this.samplerWindow;
 
     }
 }
