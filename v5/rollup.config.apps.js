@@ -749,6 +749,62 @@ export default [
   }
 ,
   {
+    input: 'apps/based/frvr-basketball/frvr-basketball.js',
+    output: {
+      file: 'dist/apps/based/frvr-basketball.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/frvr-bowlingo/frvr-bowlingo.js',
+    output: {
+      file: 'dist/apps/based/frvr-bowlingo.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/frvr-greed/frvr-greed.js',
+    output: {
+      file: 'dist/apps/based/frvr-greed.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/frvr-kittenforce/frvr-kittenforce.js',
+    output: {
+      file: 'dist/apps/based/frvr-kittenforce.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/gamblor/gamblor.js',
     output: {
       file: 'dist/apps/based/gamblor.js',
@@ -1165,6 +1221,34 @@ export default [
     input: 'apps/based/play/play.js',
     output: {
       file: 'dist/apps/based/play.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/plays-doodle-jump-extra/plays-doodle-jump-extra.js',
+    output: {
+      file: 'dist/apps/based/plays-doodle-jump-extra.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/plays-malpek/plays-malpek.js',
+    output: {
+      file: 'dist/apps/based/plays-malpek.js',
       format: 'es',
       sourcemap: true,
     },
