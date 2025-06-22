@@ -209,10 +209,10 @@ export default function defaultChatWindowButtons(bp) {
                 let type = ev.target.dataset.type;
                 // TODO: better way to get the windowId
                 // TODO: instead just use context on the button, like how all the other buttons work
-                let windowIdPrefix = type === 'pond' ? 'pond_message_-' : 'buddy_message_-';
+                let windowIdPrefix = type === 'pond' ? 'pond_message_-' : 'messages/';
                 let windowId = windowIdPrefix + context;
                 if (type === 'pond') {
-                    windowId = 'pond_message_main';
+                    windowId = 'pond-chat';
                 }
                 // console.log('opening chat window ', windowId)
                 let chatWindow = bp.apps.ui.windowManager.getWindow(windowId);

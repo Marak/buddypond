@@ -148,13 +148,12 @@ export default class Paint {
             }, false);
 
          
-            return true;
+            // return true;
 
         }
 
-       
 
-
+        return this.paintWindow;
 
 
 

@@ -26,7 +26,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     }
 
     // Determine the window ID based on the message context
-    let windowId = `buddy_message_-${message.to}`;
+    let windowId = `messages/${message.to}`;
 
     // dynamically create the windowId based on the message details
     if (message.type === 'buddy') {
@@ -45,20 +45,20 @@ export default async function renderChatMessage(message, _chatWindow) {
               // we need to set the windowId to be the non-me participant
               let notMe = participants.find(participant => participant !== this.bp.me);
               // console.log('Setting windowId for non-me participant', notMe);
-              windowId = `buddy_message_-${notMe}`;
+              windowId = `messages/${notMe}`;
               context = notMe;
             } else {
               // regular buddy conversation with (2) participants
-              windowId = `buddy_message_-${message.from}`;
+              windowId = `messages/${message.from}`;
               context = message.from;
             }
             */
-            windowId = `buddy_message_-${message.from}`;
+            windowId = `messages/${message.from}`;
             context = message.from;
 
 
         } else {
-            windowId = `buddy_message_-${message.to}`;
+            windowId = `messages/${message.to}`;
             context = message.to;
         }
     }
@@ -66,7 +66,7 @@ export default async function renderChatMessage(message, _chatWindow) {
     if (message.type === 'pond') {
         context = message.to;
         // windowId = `pond_message_-${message.to}`;
-        windowId = "pond_message_main";
+        windowId = 'pond-chat';
     }
     // console.log('windowIdwindowId', windowId)
     // TODO: scope on processedMessages needs to be keyed by type in addition to context

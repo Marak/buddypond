@@ -13,7 +13,7 @@ export default class AudioVisual {
 
     async open() {
         
-        let exampleWindow = this.windowManager.createWindow({
+        let avWindow = this.windowManager.createWindow({
             id: 'audio-visual',
             title: 'Audio Visualizer',
             x: 50,
@@ -35,7 +35,7 @@ export default class AudioVisual {
             canBeBackground: true,
         });
 
+        return avWindow;
 
-        return 'loaded Example';
     }
 }

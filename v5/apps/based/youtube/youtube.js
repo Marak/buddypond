@@ -38,7 +38,7 @@ export default class Youtube {
             if (this.player && options.context) {
                 this.player.loadVideoById(options.context);
             }
-            return;
+            return this.youtubeWindow;
         }
 
         this.youtubeWindow = this.bp.apps.ui.windowManager.createWindow({
@@ -86,6 +86,7 @@ export default class Youtube {
             },
             origin: window.location.origin
         });
+        return this.youtubeWindow;
     }
 
     onPlayerReady(event) {

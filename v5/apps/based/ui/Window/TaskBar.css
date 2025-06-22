@@ -40,6 +40,7 @@
     transition: transform 0.3s ease, background-color 0.2s ease;
     background: none;
     cursor: pointer;
+    color: #ececed;
 }
 
 .taskbar-item img {

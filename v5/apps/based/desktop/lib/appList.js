@@ -25,7 +25,8 @@ export default {
     "label": "Buddy Apps",
     "description": "Create hosted Apps for Buddy Pond",
     "onClick": "bp.open('pad')",
-    "categories": ["productivity", "creative", "community"]
+    "categories": ["productivity", "creative", "community"],
+    "alias": ["buddy-apps"]
   },
   "pond": {
     "icon": "desktop/assets/images/icons/icon_pond_64.png",
@@ -40,7 +41,8 @@ export default {
     "description": "Browse and manage your files",
     "onClick": "bp.open('file-explorer')",
     "desktopOnly": true,
-    "categories": ["files", "productivity"]
+    "categories": ["files", "productivity"],
+    "alias": ["buddy-files", "files"]
   },
 
 "plays-doodle-jump-extra": {
@@ -50,6 +52,7 @@ export default {
     "onClick": "bp.open('doodle-jump-extra')",
     "categories": ["games", "entertainment"],
     "author": "Plays.org",
+    "alias": ["doodle-jump"],
   },
   "plays-malpek": {
     "icon": "desktop/assets/images/icons/icon_plays-malpek_64.png",
@@ -58,6 +61,7 @@ export default {
     "onClick": "bp.open('plays-malpek')",
     "categories": ["games", "entertainment"],
     "author": "Plays.org",
+    "alias": ["malpek"],
   },
 
 
@@ -84,6 +88,7 @@ export default {
     "onClick": "bp.open('frvr-greed')",
     "categories": ["games", "entertainment"],
     "author": "FRVR Games",
+    "alias": ["greed"]
   },
 
 
@@ -119,7 +124,8 @@ export default {
     "label": "IDC Cable",
     "description": "Watch and browse YouTube videos",
     "onClick": "bp.open('youtube')",
-    "categories": ["entertainment", "media"]
+    "categories": ["entertainment", "media"],
+    "alias": ["idc"]
   },
   "camera": {
     "icon": "desktop/assets/images/icons/icon_camera_64.png",
@@ -145,7 +151,8 @@ export default {
     "label": "Fluid Simulation",
     "description": "Interact with a fluid dynamics simulation",
     "onClick": "bp.open('fluid-simulation')",
-    "categories": ["creative", "entertainment"]
+    "categories": ["creative", "entertainment"],
+    "alias": ["fluids"]
   },
   "sampler": {
     "icon": "desktop/assets/images/icons/icon_midifighter_64.png",
@@ -160,7 +167,8 @@ export default {
     "label": "Audio Visuals",
     "description": "Experience audio-responsive visuals",
     "onClick": "bp.open('audio-visual')",
-    "categories": ["creative", "entertainment", "audio"]
+    "categories": ["creative", "entertainment", "audio"],
+    "alias": ["av"]
   },
   "chalkboard": {
     "icon": "desktop/assets/images/icons/icon_chalkboard_64.png",
@@ -230,18 +238,20 @@ export default {
   "frvr-basketball": {
     "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.png",
     "label": "BasketBall",
-    "description": "Play Basketball FRVR game",
+    "description": "Play Basketball game",
     "onClick": "bp.open('frvr-basketball')",
     "categories": ["games", "entertainment"],
     "author": "FRVR Games",
+    "alias": ["basketball"]
   },
   "frvr-bowlingo": {
     "icon": "desktop/assets/images/icons/icon_frvr-bowlingo_64.png",
     "label": "Bowlingo",
-    "description": "Play Bowlingo FRVR game",
+    "description": "Play Bowlingo game",
     "onClick": "bp.open('frvr-bowlingo')",
     "categories": ["games", "entertainment"],
     "author": "FRVR Games",
+    "alias": ["bowling"]
   },
   "mantra": {
     "icon": "desktop/assets/images/icons/icon_mantra_64.png",
@@ -345,6 +355,16 @@ export default {
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
+  /*
+  "aero-player": {
+    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
+    "label": "Aero Player",
+    "description": "Play music with Aero Player",
+    "onClick": "bp.open('aero-player')",
+    "categories": ["audio", "music", "entertainment"],
+    "author": "Swayam"
+  },
+  */
 
   "motd": {
     "icon": "desktop/assets/images/icons/icon_console_64.png",

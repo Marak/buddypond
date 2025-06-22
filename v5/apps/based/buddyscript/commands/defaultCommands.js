@@ -589,6 +589,13 @@ let legacyCommands = {
     description: 'Search and Create Animated GIFs',
     icon: 'gifstudio'
   },
+  greed: {
+    command: function (params, context) {
+      bp.open('frvr-greed', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Greed Game',
+    icon: 'frvr-greed'
+  },
   image: {
     command: function (params, context) {
       bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'pexels' });

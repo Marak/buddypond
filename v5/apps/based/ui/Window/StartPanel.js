@@ -22,6 +22,8 @@ export default class StartPanel {
         searchInput.className = 'start-panel-search';
         searchInput.type = 'text';
         searchInput.placeholder = 'Search apps...';
+        searchInput.autocomplete = 'off'; // ✅ Disable browser autofill/autocomplete
+
 
         const recentSection = document.createElement('div');
         recentSection.className = 'start-panel-section';
@@ -48,8 +50,6 @@ export default class StartPanel {
         const recentApps = (window.bp?.apps?.ui?.recentApps || []).slice(0, 10);
         // console.log('Recent apps:', recentApps);
         recentApps.forEach(appData => {
-            //appData.app = appData.app || appName; // Ensure appName is available
-            //appData.id = appData.id || appName; // Ensure id is available
             const app = this.createAppTile(appData);
             recentGrid.appendChild(app);
         });
@@ -57,10 +57,9 @@ export default class StartPanel {
         // Populate all apps (stub)
         const appList = window.bp?.apps?.desktop?.appList || {};
 
-        // TODO: we should have a sort on here, maybe preserve appList order itself to keep it simple
         const allAppEntries = Object.entries(appList);
         allAppEntries.forEach(([appName, appData]) => {
-            if (appData.adminOnly && this.bp.me !== 'Marak') { // TODO: admin rbac
+            if (appData.adminOnly && this.bp.me !== 'Marak') { // Remark: admin rbac
                 // Skip apps that are admin-only unless the user is Marak
                 return;
             }
@@ -73,34 +72,33 @@ export default class StartPanel {
         // Live search filtering
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase();
+
+            // Toggle recentSection visibility based on query
+            if (query.length > 0) {
+                recentSection.style.display = 'none';
+            } else {
+                recentSection.style.display = '';
+            }
+
             allGrid.querySelectorAll('.start-panel-app').forEach(el => {
                 const label = el.dataset.name.toLowerCase();
                 let _app = this.bp.apps.desktop.appList[el.dataset.id];
-                console.log('Searching app:', el.dataset.app, _app);
                 let showResult = false;
+
                 if (_app) {
-                    console.log('Found app in appList', _app);
-                    // first search the label
                     if (label.includes(query)) {
                         showResult = true;
                     }
-                    // then search the category
                     if (!showResult && _app.categories) {
-                        console.log('App has categories', _app.categories);
-                        // _app.category is an array of strings, so we need to check if any of them match
                         showResult = _app.categories.some(cat => cat.toLowerCase().includes(query));
                     }
                 }
 
-                console.log('el.dataset.name', el.dataset, 'query', query);
-                if (showResult) {
-                    el.style.display = 'flex'
-                } else {
-                    el.style.display = 'none';
-                }
-                // el.style.display = label.includes(query) ? '' : 'none';
+                el.style.display = showResult ? 'flex' : 'none';
             });
         });
+
+        // this.enableKeyboardNavigation(panel, searchInput);
 
         this.closeEventHandler = (event) => {
             // console.log('click event target', event.target);
@@ -163,4 +161,131 @@ export default class StartPanel {
 
         return tile;
     }
+}
+
+// Enable keyboard navigation for the start panel
+StartPanel.prototype.enableKeyboardNavigation = function (panel, searchInput) {
+    // Add keyboard navigation
+    let currentIndex = -1;
+    let appTiles = [];
+
+    function updateTilesList() {
+        appTiles = Array.from(panel.querySelectorAll('.start-panel-app'))
+            .filter(el => el.style.display !== 'none');
+    }
+    updateTilesList();
+
+    // Add highlight class
+    function focusTile(index) {
+        console.log('Focusing tile at index:', index);
+        appTiles.forEach((el, i) => {
+            el.classList.toggle('focused', i === index);
+            if (i === index) el.scrollIntoView({ block: 'nearest' });
+        });
+        currentIndex = index;
+    }
+
+    // Clear highlight
+    function clearFocus() {
+        appTiles.forEach(el => el.classList.remove('focused'));
+        currentIndex = -1;
+    }
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+            updateTilesList();
+            if (appTiles.length > 0) {
+                focusTile(0);
+                e.preventDefault();
+            }
+        }
+    });
+
+    const ROW_LENGTH = 5;
+
+    panel.addEventListener('keydown', (e) => {
+        console.log('Key pressed:', e.key);
+        if (appTiles.length === 0) return;
+
+
+        // tab key should select the first tile
+        if (e.key === 'Tab') {
+            // TODO: shift tab should select the last tile
+            if (currentIndex === -1) {
+                focusTile(0);
+            } else {
+                // Move to next tile
+                let nextIndex = currentIndex + 1;
+                if (nextIndex < appTiles.length) {
+                    focusTile(nextIndex);
+                } else {
+                    // Stay on last tile if next tile is out of bounds
+                    focusTile(appTiles.length - 1);
+                }
+            }
+            e.preventDefault();
+            return;
+        }
+
+        if (e.key === 'ArrowDown') {
+            // ✅ If nothing is focused, focus first tile
+            if (currentIndex === -1) {
+                focusTile(0);
+            } else {
+                // ✅ Move down one row
+                let nextIndex = currentIndex + ROW_LENGTH;
+                if (nextIndex < appTiles.length) {
+                    focusTile(nextIndex);
+                } else {
+                    // Stay on last tile if next row is out of bounds
+                    focusTile(appTiles.length - 1);
+                }
+            }
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowUp') {
+            if (currentIndex === -1) {
+                focusTile(0);
+            } else {
+                // ✅ Move up one row
+                let prevIndex = currentIndex - ROW_LENGTH;
+                if (prevIndex >= 0) {
+                    focusTile(prevIndex);
+                } else {
+                    // Stay on first tile if already in top row
+                    focusTile(0);
+                }
+            }
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowRight') {
+            if (currentIndex === -1) {
+                focusTile(0);
+            } else {
+                focusTile(Math.min(currentIndex + 1, appTiles.length - 1));
+            }
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowLeft') {
+            if (currentIndex === -1) {
+                focusTile(0);
+            } else {
+                focusTile(Math.max(currentIndex - 1, 0));
+            }
+            e.preventDefault();
+        }
+
+        if (e.key === 'Enter' && currentIndex >= 0) {
+            appTiles[currentIndex].click();
+            e.preventDefault();
+        }
+
+        if (e.key === 'Escape') {
+            clearFocus();
+            searchInput.focus();
+        }
+    });
 }

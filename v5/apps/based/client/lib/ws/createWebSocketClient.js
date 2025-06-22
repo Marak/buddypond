@@ -60,7 +60,7 @@ export default function createWebSocketClient(chatId) {
     // of the .aim-room-list-item with data-pond of chatId
     // TODO: Move this code elsewhere, not in the client
     // we may want to bp.emit('pond::connected') event instead
-    const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+    const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond-chat');
     if (chatWindow) {
       const roomListItem = chatWindow.content.querySelector(`.aim-room-item[data-pond="${chatId}"]`);
       if (roomListItem) {

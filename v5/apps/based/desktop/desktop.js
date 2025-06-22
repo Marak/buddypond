@@ -276,3 +276,33 @@ Desktop.prototype.addApp = addApp;
 Desktop.prototype.removeApp = removeApp;
 Desktop.prototype.client = client; // client api for desktop
 Desktop.prototype.bindKeyboardShortcuts = bindKeyboardShortcuts;
+
+// Debounced pushState wrapper
+// This prevents rapid calls to history.pushState from flickering the URL
+// and allows for a delay before the state is actually pushed to the history stack.
+// This is useful for UX such that multiple rapid changes to the URL do not cause flickering
+const DelayedPushState = (() => {
+  let timeout = null;
+  let latestState = null;
+
+  function push(stateObj, title, url, delay = 250) {
+    // Store the latest call
+    latestState = { stateObj, title, url };
+
+    // Clear any existing timer
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    // Set a new timer
+    timeout = setTimeout(() => {
+      const { stateObj, title, url } = latestState;
+      history.pushState(stateObj, title, url);
+      timeout = null;
+    }, delay);
+  }
+
+  return { push };
+})();
+
+window.DelayedPushState = DelayedPushState;

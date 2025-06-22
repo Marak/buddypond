@@ -10,7 +10,7 @@ export default class Patatap {
     }
 
     async open () {
-        this.bp.window(this.window());
+        return this.bp.window(this.window());
 
 
          // TODO: register the chat button

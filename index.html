@@ -175,6 +175,7 @@ window.top.location = 'ie.html';
       buddypond.apiKeysEndpoint = _apiKeysEndpoint;
 
       let renderBpApp = true;
+      let loadedFromApp = false;
 
       // route the SPA based on the current path
       // any routes that land here outside of root will be proxied to files.buddypond.com ( user pads )
@@ -197,6 +198,10 @@ window.top.location = 'ie.html';
         if (!currentPath.startsWith('/app/')) {
           renderBpApp = false;
           console.log('currentPath', currentPath);
+        } else {
+          // indicates that loaded from an app
+          // currently used to prevent default behaviors like opening the motd app
+          loadedFromApp = true;
         }
       }
 
@@ -204,7 +209,7 @@ window.top.location = 'ie.html';
       function bindJqueryReady() {
         // see: ReadMe.md for documentation on `desktop.use`
         $(document).ready(async function () {
-
+          bp.loadedFromApp = loadedFromApp;
           bp.on('bp::loading', 'update-loading-text', function (resource) {
             // desktop.log('Buddy Pond Cloud OS Loading');
             if (typeof resource === 'object') {

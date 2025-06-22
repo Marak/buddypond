@@ -24,11 +24,12 @@ window.bp_v_5 = async function bp_v_5() {
 
     await bp.load('card');
 
-    // if not mobile, open buddylist
-    await bp.open({
-        name: 'buddylist',
-        autocomplete: allCommands
-    });
+    if (!bp.loadedFromApp) {
+        await bp.open({
+            name: 'buddylist',
+            autocomplete: allCommands
+        });
+    }
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
     await bp.load('pond');
@@ -37,7 +38,9 @@ window.bp_v_5 = async function bp_v_5() {
     // bp.load('console');
     bp.load('clock');
     // bp.load('appstore'); // replaced with pads
-    bp.open('motd');
+    if (!bp.loadedFromApp) {
+        bp.open('motd');
+    }
     bp.load('say');
     bp.load('droparea');
     bp.load('file-viewer');

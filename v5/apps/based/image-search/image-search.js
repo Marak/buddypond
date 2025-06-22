@@ -111,13 +111,13 @@ export default class ImageSearch {
 
             async function sendImageToChat() {
 
-                let windowIdPrefix = this.output === 'pond' ? 'pond_message_-' : 'buddy_message_-';
+                let windowIdPrefix = this.output === 'pond' ? 'pond_message_-' : 'messages/';
 
                 let windowId = windowIdPrefix + this.context;
                 // console.log('opening chat window ', windowId)
 
                 if (this.output === 'pond') {
-                    windowId = 'pond_message_main';
+                    windowId = 'pond-chat';
                 }
 
                 let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);

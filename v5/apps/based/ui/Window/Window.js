@@ -728,7 +728,19 @@ class Window {
         if (propigate) {
             this.windowManager.focusWindow(this);
         }
+
         this.onFocus(this);
+
+        let appData = this.bp.apps.desktop.appList[this.id];
+        let pushStateId = this.id;
+        if (appData && appData.alias) {
+            // get the first entry in the alias array
+            let alias = appData.alias[0];
+            pushStateId = alias; // use the id if it exists, otherwise use the alias string
+        }
+        // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+        DelayedPushState.push({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+
     }
 
     open() {
@@ -786,6 +798,23 @@ class Window {
         this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.slice(-10); // keep only the last 10 items
         this.bp.set('recentApps', this.bp.apps.ui.recentApps);
 
+        // update the url bar push state with app id
+        // modify the url to include the app id
+
+        // load app data to find any aliases
+
+
+        let appData = this.bp.apps.desktop.appList[this.id];
+        let pushStateId = this.id;
+        console.log('appData', appData);
+        if (appData && appData.alias) {
+            // get the first entry in the alias array
+            let alias = appData.alias[0];
+            pushStateId = alias; // use the id if it exists, otherwise use the alias string
+        }
+
+        // history.pushState({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
+        DelayedPushState.push({ appId: pushStateId }, this.title, `/app/${pushStateId}`);
 
     }
     close() {
@@ -841,6 +870,10 @@ class Window {
                 this.windowManager.arrangeVerticalStacked();
             }, 100);
         }
+
+        // clear the current pushState
+        // history.pushState({}, '', '/');
+        DelayedPushState.push({}, '', '/');
 
     }
 

@@ -217,8 +217,8 @@ function isValidContextName(contextName) {
 
 function generateWindowId(windowType, contextName) {
     return windowType === "pond"
-        ? "pond_message_main"
-        : `buddy_message_-${contextName}`;
+        ? 'pond-chat'
+        : `messages/${contextName}`;
 }
 
 function handleExistingWindow(chatWindow, windowType, contextName, client, context) {
@@ -252,7 +252,7 @@ function createNewChatWindow({ windowType, contextName, windowTitle, windowId, c
                 this.data.activePonds = [];
                 // Remark: This is a special case if the entire pond window is closed at once
                 // It's important we close all active pond subscriptions
-                if (_window.id === 'pond_message_main') {
+                if (_window.id === 'pond-chat') {
                     // alert('main pond window closed')
                     // iterate through all current subscriptions and close them all
                     for (let [key, value] of bp.apps.client.messagesWsClients) {
@@ -667,7 +667,7 @@ function joinPond(pondName) {
     }
 
     // currently all ponds exists in the main "server" context, pond_messages_main
-    let chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+    let chatWindow = this.bp.apps.ui.windowManager.getWindow('pond-chat');
 
     if (!chatWindow) {
         // we may want to open  bp.open('buddylist', { context: pondName, type: 'pond' }); in this case

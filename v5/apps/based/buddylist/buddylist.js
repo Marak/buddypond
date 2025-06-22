@@ -423,7 +423,7 @@ export default class BuddyList {
 
         this.bp.on('profile::buddy::newmessage', 'open-chat-window', data => {
             // open the new chat window only if not already open
-            let windowId = `buddy_message_-` + data.name;
+            let windowId = `messages/` + data.name;
             let win = this.bp.apps.ui.windowManager.getWindow(windowId);
             if (!win) {
                 this.openChatWindow(data)
@@ -491,15 +491,15 @@ export default class BuddyList {
                 let windowId;
                 if (message.type === 'buddy') {
                     if (message.to === this.bp.me) {
-                        windowId = `buddy_message_-${message.from}`;
+                        windowId = `messages/${message.from}`;
                     } else {
-                        windowId = `buddy_message_-${message.to}`;
+                        windowId = `messages/${message.to}`;
                     }
                 }
 
                 if (message.type === 'pond') {
                     // windowId = `pond_message_-${message.to}`;
-                    windowId = 'pond_message_main';
+                    windowId = 'pond-chat';
                 }
 
                 let chatWindow = this.bp.apps.ui.windowManager.getWindow(windowId);

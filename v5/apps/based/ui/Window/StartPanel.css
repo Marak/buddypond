@@ -75,3 +75,8 @@
     color: #ddd;
     text-align: center;
 }
+
+.start-panel-app.focused {
+  outline: 2px solid #00bcd4;
+  border-radius: 4px;
+}

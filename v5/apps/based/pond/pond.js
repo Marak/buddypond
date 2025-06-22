@@ -40,7 +40,7 @@ export default class Pond {
                 // console.log('Received hotpond::activePonds event with data:', data);
                 this.data.hotPonds = data;
 
-                const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+                const chatWindow = this.bp.apps.ui.windowManager.getWindow('pond-chat');
                 if (!chatWindow) {
                     console.log('Pond message main window not found, cannot update room list');
                 } else {
@@ -98,7 +98,7 @@ export default class Pond {
             return;
         }
 
-        const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond_message_main');
+        const pondMainWindow = this.bp.apps.ui.windowManager.getWindow('pond-chat');
         if (pondMainWindow) {
             this.bp.apps.buddylist.joinPond(pondName);
             pondMainWindow.focus();

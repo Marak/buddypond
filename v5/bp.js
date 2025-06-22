@@ -51,6 +51,20 @@ bp.open = async function open(app, config = { context: 'default' }) {
     // console.log('bp.open', app, config)
     let appName = app;
     if (typeof app === 'string') {
+        // See if the requested app is an alias in the desktop appList
+        // This allows for loading apps by their alias names
+        if (this.apps.desktop && this.apps.desktop.appList) {
+            let appList = this.apps.desktop.appList;
+            // iterate through all entries in appList and see if appName matches any entries in alias array
+            for (let key in appList) {
+                let appData = this.apps.desktop.appList[key];
+                if (appData && appData.alias && Array.isArray(appData.alias) && appData.alias.includes(appName)) {
+                    appName = key; // found an alias
+                    break;
+                }
+            }
+        }
+
         // console.log('string loading async import app', appName);
         await bp.importModule(appName, {}, true);
 
@@ -101,7 +115,8 @@ bp.load = async function load(resource, config = {}) {
 }
 
 bp.importModule = async function importModule(app, config, buddypond = true, cb) {
-    // console.log('importModule', app, config, buddypond);
+    console.log('importModule', app, config, buddypond);
+
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     let appName = app;
 
