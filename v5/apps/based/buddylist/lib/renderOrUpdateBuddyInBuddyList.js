@@ -143,7 +143,7 @@ export default function renderOrUpdateBuddyInBuddyList(data) {
     // Create new element if buddy doesn't exist
     let buddyListItem = `<li data-buddy="${buddyname}" data-utime="${buddydata.utime}" class="buddy-message-sender" title="${lastSeenString}">
                           <span class="buddy-status">${newMessages}${connectedStatusIcon}${isCalling}</span> 
-                          <a data-buddy="${buddyname}" class="message-buddy" href="#" draggable="false">${buddyname}</a>
+                          <span data-buddy="${buddyname}" class="message-buddy" href="#" draggable="false">${buddyname}</span>
                         </li>`;
     buddyListItemEl = document.createElement('div');
     buddyListItemEl.innerHTML = buddyListItem;
