@@ -295,9 +295,22 @@ window.top.location = 'ie.html';
                   output: 'window'
                 });
                 console.log('Opened app:', win);
-                if (!win.isMaximized) {
-                  // if the window is not maximized, maximize it
-                  win.maximize();
+                if (win) {
+                  if (!win.isMaximized) {
+                    // if the window is not maximized, maximize it
+                    win.maximize();
+                  }
+                } else {
+                  bp.loadedFromApp = false;
+                  // TODO: better control of default loading apps / failover if missing /app/app-name
+                  // there was an error loading the /app/app-name
+                  // we need to re-run the default logic
+                  let allCommands = bp.apps.buddyscript.commands;
+                  await bp.open({
+                    name: 'buddylist',
+                    autocomplete: allCommands
+                  });
+                  await bp.open('motd');
                 }
               }
 

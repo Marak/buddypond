@@ -5,7 +5,7 @@ if (typeof window !== 'undefined') {
     window.bp = bp;
 }
 
-bp.version = '6.5.2';
+bp.version = '6.5.3';
 bp.log = console.log;
 bp.log = function noop() { }
 bp.error = console.error;
@@ -66,7 +66,11 @@ bp.open = async function open(app, config = { context: 'default' }) {
         }
 
         // console.log('string loading async import app', appName);
-        await bp.importModule(appName, {}, true);
+        try {
+            await bp.importModule(appName, {}, true);
+        } catch (error) {
+            console.log('Failed to load app:', appName, error);
+        }
 
     }
     if (typeof app === 'object') {
@@ -76,7 +80,7 @@ bp.open = async function open(app, config = { context: 'default' }) {
         await bp.importModule(appName, config, true);
     }
 
-    if (typeof bp.apps[appName].open === 'function') {
+    if (bp.apps[appName] && typeof bp.apps[appName].open === 'function') {
         // console.log('open', appName, config)
         let _window = await bp.apps[appName].open(config);
         if (_window && typeof _window.focus === 'function') { // focus the window if it was created
