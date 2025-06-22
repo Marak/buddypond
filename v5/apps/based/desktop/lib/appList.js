@@ -42,12 +42,24 @@ export default {
     "desktopOnly": true,
     "categories": ["files", "productivity"]
   },
-    "spellbook": {
-    "icon": "desktop/assets/images/icons/icon_spellbook_64.png",
-    "label": "Spellbook",
-    "description": "Manage scripts or commands",
-    "categories": ["tools", "productivity"]
+
+"plays-doodle-jump-extra": {
+    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
+    "label": "Doodle Jump Extra",
+    "description": "Play Doodle Jump Extra game",
+    "onClick": "bp.open('doodle-jump-extra')",
+    "categories": ["games", "entertainment"],
+    "author": "Plays.org",
   },
+  "plays-malpek": {
+    "icon": "desktop/assets/images/icons/icon_plays-malpek_64.png",
+    "label": "Malpek",
+    "description": "Play Malpek game",
+    "onClick": "bp.open('plays-malpek')",
+    "categories": ["games", "entertainment"],
+    "author": "Plays.org",
+  },
+
 
   "frvr-kittenforce": {
     "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
@@ -117,7 +129,7 @@ export default {
     "categories": ["media", "creative"]
   },
 
-    "coin": {
+  "coin": {
     "icon": "desktop/assets/images/icons/icon_coin_64.png",
     "label": "Buddy Coins",
     "description": "Manage your virtual currency",
@@ -158,21 +170,21 @@ export default {
     "categories": ["art", "creative"],
     "chatWindowButton": ['buddy', 'pond'], // adds this app as a button in the chat window, array is types of windows to add it to
     "chatButton": {
-        text: 'Chalkboard',
-        image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
-        onclick: async (ev) => {
-            let context = ev.target.dataset.context;
-            let type = ev.target.dataset.type;
-            // Open the image search window
-            bp.open('chalkboard', {
-                output: type || 'buddy',
-                context: context,
-            });
-            return false;
-        }
-    }    
+      text: 'Chalkboard',
+      image: 'desktop/assets/images/icons/icon_chalkboard_64.png',
+      onclick: async (ev) => {
+        let context = ev.target.dataset.context;
+        let type = ev.target.dataset.type;
+        // Open the image search window
+        bp.open('chalkboard', {
+          output: type || 'buddy',
+          context: context,
+        });
+        return false;
+      }
+    }
   },
-    "piano": {
+  "piano": {
     "icon": "desktop/assets/images/icons/icon_piano_64.png",
     "label": "Piano",
     "description": "Play a virtual piano keyboard",
@@ -180,6 +192,8 @@ export default {
     "desktopOnly": true,
     "categories": ["music", "creative"]
   },
+
+
 
   "portfolio": {
     "icon": "desktop/assets/images/icons/icon_portfolio_64.png",
@@ -292,13 +306,21 @@ export default {
     "description": "Classic Solitaire card game",
     "categories": ["games"]
   },
+
+  "spellbook": {
+    "icon": "desktop/assets/images/icons/icon_spellbook_64.png",
+    "label": "Spellbook",
+    "description": "Manage scripts or commands",
+    "categories": ["tools", "productivity"]
+  },
+
   "globe": {
     "icon": "desktop/assets/images/icons/icon_globe_64.png",
     "label": "Globe",
     "description": "Visualize global network data",
     "categories": ["tools"]
   },
-    "file-viewer": {
+  "file-viewer": {
     "icon": "desktop/assets/images/icons/icon_file-viewer_64.png",
     "label": "File Viewer",
     "description": "View files in various formats",
@@ -331,16 +353,7 @@ export default {
     "onClick": "bp.open('motd')",
     "categories": ["social", "community"],
     "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
-  },
-
-  /*
-  "doodle-jump-extra": {
-    "icon": "desktop/assets/images/icons/icon_doodle-jumo-extra_64.png",
-    "label": "Doodle Jump Extra",
-    "description": "Play Doodle Jump Extra game",
-    "onClick": "bp.open('doodle-jump-extra')",
-    "categories": ["games", "entertainment"],
-    "author": "Plays.org",
   }
-  */
+
+
 }
