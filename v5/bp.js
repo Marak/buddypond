@@ -115,7 +115,7 @@ bp.load = async function load(resource, config = {}) {
 }
 
 bp.importModule = async function importModule(app, config, buddypond = true, cb) {
-    console.log('importModule', app, config, buddypond);
+    // console.log('importModule', app, config, buddypond);
 
     let modulePath = bp.config.host + `/v5/apps/based/${app}/${app}.js`;
     let appName = app;
