@@ -60,6 +60,10 @@ export default class StartPanel {
         // TODO: we should have a sort on here, maybe preserve appList order itself to keep it simple
         const allAppEntries = Object.entries(appList);
         allAppEntries.forEach(([appName, appData]) => {
+            if (appData.adminOnly && this.bp.me !== 'Marak') { // TODO: admin rbac
+                // Skip apps that are admin-only unless the user is Marak
+                return;
+            }
             appData.app = appData.app || appName; // Ensure appName is available
             appData.id = appData.id || appName; // Ensure id is available
             const app = this.createAppTile(appData, appData.icon);
