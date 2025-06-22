@@ -190,12 +190,12 @@ function replaceShortcodes(text) {
 }
 
 // Function to handle text area input and replace shortcodes
-function handleEmojiInput(event) {
+function handleEmojiInput(event, $sendButton) {
     const textarea = event.target;
     const $textarea = $(textarea);
     const cursorPos = textarea.selectionStart;
     const originalText = $textarea.val();
-    const newText = replaceShortcodes(originalText);
+    const newText = replaceShortcodes.call(this, originalText);
 
     if (newText !== originalText) {
         $textarea.val(newText);

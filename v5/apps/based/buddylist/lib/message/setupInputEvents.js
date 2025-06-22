@@ -7,7 +7,9 @@ export default function setupInputEvents(windowType, contextName, chatWindow) {
     // Trigger autocomplete manually on input
     let that = this;
     $input.on("input", function (event) {
-        that.handleEmojiInput(event);
+        const $sendButton = $(".aim-send-btn", chatWindow.content);
+
+        that.handleEmojiInput(event, $sendButton);
         const cursorPos = this.selectionStart;
         const inputValue = $input.val();
         const context = that.getInputContext(inputValue, cursorPos);
