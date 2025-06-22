@@ -17,6 +17,7 @@
   <meta name="twitter:image"
     content="https://github.com/Marak/buddypond-assets/raw/master/promo/buddypond-demo-april-2022.gif">
   <title>Buddy Pond</title>
+  <base href="/">
   <!--[if lt IE 7]>
 <script>
 window.top.location = 'ie.html';
@@ -134,7 +135,6 @@ window.top.location = 'ie.html';
 
       if (devmode) {
         // localIp = '192.168.64.1';
-
         _portfolioEndpoint = `http://${localIp}:9002`;
         _coinEndpoint = `http://${localIp}:9001`;
         _buddylistWsEndpoint = `ws://${localIp}:8787/ws/buddylist`;
@@ -155,7 +155,7 @@ window.top.location = 'ie.html';
       }
 
       // _host = 'https://' + localIp;
-      // _errorsEndpoint = `https://${localIp}:8787/error`;
+      // _errorsEndpoint = `http://${localIp}:9010`;
 
       buddypond.host = _host;
       buddypond.endpoint = _api + '/api/v6';
@@ -192,10 +192,12 @@ window.top.location = 'ie.html';
       // document.write currentPath
 
       if (currentPath !== '/') {
-        renderBpApp = false;
-
-        console.log('currentPath', currentPath);
-
+        // check if route is /app/app-name, if so we still wil render the app
+        // but we will not render the BuddyPad iframe
+        if (!currentPath.startsWith('/app/')) {
+          renderBpApp = false;
+          console.log('currentPath', currentPath);
+        }
       }
 
       bindJqueryReady();
@@ -215,25 +217,7 @@ window.top.location = 'ie.html';
             }
           });
 
-          /*
-          bp.on('bp::loaded', 'update-loading-text', function (resource) {
-            // desktop.log('Buddy Pond Cloud OS Loading');
-            console.log('Loaded ' + resource + '...');
-            //$('.loaderText').text(resource + ' loaded');
-          });
-          */
 
-          // Use this to debug the focus() method
-          /*
-          (function () {
-            var originalFocus = HTMLElement.prototype.focus;
-            HTMLElement.prototype.focus = function () {
-              console.log('Native focus() called on:', this);
-              console.trace();
-              return originalFocus.apply(this, arguments);
-            };
-          })();
-          */
 
           if (!renderBpApp) {
             // render the app
@@ -269,8 +253,6 @@ window.top.location = 'ie.html';
 
           }
 
-
-
           await bp_v_5();
 
           let documentReadyTime = new Date();
@@ -290,11 +272,29 @@ window.top.location = 'ie.html';
           $('#loaderHolder').fadeOut({
             easing: 'linear',
             duration: fadeInDelay,
-            complete: function () {
+            complete: async function () {
               $('#mainOverlay').fadeIn({
                 easing: 'linear',
                 duration: 333
               });
+
+              // check if currentPath starts with /app/app-name
+              // if so, then extra app-name and call bp.open('app-name');
+              if (currentPath.startsWith('/app/')) {
+                // get the app name from the currentPath
+                let appName = currentPath.split('/')[2];
+                console.log('Opening app:', appName);
+                // open the app
+                let win = await bp.open(appName, {
+                  context: 'buddypond',
+                  output: 'window'
+                });
+                console.log('Opened app:', win);
+                if (!win.isMaximized) {
+                  // if the window is not maximized, maximize it
+                  win.maximize();
+                }
+              }
 
               // check if we have a query param named rtoken
               let urlParams = new URLSearchParams(window.location.search);
