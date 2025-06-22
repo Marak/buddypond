@@ -10,7 +10,9 @@ export default class BowlingoFRVR {
     }
 
     async open () {
-        return this.bp.window(this.window());
+        let win = this.bp.window(this.window());
+        win.maximize();
+        return win;
     }
 
     window () {

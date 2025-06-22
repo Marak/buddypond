@@ -10,6 +10,10 @@ export default async function castSpell(targetType, targetName, spellName, spell
       result = {
         error: err.message
       };
+      if (err.message === 'HTTP error! status: 401') {
+        result.error = 'Please log in to cast spells.';
+      }
+
     }
     console.log('castSpell result', result);
     return result;
