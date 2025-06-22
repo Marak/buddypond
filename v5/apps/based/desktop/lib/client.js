@@ -20,7 +20,7 @@ client.incrementAppInstallCount = async function (appName) {
             },
             body: JSON.stringify({ appIds: appName }),
         });
-        console.log(`Install count for app ${appName} incremented successfully.`);
+        // console.log(`Install count for app ${appName} incremented successfully.`);
     } catch (error) {
         console.error(`Failed to increment install count for app ${appName}:`, error);
     }

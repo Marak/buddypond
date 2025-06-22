@@ -9,7 +9,7 @@ class Window {
             title = "Window", // Title of the window
             width = '400px', // Default width
             height = '300px', // Default height
-            app = 'ui', // default app
+            app = 'default', // default app
             type = 'singleton', // Default type ( intended to not have siblings )
             context = 'default', // Default context
             content = '', // Default content
@@ -46,7 +46,14 @@ class Window {
         this.icon = icon;
         this.width = width;
         this.height = height;
-        this.app = app;
+
+        if (app !== 'default') {
+            this.app = app;
+        } else {
+            this.app = id;
+        }
+
+        
         this.type = type;
         this.x = x;
         this.y = y;
@@ -645,7 +652,6 @@ class Window {
                 this.restore();
             } else {
                 // Minimize the window
-                console.log('hiding content area');
                 this.container.style.display = "none";  // Hide content area
                 this.isMinimized = true;
             }
@@ -706,7 +712,7 @@ class Window {
 
             } else {
                 this.container.style.width = "100vw";
-                this.container.style.height = "calc(100vh - 75px)";
+                this.container.style.height = "calc(100vh - 104px)";
                 this.container.style.top = pixelOffset;
                 this.container.style.left = "0";
 
@@ -747,15 +753,18 @@ class Window {
         }
 
         this.bp.emit('window::open', this);
+
         // console.log('Window opened:', this);
         let _app = {
             id: this.id,
             app: this.app,
             label: this.title,
             icon: this.icon,
-            app: this.app,
-            type: this.type
+            // app: this.app,
+            type: this.type,
+            context: this.context
         };
+        // console.log('openWindow openItem', _app);
         this.bp.apps.ui.windowManager.taskBar.openItem(_app);
 
         // add the items to this.bp.apps.ui.recentApps
@@ -767,8 +776,8 @@ class Window {
         
         this.bp.apps.ui.recentApps.unshift({
             id: this.id,
-            app: this.id,
-            label: this.title,
+            app: this.app,
+            label: this.label || this.title,
             icon: this.icon,
             type: this.type
         });

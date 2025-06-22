@@ -87,10 +87,11 @@ export default class Emulator {
             atari2600: 'Atari 2600'
         };
 
-
         return this.bp.apps.ui.windowManager.createWindow({
             id: windowId, // Use passed-in ID
+            app: 'emulator', // Use context to differentiate apps
             title: emulatorTitles[context] || 'Emulator',
+            // label: emulatorTitles[context] || 'Emulator',
             x: 50,
             y: 100,
             width: 600,

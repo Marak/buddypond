@@ -22,6 +22,8 @@ import removeApp from "./lib/apps/removeApp.js";
 import setupContextMenu from "./lib/contextmenu/setupContextMenu.js";
 import showContextMenu from "./lib/contextmenu/showContextMenu.js";
 
+import bindKeyboardShortcuts from "./lib/bindKeyboardShortcuts.js";
+
 // utils
 import buildJsTreeData from "../file-explorer/lib/buildJsTreeData.js";
 import viewSource from "./lib/viewSource.js";
@@ -75,6 +77,7 @@ export default class Desktop {
 
         // Render the default shortcuts
         defaultDesktopShortcuts.call(this);
+        // this.bindKeyboardShortcuts();
 
         /*
         if (this.bp.settings.wallpaper_url) {
@@ -272,3 +275,4 @@ Desktop.prototype.renameShortCut = renameShortCut;
 Desktop.prototype.addApp = addApp;
 Desktop.prototype.removeApp = removeApp;
 Desktop.prototype.client = client; // client api for desktop
+Desktop.prototype.bindKeyboardShortcuts = bindKeyboardShortcuts;

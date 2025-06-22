@@ -6,9 +6,8 @@ export default function eventBind (helpWindow){
     // TODO: add window::focus event..., WindowManager? probably ui app is smarter
     this.bp.on('window::open', 'update-help-context', async (data) => {
 
-
         // alert('window::open');
-        console.log('window::open', data);
+        // console.log('window::open', data);
 
         let appId = data.id; // window id ( for now )
         let type = data.type; // window type ( for now

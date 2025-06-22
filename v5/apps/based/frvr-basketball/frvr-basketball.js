@@ -15,7 +15,7 @@ export default class BasketBall_FRVR {
 
     window () {
         return {
-            id: 'basketball_frvr',
+            id: 'frvr-basketball',
             title: 'BasketBall FRVR',
             icon: 'desktop/assets/images/icons/icon_basketball-frvr_64.png',
             x: 250,

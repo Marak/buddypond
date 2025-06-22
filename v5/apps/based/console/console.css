@@ -29,7 +29,6 @@
       resize: none;
       cursor: text;
       box-sizing: border-box;
-      background-color: #ebebeb;
       padding: 2px 10px;
       flex-grow: 1;
       border: none;
@@ -80,7 +79,6 @@
       resize: none;
       cursor: text;
       box-sizing: border-box;
-      background-color: #ebebeb;
       padding: 2px 10px;
       flex-grow: 1;
       border: none;

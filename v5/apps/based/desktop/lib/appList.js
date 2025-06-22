@@ -7,7 +7,7 @@ export default {
     adminOnly: true,
   },
   "profile": {
-    "icon": "desktop/assets/images/icons/icon_profile_64.png",
+    "icon": "desktop/assets/images/icons/icon_myprofile_64.png",
     "label": "My Profile",
     "description": "Manage your profile and settings",
     "onClick": "bp.open('profile')",
@@ -42,12 +42,20 @@ export default {
     "desktopOnly": true,
     "categories": ["files", "productivity"]
   },
-  "file-viewer": {
-    "icon": "desktop/assets/images/icons/icon_file-viewer_64.png",
-    "label": "File Viewer",
-    "description": "View files in various formats",
-    "onClick": "bp.open('file-viewer')",
-    "categories": ["files", "productivity"]
+    "spellbook": {
+    "icon": "desktop/assets/images/icons/icon_spellbook_64.png",
+    "label": "Spellbook",
+    "description": "Manage scripts or commands",
+    "categories": ["tools", "productivity"]
+  },
+
+  "frvr-kittenforce": {
+    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
+    "label": "Kitten Force",
+    "description": "Play Kitten Force FRVR game",
+    "onClick": "bp.open('frvr-kittenforce')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
   },
   "minipaint": {
     "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
@@ -57,31 +65,17 @@ export default {
     "onClick": "bp.open('minipaint')",
     "categories": ["art", "creative"]
   },
-  "motd": {
-    "icon": "desktop/assets/images/icons/icon_console_64.png",
-    "label": "MOTD",
-    "description": "Message of the Day",
-    "onClick": "bp.open('motd')",
-    "categories": ["social", "community"],
-    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
+  "frvr-greed": {
+    "icon": "desktop/assets/images/icons/icon_frvr-greed_64.png",
+    "label": "Greed",
+    "description": "Play Greedy FRVR game",
+    "onClick": "bp.open('frvr-greed')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
   },
-  "paint": {
-    "icon": "desktop/assets/images/icons/icon_paint_64.png",
-    "label": "Paint",
-    "author": "Isaiah Odhner",
-    "description": "A Classic Retro Style Image Editor",
-    "onClick": "bp.open('paint')",
-    "categories": ["art", "creative"],
-    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
-  },
-  "painterro": {
-    "icon": "desktop/assets/images/icons/icon_painterro_64.png",
-    "label": "Painterro",
-    "author": "Ivan Borshchov",
-    "description": "Easy to use image editing tool",
-    "onClick": "bp.open('painterro')",
-    "categories": ["art", "creative"]
-  },
+
+
+
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
@@ -122,14 +116,17 @@ export default {
     "onClick": "bp.open('camera')",
     "categories": ["media", "creative"]
   },
-  "piano": {
-    "icon": "desktop/assets/images/icons/icon_piano_64.png",
-    "label": "Piano",
-    "description": "Play a virtual piano keyboard",
-    "onClick": "bp.open('piano')",
-    "desktopOnly": true,
-    "categories": ["music", "creative"]
+
+    "coin": {
+    "icon": "desktop/assets/images/icons/icon_coin_64.png",
+    "label": "Buddy Coins",
+    "description": "Manage your virtual currency",
+    "onClick": "bp.open('coin')",
+    "categories": ["finance"]
   },
+
+
+
   "fluid-simulation": {
     "icon": "desktop/assets/images/icons/icon_fluidsimulation_64.png",
     "author": "Pavel Dobryakov",
@@ -175,13 +172,15 @@ export default {
         }
     }    
   },
-  "coin": {
-    "icon": "desktop/assets/images/icons/icon_coin_64.png",
-    "label": "Buddy Coins",
-    "description": "Manage your virtual currency",
-    "onClick": "bp.open('coin')",
-    "categories": ["finance"]
+    "piano": {
+    "icon": "desktop/assets/images/icons/icon_piano_64.png",
+    "label": "Piano",
+    "description": "Play a virtual piano keyboard",
+    "onClick": "bp.open('piano')",
+    "desktopOnly": true,
+    "categories": ["music", "creative"]
   },
+
   "portfolio": {
     "icon": "desktop/assets/images/icons/icon_portfolio_64.png",
     "label": "Portfolio",
@@ -195,6 +194,40 @@ export default {
     "description": "Play and manage audio files",
     "onClick": "bp.open('audio-player')",
     "categories": ["media", "audio"]
+  },
+  "paint": {
+    "icon": "desktop/assets/images/icons/icon_paint_64.png",
+    "label": "Paint",
+    "author": "Isaiah Odhner",
+    "description": "A Classic Retro Style Image Editor",
+    "onClick": "bp.open('paint')",
+    "categories": ["art", "creative"],
+    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
+  },
+  "painterro": {
+    "icon": "desktop/assets/images/icons/icon_painterro_64.png",
+    "label": "Painterro",
+    "author": "Ivan Borshchov",
+    "description": "Easy to use image editing tool",
+    "onClick": "bp.open('painterro')",
+    "categories": ["art", "creative"]
+  },
+  /* FRVR Games */
+  "frvr-basketball": {
+    "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.png",
+    "label": "BasketBall",
+    "description": "Play Basketball FRVR game",
+    "onClick": "bp.open('frvr-basketball')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
+  },
+  "frvr-bowlingo": {
+    "icon": "desktop/assets/images/icons/icon_frvr-bowlingo_64.png",
+    "label": "Bowlingo",
+    "description": "Play Bowlingo FRVR game",
+    "onClick": "bp.open('frvr-bowlingo')",
+    "categories": ["games", "entertainment"],
+    "author": "FRVR Games",
   },
   "mantra": {
     "icon": "desktop/assets/images/icons/icon_mantra_64.png",
@@ -265,6 +298,13 @@ export default {
     "description": "Visualize global network data",
     "categories": ["tools"]
   },
+    "file-viewer": {
+    "icon": "desktop/assets/images/icons/icon_file-viewer_64.png",
+    "label": "File Viewer",
+    "description": "View files in various formats",
+    "onClick": "bp.open('file-viewer')",
+    "categories": ["files", "productivity"]
+  },
   "hacker-typer": {
     "icon": "desktop/assets/images/icons/icon_hacker-typer_64.png",
     "label": "Hack Typer",
@@ -283,46 +323,16 @@ export default {
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
-  "spellbook": {
-    "icon": "desktop/assets/images/icons/icon_spellbook_64.png",
-    "label": "Spellbook",
-    "description": "Manage scripts or commands",
-    "categories": ["tools", "productivity"]
+
+  "motd": {
+    "icon": "desktop/assets/images/icons/icon_console_64.png",
+    "label": "MOTD",
+    "description": "Message of the Day",
+    "onClick": "bp.open('motd')",
+    "categories": ["social", "community"],
+    "chatWindowButton": ['buddy', 'pond'] // adds this app as a button in the chat window, array is types of windows to add it to
   },
 
-  /* FRVR Games */
-  "frvr-basketball": {
-    "icon": "desktop/assets/images/icons/icon_basketball-frvr_64.png",
-    "label": "BasketBall FRVR",
-    "description": "Play Basketball FRVR game",
-    "onClick": "bp.open('frvr-basketball')",
-    "categories": ["games", "entertainment"],
-    "author": "FRVR Games",
-  },
-  "frvr-kittenforce": {
-    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
-    "label": "Kitten Force FRVR",
-    "description": "Play Kitten Force FRVR game",
-    "onClick": "bp.open('frvr-kittenforce')",
-    "categories": ["games", "entertainment"],
-    "author": "FRVR Games",
-  },
-  "frvr-bowlingo": {
-    "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
-    "label": "Bowlingo FRVR",
-    "description": "Play Bowlingo FRVR game",
-    "onClick": "bp.open('frvr-bowlingo')",
-    "categories": ["games", "entertainment"],
-    "author": "FRVR Games",
-  },
-  "frvr-greed": {
-    "icon": "desktop/assets/images/icons/icon_frvr-greed_64.png",
-    "label": "Greed FRVR",
-    "description": "Play Greedy FRVR game",
-    "onClick": "bp.open('frvr-greed')",
-    "categories": ["games", "entertainment"],
-    "author": "FRVR Games",
-  },
   /*
   "doodle-jump-extra": {
     "icon": "desktop/assets/images/icons/icon_doodle-jumo-extra_64.png",

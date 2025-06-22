@@ -7,7 +7,7 @@ export default class StartPanel {
     }
 
     open() {
-        console.log('Opening start panel', this.panelElement);
+        // console.log('Opening start panel', this.panelElement);
         if (this.panelElement) {
             // if the panel is already open, close it first
             this.close();
@@ -46,11 +46,10 @@ export default class StartPanel {
 
         // Populate recent apps (stub)
         const recentApps = (window.bp?.apps?.ui?.recentApps || []).slice(0, 10);
-        console.log('Recent apps:', recentApps);
+        // console.log('Recent apps:', recentApps);
         recentApps.forEach(appData => {
             //appData.app = appData.app || appName; // Ensure appName is available
             //appData.id = appData.id || appName; // Ensure id is available
-            console.log('Adding recent app:', appData);
             const app = this.createAppTile(appData);
             recentGrid.appendChild(app);
         });
@@ -122,7 +121,6 @@ export default class StartPanel {
 
     close() {
         if (this.panelElement) {
-            console.log('Closing start panel');
             this.panelElement.remove();
             this.panelElement = null;
         }
@@ -134,7 +132,7 @@ export default class StartPanel {
     }
 
     createAppTile(appData, icon = 'icons/default.png') {
-        console.log('Creating app tile for:', appData);
+        // console.log('Creating app tile for:', appData);
         let name = appData.id || appData.appName || appData.name || appData.label || 'Unknown App';
         icon = appData.icon || icon || 'icons/default.png';
         const tile = document.createElement('div');
@@ -154,7 +152,6 @@ export default class StartPanel {
         tile.appendChild(label);
 
         tile.onclick = async () => {
-            console.log('Launching app:', appData);
             let win = await this.bp.open(appData.app || appData.id, { context: appData.context });
             this.onAppLaunch(name);
             this.close();
@@ -163,4 +160,3 @@ export default class StartPanel {
         return tile;
     }
 }
-

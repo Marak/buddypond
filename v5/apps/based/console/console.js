@@ -94,14 +94,36 @@ export default class Console {
         $('.console_message_text', consoleWindow.content).on('keypress', (e) => {
             if (e.which === 13) {
                 let val = $('.console_message_text', consoleWindow.content).val();
-                this.bp.apps.buddyscript.parseCommand(val);
+                let bs = this.bp.apps.buddyscript.parseCommand(val);
+                console.log('buddyscript result', bs);
                 $('.console_message_text', consoleWindow.content).val('');
+
+
+                if (bs.pipe) {
+                    //if (now - messageTime < 10000) {
+                    // pipeable / immediate run commands should only persist for 10 seconds
+                    bs.pipe({
+                    chatWindow: consoleWindow,
+                    contextName: 'console',
+                    windowType: 'console'
+                    });
+                    // clear the input
+                    // $('.aim-input', chatWindow.content).val('');
+                    return false;
+
+                    // }
+                    }
+
                 this.log(val);
                 e.preventDefault();
                 return false;
 
             }
         });
+
+        // focus on the console_message_text
+        $('.console_message_text', consoleWindow.content).focus();
+        return consoleWindow;
 
     }
 

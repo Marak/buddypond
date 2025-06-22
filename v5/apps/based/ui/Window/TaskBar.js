@@ -12,7 +12,7 @@ export default class TaskBar {
         this.shortcuts = new Set(); // id
 
 
-        function openStartPanel () {
+        function openStartPanel() {
             if (!this.startPanel) {
                 this.startPanel = new StartPanel({ bp: this.bp });
             }
@@ -77,18 +77,32 @@ export default class TaskBar {
         if (this.shortcuts.has(id)) {
             makeOption('Unpin from Taskbar', () => {
                 this.shortcuts.delete(id);
-                this.removeItem(id);
+                // this.removeItem(id);
             });
         } else {
 
-            // don't allow pin of buddylist with context
             if (item.app === 'buddylist' && id !== 'buddylist') {
+                // don't allow pinning buddylist with context
             } else {
+                // Remark: Issue with non-singleton apps like 'emulator'
+                // Needs to be handled differently
+                if (item.app !== 'emulator') {
+                    makeOption('Keep in Taskbar', () => {
+                        // console.log('Pinning item to taskbar:', item);
+                        // console.log('Adding shortcut to taskbar:', item.app);
+                        this.shortcuts.add(item.app || id);
+                        // save the taskbar_apps to settings
+                        let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
+                        installedTaskBarApps[item.app || id] = {
+                            app: item.app || id,
+                            context: item.context || 'default',
+                            label: item.label || id,
+                            icon: item.icon || ''
+                        };
+                        this.bp.set('taskbar_apps', installedTaskBarApps);
+                    });
+                }
 
-                makeOption('Keep in Taskbar', () => {
-                    console.log('Adding shortcut to taskbar:', id);
-                    this.shortcuts.add(id);
-                });
             }
 
         }
@@ -122,24 +136,32 @@ export default class TaskBar {
 
     addItem(config) {
         let { app, id, context, label = "", onClick, icon, isShortcut = true } = config;
-
+        // console.log('TaskBar.addItem', config);
 
         // save the taskbar_apps
+        if (context && context !== 'default') {
+            // app = app + '-' + context; // append context to app name
+        }
+
         let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
         if (id !== 'home') {
-            installedTaskBarApps[id] = {
+            installedTaskBarApps[app || id] = {
+                id: id,
                 app: app || id,
                 context: context || 'default',
                 label: label || id,
                 icon: icon || ''
             };
+            // console.log('TaskBar.addItem installedTaskBarApps', installedTaskBarApps);
 
         }
-        // save the taskbar_apps to settings
-        this.bp.set('taskbar_apps', installedTaskBarApps);
 
-        console.log('TaskBar.addItem', config);
-        console.log(onClick, typeof onClick);
+        if (isShortcut) {
+            // save the taskbar_apps to settings, if it is a shortcut
+            this.bp.set('taskbar_apps', installedTaskBarApps);
+        }
+
+        // console.log('TaskBar.addItem', config);
         if (typeof onClick !== 'function') {
             // default action is to open the app, bp.open()
             onClick = async (ev, itemElement) => {
@@ -150,25 +172,18 @@ export default class TaskBar {
                 if (!existingWindow) {
                     console.log('default onClick, opening window', id, config);
                     // Remark: this.bp wasn't scoped here? should work...
-                    console.log('what is app', app);
-                    console.log("what is id", id);
-
                     let win = await this.bp.open(app || id, { context });
-                    console.log('TaskBar.onClick bp.open', id, win);
-
+                    // console.log('TaskBar.onClick bp.open', id, win);
                 } else {
-
                     if (existingWindow.isMinimized) {
-                        console.log('TaskBar.onClick restoring window', existingWindow);
+                        // console.log('TaskBar.onClick restoring window', existingWindow);
                         existingWindow.restore();
                         existingWindow.focus();
                     } else {
-                        console.log('TaskBar.onClick minimizing window', existingWindow);
+                        // console.log('TaskBar.onClick minimizing window', existingWindow);
                         existingWindow.minimize();
                     }
-
                 }
-
                 ev.stopPropagation();
             };
         }
@@ -218,11 +233,12 @@ export default class TaskBar {
     }
 
     openItem(config) {
+        // console.log('TaskBar.openItem', config);
         let item = this.items.get(config.id);
         if (item) {
             item.isOpen = true;
             item.element.classList.add("taskbar-item-open");
-            console.log('TaskBar.openItem', item);
+            // console.log('TaskBar.openItem', item);
             // item.onClick?.(null, item.element); // call the onClick handler if it exists
         } else {
             this.addItem({ ...config, isShortcut: false }); // treat open as temporary unless marked otherwise

@@ -15,7 +15,7 @@ export default class KittenForceFRVR {
 
     window () {
         return {
-            id: 'kittenforce-frvr',
+            id: 'frvr-kittenforce',
             title: 'Kitten Force FRVR',
             icon: 'desktop/assets/images/icons/icon_kittenforce-frvr_64.png',
             x: 250,
