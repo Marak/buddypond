@@ -22,6 +22,14 @@
   background: none;
 }
 
+#mainOverlay.div,
+.bp-window-content,
+.window-main,
+.buddyListHolder {
+  background: var(--window_content-background);
+  color: var(--window_content-color);
+}
+
 #loaderHolder {
   position: absolute;
   left: 50%;

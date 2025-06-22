@@ -26,7 +26,7 @@ export default class Ramblor {
           if (!this.ramblorWindow) {
             // Create window
             this.ramblorWindow = this.bp.apps.ui.windowManager.createWindow({
-                id: 'ramblow',
+                id: 'ramblor',
                 title: 'Ramblor',
                 x: 50,
                 y: 100,

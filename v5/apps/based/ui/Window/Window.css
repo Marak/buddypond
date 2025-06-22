@@ -186,20 +186,3 @@ button {
 .window-not-resizeable {
     resize: none !important;
 }
-
-@media (max-width: 767px)  {
-    .window-container {
-        zoom: 1.5; /* Slightly zoom in for better touch interaction */
-    }
-
-    .window-title-bar {
-        height: 64px;
-        font-size: 48px;
-        padding: 32px;
-    }
-    .window-title-bar img {
-        width: 64px;
-        height: 64px;
-        margin-right: 16px;
-    }
-  }
