@@ -765,9 +765,7 @@ export default class BuddyList {
         }
 
         // show help card if local storage does not have the card shown
-        // TODO: remove false
-        // if (true || !this.bp.settings['viewed-help-card']) {
-        if (!this.showedHelp) {
+        if (this.bp.settings['viewed-help-card'] !== true) {
             let chatWindow = windowsToUpdate.values().next().value;
             this.showCard({
                 chatWindow,
@@ -776,12 +774,6 @@ export default class BuddyList {
             // console.log('showing help card', chatWindow);
             this.showedHelp = true;
         }
-
-        /*
-        if (!localStorage.getItem('buddylist-help-card-shown')) {
-            localStorage.setItem('buddylist-help-card-shown', true);
-        }
-        */
 
     }
 
