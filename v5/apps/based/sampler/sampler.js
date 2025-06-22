@@ -26,7 +26,7 @@ export default class Sampler {
             // TODO: better options for rendering apps with windows
             if (this.options.window && this.bp.apps.ui && this.bp.apps.ui.windowManager) {
                 let samplerWindow = this.bp.apps.ui.windowManager.createWindow({
-                    id: 'sampler-0',
+                    id: 'sampler',
                     title: 'Sampler',
                     x: 50,
                     y: 100,
