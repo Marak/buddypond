@@ -252,6 +252,7 @@ function arrangeDesktop() {
     if (!bp.apps.desktop || !bp.apps.ui) {
         console.log('bp.apps', bp.apps)
         console.error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
+        return;
         // throw new Error('Desktop app or UI is not loaded yet, cannot arrange shortcuts.');
     }
     if (bp.isMobile()) {
