@@ -8,6 +8,15 @@ export default async function userByIp(ip) {
 
     userByIpData = await this.client.apiRequest(`/super-admin/user-by-ip?ip=${ip}`, 'GET');
 
+    // check if userByIpData is an array
+    if (!Array.isArray(userByIpData)) {
+        console.log('userByIpData is not an array:', userByIpData);
+        // update the UI to show an error message
+        $('.api-response', '#admin-userbyIP').text(userByIpData.message);
+        return;
+    }
+    $('.api-response', '#admin-userbyIP').text('');
+
     console.log('userByIp userByIpData', userByIpData);
     const tbody = document.querySelector('#user-by-ip-table tbody');
     tbody.innerHTML = '';

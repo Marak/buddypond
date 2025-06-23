@@ -45,7 +45,7 @@ export default {
     "alias": ["buddy-files", "files"]
   },
 
-"plays-doodle-jump-extra": {
+  "plays-doodle-jump-extra": {
     "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
     "label": "Doodle Jump Extra",
     "description": "Play Doodle Jump Extra game",
@@ -63,8 +63,6 @@ export default {
     "author": "Plays.org",
     "alias": ["malpek"],
   },
-
-
   "frvr-kittenforce": {
     "icon": "desktop/assets/images/icons/icon_kittenforce-frvr_64.png",
     "label": "Kitten Force",
@@ -72,6 +70,7 @@ export default {
     "onClick": "bp.open('frvr-kittenforce')",
     "categories": ["games", "entertainment"],
     "author": "FRVR Games",
+    "alias": ["kittenforce"]
   },
   "minipaint": {
     "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
@@ -90,9 +89,6 @@ export default {
     "author": "FRVR Games",
     "alias": ["greed"]
   },
-
-
-
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
@@ -117,7 +113,8 @@ export default {
     "description": "Record and save audio clips",
     "onClick": "bp.open('soundrecorder')",
     "desktopOnly": true,
-    "categories": ["audio", "creative"]
+    "categories": ["audio", "creative"],
+    "alias": ["recorder"]
   },
   "youtube": {
     "icon": "desktop/assets/images/icons/icon_interdimensionalcable_64.png",
@@ -142,8 +139,6 @@ export default {
     "onClick": "bp.open('coin')",
     "categories": ["finance"]
   },
-
-
 
   "fluid-simulation": {
     "icon": "desktop/assets/images/icons/icon_fluidsimulation_64.png",
@@ -200,8 +195,6 @@ export default {
     "desktopOnly": true,
     "categories": ["music", "creative"]
   },
-
-
 
   "portfolio": {
     "icon": "desktop/assets/images/icons/icon_portfolio_64.png",

@@ -800,13 +800,9 @@ class Window {
 
         // update the url bar push state with app id
         // modify the url to include the app id
-
         // load app data to find any aliases
-
-
         let appData = this.bp.apps.desktop.appList[this.id];
         let pushStateId = this.id;
-        console.log('appData', appData);
         if (appData && appData.alias) {
             // get the first entry in the alias array
             let alias = appData.alias[0];
