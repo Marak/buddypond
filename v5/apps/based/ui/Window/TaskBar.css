@@ -3,7 +3,7 @@
     bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
+    display: none;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;

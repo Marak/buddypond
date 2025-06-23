@@ -283,6 +283,15 @@ window.top.location = 'ie.html';
                 duration: 333
               });
 
+              // show the .taskbar-container
+              $('.taskbar-container')
+                .css('display', 'flex')
+                .hide()
+                .fadeIn({
+                  easing: 'linear',
+                  duration: 555
+                });
+
               // check if currentPath starts with /app/app-name
               // if so, then extra app-name and call bp.open('app-name');
               if (currentPath.startsWith('/app/')) {
@@ -298,7 +307,12 @@ window.top.location = 'ie.html';
                 if (win) {
                   if (!win.isMaximized) {
                     // if the window is not maximized, maximize it
-                    win.maximize();
+                    if (win.maximize) {
+                      win.maximize();
+                    } else {
+                      // should not happen
+                      throw new Error('Window maximize function not found for ' + appName);
+                    }
                   }
                 } else {
                   bp.loadedFromApp = false;
