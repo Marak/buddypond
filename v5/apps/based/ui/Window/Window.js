@@ -354,7 +354,18 @@ class Window {
             this.content = document.createElement("iframe");
             this.content.classList.add("bp-window-content");
             this.content.src = this.iframeContent;
-            this.content.onload = () => this.setupMessageHandling();
+
+            // Remark: This is legacy settings for iframe message handling bootstrapping
+            // In more modern applications, we use broadcast channels or other methods
+            // It's important we don't attempt to setup message handling for iframes that are not from the same origin
+            let currentOrigin = window.location.origin;
+            let iframeOrigin = this.content.src;
+            // check if currentOrigin can be found in iframeOrigin
+            if (iframeOrigin.indexOf(currentOrigin) !== -1) {
+                this.content.onload = () => this.setupMessageHandling();
+            } else {
+                // console.log('not setting up legacy iframe message handling, as the iframe origin does not match current origin');
+            }
         } else {
             this.content = document.createElement("div");
             this.content.classList.add("bp-window-content");
