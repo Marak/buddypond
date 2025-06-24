@@ -26,62 +26,238 @@ export default class ComputerVision {
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/fingerpose/dist/fingerpose.min.js');
 
         await this.bp.appendCSS('/v5/apps/based/computer-vision/computer-vision.css');
+
+        this.spellMap = {
+            'tiger_seal-thumbs_up': {
+                spell: 'lightning',
+                jutsu: 'lightning',
+                type: 'jutsu',
+                emoji: '⚡',
+                label: '⚡ Lightning Jutsu!',
+            },
+            'ram_seal-thumbs_up': {
+                spell: 'flood',
+                jutsu: 'flood',
+                type: 'jutsu',
+                emoji: '🌊',
+                label: '🌊 Flood Jutsu!',
+            },
+            'victory-thumbs_up': {
+                spell: 'fireball',
+                jutsu: 'fireball',
+                type: 'jutsu',
+                emoji: '🔥',
+                label: '🔥 Fireball Jutsu!',
+            },
+            // thumbs up + thumbs down = barrelroll
+            'thumbs_up-thumbs_down': {
+                spell: 'barrelroll',
+                jutsu: 'barrelroll',
+                type: 'jutsu',
+                emoji: '🌀',
+                label: '🌀 Barrel Roll Jutsu!',
+            },
+            'thumbs_down-thumbs_up': {
+                spell: 'barrelroll',
+                jutsu: 'barrelroll',
+                type: 'jutsu',
+                emoji: '🌀',
+                label: '🌀 Barrel Roll Jutsu!',
+            },
+
+            // Add more spells here!
+        };
+
         console.log(fp.Gestures)
         const { Finger, FingerCurl, FingerDirection, GestureDescription } = fp;
 
-
-
-        // 🤜 "Tiger Seal" – fist with thumbs tucked
-        const tigerSealGesture = new GestureDescription('tiger_seal');
+        const fistGesture = new GestureDescription('fist_thumb_in');
         for (let finger of Finger.all) {
-            tigerSealGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+            fistGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
         }
-        tigerSealGesture.addCurl(Finger.Thumb, FingerCurl.FullCurl, 1.0);
 
-        // ✋ "Ram Seal" – open palm
-        const ramSealGesture = new GestureDescription('ram_seal');
-        for (let finger of Finger.all) {
-            ramSealGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
+        const openPalmGesture = new fp.GestureDescription('open_palm');
+
+        // All fingers extended and vertical
+        for (let finger of fp.Finger.all) {
+            openPalmGesture.addCurl(finger, fp.FingerCurl.NoCurl, 1.0);
+            openPalmGesture.addDirection(finger, fp.FingerDirection.VerticalUp, 0.9);
         }
+
+        // Optional: Suggest finger spread (for added realism if your detector supports it)
+        openPalmGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpLeft, 0.5);
+        openPalmGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpRight, 0.5);
+
+
+        // 🖖 Boar Seal – Spock hand, index/middle separated from ring/pinky
+        /*
+        const boarSealGesture = new fp.GestureDescription('boar_seal');
+        boarSealGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.NoCurl, 1.0);
+        // Differentiate with direction: index/middle vs. ring/pinky form a "V"
+        boarSealGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpLeft, 0.9);
+        boarSealGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpLeft, 0.9);
+        boarSealGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalUpRight, 0.9);
+        boarSealGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpRight, 0.9);
+        boarSealGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalLeft, 0.8); // Thumb often extends outward
+        */
 
         // 🤞 "Bird Seal" – middle over index
+        /*
         const birdSealGesture = new GestureDescription('bird_seal');
         birdSealGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
         birdSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0);
         birdSealGesture.addCurl(Finger.Ring, FingerCurl.FullCurl, 1.0);
         birdSealGesture.addCurl(Finger.Pinky, FingerCurl.FullCurl, 1.0);
         birdSealGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 0.5);
+        */
 
-        // 🖖 "Boar Seal" – Spock hand
-        const boarSealGesture = new GestureDescription('boar_seal');
-        boarSealGesture.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
-        boarSealGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
-        boarSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0);
-        boarSealGesture.addCurl(Finger.Ring, FingerCurl.NoCurl, 1.0);
-        boarSealGesture.addCurl(Finger.Pinky, FingerCurl.NoCurl, 1.0);
 
-        boarSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0); // Could add separation later if needed
+        const pointUpGesture = new GestureDescription('point_up');
+        pointUpGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
+        pointUpGesture.addDirection(Finger.Index, FingerDirection.VerticalUp, 1.0);
+        [Finger.Thumb, Finger.Middle, Finger.Ring, Finger.Pinky].forEach(finger => {
+            pointUpGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+        });
+
+
+        // describe hang loose gesture 🤙
+        const hangLooseGesture = new GestureDescription('hang_loose');
+
+        // thumb:
+        // - curl: none (must)
+        // - direction vertical up (best)
+        // - direction diagonal up left / right (acceptable)
+        hangLooseGesture.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
+        hangLooseGesture.addCurl(Finger.Pinky, FingerCurl.NoCurl, 1.0);
+        hangLooseGesture.addDirection(Finger.Thumb, FingerDirection.VerticalUp, 1.0);
+        hangLooseGesture.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft, 0.9);
+        hangLooseGesture.addDirection(Finger.Thumb, FingerDirection.DiagonalUpRight, 0.9);
+
+        // all other fingers:
+        // - curled (best)
+        // - half curled (acceptable)
+        // - pointing down is NOT acceptable
+        for (let finger of [Finger.Index, Finger.Middle, Finger.Ring]) {
+            hangLooseGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+            hangLooseGesture.addCurl(finger, FingerCurl.HalfCurl, 0.9);
+        }
+
+
+        const thumbsDownGesture = new GestureDescription('thumbs_down');
+
+        // Thumb: no curl, pointing down
+        thumbsDownGesture.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
+        thumbsDownGesture.addDirection(Finger.Thumb, FingerDirection.VerticalDown, 1.0);
+        thumbsDownGesture.addDirection(Finger.Thumb, FingerDirection.DiagonalDownLeft, 0.9);
+        thumbsDownGesture.addDirection(Finger.Thumb, FingerDirection.DiagonalDownRight, 0.9);
+
+        // All other fingers: curled
+        for (let finger of [Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky]) {
+            thumbsDownGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+            thumbsDownGesture.addCurl(finger, FingerCurl.HalfCurl, 0.9);
+        }
+
+        const tightVictoryGesture = new GestureDescription('tight_victory');
+
+        // Index & middle fingers: no curl, same upward direction
+        for (let finger of [Finger.Index, Finger.Middle]) {
+            tightVictoryGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
+            tightVictoryGesture.addDirection(finger, FingerDirection.VerticalUp, 1.0);
+            tightVictoryGesture.addDirection(finger, FingerDirection.DiagonalUpLeft, 0.9);
+            tightVictoryGesture.addDirection(finger, FingerDirection.DiagonalUpRight, 0.9);
+        }
+
+        // Remaining fingers: curled
+        for (let finger of [Finger.Ring, Finger.Pinky]) {
+            tightVictoryGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+        }
+
+        tightVictoryGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 0.9);
+
+
+        const okayGesture = new GestureDescription('okay');
+        // Thumb: Half curl (touching index)
+        okayGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
+        // Index: Half curl (touching thumb)
+        okayGesture.addCurl(Finger.Index, FingerCurl.HalfCurl, 1.0);
+        // Middle, Ring, Pinky: No curl (extended)
+        [Finger.Middle, Finger.Ring, Finger.Pinky].forEach(finger => {
+            okayGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
+        });
+
+
+        const pointGesture = new GestureDescription('point');
+        pointGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
+        [Finger.Thumb, Finger.Middle, Finger.Ring, Finger.Pinky].forEach(finger => {
+            pointGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+            pointGesture.addCurl(finger, FingerCurl.HalfCurl, 0.9);
+        });
+
+        const devilHornsGesture = new GestureDescription('devil_horns');
+
+        // Index & pinky: extended
+        [Finger.Index, Finger.Pinky].forEach(finger => {
+            devilHornsGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
+        });
+
+        // Middle & ring: curled
+        [Finger.Middle, Finger.Ring].forEach(finger => {
+            devilHornsGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+            devilHornsGesture.addCurl(finger, FingerCurl.HalfCurl, 0.9);
+        });
+
+        // Thumb: either half curled or extended
+        devilHornsGesture.addCurl(Finger.Thumb, FingerCurl.NoCurl, 0.9);
+        devilHornsGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
+
 
         // 🧠 Setup in your init
         this.GE = new fp.GestureEstimator([
             fp.Gestures.VictoryGesture,
             fp.Gestures.ThumbsUpGesture,
-            tigerSealGesture,
-            ramSealGesture,
-            birdSealGesture,
-            boarSealGesture
+            fistGesture,
+            //birdSealGesture,
+            pointUpGesture,
+            openPalmGesture,
+            // boarSealGesture,
+            hangLooseGesture,
+            thumbsDownGesture,
+            tightVictoryGesture,
+            okayGesture,
+            devilHornsGesture,
+            pointGesture
         ]);
+
+        /*
+
+                    'bird_seal': '🐦',
+            'boar_seal': '🐗',
+*/
 
         this.gestureEmoji = {
             'victory': '✌️',
             'thumbs_up': '👍',
-            'tiger_seal': '🐯',
-            'ram_seal': '🐏',
-            'bird_seal': '🐦',
-            'boar_seal': '🐗'
+            'fist_left': '🤛',
+            'fist_right': '🤜',
+            'point_up': '☝️',
+            'open_palm': '🖐️',
+            'hang_loose': '🤙',
+            'thumbs_down': '👎',
+            'tight_victory': '🤞',
+            'okay': '👌',
+            'devil_horns': '🤘',
+            'point_left': '👈',
+            'point_right': '👉'
         };
 
-        this.jutsuQueue = []; this.lastGestureTime = Date.now();
+        this.jutsuQueue = [];
+        //         this.jutsuQueue = { left: [], right: [] }; // Separate queues for left and right hands
+
+        this.lastGestureTime = Date.now();
 
         this.hands = new Hands({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
@@ -201,126 +377,98 @@ export default class ComputerVision {
         });
 
         hands.setOptions({
-            maxNumHands: 1,
+            maxNumHands: 2,
             modelComplexity: 1,
-            minDetectionConfidence: 0.5,
-            minTrackingConfidence: 0.5,
+            minDetectionConfidence: 0.85,
+            minTrackingConfidence: 0.85,
             selfieMode: true,
         });
 
-        let latestHandLandmarks = null;
+        this.previousGestures = {}; // Maps hand index => previous gesture name
+        this.lastGestureTimePerHand = {};      // hand index => timestamp (ms)
+
 
         hands.onResults(async (results) => {
+            const gestureTrailEl = document.getElementById('gesture-trail');
+            const now = Date.now();
+
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                latestHandLandmarks = results.multiHandLandmarks[0];
-                // console.log('Hand landmarks detected:', latestHandLandmarks);
+                const allGestures = [];
 
-                const rawLandmarks = results.multiHandLandmarks[0];
-                const landmarks = rawLandmarks.map(p => [p.x, p.y, p.z]); // <- convert to [x, y, z]
 
-                const est = this.GE.estimate(landmarks, 5); // loosened from 7
 
-                // const est = this.GE.estimate(latestHandLandmarks, 7);
-                if (est.gestures.length > 0) {
-                    const best = est.gestures.reduce((p, c) => (p.score > c.score ? p : c));
-                    const name = best.name;
-                    // console.log('Detected gesture:', name);
-                    const gestureTrailEl = document.getElementById('gesture-trail');
-                    const emoji = this.gestureEmoji[name] || '❓';
-                    const span = document.createElement('span');
-                    span.textContent = emoji;
-                    span.style.marginRight = '6px';
-                    gestureTrailEl.appendChild(span);
+                // Reset if timeout
+                if (now - this.lastGestureTime > 5000) {
+                    this.jutsuQueue = [];
+                    gestureTrailEl.innerHTML = '';
+                    this.previousGestures = {};
+                    this.lastGestureTimePerHand = {};
+                }
 
-                    while (gestureTrailEl.children.length > 10) {
-                        gestureTrailEl.removeChild(gestureTrailEl.firstChild);
-                    }
+                for (let i = 0; i < results.multiHandLandmarks.length; i++) {
+                    const rawLandmarks = results.multiHandLandmarks[i];
+                    const landmarks = rawLandmarks.map(p => [p.x, p.y, p.z]);
+                    const est = this.GE.estimate(landmarks, 8.5);
+                    const handLabel = results.multiHandedness?.[i]?.label; // 'Left' or 'Right'
 
-                    const now = Date.now();
-                    if (now - this.lastGestureTime > 5000) {
-                        this.jutsuQueue = [];
-                        gestureTrailEl.innerHTML = '';
-                    }
-                    this.lastGestureTime = now;
-                    console.log('[Hand Gesture]', name);
-                    this.jutsuQueue.push(name);
-                    console.log(this.jutsuQueue.join('-'))
 
-                    // truncate this.jutsuQueue to the last 2 gestures ( for now )
-                    if (this.jutsuQueue.length > 2) {
-                        this.jutsuQueue = this.jutsuQueue.slice(-2);
-                    }
+                    if (est.gestures.length > 0) {
+                        const best = est.gestures.reduce((p, c) => (p.score > c.score ? p : c));
+                        let name = best.name;
 
-                    if (this.jutsuQueue.join('-') === 'tiger_seal-thumbs_up') {
-                        // lightning jutsu
-                        console.log("🔥 Jutsu Cast: Lightning!");
-                        gestureTrailEl.innerHTML = '⚡ Lightning Jutsu!';
-                        let data = {
-                            spell: 'lightning',
-                            jutsu: 'lightning',
-                            type: 'jutsu',
-                            emoji: '⚡'
-                        };
-                        try {
-                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
-                            spellModule.default.call(this);
+                        // If it's the 'point' gesture, specialize based on handedness
+                        if (name === 'point') {
+                            name = handLabel === 'Left' ? 'point_left' : 'point_right';
                         }
-                        catch (error) {
-                            console.log('Error importing spell module:', error);
+
+                        if (name === 'fist_thumb_in') {
+                            name = handLabel === 'Left' ? 'fist_left' : 'fist_right';
                         }
-                        this.jutsuQueue = [];
-                        setTimeout(() => {
-                            gestureTrailEl.innerHTML = '';
-                        }, 2000);
+
+                        const emoji = this.gestureEmoji[name] || '❓';
+
+                        const lastName = this.previousGestures[i];
+                        const lastTime = this.lastGestureTimePerHand[i] || 0;
+
+                        // Only process gesture if it's new AND enough time has passed
+                        const gestureChanged = lastName !== name;
+                        const debouncePassed = now - lastTime > 500;
+
+                        if (gestureChanged && debouncePassed) {
+                            this.previousGestures[i] = name;
+                            this.lastGestureTimePerHand[i] = now;
+
+                            allGestures.push({ name, emoji });
+
+                            // UI update
+                            const span = document.createElement('span');
+                            span.textContent = emoji;
+                            span.style.marginRight = '6px';
+                            gestureTrailEl.appendChild(span);
+
+                            while (gestureTrailEl.children.length > 10) {
+                                gestureTrailEl.removeChild(gestureTrailEl.firstChild);
+                            }
+
+                            console.log('[Hand Gesture]', name);
+                            this.jutsuQueue.push(name);
+                        }
+                    } else {
+                        // If no gesture is detected, clear state for that hand
+                        this.previousGestures[i] = null;
+                        this.lastGestureTimePerHand[i] = 0;
                     }
+                }
 
+                this.lastGestureTime = now;
 
-                    if (this.jutsuQueue.join('-') === 'boar_seal-thumbs_up') {
+                // Truncate to the last 2 gestures
+                if (this.jutsuQueue.length > 2) {
+                    this.jutsuQueue = this.jutsuQueue.slice(-2);
+                }
 
-                        console.log("🔥 Jutsu Cast: Fireball!");
-                        gestureTrailEl.innerHTML = '🔥 Fireball Jutsu!';
-                        let data = {
-                            spell: 'flood',
-                            type: 'jutsu',
-                            emoji: '🔥'
-                        };
-                        try {
-                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
-                            spellModule.default.call(this);
-                        }
-                        catch (error) {
-                            console.log('Error importing spell module:', error);
-                        }
-                        this.jutsuQueue = [];
-                        setTimeout(() => {
-                            gestureTrailEl.innerHTML = '';
-                        }, 2000);
-
-
-                    }
-
-
-                    if (this.jutsuQueue.join('-') === 'victory-thumbs_up') {
-                        console.log("🔥 Jutsu Cast: Fireball!");
-                        gestureTrailEl.innerHTML = '🔥 Fireball Jutsu!';
-                        let data = {
-                            spell: 'fireball',
-                            jutsu: 'fireball',
-                            type: 'jutsu',
-                            emoji: '🔥'
-                        };
-                        try {
-                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
-                            spellModule.default.call(this);
-                        }
-                        catch (error) {
-                            console.log('Error importing spell module:', error);
-                        }
-                        this.jutsuQueue = [];
-                        setTimeout(() => {
-                            gestureTrailEl.innerHTML = '';
-                        }, 2000);
-                    }
+                if (allGestures.length > 0) {
+                    await this.handleJutsuCast(this.jutsuQueue, gestureTrailEl, this.bp);
                 }
             }
         });
@@ -341,9 +489,6 @@ export default class ComputerVision {
             // draw landmarks...
 
             const gestureTrailEl = document.getElementById('gesture-trail');
-
-
-
 
             // Pose landmarks
             if (this.showDots && results.poseLandmarks) {
@@ -431,5 +576,30 @@ export default class ComputerVision {
 
         camera.start();
     }
+
+
+    async handleJutsuCast(jutsuQueue, gestureTrailEl) {
+        const key = jutsuQueue.join('-');
+        const spellMeta = this.spellMap[key];
+        if (!spellMeta) return;
+
+        console.log(`🔥 Jutsu Cast: ${spellMeta.jutsu.charAt(0).toUpperCase() + spellMeta.jutsu.slice(1)}!`);
+        gestureTrailEl.innerHTML = spellMeta.label;
+
+        try {
+            const spellModule = await this.bp.importModule(
+                `/v5/apps/based/spellbook/spells/${spellMeta.spell}/${spellMeta.spell}.js`, {}, false
+            );
+            spellModule.default.call(this);
+        } catch (error) {
+            console.error('Error importing spell module:', error);
+        }
+
+        jutsuQueue.length = 0; // clear queue in-place
+        setTimeout(() => {
+            gestureTrailEl.innerHTML = '';
+        }, 2000);
+    }
+
 
 }
