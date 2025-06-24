@@ -30,64 +30,76 @@ export default class ComputerVision {
         this.html = await this.bp.load('/v5/apps/based/computer-vision/computer-vision.html');
 
         this.spellMap = {
-            'tiger_seal-thumbs_up': {
-                spell: 'lightning',
-                jutsu: 'lightning',
-                type: 'jutsu',
-                emoji: '⚡',
-                label: '⚡ Lightning Jutsu!',
-            },
-            'ram_seal-thumbs_up': {
-                spell: 'flood',
-                jutsu: 'flood',
-                type: 'jutsu',
-                emoji: '🌊',
-                label: '🌊 Flood Jutsu!',
-            },
             'victory-thumbs_up': {
+                gestures: '✌️👍',
                 spell: 'fireball',
                 jutsu: 'fireball',
                 type: 'jutsu',
                 emoji: '🔥',
-                label: '🔥 Fireball Jutsu!',
+                label: '🔥 Fireball 🔥',
             },
             // thumbs up + thumbs down = barrelroll
             'thumbs_up-thumbs_down': {
+                gestures: '👍👎',
                 spell: 'barrelroll',
                 jutsu: 'barrelroll',
                 type: 'jutsu',
                 emoji: '🌀',
-                label: '🌀 Barrel Roll Jutsu!',
+                label: '🌀 Barrel Roll 🌀',
             },
             'thumbs_down-thumbs_up': {
+                // use emoji symbols in gestures field
+                gestures: '👎👍',
                 spell: 'barrelroll',
                 jutsu: 'barrelroll',
                 type: 'jutsu',
                 emoji: '🌀',
-                label: '🌀 Barrel Roll Jutsu!',
+                label: '🌀 Barrel Roll 🌀',
             },
             // left point + right point = lightning
-            'point_left-point_right': {
-                spell: 'lightning',
-                jutsu: 'lightning',
-                type: 'jutsu',
-                emoji: '⚡',
-                label: '⚡ Lightning Jutsu!',
-            },
             'point_right-point_left': {
+                gestures: '👉👈',
                 spell: 'lightning',
                 jutsu: 'lightning',
                 type: 'jutsu',
                 emoji: '⚡',
-                label: '⚡ Lightning Jutsu!',
+                label: '⚡ Lightning ⚡',
             },
+            'point_left-point_right': {
+                gestures: '👈👉',
+                spell: 'lightning',
+                jutsu: 'lightning',
+                type: 'jutsu',
+                emoji: '⚡',
+                label: '⚡ Lightning ⚡',
+            },
+
             // two open palms is earthquake
             'open_palm-open_palm': {
+                gestures: '👐👐',
                 spell: 'earthquake',
                 jutsu: 'earthquake',
                 type: 'jutsu',
                 emoji: '🌍',
-                label: '🌍 Earthquake Jutsu!'
+                label: '🌍 Earthquake 🌍'
+            },
+            // flood spell
+            'hang_loose-hang_loose': {
+                gestures: '🤙🤙',
+                spell: 'flood',
+                jutsu: 'flood',
+                type: 'jutsu',
+                emoji: '🌊',
+                label: '🌊 Flood 🌊'
+            },
+            // vortex spell
+            'devil_horns-devil_horns': {
+                gestures: '🤘🤘',
+                spell: 'vortex',
+                jutsu: 'vortex',
+                type: 'jutsu',
+                emoji: '🌪️',
+                label: '🌪️ Vortex 🌪️'
             },
 
             // Add more spells here!
@@ -203,7 +215,6 @@ export default class ComputerVision {
 
         tightVictoryGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 0.9);
 
-
         const okayGesture = new GestureDescription('okay');
         // Thumb: Half curl (touching index)
         okayGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
@@ -213,7 +224,6 @@ export default class ComputerVision {
         [Finger.Middle, Finger.Ring, Finger.Pinky].forEach(finger => {
             okayGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
         });
-
 
         const pointGesture = new GestureDescription('point');
         pointGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
@@ -292,11 +302,19 @@ export default class ComputerVision {
     }
 
     async open() {
-        let win = this.bp.window(this.window());
+
+        if (this.win) {
+            this.win.focus();
+            return this.win;
+        }
+
+        this.win = this.bp.window(this.window());
 
         document.getElementById('toggle-dots-btn').onclick = () => {
             this.showDots = !this.showDots;
         };
+
+        this.renderSpellGuide(this.spellMap); // Call this on init
 
 
         function startFakeLoadingSequence() {
@@ -310,7 +328,7 @@ export default class ComputerVision {
             ];
 
             let stepIndex = 0;
-            const $loadingText = $('#loading-text', win.content);
+            const $loadingText = $('#loading-text', this.win.content);
 
             const interval = setInterval(() => {
                 $loadingText.text(steps[stepIndex]);
@@ -325,8 +343,8 @@ export default class ComputerVision {
         startFakeLoadingSequence.call(this);
 
         this.startObjectDetection();
-        win.maximize();
-        return win;
+        this.win.maximize();
+        return this.win;
     }
 
     window() {
@@ -411,6 +429,8 @@ export default class ComputerVision {
         this.previousGestures = {}; // Maps hand index => previous gesture name
         this.lastGestureTimePerHand = {};      // hand index => timestamp (ms)
 
+        let foundFirstHandGesture = false;
+        let startTime = Date.now();
 
         hands.onResults(async (results) => {
             const gestureTrailEl = document.getElementById('gesture-trail');
@@ -418,6 +438,16 @@ export default class ComputerVision {
             const now = Date.now();
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+
+                if (!foundFirstHandGesture) {
+                    let now = Date.now();
+                    // wait at least a few seconds before showing the overlay
+                    if (now - startTime > 7000) {
+                        $('.instruction-overlay', this.win.content).hide();
+                        foundFirstHandGesture = true;
+                    }
+                }
+
                 const allGestures = [];
 
                 // Reset if timeout
@@ -491,7 +521,14 @@ export default class ComputerVision {
                 }
 
                 if (allGestures.length > 0) {
-                    await this.handleJutsuCast(this.jutsuQueue, gestureSpellEl, this.bp);
+                    // hide the first time a spell is cast
+                    let result = await this.handleJutsuCast(this.jutsuQueue, gestureSpellEl, this.bp);
+                    if (result && !foundFirstHandGesture) {
+                        $('.instruction-overlay', this.win.content).hide();
+                        foundFirstHandGesture = true;
+                    }
+
+
                 }
             }
         });
@@ -507,6 +544,7 @@ export default class ComputerVision {
 
                 // video.style.display = 'block';
                 firstResults = true;
+                $('.instruction-overlay', this.win.content).flexShow();
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -629,6 +667,23 @@ export default class ComputerVision {
         setTimeout(() => {
             gestureTrailEl.innerHTML = '';
         }, 2000);
+        return true; // Indicate spell was cast
+    }
+
+    renderSpellGuide(spellMap) {
+        const $list = $('#spell-list');
+        const addedCombos = new Set();
+
+        for (const [combo, info] of Object.entries(spellMap)) {
+            // Avoid showing duplicates of same spell (some combos are symmetric)
+            const key = info.jutsu + info.emoji;
+            if (addedCombos.has(key)) continue;
+            addedCombos.add(key);
+
+            let label = info.label || `${info.emoji} ${info.spell}`;
+            label = info.gestures + ` ${label}`;
+            $list.append(`<li>${label}</li>`);
+        }
     }
 
 
