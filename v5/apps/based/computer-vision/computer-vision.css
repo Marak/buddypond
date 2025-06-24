@@ -1,0 +1,9 @@
+#gesture-trail {
+    position: absolute;
+}
+
+.detected-objects {
+    position: absolute;
+    right: 0;
+    padding: 10px;
+}
