@@ -13,31 +13,81 @@ export default class ComputerVision {
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/holistic');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils');
+        await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands');
+
+        await this.bp.load('spellbook');
 
         // TODO: add loading image while we wait for camera to start
         // desktop/assets/images/gui/rainbow-tv-loading.gif'
 
         // not needed?
-        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@2.0.0/dist/hand-pose-detection.js');
+        // await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection');
         //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.min.js');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/fingerpose/dist/fingerpose.min.js');
 
         await this.bp.appendCSS('/v5/apps/based/computer-vision/computer-vision.css');
+        console.log(fp.Gestures)
+        const { Finger, FingerCurl, FingerDirection, GestureDescription } = fp;
 
+
+
+        // 🤜 "Tiger Seal" – fist with thumbs tucked
+        const tigerSealGesture = new GestureDescription('tiger_seal');
+        for (let finger of Finger.all) {
+            tigerSealGesture.addCurl(finger, FingerCurl.FullCurl, 1.0);
+        }
+        tigerSealGesture.addCurl(Finger.Thumb, FingerCurl.FullCurl, 1.0);
+
+        // ✋ "Ram Seal" – open palm
+        const ramSealGesture = new GestureDescription('ram_seal');
+        for (let finger of Finger.all) {
+            ramSealGesture.addCurl(finger, FingerCurl.NoCurl, 1.0);
+        }
+
+        // 🤞 "Bird Seal" – middle over index
+        const birdSealGesture = new GestureDescription('bird_seal');
+        birdSealGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
+        birdSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0);
+        birdSealGesture.addCurl(Finger.Ring, FingerCurl.FullCurl, 1.0);
+        birdSealGesture.addCurl(Finger.Pinky, FingerCurl.FullCurl, 1.0);
+        birdSealGesture.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 0.5);
+
+        // 🖖 "Boar Seal" – Spock hand
+        const boarSealGesture = new GestureDescription('boar_seal');
+        boarSealGesture.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(Finger.Index, FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(Finger.Ring, FingerCurl.NoCurl, 1.0);
+        boarSealGesture.addCurl(Finger.Pinky, FingerCurl.NoCurl, 1.0);
+
+        boarSealGesture.addCurl(Finger.Middle, FingerCurl.NoCurl, 1.0); // Could add separation later if needed
+
+        // 🧠 Setup in your init
         this.GE = new fp.GestureEstimator([
             fp.Gestures.VictoryGesture,
-            fp.Gestures.ThumbsUpGesture
+            fp.Gestures.ThumbsUpGesture,
+            tigerSealGesture,
+            ramSealGesture,
+            birdSealGesture,
+            boarSealGesture
         ]);
-        this.jutsuQueue = []; this.lastGestureTime = Date.now();
 
         this.gestureEmoji = {
             'victory': '✌️',
             'thumbs_up': '👍',
-            'thumbs_down': '👎',
-            'open_palm': '🖐️',
-            'fist': '✊',
-            'i_love_you': '🤟'
+            'tiger_seal': '🐯',
+            'ram_seal': '🐏',
+            'bird_seal': '🐦',
+            'boar_seal': '🐗'
         };
+
+        this.jutsuQueue = []; this.lastGestureTime = Date.now();
+
+        this.hands = new Hands({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+        });
+
+
 
 
         return 'loaded ComputerVision';
@@ -64,7 +114,7 @@ export default class ComputerVision {
 
 <video id="video" width="640" height="480" autoplay></video>
 
-<div style="display: flex; align-items: flex-start;">
+<div>
   <canvas id="canvas" width="640" height="480" style="flex: 1;"></canvas>
   
   <div style="margin-left: 10px;">
@@ -141,9 +191,138 @@ export default class ComputerVision {
             smoothLandmarks: true,
             enableSegmentation: false,
             refineFaceLandmarks: true,
+            minDetectionConfidence: 0.7,
+            minTrackingConfidence: 0.7,
+            selfieMode: true // Add this to flip landmarks for mirrored cameras
+        });
+
+        const hands = new Hands({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+        });
+
+        hands.setOptions({
+            maxNumHands: 1,
+            modelComplexity: 1,
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5,
-            selfieMode: true // Add this to flip landmarks for mirrored cameras
+            selfieMode: true,
+        });
+
+        let latestHandLandmarks = null;
+
+        hands.onResults(async (results) => {
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                latestHandLandmarks = results.multiHandLandmarks[0];
+                // console.log('Hand landmarks detected:', latestHandLandmarks);
+
+                const rawLandmarks = results.multiHandLandmarks[0];
+                const landmarks = rawLandmarks.map(p => [p.x, p.y, p.z]); // <- convert to [x, y, z]
+
+                const est = this.GE.estimate(landmarks, 5); // loosened from 7
+
+                // const est = this.GE.estimate(latestHandLandmarks, 7);
+                if (est.gestures.length > 0) {
+                    const best = est.gestures.reduce((p, c) => (p.score > c.score ? p : c));
+                    const name = best.name;
+                    // console.log('Detected gesture:', name);
+                    const gestureTrailEl = document.getElementById('gesture-trail');
+                    const emoji = this.gestureEmoji[name] || '❓';
+                    const span = document.createElement('span');
+                    span.textContent = emoji;
+                    span.style.marginRight = '6px';
+                    gestureTrailEl.appendChild(span);
+
+                    while (gestureTrailEl.children.length > 10) {
+                        gestureTrailEl.removeChild(gestureTrailEl.firstChild);
+                    }
+
+                    const now = Date.now();
+                    if (now - this.lastGestureTime > 5000) {
+                        this.jutsuQueue = [];
+                        gestureTrailEl.innerHTML = '';
+                    }
+                    this.lastGestureTime = now;
+                    console.log('[Hand Gesture]', name);
+                    this.jutsuQueue.push(name);
+                    console.log(this.jutsuQueue.join('-'))
+
+                    // truncate this.jutsuQueue to the last 2 gestures ( for now )
+                    if (this.jutsuQueue.length > 2) {
+                        this.jutsuQueue = this.jutsuQueue.slice(-2);
+                    }
+
+                    if (this.jutsuQueue.join('-') === 'tiger_seal-thumbs_up') {
+                        // lightning jutsu
+                        console.log("🔥 Jutsu Cast: Lightning!");
+                        gestureTrailEl.innerHTML = '⚡ Lightning Jutsu!';
+                        let data = {
+                            spell: 'lightning',
+                            jutsu: 'lightning',
+                            type: 'jutsu',
+                            emoji: '⚡'
+                        };
+                        try {
+                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
+                            spellModule.default.call(this);
+                        }
+                        catch (error) {
+                            console.log('Error importing spell module:', error);
+                        }
+                        this.jutsuQueue = [];
+                        setTimeout(() => {
+                            gestureTrailEl.innerHTML = '';
+                        }, 2000);
+                    }
+
+
+                    if (this.jutsuQueue.join('-') === 'boar_seal-thumbs_up') {
+
+                        console.log("🔥 Jutsu Cast: Fireball!");
+                        gestureTrailEl.innerHTML = '🔥 Fireball Jutsu!';
+                        let data = {
+                            spell: 'flood',
+                            type: 'jutsu',
+                            emoji: '🔥'
+                        };
+                        try {
+                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
+                            spellModule.default.call(this);
+                        }
+                        catch (error) {
+                            console.log('Error importing spell module:', error);
+                        }
+                        this.jutsuQueue = [];
+                        setTimeout(() => {
+                            gestureTrailEl.innerHTML = '';
+                        }, 2000);
+
+
+                    }
+
+
+                    if (this.jutsuQueue.join('-') === 'victory-thumbs_up') {
+                        console.log("🔥 Jutsu Cast: Fireball!");
+                        gestureTrailEl.innerHTML = '🔥 Fireball Jutsu!';
+                        let data = {
+                            spell: 'fireball',
+                            jutsu: 'fireball',
+                            type: 'jutsu',
+                            emoji: '🔥'
+                        };
+                        try {
+                            let spellModule = await this.bp.importModule(`/v5/apps/based/spellbook/spells/${data.spell}/${data.spell}.js`, {}, false);
+                            spellModule.default.call(this);
+                        }
+                        catch (error) {
+                            console.log('Error importing spell module:', error);
+                        }
+                        this.jutsuQueue = [];
+                        setTimeout(() => {
+                            gestureTrailEl.innerHTML = '';
+                        }, 2000);
+                    }
+                }
+            }
         });
 
 
@@ -163,48 +342,7 @@ export default class ComputerVision {
 
             const gestureTrailEl = document.getElementById('gesture-trail');
 
-            if (results.rightHandLandmarks) {
-                const est = this.GE.estimate(results.rightHandLandmarks, 7);
-                if (est.gestures.length) {
-                    const best = est.gestures.reduce((p, c) =>
-                        (p.score > c.score ? p : c)
-                    );
-                    const name = best.name;
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(name, 10, 35);
 
-                    // 👣 Append emoji to trail
-                    console.log('Gesture detected:', name);
-                    const emoji = this.gestureEmoji[name] || '❓';
-                    const span = document.createElement('span');
-                    span.textContent = emoji;
-                    span.style.marginRight = '6px';
-                    gestureTrailEl.appendChild(span);
-
-                    // ✅ Trim to last 10 emojis
-                    while (gestureTrailEl.children.length > 10) {
-                        gestureTrailEl.removeChild(gestureTrailEl.firstChild);
-                    }
-                    // Add to gesture sequence buffer
-                    const now = Date.now();
-                    if (now - this.lastGestureTime > 3000) {
-                        this.jutsuQueue = [];
-                        gestureTrailEl.innerHTML = ''; // reset visuals
-                    }
-                    this.lastGestureTime = now;
-                    console.log(name)
-                    this.jutsuQueue.push(name);
-
-                    if (this.jutsuQueue.join('-') === 'Victory-Thumbs_Up') {
-                        this.bp.toast("🔥 Jutsu Cast: Fireball!");
-                        gestureTrailEl.innerHTML = '🔥 Fireball Jutsu!';
-                        this.jutsuQueue = [];
-                        setTimeout(() => {
-                            gestureTrailEl.innerHTML = '';
-                        }, 2000);
-                    }
-                }
-            }
 
 
             // Pose landmarks
@@ -264,6 +402,7 @@ export default class ComputerVision {
 
                 // Feed video to holistic model
                 await holistic.send({ image: video });
+                await hands.send({ image: video }); // Send to Hands pipeline
 
                 // Run object detection in parallel
                 const predictions = await model.detect(video);
