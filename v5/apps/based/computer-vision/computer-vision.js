@@ -371,8 +371,11 @@ export default class ComputerVision {
             focusable: true,
             maximized: false,
             minimized: false,
-            onclose: () => {
-                // this.bp.apps.ui.windowManager.destroyWindow('motd');
+            onClose: () => {
+                this.win = null; // Clear reference on close
+                // close the camera
+                this.video.srcObject.getTracks().forEach(track => track.stop());
+                this.video = null;
             }
         }
     }
@@ -388,6 +391,7 @@ export default class ComputerVision {
         // Start webcam
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
+        this.video = video;
 
         await new Promise((resolve) => {
             video.onloadeddata = () => resolve();
@@ -546,7 +550,8 @@ export default class ComputerVision {
         holistic.onResults((results) => {
 
             if (!firstResults) {
-                document.getElementById('cv-loading').style.display = 'none';
+                $('#cv-loading', this.win.content).fadeOut(300);
+                // document.getElementById('cv-loading').style.display = 'none';
                 // $('#cv-loading').fadeOut(300);
 
                 // video.style.display = 'block';
@@ -622,7 +627,7 @@ export default class ComputerVision {
                 // Run object detection in parallel
                 const predictions = await model.detect(video);
 
-                const listEl = document.getElementById('object-list');
+                const listEl = $('#object-list', this.win.content)[0];
                 listEl.innerHTML = '';
 
                 predictions.forEach((pred) => {
