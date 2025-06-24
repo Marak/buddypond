@@ -64,7 +64,7 @@
 #gesture-trail {
   position: absolute;
   bottom: 20px;
-  left: 10px;
+  left: 0px;
   font-size: 64px;
   white-space: nowrap;
   overflow-x: auto;
@@ -75,13 +75,17 @@
 /* Gesture spell effect in center */
 #gesture-spell {
   position: absolute;
-  top: 100px;
+  bottom: 40px;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 64px;
   pointer-events: none;
   text-align: center;
   white-space: nowrap;
+  /* font should be white with glowing effect and black outline */
+  color: white;
+  text-shadow: 0 0 5px #00ffff;
+  -webkit-text-stroke: 1px black;
 }
 
 /* Detected object list in top-right */
@@ -94,6 +98,7 @@
   padding: 8px;
   border-radius: 4px;
   pointer-events: none;
+  display: none; /* for now */
 }
 
 .detected-objects ul {
@@ -156,19 +161,18 @@
   to   { opacity: 1; }
 }
 
-
 .spell-guide {
   position: absolute;
-  top: 60px;
+  top: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.7);
   padding: 12px;
   border-radius: 8px;
-  max-height: 70vh;
+  max-height: 80%;
   overflow-y: auto;
   font-family: sans-serif;
   font-size: 14px;
-  z-index: 100;
+  z-index: 50; /* Should be below loading/instruction, above canvas */
   pointer-events: none;
 }
 
@@ -187,4 +191,17 @@
 #spell-list li {
   margin-bottom: 6px;
   color: #fff;
+}
+
+#toggle-dots-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 100; /* Above everything else */
 }

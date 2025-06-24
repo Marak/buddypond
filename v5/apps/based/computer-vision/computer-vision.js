@@ -312,6 +312,7 @@ export default class ComputerVision {
 
         document.getElementById('toggle-dots-btn').onclick = () => {
             this.showDots = !this.showDots;
+            $('.spell-guide', this.win.content).toggle();
         };
 
         this.renderSpellGuide(this.spellMap); // Call this on init
@@ -351,10 +352,8 @@ export default class ComputerVision {
 
         return {
             id: 'computer-vision',
-            title: 'Computer Vision',
-            icon: 'desktop/assets/images/icons/icon_computer-vision_64.png',
-            title: 'Computer Vision',
-            icon: 'desktop/assets/images/icons/icon_doodle-jump-extra_64.png',
+            title: 'Jutsu Caster',
+            icon: 'desktop/assets/images/icons/icon_jutsu_64.png',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout
@@ -432,6 +431,14 @@ export default class ComputerVision {
         let foundFirstHandGesture = false;
         let startTime = Date.now();
 
+        // create a default timer to hide instruction overlay after 7 seconds
+        setTimeout(() => {
+            if (!foundFirstHandGesture) {
+                $('.instruction-overlay', this.win.content).hide();
+                foundFirstHandGesture = true;
+            }
+        }, 10000);
+
         hands.onResults(async (results) => {
             const gestureTrailEl = document.getElementById('gesture-trail');
             const gestureSpellEl = document.getElementById('gesture-spell');
@@ -497,7 +504,7 @@ export default class ComputerVision {
                             const span = document.createElement('span');
                             span.textContent = emoji;
                             span.style.marginRight = '6px';
-                            gestureTrailEl.appendChild(span);
+                            gestureTrailEl.prepend(span);
 
                             while (gestureTrailEl.children.length > 10) {
                                 gestureTrailEl.removeChild(gestureTrailEl.firstChild);

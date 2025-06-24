@@ -73,7 +73,7 @@ export default {
     "alias": ["kittenforce"]
   },
 
-    "marbleblast": {
+  "marbleblast": {
     "icon": "desktop/assets/images/icons/icon_marbleblast_64.png",
     "label": "Marble Blast",
     "description": "Play the Marble Blast game",
@@ -91,7 +91,16 @@ export default {
     "author": "FRVR Games",
     "alias": ["greed"]
   },
-   "minipaint": {
+  'computer-vision': {
+    "icon": "desktop/assets/images/icons/icon_jutsu_64.png",
+    "label": "Jutsu Caster",
+    "description": "Cast Jutsu spells using hand gestures",
+    "onClick": "bp.open('computer-vision')",
+    "categories": ["tools", "creative"],
+    "author": "BuddyPond",
+    "alias": ["jutsu"]
+  },
+  "minipaint": {
     "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
     "label": "miniPaint",
     "author": "ViliusL",
@@ -99,7 +108,7 @@ export default {
     "onClick": "bp.open('minipaint')",
     "categories": ["art", "creative"]
   },
- 
+
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
