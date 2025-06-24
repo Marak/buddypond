@@ -2,6 +2,8 @@ export default class ComputerVision {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.options = options;
+        this.showDots = true; // <-- add this to constructor or init
+
         return this;
     }
 
@@ -11,6 +13,13 @@ export default class ComputerVision {
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/holistic');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils');
+
+        // TODO: add loading image while we wait for camera to start
+        // desktop/assets/images/gui/rainbow-tv-loading.gif'
+
+        // not needed?
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@2.0.0/dist/hand-pose-detection.js');
+        //await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.min.js');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/fingerpose/dist/fingerpose.min.js');
 
         await this.bp.appendCSS('/v5/apps/based/computer-vision/computer-vision.css');
@@ -36,6 +45,11 @@ export default class ComputerVision {
 
     async open() {
         let win = this.bp.window(this.window());
+
+        document.getElementById('toggle-dots-btn').onclick = () => {
+            this.showDots = !this.showDots;
+        };
+
         this.startObjectDetection();
         win.maximize();
         return win;
@@ -43,16 +57,30 @@ export default class ComputerVision {
 
     window() {
 
-        let content = `<video id="video" width="640" height="480" autoplay></video>
-                       <div style="display: flex;">
-  <canvas id="canvas" width="640" height="480" style="flex: 1;"></canvas>
-  <div id="gesture-trail" style="font-size: 24px; margin-top: 10px; white-space: nowrap; overflow-x: auto;"></div>
+        let content = `
+<div id="cv-loading" style="position: absolute; z-index: 10; width: 640px; height: 480px; display: flex; align-items: center; justify-content: center; background: black;">
+  <img src="desktop/assets/images/gui/rainbow-tv-loading.gif" alt="Loading..." style="width: 120px; height: auto;" />
+</div>
 
-  <div class="detected-objects">
-    <h3>Detected Objects</h3>
-    <ul id="object-list" style="font-size: 12px; list-style: none; padding-left: 0;"></ul>
+<video id="video" width="640" height="480" autoplay></video>
+
+<div style="display: flex; align-items: flex-start;">
+  <canvas id="canvas" width="640" height="480" style="flex: 1;"></canvas>
+  
+  <div style="margin-left: 10px;">
+    <div>
+      <button id="toggle-dots-btn" style="margin-bottom: 10px;">Toggle Dots</button>
+    </div>
+    <div id="gesture-trail" style="font-size: 24px; margin-top: 10px; white-space: nowrap; overflow-x: auto;"></div>
+
+    <div class="detected-objects">
+      <h3>Detected Objects</h3>
+      <ul id="object-list" style="font-size: 12px; list-style: none; padding-left: 0;"></ul>
+    </div>
   </div>
-</div>`;
+</div>
+`;
+
         return {
             id: 'computer-vision',
             title: 'Computer Vision',
@@ -96,6 +124,7 @@ export default class ComputerVision {
 
         await new Promise((resolve) => {
             video.onloadeddata = () => resolve();
+
         });
 
         video.play();
@@ -107,19 +136,26 @@ export default class ComputerVision {
                 `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
         });
 
-       holistic.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    enableSegmentation: false,
-    refineFaceLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
-    selfieMode: true // Add this to flip landmarks for mirrored cameras
-});
+        holistic.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            enableSegmentation: false,
+            refineFaceLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5,
+            selfieMode: true // Add this to flip landmarks for mirrored cameras
+        });
 
+
+        let firstResults = false
 
         holistic.onResults((results) => {
 
+            if (!firstResults) {
+                document.getElementById('cv-loading').style.display = 'none';
+                // video.style.display = 'block';
+                firstResults = true;
+            }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
@@ -172,7 +208,7 @@ export default class ComputerVision {
 
 
             // Pose landmarks
-            if (results.poseLandmarks) {
+            if (this.showDots && results.poseLandmarks) {
                 for (const lm of results.poseLandmarks) {
                     const x = lm.x * canvas.width;
                     const y = lm.y * canvas.height;
@@ -184,7 +220,7 @@ export default class ComputerVision {
             }
 
             // Face landmarks (draw fewer for performance)
-            if (results.faceLandmarks) {
+            if (this.showDots && results.faceLandmarks) {
                 for (let i = 0; i < results.faceLandmarks.length; i += 10) {
                     const lm = results.faceLandmarks[i];
                     const x = lm.x * canvas.width;
@@ -197,7 +233,7 @@ export default class ComputerVision {
             }
 
             // Hand landmarks
-            if (results.leftHandLandmarks) {
+            if (this.showDots && results.leftHandLandmarks) {
                 for (const lm of results.leftHandLandmarks) {
                     const x = lm.x * canvas.width;
                     const y = lm.y * canvas.height;
@@ -207,7 +243,7 @@ export default class ComputerVision {
                     ctx.fill();
                 }
             }
-            if (results.rightHandLandmarks) {
+            if (this.showDots && results.rightHandLandmarks) {
                 for (const lm of results.rightHandLandmarks) {
                     const x = lm.x * canvas.width;
                     const y = lm.y * canvas.height;
