@@ -1,0 +1,29 @@
+<div id="cv-root">
+  <div id="cv-loading" class="cv-loading">
+    <img src="desktop/assets/images/gui/rainbow-tv-loading.gif" alt="Loading..." />
+    <div class="loading-text" id="loading-text">Loading...</div>
+
+  </div>
+
+  <!-- Video is hidden, just used as input -->
+  <video id="video" width="640" height="480" autoplay playsinline style="display: none;"></video>
+
+  <div class="cv-wrapper">
+    <div class="cv-aspect-box">
+      <canvas id="canvas" class="cv-canvas" width="640" height="480"></canvas>
+
+      <div class="cv-overlay">
+        <div>
+          <button id="toggle-dots-btn" style="margin-bottom: 10px;">Toggle Dots</button>
+        </div>
+        <div id="gesture-trail"></div>
+        <div id="gesture-spell"></div>
+
+        <div class="detected-objects">
+          <h3>Detected Objects</h3>
+          <ul id="object-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

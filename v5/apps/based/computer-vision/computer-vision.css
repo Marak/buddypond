@@ -1,9 +1,118 @@
-#gesture-trail {
-    position: absolute;
+/* Outer wrapper fills entire app window */
+#cv-root, .cv-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  overflow: hidden;
 }
 
+/* 4:3 aspect ratio box that scales responsively */
+.cv-aspect-box {
+  position: relative;
+  height: 100%;
+  max-height: 100%;
+  aspect-ratio: 4 / 3;
+  background: black;
+}
+
+/* Canvas fills the box, maintaining aspect ratio */
+.cv-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Overlay content is pinned to canvas */
+.cv-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.cv-overlay button {
+  pointer-events: auto;
+}
+
+/* Loading screen centered */
+.cv-loading {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-loading img {
+  width: 120px;
+  height: auto;
+}
+
+/* Gesture trail styling */
+#gesture-trail {
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  font-size: 64px;
+  white-space: nowrap;
+  overflow-x: auto;
+  pointer-events: none;
+  width: 100%;
+}
+
+/* Gesture spell effect in center */
+#gesture-spell {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Detected object list in top-right */
 .detected-objects {
-    position: absolute;
-    right: 0;
-    padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  background: rgba(0,0,0,0.6);
+  padding: 8px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.detected-objects ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: white;
+  font-size: 18px;
+  font-family: monospace;
+  text-align: center;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%   { opacity: 0.3; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.3; }
 }

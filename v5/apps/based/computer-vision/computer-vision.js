@@ -27,6 +27,8 @@ export default class ComputerVision {
 
         await this.bp.appendCSS('/v5/apps/based/computer-vision/computer-vision.css');
 
+        this.html = await this.bp.load('/v5/apps/based/computer-vision/computer-vision.html');
+
         this.spellMap = {
             'tiger_seal-thumbs_up': {
                 spell: 'lightning',
@@ -63,6 +65,29 @@ export default class ComputerVision {
                 type: 'jutsu',
                 emoji: '🌀',
                 label: '🌀 Barrel Roll Jutsu!',
+            },
+            // left point + right point = lightning
+            'point_left-point_right': {
+                spell: 'lightning',
+                jutsu: 'lightning',
+                type: 'jutsu',
+                emoji: '⚡',
+                label: '⚡ Lightning Jutsu!',
+            },
+            'point_right-point_left': {
+                spell: 'lightning',
+                jutsu: 'lightning',
+                type: 'jutsu',
+                emoji: '⚡',
+                label: '⚡ Lightning Jutsu!',
+            },
+            // two open palms is earthquake
+            'open_palm-open_palm': {
+                spell: 'earthquake',
+                jutsu: 'earthquake',
+                type: 'jutsu',
+                emoji: '🌍',
+                label: '🌍 Earthquake Jutsu!'
             },
 
             // Add more spells here!
@@ -263,9 +288,6 @@ export default class ComputerVision {
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
         });
 
-
-
-
         return 'loaded ComputerVision';
     }
 
@@ -276,36 +298,38 @@ export default class ComputerVision {
             this.showDots = !this.showDots;
         };
 
+
+        function startFakeLoadingSequence() {
+            const steps = [
+                "Initializing camera...",
+                "Loading vision model...",
+                "Warming up tensors...",
+                "Calibrating hand gestures...",
+                "Syncing overlays...",
+                "Finalizing setup..."
+            ];
+
+            let stepIndex = 0;
+            const $loadingText = $('#loading-text', win.content);
+
+            const interval = setInterval(() => {
+                $loadingText.text(steps[stepIndex]);
+                stepIndex++;
+
+                // End of steps — stop interval
+                if (stepIndex >= steps.length) {
+                    clearInterval(interval);
+                }
+            }, 1200); // Change step every 1.2s
+        }
+        startFakeLoadingSequence.call(this);
+
         this.startObjectDetection();
         win.maximize();
         return win;
     }
 
     window() {
-
-        let content = `
-<div id="cv-loading" style="position: absolute; z-index: 10; width: 640px; height: 480px; display: flex; align-items: center; justify-content: center; background: black;">
-  <img src="desktop/assets/images/gui/rainbow-tv-loading.gif" alt="Loading..." style="width: 120px; height: auto;" />
-</div>
-
-<video id="video" width="640" height="480" autoplay></video>
-
-<div>
-  <canvas id="canvas" width="640" height="480" style="flex: 1;"></canvas>
-  
-  <div style="margin-left: 10px;">
-    <div>
-      <button id="toggle-dots-btn" style="margin-bottom: 10px;">Toggle Dots</button>
-    </div>
-    <div id="gesture-trail" style="font-size: 24px; margin-top: 10px; white-space: nowrap; overflow-x: auto;"></div>
-
-    <div class="detected-objects">
-      <h3>Detected Objects</h3>
-      <ul id="object-list" style="font-size: 12px; list-style: none; padding-left: 0;"></ul>
-    </div>
-  </div>
-</div>
-`;
 
         return {
             id: 'computer-vision',
@@ -320,7 +344,7 @@ export default class ComputerVision {
             minWidth: 400,
             minHeight: 300,
             parent: $('#desktop')[0],
-            content: content,
+            content: this.html,
             // iframeContent: 'https://plays.org/game/doodle-jump-extra/',
             //iframeContent: iframeUrl,
             resizable: true,
@@ -390,12 +414,11 @@ export default class ComputerVision {
 
         hands.onResults(async (results) => {
             const gestureTrailEl = document.getElementById('gesture-trail');
+            const gestureSpellEl = document.getElementById('gesture-spell');
             const now = Date.now();
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const allGestures = [];
-
-
 
                 // Reset if timeout
                 if (now - this.lastGestureTime > 5000) {
@@ -468,7 +491,7 @@ export default class ComputerVision {
                 }
 
                 if (allGestures.length > 0) {
-                    await this.handleJutsuCast(this.jutsuQueue, gestureTrailEl, this.bp);
+                    await this.handleJutsuCast(this.jutsuQueue, gestureSpellEl, this.bp);
                 }
             }
         });
@@ -480,6 +503,8 @@ export default class ComputerVision {
 
             if (!firstResults) {
                 document.getElementById('cv-loading').style.display = 'none';
+                // $('#cv-loading').fadeOut(300);
+
                 // video.style.display = 'block';
                 firstResults = true;
             }
@@ -557,13 +582,18 @@ export default class ComputerVision {
 
                 predictions.forEach((pred) => {
                     const [x, y, width, height] = pred.bbox;
-                    ctx.beginPath();
-                    ctx.rect(x, y, width, height);
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = 'red';
-                    ctx.fillStyle = 'red';
-                    ctx.stroke();
-                    ctx.fillText(pred.class, x, y > 10 ? y - 5 : 10);
+
+                    if (this.showDots) {
+                        ctx.beginPath();
+                        ctx.rect(x, y, width, height);
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = 'red';
+                        ctx.fillStyle = 'red';
+                        ctx.stroke();
+                        ctx.fillText(pred.class, x, y > 10 ? y - 5 : 10);
+
+                    }
+
 
                     const li = document.createElement('li');
                     li.textContent = `${pred.class} (${(pred.score * 100).toFixed(1)}%)`;
