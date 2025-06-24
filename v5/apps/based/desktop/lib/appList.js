@@ -72,13 +72,15 @@ export default {
     "author": "FRVR Games",
     "alias": ["kittenforce"]
   },
-  "minipaint": {
-    "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
-    "label": "miniPaint",
-    "author": "ViliusL",
-    "description": "Advanced image editor to create and edit images",
-    "onClick": "bp.open('minipaint')",
-    "categories": ["art", "creative"]
+
+    "marbleblast": {
+    "icon": "desktop/assets/images/icons/icon_marbleblast_64.png",
+    "label": "Marble Blast",
+    "description": "Play the Marble Blast game",
+    "onClick": "bp.open('marbleblast')",
+    "categories": ["games", "entertainment"],
+    "author": "Vanilagy",
+    "alias": ["marble-blast"]
   },
   "frvr-greed": {
     "icon": "desktop/assets/images/icons/icon_frvr-greed_64.png",
@@ -89,6 +91,15 @@ export default {
     "author": "FRVR Games",
     "alias": ["greed"]
   },
+   "minipaint": {
+    "icon": "desktop/assets/images/icons/icon_minipaint_64.png",
+    "label": "miniPaint",
+    "author": "ViliusL",
+    "description": "Advanced image editor to create and edit images",
+    "onClick": "bp.open('minipaint')",
+    "categories": ["art", "creative"]
+  },
+ 
   "patatap": {
     "icon": "desktop/assets/images/icons/icon_patatap_64.png",
     "label": "Patatap",
@@ -348,6 +359,7 @@ export default {
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
+
   /*
   "aero-player": {
     "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
