@@ -170,7 +170,7 @@ export default class TaskBar {
                 let existingWindow = this.bp.apps.ui.windowManager.getWindow(id);
 
                 if (!existingWindow) {
-                    console.log('default onClick, opening window', id, config);
+                    // console.log('default onClick, opening window', id, config);
                     // Remark: this.bp wasn't scoped here? should work...
                     let win = await this.bp.open(app || id, { context });
                     // console.log('TaskBar.onClick bp.open', id, win);
@@ -253,8 +253,8 @@ export default class TaskBar {
         item.isOpen = false;
         item.element.classList.remove("taskbar-item-open");
 
-        console.log('TaskBar.closeItem', id, item);
-        console.log('shortcuts', this.shortcuts);
+        // console.log('TaskBar.closeItem', id, item);
+        // console.log('shortcuts', this.shortcuts);
 
         // shouldn't this be checking this.shortcuts instead of item.isShortcut?
         if (!this.shortcuts.has(id)) {
@@ -290,7 +290,7 @@ export default class TaskBar {
                 delete taskBarApps[id];
                 this.bp.set('taskbar_apps', taskBarApps);
             }
-            console.log('TaskBar.removeItem', id, item);
+            // console.log('TaskBar.removeItem', id, item);
 
         }
     }
