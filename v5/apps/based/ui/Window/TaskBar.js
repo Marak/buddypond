@@ -77,7 +77,10 @@ export default class TaskBar {
         if (this.shortcuts.has(id)) {
             makeOption('Unpin from Taskbar', () => {
                 this.shortcuts.delete(id);
-                // this.removeItem(id);
+                // if the item is not open, remove it from the taskbar
+                if (!item.isOpen) {
+                    this.removeItem(id);
+                }
             });
         } else {
 
