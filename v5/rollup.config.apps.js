@@ -79,6 +79,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/aero-player/aero-player.js',
+    output: {
+      file: 'dist/apps/based/aero-player.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/affirmations/affirmations.js',
     output: {
       file: 'dist/apps/based/affirmations.js',
@@ -413,6 +427,35 @@ export default [
     plugins: [
       postcss({
         extract: path.resolve('dist/apps/based/coin.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/computer-vision/computer-vision.js',
+    output: {
+      file: 'dist/apps/based/computer-vision.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/computer-vision/computer-vision-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/computer-vision.css'),
         minimize: true,
         sourceMap: true
       })
@@ -964,6 +1007,20 @@ export default [
     input: 'apps/based/maps/maps.js',
     output: {
       file: 'dist/apps/based/maps.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/marbleblast/marbleblast.js',
+    output: {
+      file: 'dist/apps/based/marbleblast.js',
       format: 'es',
       sourcemap: true,
     },
