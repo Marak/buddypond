@@ -41,8 +41,8 @@ export default class ComputerVision {
             // thumbs up + thumbs down = barrelroll
             'thumbs_up-thumbs_down': {
                 gestures: '👍👎',
-                spell: 'barrelroll',
-                jutsu: 'barrelroll',
+                spell: 'barrelRoll',
+                jutsu: 'barrelRoll',
                 type: 'jutsu',
                 emoji: '🌀',
                 label: '🌀 Barrel Roll 🌀',
@@ -50,8 +50,8 @@ export default class ComputerVision {
             'thumbs_down-thumbs_up': {
                 // use emoji symbols in gestures field
                 gestures: '👎👍',
-                spell: 'barrelroll',
-                jutsu: 'barrelroll',
+                spell: 'barrelRoll',
+                jutsu: 'barrelRoll',
                 type: 'jutsu',
                 emoji: '🌀',
                 label: '🌀 Barrel Roll 🌀',
