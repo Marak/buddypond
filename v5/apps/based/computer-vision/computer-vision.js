@@ -101,6 +101,16 @@ export default class ComputerVision {
                 emoji: '🌪️',
                 label: '🌪️ Vortex 🌪️'
             },
+            /*
+            'ArmsCrossed': {
+                gestures: '🙅‍♀️',
+                spell: 'lightning',
+                jutsu: 'lightning',
+                type: 'jutsu',
+                emoji: '⚡',
+                label: '⚡ Lightning ⚡',
+            }
+            */
 
             // Add more spells here!
         };
@@ -562,6 +572,9 @@ export default class ComputerVision {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
 
+
+
+
             // Pose landmarks
             if (this.showDots && results.poseLandmarks) {
                 for (const lm of results.poseLandmarks) {
@@ -608,6 +621,76 @@ export default class ComputerVision {
                     ctx.fill();
                 }
             }
+
+
+            // --- Detect "Arms Crossed" Gesture ---
+            if (results.poseLandmarks) {
+                const lw = results.poseLandmarks[15]; // leftWrist
+                const rw = results.poseLandmarks[16]; // rightWrist
+                const ls = results.poseLandmarks[11]; // leftShoulder
+                const rs = results.poseLandmarks[12]; // rightShoulder
+
+                // 1. Check wrists are horizontally between the shoulders
+                const wristsBetweenShoulders =
+                    lw.x > rs.x && lw.x < ls.x &&
+                    rw.x > rs.x && rw.x < ls.x;
+
+                // 2. Check wrists are close to each other
+                const dx = lw.x - rw.x;
+                const dy = lw.y - rw.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const wristsClose = dist < 0.15;
+
+                // 3. Check wrists are near same vertical level as shoulders
+                const avgShoulderY = (ls.y + rs.y) / 2;
+                const avgWristY = (lw.y + rw.y) / 2;
+                const wristsNearChest = Math.abs(avgWristY - avgShoulderY) < 0.15;
+
+                // Final gesture check
+                const armsCrossed = wristsClose && wristsBetweenShoulders && wristsNearChest;
+
+                // console.log('[Pose Gesture] ArmsCrossed:', armsCrossed);
+                // TODO: add more advanced jutsu like crossed arms, etc.
+                // Remark: The gesture works, we need better processing of jutsu pipelines
+                if (false && armsCrossed) {
+                    const gestureTrailEl = document.getElementById('gesture-trail');
+                    const gestureSpellEl = document.getElementById('gesture-spell');
+                    const now = Date.now();
+
+                    // Reset gesture queue if timed out
+                    if (now - this.lastGestureTime > 5000) {
+                        this.jutsuQueue = [];
+                        gestureTrailEl.innerHTML = '';
+                        this.previousGestures = {};
+                        this.lastGestureTimePerHand = {};
+                    }
+
+                    this.lastGestureTime = now;
+                    this.jutsuQueue.push('ArmsCrossed');
+
+                    // Add 🙅‍♀️ to gesture trail
+                    const skull = '🙅‍♀️';
+                    const span = document.createElement('span');
+                    span.textContent = skull;
+                    span.style.marginRight = '6px';
+                    gestureTrailEl.prepend(span);
+
+                    while (gestureTrailEl.children.length > 10) {
+                        gestureTrailEl.removeChild(gestureTrailEl.lastChild);
+                    }
+
+
+                    // Limit to last 2 jutsu signs
+                    if (this.jutsuQueue.length > 2) {
+                        this.jutsuQueue = this.jutsuQueue.slice(-2);
+                    }
+
+                    // Trigger jutsu
+                    this.handleJutsuCast(this.jutsuQueue, gestureSpellEl, this.bp);
+                }
+            }
+
+
         });
 
         // Use MediaPipe's camera helper to feed video frames
@@ -673,8 +756,8 @@ export default class ComputerVision {
 
         jutsuQueue.length = 0; // clear queue in-place
         setTimeout(() => {
-            gestureTrailEl.innerHTML = '';
-        }, 2000);
+            gestureSpellEl.innerHTML = '';
+        }, 2200);
         return true; // Indicate spell was cast
     }
 

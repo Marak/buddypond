@@ -169,7 +169,7 @@ export default class Spellbook {
         x: 250,
         y: 75,
         width: 360,
-        height: 440,
+        height: 500,
         minWidth: 200,
         minHeight: 200,
         parent: $('#desktop')[0],

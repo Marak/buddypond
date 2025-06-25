@@ -131,6 +131,103 @@ export default {
       config: { targets: ['self', 'buddy', 'pond'] },
     },
     {
+      name: 'death',
+      label: 'Death',
+      icon: '💀',
+      description: 'Causes the target to die.',
+      cost: 100,
+      costText: '🪙5',
+      costSymbol: 'B.webp,R.webp',
+      config: { targets: ['self', 'buddy'] }
+    },
+    {
+      name: 'confetti',
+      label: 'Confetti',
+      icon: '🎉',
+      description: 'Covers the area in confetti.',
+      cost: 20,
+      costText: '🪙2',
+      costSymbol: 'R.webp, W.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        particleCount: { type: 'number', label: 'Particle Count', value: 100, min: 10, max: 500 },
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      } 
+    },
+    {
+      name: 'rainbow',
+      label: 'Rainbow',
+      icon: '🌈',
+      description: 'Creates a beautiful rainbow.',
+      cost: 30,
+      costText: '🪙2',
+      costSymbol: 'U.webp,G.webp, W.webp, R.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      }
+    },
+    /*
+    {
+      name: 'pixelate',
+      label: 'Pixelate',
+      icon: '🖼️',
+      description: 'Applies a pixelation effect.',
+      cost: 50,
+      costText: '🪙2',
+      costSymbol: 'B.webp,G.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 },
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      }
+    },
+    {
+      name: 'wavy',
+      label: 'Wavy',
+      icon: '🌊',
+      description: 'Applies a wavy effect.',
+      cost: 50,
+      costText: '🪙2',
+      costSymbol: 'U.webp,G.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 },
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      }
+    },
+    {
+      name: 'whirlpool',
+      label: 'Whirlpool',
+      icon: '🌪️',
+      description: 'Creates a swirling whirlpool effect.',
+      cost: 50,
+      costText: '🪙2',
+      costSymbol: 'U.webp,U\.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        intensity: { type: 'number', label: 'Intensity', value: 5, min: 1, max: 10 },
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      }
+    },
+    */
+    /*
+    {
+      name: 'explode',
+      label: 'Explode',
+      icon: '💥',
+      description: 'Causes a small explosion.',
+      cost: 100,
+      costText: '🪙5',
+      costSymbol: 'R.webp,G.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        radius: { type: 'number', label: 'Explosion Radius', value: 5, min: 1, max: 10 },
+        power: { type: 'number', label: 'Explosion Power', value: 5, min: 1, max: 10 },
+      }
+    },
+    */
+    {
       name: 'alert',
       label: 'Alert',
       icon: '📢',
