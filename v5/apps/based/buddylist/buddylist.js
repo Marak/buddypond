@@ -55,6 +55,13 @@ export default class BuddyList {
         this.subscribedBuddies = [];
         this.subscribedPonds = [];
         this.options = options;
+
+
+        // ensures autocomplete options are always used regardless of entry
+        if (bp.apps.buddyscript && bp.apps.buddyscript.commands) {
+            this.options.autocomplete = bp.apps.buddyscript.commands;
+        }
+
         this.showedHelp = false;
 
         // alias global logout to the buddylist logout
