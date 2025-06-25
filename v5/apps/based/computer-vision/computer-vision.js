@@ -511,7 +511,7 @@ export default class ComputerVision {
                             gestureTrailEl.prepend(span);
 
                             while (gestureTrailEl.children.length > 10) {
-                                gestureTrailEl.removeChild(gestureTrailEl.firstChild);
+                                gestureTrailEl.removeChild(gestureTrailEl.lastChild);
                             }
 
                             console.log('[Hand Gesture]', name);
@@ -561,9 +561,6 @@ export default class ComputerVision {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-            // draw landmarks...
-
-            const gestureTrailEl = document.getElementById('gesture-trail');
 
             // Pose landmarks
             if (this.showDots && results.poseLandmarks) {
@@ -657,14 +654,13 @@ export default class ComputerVision {
         camera.start();
     }
 
-
-    async handleJutsuCast(jutsuQueue, gestureTrailEl) {
+    async handleJutsuCast(jutsuQueue, gestureSpellEl) {
         const key = jutsuQueue.join('-');
         const spellMeta = this.spellMap[key];
         if (!spellMeta) return;
 
         console.log(`🔥 Jutsu Cast: ${spellMeta.jutsu.charAt(0).toUpperCase() + spellMeta.jutsu.slice(1)}!`);
-        gestureTrailEl.innerHTML = spellMeta.label;
+        gestureSpellEl.innerHTML = spellMeta.label;
 
         try {
             const spellModule = await this.bp.importModule(
