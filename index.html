@@ -360,8 +360,13 @@ window.top.location = 'ie.html';
                     // remove all query params from the URL
                     let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
                     window.history.pushState({ path: newUrl }, '', newUrl);
+                    // loads non-critical apps after main apps are loaded
+                    // this is used for chatbar buttons, etc, makes UI more responsive
+                    window.deferLoad();
                   }
                 });
+              } else {
+                window.deferLoad();
               }
 
             }

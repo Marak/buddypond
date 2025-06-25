@@ -89,8 +89,8 @@ window.bp_v_5 = async function bp_v_5() {
             console.log('Deferred loading of additional apps completed.');
         }, 7000);
     }
+    window.deferLoad = deferLoad;
 
-    deferLoad();
 
 };
 
