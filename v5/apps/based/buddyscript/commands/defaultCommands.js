@@ -654,6 +654,20 @@ let legacyCommands = {
     description: 'Paint Editor. Draw cool paintings for Buddies.',
     icon: 'paint'
   },
+  painterro: {
+    command: function (params, context) {
+      bp.open('painterro', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Painterro. Collaborative Drawing App',
+    icon: 'painterro'
+  },
+  minipaint: {
+    command: function (params, context) {
+      bp.open('minipaint', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Mini Paint. Simple Drawing App',
+    icon: 'minipaint'
+  },
   piano: {
     command: function (params) {
       bp.open('piano');

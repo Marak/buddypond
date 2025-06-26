@@ -17,10 +17,22 @@ export default function applyData(el, data, cardClass, parentWindow) {
     });
     $el.find('.image-image').attr('src', data.url);
   
-    $el.find('.remixGif').data('output', data.message.type);
-    $el.find('.remixGif').data('context', data.message.to);
+    // $el.find('.remixGif').data('output', data.message.type);
+    // $el.find('.remixGif').data('context', data.message.to);
 
-    $el.find('.remixPaint').data('output', data.message.type);
-    $el.find('.remixPaint').data('context', data.message.to);
+    // TODO: replace this with data.message.chatId in the future
+    if (data.message.type === 'pond') {
+        $el.find('.remixPaint').data('output', data.message.type);
+        $el.find('.remixPaint').data('context', data.message.to);
+    } else {
+        $el.find('.remixPaint').data('output', data.message.type);
+        // Remark: Temporary solution to get context for legacy paint app
+        // In the future we can simply user the chatId to get the correct target context
+        if (data.message.from === this.bp.me) {
+            $el.find('.remixPaint').data('context', data.message.to);
+        } else {
+            $el.find('.remixPaint').data('context', data.message.from);
+        }
+    }
 
   }
