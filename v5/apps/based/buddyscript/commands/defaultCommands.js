@@ -601,7 +601,7 @@ let legacyCommands = {
       bp.open('vision-harp');
     },
     description: 'Computer Vision Harp Instrument',
-    icon: 'harp'
+    icon: 'vision-harp'
   },
   /*
   bubbles: {
