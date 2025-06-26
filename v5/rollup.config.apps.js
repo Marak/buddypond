@@ -248,6 +248,35 @@ export default [
   }
 ,
   {
+    input: 'apps/based/bubblepop/bubblepop.js',
+    output: {
+      file: 'dist/apps/based/bubblepop.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/bubblepop/bubblepop-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/bubblepop.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
     input: 'apps/based/buddybux/buddybux.js',
     output: {
       file: 'dist/apps/based/buddybux.js',
@@ -427,35 +456,6 @@ export default [
     plugins: [
       postcss({
         extract: path.resolve('dist/apps/based/coin.css'),
-        minimize: true,
-        sourceMap: true
-      })
-    ]
-  }
-,
-  {
-    input: 'apps/based/computer-vision/computer-vision.js',
-    output: {
-      file: 'dist/apps/based/computer-vision.js',
-      format: 'es',
-      sourcemap: true,
-    },
-    plugins: [
-      resolve(),
-      commonjs(),
-      terser(),
-    ]
-  }
-,
-  {
-    input: 'apps/based/computer-vision/computer-vision-style.js',
-    output: {
-      file: 'dist/dummy-css.js',
-      format: 'es',
-    },
-    plugins: [
-      postcss({
-        extract: path.resolve('dist/apps/based/computer-vision.css'),
         minimize: true,
         sourceMap: true
       })
@@ -764,6 +764,35 @@ export default [
   }
 ,
   {
+    input: 'apps/based/fingerpaint/fingerpaint.js',
+    output: {
+      file: 'dist/apps/based/fingerpaint.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/fingerpaint/fingerpaint-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/fingerpaint.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
     input: 'apps/based/fluid-simulation/fluid-simulation.js',
     output: {
       file: 'dist/apps/based/fluid-simulation.js',
@@ -969,6 +998,35 @@ export default [
     plugins: [
       postcss({
         extract: path.resolve('dist/apps/based/image-search.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/jutsu-caster/jutsu-caster.js',
+    output: {
+      file: 'dist/apps/based/jutsu-caster.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/jutsu-caster/jutsu-caster-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/jutsu-caster.css'),
         minimize: true,
         sourceMap: true
       })
@@ -1375,6 +1433,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/posepuppet/posepuppet.js',
+    output: {
+      file: 'dist/apps/based/posepuppet.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/powerlevel/powerlevel.js',
     output: {
       file: 'dist/apps/based/powerlevel.js',
@@ -1754,6 +1826,35 @@ export default [
     plugins: [
       postcss({
         extract: path.resolve('dist/apps/based/videochat.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/vision-harp/vision-harp.js',
+    output: {
+      file: 'dist/apps/based/vision-harp.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/vision-harp/vision-harp-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/vision-harp.css'),
         minimize: true,
         sourceMap: true
       })

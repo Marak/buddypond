@@ -1,0 +1,29 @@
+.finger-paint-video {
+    display: none;
+}
+
+.finger-paint-container {
+    background-color: black;
+    /*
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    */
+}
+
+.finger-paint-canvas {
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.finger-paint-indicator {
+    position:absolute;
+    top:40px;
+    left:20px;
+    color:white;
+    font-size:14px;
+}

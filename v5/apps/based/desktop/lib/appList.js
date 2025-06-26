@@ -44,10 +44,9 @@ export default {
     "categories": ["files", "productivity"],
     "alias": ["buddy-files", "files"]
   },
-
   "plays-doodle-jump-extra": {
     "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
-    "label": "Doodle Jump Extra",
+    "label": "Doodle Jump",
     "description": "Play Doodle Jump Extra game",
     "onClick": "bp.open('doodle-jump-extra')",
     "categories": ["games", "entertainment"],
@@ -91,12 +90,12 @@ export default {
     "author": "FRVR Games",
     "alias": ["greed"]
   },
-  'computer-vision': {
+  'jutsu-caster': {
     "icon": "desktop/assets/images/icons/icon_jutsu_64.png",
     "label": "Jutsu Caster",
     "description": "Cast Jutsu spells using hand gestures",
-    "onClick": "bp.open('computer-vision')",
-    "categories": ["tools", "creative"],
+    "onClick": "bp.open('jutsu-caster')",
+    "categories": ["tools", "creative", "computer-vision"],
     "author": "BuddyPond",
     "alias": ["jutsu"]
   },
@@ -124,6 +123,48 @@ export default {
     "description": "A creative sandbox game with sand and physics",
     "onClick": "bp.open('sandspiel')",
     "categories": ["games", "creative"]
+  },
+  */
+  "vision-harp": {
+    "icon": "desktop/assets/images/icons/icon_vision-harp_64.png",
+    "label": "Vision Harp",
+    "description": "Play music using hand gestures",
+    "onClick": "bp.open('vision-harp')",
+    "categories": ["audio", "computer-vision", "music", "creative"],
+    "author": "BuddyPond",
+    "alias": ["vision-harp"]
+  },
+  /*
+  "fingerpaint": {
+    "icon": "desktop/assets/images/icons/icon_finger-paint_64.png",
+    "label": "Finger Paint",
+    "description": "Create art using hand gestures",
+    "onClick": "bp.open('fingerpaint')",
+    "categories": ["art", "creative", "computer-vision"],
+    "author": "BuddyPond",
+    "alias": ["hand-paint", "hand-art"]
+  },
+  */
+  /*
+  "posepuppet": {
+    "icon": "desktop/assets/images/icons/icon_pose-puppet_64.png",
+    "label": "Pose Puppet",
+    "description": "Control a puppet using body poses",
+    "onClick": "bp.open('posepuppet')",
+    "categories": ["creative", "computer-vision"],
+    "author": "BuddyPond",
+    "alias": ["puppet", "pose"]
+  },
+  */
+ /*
+  "bubblepop": {
+    "icon": "desktop/assets/images/icons/icon_bubblepop_64.png",
+    "label": "Bubble Pop",
+    "description": "Pop bubbles and enjoy the visuals",
+    "onClick": "bp.open('bubblepop')",
+    "categories": ["games", "entertainment", "computer-vision"],
+    "author": "BuddyPond",
+    "alias": ["bubbles", "pop"]
   },
   */
   "soundrecorder": {

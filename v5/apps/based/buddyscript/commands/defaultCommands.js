@@ -596,6 +596,22 @@ let legacyCommands = {
     description: 'Greed Game',
     icon: 'frvr-greed'
   },
+  harp: {
+    command: function (params) {
+      bp.open('vision-harp');
+    },
+    description: 'Computer Vision Harp Instrument',
+    icon: 'harp'
+  },
+  /*
+  bubbles: {
+    command: function (params) {
+      bp.open('bubblepop');
+    },
+    description: 'Bubbles. Pop and Share with Buddies',
+    icon: 'bubbles'
+  },
+  */
   image: {
     command: function (params, context) {
       bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'pexels' });
@@ -603,7 +619,13 @@ let legacyCommands = {
     description: 'Search and Create Images',
     icon: 'image'
   },
-
+  jutsu: {
+    command: function (params, context) {
+      bp.open('jutsu-caster', { context: context.contextName, output: context.windowType });
+    },
+    description: 'Jutsu. Create and Share with Buddies',
+    icon: 'jutsu'
+  },
   mantra: {
     command: function (params) {
       bp.open('mantra');
