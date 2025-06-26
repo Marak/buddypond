@@ -100,7 +100,7 @@ export default class VisionInstrument {
 
     async startVisionInstrument() {
         this.video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('video-harp-canvas');
         const ctx = canvas.getContext('2d');
         const noteIndicator = document.getElementById('note-indicator');
 

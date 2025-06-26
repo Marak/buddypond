@@ -44,6 +44,10 @@
   text-align: left;
 }
 
+.video-harp-canvas {
+    cursor: none; /* Hide cursor when using the harp */
+}
+
 .vision-harp-loading {
   position: absolute;
   z-index: 1000;

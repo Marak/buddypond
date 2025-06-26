@@ -145,24 +145,6 @@ export default {
     "alias": ["hand-paint", "hand-art"]
   },
   */
-  "stickman": {
-    "icon": "desktop/assets/images/icons/icon_stickman_64.png",
-    "label": "Stickman",
-    "description": "Control a stickman using body poses",
-    "onClick": "bp.open('stickman')",
-    "categories": ["creative", "computer-vision", "entertainment"],
-    "author": "BuddyPond",
-    "alias": ["stickman"]
-  },
-  "bubblepop": {
-    "icon": "desktop/assets/images/icons/icon_bubblepop_64.png",
-    "label": "Bubble Pop",
-    "description": "Pop bubbles and enjoy the visuals",
-    "onClick": "bp.open('bubblepop')",
-    "categories": ["games", "entertainment", "computer-vision"],
-    "author": "BuddyPond",
-    "alias": ["bubblepop"]
-  },
   "soundrecorder": {
     "icon": "desktop/assets/images/icons/icon_soundrecorder_64.png",
     "label": "Sound Recorder",
@@ -251,6 +233,15 @@ export default {
     "onClick": "bp.open('piano')",
     "desktopOnly": true,
     "categories": ["music", "creative"]
+  },
+  "bubblepop": {
+    "icon": "desktop/assets/images/icons/icon_bubblepop_64.png",
+    "label": "Bubble Pop",
+    "description": "Pop bubbles and enjoy the visuals",
+    "onClick": "bp.open('bubblepop')",
+    "categories": ["games", "entertainment", "computer-vision"],
+    "author": "BuddyPond",
+    "alias": ["bubblepop"]
   },
 
   "portfolio": {
@@ -365,6 +356,15 @@ export default {
     "label": "Solitaire",
     "description": "Classic Solitaire card game",
     "categories": ["games"]
+  },
+  "stickman": {
+    "icon": "desktop/assets/images/icons/icon_stickman_64.png",
+    "label": "Stickman",
+    "description": "Control a stickman using body poses",
+    "onClick": "bp.open('stickman')",
+    "categories": ["creative", "computer-vision", "entertainment"],
+    "author": "BuddyPond",
+    "alias": ["stickman"]
   },
 
   "spellbook": {
