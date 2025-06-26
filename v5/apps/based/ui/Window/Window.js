@@ -553,7 +553,7 @@ class Window {
 
     startDrag(e) {
         this.isDragging = true;
-        this.container.style.cursor = "grabbing";
+        this.titleBar.style.cursor = "grabbing";
 
         // Disable pointer events on iframe
         const iframes = this.container.querySelectorAll('iframe');
@@ -598,7 +598,7 @@ class Window {
 
     stopDrag() {
         this.isDragging = false;
-        this.container.style.cursor = "default";
+        this.titleBar.style.cursor = "grab";
 
         // Restore pointer events on iframe
         const iframes = this.container.querySelectorAll('iframe');
