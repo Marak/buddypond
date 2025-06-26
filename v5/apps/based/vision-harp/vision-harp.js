@@ -26,6 +26,20 @@ export default class VisionInstrument {
         await this.bp.appendCSS('/v5/apps/based/vision-harp/vision-harp.css');
         this.html = await this.bp.load('/v5/apps/based/vision-harp/vision-harp.html');
 
+        return 'loaded VisionInstrument';
+    }
+
+    async open() {
+
+        if (this.win) {
+            console.log('VisionInstrument window is already open');
+            this.win.restore();
+            this.win.focus();
+            return this.win; // Return existing window if already open
+        }
+
+        this.win = this.bp.window(this.window());
+
         // this should be in open, not init
         // Create a polyphonic synth with harp-like settings
         this.synth = new Tone.PolySynth(Tone.FMSynth, {
@@ -49,11 +63,7 @@ export default class VisionInstrument {
         gain.toDestination();
 
 
-        return 'loaded VisionInstrument';
-    }
 
-    async open() {
-        this.win = this.bp.window(this.window());
         this.startLoadingSequence();
         this.startVisionInstrument();
         this.win.maximize();
@@ -76,20 +86,29 @@ export default class VisionInstrument {
             resizable: true,
             maximizable: true,
             closable: true,
+
+            onClose: () => {
+                this.win = null; // Clear reference on close
+                // close the camera
+                this.video.srcObject.getTracks().forEach(track => track.stop());
+                this.video = null;
+            }
+
+
         };
     }
 
     async startVisionInstrument() {
-        const video = document.getElementById('video');
+        this.video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const noteIndicator = document.getElementById('note-indicator');
 
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
+        this.video.srcObject = stream;
 
-        await new Promise(resolve => video.onloadeddata = resolve);
-        video.play();
+        await new Promise(resolve => this.video.onloadeddata = resolve);
+        this.video.play();
 
         const hands = new Hands({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -103,8 +122,8 @@ export default class VisionInstrument {
             selfieMode: true // Add this to flip landmarks for mirrored cameras
         });
 
-        const camera = new Camera(video, {
-            onFrame: async () => await hands.send({ image: video }),
+        const camera = new Camera(this.video, {
+            onFrame: async () => await hands.send({ image: this.video }),
             width: 640,
             height: 480,
         });
@@ -259,27 +278,27 @@ export default class VisionInstrument {
     }
 
     startLoadingSequence() {
-            const steps = [
-                "Initializing camera...",
-                "Loading vision model...",
-                "Warming up tensors...",
-                "Calibrating hand gestures...",
-                "Initializing Synth...",
-                "Finalizing setup..."
-            ];
+        const steps = [
+            "Initializing camera...",
+            "Loading vision model...",
+            "Warming up tensors...",
+            "Calibrating hand gestures...",
+            "Initializing Synth...",
+            "Finalizing setup..."
+        ];
 
-            let stepIndex = 0;
-            const $loadingText = $('#loading-text', this.win.content);
+        let stepIndex = 0;
+        const $loadingText = $('#loading-text', this.win.content);
 
-            const interval = setInterval(() => {
-                $loadingText.text(steps[stepIndex]);
-                stepIndex++;
+        const interval = setInterval(() => {
+            $loadingText.text(steps[stepIndex]);
+            stepIndex++;
 
-                // End of steps — stop interval
-                if (stepIndex >= steps.length) {
-                    clearInterval(interval);
-                }
-            }, 1200); // Change step every 1.2s
-        }
+            // End of steps — stop interval
+            if (stepIndex >= steps.length) {
+                clearInterval(interval);
+            }
+        }, 1200); // Change step every 1.2s
+    }
 
 }

@@ -3,6 +3,7 @@
 }
 
 .vision-harp-container {
+    position: relative;
     background-color: black;
     text-align: center;
     display: flex;

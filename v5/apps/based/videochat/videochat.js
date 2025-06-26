@@ -276,7 +276,7 @@ export default class VideoChat {
         // TODO: add a reconnection strategy for unexpected closures
         this.websocket.onclose = (event) => {
             console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
-            if (this.videocallWindow.content) {
+            if (this.videocallWindow && this.videocallWindow.content) {
                 $('.webrtcStatus', this.videocallWindow.content).html('WebSocket connection closed');
             }
             this.endCall(buddyName);
