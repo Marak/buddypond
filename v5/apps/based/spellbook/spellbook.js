@@ -107,7 +107,9 @@ function initSpellbookUI($content, context) {
     //const $spellCost = $content.querySelector('#spellCost');
     //$spellCost.textContent = `Cost: ${spell.cost}`;
     // console.log('Selected spell:', spell);
-    if (spell.config?.targets) {
+
+    // Perform client-side validation of valid spell targets
+    if (spell.config?.targets && this.bp.me !== 'Marak') { // TODO: admin rbac check
       const availableTargets = spell.config.targets;
       [...$spellTargetType.options].forEach(opt => {
         opt.disabled = !availableTargets.includes(opt.value);

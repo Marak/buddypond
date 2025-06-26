@@ -6,11 +6,14 @@ export default async function submitFormHandler(e, content, spell) {
     //const spellName = $('#spellName', $content).val();
     let spellName = spell.name;
     let targetType = $('#spellTargetType', $content).val();
+
     // console.log(`Submitting spell form for type: ${spellType}, name: ${spellName} and target type: ${targetType}`);
     const spellDuration = $('#spellDuration', $content).val();
-    const _spellData = this.data[spellType].find((s) => s.name === spellName);
+    // const _spellData = this.data[spellType].find((s) => s.name === spellName);
+
     let target = null;
     const config = {};
+
 
     if (targetType === 'buddy') {
       target = this.isUsingInput ? $('#spellTargetInput', $content).val() : $('#spellTargetName', $content).val();
