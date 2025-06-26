@@ -549,3 +549,8 @@
 .ui-widget-content {
     background: var(--desktop_element-background) !important;
 }
+
+/* we need this (for now) or the hover menu will not show, as it's positioned absolutely on the right */
+.cardContainer {
+    max-width: 500px;
+}

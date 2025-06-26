@@ -603,15 +603,20 @@ let legacyCommands = {
     description: 'Computer Vision Harp Instrument',
     icon: 'vision-harp'
   },
-  /*
-  bubbles: {
+  bubblepop: {
     command: function (params) {
       bp.open('bubblepop');
     },
     description: 'Bubbles. Pop and Share with Buddies',
-    icon: 'bubbles'
+    icon: 'bubblepop'
   },
-  */
+  stickman: {
+    command: function (params) {
+      bp.open('stickman');
+    },
+    description: 'StickMan. Create and Share with Buddies',
+    icon: 'stickman'
+  },
   image: {
     command: function (params, context) {
       bp.open('image-search', { context: context.contextName, output: context.windowType, provider: 'pexels' });

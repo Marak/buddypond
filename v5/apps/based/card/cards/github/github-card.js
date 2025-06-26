@@ -1,6 +1,6 @@
 
 
-export default async function applyData(el, data, cardClass) {
+export default async function applyData(el, data, cardClass, parent) {
     const $el = $(el);
 
     $el.find('.card-url-url').text(data.url);
@@ -20,10 +20,10 @@ export default async function applyData(el, data, cardClass) {
     });
 
     // Fetch and display GitHub snippet with expand/collapse functionality
-    fetchGitHubSnippet(data.url, $el);
+    fetchGitHubSnippet(data.url, $el, cardClass, parent);
 }
 
-async function fetchGitHubSnippet(url, $el) {
+async function fetchGitHubSnippet(url, $el, cardClass, parent) {
     try {
         const apiUrl = url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
         const response = await fetch(apiUrl);
@@ -44,9 +44,24 @@ async function fetchGitHubSnippet(url, $el) {
         $codeBlock.addClass(`language-${language}`);
         Prism.highlightElement($codeBlock[0]);
 
-      
+        triggerScroll.call(this);
+
+        // ensure we scroll to bottom of chat after rendering github card
+        function triggerScroll() {
+            if (parent && parent.content) {
+                // console.log('Scrolling to bottom of parent content');
+                // Scroll to bottom of parent content
+                if (cardClass.bp && cardClass.bp.apps && cardClass.bp.apps.buddylist) {
+                    cardClass.bp.apps.buddylist.scrollToBottom(parent.content);
+                }
+            }
+        }
+
+
     } catch (error) {
         console.log("Error fetching GitHub snippet:", error);
         $el.find("code").text("Error loading preview.");
     }
 }
+
+
