@@ -132,7 +132,7 @@ export default {
     "onClick": "bp.open('vision-harp')",
     "categories": ["audio", "computer-vision", "music", "creative"],
     "author": "BuddyPond",
-    "alias": ["vision-harp"]
+    "alias": ["harp"]
   },
   /*
   "fingerpaint": {
@@ -145,18 +145,15 @@ export default {
     "alias": ["hand-paint", "hand-art"]
   },
   */
-  /*
-  "posepuppet": {
-    "icon": "desktop/assets/images/icons/icon_pose-puppet_64.png",
-    "label": "Pose Puppet",
-    "description": "Control a puppet using body poses",
-    "onClick": "bp.open('posepuppet')",
-    "categories": ["creative", "computer-vision"],
+  "stickman": {
+    "icon": "desktop/assets/images/icons/icon_stickman_64.png",
+    "label": "Stickman",
+    "description": "Control a stickman using body poses",
+    "onClick": "bp.open('stickman')",
+    "categories": ["creative", "computer-vision", "entertainment"],
     "author": "BuddyPond",
-    "alias": ["puppet", "pose"]
+    "alias": ["stickman"]
   },
-  */
- /*
   "bubblepop": {
     "icon": "desktop/assets/images/icons/icon_bubblepop_64.png",
     "label": "Bubble Pop",
@@ -164,9 +161,8 @@ export default {
     "onClick": "bp.open('bubblepop')",
     "categories": ["games", "entertainment", "computer-vision"],
     "author": "BuddyPond",
-    "alias": ["bubbles", "pop"]
+    "alias": ["bubblepop"]
   },
-  */
   "soundrecorder": {
     "icon": "desktop/assets/images/icons/icon_soundrecorder_64.png",
     "label": "Sound Recorder",

@@ -1,3 +1,5 @@
+import startLoadingSequence from './lib/startLoadingSequence.js';
+
 export default class BubblePop {
     constructor(bp, options = {}) {
         this.bp = bp;
@@ -22,7 +24,9 @@ export default class BubblePop {
         this.chainCount = 0; // Track number of chained pops
         this.chainThreshold = 800; // 800ms threshold for pitch chain
         this.pitchNotes = ['C5', 'C#5', 'D5', 'D#5', 'E5', 'F5']; // Pitch progression
-    
+
+        this.isHandDetected = false; // Track hand detection state
+
 
         return this;
     }
@@ -66,7 +70,7 @@ export default class BubblePop {
         return {
             id: 'bubblepop',
             title: 'BubblePop',
-            icon: 'desktop/assets/images/icons/icon_game_64.png',
+            icon: 'desktop/assets/images/icons/icon_bubblepop_64.png',
             x: 300,
             y: 100,
             width: 700,
@@ -97,6 +101,10 @@ export default class BubblePop {
                 if (this.video && this.video.srcObject) {
                     this.video.srcObject.getTracks().forEach(track => track.stop());
                     this.video.srcObject = null;
+                }
+
+                if (this.canvas && this.mouseMoveHandler) {
+                    this.canvas.removeEventListener('mousemove', this.mouseMoveHandler);
                 }
                 this.video = null;
                 this.bubbles = [];
@@ -137,31 +145,43 @@ export default class BubblePop {
         this.bubbles.push({ x, y: 480 + radius, radius, speedY, speedX });
     }
 
- async startBubblePop() {
+    async startBubblePop() {
         this.video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        this.canvas = document.getElementById('canvas');
+        const ctx = this.canvas.getContext('2d');
         const status = document.getElementById('status');
         const scoreDisplay = document.getElementById('score-display');
 
         // Initialize score display
         scoreDisplay.innerText = `Score: ${this.score}`;
 
+        // Mouse movement handler
+        this.mouseMoveHandler = (e) => {
+            if (this.isHandDetected) return; // Ignore mouse if hand is detected
+            const rect = this.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const smoothedPos = this.smoothPosition({ x, y });
+            this.lastPos = { x: smoothedPos.x, y: smoothedPos.y };
+            this.lastCursorTime = Date.now();
+        };
+        this.canvas.addEventListener('mousemove', this.mouseMoveHandler);
+
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
             switch (e.key.toLowerCase()) {
                 case 'c':
                     this.bubbles = [];
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     status.innerText = `🎈 BubblePop | C: Clear, R: Reset`;
                     scoreDisplay.innerText = `Score: ${this.score}`;
                     break;
                 case 'r':
                     this.bubbles = [];
                     this.score = 0;
-                    this.chainCount = 0; // Reset chain count
+                    this.chainCount = 0;
                     this.spawnRate = 1000;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     status.innerText = `🎈 BubblePop | C: Clear, R: Reset`;
                     scoreDisplay.innerText = `Score: ${this.score}`;
                     if (this.spawnInterval) {
@@ -176,7 +196,7 @@ export default class BubblePop {
         this.spawnInterval = setInterval(() => {
             this.spawnBubble();
             const newSpawnRate = Math.max(300, this.spawnRate * 0.95);
-            if (Math.abs(newSpawnRate - this.spawnRate) > 1) { // Only update if significant change
+            if (Math.abs(newSpawnRate - this.spawnRate) > 1) {
                 this.spawnRate = newSpawnRate;
                 if (this.spawnInterval) {
                     clearInterval(this.spawnInterval);
@@ -185,10 +205,20 @@ export default class BubblePop {
             }
         }, this.spawnRate);
 
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        this.video.srcObject = stream;
-        await new Promise(resolve => (this.video.onloadeddata = resolve));
-        this.video.play();
+        // Attempt to start camera, but allow mouse-only fallback
+        let stream;
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            this.video.srcObject = stream;
+            await new Promise(resolve => (this.video.onloadeddata = resolve));
+            this.video.play();
+        } catch (err) {
+            console.warn('Camera access denied, falling back to mouse input:', err);
+            status.innerText = `🎈 BubblePop | Using mouse | C: Clear, R: Reset`;
+            this.canvas.classList.add('no-hand');
+            // hide the loading spinner
+            $('.bubblepop-loading', this.win.content).fadeOut(300);
+        }
 
         this.hands = new Hands({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -202,15 +232,17 @@ export default class BubblePop {
             selfieMode: true
         });
 
-        this.camera = new Camera(this.video, {
-            onFrame: async () => await this.hands.send({ image: this.video }),
-            width: 640,
-            height: 480,
-        });
-        this.camera.start();
+        if (stream) {
+            this.camera = new Camera(this.video, {
+                onFrame: async () => await this.hands.send({ image: this.video }),
+                width: 640,
+                height: 480,
+            });
+            this.camera.start();
+        }
 
         const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
             // Draw bubbles
             this.bubbles.forEach(bubble => {
@@ -244,6 +276,50 @@ export default class BubblePop {
                 ctx.fill();
             }
 
+            // Check for bubble collisions with mouse or hand
+            const now = Date.now();
+            if (this.lastPos && Date.now() - this.lastCursorTime < this.cursorTimeout) {
+                this.bubbles = this.bubbles.filter(bubble => {
+                    const distance = Math.hypot(this.lastPos.x - bubble.x, this.lastPos.y - bubble.y);
+                    if (distance < bubble.radius && now - this.lastPopTime >= this.cooldown) {
+                        this.score++;
+                        if (now - this.lastPopTime <= this.chainThreshold) {
+                            this.chainCount = Math.min(this.chainCount + 1, this.pitchNotes.length - 1);
+                        } else {
+                            this.chainCount = 0;
+                        }
+                        const note = this.pitchNotes[this.chainCount];
+                        /*
+                        This error only happens in mouse mode, not hand mode, when camera is not available.
+                        Debug.ts:12 Uncaught Error: Start time must be strictly greater than previous start time
+                            at Bn (Debug.ts:12:9)
+                            at Xa.start (Source.ts:208:4)
+                            at Ha._triggerEnvelopeAttack (Synth.ts:133:19)
+                            at Ha.triggerAttack (Monophonic.ts:87:8)
+                            at Ha.triggerAttackRelease (Instrument.ts:168:8)
+                            at bubblepop.js?v=6.5.6:293:36
+                            at Array.filter (<anonymous>)
+                            at animate (bubblepop.js?v=6.5.6:283:45)
+                            */                       
+                           // TODO: get sound to work in mouse-only mode
+                           // issue with too rapid calls to triggerAttackRelease, probably need to debounce
+                           try {
+                            this.synth.triggerAttackRelease(note, '16n', Tone.now());
+                           } catch (err) {
+
+                           }
+                        this.lastPopTime = now;
+                        this.burstAnimations.push({ x: bubble.x, y: bubble.y, radius: bubble.radius });
+                        scoreDisplay.innerText = `Score: ${this.score}`;
+                        status.innerText = this.isHandDetected
+                            ? `🎈 BubblePop | C: Clear, R: Reset`
+                            : `🎈 BubblePop | Using mouse | C: Clear, R: Reset`;
+                        return false;
+                    }
+                    return true;
+                });
+            }
+
             // Remove off-screen bubbles
             this.bubbles = this.bubbles.filter(bubble => bubble.y > -bubble.radius);
 
@@ -259,15 +335,23 @@ export default class BubblePop {
                 $('.bubblepop-loading', this.win.content).fadeOut(300);
             }
 
-            if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
-                status.innerText = `🎈 BubblePop | No hand detected | C: Clear, R: Reset`;
+            this.isHandDetected = !!(results.multiHandLandmarks && results.multiHandLandmarks.length > 0);
+            if (this.isHandDetected) {
+                this.canvas.classList.remove('no-hand');
+                status.innerText = `🎈 BubblePop | C: Clear, R: Reset`;
+            } else {
+                this.canvas.classList.add('no-hand');
+                status.innerText = `🎈 BubblePop | Using mouse | C: Clear, R: Reset`;
+            }
+
+            if (!this.isHandDetected) {
                 return;
             }
 
             const hand = results.multiHandLandmarks[0];
             const tip = hand[8]; // Index finger tip
-            let x = tip.x * canvas.width;
-            let y = tip.y * canvas.height;
+            let x = tip.x * this.canvas.width;
+            let y = tip.y * this.canvas.height;
 
             // Smooth position
             const smoothedPos = this.smoothPosition({ x, y });
@@ -277,54 +361,10 @@ export default class BubblePop {
             // Update cursor position and timestamp
             this.lastPos = { x, y };
             this.lastCursorTime = Date.now();
-
-            // Check for bubble collisions
-            const now = Date.now();
-            this.bubbles = this.bubbles.filter(bubble => {
-                const distance = Math.hypot(x - bubble.x, y - bubble.y);
-                if (distance < bubble.radius && now - this.lastPopTime >= this.cooldown) {
-                    this.score++;
-                    // Calculate pitch based on chain
-                    if (now - this.lastPopTime <= this.chainThreshold) {
-                        this.chainCount = Math.min(this.chainCount + 1, this.pitchNotes.length - 1);
-                    } else {
-                        this.chainCount = 0; // Reset chain if too much time has passed
-                    }
-                    const note = this.pitchNotes[this.chainCount];
-                    this.synth.triggerAttackRelease(note, '16n', Tone.now());
-                    this.lastPopTime = now;
-                    this.burstAnimations.push({ x: bubble.x, y: bubble.y, radius: bubble.radius });
-                    scoreDisplay.innerText = `Score: ${this.score}`;
-                    status.innerText = `🎈 BubblePop | C: Clear, R: Reset`;
-                    return false;
-                }
-                return true;
-            });
         });
     }
 
-    startLoadingSequence() {
-        const steps = [
-            "Initializing camera...",
-            "Loading vision model...",
-            "Warming up tensors...",
-            "Calibrating hand gestures...",
-            "Initializing Synth...",
-            "Finalizing setup..."
-        ];
-
-        let stepIndex = 0;
-        const $loadingText = $('#loading-text', this.win.content);
-
-        const interval = setInterval(() => {
-            $loadingText.text(steps[stepIndex]);
-            stepIndex++;
-
-            // End of steps — stop interval
-            if (stepIndex >= steps.length) {
-                clearInterval(interval);
-            }
-        }, 1200); // Change step every 1.2s
-    }
-
 }
+
+
+BubblePop.prototype.startLoadingSequence = startLoadingSequence;

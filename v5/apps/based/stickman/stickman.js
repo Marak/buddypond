@@ -1,4 +1,6 @@
-export default class PosePuppet {
+import startLoadingSequence from './lib/startLoadingSequence.js';
+
+export default class StickMan {
     constructor(bp, options = {}) {
         this.bp = bp;
         this.options = options;
@@ -12,29 +14,32 @@ export default class PosePuppet {
     async init() {
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/pose');
         await this.bp.appendScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils');
-        await this.bp.appendCSS('/v5/apps/based/posepuppet/pose-puppet.css');
-        return 'loaded PosePuppet';
+        this.html = await this.bp.load('/v5/apps/based/stickman/stickman.html');
+        await this.bp.appendCSS('/v5/apps/based/stickman/stickman.css');
+        return 'loaded StickMan';
     }
 
     async open() {
+        if (this.win) {
+            this.win.restore();
+            this.win.focus();
+            return this.win;
+        }
+
         this.win = this.bp.window(this.window());
-        this.startPosePuppet();
+        this.startLoadingSequence();
+
+        this.startStickMan();
         this.win.maximize();
         return this.win;
     }
 
     window() {
-        const content = `
-        <video class="pose-puppet-video" id="video" width="640" height="480" autoplay style="display:none;"></video>
-        <canvas id="canvas" width="640" height="480" style="cursor:none;"></canvas>
-        <div style="position:absolute; top:10px; left:10px; color:white; font-size:14px;" id="status">
-            🧍 PosePuppet | Waves: 0 | B: Change Background, R: Reset
-        </div>
-        `;
+        const content = this.html;
         return {
-            id: 'posepuppet',
-            title: 'PosePuppet',
-            icon: 'desktop/assets/images/icons/icon_puppet_64.png',
+            id: 'stickman',
+            title: 'StickMan',
+            icon: 'desktop/assets/images/icons/icon_stickman_64.png',
             x: 300,
             y: 100,
             width: 700,
@@ -44,6 +49,13 @@ export default class PosePuppet {
             resizable: true,
             maximizable: true,
             closable: true,
+            onClose: () => {
+                this.win = null; // Clear reference on close
+                if (this.video && this.video.srcObject) {
+                    this.video.srcObject.getTracks().forEach(track => track.stop());
+                    this.video.srcObject = null;
+                }
+            }
         };
     }
 
@@ -56,8 +68,8 @@ export default class PosePuppet {
         return leftWrist.y < leftShoulder.y && rightWrist.y < rightShoulder.y;
     }
 
-    async startPosePuppet() {
-        const video = document.getElementById('video');
+    async startStickMan() {
+        this.video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const status = document.getElementById('status');
@@ -68,21 +80,23 @@ export default class PosePuppet {
             switch (e.key.toLowerCase()) {
                 case 'b':
                     this.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-                    status.innerText = `🧍 PosePuppet | Waves: ${this.waveCount} | B: Change Background, R: Reset`;
+                    status.innerText = `🧍 StickMan | B: Change Background, R: Reset`;
                     break;
+                /*
                 case 'r':
                     this.waveCount = 0;
                     this.isSpinning = false;
                     this.spinAngle = 0;
-                    status.innerText = `🧍 PosePuppet | Waves: ${this.waveCount} | B: Change Background, R: Reset`;
+                    status.innerText = `🧍 StickMan | Waves: ${this.waveCount} | B: Change Background, R: Reset`;
                     break;
+                */
             }
         });
 
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        await new Promise(resolve => (video.onloadeddata = resolve));
-        video.play();
+        this.video.srcObject = stream;
+        await new Promise(resolve => (this.video.onloadeddata = resolve));
+        this.video.play();
 
         const pose = new Pose({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
@@ -95,14 +109,25 @@ export default class PosePuppet {
             minTrackingConfidence: 0.7
         });
 
-        const camera = new Camera(video, {
-            onFrame: async () => await pose.send({ image: video }),
+        const camera = new Camera(this.video, {
+            onFrame: async () => await pose.send({ image: this.video }),
             width: 640,
             height: 480,
         });
         camera.start();
 
+
+        let firstResults = false;
+
         pose.onResults((results) => {
+
+            if (!firstResults) {
+                firstResults = true;
+                $('.stickman-loading', this.win.content).fadeOut(300);
+            }
+
+
+
             if (!results.poseLandmarks) {
                 latestLandmarks = null;
                 return;
@@ -161,11 +186,13 @@ export default class PosePuppet {
                 ctx.fill();
             });
 
-            if (this.isWaveGesture(landmarks) && !this.isSpinning) {
+            /*
+            if (this.isWaveGesture(landmarks)) {
                 this.waveCount++;
                 this.isSpinning = true;
-                status.innerText = `🧍 PosePuppet | Waves: ${this.waveCount} | B: Change Background, R: Reset`;
+                status.innerText = `🧍 StickMan | B: Change Background, R: Reset`;
             }
+            */
         };
 
         const renderLoop = () => {
@@ -176,7 +203,7 @@ export default class PosePuppet {
             if (latestLandmarks) {
                 drawPuppet(latestLandmarks);
             } else {
-                status.innerText = `🧍 PosePuppet | Waves: ${this.waveCount} | No body detected | B: Change Background, R: Reset`;
+                status.innerText = `🧍 StickMan | B: Change Background`;
             }
 
             requestAnimationFrame(renderLoop);
@@ -186,3 +213,5 @@ export default class PosePuppet {
     }
 
 }
+
+StickMan.prototype.startLoadingSequence = startLoadingSequence;

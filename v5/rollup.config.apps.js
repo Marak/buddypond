@@ -1433,20 +1433,6 @@ export default [
   }
 ,
   {
-    input: 'apps/based/posepuppet/posepuppet.js',
-    output: {
-      file: 'dist/apps/based/posepuppet.js',
-      format: 'es',
-      sourcemap: true,
-    },
-    plugins: [
-      resolve(),
-      commonjs(),
-      terser(),
-    ]
-  }
-,
-  {
     input: 'apps/based/powerlevel/powerlevel.js',
     output: {
       file: 'dist/apps/based/powerlevel.js',
@@ -1683,6 +1669,35 @@ export default [
     plugins: [
       postcss({
         extract: path.resolve('dist/apps/based/spellbook.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/stickman/stickman.js',
+    output: {
+      file: 'dist/apps/based/stickman.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/stickman/stickman-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/stickman.css'),
         minimize: true,
         sourceMap: true
       })

@@ -1,8 +1,8 @@
-.bubblepop-video {
+.stickman-video {
     display: none;
 }
 
-.bubblepop-container {
+.stickman-container {
     position: relative;
     background-color: black;
     text-align: center;
@@ -15,10 +15,7 @@
 
 #canvas {
     background: black;
-}
-
-#canvas.no-hand {
-    cursor: default; /* Show default cursor when no hand is detected */
+    cursor: none; /* Moved from inline style */
 }
 
 #score-display {
@@ -33,7 +30,7 @@
     z-index: 50; /* Above canvas, below loading */
 }
 
-.bubblepop-guide {
+.stickman-guide {
     position: absolute;
     top: 30px;
     right: 10px;
@@ -50,13 +47,13 @@
     text-align: left;
 }
 
-.bubblepop-guide h3 {
+.stickman-guide h3 {
     margin-top: 0;
     font-size: 16px;
     color: #00f0ff;
 }
 
-.bubblepop-loading {
+.stickman-loading {
     position: absolute;
     z-index: 1000;
     width: 100%;
