@@ -36,8 +36,6 @@
     border-radius: 8px 8px 0 0; /* Match window container corners */
     user-select: none;
     cursor: grab;
-
-    
 }
 
 .window-title-bar {
