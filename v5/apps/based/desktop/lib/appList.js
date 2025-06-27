@@ -406,16 +406,16 @@ export default {
     "categories": ["tools"]
   },
 
-  /*
   "aero-player": {
-    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
+    "icon": "desktop/assets/images/icons/icon_aero-player_64.png",
     "label": "Aero Player",
     "description": "Play music with Aero Player",
     "onClick": "bp.open('aero-player')",
     "categories": ["audio", "music", "entertainment"],
-    "author": "Swayam"
+    "author": "Swayam",
+    "authorUrl": "https://github.com/swayam25/Aero",
+     adminOnly: true
   },
-  */
 
   "motd": {
     "icon": "desktop/assets/images/icons/icon_console_64.png",

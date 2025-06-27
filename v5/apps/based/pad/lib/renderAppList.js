@@ -44,6 +44,11 @@ export default function renderAppList(appStats = {}) {
         const uninstallButton = isInstalled
             ? `<button class="bp-pads-btn bp-pads-btn-uninstall" data-app="${name}">Uninstall</button>`
             : '';
+
+        let author = app.author || 'BuddyPond';
+        if (app.authorUrl) {
+            author = `<a href="${app.authorUrl}" target="_blank" rel="noopener noreferrer">${author}</a>`;
+        }
         return `
             <div class="bp-pads-app" data-app="${name}">
                 <img src="${app.icon}" alt="${app.label} icon" class="bp-pads-app-icon">
@@ -57,7 +62,7 @@ export default function renderAppList(appStats = {}) {
                     <div class="bp-pads-app-metadata">
                         <div class="bp-pads-app-author">
                             <span class="bp-pads-app-author-label">Author:</span>
-                            <span class="bp-pads-app-author-value">${app.author || 'BuddyPond'}</span>
+                            <span class="bp-pads-app-author-value">${author}</span>
                         </div>
                         <div class="bp-pads-app-install-count">
                             <span class="bp-pads-app-install-count-label">Downloads:</span>

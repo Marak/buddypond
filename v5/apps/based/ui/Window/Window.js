@@ -53,7 +53,7 @@ class Window {
             this.app = id;
         }
 
-        
+
         this.type = type;
         this.x = x;
         this.y = y;
@@ -351,19 +351,44 @@ class Window {
                 this.setupMessageHandling();
             };
         } else if (typeof this.iframeContent === 'string' && this.iframeContent.length) {
-            this.content = document.createElement("iframe");
+            this.content = document.createElement("div");
             this.content.classList.add("bp-window-content");
-            this.content.src = this.iframeContent;
+
+            let iframe = document.createElement("iframe");
+
+            this.content.appendChild(iframe);
+
+            iframe.src = this.iframeContent;
 
             // Remark: This is legacy settings for iframe message handling bootstrapping
             // In more modern applications, we use broadcast channels or other methods
             // It's important we don't attempt to setup message handling for iframes that are not from the same origin
             let currentOrigin = window.location.origin;
-            let iframeOrigin = this.content.src;
+            let iframeOrigin = iframe.src;
+
             // check if currentOrigin can be found in iframeOrigin
             if (iframeOrigin.indexOf(currentOrigin) !== -1) {
-                this.content.onload = () => this.setupMessageHandling();
+                iframe.onload = () => this.setupMessageHandling();
             } else {
+
+                // hide the iframe
+                iframe.style.display = 'none';
+                iframe.onload = () => {
+                    // remove loading image
+                    loaderHolder.remove();
+                    // show the iframe
+                    iframe.style.display = 'block';
+                }
+
+                // add the loaderHolder
+                let loaderHolder = document.createElement("div");
+                loaderHolder.id = "loaderHolder";
+                loaderHolder.innerHTML = `
+                <div id="loader"></div>
+                <p class="loaderText">Loading... ${this.id || this.title || this.label || ''}</p>
+            `;
+                this.content.appendChild(loaderHolder);
+
                 // console.log('not setting up legacy iframe message handling, as the iframe origin does not match current origin');
             }
         } else {
@@ -795,7 +820,7 @@ class Window {
 
         // remove items with the same id if already exists
         this.bp.apps.ui.recentApps = this.bp.apps.ui.recentApps.filter(app => app.id !== this.id);
-        
+
         this.bp.apps.ui.recentApps.unshift({
             id: this.id,
             app: this.app,
