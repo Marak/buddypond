@@ -357,6 +357,8 @@ class Window {
             this.iframe = document.createElement("iframe");
 
             this.content.appendChild(this.iframe);
+            // by default add allow attributes to the iframe
+            this.iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen; clipboard-write; accelerometer; gyroscope; web-share");
 
             this.iframe.src = this.iframeContent;
 
