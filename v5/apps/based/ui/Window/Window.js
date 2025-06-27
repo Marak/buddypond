@@ -354,30 +354,30 @@ class Window {
             this.content = document.createElement("div");
             this.content.classList.add("bp-window-content");
 
-            let iframe = document.createElement("iframe");
+            this.iframe = document.createElement("iframe");
 
-            this.content.appendChild(iframe);
+            this.content.appendChild(this.iframe);
 
-            iframe.src = this.iframeContent;
+            this.iframe.src = this.iframeContent;
 
             // Remark: This is legacy settings for iframe message handling bootstrapping
             // In more modern applications, we use broadcast channels or other methods
             // It's important we don't attempt to setup message handling for iframes that are not from the same origin
             let currentOrigin = window.location.origin;
-            let iframeOrigin = iframe.src;
+            let iframeOrigin = this.iframe.src;
 
             // check if currentOrigin can be found in iframeOrigin
             if (iframeOrigin.indexOf(currentOrigin) !== -1) {
-                iframe.onload = () => this.setupMessageHandling();
+                this.iframe.onload = () => this.setupMessageHandling();
             } else {
 
                 // hide the iframe
-                iframe.style.display = 'none';
-                iframe.onload = () => {
+                this.iframe.style.display = 'none';
+                this.iframe.onload = () => {
                     // remove loading image
                     loaderHolder.remove();
                     // show the iframe
-                    iframe.style.display = 'block';
+                    this.iframe.style.display = 'block';
                 }
 
                 // add the loaderHolder
@@ -406,10 +406,10 @@ class Window {
     setupMessageHandling() {
         // iframe is loaded by now
         this.onLoad(this);
-        const iframeWindow = this.content.contentWindow;
+        const iframeWindow = this.iframe.contentWindow;
 
         // Inject a script into the iframe to listen for the ESC key
-        const iframeDoc = this.content.contentDocument || this.content.contentWindow.document;
+        const iframeDoc = this.iframe.contentDocument || this.iframe.contentWindow.document;
         const script = iframeDoc.createElement("script");
         script.type = "text/javascript";
         script.textContent = `
@@ -428,8 +428,8 @@ class Window {
 
 
     sendMessage(message) {
-        if (this.content && this.content.contentWindow) {
-            this.content.contentWindow.postMessage(message, '*'); // Consider specifying an origin here instead of '*'
+        if (this.iframe && this.iframe.contentWindow) {
+            this.iframe.contentWindow.postMessage(message, '*'); // Consider specifying an origin here instead of '*'
         }
     }
 
