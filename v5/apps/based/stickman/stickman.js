@@ -106,7 +106,9 @@ export default class StickMan {
             modelComplexity: 1,
             smoothLandmarks: true,
             minDetectionConfidence: 0.7,
-            minTrackingConfidence: 0.7
+            minTrackingConfidence: 0.7,
+            selfieMode: true // Add this to flip landmarks for mirrored cameras
+
         });
 
         const camera = new Camera(this.video, {
