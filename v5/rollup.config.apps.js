@@ -1605,6 +1605,35 @@ export default [
   }
 ,
   {
+    input: 'apps/based/sigil-caster/sigil-caster.js',
+    output: {
+      file: 'dist/apps/based/sigil-caster.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/sigil-caster/sigil-caster-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/sigil-caster.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
     input: 'apps/based/solitaire/solitaire.js',
     output: {
       file: 'dist/apps/based/solitaire.js',
