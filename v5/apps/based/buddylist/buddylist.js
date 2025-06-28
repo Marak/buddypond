@@ -229,7 +229,7 @@ export default class BuddyList {
             width: 250,
             height: 500,
             x: x,
-            y: 75,
+            y: 50,
             onOpen: () => {
 
                 // Remark: We seeing a race condition where the input field is not focusable

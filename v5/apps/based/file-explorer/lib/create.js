@@ -53,12 +53,15 @@ export default function create(options = {}) {
     this.uploadOverlay.hide();
     this.container = container;
 
-    // TODO
-    /*
-    $('.bp-file-explorer-sidebar').resizable({
-        handles: 'e' // 'e' stands for east, i.e., the right side
+    $('.bp-file-explorer-sidebar', this.container).resizable({
+        handles: 'e,w',// 'e' stands for east, i.e., the right side
+        start: (event, ui) => {
+            $('.bp-file-explorer-file-viewer-iframe', this.container).css('pointer-events', 'none');
+        },
+        stop: (event, ui) => {
+            $('.bp-file-explorer-file-viewer-iframe', this.container).css('pointer-events', 'auto');
+        }
     });
-    */
 
     $('.bp-file-explorer-address-input', this.container).on('keyup', (e) => {
         // check to see if we matched a node in the jstree

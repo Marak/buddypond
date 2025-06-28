@@ -239,6 +239,7 @@ export default async function sendMessageHandler(e, chatWindow, windowType, cont
     && !_data.text.startsWith('/roll')
     && !_data.text.startsWith('/gif')
     && !_data.text.startsWith('/image')
+    && !_data.text.startsWith('/deepseek')
   ) {
     // TODO: process the card locall here
     /*

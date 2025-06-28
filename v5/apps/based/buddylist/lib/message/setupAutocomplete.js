@@ -160,11 +160,13 @@ export default function setupAutocomplete(chatWindow) {
                 // Update send button
                 $sendButton.css("opacity", newValue.length > 0 ? 1 : 0.5);
 
-                // Close autocomplete
-                $input.autocomplete("close");
-
                 return false;
             }
+
+            // Close autocomplete
+            $input.autocomplete("close");
+            return false;
+
         },
         minLength: 0,
         position: { my: "left bottom", at: "left top", collision: "none" },

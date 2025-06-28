@@ -302,7 +302,7 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
         //x: 0,
         //y: 0,
         x: data.x || 10,
-        y: 75,
+        y: 50,
         width: width,
         height: height,
     };

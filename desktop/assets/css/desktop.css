@@ -65,10 +65,13 @@ li {
   bottom: 0;
 }
 
-div.ui-resizable-handle {
-  display: none !important;
-  visibility: hidden !important;
-}
+/* 
+  Removed 6/27/25, required for $.resizable()
+  div.ui-resizable-handle {
+    display: none !important;
+    visibility: hidden !important;
+  }
+*/
 
 /* `Icons
 ----------------------------------------------------------------------------------------------------*/

@@ -181,7 +181,7 @@ export default function defaultMenuBar(bp) {
     },
     {
       label: `
-              <span class="loggedIn">Next Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
+              <span class="loggedIn">Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
               <!-- <span class="loggedOut">Login to get Coin Rewards</span> -->
             `,
     },

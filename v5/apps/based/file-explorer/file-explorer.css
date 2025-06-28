@@ -63,13 +63,12 @@
   }
   
   .bp-file-explorer-sidebar {
-    width: 30%; /* TODO: calc() */
+    width: 200px;
     min-width: 100px;
     border-right: 1px solid #999;
-    /*
-    background: #fff;
-    */
     overflow: auto;
+    /* hide the scrollbar */
+    scrollbar-width: none; /* Firefox */
   }
   
   .bp-file-explorer-tree {
