@@ -1,5 +1,5 @@
 .card-gpt {
-    background-color: #f4f4f8;
+    /* background-color: #f4f4f8; */
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -31,15 +31,17 @@
 
 .card-gpt-body {
     padding: 15px;
+    /*
     background-color: white;
     color: #333;
+    */
     font-size: 14px;
     line-height: 1.6;
 }
 
 .card-gpt-response {
     padding: 10px;
-    background-color: #eef2f7;
+    /*background-color: #eef2f7; */
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     white-space: pre-wrap;
