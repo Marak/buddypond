@@ -257,6 +257,12 @@
     .user-coins h2, .all-coins h2 {
         font-size: 18px;
     }
+
+    .coin-container .tabs-container ul {
+        gap: 0px;
+    }
+
+
 }
 
 /* Smooth transitions for data updates */

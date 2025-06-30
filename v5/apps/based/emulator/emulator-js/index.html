@@ -317,6 +317,7 @@
         }, '*');
 
 
+        let started = false;
         // Function to handle receiving messages from the parent window
         function receiveMessage(event) { // IMPORTANT
             console.log("Received message from parent:", event);
@@ -326,6 +327,11 @@
                 // Handle the message based on event.data.event and event.data.data
                 switch (event.data.event) {
                     case 'startGame':
+                        if (started) {
+                            console.warn('Game already started, ignoring startGame event');
+                            return;
+                        }
+                        started = true;
                         // Execute command or display data
                         let gameZipUrl = event.data.gameUrl;
                         let gameSystem = event.data.gameSystem;
@@ -338,7 +344,7 @@
                         // console.log(window.EJS_emulator)
                         // reload the whole page
                         location.reload();
-
+                        started = false;
                         break;
                     default:
                         console.warn('Unhandled event:', event.data.event);
