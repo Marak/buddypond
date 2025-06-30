@@ -13,7 +13,8 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Prevent scrollbars during shake */
+  overflow: hidden;
+  /* Prevent scrollbars during shake */
 }
 
 input {
@@ -174,7 +175,8 @@ li {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background: linear-gradient(180deg, #666666, #353535); /* Mac-like gradient */
+  background: linear-gradient(180deg, #666666, #353535);
+  /* Mac-like gradient */
   color: #e0e0e0;
   padding-top: 8px;
   padding-left: 8px;
@@ -184,7 +186,8 @@ li {
   letter-spacing: 0.5px;
   text-shadow: #000 0 1px 1px;
   border-bottom: 1px solid #444;
-  border-radius: 8px 8px 0 0; /* Match window container corners */
+  border-radius: 8px 8px 0 0;
+  /* Match window container corners */
   user-select: none;
   cursor: grab;
 }
@@ -287,7 +290,7 @@ li {
   right: 0px;
   height: calc(100% - 52px);
 }
-  
+
 
 .window_aside {
   /*
@@ -319,6 +322,7 @@ li {
   -webkit-border-radius: 0;
   -webkit-background-clip: padding-box;
 }
+
 .window_bottom {
   color: linear-gradient(180deg, #666666, #353535);
 }
@@ -429,6 +433,7 @@ th.shrink {
 #bar_top {
   margin-top: 40px
 }
+
 #bar_top li,
 #bar_bottom li {
   float: left;
@@ -587,7 +592,7 @@ th.shrink {
   text-align: left;
 }
 
-.desktop-shortcuts-container-folder > div {
+.desktop-shortcuts-container-folder>div {
   /*background-color: rgba(255, 255, 255, 0.8);*/
   text-align: center;
   font-size: 30px;
@@ -638,10 +643,12 @@ a:hover {
   border-color: red !important;
   color: red;
 }
+
 .success {
   color: green;
   border-color: green;
 }
+
 .danger {
   color: red;
   border-color: red;
@@ -691,11 +698,11 @@ a:hover {
 }
 
 .desktopLink {
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .desktopButton {
-  width: 10vw;
+  /* width: 10vw; */
   cursor: pointer;
   border: solid;
   border-width: 1px;
@@ -759,13 +766,23 @@ a:hover {
 }
 
 @keyframes desktopButton {
-  from {background-color: blue;}
-  to {background-color: yellow;}
+  from {
+    background-color: blue;
+  }
+
+  to {
+    background-color: yellow;
+  }
 }
 
 @keyframes example {
-  from {background-color: blue;}
-  to {background-color: yellow;}
+  from {
+    background-color: blue;
+  }
+
+  to {
+    background-color: yellow;
+  }
 }
 
 .orb {
@@ -790,11 +807,18 @@ a:hover {
 }
 
 @keyframes example {
-  from {background-color: blue;}
-  to {background-color: yellow;}
+  from {
+    background-color: blue;
+  }
+
+  to {
+    background-color: yellow;
+  }
 }
 
-.emoji-menu { bottom: 111px!important; }
+.emoji-menu {
+  bottom: 111px !important;
+}
 
 .chat_messages {
   height: 100%;
@@ -813,8 +837,7 @@ a:hover {
   cursor: pointer;
 }
 
-.emojiPicker {
-}
+.emojiPicker {}
 
 .emojiPicker:hover {
   cursor: pointer;
@@ -849,12 +872,12 @@ a:hover {
   */
 }
 
-.demo{
-  width:400px;
-  height:400px;
-  font-size:5em;
-  float:left;
-  text-align:center;
+.demo {
+  width: 400px;
+  height: 400px;
+  font-size: 5em;
+  float: left;
+  text-align: center;
 }
 
 .loading {
@@ -867,8 +890,7 @@ video {
   padding: 16px;
 }
 
-.totalConnected {
-}
+.totalConnected {}
 
 #login_desktop_icon {
   display: none;
@@ -892,7 +914,7 @@ video {
 }
 
 .wallpaperColor {
-  display:none;
+  display: none;
 }
 
 #window_games .icon {
@@ -903,8 +925,9 @@ video {
   display: none;
 }
 
-.spinningCursor  {
-  cursor: pointer !important; /* progress, grabbing, context-menu */
+.spinningCursor {
+  cursor: pointer !important;
+  /* progress, grabbing, context-menu */
 }
 
 label {
@@ -947,6 +970,7 @@ iframe {
   padding-left: 6px;
   padding-right: 6px;
 }
+
 .volumeMuted {
   display: none;
 }
@@ -957,40 +981,40 @@ iframe {
 }
 
 .card-meme {
- max-width: 100%;
+  max-width: 100%;
 }
 
-.rainbow-bg{
-		animation: rainbow-bg 2.5s linear;
-		animation-iteration-count: infinite;
+.rainbow-bg {
+  animation: rainbow-bg 2.5s linear;
+  animation-iteration-count: infinite;
 }
 
-.rainbow-border-active{
+.rainbow-border-active {
   border-width: 2px;
-		animation: rainbow-border 7.77s linear;
-		animation-iteration-count: infinite;
+  animation: rainbow-border 7.77s linear;
+  animation-iteration-count: infinite;
 }
 
 
-.rainbow-border:hover{
+.rainbow-border:hover {
   border-width: 2px;
-		animation: rainbow-border 7.77s linear;
-		animation-iteration-count: infinite;
+  animation: rainbow-border 7.77s linear;
+  animation-iteration-count: infinite;
 }
 
 .rainbow {
-		animation: rainbow 2.5s linear;
-		animation-iteration-count: infinite;
+  animation: rainbow 2.5s linear;
+  animation-iteration-count: infinite;
 }
 
-.rainbowFast{
-		animation: rainbow 1.444s linear;
-		animation-iteration-count: infinite;
+.rainbowFast {
+  animation: rainbow 1.444s linear;
+  animation-iteration-count: infinite;
 }
 
 .rainbowLink:hover {
-		animation: rainbow 2.5s linear;
-		animation-iteration-count: infinite;
+  animation: rainbow 2.5s linear;
+  animation-iteration-count: infinite;
 }
 
 .purple:not(.message):hover {
@@ -1001,121 +1025,160 @@ iframe {
   cursor: pointer;
 }
 
-@keyframes rainbow-bg{
-		100%,0%{
-			background-color: rgb(255,0,0);
-		}
-		8%{
-			background-color: rgb(255,127,0);
-		}
-		16%{
-			background-color: rgb(255,255,0);
-		}
-		25%{
-			background-color: rgb(127,255,0);
-		}
-		33%{
-			background-color: rgb(0,255,0);
-		}
-		41%{
-			background-color: rgb(0,255,127);
-		}
-		50%{
-			background-color: rgb(0,255,255);
-		}
-		58%{
-			background-color: rgb(0,127,255);
-		}
-		66%{
-			background-color: rgb(0,0,255);
-		}
-		75%{
-			background-color: rgb(127,0,255);
-		}
-		83%{
-			background-color: rgb(255,0,255);
-		}
-		91%{
-			background-color: rgb(255,0,127);
-		}
+@keyframes rainbow-bg {
+
+  100%,
+  0% {
+    background-color: rgb(255, 0, 0);
+  }
+
+  8% {
+    background-color: rgb(255, 127, 0);
+  }
+
+  16% {
+    background-color: rgb(255, 255, 0);
+  }
+
+  25% {
+    background-color: rgb(127, 255, 0);
+  }
+
+  33% {
+    background-color: rgb(0, 255, 0);
+  }
+
+  41% {
+    background-color: rgb(0, 255, 127);
+  }
+
+  50% {
+    background-color: rgb(0, 255, 255);
+  }
+
+  58% {
+    background-color: rgb(0, 127, 255);
+  }
+
+  66% {
+    background-color: rgb(0, 0, 255);
+  }
+
+  75% {
+    background-color: rgb(127, 0, 255);
+  }
+
+  83% {
+    background-color: rgb(255, 0, 255);
+  }
+
+  91% {
+    background-color: rgb(255, 0, 127);
+  }
 }
 
-@keyframes rainbow{
-		100%,0%{
-			color: rgb(255,0,0);
-		}
-		8%{
-			color: rgb(255,127,0);
-		}
-		16%{
-			color: rgb(255,255,0);
-		}
-		25%{
-			color: rgb(127,255,0);
-		}
-		33%{
-			color: rgb(0,255,0);
-		}
-		41%{
-			color: rgb(0,255,127);
-		}
-		50%{
-			color: rgb(0,255,255);
-		}
-		58%{
-			color: rgb(0,127,255);
-		}
-		66%{
-			color: rgb(0,0,255);
-		}
-		75%{
-			color: rgb(127,0,255);
-		}
-		83%{
-			color: rgb(255,0,255);
-		}
-		91%{
-			color: rgb(255,0,127);
-		}
+@keyframes rainbow {
+
+  100%,
+  0% {
+    color: rgb(255, 0, 0);
+  }
+
+  8% {
+    color: rgb(255, 127, 0);
+  }
+
+  16% {
+    color: rgb(255, 255, 0);
+  }
+
+  25% {
+    color: rgb(127, 255, 0);
+  }
+
+  33% {
+    color: rgb(0, 255, 0);
+  }
+
+  41% {
+    color: rgb(0, 255, 127);
+  }
+
+  50% {
+    color: rgb(0, 255, 255);
+  }
+
+  58% {
+    color: rgb(0, 127, 255);
+  }
+
+  66% {
+    color: rgb(0, 0, 255);
+  }
+
+  75% {
+    color: rgb(127, 0, 255);
+  }
+
+  83% {
+    color: rgb(255, 0, 255);
+  }
+
+  91% {
+    color: rgb(255, 0, 127);
+  }
 }
 
-@keyframes rainbow-border{
-		100%,0%{
-			border-color: rgb(255,0,0);
-		}
-		8%{
-			border-color: rgb(255,127,0);
-		}
-		16%{
-			border-color: rgb(255,255,0);
-		}
-		25%{
-			border-color: rgb(127,255,0);
-		}
-		33%{
-			border-color: rgb(0,255,0);
-		}
-		41%{
-			border-color: rgb(0,255,127);
-		}
-		50%{
-			border-color: rgb(0,255,255);
-		}
-		58%{
-			border-color: rgb(0,127,255);
-		}
-		66%{
-			border-color: rgb(0,0,255);
-		}
-		75%{
-			border-color: rgb(127,0,255);
-		}
-		83%{
-			border-color: rgb(255,0,255);
-		}
-		91%{
-			border-color: rgb(255,0,127);
-		}
+@keyframes rainbow-border {
+
+  100%,
+  0% {
+    border-color: rgb(255, 0, 0);
+  }
+
+  8% {
+    border-color: rgb(255, 127, 0);
+  }
+
+  16% {
+    border-color: rgb(255, 255, 0);
+  }
+
+  25% {
+    border-color: rgb(127, 255, 0);
+  }
+
+  33% {
+    border-color: rgb(0, 255, 0);
+  }
+
+  41% {
+    border-color: rgb(0, 255, 127);
+  }
+
+  50% {
+    border-color: rgb(0, 255, 255);
+  }
+
+  58% {
+    border-color: rgb(0, 127, 255);
+  }
+
+  66% {
+    border-color: rgb(0, 0, 255);
+  }
+
+  75% {
+    border-color: rgb(127, 0, 255);
+  }
+
+  83% {
+    border-color: rgb(255, 0, 255);
+  }
+
+  91% {
+    border-color: rgb(255, 0, 127);
+  }
 }
 
 /* TODO: move these CSS to respective App files */
@@ -1134,6 +1197,7 @@ iframe {
   -ms-filter: "FlipH";
   */
 }
+
 .paintsImage {
   width: 100%;
 }
@@ -1252,8 +1316,7 @@ iframe {
   opacity: 0.77;
 }
 
-.canvasBackground {
-}
+.canvasBackground {}
 
 .help {
   background-color: #CBD;
@@ -1264,12 +1327,15 @@ iframe {
   margin-left: 25px;
   display: flex;
 }
+
 .help-command {
   min-width: 120px;
 }
+
 .help-description {
   word-wrap: break-word
 }
+
 .help-example {
   margin-left: 25px;
 }
@@ -1353,19 +1419,19 @@ iframe {
   top: 128px;
   opacity: 0.66;
   left: 16vw;
-  
+
 }
 
 .trafficLight {
   position: absolute;
-    right: 10px;
+  right: 10px;
 }
 
 .window_top .float_left {
   display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .trafficLight a {
@@ -1374,14 +1440,15 @@ iframe {
 
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
   .window_top {
-      height: 128px;
-      font-size: 48px;
-      padding-left: 32px;
+    height: 128px;
+    font-size: 48px;
+    padding-left: 32px;
   }
+
   .window_top img {
-      width: 64px;
-      height: 64px;
-      margin-right: 16px;
+    width: 64px;
+    height: 64px;
+    margin-right: 16px;
   }
 }
 
@@ -1424,7 +1491,7 @@ iframe {
 .buddyScript {
   cursor: pointer;
   color: #00FF41;
-;
+  ;
 }
 
 .runBuddyScript {
@@ -1473,8 +1540,7 @@ img.button-bar-button:hover {
   background: none;
 }
 
-.reaction-summary {
-}
+.reaction-summary {}
 
 .reaction-container {
   display: none;
@@ -1483,17 +1549,17 @@ img.button-bar-button:hover {
   left: 0px;
 }
 
-.loggedIn {
-}
+.loggedIn {}
 
 .loaderText {
   position: absolute;
-  left: -55%;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
+  left: calc(-50% - 170px);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  width: 500px;
 }
 
 input,
@@ -1514,9 +1580,10 @@ button {
   font-size: var(--desktop_button-font-size);
   text-align: var(--desktop_button-text-align, center);
   transition: var(--desktop_button-transition);
-  padding-left:  8px;
+  padding-left: 8px;
   padding-right: 8px;
 }
+
 button:hover {
   background: var(--desktop_button_hover-background);
   color: var(--desktop_button_hover-color);
@@ -1533,4 +1600,19 @@ a {
 a:hover {
   color: var(--desktop_links_hover-color);
   text-decoration: var(--desktop_links_hover-text-decoration);
+}
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+  .loaderText {
+    font-size: 2em;
+
+  }
+
+
+img.button-bar-button {
+  width: 32pt;
+  height: 32pt;
+  cursor: pointer;
+}
+
 }

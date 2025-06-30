@@ -291,7 +291,7 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
     let width = isBuddy ? 600 : Math.floor(window.innerWidth * 0.75);
 
     if (this.bp.isMobile()) {
-      height = 'calc(var(--vh) * 90)';
+        height = 'calc(var(--vh) * 90)';
     }
 
     return {
@@ -313,10 +313,12 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
 }
 
 async function initializeChatWindow(windowType, contextName, chatWindow, client) {
+    console.log('initializeChatWindow', windowType, contextName, chatWindow);
     setupChatWindow.call(this, windowType, contextName, chatWindow);
     client.addSubscription(windowType, contextName);
 
     if (windowType === "buddy") {
+        console.log(`Opening buddy chat window for: ${contextName}`);
         // remove the .aim-chat-area margin-top ( its the close button for tabbed ponds )
         $(".aim-chat-area", chatWindow.content).css("margin-top", "0");
         // the top to 10
@@ -332,7 +334,6 @@ async function initializeChatWindow(windowType, contextName, chatWindow, client)
         // send getConnectedUsers message to the pond
         toggleMessagesContainer.call(this, contextName, chatWindow);
     }
-
     await renderMessages.call(this, contextName, chatWindow);
     focusInputField(chatWindow);
 }
@@ -515,13 +516,11 @@ function setupChatWindow(windowType, contextName, chatWindow) {
     aimMessagesContainer.setAttribute("data-context", contextName);
     aimMessagesContainer.setAttribute("data-type", windowType);
 
-
     if (windowType === "buddy") {
         $(".aim-user-list-area", cloned).remove();
         $(".aim-room-list", cloned).remove();
         $('.aim-messages-header', cloned).remove();
     } else {
-
 
         const aimUserListContainer = $(".aim-user-list", cloned)[0];
         aimUserListContainer.setAttribute("data-context", contextName);
@@ -547,9 +546,6 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             }
             return false;
         });
-
-        chatWindow.container.classList.add("has-droparea");
-        chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
 
         const aimWindow = $('.aim-window', chatWindow.content)[0];
@@ -616,9 +612,10 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             aimWindow.classList.remove('show-room-list');
         });
 
-
     }
 
+    chatWindow.container.classList.add("has-droparea");
+    chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
     setupAutocomplete.call(this, chatWindow);
     setupChatWindowButtons.call(this, windowType, contextName, chatWindow);
