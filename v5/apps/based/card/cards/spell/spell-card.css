@@ -185,7 +185,6 @@
         width: 100%; /* Full-width, removes conflicting 768px */
         margin: 0.5rem 0; /* ~8px, unchanged but in rem */
         flex-direction: column; /* Unchanged, stacks art and content */
-        min-height: 10rem; /* ~160px, reduced from 200px */
     }
 
     .card-spell-art {
@@ -202,7 +201,7 @@
     }
 
     .card-spell-target {
-        font-size: 1.25rem; /* ~20px, reduced from 40px */
+        font-size: 1rem; /* ~20px, reduced from 40px */
     }
 
     .card-spell-name {

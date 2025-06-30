@@ -25,6 +25,18 @@ export default function defaultDesktopShortcuts() {
             // 'pond',
             'portfolio',
         ];
+
+        if (this.bp.isMobile()) {
+            defaultTaskBarApps = [
+                'buddylist',
+                // 'pond',
+                'portfolio',
+                'coin',
+                //'youtube',
+                'fluid-simulation',
+            ]
+        }
+
         defaultTaskBarApps.forEach(appName => {
             let app = this.bp.apps.desktop.appList[appName];
             if (app) {
@@ -41,7 +53,7 @@ export default function defaultDesktopShortcuts() {
         });
     }
 
-    if (!this.bp.isMobile()) {
+    // if (!this.bp.isMobile()) {
         Object.keys(installedTaskBarApps).forEach(appName => {
             let savedApp = installedTaskBarApps[appName];
             //console.log('Adding taskbar app', appName);
@@ -66,7 +78,7 @@ export default function defaultDesktopShortcuts() {
                 console.warn(`App ${appName} not found in desktop app list.`);
             }
         });
-    }
+    // }
 
 
     if (Object.keys(installedApps).length === 0) {
