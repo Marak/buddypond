@@ -520,6 +520,9 @@ function setupChatWindow(windowType, contextName, chatWindow) {
         $(".aim-user-list-area", cloned).remove();
         $(".aim-room-list", cloned).remove();
         $('.aim-messages-header', cloned).remove();
+        chatWindow.container.classList.add("has-droparea");
+        chatWindow.content.appendChild($(".aim-window", cloned)[0]);
+
     } else {
 
         const aimUserListContainer = $(".aim-user-list", cloned)[0];
@@ -547,6 +550,8 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             return false;
         });
 
+        chatWindow.container.classList.add("has-droparea");
+        chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
         const aimWindow = $('.aim-window', chatWindow.content)[0];
         console.log('chatWindow.contentchatWindow.content', chatWindow.content)
@@ -614,8 +619,6 @@ function setupChatWindow(windowType, contextName, chatWindow) {
 
     }
 
-    chatWindow.container.classList.add("has-droparea");
-    chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
     setupAutocomplete.call(this, chatWindow);
     setupChatWindowButtons.call(this, windowType, contextName, chatWindow);
