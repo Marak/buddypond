@@ -153,7 +153,6 @@
         width: 100%; /* Unchanged, full width of sidebar */
         justify-content: space-between; /* Distribute buttons evenly */
          height: 20vh;
-}
     }
 
     .nav-button {
