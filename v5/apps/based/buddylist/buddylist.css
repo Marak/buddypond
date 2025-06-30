@@ -166,68 +166,102 @@
     background-color: #0056b3;
 }
 
-
-
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
-    .app-buddylist>p,
-    .app-buddylist>input,
-    .app-buddylist>i,
-    .app-buddylist>button {
-        font-size: 64px !important;
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px if you want smaller scaling */
     }
+
+    .app-buddylist > p,
+    .app-buddylist > input,
+    .app-buddylist > i,
+    .app-buddylist > button {
+        font-size: 1rem; /* ~16px, standard for body text and inputs */
+    }
+
     .aim-input {
-        font-size: 42px;
-        height: 96px;
+        font-size: 0.875rem; /* ~14px, slightly smaller for inputs */
+        height: 2.5rem; /* ~40px, touch-friendly height */
     }
+
     .button-bar-button {
-        width: 64px !important;
-        height: 64px !important;
+        width: 2rem; /* ~32px, compact but tappable with padding */
+        height: 2rem;
+        padding: 0.5rem; /* ~8px, total ~48px tap target */
     }
+
     .aim-send-btn {
-        height: 128px;
-        width: 128px;
+        width: 3rem; /* ~48px, smaller but touch-friendly */
+        height: 3rem;
+        padding: 0.5rem; /* ~8px, total ~64px tap target */
     }
+
     .emojiPicker {
-        display: none;
+        display: none; /* Unchanged, good for mobile */
     }
+
     .loginButton {
-        width: 100%;
-        font-size: 42px;
-        height: 200px;
+        width: 100%; /* Unchanged, full-width is good */
+        font-size: 1.25rem; /* ~20px, readable for buttons */
+        height: 3.5rem; /* ~56px, touch-friendly */
     }
+
     .loginForm input {
-        font-size: 64px;
-        height: 128px;
+        font-size: 1rem; /* ~16px, standard for inputs */
+        height: 3rem; /* ~48px, touch-friendly */
     }
+
     #tosAgree {
-        width: 96px;
-        height: 96px;
+        width: 2rem; /* ~32px, smaller but tappable */
+        height: 2rem;
     }
+
     .loginMessage {
-        font-size: 42px;
+        font-size: 1.5rem; /* ~16px, readable for messages */
     }
+
     .onlineStatusSelect {
-        font-size: 52px;
+        font-size: 1.5rem; /* ~16px, consistent with inputs */
     }
+
     .buddy-message-sender {
-        font-size: 52px;
+        font-size: 1rem; /* ~16px, standard for text */
     }
+
     .desktopButton {
-        width: 100% !important;
-        height: 128px;
-        font-size: 42px;
+        width: 100%; /* Unchanged, full-width is good */
+        height: 3rem; /* ~48px, touch-friendly */
+        font-size: 1.25rem; /* ~20px, readable */
     }
+
     .positiveAffirmation {
-        font-size: 42px;
-        padding-bottom: 20px;
-        padding-top: 10px;
+        font-size: 1rem; /* ~16px, readable for text */
+        padding-bottom: 0.75rem; /* ~12px */
+        padding-top: 0.5rem; /* ~8px */
     }
+
     .addBuddyForm {
-        align-items: center;
+        align-items: center; /* Unchanged, good for layout */
     }
+
+    .buddy_request_name {
+        width: 100%; /* Unchanged, full-width is good */
+    }
+
+    .sendBuddyRequest {
+        width: 100%; /* Unchanged, full-width is good */
+    }
+
     .tos-checkbox {
-        font-size: 42px;
+        font-size: 1rem; /* ~16px, standard */
+        flex-direction: column; /* Unchanged */
+        align-items: center; /* Unchanged */
+        gap: 0.75rem; /* ~12px, smaller gap */
+        padding-top: 1rem; /* ~16px, reduced padding */
     }
 
+    .tos-checkbox label {
+        font-size: 1rem; /* ~16px, matches other text */
+        line-height: 1.4; /* Unchanged, good for readability */
+    }
 }
-

@@ -6,43 +6,63 @@
     /* this needs to be 100% */
     width: 100%;
 }
+
 .desktop-shortcuts-container {
-    display: none; /* Use flex display */
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
-    align-items: flex-start; /* Align items to the start of the flex line */
-    justify-content: flex-start; /* Align items to the start of the main axis */
+    display: none;
+    /* Use flex display */
+    flex-wrap: wrap;
+    /* Allow items to wrap to the next line */
+    align-items: flex-start;
+    /* Align items to the start of the flex line */
+    justify-content: flex-start;
+    /* Align items to the start of the main axis */
     padding: 10px;
-    gap: 5px; /* Uniform gap between items */
+    gap: 5px;
+    /* Uniform gap between items */
     position: absolute;
     top: 5vh;
-    overflow: auto; /* Enables scrolling if content overflows */
-    width: 100%; /* Ensure the container takes up full width */
-    height: 90%; /* Adjust height to prevent overflow beyond the viewport */
-    margin-left: auto; /* Center the container horizontally */
-    margin-right: auto; /* Center the container horizontally */
+    overflow: auto;
+    /* Enables scrolling if content overflows */
+    width: 100%;
+    /* Ensure the container takes up full width */
+    height: 90%;
+    /* Adjust height to prevent overflow beyond the viewport */
+    margin-left: auto;
+    /* Center the container horizontally */
+    margin-right: auto;
+    /* Center the container horizontally */
 }
 
 /* these are the shortcuts */
-.desktop-shortcuts-container > div {
+.desktop-shortcuts-container>div {
     text-align: center;
-    font-size: 12px; /* Adjusted for better readability */
-    width: 64px; /* Set a fixed width for each shortcut */
-    margin: 5px; /* Add margin around each shortcut */
-    display: flex; /* Use flexbox for internal alignment */
-    flex-direction: column; /* Stack items vertically within each shortcut */
-    justify-content: center; /* Center content vertically within each shortcut */
-    align-items: center; /* Center content horizontally within each shortcut */
-    user-select: none; /* Prevent text selection */
+    font-size: 12px;
+    /* Adjusted for better readability */
+    width: 64px;
+    /* Set a fixed width for each shortcut */
+    margin: 5px;
+    /* Add margin around each shortcut */
+    display: flex;
+    /* Use flexbox for internal alignment */
+    flex-direction: column;
+    /* Stack items vertically within each shortcut */
+    justify-content: center;
+    /* Center content vertically within each shortcut */
+    align-items: center;
+    /* Center content horizontally within each shortcut */
+    user-select: none;
+    /* Prevent text selection */
 }
 
 .bp-desktop-icon {
-    width: 32px; /* Set a fixed width for the icon */
-    height: 32px; /* Set a fixed height for the icon */
+    width: 32px;
+    /* Set a fixed width for the icon */
+    height: 32px;
+    /* Set a fixed height for the icon */
     color: white;
 }
-.bp-desktop-shortcut {
-  
-}
+
+.bp-desktop-shortcut {}
 
 .folder-holder {
     width: 100%;
@@ -53,33 +73,33 @@
 }
 
 .odometer {
-  display: inline-flex;
-  /*font-family: monospace;*/
-  overflow: hidden;
-  color: #00CED1;
-  font-weight: bold;
-  height: 1em;
+    display: inline-flex;
+    /*font-family: monospace;*/
+    overflow: hidden;
+    color: #00CED1;
+    font-weight: bold;
+    height: 1em;
 }
 
 .odometer-digit {
-  color: #00CED1;
-  position: relative;
-  width: 0.6em;
-  height: 1em;
-  overflow: hidden;
+    color: #00CED1;
+    position: relative;
+    width: 0.6em;
+    height: 1em;
+    overflow: hidden;
 }
 
 .odometer-digit-inner {
-  position: absolute;
-  top: 0;
-  transition: transform 0.5s ease-out;
-  will-change: transform;
+    position: absolute;
+    top: 0;
+    transition: transform 0.5s ease-out;
+    will-change: transform;
 }
 
 .odometer-digit-inner span {
-  display: block;
-  height: 1em;
-  color: #00CED1;
+    display: block;
+    height: 1em;
+    color: #00CED1;
 }
 
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
@@ -87,24 +107,31 @@
         top: 0px;
         height: calc(100vh - 128px);
     }
+
     .desktop-shortcuts-container img {
-        width: 128px !important; 
+        width: 128px !important;
         height: 128px !important;
     }
+
     .desktop-shortcuts-container .icon {
-        width: 128px !important; 
+        width: 128px !important;
         height: 128px !important;
     }
+
     .desktop-shortcuts-container .title {
         font-size: 32px !important;
     }
+
     .bp-desktop-icon {
-        width: 128px !important; /* Set a fixed width for the icon */
-        height: 128px !important; /* Set a fixed height for the icon */
+        width: 128px !important;
+        /* Set a fixed width for the icon */
+        height: 128px !important;
+        /* Set a fixed height for the icon */
     }
 
     .shortcut .title {
-        font-size: 32px !important; /* Adjusted for better readability */
+        font-size: 32px !important;
+        /* Adjusted for better readability */
     }
 }
 
@@ -153,18 +180,23 @@
 p,
 .desktop-shortcuts-container-folder a,
 .buddyListHolder a {
-  color: var(--desktop_text-color);
-  text-shadow: var(--desktop_text-text-shadow);
+    color: var(--desktop_text-color);
+    text-shadow: var(--desktop_text-text-shadow);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--desktop_headers-color);
-  text-shadow: var(--desktop_headers-text-shadow);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--desktop_headers-color);
+    text-shadow: var(--desktop_headers-text-shadow);
 }
 
 .desktop-section {
-  background: var(--desktop_section-background);
-  color: var(--desktop_section-color);
+    background: var(--desktop_section-background);
+    color: var(--desktop_section-color);
 }
 
 .desktop-overlay {
@@ -255,10 +287,87 @@ button {
     text-align: center;
 }
 
+#soundcloudplayer {
+    height: 100%;
+}
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .bp-shortcut-type {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Keep this as-is; hiding desktop shortcuts is good for mobile */
+    #desktop-shortcuts-container {
+        display: none !important;
+    }
+
+    /* Set a base font size for mobile to make rem units predictable */
+    html {
+        font-size: 16px; /* Adjust if you prefer smaller (e.g., 14px) */
+    }
+
+    h1 {
+        font-size: 2rem; /* ~32px at 16px base, good for main headings */
+    }
+
+    h2 {
+        font-size: 1.75rem; /* ~28px, slightly smaller */
+    }
+
+    h3 {
+        font-size: 1.5rem; /* ~24px, distinct but not huge */
+    }
+
+    h4 {
+        font-size: 1.25rem; /* ~20px, smaller for subheadings */
+    }
+
+    li {
+        font-size: 1rem; /* ~16px, standard for list items */
+    }
+
+    p {
+        font-size: 1rem; /* ~16px, readable for body text */
+    }
+
+    i {
+        font-size: 2.5rem; /* ~40px, smaller for icons but still prominent */
+    }
+
+    span {
+        font-size: 1.25rem; /* ~20px, versatile for inline elements */
+    }
+
+    input {
+        font-size: 1rem; /* ~16px, standard for form inputs */
+    }
+
+    input[type='checkbox'] {
+        width: 1.5rem; /* ~24px, reasonable for touch targets */
+        height: 1.5rem;
+    }
+
+    button {
+        font-size: 1rem; /* ~16px, readable for buttons */
+        padding: 0.5rem 1rem; /* Add padding for touch targets */
+    }
+
+    label {
+        font-size: 1rem; /* ~16px, matches inputs */
+    }
+
+    td {
+        font-size: 0.875rem; /* ~14px, slightly smaller for table data */
+    }
+
+    th {
+        font-size: 1rem; /* ~16px, slightly larger for table headers */
+    }
+
+    select {
+        font-size: 1rem; /* ~16px, consistent with inputs */
     }
 }

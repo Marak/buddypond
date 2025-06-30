@@ -32,6 +32,17 @@ export default class UI {
         // this.countdownManager.updateCountdowns();
         let that = this;
         this.bp.window = that.windowManager.createWindow.bind(that.windowManager);
+
+        function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // Run on load and resize
+        window.addEventListener('resize', setViewportHeight);
+        setViewportHeight();
+
+
         return this;
     }
 

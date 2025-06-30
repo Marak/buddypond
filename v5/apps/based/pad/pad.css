@@ -398,7 +398,8 @@ hr {
 .bp-pads-app {
     text-align: center;
     max-width: 220px;
-    flex: 1 1 calc(33.333% - 20px); /* Aim for ~3 columns */
+    flex: 1 1 calc(33.333% - 20px);
+    /* Aim for ~3 columns */
     min-width: 250px;
     display: flex;
     flex-direction: column;
@@ -454,7 +455,8 @@ hr {
 .bp-pads-btn-loading {
     cursor: wait;
     opacity: 0.7;
-    pointer-events: none; /* Prevent clicks during loading */
+    pointer-events: none;
+    /* Prevent clicks during loading */
 }
 
 .bp-pads-app-metadata {
@@ -492,8 +494,7 @@ hr {
     margin-right: 4px;
 }
 
-.bp-pads-app-author-value {
-}
+.bp-pads-app-author-value {}
 
 .bp-pads-app-install-count {
     display: flex;
@@ -516,39 +517,61 @@ hr {
         transform: rotate(360deg);
     }
 }
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px for smaller scaling if needed */
+    }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+    #buddy-pads {
+        padding: 0px;
+    }
+    
+    .bp-pads-category-btn {
+        padding: 0.75rem; /* ~12px, added for touch-friendly tap target */
+        font-size: 1rem; /* ~16px, readable */
+    }
+
     .bp-pads-container {
-        flex-direction: column;
+        flex-direction: column; /* Unchanged, good for stacking */
     }
 
     .bp-pads-sidebar {
-        width: 100%;
+        width: 100%; /* Unchanged, full-width is good */
     }
 
     .bp-pads-category-list {
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: row; /* Unchanged */
+        flex-wrap: wrap; /* Unchanged */
+        gap: 1rem; /* ~16px, reduced from 30px */
     }
 
     .bp-pads-app {
-        flex: 1 1 calc(50% - 20px); /* 2 columns */
-        min-width: 200px;
+        flex: 1 1 100%; /* Single column for mobile, overrides calc(50% - 20px) */
+        min-width: 10rem; /* ~160px, reduced from 200px */
+        max-width: 100%; /* Unchanged */
     }
-}
 
-@media (max-width: 480px) {
-    .bp-pads-app {
-        flex: 1 1 100%; /* 1 column */
+    .bp-pads-app-icon {
+        width: 3rem; /* ~48px, reduced from 128px */
+        height: 3rem;
+    }
+
+    .bp-pads-app-author > span {
+        font-size: 1rem; /* ~16px, readable */
+    }
+
+    .bp-pads-app-install-count > span {
+        font-size: 1rem; /* ~16px, readable */
     }
 
     .bp-pads-app-actions {
-        flex-direction: column;
-        gap: 8px;
+        flex-direction: column; /* Unchanged */
+        gap: 0.5rem; /* ~8px, unchanged but in rem */
     }
 
     .bp-pads-btn {
-        width: 100%;
+        width: 100%; /* Unchanged, full-width is good */
+        padding: 0.75rem; /* ~12px, added for touch-friendly tap target */
     }
 }

@@ -99,16 +99,56 @@
     font-size: 0.95rem;
 }
 
-/* CSS section for mobile to make fonts larger */
+/* Mobile media query */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+
+    .card-help-card {
+        margin: 0.5rem auto; /* ~8px top/bottom */
+        padding: 0.5rem; /* ~8px */
+        width: 95%; /* Maximize space on mobile */
+        max-width: none; /* Remove desktop constraint */
+    }
+
     .card-help-content h2 {
-        font-size: 3.25rem;
+        font-size: 1.25rem; /* ~20px, reduced from 3.25rem */
     }
 
     .card-help-intro-text,
     .card-help-hint,
     .card-help-command-text,
     .card-help-command-help {
-        font-size: 2.25rem;
+        font-size: 0.875rem; /* ~14px, reduced from 2.25rem */
+    }
+
+    .card-help-close-btn {
+        width: 2rem; /* ~32px */
+        height: 2rem;
+        padding: 0.5rem; /* ~8px, for ~48px tap target */
+        font-size: 1rem; /* ~16px */
+    }
+
+    .card-help-command {
+        padding: 0.625rem; /* ~10px, for ~44px tap target */
+        flex-direction: column; /* Stack for better mobile fit */
+        align-items: flex-start;
+    }
+
+    .card-help-command-text {
+        flex: 0 0 auto; /* Remove fixed width for flexibility */
+        padding-left: 0;
+        margin-bottom: 0.25rem; /* ~4px, separate from help text */
+    }
+
+    .card-help-command:hover {
+        transform: none; /* Disable hover effects */
+        box-shadow: none;
+    }
+
+    .card-help-close-btn:hover {
+        background: #e2e8f0; /* Disable hover effect */
+    }
+
+    .card-help-commands {
+        gap: 0.625rem; /* ~10px, increased for spacing */
     }
 }

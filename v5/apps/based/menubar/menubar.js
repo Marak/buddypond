@@ -57,6 +57,11 @@ export default class MenuBar {
         // console.log('new menuBarElement', parent, this.menuBarElement);
         parent.appendChild(this.menuBarElement);
 
+        if (this.bp.isMobile()) {
+            // $('.desktop-menu-bar').hide();
+            $('.desktop-only').remove();
+        }
+
         // update the default values based on local storage settings
         // TODO: we may want to move this somewhere else
         // console.log('setting current theme', this.bp.settings.active_theme);
@@ -111,6 +116,8 @@ export default class MenuBar {
             if (value === 'open') {
                 // open the desktop settings
                 bp.open('profile', { context: 'themes' });
+                //this.closeMobileMenu();
+                this.menuBarElement.closeMobileMenu();
                 return;
             }
             // clear wallpaper_url if exists
@@ -145,21 +152,6 @@ export default class MenuBar {
             }
             bp.open('soundcloud', { playlistID: value });
 
-
-            return;
-
-            if (!value) {
-                return;
-            }
-            if (value === 'urlWallpaper') {
-                bp.apps.desktop.setWallpaper();
-            }
-            if (value === 'open') {
-                // open the desktop settings
-                bp.open('profile', { context: 'themes' });
-                return;
-            }
-            bp.set('wallpaper_name', value);
         });
 
 
@@ -220,8 +212,40 @@ class MenuBarClass {
         this.menuBarElement.classList.add("desktop-menu-bar");
         this.menuBarElement.id = this.id;
 
+        /*
+        const toggleButton = document.createElement("div");
+        toggleButton.className = "mobile-menu-toggle";
+        toggleButton.innerHTML = "☰";
+        toggleButton.onclick = (e) => {
+            e.stopPropagation();
+
+            const $menu = $(this.menuBarElement);
+
+            if ($menu.hasClass("mobile-active")) {
+                // Animate out (slide off left)
+                $menu.animate({ left: "-100%" }, 300, () => {
+                    $menu.removeClass("mobile-active");
+                });
+            } else {
+                // Prepare for entry: move off-screen, then show and animate in
+                $menu
+                    .css({ left: "-100%", display: "flex" }) // ensure it's ready to animate
+                    .addClass("mobile-active")
+                    .animate({ left: "0%" }, 300);
+            }
+        };
+
+        // this.menuBarElement.appendChild(toggleButton);
+        document.body.appendChild(toggleButton);
+        */
+
+
         this.menuTemplate.forEach(menuItem => this.createMenuItem(menuItem));
+
+        this.menuBarElement.classList.add("responsive-ready");
+
         this.addGlobalEventListeners();
+
 
         return this.menuBarElement;
     }
@@ -235,37 +259,44 @@ class MenuBarClass {
             menuButton.style.flex = menuItem.flex;
         }
 
-        /*
-        if (menuItem.label instanceof HTMLElement) {
-            menuButton.appendChild(menuItem.label);
-        } else if (typeof menuItem.label === 'object') {
-            menuButton.textContent = menuItem.label.label;
-        } else {
-            menuButton.innerHTML = menuItem.label;
-        }
-        */
-
-
         if (menuItem.className) {
             menuButton.classList.add(menuItem.className);
         }
 
-        menuButton.onclick = (event) => {
-            event.stopPropagation();
-            if (menuItem.click) {
+        if (menuItem.click) {
+            menuButton.onclick = (event) => {
+                event.stopPropagation();
                 menuItem.click();
-            }
-        };
+
+                if (menuItem.closeMenu) {
+                    this.closeMobileMenu();
+                }
+            };
+        }
+
 
         if (menuItem.submenu) {
             const submenuContainer = this.createSubMenu(menuItem.submenu);
             menuButton.appendChild(submenuContainer);
-            menuButton.addEventListener("mouseover", () => submenuContainer.style.display = "block");
-            menuButton.addEventListener("mouseleave", () => submenuContainer.style.display = "none");
+
+            // 🛠️ Handle accordion vs. hover based on screen width
+            const isMobile = window.matchMedia("(max-width: 1000px)").matches;
+
+            if (isMobile) {
+                menuButton.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    submenuContainer.classList.toggle("open");
+                });
+            } else {
+                // desktop hover behavior
+                menuButton.addEventListener("mouseover", () => submenuContainer.style.display = "block");
+                menuButton.addEventListener("mouseleave", () => submenuContainer.style.display = "none");
+            }
         }
 
         this.menuBarElement.appendChild(menuButton);
     }
+
 
     createSubMenu(submenuItems) {
         const submenuContainer = document.createElement("div");
@@ -280,9 +311,12 @@ class MenuBarClass {
                 subMenuItem.onclick = (event) => {
                     event.stopPropagation();
                     subItem.click();
+
+                    if (subItem.closeMenu) {
+                        this.closeMobileMenu();
+                    }
                 };
             }
-
             if (subItem.submenu) {
                 const nestedSubMenu = this.createSubMenu(subItem.submenu);
                 subMenuItem.appendChild(nestedSubMenu);
@@ -313,4 +347,14 @@ class MenuBarClass {
     closeAllSubmenus() {
         document.querySelectorAll(".submenu").forEach(submenu => submenu.style.display = "none");
     }
+
+    closeMobileMenu() {
+        const $menu = $(this.menuBarElement);
+        if ($menu.hasClass("mobile-active")) {
+            $menu.animate({ left: "-100%" }, 300, () => {
+                $menu.removeClass("mobile-active");
+            });
+        }
+    }
+
 }

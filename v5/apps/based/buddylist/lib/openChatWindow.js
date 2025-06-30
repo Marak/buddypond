@@ -290,6 +290,10 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
     let height = isBuddy ? 500 : Math.floor(window.innerHeight * 0.8);
     let width = isBuddy ? 600 : Math.floor(window.innerWidth * 0.75);
 
+    if (this.bp.isMobile()) {
+      height = 'calc(var(--vh) * 90)';
+    }
+
     return {
         app: "buddylist",
         id: windowId,
@@ -523,7 +527,13 @@ function setupChatWindow(windowType, contextName, chatWindow) {
         aimUserListContainer.setAttribute("data-context", contextName);
         aimUserListContainer.setAttribute("data-type", windowType);
 
-        $('.aim-chat-title', cloned).text(`#${contextName.replace("pond/", "")}`);
+        if (this.bp.isMobile()) {
+            $('.aim-close-chat-btn', cloned).text('Close #' + contextName.replace("pond/", ""));
+            $('.aim-chat-title', cloned).remove();
+        } else {
+            $('.aim-chat-title', cloned).text(`#${contextName.replace("pond/", "")}`);
+
+        }
 
         $('.joinPondForm', cloned).on('submit', (e) => {
             e.preventDefault();
@@ -538,11 +548,77 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             return false;
         });
 
+        chatWindow.container.classList.add("has-droparea");
+        chatWindow.content.appendChild($(".aim-window", cloned)[0]);
+
+
+        const aimWindow = $('.aim-window', chatWindow.content)[0];
+        console.log('chatWindow.contentchatWindow.content', chatWindow.content)
+        console.log('aimWindow', aimWindow)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        aimWindow.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        aimWindow.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; // Minimum swipe distance in pixels
+            const deltaX = touchEndX - touchStartX;
+
+            if (deltaX > swipeThreshold) {
+                // Swipe right: show user list
+                aimWindow.classList.remove('show-room-list');
+                aimWindow.classList.add('show-user-list');
+            } else if (deltaX < -swipeThreshold) {
+                // Swipe left: show room list
+                aimWindow.classList.remove('show-user-list');
+                aimWindow.classList.add('show-room-list');
+            } else {
+                // No swipe or too small: return to chat
+                aimWindow.classList.remove('show-room-list', 'show-user-list');
+            }
+        }
+
+        // Optional: Add buttons to toggle panels for accessibility
+        const toggleRoomListBtn = document.createElement('button');
+        toggleRoomListBtn.textContent = 'Ponds';
+        toggleRoomListBtn.className = 'toggle-room-list';
+        toggleRoomListBtn.style.position = 'fixed';
+        toggleRoomListBtn.style.top = '4rem';
+        toggleRoomListBtn.style.left = '0.5rem';
+        toggleRoomListBtn.style.padding = '0.5rem';
+        toggleRoomListBtn.style.zIndex = '15000';
+
+        const toggleUserListBtn = document.createElement('button');
+        toggleUserListBtn.textContent = 'Buddies';
+        toggleUserListBtn.className = 'toggle-user-list';
+        toggleUserListBtn.style.position = 'fixed';
+        toggleUserListBtn.style.top = '4rem';
+        toggleUserListBtn.style.right = '0.5rem';
+        toggleUserListBtn.style.padding = '0.5rem';
+        toggleUserListBtn.style.zIndex = '15000';
+
+        chatWindow.content.append(toggleRoomListBtn, toggleUserListBtn);
+
+        toggleRoomListBtn.addEventListener('click', () => {
+            aimWindow.classList.toggle('show-room-list');
+            aimWindow.classList.remove('show-user-list');
+        });
+
+        toggleUserListBtn.addEventListener('click', () => {
+            aimWindow.classList.toggle('show-user-list');
+            aimWindow.classList.remove('show-room-list');
+        });
+
 
     }
 
-    chatWindow.container.classList.add("has-droparea");
-    chatWindow.content.appendChild($(".aim-window", cloned)[0]);
 
     setupAutocomplete.call(this, chatWindow);
     setupChatWindowButtons.call(this, windowType, contextName, chatWindow);

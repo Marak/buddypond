@@ -90,29 +90,60 @@
     text-align: center;
     width: 100%;
 }
-
-/* Responsive adjustments for smaller screens */
+/* Mobile media query */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
-    .card-apps-card {
-        margin: 10px;
-        padding: 15px;
+    html {
+        font-size: 16px; /* Base font size */
     }
 
-    .card-apps-command {
-        flex: 0 0 250px !important; /* Slightly smaller width on mobile */
-        min-height: 200px;
+    .card-apps-card {
+        margin: 0.5rem auto; /* ~8px top/bottom, centered */
+        padding: 0.5rem; /* ~8px, reduced from 15px */
+        width: 95%; /* Maximize mobile viewport */
+        max-width: none; /* Remove desktop constraint */
     }
 
     .card-apps-content h2 {
-        font-size: 3.3rem;
+        font-size: 1.25rem; /* ~20px, reduced from 3.3rem */
     }
 
-
     .card-apps-intro-text {
-        font-size: 2.2rem;
+        font-size: 0.875rem; /* ~14px, reduced from 2.2rem */
+    }
+
+    .card-apps-command-text,
+    .card-apps-command-help {
+        font-size: 0.875rem; /* ~14px, reduced from 2rem */
+    }
+
+    .card-apps-command {
+        flex: 0 0 auto; /* Responsive, remove fixed 250px */
+        min-height: auto; /* Flexible height, remove 200px */
+        padding: 0.625rem; /* ~10px, for ~44px tap target */
+        flex-direction: column; /* Stack for mobile */
+        align-items: flex-start;
     }
 
     .card-apps-command-text {
-        font-size: 2rem !important;
+        padding-left: 0;
+        margin-bottom: 0.25rem; /* ~4px, separate from help text */
+    }
+
+    .card-apps-close-btn {
+        width: 2rem; /* ~32px */
+        height: 2rem;
+        padding: 0.5rem; /* ~8px, for ~48px tap target */
+        font-size: 1rem; /* ~16px */
+    }
+
+    .card-apps-command:hover,
+    .card-apps-close-btn:hover {
+        transform: none; /* Disable hover effects */
+        box-shadow: none;
+        background: #e2e8f0; /* Reset for close button */
+    }
+
+    .card-apps-commands {
+        gap: 0.625rem; /* ~10px, increased for spacing */
     }
 }

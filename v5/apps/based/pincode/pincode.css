@@ -92,3 +92,61 @@
   text-align: center;
   color: red;
 }
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px for smaller scaling if needed */
+    }
+
+    .password-dialog {
+        width: 90vw; /* Unchanged, good for mobile */
+        max-width: 100%; /* Unchanged */
+        padding: 1.5rem 0.75rem; /* ~24px 12px, reduced from 40px 20px */
+        border-radius: 0.75rem; /* ~12px, reduced from 20px */
+        font-size: 1rem; /* ~16px, readable */
+    }
+
+    .password-title {
+        font-size: 1.5rem; /* ~24px, prominent but not 64px */
+        margin-bottom: 1rem; /* ~16px, reduced from 30px */
+    }
+
+    .password-form label {
+        font-size: 1rem; /* ~16px, readable */
+        margin-bottom: 0.75rem; /* ~12px, reduced from 20px */
+    }
+
+    .required {
+        font-size: 1rem; /* ~16px, matches labels */
+    }
+
+    .password-input {
+        font-size: 1rem; /* ~16px, readable */
+        padding: 0.75rem; /* ~12px, reduced from 24px */
+        border-radius: 0.5rem; /* ~8px, reduced from 16px */
+    }
+
+    .input-error {
+        font-size: 0.875rem; /* ~14px, slightly smaller for errors */
+        height: auto; /* Unchanged */
+    }
+
+    .form-actions {
+        flex-direction: column; /* Unchanged, good for mobile */
+        gap: 0.75rem; /* ~12px, reduced from 20px */
+        margin-top: 1.5rem; /* ~24px, reduced from 40px */
+    }
+
+    .password-action {
+        font-size: 1rem; /* ~16px, readable */
+        padding: 0.75rem; /* ~12px, reduced but touch-friendly */
+        width: 100%; /* Unchanged, full-width is good */
+        margin: 0; /* Unchanged */
+    }
+
+    .form-status {
+        font-size: 0.875rem; /* ~14px, readable */
+        margin-top: 1rem; /* ~16px, reduced from 30px */
+    }
+}

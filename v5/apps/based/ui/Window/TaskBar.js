@@ -6,11 +6,29 @@ export default class TaskBar {
         this.taskBarElement.className = "taskbar-container";
         document.body.appendChild(this.taskBarElement);
 
-        this.bp = bp; // reference to the base platform instance
+        // Create containers for anchored and scrollable items
+        this.taskbarLeft = document.createElement("div");
+        this.taskbarLeft.className = "taskbar-left";
+        this.taskBarElement.appendChild(this.taskbarLeft);
 
+        this.taskbarItems = document.createElement("div");
+        this.taskbarItems.className = "taskbar-items";
+        this.taskBarElement.appendChild(this.taskbarItems);
+
+        this.taskbarRight = document.createElement("div");
+        this.taskbarRight.className = "taskbar-right";
+        this.taskBarElement.appendChild(this.taskbarRight);
+
+        this.bp = bp; // Reference to the base platform instance
         this.items = new Map(); // id -> config
         this.shortcuts = new Set(); // id
 
+          // Add scroll listener for indicator visibility
+        this.taskbarItems.addEventListener('scroll', () => {
+            const isAtEnd = this.taskbarItems.scrollLeft + this.taskbarItems.clientWidth >= this.taskbarItems.scrollWidth - 1;
+            console.log("Scroll end reached:", isAtEnd);
+            this.taskbarItems.setAttribute('data-scroll-end', isAtEnd);
+        });
 
         function openStartPanel() {
             if (!this.startPanel) {
@@ -19,22 +37,49 @@ export default class TaskBar {
             this.startPanel.open();
         }
 
+        // Add "home" button (anchored right)
         if (homeCallback) {
             this.addItem({
                 id: "home",
                 label: "Home",
-                // onClick: homeCallback,
                 onClick: openStartPanel,
                 icon: "desktop/assets/images/icons/icon_mantra_64.png",
                 isShortcut: true,
+                anchor: "right"
             });
         }
+
+        // Add "settings" button (anchored left on mobile)
+        if (this.bp.isMobile()) {
+            this.addItem({
+                id: "settings",
+                label: "Settings",
+                onClick: (e) => {
+                    e.stopPropagation();
+                    const $menu = $('.menu-bar'); // TODO: Reference class property, not DOM
+                    if ($menu.hasClass("mobile-active")) {
+                        $menu.animate({ left: "-100%" }, 300, () => {
+                            $menu.removeClass("mobile-active");
+                        });
+                    } else {
+                        $menu
+                            .css({ left: "-100%", display: "flex" })
+                            .addClass("mobile-active")
+                            .animate({ left: "0%" }, 300);
+                    }
+                },
+                icon: "desktop/assets/images/icons/icon_settings_64.png",
+                isShortcut: true,
+                anchor: "left"
+            });
+        }
+
         this.taskBarElement.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             const target = e.target.closest('.taskbar-item');
             if (!target) return;
             const id = target.dataset.id;
-            if (!id || id === 'home') return;
+            if (!id || id === 'home' || id === 'settings') return; // Exclude anchored items
             this.showContextMenu(id, e.clientX, e.clientY);
         });
 
@@ -52,22 +97,21 @@ export default class TaskBar {
         menu.className = 'taskbar-context-menu';
         menu.style.position = 'fixed';
         menu.style.left = `${x}px`;
-        menu.style.visibility = 'hidden'; // hide until we calculate dimensions
+        menu.style.visibility = 'hidden';
         document.body.appendChild(menu);
 
-        // Helper
         const makeOption = (label, handler) => {
             const option = document.createElement('div');
             option.className = 'taskbar-context-menu-item';
             option.textContent = label;
             option.onclick = () => {
                 handler();
+                this.startPanel.close();
                 menu.remove();
             };
             menu.appendChild(option);
         };
 
-        // Options
         if (item.isOpen) {
             makeOption('Close', () => this.closeItem(id));
         } else {
@@ -77,54 +121,33 @@ export default class TaskBar {
         if (this.shortcuts.has(id)) {
             makeOption('Unpin from Taskbar', () => {
                 this.shortcuts.delete(id);
-                // if the item is not open, remove it from the taskbar
                 if (!item.isOpen) {
                     this.removeItem(id);
                 }
             });
         } else {
-
-            if (item.app === 'buddylist' && id !== 'buddylist') {
-                // don't allow pinning buddylist with context
-            } else {
-                // Remark: Issue with non-singleton apps like 'emulator'
-                // Needs to be handled differently
-                if (item.app !== 'emulator') {
-                    makeOption('Keep in Taskbar', () => {
-                        // console.log('Pinning item to taskbar:', item);
-                        // console.log('Adding shortcut to taskbar:', item.app);
-                        this.shortcuts.add(item.app || id);
-                        // save the taskbar_apps to settings
-                        let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
-                        installedTaskBarApps[item.app || id] = {
-                            app: item.app || id,
-                            context: item.context || 'default',
-                            label: item.label || id,
-                            icon: item.icon || ''
-                        };
-                        this.bp.set('taskbar_apps', installedTaskBarApps);
-                    });
-                }
-
+            if (item.app !== 'buddylist' && id !== 'buddylist' && item.app !== 'emulator') {
+                makeOption('Keep in Taskbar', () => {
+                    this.shortcuts.add(item.app || id);
+                    let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
+                    installedTaskBarApps[item.app || id] = {
+                        app: item.app || id,
+                        context: item.context || 'default',
+                        label: item.label || id,
+                        icon: item.icon || ''
+                    };
+                    this.bp.set('taskbar_apps', installedTaskBarApps);
+                });
             }
-
         }
 
-        // makeOption('Remove from Taskbar', () => this.removeItem(id));
-
-        // Wait for DOM to layout, then position the menu
         requestAnimationFrame(() => {
             const menuHeight = menu.offsetHeight;
             const viewportHeight = window.innerHeight;
-
-            // Attempt to place above the cursor
-            let top = y - menuHeight - 4; // slight offset
-
-            // If that would go off screen, place below (fallback)
+            let top = y - menuHeight - 4;
             if (top < 0) {
                 top = y + 4;
             }
-
             menu.style.top = `${top}px`;
             menu.style.visibility = 'visible';
         });
@@ -136,18 +159,11 @@ export default class TaskBar {
         }, 0);
     }
 
-
     addItem(config) {
-        let { app, id, context, label = "", onClick, icon, isShortcut = true } = config;
-        // console.log('TaskBar.addItem', config);
-
-        // save the taskbar_apps
-        if (context && context !== 'default') {
-            // app = app + '-' + context; // append context to app name
-        }
+        let { app, id, context, label = "", onClick, icon, isShortcut = true, anchor } = config;
 
         let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
-        if (id !== 'home') {
+        if (id !== 'home' && id !== 'settings') {
             installedTaskBarApps[app || id] = {
                 id: id,
                 app: app || id,
@@ -155,38 +171,23 @@ export default class TaskBar {
                 label: label || id,
                 icon: icon || ''
             };
-            // console.log('TaskBar.addItem installedTaskBarApps', installedTaskBarApps);
-
-        }
-
-        if (isShortcut) {
-            // save the taskbar_apps to settings, if it is a shortcut
             this.bp.set('taskbar_apps', installedTaskBarApps);
         }
 
-        // console.log('TaskBar.addItem', config);
         if (typeof onClick !== 'function') {
-            // default action is to open the app, bp.open()
             onClick = async (ev, itemElement) => {
-
-                // first check to see if the window exists / is open
                 let existingWindow = this.bp.apps.ui.windowManager.getWindow(id);
-
                 if (!existingWindow) {
-                    // console.log('default onClick, opening window', id, config);
-                    // Remark: this.bp wasn't scoped here? should work...
                     let win = await this.bp.open(app || id, { context });
-                    // console.log('TaskBar.onClick bp.open', id, win);
                 } else {
                     if (existingWindow.isMinimized) {
-                        // console.log('TaskBar.onClick restoring window', existingWindow);
                         existingWindow.restore();
                         existingWindow.focus();
                     } else {
-                        // console.log('TaskBar.onClick minimizing window', existingWindow);
                         existingWindow.minimize();
                     }
                 }
+                this.startPanel.close();
                 ev.stopPropagation();
             };
         }
@@ -197,12 +198,14 @@ export default class TaskBar {
         const itemElement = document.createElement("div");
         itemElement.className = "taskbar-item";
         itemElement.dataset.id = id;
-        itemElement.draggable = true;
+        itemElement.draggable = id !== 'home' && id !== 'settings'; // Disable drag for anchored items
 
-        const itemText = document.createElement("div");
-        itemText.className = "taskbar-item-text";
-        itemText.textContent = label;
-        itemElement.appendChild(itemText);
+        if (!this.bp.isMobile()) {
+            const itemText = document.createElement("div");
+            itemText.className = "taskbar-item-text";
+            itemText.textContent = label;
+            itemElement.appendChild(itemText);
+        }
 
         if (icon) {
             const itemIcon = document.createElement("img");
@@ -224,7 +227,21 @@ export default class TaskBar {
             this.shortcuts.add(id);
         }
 
-        this.taskBarElement.appendChild(itemElement);
+        // Append to appropriate container
+        if (id === 'home' && anchor === 'right') {
+            this.taskbarRight.appendChild(itemElement);
+        } else if (id === 'settings' && anchor === 'left') {
+            this.taskbarLeft.appendChild(itemElement);
+        } else {
+            this.taskbarItems.appendChild(itemElement);
+            // Scroll to the newly added item
+            if (this.bp.isMobile()) {
+                requestAnimationFrame(() => {
+                    itemElement.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                });
+            }
+        }
+
         this.items.set(id, {
             ...config,
             element: itemElement,
@@ -236,16 +253,19 @@ export default class TaskBar {
     }
 
     openItem(config) {
-        // console.log('TaskBar.openItem', config);
         let item = this.items.get(config.id);
         if (item) {
             item.isOpen = true;
             item.element.classList.add("taskbar-item-open");
-            // console.log('TaskBar.openItem', item);
-            // item.onClick?.(null, item.element); // call the onClick handler if it exists
+            // Scroll to the opened item
+            if (this.bp.isMobile()) {
+                requestAnimationFrame(() => {
+                    item.element.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                });
+            }
         } else {
-            this.addItem({ ...config, isShortcut: false }); // treat open as temporary unless marked otherwise
-            this.openItem(config); // re-call to apply open state
+            this.addItem({ ...config, isShortcut: false });
+            this.openItem(config); // Scroll happens in addItem
         }
     }
 
@@ -256,22 +276,10 @@ export default class TaskBar {
         item.isOpen = false;
         item.element.classList.remove("taskbar-item-open");
 
-        // console.log('TaskBar.closeItem', id, item);
-        // console.log('shortcuts', this.shortcuts);
-
-        // shouldn't this be checking this.shortcuts instead of item.isShortcut?
         if (!this.shortcuts.has(id)) {
             this.removeItem(id);
         }
-        /*
-        console.log('shortcuts', this.shortcuts);
-        // If the item is NOT a shortcut, remove it from the taskbar
-        if (!item.isShortcut) {
-            this.removeItem(id);
-        }
-        */
 
-        // get the window instance and close it
         const win = this.bp.apps.ui.windowManager.getWindow(id);
         if (win) {
             win.close();
@@ -282,19 +290,16 @@ export default class TaskBar {
 
     removeItem(id) {
         const item = this.items.get(id);
-        if (item) {
-            this.taskBarElement.removeChild(item.element);
-            this.items.delete(id);
-            this.shortcuts.delete(id);
+        if (!item) return;
 
-            // save the updated taskbar_apps
-            let taskBarApps = this.bp.settings.taskbar_apps || {};
-            if (taskBarApps[id]) {
-                delete taskBarApps[id];
-                this.bp.set('taskbar_apps', taskBarApps);
-            }
-            // console.log('TaskBar.removeItem', id, item);
+        item.element.parentNode.removeChild(item.element);
+        this.items.delete(id);
+        this.shortcuts.delete(id);
 
+        let taskBarApps = this.bp.settings.taskbar_apps || {};
+        if (taskBarApps[id]) {
+            delete taskBarApps[id];
+            this.bp.set('taskbar_apps', taskBarApps);
         }
     }
 
@@ -306,47 +311,48 @@ export default class TaskBar {
         const item = this.items.get(id);
         if (item) {
             item.element.classList.add("taskbar-item-alert");
-            setTimeout(() => item.element.classList.remove("taskbar-item-alert"), 3000);
+            setTimeout(() => item.element.classList.remove("taskbar-item-alert"), 1000);
         }
     }
 
     enableDragAndDrop() {
         let dragged = null;
 
-        this.taskBarElement.addEventListener("dragstart", (e) => {
+        this.taskbarItems.addEventListener("dragstart", (e) => {
             dragged = e.target.closest(".taskbar-item");
+            if (dragged && (dragged.dataset.id === 'home' || dragged.dataset.id === 'settings')) {
+                e.preventDefault(); // Prevent dragging anchored items
+                dragged = null;
+            }
         });
 
-        this.taskBarElement.addEventListener("dragover", (e) => {
+        this.taskbarItems.addEventListener("dragover", (e) => {
             e.preventDefault();
             const over = e.target.closest(".taskbar-item");
-            if (dragged && over && dragged !== over) {
-                const draggedIndex = [...this.taskBarElement.children].indexOf(dragged);
-                const overIndex = [...this.taskBarElement.children].indexOf(over);
+            if (dragged && over && dragged !== over && over.dataset.id !== 'home' && over.dataset.id !== 'settings') {
+                const draggedIndex = [...this.taskbarItems.children].indexOf(dragged);
+                const overIndex = [...this.taskbarItems.children].indexOf(over);
                 if (draggedIndex < overIndex) {
-                    this.taskBarElement.insertBefore(over, dragged);
+                    this.taskbarItems.insertBefore(over, dragged);
                 } else {
-                    this.taskBarElement.insertBefore(dragged, over);
+                    this.taskbarItems.insertBefore(dragged, over);
                 }
             }
         });
 
-        this.taskBarElement.addEventListener("dragend", () => {
+        this.taskbarItems.addEventListener("dragend", () => {
+            if (dragged) {
+                const newOrder = Array.from(this.taskbarItems.children).map(item => item.dataset.id);
+                let taskBarApps = this.bp.settings.taskbar_apps || {};
+                const newTaskBarApps = {};
+                newOrder.forEach(id => {
+                    if (taskBarApps[id]) {
+                        newTaskBarApps[id] = taskBarApps[id];
+                    }
+                });
+                this.bp.set('taskbar_apps', newTaskBarApps);
+            }
             dragged = null;
-
-            // resave the new order of shortcuts
-            const newOrder = Array.from(this.taskBarElement.children).map(item => item.dataset.id);
-            let taskBarApps = this.bp.settings.taskbar_apps || {};
-            // reorder the taskbar_apps based on the new order
-            const newTaskBarApps = {};
-            newOrder.forEach(id => {
-                if (taskBarApps[id]) {
-                    newTaskBarApps[id] = taskBarApps[id];
-                }
-            });
-            //console.log('New taskbar order:', newOrder);
-            this.bp.set('taskbar_apps', newTaskBarApps);
-
         });
     }
 }

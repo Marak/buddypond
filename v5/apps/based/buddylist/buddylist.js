@@ -772,7 +772,7 @@ export default class BuddyList {
         }
 
         // show help card if local storage does not have the card shown
-        if (this.bp.settings['viewed-help-card'] !== true) {
+        if (this.bp.settings['viewed-help-card'] !== true && !this.bp.isMobile()) {
             let chatWindow = windowsToUpdate.values().next().value;
             this.showCard({
                 chatWindow,

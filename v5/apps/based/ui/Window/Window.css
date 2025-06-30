@@ -184,3 +184,26 @@ button {
 .window-not-resizeable {
     resize: none !important;
 }
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Set a base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px or 15px if you want smaller scaling */
+    }
+
+    .window-controls > button {
+        width: 2rem; /* ~32px, same as before but relative */
+        height: 2rem; /* ~32px */
+        padding: 1.5rem; /* ~8px, reduced for smaller total size */
+        font-size: 2rem; /* ~16px, readable and not oversized */
+    }
+
+    .window-title-text {
+        font-size: 1.3rem; /* ~28px, prominent but not 64px huge */
+    }
+
+    .window-icon {
+        width: 2.5rem; /* ~40px, smaller but still visible */
+        height: 2.5rem;
+        margin-right: 0.75rem; /* ~12px, slightly smaller margin */
+    }
+}

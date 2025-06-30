@@ -12,7 +12,7 @@ export default function defaultMenuBar(bp) {
 
 
       let selectMusicPlaylist = `
-<div class="dropdown-wrapper float_right select-playlist-dropdown-menu">
+<div class="dropdown-wrapper desktop-only float_right select-playlist-dropdown-menu">
   <span class="icon trigger" title="Select Music Playlist">
     <i class="fa-duotone fa-regular fa-music"></i> Select Music Playlist
   </span>
@@ -91,16 +91,18 @@ export default function defaultMenuBar(bp) {
       label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
       submenu: [
         {
-          label: 'We are stoked to be your Buddy'
+          label: '<span class="desktop-only">We are stoked to be your Buddy</span>'
           // click: () => api.ui.toggleDeviceSettings() 
         },
               {
           label: 'Buddy Apps',
+          closeMenu: true,
           click: () => bp.open('pad')
         },
 
         {
           label: 'Edit Profile',
+          closeMenu: true,
           click: () => bp.open('profile')
         },
         {
@@ -165,6 +167,7 @@ export default function defaultMenuBar(bp) {
       submenu: [
         {
           label: 'View Coin Balance',
+          closeMenu: true,
           click: () => bp.open('portfolio')
         },
         /*
@@ -175,6 +178,7 @@ export default function defaultMenuBar(bp) {
         */
         {
           label: 'Send Coins',
+          closeMenu: true,
           click: () => bp.open('portfolio', { context: '#portfolio-transfer' })
         }
       ]

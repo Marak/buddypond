@@ -36,7 +36,7 @@
   color: var(--desktop_menu_bar-color);
 }
 
-.menu-item > div {
+.menu-item>div {
   color: var(--desktop_menu_bar-color);
 }
 
@@ -53,7 +53,7 @@
 }
 
 .menu-item:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 
 }
 
@@ -112,9 +112,10 @@
   /* rounded corners */
   border-radius: 4px;
   background-color: #2a2a2a;
-    padding-left: 4px;
+  padding-left: 4px;
   padding-right: 4px;
 }
+
 .selectLightMode i {
   color: #ddd;
   /* padding: 8px 12px; */
@@ -124,6 +125,7 @@
   padding-left: 4px;
   padding-right: 4px;
 }
+
 .selectLightMode i:hover {
   color: #fff;
   /* zoom in */
@@ -176,8 +178,193 @@
   padding-left: 2px;
 }
 
+/* Mobile menu full overlay */
+.menu-bar.responsive-ready.mobile-active {
+  position: fixed;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 14000;
+}
+
+.menu-bar.responsive-ready.mobile-active .menu-item {
+  font-size: 24px;
+  padding: 14px 0;
+  width: 100%;
+  border-bottom: 1px solid #333;
+}
+
+.menu-bar.responsive-ready.mobile-active .submenu {
+  position: static;
+  display: block !important;
+  border: none;
+  box-shadow: none;
+  padding-left: 20px;
+}
+
+.menu-bar.responsive-ready.mobile-active .submenu-item {
+  font-size: 18px;
+  padding: 10px 0;
+}
+
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+
+  /* Set base font size for consistency (optional, only if not already set) */
+  html {
+    font-size: 16px;
+    /* Adjust to 14px for smaller scaling if needed */
+  }
+
   .menu-bar {
     display: none;
+    /* Unchanged, good for hiding by default */
+  }
+
+  .menu-bar.responsive-ready.mobile-active {
+    display: flex;
+    /* Unchanged */
+    flex-direction: column-reverse;
+    /* Unchanged */
+    align-items: flex-start;
+    /* Unchanged */
+    justify-content: flex-end;
+    /* Unchanged */
+    position: fixed;
+    /* Unchanged */
+    top: 0;
+    /* Unchanged */
+    left: 0;
+    /* Unchanged */
+    width: 80%;
+    /* Unchanged, good for mobile */
+    height: 100%;
+    /* Unchanged, full-height is good */
+    z-index: 14000;
+    /* Unchanged */
+    padding: 0.75rem;
+    /* ~12px, reduced from 20px */
+    overflow-y: auto;
+    /* Unchanged */
+  }
+
+  .menu-bar.responsive-ready.mobile-active .menu-item {
+    text-align: center;
+    /* Unchanged */
+    width: 100%;
+    /* Unchanged */
+    padding: 0.75rem 0;
+    /* ~12px, reduced from 16px */
+    font-size: 1rem;
+    /* ~16px, readable */
+    border-bottom: 0.0625rem solid #333;
+    /* ~1px, converted to rem */
+  }
+
+  .menu-item {
+    display: flex;
+    /* Unchanged */
+    flex-direction: column;
+    /* Unchanged */
+  }
+
+  /* Mobile-specific Menu Toggle Button */
+  .mobile-menu-toggle {
+    display: none;
+    /* Unchanged */
+    position: fixed;
+    /* Unchanged */
+    bottom: 0.625rem;
+    /* ~10px, unchanged but in rem */
+    left: 0.625rem;
+    /* ~10px, unchanged but in rem */
+    z-index: 55555;
+    /* Unchanged */
+    background: #444;
+    /* Unchanged */
+    color: #000;
+    /* Unchanged */
+    padding: 0.5rem;
+    /* ~8px, reduced from 10px 14px */
+    border-radius: 0.5rem;
+    /* ~8px, unchanged but in rem */
+    font-size: 3.5rem;
+    /* ~24px, reduced from 128px */
+    cursor: pointer;
+    /* Unchanged */
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.4);
+    /* ~2px 8px, converted to rem */
+    align-items: center;
+    /* Unchanged */
+    width: 3rem;
+    /* ~48px, touch-friendly */
+    height: 3rem;
+    /* ~48px, touch-friendly */
+  }
+
+  .menu-bar.responsive-ready.mobile-active .submenu {
+    display: none;
+    /* Unchanged */
+    position: static;
+    /* Unchanged */
+    border: none;
+    /* Unchanged */
+    box-shadow: none;
+    /* Unchanged */
+    padding-left: 0.75rem;
+    /* ~12px, reduced from 16px */
+    width: 100%;
+    /* Unchanged */
+  }
+
+  .menu-bar.responsive-ready.mobile-active .submenu.open {
+    display: block;
+    /* Unchanged */
+  }
+
+  .menu-bar.responsive-ready.mobile-active .submenu-item {
+    font-size: 1rem;
+    /* ~16px, readable */
+    padding: 0.625rem 0;
+    /* ~10px, unchanged but in rem */
+    border-bottom: 0.0625rem solid #222;
+    /* ~1px, converted to rem */
+    width: 100%;
+    /* Unchanged */
+  }
+
+  /* Optional: give submenu items some separation */
+  .submenu-item:not(:last-child) {
+    margin-bottom: 0.5rem;
+    /* ~8px, unchanged but in rem */
+  }
+
+  .dropdown-menu {
+    position: relative;
+    /* Unchanged */
+    top: 0;
+    /* Unchanged */
+    left: 0;
+    /* Unchanged */
+  }
+
+  .dropdown-menu li {
+    font-size: 1rem;
+    /* ~16px, readable */
+  }
+}
+
+/* Desktop: always visible */
+@media (min-width: 1001px) {
+  .menu-bar {
+    display: flex !important;
+  }
+
+  .mobile-menu-toggle {
+    display: none !important;
   }
 }

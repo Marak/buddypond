@@ -25,6 +25,9 @@ export default function renderAppList(appStats = {}) {
         }
     });
 
+    // empty the categoryContainer
+    categoryContainer.empty();
+
     // Populate category buttons
     // TODO: sort categories alphabetically
     categories = Array.from(categories).sort();

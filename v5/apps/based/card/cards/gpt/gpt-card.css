@@ -53,3 +53,20 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px for smaller scaling if needed */
+    }
+
+    .gpt-bot-name {
+        font-size: 1.25rem; /* ~20px, reduced from 32px */
+        padding: 0.625rem; /* ~10px, unchanged but in rem */
+    }
+
+    .card-gpt-response > p {
+        font-size: 1rem; /* ~16px, reduced from 28px */
+        padding: 0.75rem; /* ~12px, reduced from 20px */
+    }
+}

@@ -68,6 +68,7 @@
   border: 1px solid #666;
   padding: 6px;
   border-radius: 4px;
+
 }
 
 .spellbook-spells {
@@ -170,4 +171,207 @@
   border-color: #666;
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Mobile media query */
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    html {
+        font-size: 16px; /* Base font size */
+    }
+
+    .taskbar-container {
+        bottom: 0.5rem; /* ~8px */
+        right: 0.5rem; /* ~8px */
+        left: 0.5rem; /* ~8px */
+        transform: none;
+        display: flex;
+        gap: 0.5rem; /* ~8px */
+        padding: 0.375rem; /* ~6px */
+        max-width: calc(100% - 1rem); /* ~355px on 375px viewport */
+        border-radius: 0.75rem; /* ~12px */
+        flex-direction: row;
+    }
+
+    .taskbar-left,
+    .taskbar-right {
+        flex: 0 0 auto;
+        position: relative; /* For indicators */
+    }
+
+    .taskbar-items {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.625rem; /* ~10px */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex: 1;
+    }
+
+    .taskbar-items::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Scroll indicators */
+    .taskbar-left::after,
+    .taskbar-right::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0.5rem; /* ~8px */
+        height: 1rem; /* ~16px */
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 0.125rem; /* ~2px */
+        z-index: 100000;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .taskbar-left::after {
+        right: -0.75rem; /* ~12px, outside taskbar-left */
+        clip-path: polygon(0 0, 100% 50%, 0 100%); /* Right chevron */
+    }
+
+    .taskbar-right::before {
+        left: -0.75rem; /* ~12px, outside taskbar-right */
+        clip-path: polygon(100% 0, 0 50%, 100% 100%); /* Left chevron */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"]::after {
+        opacity: 1; /* Show right chevron when scrollable */
+    }
+
+    .taskbar-items[data-scrollable="true"]:not([style*="scrollLeft: 0"]) + .taskbar-right::before {
+        opacity: 1; /* Show left chevron when not at start and scrollable */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"][data-scroll-end="true"]::after {
+        opacity: 0; /* Hide right chevron at end */
+    }
+
+    .taskbar-left + .taskbar-items:not([data-scrollable="true"])::after,
+    .taskbar-items:not([data-scrollable="true"]) + .taskbar-right::before {
+        opacity: 0; /* Hide both chevrons when not scrollable */
+    }
+
+    .taskbar-item {
+        width: 2.5rem; /* ~40px */
+        height: 2.5rem;
+        padding: 0.25rem; /* ~4px */
+        border-radius: 0.5rem; /* ~8px */
+        flex-shrink: 0;
+    }
+
+    .taskbar-item img {
+        width: 1.75rem; /* ~28px */
+        height: 1.75rem;
+    }
+
+    .taskbar-item:hover,
+    .taskbar-item:active {
+        transform: none;
+    }
+
+    .taskbar-item:hover .taskbar-item-text {
+        visibility: hidden;
+    }
+
+    .taskbar-context-menu {
+        min-width: 9rem; /* ~144px */
+        font-size: 0.75rem; /* ~12px */
+        padding: 0.25rem 0; /* ~4px */
+    }
+
+    .taskbar-context-menu-item {
+        padding: 0.375rem 0.75rem; /* ~6px 12px */
+    }
+
+    .taskbar-item-open::after {
+        width: 0.875rem; /* ~14px */
+        height: 0.1875rem; /* ~3px */
+    }
+
+    .spellbook-content {
+        padding: 1.25rem 0.75rem; /* 20px 12px */
+        font-size: 1rem; /* ~16px, was 1.4em (~22.4px), too large */
+        margin-bottom: 4rem; /* ~64px, clears taskbar (~48px + 8px bottom) */
+        box-sizing: border-box;
+        min-height: calc(100vh - 4rem); /* Ensure content fills viewport minus taskbar */
+    }
+
+    .spellbook-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem; /* 12px */
+        margin-bottom: 1.5rem; /* 24px */
+    }
+
+    .spellbook-header h2 {
+        font-size: 1.75rem; /* ~28px, was 36px, fits better */
+        text-align: left;
+        margin: 0;
+    }
+
+    .spellbook-action-bar {
+        gap: 1rem; /* ~16px, was 1.5em (~24px), tighter for mobile */
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .spellbook-spell-types {
+        flex-wrap: wrap;
+        gap: 0.5rem; /* ~8px, was 0.75em (~12px), tighter */
+        width: 100%;
+    }
+
+    .spellbook-tab {
+        font-size: 1.25rem; /* ~20px, was 28px, more compact */
+        padding: 0.5rem 1rem; /* ~8px 16px, was 0.75em 1.25em */
+        width: calc(50% - 0.25rem); /* Two tabs per row, minus gap */
+        text-align: center;
+        box-sizing: border-box;
+        min-height: 2.75rem; /* ~44px, touch-friendly */
+    }
+
+    .spellbook-targeting {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem; /* ~12px, was 1em (~16px) */
+        width: 100%;
+    }
+
+    .spellbook-targeting select {
+        width: 100%;
+        font-size: 1.25rem; /* ~20px, was 24px/64px, resolves conflict */
+        padding: 0.75rem; /* 12px */
+        box-sizing: border-box;
+        min-height: 2.75rem; /* ~44px, touch-friendly */
+    }
+
+    .spellbook-spells {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem; /* 16px */
+    }
+
+    .spellbook-spell-button {
+        width: min(40vw, 10rem); /* ~150px on 375px, was 256px, prevents overflow */
+        height: min(40vw, 10rem);
+        padding: 0.5rem; /* 8px */
+        box-sizing: border-box;
+        min-height: 2.75rem; /* ~44px, touch-friendly */
+    }
+
+    .spell-icon {
+        font-size: 4rem; /* ~64px, was 164px, fits better */
+        line-height: 1;
+    }
+
+    .spell-label {
+        font-size: 1.25rem; /* ~20px, was 64px, prevents overflow */
+        line-height: 1.2;
+    }
 }

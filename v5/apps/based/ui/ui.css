@@ -227,22 +227,36 @@ button.largest {
     background-color: yellow;
   }
 }
-
-/* mobile support */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
-  .ui-button {
-    width: 100%;
-    font-size: 14px;
-  }
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px for smaller scaling if needed */
+    }
 
-  .tabs-container .tab-list {
-    font-size: 44px;
-  }
+    .ui-button {
+        width: 100%; /* Unchanged, full-width is good */
+        font-size: 1rem; /* ~16px, slightly increased from 14px for readability */
+        padding: 0.75rem; /* ~12px, added for touch-friendly tap target */
+    }
 
-  .tabs-container .tab-list li {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
+    .tabs-container .tab-list {
+        text-align: center; /* Unchanged */
+        font-size: 1.25rem; /* ~20px, reduced from 44px */
+        flex-direction: column; /* Unchanged, good for mobile */
+        width: 100%; /* Unchanged, full-width is good */
+    }
+
+    .tabs-container .tab-list li {
+        margin-right: 0; /* Unchanged */
+        margin-bottom: 0.625rem; /* ~10px, unchanged but in rem */
+        width: 100%; /* Unchanged */
+    }
+
+    .tabs-container .tab-list li a {
+        font-size: 1.5rem; /* ~24px, reduced from 64px */
+        width: 100%; /* Unchanged */
+        padding: 0.75rem; /* ~12px, added for touch-friendly tap target */
+    }
 }
 
 table {

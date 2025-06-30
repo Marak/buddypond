@@ -82,7 +82,6 @@
 }
 
 .card-bs-commands-command-text {
-    flex: 0 0 180px;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     color: #2b6cb0;
     font-size: 0.95rem;
@@ -95,21 +94,55 @@
     font-size: 0.95rem;
 }
 
-/* mobile styles to make font larger */
-@media (max-width: 768px) {
-    
+/* Mobile media query */
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+
     .card-bs-commands-card {
-        padding: 10px;
+        margin: 0.5rem auto; /* ~8px top/bottom, centered */
+        padding: 0.5rem; /* ~8px, reduced from 10px */
+        width: 95%; /* Maximize mobile viewport */
+        max-width: none; /* Remove desktop constraint */
     }
 
     .card-bs-commands-content h2 {
-        font-size: 3.25rem;
+        font-size: 1.25rem; /* ~20px, reduced from 3.25rem */
     }
 
     .card-bs-commands-intro-text,
     .card-bs-commands-hint,
     .card-bs-commands-command-text,
     .card-bs-commands-command-apps {
-        font-size: 0.9rem;
+        font-size: 1.5rem; /* ~14px, adjusted from 0.9rem */
+    }
+
+    .card-bs-commands-command {
+        flex: 0 0 auto; /* Responsive, no fixed width */
+        min-height: auto; /* Flexible height */
+        padding: 0.625rem; /* ~10px, for ~44px tap target */
+        flex-direction: column; /* Stack for mobile */
+        align-items: flex-start;
+    }
+
+    .card-bs-commands-command-text {
+        padding-left: 0;
+        margin-bottom: 0.25rem; /* ~4px, separate from apps text */
+    }
+
+    .card-bs-commands-close-btn {
+        width: 2rem; /* ~32px */
+        height: 2rem;
+        padding: 0.5rem; /* ~8px, for ~48px tap target */
+        font-size: 1rem; /* ~16px */
+    }
+
+    .card-bs-commands-command:hover,
+    .card-bs-commands-close-btn:hover {
+        transform: none; /* Disable hover effects */
+        box-shadow: none;
+        background: #e2e8f0; /* Reset for close button */
+    }
+
+    .card-bs-commands-commands {
+        gap: 0.625rem; /* ~10px, for spacing */
     }
 }

@@ -42,7 +42,7 @@ export default class MiniPaint {
         return {
             id: 'minipaint',
             title: 'miniPaint',
-            icon: 'desktop/assets/images/icons/icon_console_64.png',
+            icon: 'desktop/assets/images/icons/icon_minipaint_64.png',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout

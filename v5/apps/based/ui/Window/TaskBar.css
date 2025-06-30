@@ -1,30 +1,97 @@
+/* Base styles */
 .taskbar-container {
     position: fixed;
-    bottom: 5px;
+    bottom: 0.3125rem; /* ~5px */
     left: 50%;
     transform: translateX(-50%);
-    display: none;
+    display: flex;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 30px;
-
-    padding: 8px 16px;
+    gap: 0.5rem; /* ~8px */
+    padding: 0.5rem; /* ~8px */
     width: max-content;
-    max-width: 90%;
     background: rgba(60, 60, 60, 0.9);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-
+    backdrop-filter: blur(0.75rem); /* ~12px */
+    border-radius: 1rem; /* ~16px */
+    border: 0.0625rem solid rgba(255, 255, 255, 0.1); /* ~1px */
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3); /* ~4px 16px */
     color: #e0e0e0;
-    font-size: 14px;
+    font-size: 0.875rem; /* ~14px */
     font-weight: bold;
-    letter-spacing: 0.5px;
-    text-shadow: #000 0 1px 1px;
+    letter-spacing: 0.03125rem; /* ~0.5px */
+    text-shadow: #000 0 0.0625rem 0.0625rem; /* ~1px 1px */
     user-select: none;
     z-index: 99999;
+}
+
+.taskbar-left,
+.taskbar-right {
+    flex: 0 0 auto; /* Fixed size for anchored buttons */
+    position: relative; /* For indicators */
+}
+
+.taskbar-items {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem; /* ~16px */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1;
+}
+
+/* Hide scrollbar */
+.taskbar-items::-webkit-scrollbar {
+    display: none;
+}
+
+/* Scroll indicators */
+.taskbar-left::after,
+.taskbar-right::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.5rem; /* ~8px */
+    height: 1rem; /* ~16px */
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.125rem; /* ~2px */
+    z-index: 100000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Right chevron (in taskbar-left, next to settings) */
+.taskbar-left::after {
+    right: -0.75rem; /* ~12px, outside taskbar-left */
+    clip-path: polygon(0 0, 100% 50%, 0 100%); /* Right-pointing chevron */
+}
+
+/* Left chevron (in taskbar-right, next to home) */
+.taskbar-right::before {
+    left: -0.75rem; /* ~12px, outside taskbar-right */
+    clip-path: polygon(100% 0, 0 50%, 100% 100%); /* Left-pointing chevron */
+}
+
+/* Show indicators only when scrollable */
+.taskbar-left + .taskbar-items[data-scrollable="true"]::after {
+    opacity: 1; /* Show right chevron when scrollable */
+}
+
+.taskbar-items[data-scrollable="true"]:not([style*="scrollLeft: 0"]) + .taskbar-right::before {
+    opacity: 1; /* Show left chevron when not at start and scrollable */
+}
+
+/* Hide right chevron when scrolled to end */
+.taskbar-left + .taskbar-items[data-scrollable="true"][data-scroll-end="true"]::after {
+    opacity: 0; /* Hide right chevron at end */
+}
+
+/* Hide both chevrons when not scrollable */
+.taskbar-left + .taskbar-items:not([data-scrollable="true"])::after,
+.taskbar-items:not([data-scrollable="true"]) + .taskbar-right::before {
+    opacity: 0;
 }
 
 .taskbar-item {
@@ -33,20 +100,21 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 48px;
-    height: 48px;
-    padding: 4px;
-    border-radius: 12px;
+    width: 3rem; /* ~48px */
+    height: 3rem;
+    padding: 0.25rem; /* ~4px */
+    border-radius: 0.75rem; /* ~12px */
     transition: transform 0.3s ease, background-color 0.2s ease;
     background: none;
     cursor: pointer;
     color: #ececed;
+    flex-shrink: 0;
 }
 
 .taskbar-item img {
     display: block;
-    width: 32px;
-    height: 32px;
+    width: 2rem; /* ~32px */
+    height: 2rem;
     pointer-events: none;
 }
 
@@ -61,17 +129,17 @@
 .taskbar-item-text {
     visibility: hidden;
     position: absolute;
-    bottom: 60px;
+    bottom: 3.75rem; /* ~60px */
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
     z-index: 100000;
-    padding: 6px 12px;
+    padding: 0.375rem 0.75rem; /* ~6px 12px */
     background-color: #ffffff;
     color: #333333;
     text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem; /* ~8px */
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5); /* ~10px */
 }
 
 .taskbar-item:hover .taskbar-item-text {
@@ -83,48 +151,49 @@
 }
 
 .taskbar-context-menu {
-  position: fixed;
-  background-color: var(--desktop_element-background);
-  border: 1px solid #333;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  padding: 4px 0;
-  z-index: 100001;
-  min-width: 180px;
-  font-size: 14px;
-  color: white;
-  user-select: none;
+    position: fixed;
+    background-color: var(--desktop_element-background);
+    border: 0.0625rem solid #333; /* ~1px */
+    border-radius: 0.5rem; /* ~8px */
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.5); /* ~4px 12px */
+    padding: 0.25rem 0; /* ~4px */
+    z-index: 100001;
+    min-width: 11.25rem; /* ~180px */
+    font-size: 0.875rem; /* ~14px */
+    color: white;
+    user-select: none;
 }
 
 .taskbar-context-menu-item {
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+    padding: 0.5rem 1rem; /* ~8px 16px */
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .taskbar-context-menu-item:hover {
-  background-color: var(--desktop_element_hover)
+    background-color: var(--desktop_element_hover);
 }
 
 @keyframes blinker {
-    50% { background-color: orange; }
+    50% {
+        background-color: orange;
+    }
 }
 
 .taskbar-item-open::after {
     content: '';
     position: absolute;
-    bottom: 4px;
+    bottom: 0.25rem; /* ~4px */
     left: 50%;
     transform: translateX(-50%);
-    width: 18px;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.5); /* light gray / subtle glow */
-    border-radius: 2px;
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3); /* soft glow */
+    width: 1.125rem; /* ~18px */
+    height: 0.25rem; /* ~4px */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.125rem; /* ~2px */
+    box-shadow: 0 0 0.25rem rgba(255, 255, 255, 0.3); /* ~4px */
 }
 
-/* Drag visuals */
-.taskbar-item[draggable=\"true\"] {
+.taskbar-item[draggable="true"] {
     user-select: none;
 }
 
@@ -132,33 +201,123 @@
     opacity: 0.5;
 }
 
-/* Mobile devices */
+/* Mobile media query */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    html {
+        font-size: 16px; /* Base font size */
+    }
+
     .taskbar-container {
-        display: none !important;
+        bottom: 0rem; /* ~8px */
+        left: 0px; /* ~8px */
+        transform: none;
+        display: flex;
+        gap: 0.5rem; /* ~8px */
+        padding: 0; /* ~6px */
+        margin: 0;
+        border-radius: 0.75rem; /* ~12px */
+        flex-direction: row;
+        width: 100%;
+        height: calc(var(--vh) * 10);
+    }
+
+    .taskbar-left,
+    .taskbar-right {
+        flex: 0 0 auto;
+        position: relative; /* For indicators */
+    }
+
+    .taskbar-items {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.625rem; /* ~10px */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex: 1;
+    }
+
+    .taskbar-items::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Scroll indicators */
+    .taskbar-left::after,
+    .taskbar-right::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0.5rem; /* ~8px */
+        height: 1rem; /* ~16px */
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 0.125rem; /* ~2px */
+        z-index: 100000;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .taskbar-left::after {
+        right: -0.75rem; /* ~12px, outside taskbar-left */
+        clip-path: polygon(0 0, 100% 50%, 0 100%); /* Right chevron */
+    }
+
+    .taskbar-right::before {
+        left: -0.75rem; /* ~12px, outside taskbar-right */
+        clip-path: polygon(100% 0, 0 50%, 100% 100%); /* Left chevron */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"]::after {
+        opacity: 1; /* Show right chevron when scrollable */
+    }
+
+    .taskbar-items[data-scrollable="true"]:not([style*="scrollLeft: 0"]) + .taskbar-right::before {
+        opacity: 1; /* Show left chevron when not at start and scrollable */
+    }
+
+    .taskbar-left + .taskbar-items[data-scrollable="true"][data-scroll-end="true"]::after {
+        opacity: 0; /* Hide right chevron at end */
+    }
+
+    .taskbar-left + .taskbar-items:not([data-scrollable="true"])::after,
+    .taskbar-items:not([data-scrollable="true"]) + .taskbar-right::before {
+        opacity: 0; /* Hide both chevrons when not scrollable */
     }
 
     .taskbar-item {
-        padding: 15px 64px !important;
-        margin-right: 15px !important;
-        font-size: 28px !important;
-        transition: background-color 0.3s ease !important;
-    }
-
-    .taskbar-item:hover {
-        background-color: #666 !important;
-        transform: scale(1.1) !important;
-    }
-
-    .taskbar-item-text {
-        display: none !important;
-        font-size: 24px !important;
-        padding: 10px 20px !important;
-        border-radius: 8px !important;
+        width: 2.5rem; /* ~40px */
+        height: 2.5rem;
+        padding: 0.25rem; /* ~4px */
+        border-radius: 0.5rem; /* ~8px */
+        flex-shrink: 0;
     }
 
     .taskbar-item img {
-        width: 128px !important;
-        height: 128px !important;
+        width: 1.75rem; /* ~28px */
+        height: 1.75rem;
+    }
+
+    .taskbar-item:hover,
+    .taskbar-item:active {
+        transform: none;
+    }
+
+    .taskbar-item:hover .taskbar-item-text {
+        visibility: hidden;
+    }
+
+    .taskbar-context-menu {
+        min-width: 9rem; /* ~144px */
+        font-size: 0.75rem; /* ~12px */
+        padding: 0.25rem 0; /* ~4px */
+    }
+
+    .taskbar-context-menu-item {
+        padding: 0.375rem 0.75rem; /* ~6px 12px */
+    }
+
+    .taskbar-item-open::after {
+        width: 0.875rem; /* ~14px */
+        height: 0.1875rem; /* ~3px */
     }
 }

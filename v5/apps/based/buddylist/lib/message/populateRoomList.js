@@ -81,9 +81,13 @@ export default function populateRoomList(hotPonds, chatWindow, activeContext = n
         }
 
         // Ensure messages container exists for active or opened ponds
+        // TODO: we don't have a scope to ensureMessagesContainer here,
+        // do we need to ensureMessagesContainer here? if so, it needs to be scoped to buddylist or chatWindow
+        /*
         if (isActive || isUserOpened) {
             ensureMessagesContainer.call(this, pondId, chatWindow, this.bp.apps.client);
         }
+        */
     });
 
     // Remove room items for ponds no longer in hotPonds

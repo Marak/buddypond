@@ -39,7 +39,11 @@ export default function bindUIEvents(options = {}) {
     */
 
     // check if user profile has a profilePicture
-    let profilePicture = this.bp.apps.buddylist.data.profileState.profilePicture;
+    let profilePicture;
+    if (this.bp.apps.buddylist && this.bp.apps.buddylist.data && this.bp.apps.buddylist.data.profileState) {
+        profilePicture = this.bp.apps.buddylist.data.profileState.profilePicture;
+    }
+
     let profilePicturePreview = $('.aim-profile-picture-preview');
 
     if (profilePicture) {
@@ -53,17 +57,22 @@ export default function bindUIEvents(options = {}) {
 
 
     } else {
-        const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
-            seed: this.bp.me, // Username as seed for consistent avatar
-            size: 128, // Avatar size in pixels
-            backgroundColor: ["#f0f0f0"], // Optional: Customize background
-        });
+        try {
+            const avatar = this.bp.vendor.dicebear.createAvatar(this.bp.vendor.dicebearAvatars, {
+                seed: this.bp.me, // Username as seed for consistent avatar
+                size: 128, // Avatar size in pixels
+                backgroundColor: ["#f0f0f0"], // Optional: Customize background
+            });
 
-        // Convert avatar to SVG string
-        const svg = avatar.toString();
-        console.log('Avatar SVG:', svg);
+            // Convert avatar to SVG string
+            const svg = avatar.toString();
+            console.log('Avatar SVG:', svg);
 
-        profilePicturePreview.html(svg);
+            profilePicturePreview.html(svg);
+        } catch (err) {
+            console.error('Error generating avatar:', err);
+        }
+
 
     }
 

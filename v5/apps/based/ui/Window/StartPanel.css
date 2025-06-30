@@ -1,7 +1,7 @@
 .start-panel {
     position: fixed;
     bottom: 100px;
-    left: 50%;
+    left: calc(50% - 200px);
     transform: translateX(-50%);
     width: 400px;
     height: 400px;
@@ -16,6 +16,8 @@
     gap: 16px;
     overflow-y: auto;
     font-family: sans-serif;
+      z-index: 9999;
+
 }
 
 .start-panel-search {
@@ -79,4 +81,45 @@
 .start-panel-app.focused {
   outline: 2px solid #00bcd4;
   border-radius: 4px;
+}
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px if you want smaller scaling */
+    }
+
+    .start-panel {
+        padding: 0; /* ~16px, reduced for smaller screens */
+        left: 0; /* No unit needed for 0, unchanged */
+        width: 100%; /* Unchanged, full-width is good */
+        height: calc(100% - 100px); /* ~96px offset, reduced from 220px */
+        /* height: 'calc(var(--vh) * 100)'; */
+
+    }
+
+    .start-panel-section h3 {
+        font-size: 1.5rem; /* ~24px, prominent but not 64px huge */
+    }
+
+    .start-panel-section {
+    }
+
+    .start-panel-app > img {
+        width: 3rem; /* ~48px, smaller but clear for app icons */
+        height: 3rem;
+    }
+
+    .start-panel-app div {
+        font-size: 0.875rem; /* ~14px, readable for app labels */
+    }
+
+    .start-panel-grid {
+        gap: 1.2rem; /* ~32px, reduced from 128px for tighter layout */
+    }
+
+    .start-panel-search {
+        font-size: 1.25rem; /* ~20px, readable for search input */
+        padding: 0.75rem 1rem; /* ~12px 16px, reduced for compactness */
+    }
 }

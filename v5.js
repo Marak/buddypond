@@ -24,12 +24,12 @@ window.bp_v_5 = async function bp_v_5() {
 
     await bp.load('card');
 
-    if (!bp.loadedFromApp) {
+    // if (!bp.loadedFromApp) {
         await bp.open({
             name: 'buddylist',
             autocomplete: allCommands
         });
-    }
+    // }
 
     // Remark: Do we need to load the pond here, or can we wait until login is successful?
     await bp.load('pond');
@@ -160,12 +160,10 @@ function bindUIEvents() {
 
     d.on('mousedown', 'img.remixPaint, img.remixMeme', function () {
 
-
         let form = $(this).parent();
         let url = $('.image', form).attr('src');
         let output = $(this).data('output');
         let context = $(this).data('context');
-
 
         let cardContainer = $(this).parent().parent();
         console.log('cardContainer', cardContainer);
@@ -176,7 +174,8 @@ function bindUIEvents() {
         bp.open('paint', {
             src: url,
             output: output,
-            context: context
+            context: context,
+            
         });
 
     });
@@ -263,7 +262,7 @@ function arrangeDesktop() {
             ignoreSavedPosition: false
         });
         bp.apps.desktop.showDesktopIcons();
-        bp.apps.ui.windowManager.arrangeVerticalStacked()
+        // bp.apps.ui.windowManager.arrangeVerticalStacked()
 
     } else {
         bp.apps.desktop.arrangeShortcuts(2, {

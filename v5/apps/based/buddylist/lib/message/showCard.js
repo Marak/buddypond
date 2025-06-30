@@ -36,9 +36,12 @@ export default async function showCard({chatWindow, cardName, context = {}}) {
 
     // scroll to the bottom of the chat window
     // aimMessages.scrollTop = aimMessages.scrollHeight;
-    container.scrollIntoView({
-      behavior: 'instant'
-    });
+    if (!this.bp.isMobile()) {
+      container.scrollIntoView({
+        behavior: 'instant'
+      });
+
+    }
 
     return d;
   }

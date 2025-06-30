@@ -2,166 +2,170 @@
 
 /* Media query for mobile devices */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
-
+    /* Set base font size for consistency (optional, only if not already set) */
+    html {
+        font-size: 16px; /* Adjust to 14px for smaller scaling if needed */
+    }
 
     #desktop {
-        overflow: auto !important; /* Allow scrolling on mobile */
+        overflow: auto; /* Unchanged, good for mobile scrolling */
     }
 
     /* General styles for mobile view */
     .bp-window-content {
-        padding: 5px; /* Less padding for mobile */
-        font-size: 14px; /* Larger font for better readability */
-        max-height: calc(100% - 70px) !important; /* Adjust max height */
+        font-size: 0.875rem; /* ~14px, unchanged for readability */
+        /* max-height: calc(100% - 3rem); */
     }
 
     .window-controls button {
-        width: 64px !important; /* Larger touch targets */
-        height: 64px !important; /* Larger touch targets */
-        font-size: 64px !important; /* Larger icons */
-        margin-left: 32px !important;
-        margin-right: 16px !important;
+        width: 2rem; /* ~32px, touch-friendly */
+        height: 2rem;
+        font-size: 1rem; /* ~16px, readable icons */
+        margin-left: 1rem; /* ~16px, reduced from 32px */
+        margin-right: 0.5rem; /* ~8px, reduced from 16px */
     }
 
     /*
     .maximize-button {
-        display: none !important; 
+        display: none; 
     }
     */
 
     .window-container, .window {
-        user-select: none !important;
+        user-select: none;
         /*
-        left: 5px !important;
-        top: 7px !important;
+        left: 0.3125rem; 
+        top: 0.4375rem; 
         */
         /*
-        width: calc(100vw - 10px) !important; 
-        height: calc(70vh - 220px) !important;
+        width: calc(100vw - 0.625rem); 
+        height: calc(70vh - 6rem); 
         */
     }
 
     .window-content {
-        height: 100% !important;
+        height: 100%;
     }
 
     .aim-message-content {
-        font-size: 32px !important; /* Larger font for better readability */
+        font-size: 1rem; /* ~16px, readable */
     }
 
     .aim-sender {
-        font-size: 32px !important; /* Larger font for better readability */
+        font-size: 1rem; /* ~16px, readable */
     }
+
     .aim-timestamp {
-        font-size: 32px !important; /* Larger font for better readability */
+        font-size: 0.875rem; /* ~14px, slightly smaller for timestamps */
     }
+
     .aim-chat-message-profile-picture-img {
-        width: 64px !important;
-        height: 64px !important;
-        margin-right: 16px;
+        width: 2.5rem; /* ~40px, touch-friendly */
+        height: 2.5rem;
+        margin-right: 0.75rem; /* ~12px */
     }
+
     .aim-profile-picture svg {
-        width: 64px !important;
-        height: 64px !important;
-        margin-right: 16px;
+        width: 2.5rem; /* ~40px, matches img */
+        height: 2.5rem;
+        margin-right: 0.75rem; /* ~12px */
     }
+
     .aim-hover-menu button {
-        padding: 8px 32px;
-        margin: 12px;
-        font-size: 42px !important;
+        padding: 0.5rem 1rem; /* ~8px 16px, touch-friendly */
+        margin: 0.5rem; /* ~8px */
+        font-size: 1rem; /* ~16px, readable */
     }
+
     .aim-reply-box {
-        padding: 5px;
-        font-size: 32px !important; /* Larger font for better readability */
-        width: 80%; /* Adjust width for the send button */
+        padding: 0.5rem; /* ~8px, slightly increased from 5px */
+        font-size: 1rem; /* ~16px, readable */
+        width: 80%; /* Unchanged, good for send button */
     }
+
     .aim-reply-cancel {
-        font-size: 32px !important; /* Larger font for better readability */
+        font-size: 1rem; /* ~16px, readable */
     }
+
     .aim-reply-header {
-        width: 100%;
+        width: 100%; /* Unchanged, full-width is good */
     }
 
     /* Buddy list adjustments */
     .app-buddylist .window-main {
-        display: block; /* Stack vertically on mobile */
+        display: block; /* Unchanged, good for stacking */
     }
 
     .buddy_list_not_connected, .buddylistContainer {
-        width: auto; /* Full width for mobile */
-        margin: 0; /* Remove any margins */
+        width: auto; /* Unchanged, good for mobile */
+        margin: 0; /* Unchanged, good */
     }
 
     .loginForm input[type="text"],
     .loginForm input[type="password"],
     .addBuddyForm input[type="text"] {
-        width: 100%;
-        margin-bottom: 10px; 
-        font-size: 64px;
+        width: 100%; /* Unchanged, full-width is good */
+        margin-bottom: 0.625rem; /* ~10px, unchanged */
+        font-size: 1rem; /* ~16px, readable */
     }
 
     button {
-        width: 100%; /* Full width buttons */
-        padding: 10px; /* Larger touch targets */
-        font-size: 32px; /* Larger font for better readability */
+        padding: 0.625rem; /* ~10px, unchanged for touch targets */
+        font-size: 1rem; /* ~16px, readable */
     }
 
     input[type="checkbox"] {
-        width: 32px; /* Larger checkbox */
-        height: 32px; /* Larger checkbox */
+        width: 1.5rem; /* ~24px, touch-friendly */
+        height: 1.5rem;
     }
 
     div {
-        font-size: 32px; /* Larger font for better readability */
+        font-size: 1rem; /* ~16px, readable */
     }
 
     p {
-        font-size: 32px; /* Larger font for better readability */
+        font-size: 1rem; /* ~16px, readable */
     }
 
     .loginButton, .sendBuddyRequest {
-        width: 100%; /* Full width buttons */
-        padding: 10px; /* Larger touch targets */
+        width: 100%; /* Unchanged, full-width is good */
+        padding: 0.625rem; /* ~10px, unchanged */
     }
 
     /* Chat window adjustments */
     #window_buddy_message_0 {
-        margin: 0; /* Remove margins */
+        margin: 0; /* Unchanged, good */
     }
 
     .aim-chat-area {
-        height: calc(100vh - 180px); /* Adjust height based on viewport */
-        overflow-y: auto; /* Scrollable chat area */
+        height: calc(100vh - 5rem); /* ~80px offset, reduced from 180px */
+        overflow-y: auto; /* Unchanged, good for scrolling */
     }
 
     .aim-messages-container {
-        padding: 5px; /* Reduced padding */
-        font-size: 14px; /* Larger font for better readability */
+        padding: 0.5rem; /* ~8px, slightly increased from 5px */
+        font-size: 0.875rem; /* ~14px, unchanged for readability */
     }
 
-    .chatMessage span{
-        font-size: 22px !important; /* Larger font for better readability */
-    }
-
-    .aim-send-btn {
-        width: 200px !important; /* Static width for send button */
-        height: 100px !important; /* Matching input height */
+    .chatMessage span {
+        font-size: 0.875rem; /* ~14px, readable */
     }
 
     /* Typing indicator styling */
     .aim-typing {
-        padding: 5px; /* Sufficient padding */
+        padding: 0.5rem; /* ~8px, slightly increased from 5px */
     }
-    
+
     /* Buddy list UI tweaks */
     .onlineStatusSelect, .buddyListHolder, .addBuddyForm {
-        width: 100%; /* Full-width elements */
+        width: 100%; /* Unchanged, full-width is good */
     }
 
     .buddyListHolder {
-        padding: 0 5px; /* Padding adjustment */
+        padding: 0 0.5rem; /* ~0 8px, slightly increased */
     }
+
     .resize-handle {
-        display: none; /* Hide resize handle */
+        display: none; /* Unchanged, good for mobile */
     }
 }

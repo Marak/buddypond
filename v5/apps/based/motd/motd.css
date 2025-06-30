@@ -1,3 +1,4 @@
+/* Base styles */
 .motd-container {
     display: flex;
     height: 100%;
@@ -9,16 +10,16 @@
 
 .patch-notes {
     flex: 3;
-    padding: 20px;
+    padding: 1.25rem; /* ~20px */
     overflow-y: auto;
-    border-right: 1px solid #3b3b4f;
+    border-right: 0.0625rem solid #3b3b4f; /* ~1px */
     background: #1e1e2e;
 }
 
 .patch-notes h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    color: #50fa7b !important;
+    font-size: 1.8em; /* Unchanged, relative unit */
+    margin-bottom: 0.9375rem; /* ~15px */
+    color: #50fa7b;
     text-transform: uppercase;
 }
 
@@ -28,73 +29,73 @@
 }
 
 .patch-item {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem; /* ~20px */
 }
 
 .patch-item h3 {
-    font-size: 1.3em;
-    color: #f1fa8c !important;
-    margin-bottom: 10px;
+    font-size: 1.3em; /* Unchanged, relative unit */
+    color: #f1fa8c;
+    margin-bottom: 0.625rem; /* ~10px */
 }
 
 .patch-item ul {
     list-style: disc;
-    padding-left: 20px;
-    font-size: 1em;
+    padding-left: 1.25rem; /* ~20px */
+    font-size: 1em; /* Unchanged */
     color: #d0d0d0;
 }
 
 .patch-item li {
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem; /* ~5px */
 }
 
 .sidebar {
     flex: 1;
     background: #2a2a3c;
-    padding: 20px;
+    padding: 1.25rem; /* ~20px */
     display: flex;
     flex-direction: column;
 }
 
 .sidebar h2 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #50fa7b !important;
+    font-size: 1.5em; /* Unchanged, relative unit */
+    margin-bottom: 0.9375rem; /* ~15px */
+    color: #50fa7b;
     text-transform: uppercase;
 }
 
 .nav-links {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem; /* ~10px */
     background: none;
 }
 
 .nav-button {
-    background: #3b3b4f !important;
-    color: #ffffff !important;
+    background: #3b3b4f;
+    color: #ffffff;
     border: none;
-    padding: 10px;
-    font-size: 1em;
+    padding: 0.625rem; /* ~10px */
+    font-size: 1em; /* Unchanged */
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 0.3125rem; /* ~5px */
     transition: background 0.3s, transform 0.1s;
     text-align: left;
 }
 
 .nav-button:hover {
-    background: #50fa7b !important;
-    color: #1e1e2e !important;
-    transform: translateX(5px);
+    background: #50fa7b;
+    color: #1e1e2e;
+    transform: translateX(0.3125rem); /* ~5px */
 }
 
 .nav-button:active {
-    transform: translateX(2px);
+    transform: translateX(0.125rem); /* ~2px */
 }
 
 /* Scrollbar styling for patch notes */
 .patch-notes::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem; /* ~8px */
 }
 
 .patch-notes::-webkit-scrollbar-track {
@@ -103,19 +104,70 @@
 
 .patch-notes::-webkit-scrollbar-thumb {
     background: #50fa7b;
-    border-radius: 4px;
+    border-radius: 0.25rem; /* ~4px */
 }
 
 .patch-notes::-webkit-scrollbar-thumb:hover {
     background: #f1fa8c;
 }
-
-/* touch course media query for better mobile experience */
+/* Mobile media query */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
-   
-    .nav-links button {
-        font-size: 1.5em;
-        padding: 24px;
-        margin: 14px 0;
+    html {
+        font-size: 16px; /* Base font size, adjust to 14px if needed */
+    }
+
+    .motd-container {
+        flex-direction: column; /* Unchanged, stacks content */
+    }
+
+    .patch-notes {
+        flex: none; /* Unchanged */
+        border-right: none; /* Unchanged */
+        border-bottom: 0.0625rem solid #3b3b4f; /* ~1px */
+        height: auto; /* Unchanged */
+        max-height: 60%; /* Reduced from 70vh to ensure sidebar visibility */
+        padding: 0.625rem; /* ~10px, reduced for mobile */
+    }
+
+    .sidebar {
+        flex: none; /* Unchanged */
+        padding: 0.625rem 1.25rem; /* ~10px 20px, unchanged but in rem */
+        flex-direction: row; /* Unchanged */
+        overflow-x: auto; /* Unchanged */
+        gap: 0.625rem; /* ~10px, unchanged but in rem */
+        border-top: 0.0625rem solid #3b3b4f; /* ~1px */
+        justify-content: space-between; /* Unchanged */
+        min-height: 3rem; /* ~48px, ensures visibility */
+        height: 50%;
+    }
+
+    .sidebar h2 {
+        display: none; /* Unchanged, hides header */
+    }
+
+    .nav-links {
+        display: flex; /* Explicitly set for clarity */
+        flex-direction: row; /* Changed to row for wrapping */
+        flex-wrap: wrap; /* Allow buttons to wrap into two columns */
+        gap: 0.625rem; /* ~10px, unchanged */
+        width: 100%; /* Unchanged, full width of sidebar */
+        justify-content: space-between; /* Distribute buttons evenly */
+         height: 20vh;
+}
+    }
+
+    .nav-button {
+        flex: 0 0 calc(50% - 0.3125rem); /* ~50% minus half gap for two columns */
+        font-size: 1.5rem; /* ~14px, reduced from 1.2rem for better fit */
+        padding: 0.75rem; /* ~12px, unchanged, ~44px tap target with font */
+        text-align: center; /* Unchanged */
+        white-space: nowrap; /* Unchanged */
+        min-width: 0; /* Changed from 5rem to allow flexible sizing */
+        box-sizing: border-box; /* Ensure padding is included in width */
+    }
+
+    .nav-button:hover {
+        transform: none; /* Disable hover effects for mobile */
+        box-shadow: none; /* Reset any base hover shadow */
     }
 }

@@ -7,23 +7,21 @@ export default class StartPanel {
     }
 
     open() {
-        // console.log('Opening start panel', this.panelElement);
         if (this.panelElement) {
-            // if the panel is already open, close it first
             this.close();
             return;
         }
 
         const panel = document.createElement('div');
         panel.className = 'start-panel';
+        panel.style.display = 'none'; // hide initially for animation
 
         const searchInput = document.createElement('input');
         searchInput.id = 'start-panel-search';
         searchInput.className = 'start-panel-search';
         searchInput.type = 'text';
         searchInput.placeholder = 'Search apps...';
-        searchInput.autocomplete = 'off'; // ✅ Disable browser autofill/autocomplete
-
+        searchInput.autocomplete = 'off';
 
         const recentSection = document.createElement('div');
         recentSection.className = 'start-panel-section';
@@ -45,93 +43,97 @@ export default class StartPanel {
 
         document.body.appendChild(panel);
         this.panelElement = panel;
+        // Animate it in
+        $(panel).css({
+            display: 'block',
+            opacity: 1,
+            transform: 'translateY(100%)',
+            transition: 'all 300ms ease-out'
+        });
 
-        // Populate recent apps (stub)
+        requestAnimationFrame(() => {
+            $(panel).css({
+                opacity: 1,
+                transform: 'translateY(0)'
+            });
+        });
+
+
         const recentApps = (window.bp?.apps?.ui?.recentApps || []).slice(0, 10);
-        // console.log('Recent apps:', recentApps);
         recentApps.forEach(appData => {
             const app = this.createAppTile(appData);
             recentGrid.appendChild(app);
         });
 
-        // Populate all apps (stub)
         const appList = window.bp?.apps?.desktop?.appList || {};
-
         const allAppEntries = Object.entries(appList);
         allAppEntries.forEach(([appName, appData]) => {
-            if (appData.adminOnly && this.bp.me !== 'Marak') { // Remark: admin rbac
-                // Skip apps that are admin-only unless the user is Marak
-                return;
-            }
-            appData.app = appData.app || appName; // Ensure appName is available
-            appData.id = appData.id || appName; // Ensure id is available
+            if (appData.adminOnly && this.bp.me !== 'Marak') return;
+            appData.app = appData.app || appName;
+            appData.id = appData.id || appName;
             const app = this.createAppTile(appData, appData.icon);
             allGrid.appendChild(app);
         });
 
-        // Live search filtering
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase();
 
-            // Toggle recentSection visibility based on query
-            if (query.length > 0) {
-                recentSection.style.display = 'none';
-            } else {
-                recentSection.style.display = '';
-            }
-
+            recentSection.style.display = query.length > 0 ? 'none' : '';
             allGrid.querySelectorAll('.start-panel-app').forEach(el => {
                 const label = el.dataset.name.toLowerCase();
-                let _app = this.bp.apps.desktop.appList[el.dataset.id];
-                let showResult = false;
-
-                if (_app) {
-                    if (label.includes(query)) {
-                        showResult = true;
-                    }
-                    if (!showResult && _app.categories) {
-                        showResult = _app.categories.some(cat => cat.toLowerCase().includes(query));
-                    }
+                const _app = this.bp.apps.desktop.appList[el.dataset.id];
+                let showResult = label.includes(query);
+                if (!showResult && _app?.categories) {
+                    showResult = _app.categories.some(cat => cat.toLowerCase().includes(query));
                 }
-
                 el.style.display = showResult ? 'flex' : 'none';
             });
         });
 
-        // this.enableKeyboardNavigation(panel, searchInput);
-
         this.closeEventHandler = (event) => {
-            // console.log('click event target', event.target);
-            if ($(event.target).hasClass('taskbar-item')) {
-                // If the click is inside the panel or on the search input, do nothing
-                return;
-            }
-            // close the panel if it exists
+            if ($(event.target).hasClass('taskbar-item')) return;
             if (this.panelElement && !this.panelElement.contains(event.target) && event.target !== searchInput) {
                 this.close();
             }
-            // If the click is outside the panel and not on the search input, close the panel
-            // .taskbar-item, .taskbar-container
-        }
-        // add event listener to close panel on click outside
+        };
+
         document.addEventListener('click', this.closeEventHandler);
-
-        // focus on the start-panel-search input
-        searchInput.focus();
-
+        if (!this.bp.isMobile()) {
+            // Remark: We don't want to focus the search input on mobile devices, since this brings up the keyboard
+            searchInput.focus();
+        }
     }
+
 
     close() {
         if (this.panelElement) {
-            this.panelElement.remove();
-            this.panelElement = null;
+            const $panel = $(this.panelElement);
+
+            $panel.css({
+                transform: 'translateY(0)',
+                opacity: 1,
+                transition: 'all 300ms ease-in'
+            });
+
+            requestAnimationFrame(() => {
+                $panel.css({
+                    transform: 'translateY(100%)',
+                    opacity: 1
+                });
+
+                setTimeout(() => {
+                    $panel.remove();
+                    this.panelElement = null;
+                }, 300); // match transition duration
+            });
         }
-        // remove the event listener for closing the panel
+
         if (this.closeEventHandler) {
             document.removeEventListener('click', this.closeEventHandler);
             this.closeEventHandler = null;
         }
     }
+
 
     createAppTile(appData, icon = 'icons/default.png') {
         // console.log('Creating app tile for:', appData);
@@ -201,7 +203,7 @@ StartPanel.prototype.enableKeyboardNavigation = function (panel, searchInput) {
         }
     });
 
-    const ROW_LENGTH = 5;
+    let ROW_LENGTH = 5;
 
     panel.addEventListener('keydown', (e) => {
         console.log('Key pressed:', e.key);

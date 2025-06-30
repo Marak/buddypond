@@ -667,7 +667,8 @@ class Window {
 
     minimize(force = false) {
         // console.log('minimize', this.isMinimized);
-        if (this.bp.isMobile()) {
+
+        if (false && this.bp.isMobile()) {
 
             if (this.isMinimized && !force) {
                 this.restore();
@@ -683,7 +684,7 @@ class Window {
                 this.isMinimized = true;
             }
 
-            this.windowManager.arrangeVerticalStacked();
+            // this.windowManager.arrangeVerticalStacked();
 
         } else {
             if (this.isMinimized && !force) {
@@ -711,7 +712,7 @@ class Window {
         // TODO: save the window state
 
         if (this.bp.isMobile()) {
-            this.windowManager.arrangeVerticalStacked();
+            // this.windowManager.arrangeVerticalStacked();
         }
     }
 
@@ -721,11 +722,16 @@ class Window {
         // so that on smaller devices the window is not hidden behind the menubar
         if (this.isMaximized) {
             if (this.bp.isMobile()) {
-                //this.container.style.width = "100vw";
-                //this.container.style.height = "100vh";
-                //this.container.style.top = "0";
-                //this.container.style.left = "0";
-                this.windowManager.arrangeVerticalStacked();
+                this.container.style.width = "100vw";
+                // this.container.style.height = "calc(100vh - 185px)";
+                //this.container.style.height = "90vh";
+
+                this.container.style.height = 'calc(var(--vh) * 90)';
+
+
+                this.container.style.top = "0";
+                this.container.style.left = "0";
+                // this.windowManager.arrangeVerticalStacked();
 
             } else {
                 this.container.style.width = `${this.width}px`;
@@ -744,8 +750,10 @@ class Window {
 
             if (this.bp.isMobile()) {
                 this.container.style.width = "100vw";
-                this.container.style.height = "100vh";
-                this.container.style.top = pixelOffset;
+                // this.container.style.height = "calc(100vh - 170px)";
+                // this.container.style.height = "90vh";
+                this.container.style.height = 'calc(var(--vh) * 90)';
+                this.container.style.top = "0";
                 this.container.style.left = "0";
 
             } else {
@@ -797,8 +805,10 @@ class Window {
         if (this.bp.isMobile()) {
             // this.minimizeAllWindows(true);
             // alert('opening window on mobile');
+            // maximize the window
+            this.maximize();
             setTimeout(() => {
-                this.windowManager.arrangeVerticalStacked();
+                // this.windowManager.arrangeVerticalStacked();
             }, 100);
         }
 
@@ -900,7 +910,7 @@ class Window {
             // this.minimizeAllWindows(true);
             //this.windowManager.arrangeVerticalStacked();
             setTimeout(() => {
-                this.windowManager.arrangeVerticalStacked();
+                // this.windowManager.arrangeVerticalStacked();
             }, 100);
         }
 

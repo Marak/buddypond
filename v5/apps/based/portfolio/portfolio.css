@@ -208,9 +208,10 @@
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .coin-send-form {
         padding: 15px;
+        max-width: 100%;
     }
 
     .coin-send-form input, 
@@ -223,6 +224,17 @@
     .coin-send-form h1 {
         font-size: 1.5rem;
     }
+
+    .portfolio-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .portfolio-actions  button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
 }
 
 #user-portfolio > p {
