@@ -53,7 +53,8 @@ export default class MenuBar {
 
         //console.log('Rendering menu with data:', menuData);
 
-        this.menuBarElement = new MenuBarClass(menuData).createMenu();
+        this.menuBar = new MenuBarClass(menuData).createMenu();
+        this.menuBarElement = this.menuBar.menuBarElement;
         // console.log('new menuBarElement', parent, this.menuBarElement);
         parent.appendChild(this.menuBarElement);
 
@@ -92,9 +93,9 @@ export default class MenuBar {
         });
 
         // Handle option selection
-        $('.desktop-settings-dropdown-menu li').on('click', function () {
-            const value = $(this).data('value');
-            const text = $(this).text();
+        $('.desktop-settings-dropdown-menu li').on('click', (ev) => {
+            const value = $(ev.target).data('value');
+            const text = $(ev.target).text();
             // Update the trigger text/icon if desired
             /*
             $(this).closest('.dropdown-wrapper').find('.icon.trigger').html(
@@ -102,7 +103,7 @@ export default class MenuBar {
             );
             */
             // Hide the dropdown
-            $(this).parent().slideUp(200);
+            $(ev.target).parent().slideUp(200);
             // Handle the selected value (e.g., perform an action)
             console.log('Selected:', value);
 
@@ -116,8 +117,8 @@ export default class MenuBar {
             if (value === 'open') {
                 // open the desktop settings
                 bp.open('profile', { context: 'themes' });
-                //this.closeMobileMenu();
-                this.menuBarElement.closeMobileMenu();
+                console.log('Opening desktop settings', this);
+                this.menuBar.closeMobileMenu();
                 return;
             }
             // clear wallpaper_url if exists
@@ -246,8 +247,8 @@ class MenuBarClass {
 
         this.addGlobalEventListeners();
 
-
-        return this.menuBarElement;
+        return this;
+        
     }
 
     createMenuItem(menuItem) {
@@ -306,6 +307,10 @@ class MenuBarClass {
             const subMenuItem = document.createElement("div");
             subMenuItem.classList.add("submenu-item");
             subMenuItem.innerHTML = subItem.label;
+
+            if (subItem.className) {
+                subMenuItem.classList.add(subItem.className);
+            }
 
             if (subItem.click) {
                 subMenuItem.onclick = (event) => {

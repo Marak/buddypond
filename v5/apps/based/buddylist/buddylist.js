@@ -995,6 +995,13 @@ function rollToNumber($el, value) {
   const formattedValue = value.toLocaleString('en-US');
   const digits = formattedValue.split('');
 
+  // TODO: fix styles on mobile for rolling odometer
+  if (bp.isMobile()) {
+    // For mobile, just set the text directly
+    $el.text(formattedValue);
+    return;
+  }
+
   // Clear and rebuild digits
   $el.empty();
 

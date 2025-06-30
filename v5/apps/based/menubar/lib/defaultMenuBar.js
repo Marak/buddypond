@@ -12,7 +12,7 @@ export default function defaultMenuBar(bp) {
 
 
       let selectMusicPlaylist = `
-<div class="dropdown-wrapper desktop-only float_right select-playlist-dropdown-menu">
+<div class="dropdown-wrapper float_right select-playlist-dropdown-menu">
   <span class="icon trigger" title="Select Music Playlist">
     <i class="fa-duotone fa-regular fa-music"></i> Select Music Playlist
   </span>
@@ -91,7 +91,8 @@ export default function defaultMenuBar(bp) {
       label: '<span id="me_title" class="me_title">Welcome - You look nice today!</span>',
       submenu: [
         {
-          label: '<span class="desktop-only">We are stoked to be your Buddy</span>'
+          label: '<span>We are stoked to be your Buddy</span>',
+          className: 'desktop-only'
           // click: () => api.ui.toggleDeviceSettings() 
         },
               {
@@ -106,7 +107,8 @@ export default function defaultMenuBar(bp) {
           click: () => bp.open('profile')
         },
         {
-          label: '<span class="loggedOut">Login</span>',
+          label: '<span>Login</span>',
+          className: 'loggedOut',
           //visible: !bp.apps.client.isLoggedIn(), // Only show if logged out
           click: () => bp.open('buddylist')
         },
@@ -184,8 +186,9 @@ export default function defaultMenuBar(bp) {
       ]
     },
     {
+      className: 'loggedIn',
       label: `
-              <span class="loggedIn">Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
+              <span>Reward in: <span id="menu-bar-coin-reward-coindown" class="countdown-date">0:59</span></span>
               <!-- <span class="loggedOut">Login to get Coin Rewards</span> -->
             `,
     },
@@ -199,7 +202,7 @@ export default function defaultMenuBar(bp) {
     { label: '', flex: 1, className: "desktop-only" }, // empty space
 
 
-    { label: selectMusicPlaylist },
+    { label: selectMusicPlaylist, className: "desktop-only" },
 
     // { label: selectTheme },
     // { label: desktopSettings },

@@ -253,7 +253,6 @@
   }
 
   .menu-bar.responsive-ready.mobile-active .menu-item {
-    text-align: center;
     /* Unchanged */
     width: 100%;
     /* Unchanged */
@@ -356,6 +355,7 @@
     font-size: 1rem;
     /* ~16px, readable */
   }
+
 }
 
 /* Desktop: always visible */

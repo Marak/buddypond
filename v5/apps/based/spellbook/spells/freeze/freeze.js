@@ -7,7 +7,7 @@ export default function freeze(growthDuration = 3000, holdDuration = 5000, inten
     const $canvas = $('<canvas>').css({
         position: 'fixed', top: 0, left: 0,
         width: '100%', height: '100%',
-        pointerEvents: 'none', zIndex: 9999
+        pointerEvents: 'none', zIndex: 999999
     }).appendTo($body);
 
     const canvas = $canvas[0];
