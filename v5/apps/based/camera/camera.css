@@ -1,139 +1,319 @@
-    .recordSnap {
-      font-size: 128px;
+/* Base styles */
+.recordSnap {
+    font-size: 128px;
+}
+
+.confirmSnap {
+    font-size: 96px;
+}
+
+.takeSingleSnap {
+    position: absolute;
+    top: 258px;
+    left: 122px;
+    cursor: pointer;
+}
+
+.takeSnap {
+    position: absolute;
+    top: 258px;
+    right: 122px;
+    cursor: pointer;
+}
+
+.snapCountDown {
+    font-size: 128px;
+    position: absolute;
+    top: 144px;
+    left: 233px;
+    cursor: pointer;
+    display: none;
+    color: #00FF41;
+}
+
+.approveSnap {
+    position: absolute;
+    top: 288px;
+    right: 66px;
+    cursor: pointer;
+}
+
+.cancelSnap {
+    font-size: 72px;
+    position: absolute;
+    top: 308px;
+    left: 77px;
+    cursor: pointer;
+}
+
+.continueSnap {
+    position: absolute;
+    top: 288px;
+    right: 288px;
+    cursor: pointer;
+}
+
+.confirmSnap:hover {
+    font-weight: bold; /* Fixed: font-decoration -> font-weight */
+    opacity: 0.8;
+}
+
+.recordSnap:hover {
+    opacity: 0.8;
+}
+
+#snapsPreview {
+    display: none;
+    border: none;
+    /*
+    width: 640px;
+    height: 480px;
+    */
+    width: 100%;
+    height: 100%;
+    padding-bottom: 64px;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+#camera .gifFrames {
+    display: none;
+}
+
+#snaps {
+    display: none;
+}
+
+.snapDelaySliderControl {
+    background-color: white;
+    position: absolute;
+    bottom: 80px;
+    left: 166px;
+    height: 10px;
+    width: 333px;
+    display: none;
+}
+
+#snapDelaySliderLabel {
+    height: 10px;
+    width: 333px;
+}
+
+#mirrorCanvasMe {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+#mirrorPlaceHolder {
+    width: 640px;
+    height: 480px;
+    background-color: #000011;
+    position: absolute;
+}
+
+.snapControls {
+    display: none;
+    position: absolute;
+    bottom: 32px;
+    left: 132px;
+}
+
+.cameraControls {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    margin: 0px;
+    padding-top: 8px;
+    padding-bottom: 16px;
+    margin-top: 8px;
+    height: 20px;
+    z-index: 99;
+    width: 100%;
+}
+
+.mirrorControls {
+    position: absolute;
+    top: 40px;
+    right: 16px;
+    z-index: 99;
+}
+
+.mirrorControl {
+    z-index: 99;
+}
+
+.mirrorInput {
+    z-index: 99;
+    background-color: white;
+}
+
+.mirrorVideoHolder {
+}
+
+/* Mobile media query */
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    html {
+        font-size: 16px; /* Base font size */
     }
-    .confirmSnap {
-      font-size: 96px;
-    }
-    .takeSingleSnap {
-      position: absolute;
-      top: 258px;
-      left: 122px;
-      cursor: pointer;
-    }
-    .takeSnap {
-      position: absolute;
-      top: 258px;
-      right: 122px;
-      cursor: pointer;
-    }
-    .snapCountDown {
-      font-size: 128px;
-      position: absolute;
-      top: 144px;
-      left: 233px;
-      cursor: pointer;
-      display: none;
-      color: #00FF41;
-    }
-    .approveSnap {
-      position: absolute;
-      top: 288px;
-      right: 66px;
-      cursor: pointer;
-    }
-  
-    .cancelSnap {
-      font-size: 72px;
-      position: absolute;
-      top: 308px;
-      left: 77px;
-      cursor: pointer;
-    }
-  
-    .continueSnap {
-      position: absolute;
-      top: 288px;
-      right: 288px;
-      cursor: pointer;
-    }
-  
-    .confirmSnap:hover {
-      font-decoration: bold;
-      opacity: 0.8;
-    }
-  
-    .recordSnap:hover {
-      opacity: 0.8;
-    }
-    #snapsPreview {
-      display: none;
-      border: none;
-      width: 640px;
-      height: 480px;
-      padding-bottom: 64px;
-      -moz-transform: scaleX(-1);
-      -o-transform: scaleX(-1);
-      -webkit-transform: scaleX(-1);
-      transform: scaleX(-1);
-      filter: FlipH;
-      -ms-filter: "FlipH";
-    }
-    #camera .gifFrames {
-      display: none;
-    }
-    #snaps {
-      display: none;
-    }
-    .snapDelaySliderControl {
-      background-color: white;
-      position: absolute;
-      bottom: 80px;
-      left: 166px;
-      height: 10px;
-      width: 333px;
-      display: none;
-    }
-    #snapDelaySliderLabel {
-      height: 10px;
-      width: 333px;
-    }
-    #mirrorCanvasMe {
-      -moz-transform: scaleX(-1);
-      -o-transform: scaleX(-1);
-      -webkit-transform: scaleX(-1);
-      transform: scaleX(-1);
-      filter: FlipH;
-      -ms-filter: "FlipH";
-    }
+
     #mirrorPlaceHolder {
-      width: 640px;
-      height: 480px;
-      background-color: #000011;
-      position: absolute;
+        width: calc(100% - 1rem); /* ~355px on 375px viewport */
+        height: calc((100vw - 1rem) * 0.75); /* 4:3 aspect ratio, ~266px */
+        background-color: #000011;
+        position: absolute;
+        top: 0;
+        left: 0.5rem; /* ~8px */
+        margin-bottom: 4rem; /* ~64px, clears taskbar */
     }
+
+    #snapsPreview {
+        width: calc(100% - 1rem); /* ~355px */
+        height: calc((100vw - 1rem) * 0.75); /* ~266px */
+        padding-bottom: 2rem; /* ~32px, was 64px */
+        display: none;
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+    }
+
+    #mirrorCanvasMe {
+        width: calc(100% - 1rem); /* ~355px */
+        height: calc((100vw - 1rem) * 0.75); /* ~266px */
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+    }
+
+    .recordSnap {
+        font-size: 5.25rem; /* ~20px, was 128px */
+        min-width: 2.75rem; /* ~44px, touch-friendly */
+        min-height: 2.75rem;
+    }
+
+    .confirmSnap {
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .takeSingleSnap {
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.75 + 1rem); /* Below preview, ~276px */
+        left: calc(25% - 1.375rem); /* Center-left, ~44px wide */
+        cursor: pointer;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .takeSnap {
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.75 + 1rem); /* ~276px */
+        right: calc(25% - 1.375rem); /* Center-right */
+        cursor: pointer;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .snapCountDown {
+        font-size: 4.5rem; /* ~32px, was 128px */
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.375 - 1rem); /* Center vertically, ~133px */
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        display: none;
+        color: #00FF41;
+    }
+
+    .approveSnap {
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.75 + 1.5rem); /* ~281px */
+        right: calc(10% - 1.375rem); /* Near right edge */
+        cursor: pointer;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .cancelSnap {
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.75 + 1.5rem); /* ~281px */
+        left: calc(10% - 1.375rem); /* Near left edge */
+        cursor: pointer;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .continueSnap {
+        position: absolute;
+        top: calc((100vw - 1rem) * 0.75 + 1rem); /* ~276px */
+        right: calc(25% - 1.375rem); /* Center-right */
+        cursor: pointer;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    .snapDelaySliderControl {
+        background-color: white;
+        position: absolute;
+        bottom: 5rem; /* ~80px, above taskbar */
+        left: calc(50% - 7.5rem); /* Center, ~120px wide */
+        height: 0.625rem; /* ~10px */
+        width: 15rem; /* ~240px, fits 355px */
+        display: none;
+    }
+
+    #snapDelaySliderLabel {
+        height: 0.625rem;
+        width: 15rem;
+    }
+
     .snapControls {
-      display: none;
-      position: absolute;
-      bottom: 32px;
-      left: 132px;
+        display: none;
+        position: absolute;
+        bottom: 5rem; /* ~80px, above taskbar */
+        left: calc(50% - 7.5rem); /* Center, ~240px wide */
+        width: 15rem;
+        font-size: 4.5rem; /* ~32px, was 128px */
+
     }
+
     .cameraControls {
-      position: absolute;
-      bottom: 0px;
-      text-align: center;
-      margin: 0px;
-      padding-top: 8px;
-      padding-bottom: 16px;
-      margin-top: 8px;
-      height: 20px;
-      z-index: 99;
-      /* background-color: white; */
-      width: 100%;
+        position: absolute;
+        bottom: 4rem; /* ~64px, clears taskbar */
+        text-align: center;
+        margin: 0;
+        padding-top: 0.5rem; /* ~8px */
+        padding-bottom: 1rem; /* ~16px */
+        margin-top: 0.5rem;
+        height: 1.25rem; /* ~20px */
+        z-index: 99;
+        width: calc(100% - 1rem); /* ~355px */
     }
+
     .mirrorControls {
-      position: absolute;
-      top: 40px;
-      right: 16px;
-      z-index: 99;
+        position: absolute;
+        top: 0.5rem; /* ~8px */
+        right: 0.5rem; /* ~8px */
+        z-index: 99;
     }
-  
-    .mirrorControl {
-      z-index: 99;
-    }
+
+    .mirrorControl,
     .mirrorInput {
-      z-index: 99;
-      background-color: white;
+        z-index: 99;
+        min-width: 2.75rem; /* ~44px */
+        min-height: 2.75rem;
     }
-    .mirrorVideoHolder {
-    }
-  
+}
