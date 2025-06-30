@@ -82,6 +82,19 @@ export default {
       },
     },
     {
+      name: 'freeze',
+      label: 'Freeze',
+      icon: '❄️',
+      description: 'Encases the target in ice.',
+      cost: 80,
+      costText: '🪙3',
+      costSymbol: 'U.webp',
+      config: {
+        targets: ['self', 'buddy', 'pond'],
+        duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
+      }
+    },
+    {
       name: 'earthquake',
       label: 'Earthquake',
       icon: '🌍',
