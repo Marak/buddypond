@@ -531,17 +531,10 @@
     display: flex;
     align-items: center;
     padding: 0.5rem;
-    /* ~8px */
-    background: #f1f5f9;
     border-left: 0.25rem solid #3b82f6;
-    /* ~4px */
     border-radius: 0.25rem;
-    /* ~4px */
     margin-bottom: 0.5rem;
-    /* ~8px */
     font-size: 0.8125rem;
-    /* ~13px */
-    color: #1f2937;
 }
 
 .aim-reply-header {
@@ -859,6 +852,27 @@
 
     .aim-messages-header {
         top: 25px;
+    }
+
+    .aim-reply-sender {
+        font-size: 0.875rem;
+        /* ~14px, reduced */
+    }
+
+    .aim-reply-content {
+        font-size: 0.75rem;
+        /* ~12px, reduced */
+        max-width: calc(100% - 3rem);
+        /* ~48px for padding */
+    }
+
+    .aim-hover-menu-item > i {
+        font-size: 1.125rem;
+        /* ~18px, reduced */
+    }
+
+    .aim-reply-header {
+        font-size: 0.875rem;
     }
 
 
