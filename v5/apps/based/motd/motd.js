@@ -40,6 +40,17 @@ export default class Motd {
         // Dynamically populate patch notes
         const patchNotesList = motdWindow.content.querySelector('.patch-notes-list');
         const patchNotes = [
+
+            {
+                date: '6/30/25',
+                notes: [
+                    'Improved Mobile Support',
+                    'Many new Games Added!',
+                    'Computer Vision Apps Added',
+                    'Improved Task Bar and Home Panel',
+                    'Improved Emoji Support',
+                ]
+            },
             {
                 date: '6/15/25',
                 notes: [
