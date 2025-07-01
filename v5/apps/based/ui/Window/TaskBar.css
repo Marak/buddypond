@@ -215,7 +215,11 @@
         gap: 0.5rem; /* ~8px */
         padding: 0; /* ~6px */
         margin: 0;
-        border-radius: 0.75rem; /* ~12px */
+        /* only apply border radius to bottom left and right corners */
+        border-bottom-left-radius: 0.75rem; /* ~12px */
+        border-bottom-right-radius: 0.75rem; /* ~12px */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         flex-direction: row;
         width: 100%;
         height: calc(var(--vh) * 10);

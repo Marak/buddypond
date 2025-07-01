@@ -94,7 +94,6 @@
     .window_main.pond_main {
         width: 100%;
         max-width: none;
-        padding: 10px;
     }
 
     .customPondName, .desktopButton {
