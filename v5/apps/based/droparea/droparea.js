@@ -42,8 +42,18 @@ export default class DropArea {
 
     handleDragOver(event) {
         event.preventDefault(); // Prevent default behavior (prevent file from being opened)
+        // ignore drag events for .taskbar-container class
+        if (
+            event.srcElement.classList.contains('taskbar-item') ||
+            event.srcElement.classList.contains('taskbar-container') ||
+            event.srcElement.classList.contains('taskbar-items')) {
+            return false;
+        }
+
+        //console.log('srcElement:', event.srcElement);
         this.dropInfoBar.style.display = 'flex'; // Show the info bar
         let targetElement = event.target;
+
         // Traverse up the DOM
         while (targetElement && !targetElement.classList.contains('has-droparea')) {
             if (targetElement === document.body) {
@@ -98,7 +108,10 @@ export default class DropArea {
     async handleDrop(event) {
         console.log('DropArea: handleDrop called', event);
         // ignore drag events for .taskbar-container class
-        if (event.target.classList.contains('taskbar-item') || event.target.classList.contains('taskbar-container')) {
+        if (
+            event.srcElement.classList.contains('taskbar-item') ||
+            event.srcElement.classList.contains('taskbar-container') ||
+            event.srcElement.classList.contains('taskbar-items')) {
             console.log('DropArea: handleDrop ignored for taskbar-item');
             return;
         }
@@ -109,6 +122,87 @@ export default class DropArea {
         console.log('Files dropped:', event.target, event.dataTransfer.files);
         // TODO: this should be on the EE for buddylist
         // check to see if the target.id was "mainOverlay"
+
+
+        const hasFiles = event.dataTransfer.files.length > 0;
+
+        if (!hasFiles) {
+            console.warn('DropArea: No files dropped, ignoring event.');
+            this.clearDropTarget();
+            return;
+        }
+
+        // Experimental logic for dropped HTML elements with no files
+        /*
+        // this would have to be added in the parent app
+        // e.dataTransfer.setData('text/html', dragged.outerHTML);
+        // e.dataTransfer.effectAllowed = 'copyMove';
+
+
+        if (!hasFiles && event.dataTransfer.types.includes('text/html')) {
+            let htmlString = event.dataTransfer.getData('text/html');
+            if (htmlString) {
+                console.log('DropArea: HTML element dropped. Rendering preview...');
+                // Parse the HTML and extract relevant info
+                const temp = document.createElement('div');
+                temp.innerHTML = htmlString.trim();
+
+                let droppedEl = temp;
+
+                // If it's an image, render it directly
+                if (droppedEl) {
+                    const preview = document.createElement('div');
+                    preview.classList.add('file-preview');
+                    preview.style.textAlign = 'center';
+                    preview.style.padding = '10px';
+                    preview.innerHTML = `<strong>Dropped Image:</strong><br>`;
+                    preview.appendChild(droppedEl);
+
+                    // Close button
+                    let closeButton = document.createElement('button');
+                    closeButton.innerHTML = 'X';
+                    closeButton.style.position = 'absolute';
+                    closeButton.style.top = '25px';
+                    closeButton.style.right = '22px';
+                    closeButton.style.backgroundColor = '#f00';
+                    closeButton.style.color = '#fff';
+                    closeButton.style.border = 'none';
+                    closeButton.style.padding = '5px';
+                    closeButton.style.cursor = 'pointer';
+                    closeButton.onclick = () => preview.remove();
+                    preview.appendChild(closeButton);
+
+                    // Show in viewer or insert inline
+                    await this.bp.open('file-viewer');
+                    const viewer = this.bp.apps['file-viewer'];
+                    if (viewer && viewer.displayHTMLFragment) {
+                        viewer.displayHTMLFragment(droppedEl);
+                    }
+                   
+
+                    this.clearDropTarget();
+                    return;
+                }
+
+                // Fallback: render sanitized snippet
+                const preview = document.createElement('div');
+                preview.classList.add('file-preview');
+                preview.style.background = '#111';
+                preview.style.color = '#fff';
+                preview.style.padding = '15px';
+                preview.style.margin = '10px';
+                preview.style.fontFamily = 'monospace';
+                preview.innerHTML = `<strong>Dropped HTML:</strong><pre>${htmlString
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')}</pre>`;
+
+                document.body.appendChild(preview);
+                this.clearDropTarget();
+                return;
+            }
+        }
+        */
+
         if (!this.dropTarget || this.dropTarget.id === 'mainOverlay') {
             // open the file viewer
             await this.bp.open('file-viewer');
@@ -130,6 +224,9 @@ export default class DropArea {
                 console.log('target app has droparea handler:', targetApp, 'using it...');
                 app.handleDrop(event);
             }
+
+
+
 
             // TODO: invert control, have the buddylist handle the drop event
             if (targetApp === 'buddylist') {

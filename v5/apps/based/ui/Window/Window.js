@@ -702,6 +702,13 @@ class Window {
     restore() {
         // console.log('restore', this)
         // Restore the window's content and original size
+
+        if (this.bp.isMobile()) {
+            this.windowManager.minimizeAllWindows(true);
+            // this.maximize();
+        }
+
+
         this.container.style.display = "flex";
 
         //this.container.style.top = this.y + 'px';
@@ -711,9 +718,8 @@ class Window {
         this.isMinimized = false;
         // TODO: save the window state
 
-        if (this.bp.isMobile()) {
-            // this.windowManager.arrangeVerticalStacked();
-        }
+
+
     }
 
     maximize() {
@@ -803,13 +809,8 @@ class Window {
         // ???? this.parent.appendChild(this.container);
 
         if (this.bp.isMobile()) {
-            // this.minimizeAllWindows(true);
-            // alert('opening window on mobile');
-            // maximize the window
+            this.windowManager.minimizeAllWindows(true);
             this.maximize();
-            setTimeout(() => {
-                // this.windowManager.arrangeVerticalStacked();
-            }, 100);
         }
 
         this.bp.emit('window::open', this);
@@ -917,6 +918,17 @@ class Window {
         // clear the current pushState
         // history.pushState({}, '', '/');
         DelayedPushState.push({}, '', '/');
+
+        if (this.bp.isMobile()) {
+            // if mobile, check to see if there are any other windows open
+            // if so, restore the first one
+            if (this.windowManager.windows.length > 0) {
+                let firstWindow = this.windowManager.windows[0];
+                if (firstWindow) {
+                    firstWindow.restore();
+                }
+            }
+        }
 
     }
 

@@ -18,6 +18,7 @@ export default function defaultDesktopShortcuts() {
     // console.log('installedTaskBarApps from settings', installedTaskBarApps)
 
     if (Object.keys(installedTaskBarApps).length === 0) {
+
         let defaultTaskBarApps = [
             'file-explorer',
             'pad',
@@ -53,32 +54,30 @@ export default function defaultDesktopShortcuts() {
         });
     }
 
-    // if (!this.bp.isMobile()) {
-        Object.keys(installedTaskBarApps).forEach(appName => {
-            let savedApp = installedTaskBarApps[appName];
-            //console.log('Adding taskbar app', appName);
-            //console.log(this.bp.apps.desktop.appList)
-            // console.log('savedApp', appName, savedApp);
-            let app = this.bp.apps.desktop.appList[savedApp.id || appName];
-            if (!app) {
-                console.warn(`App ${appName} not found in desktop app list.`);
-                return;
-            }
+    Object.keys(installedTaskBarApps).forEach(appName => {
+        let savedApp = installedTaskBarApps[appName];
+        //console.log('Adding taskbar app', appName);
+        //console.log(this.bp.apps.desktop.appList)
+        // console.log('savedApp', appName, savedApp);
+        let app = this.bp.apps.desktop.appList[savedApp.id || appName];
+        if (!app) {
+            console.warn(`App ${appName} not found in desktop app list.`);
+            return;
+        }
 
-            app.id = appName; // ensure the app has an id for taskbar
-            app.app = app.app || appName; // ensure the app has an app property
-            // create new app object with necessary properties
-            let _app = {
-                ...app
-            }
-            if (_app) {
-                // console.log(`Adding default taskbar app: ${appName}`, _app);
-                this.bp.apps.ui.windowManager.taskBar.addItem(_app);
-            } else {
-                console.warn(`App ${appName} not found in desktop app list.`);
-            }
-        });
-    // }
+        app.id = appName; // ensure the app has an id for taskbar
+        app.app = app.app || appName; // ensure the app has an app property
+        // create new app object with necessary properties
+        let _app = {
+            ...app
+        }
+        if (_app) {
+            // console.log(`Adding default taskbar app: ${appName}`, _app);
+            this.bp.apps.ui.windowManager.taskBar.saveItem(_app);
+        } else {
+            console.warn(`App ${appName} not found in desktop app list.`);
+        }
+    });
 
 
     if (Object.keys(installedApps).length === 0) {

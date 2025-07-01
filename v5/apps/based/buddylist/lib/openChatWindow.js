@@ -335,7 +335,9 @@ async function initializeChatWindow(windowType, contextName, chatWindow, client)
         toggleMessagesContainer.call(this, contextName, chatWindow);
     }
     await renderMessages.call(this, contextName, chatWindow);
-    focusInputField(chatWindow);
+    if (!this.bp.isMobile()) {
+        focusInputField(chatWindow);
+    }
 }
 
 function clearBuddyNewMessages(contextName) {

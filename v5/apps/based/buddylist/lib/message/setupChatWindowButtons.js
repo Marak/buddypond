@@ -9,6 +9,11 @@ export default function setupChatWindowButtons(windowType, contextName, chatWind
         buttons = buttons.filter((button) => button.type !== "buddy-only");
     }
 
+    if (this.bp.isMobile() && windowType === "buddy") {
+        // don't show help button on mobile buddy chat windows
+        buttons = buttons.filter((button) => button.text !== "BuddyHelp");
+    }
+
     if (isIOS()) {
         buttons = buttons.filter((button) => button.env !== "desktop-only");
     }

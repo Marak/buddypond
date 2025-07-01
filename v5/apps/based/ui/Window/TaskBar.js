@@ -23,7 +23,7 @@ export default class TaskBar {
         this.items = new Map(); // id -> config
         this.shortcuts = new Set(); // id
 
-          // Add scroll listener for indicator visibility
+        // Add scroll listener for indicator visibility
         this.taskbarItems.addEventListener('scroll', () => {
             const isAtEnd = this.taskbarItems.scrollLeft + this.taskbarItems.clientWidth >= this.taskbarItems.scrollWidth - 1;
             console.log("Scroll end reached:", isAtEnd);
@@ -159,7 +159,15 @@ export default class TaskBar {
         }, 0);
     }
 
-    addItem(config) {
+    // same as addItem ( calls into addItem )
+    // except it also saves the item to localStorage
+    // this is used when the user explicitly pins an app to the taskbar from outside API
+    saveItem(config) {
+        // first add the item to the taskbar
+        config.isShortcut = true; // Ensure it's treated as a shortcut
+        const itemElement = this.addItem(config);
+        if (!itemElement) return;
+
         let { app, id, context, label = "", onClick, icon, isShortcut = true, anchor } = config;
 
         let installedTaskBarApps = this.bp.settings.taskbar_apps || {};
@@ -173,6 +181,11 @@ export default class TaskBar {
             };
             this.bp.set('taskbar_apps', installedTaskBarApps);
         }
+
+    }
+
+    addItem(config) {
+        let { app, id, context, label = "", onClick, icon, isShortcut = true, anchor } = config;
 
         if (typeof onClick !== 'function') {
             onClick = async (ev, itemElement) => {
@@ -316,6 +329,7 @@ export default class TaskBar {
     }
 
     enableDragAndDrop() {
+
         let dragged = null;
 
         this.taskbarItems.addEventListener("dragstart", (e) => {
@@ -343,11 +357,14 @@ export default class TaskBar {
         this.taskbarItems.addEventListener("dragend", () => {
             if (dragged) {
                 const newOrder = Array.from(this.taskbarItems.children).map(item => item.dataset.id);
+                // references the saved / pinned taskbar apps
                 let taskBarApps = this.bp.settings.taskbar_apps || {};
                 const newTaskBarApps = {};
                 newOrder.forEach(id => {
+                    // only save the order of taskbar apps that are currently pinned
                     if (taskBarApps[id]) {
-                        newTaskBarApps[id] = taskBarApps[id];
+                        let _app = taskBarApps[id];
+                        newTaskBarApps[id] = _app;
                     }
                 });
                 this.bp.set('taskbar_apps', newTaskBarApps);

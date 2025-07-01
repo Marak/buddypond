@@ -98,6 +98,32 @@ export default class FileViewer {
         });
     }
 
+    // Not currently used, could be useful for displaying HTML fragments / inspecting HTML
+    // should be connected to file-editor
+    displayHTMLFragment(fragment) {
+        console.log('displaying HTML fragment', fragment);
+        const viewerContainer = $(this.fileViewerWindow.content).find('.fileviewer-file');
+        const metadataContainer = $(this.fileViewerWindow.content).find('#fileviewer-meta');
+
+        const container = document.createElement('div');
+        container.classList.add('html-drop-preview');
+        container.appendChild(fragment);
+
+        viewerContainer.empty();
+        metadataContainer.html('<h1>HTML Fragment</h1>');
+        // add code area to display the HTML code
+        const codeArea = document.createElement('pre');
+        codeArea.classList.add('html-code');
+        codeArea.textContent = fragment.outerHTML; // Use outerHTML to get the full HTML
+        // set small width and wrap
+        codeArea.style.width = '100%';
+        codeArea.style.whiteSpace = 'pre-wrap';
+        metadataContainer.append(codeArea);
+        //metadataContainer.append(fragment);
+        viewerContainer.append(container);
+        this.fileViewerWindow.title = 'Viewing HTML Fragment';
+    }
+
     async displayFiles(files) {
         const viewerContainer = $(this.fileViewerWindow.content).find('.fileviewer-file');
         const metadataContainer = $(this.fileViewerWindow.content).find('#fileviewer-meta');
@@ -126,7 +152,7 @@ export default class FileViewer {
         console.log('using file id', fileId);
         this.fileCache.set(fileId, file);
 
-        
+
 
         // Store the original file object as a property
         fileContent.dataset.filename = file.name;
@@ -218,8 +244,8 @@ export default class FileViewer {
         container.append(metadata);
     }
 
-     // Method to get the original file
-     getFile(fileContent) {
+    // Method to get the original file
+    getFile(fileContent) {
         console.log('fileContent', fileContent);
         const fileId = fileContent.dataset.fileId;
         return this.fileCache.get(fileId);
@@ -257,7 +283,7 @@ export default class FileViewer {
         });
     }
 
-    async uploadToCloud () {
+    async uploadToCloud() {
         // let files = this.fileViewerWindow.content.querySelectorAll('.file-content');
 
         // TODO: implement this ability to upload files to the cloud from file viewer
@@ -272,7 +298,7 @@ export default class FileViewer {
                 }
             });
         });
-    
+
 
 
 
