@@ -17,14 +17,6 @@
         /* max-height: calc(100% - 3rem); */
     }
 
-    .window-controls button {
-        width: 2rem; /* ~32px, touch-friendly */
-        height: 2rem;
-        font-size: 1rem; /* ~16px, readable icons */
-        margin-left: 1rem; /* ~16px, reduced from 32px */
-        margin-right: 0.5rem; /* ~8px, reduced from 16px */
-    }
-
     /*
     .maximize-button {
         display: none; 

@@ -191,10 +191,10 @@ button {
     }
 
     .window-controls > button {
-        width: 2rem; /* ~32px, same as before but relative */
-        height: 2rem; /* ~32px */
-        padding: 1.5rem; /* ~8px, reduced for smaller total size */
-        font-size: 2rem; /* ~16px, readable and not oversized */
+        width: 2rem !important;
+        height: 2rem !important;
+        padding: 1.5rem !important;
+        font-size: 2rem !important;
     }
 
     .window-title-text {
