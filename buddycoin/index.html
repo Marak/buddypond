@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Introducing $BUDDYCOIN, the currency of friendship powering Buddy Pond’s vibrant community. Join the fair launch and be part of the Buddy revolution!">
+    <meta name="keywords" content="BUDDYCOIN, Buddy Pond, meme coin, Solana, cryptocurrency">
+    <meta name="author" content="Buddy Pond Team">
+    <title>$BUDDYCOIN - The Currency of Friendship | Buddy Pond</title>
+    <!-- Tailwind CSS CDN for sleek styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Favicon (replace with your Buddy Dog logo) -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Comic+Neue:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+
+        .comic-font {
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .flare-container {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .flare-image {
+            display: block;
+            transition: filter 0.3s ease;
+        }
+
+        .flare-container:hover .flare-image {
+            filter: brightness(1.1) saturate(1.2);
+        }
+
+        .lens-flare {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 10%, transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .lens-flare.active {
+            opacity: 1;
+        }
+
+        .text-link {
+            text-decoration: none;
+        }
+
+        .text-link:hover {
+            color: #1c6b74;
+        }
+
+        p>a {
+            color: #1c6b74;
+            text-decoration: underline !important;
+        }
+
+        p>a:hover {
+            color: #195960;
+            text-decoration: none;
+        }
+
+        .yellow-link {
+            text-decoration: none;
+        }
+
+        .yellow-link:hover {
+            color: #d4af37;
+        }
+    </style>
+</head>
+
+<body class="smooth-scroll">
+    <header class="bg-[#1c6b74] text-white py-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="https://buddypond.com" class="flex items-center space-x-2">
+                <img src="./buddycoin-256.png" alt="Buddy Pond Logo" class="h-10 w-10" />
+                <span class="text-2xl font-bold comic-font">$BUDDYCOIN</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#about" class="hover:text-yellow-300 transition">About</a>
+                <a href="#tokenomics" class="hover:text-yellow-300 transition">Tokenomics</a>
+                <a href="#roadmap" class="hover:text-yellow-300 transition">Roadmap</a>
+                <a href="#community" class="hover:text-yellow-300 transition">Community</a>
+            </nav>
+            <a href="#join"
+                class="bg-[#f2f6d2] text-[#1c6b74] px-4 py-2 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Join
+                Now</a>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
+        <!-- <section class="bg-gradient-to-r from-[#1c6b74] via-[#7ba788] to-[#f2f6d2] text-white py-20"> -->
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold comic-font mb-4">Welcome to $BUDDYCOIN!</h1>
+
+            <p class="text-lg md:text-2xl mb-8">The currency of friendship powering Buddy Pond’s vibrant community.</p>
+            <div class="flare-container">
+                <a href="#" target="_blank">
+                    <img src="./buddycoin-256.png" alt="Buddy Dog Mascot"
+                        class="mx-auto mb-8 w-48 md:w-64 hover-scale flare-image" />
+                </a>
+                <div class="lens-flare"></div>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <a href="#" target="_blank"
+                    class="bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Join
+                    the Launch</a>
+                <a href="https://buddypond.com" target="_blank"
+                    class="bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Enter
+                    Buddy Pond</a>
+            </div>
+            <p class="mt-6 text-sm font-semibold text-yellow-100">⚠️ Beware of copycats! Only trust $BUDDYCOIN info from
+                buddypond.com and our official socials.</p>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">What is $BUDDYCOIN?</h2>
+            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                <img src="./buddy-the-frog.png" alt="Buddy Pond Community"
+                    class="w-full md:w-1/2 rounded-lg shadow-lg hover-scale" /> <!-- Replace with community image -->
+                <div>
+                    <p class="text-lg mb-4">$BUDDYCOIN is the meme coin that brings <a href="https://buddypond.com"
+                            target="_blank" class="text-link">Buddy Pond’s</a> spirit of friendship to
+                        the blockchain. Built on Solana $BUDDYCOIN is your ticket to join a
+                        thriving community that’s been connecting buddies for years.</p>
+                    <p class="text-lg mb-4">Backed by <a href="https://buddypond.com" target="_blank">Buddy Pond’s</a>
+                        established platform, $BUDDYCOIN will power exclusive
+                        features like premium Buddy Files storage, community events, and more. Get ready for a fair,
+                        fun,
+                        and friendly launch!</p>
+
+
+                    <a href="#join"
+                        class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">Be
+                        a Buddy!</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <!-- Tokenomics Section -->
+<section id="tokenomics" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Tokenomics</h2>
+        <p class="text-center text-lg mb-12">Designed for fairness and community growth.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                <h3 class="text-xl font-semibold mb-2">Total Supply</h3>
+                <p class="text-2xl font-bold text-[#1c6b74]">1 Billion $BUDDYCOIN</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                <h3 class="text-xl font-semibold mb-2">Bonding Curve</h3>
+                <p class="text-lg">80% allocated to fair launch, ensuring no presale or insider
+                    advantage.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                <h3 class="text-xl font-semibold mb-2">Community & Team</h3>
+                <p class="text-lg">10% for airdrops and rewards, 10% for team (vested over 12 months).</p>
+            </div>
+        </div>
+        <p class="text-center mt-8 text-sm text-red-600 font-semibold">⚠️ Only trust tokenomics from <a
+                href="https://buddypond.com">buddypond.com</a> to avoid fake $BUDDYCOIN scams.</p>
+    </div>
+</section>
+
+   <!-- Roadmap Section -->
+<section id="roadmap" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Our Roadmap</h2>
+        <div class="space-y-8">
+
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div
+                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                    1</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold">Q2 2025: Launched Buddy Coins </h3>
+                    <p>Buddy Coins are an ecosystem of off-chain coins used as internal currencies inside the Buddy
+                        Pond.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div
+                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                    2</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold">Q3 2025: Launched $BUDDYCOIN</h3>
+                    <p>$BUDDYCOIN, the official crypto-coin of Buddy Pond goes live with a fair launch on Solana. Join the community and grab your tokens!</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div
+                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                    3</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold">Q4 2025: Community Growth and Buddy Trading Platform</h3>
+                    <p>New Features, Airdrops, meming contests, and an in-house trading platform to expand the Buddy
+                        Pond ecosystem. Your $BUDDYCOIN fuels the fun!</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div
+                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                    4</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold">Q1 2026: Ecosystem Integration</h3>
+                    <p>Integration of $BUDDYCOIN utility with the Buddy Pond: Buddy Files, Buddy Coins, Good Buddy
+                        Points, Orderbook, Trading Platform, User Mints, Gaming, and exclusive features, shaped by
+                        community feedback.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Community Section -->
+    <section id="community" class="py-16 bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font mb-8">Join the Buddy Pond Community</h2>
+            <p class="text-lg mb-8">Connect with your Buddies on our official channels. Stay updated and beware of
+                impostors!</p>
+            <div class="flex justify-center space-x-6">
+                <!--
+                <a href="https://twitter.com/GetBuddyCoin" target="_blank" class="hover-scale">
+                    <img src="x-icon.png" alt="Twitter" class="h-12 w-12" />
+                </a>
+                -->
+
+                <a href="https://buddypond.com" target="_blank" class="hover-scale">
+                    <img src="buddy-the-frog.png" alt="Official Buddy Pond Website" class="h-12 w-12" />
+                    <!-- Replace with Telegram icon -->
+                </a>
+                <a href="https://discord.gg/BuddyCoin" target="_blank" class="hover-scale">
+                    <img src="./discord-icon.webp" alt="Discord" class="h-12 w-12" />
+                    <!-- Replace with Discord icon -->
+                </a>
+                <!-- telegram link-->
+                <a href="https://t.me/@BuddyPond" target="_blank" class="hover-scale">
+                    <img src="./telegram-icon.webp" alt="Telegram" class="h-12 w-12" />
+                    <!-- Replace with Telegram icon -->
+                </a>
+
+            </div>
+            <p class="mt-6 text-sm font-semibold text-yellow-200">⚠️ Only follow links from <a
+                    href="https://buddypond.com" class="text-yellow-200 yellow-link">buddypond.com</a> to avoid scams.
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="join"
+        class="py-16 bg-gradient-to-r from-[#f2f6d2] via-[#e4ecb0] to-[#c8dc8c] text-[#1c6b74] relative overflow-hidden">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font mb-2">Ready to Be a Buddy?</h2>
+            <p class="text-md uppercase tracking-wide font-semibold text-[#3b4f51] mb-6">Hop into the Pond!</p>
+            <p class="text-lg mb-8">Join the $BUDDYCOIN launch to help shape the future of Buddy Pond!</p>
+            <a href="#" target="_blank"
+                class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">
+                Get $BUDDYCOIN Now
+            </a>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">&copy; 2025 Buddy Pond. All rights reserved.</p>
+            <p class="text-sm">Disclaimer: $BUDDYCOIN is a community-driven meme coin. Invest responsibly and only trust
+                information from buddypond.com.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for smooth scrolling -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+
+        const container = document.querySelector('.flare-container');
+        const flare = document.querySelector('.lens-flare');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left - 25; // Offset to center flare
+            const y = e.clientY - rect.top - 25;
+
+            flare.style.transform = `translate(${x}px, ${y}px)`;
+            flare.classList.add('active');
+            console.log('active flare', flare.classList);
+        });
+
+        container.addEventListener('mouseleave', () => {
+            flare.classList.remove('active');
+        });
+
+    </script>
+</body>
+
+</html>
