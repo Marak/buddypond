@@ -1148,3 +1148,9 @@
 .jstree-default-dark-large.jstree-rtl .jstree-last {
   background-image: none;
 }
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+  .vakata-context li>a>i {
+    height: 1em !important;
+  }
+}

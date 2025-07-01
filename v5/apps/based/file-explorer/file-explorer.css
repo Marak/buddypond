@@ -372,6 +372,10 @@
   font-size: 48px;
 }
 
+.toggle-tree {
+  display: none;
+}
+
 .spinner {
   width: 100px;
   height: 100px;
@@ -404,4 +408,235 @@
 
 .upload-message {
   text-align: center;
+}
+
+@media (max-width: 767px) and (pointer: coarse) and (hover: none) {
+    html {
+        font-size: 16px; /* Base font size */
+    }
+
+    .bp-file-explorer-container {
+        margin-bottom: 4rem; /* ~64px, clears taskbar (~48px + 8px) */
+        font-size: 0.875rem; /* ~14px, was 12px */
+        box-sizing: border-box;
+    }
+
+    .bp-file-explorer-toolbar {
+        padding: 0.5rem; /* ~8px */
+        gap: 0.5rem; /* ~8px */
+        flex-wrap: wrap;
+    }
+
+    .bp-file-explorer-toolbar-buttons {
+        gap: 0.25rem; /* ~4px */
+        flex-wrap: wrap;
+    }
+
+    .bp-file-explorer-toolbar-buttons i {
+        font-size: 1.25rem; /* ~20px, was 22px */
+    }
+
+    .bp-file-explorer-btn {
+        padding: 0.25rem 0.5rem; /* ~4px 8px */
+        min-height: 2.75rem; /* ~44px, touch-friendly */
+        min-width: 2.75rem;
+        border-radius: 0.25rem; /* ~4px */
+    }
+
+    .bp-file-explorer-address {
+        padding-left: 0; /* Remove desktop padding */
+        flex-grow: 1;
+        gap: 0.25rem; /* ~4px */
+    }
+
+    .bp-file-explorer-address-input {
+        padding: 0.25rem; /* ~4px */
+        font-size: 0.875rem; /* ~14px */
+        min-height: 2.75rem; /* ~44px */
+    }
+
+    .bp-file-explorer-content {
+        flex-direction: column; /* Stack sidebar and main */
+        overflow-y: auto;
+    }
+
+    .bp-file-explorer-sidebar {
+        width: 100%; /* Full width */
+        max-height: 0; /* Hidden by default */
+        overflow: hidden; /* Hide when collapsed */
+        transition: max-height 0.3s ease;
+        border-right: none;
+        border-bottom: 1px solid #999;
+    }
+
+    .bp-file-explorer-sidebar.active {
+        max-height: 15rem; /* ~240px, enough for tree */
+        min-height: 15rem;
+        overflow-y: auto;
+        scrollbar-width: none; /* Hide scrollbar */
+    }
+
+    .bp-file-explorer-sidebar.active::-webkit-scrollbar {
+        display: none;
+    }
+
+    .bp-file-explorer-tree {
+        padding: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-main {
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .bp-file-explorer-header {
+        padding: 0.25rem 0.5rem; /* ~4px 8px */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-column {
+        padding-right: 0.5rem; /* ~8px */
+        flex: 1;
+    }
+
+    .bp-file-explorer-column:first-child {
+        flex: 2; /* Name column wider */
+    }
+
+    /* Hide less critical columns (e.g., date, type) */
+    .bp-file-explorer-column:not(:first-child):not(:nth-child(2)) {
+        display: none;
+    }
+
+    .bp-file-explorer-files {
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .bp-file-explorer-files::-webkit-scrollbar {
+        display: none;
+    }
+
+    .bp-file-explorer-item {
+        /* padding: 0.5rem; */
+        /* min-height: 2.75rem; */
+        font-size: 0.875rem; /* ~14px */
+    }
+
+    .bp-file-explorer-statusbar {
+        padding: 0.25rem 0.5rem; /* ~4px 8px */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-statusbar .usage-stats {
+        margin-right: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-upload-overlay {
+        padding: 0.5rem; /* ~8px */
+        align-items: center;
+    }
+
+    .bp-file-explorer-upload-container {
+        max-width: calc(100% - 1rem); /* ~355px */
+        padding: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-header {
+        margin-bottom: 0.75rem; /* ~12px */
+        padding-bottom: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-upload-header h2 {
+        font-size: 1rem; /* ~16px */
+    }
+
+    .bp-file-explorer-upload-quota {
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-files {
+        max-height: 10rem; /* ~160px */
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .bp-file-explorer-upload-files::-webkit-scrollbar {
+        display: none;
+    }
+
+    .bp-file-explorer-upload-files-header {
+        padding: 0.5rem; /* ~8px */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-file-item {
+        padding: 0.5rem; /* ~8px */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-total {
+        margin-bottom: 0.75rem; /* ~12px */
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-controls {
+        gap: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-upload-start {
+        padding: 0.25rem 0.5rem; /* ~4px 8px */
+        min-height: 2.75rem; /* ~44px */
+        font-size: 0.875rem; /* ~14px */
+    }
+
+    .bp-file-explorer-upload-progress-container {
+        padding: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-upload-progress-bar-container {
+        height: 1rem; /* ~16px */
+    }
+
+    .bp-file-explorer-upload-progress-percentage {
+        font-size: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-drag-upload {
+        width: 80%; /* ~284px on 355px */
+        height: 8rem; /* ~128px */
+        font-size: 0.875rem; /* ~14px */
+        border-radius: 0.75rem; /* ~12px */
+    }
+
+    .bp-file-explorer-upload-errors {
+        font-size: 0.875rem; /* ~14px */
+    }
+
+    .bp-file-explorer-tos {
+        font-size: 0.75rem; /* ~12px */
+        margin-bottom: 0.5rem; /* ~8px */
+    }
+
+    .bp-file-explorer-update-overlay {
+        font-size: 1.5rem; /* ~24px, was 48px */
+    }
+
+    .spinner {
+        width: 2.5rem; /* ~40px */
+        height: 2.5rem;
+        border-width: 0.25rem; /* ~4px */
+    }
+
+    .spinner::after {
+        top: -0.25rem;
+        left: -0.25rem;
+        right: -0.25rem;
+        bottom: -0.25rem;
+        border-width: 0.25rem;
+    }
+
+    .toggle-tree {
+      display: block;
+    }
 }

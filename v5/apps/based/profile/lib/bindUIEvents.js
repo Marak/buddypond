@@ -106,7 +106,7 @@ export default function bindUIEvents(options = {}) {
     userSettings(bp);
 
 
-    let padEditorHolder = $('.pad-editor-holder', this.profileWindow.content)[0];
+    let padEditorHolder = $('.profile-pad-editor-holder', this.profileWindow.content)[0];
     // padEditorHolder.className = 'pad-editor-holder';
 
     /*

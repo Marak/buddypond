@@ -349,6 +349,21 @@ export default class FileExplorer {
 
         });
 
+
+        this.sidebar = document.querySelector('.bp-file-explorer-sidebar', this.fileExplorer.content);
+        const toggleButton = document.querySelector('.toggle-tree', this.fileExplorer.content);
+
+        if (this.bp.isMobile()) {
+        toggleButton.addEventListener('click', () => {
+            console.log('Toggle button clicked');
+            this.sidebar.classList.toggle('active');
+        });
+
+        } else {
+            toggleButton.remove();
+        }
+
+
         // console.log('got the cloud files', cloudFiles.files);
         return this;
 
@@ -366,16 +381,16 @@ export default class FileExplorer {
         // console.log('previous cloud files', this.fileExplorer.cloudFiles.files);
         let attempts = 0;
         const maxAttempts = 10; // You can adjust the maximum number of polling attempts
-    
+
         const pollForChanges = async () => {
             let cloudFiles = await this.getCloudFiles('', 6); // hard-coded to 6 (for now)
-    
+
             // Compare current cloud files with previous ones
             if (!this.areFilesSame(this.fileExplorer.cloudFiles.files, cloudFiles.files)) {
                 // console.log('Cloud files have changed, updating tree...');
                 const treeData = buildJsTreeData(this.bp.me, cloudFiles.files);
                 this.fileExplorer.cloudFiles = cloudFiles;
-    
+
                 // get the jsTree instance
                 let jsTree = $('#jtree').jstree(true);
                 // re-render the tree contents, we don't wish to destroy our previous configuration
@@ -395,29 +410,29 @@ export default class FileExplorer {
             }
 
         };
-    
+
         pollForChanges();
     }
-    
+
     // Helper function to compare two arrays of files
     areFilesSame(oldFiles, newFiles) {
 
         const oldSet = new Set(oldFiles.map(file => file)); // Assuming each file has a unique 'id'
         const newSet = new Set(newFiles.map(file => file));
-    
+
         if (oldSet.size !== newSet.size) {
             return false;
         }
-    
+
         for (let id of newSet) {
             if (!oldSet.has(id)) {
                 return false;
             }
         }
-    
+
         return true;
     }
-    
+
     async remove() {
         // Clean up the file explorer instance and its event handlers
         if (this.fileExplorer) {
@@ -454,9 +469,9 @@ export default class FileExplorer {
     async open({ context } = {}) {
         // console.log(`Opening file explorer with context ${context}`);
         this.options.context = context;
-                //alert('context is set to ' + this.options.context);
+        //alert('context is set to ' + this.options.context);
 
-        this.onUploadComplete = this.options.onUploadComplete || (() => {});
+        this.onUploadComplete = this.options.onUploadComplete || (() => { });
 
         if (!this.fileExplorer) {
             this.fileExplorer = this.fileExplorerInstance.create();
@@ -506,7 +521,7 @@ export default class FileExplorer {
             this.fileExplorerWindow.container.style.userSelect = 'none';
             this.create();
 
-             this.bp.on('auth::qtoken', 'reload-file-explorer', async (data) => {
+            this.bp.on('auth::qtoken', 'reload-file-explorer', async (data) => {
                 // console.log('auth::qtoken event received, reloading file explorer');
                 // reload the file explorer
                 // just close and re-open the file explorer window ( for now )
@@ -518,8 +533,8 @@ export default class FileExplorer {
                 this.fileExplorerWindow = null;
                 this.fileExplorer = null;
                 this.open();
-                
-             });
+
+            });
 
         } else {
             // jsTree should be ready at this point ( as file-explorer was already created )
@@ -540,7 +555,7 @@ export default class FileExplorer {
             $('.storage-used', '.bp-file-explorer-drag-upload').remove();
 
         }
-        
+
 
         return this.fileExplorerWindow;
     }

@@ -88,6 +88,8 @@ hr {
 
 .pad-editor-holder {
     height: 500px !important;
+    padding: 16px;
+
 }
 
 .bp-pad-form {
@@ -574,4 +576,9 @@ hr {
         width: 100%; /* Unchanged, full-width is good */
         padding: 0.75rem; /* ~12px, added for touch-friendly tap target */
     }
+
+    .pad-editor-holder {
+        padding: 0;
+    }
+
 }
