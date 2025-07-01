@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Introducing $BUDDYCOIN, the currency of friendship powering Buddy Pond’s vibrant community. Join the fair launch and be part of the Buddy revolution!">
-    <meta name="keywords" content="BUDDYCOIN, Buddy Pond, meme coin, Solana, cryptocurrency">
+    <meta name="keywords" content="BUDDYCOIN, Buddy Pond, Solana, cryptocurrency">
     <meta name="author" content="Buddy Pond Team">
     <title>$BUDDYCOIN - The Currency of Friendship | Buddy Pond</title>
     <!-- Tailwind CSS CDN for sleek styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Favicon (replace with your Buddy Dog logo) -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Google Fonts for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Comic+Neue:wght@700&display=swap"
         rel="stylesheet">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -119,6 +119,8 @@
         </div>
     </header>
 
+
+
     <section class="bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
         <!-- <section class="bg-gradient-to-r from-[#1c6b74] via-[#7ba788] to-[#f2f6d2] text-white py-20"> -->
         <div class="container mx-auto px-4 text-center">
@@ -127,7 +129,7 @@
             <p class="text-lg md:text-2xl mb-8">The currency of friendship powering Buddy Pond’s vibrant community.</p>
             <div class="flare-container">
                 <a href="#" target="_blank">
-                    <img src="./buddycoin-256.png" alt="Buddy Dog Mascot"
+                    <img src="./buddycoin-256.png" alt="Buddy The Frog Mascot"
                         class="mx-auto mb-8 w-48 md:w-64 hover-scale flare-image" />
                 </a>
                 <div class="lens-flare"></div>
@@ -144,6 +146,8 @@
                 buddypond.com and our official socials.</p>
         </div>
     </section>
+
+
     <!-- About Section -->
     <section id="about" class="py-16 bg-white">
         <div class="container mx-auto px-4">
@@ -152,7 +156,7 @@
                 <img src="./buddy-the-frog.png" alt="Buddy Pond Community"
                     class="w-full md:w-1/2 rounded-lg shadow-lg hover-scale" /> <!-- Replace with community image -->
                 <div>
-                    <p class="text-lg mb-4">$BUDDYCOIN is the meme coin that brings <a href="https://buddypond.com"
+                    <p class="text-lg mb-4">$BUDDYCOIN is the coin that brings <a href="https://buddypond.com"
                             target="_blank" class="text-link">Buddy Pond’s</a> spirit of friendship to
                         the blockchain. Built on Solana $BUDDYCOIN is your ticket to join a
                         thriving community that’s been connecting buddies for years.</p>
@@ -170,84 +174,232 @@
             </div>
         </div>
     </section>
+    <!-- Presale Section -->
+    <section id="presale" class="py-16 bg-gradient-to-r from-[#e2e8aa] to-[#f2f6d2] text-[#1c6b74]">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font mb-4">Join the $BUDDYCOIN Presale!</h2>
+            <p class="text-lg md:text-xl mb-6">Grab 50% of $BUDDYCOIN (500M tokens) at tiered prices in our fair, 21-day
+                presale starting July 4, 2025.</p>
+            <div id="presale-countdown" class="mb-8 bg-[#1c6b74] text-white px-8 py-6 rounded-lg shadow-lg hover-scale">
+                <p id="countdown-label" class="text-xl font-semibold mb-6">Presale starts in:</p>
+                <div class="flex justify-center gap-4 text-lg font-bold font-mono">
+                    <div class="time-box">
+                        <span id="days" class="time-value">00</span>
+                        <span class="time-label">Days</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours" class="time-value">00</span>
+                        <span class="time-label">Hours</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes" class="time-value">00</span>
+                        <span class="time-label">Minutes</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds" class="time-value">00</span>
+                        <span class="time-label">Seconds</span>
+                    </div>
+                </div>
 
-  <!-- Tokenomics Section -->
-<section id="tokenomics" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Tokenomics</h2>
-        <p class="text-center text-lg mb-12">Designed for fairness and community growth.</p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
-                <h3 class="text-xl font-semibold mb-2">Total Supply</h3>
-                <p class="text-2xl font-bold text-[#1c6b74]">1 Billion $BUDDYCOIN</p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
-                <h3 class="text-xl font-semibold mb-2">Bonding Curve</h3>
-                <p class="text-lg">80% allocated to fair launch, ensuring no presale or insider
-                    advantage.</p>
+            <!--
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h3 class="text-xl font-semibold mb-2">Pricing Tiers</h3>
+                    <ul class="text-lg text-left">
+                        <li>First 200M $BUDDYCOIN: 0.0002 SOL (~$0.035)</li>
+                        <li>Next 200M $BUDDYCOIN: 0.0003 SOL (~$0.0525)</li>
+                        <li>Final 100M $BUDDYCOIN: 0.0004 SOL (~$0.07)</li>
+                    </ul>
+                    <p class="mt-4 text-sm font-semibold">Join early to secure the lowest prices!</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h3 class="text-xl font-semibold mb-2">Presale FAQs</h3>
+                    <div class="text-left text-lg">
+                        <p class="font-semibold">Q: How do I join?</p>
+                        <p>A: Use a Phantom wallet with SOL and visit <a href="https://buddypond.com/presale"
+                                class="text-link">buddypond.com/presale</a> on July 4.</p>
+                        <p class="font-semibold mt-4">Q: When will I receive tokens?</p>
+                        <p>A: Within 7 days after the presale ends (August 1, 2025).</p>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
-                <h3 class="text-xl font-semibold mb-2">Community & Team</h3>
-                <p class="text-lg">10% for airdrops and rewards, 10% for team (vested over 12 months).</p>
+                        -->
+
+            <a href="#" target="_blank"
+                class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">Join
+                the Presale Now</a>
+            <p class="mt-6 text-sm font-semibold text-[#3b4f51]">⚠️ Only use <a href="https://buddypond.com"
+                    class="underline">buddypond.com</a> for presale details to avoid scams. Powered by CertiK-audited
+                contracts.</p>
+        </div>
+    </section>
+
+    <style>
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f2f6d2;
+            color: #1c6b74;
+            padding: 16px 12px;
+            border-radius: 12px;
+            min-width: 72px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .time-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #3b4f51;
+        }
+
+        /* Optional hover pulse */
+        .time-box:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+
+    <script>
+        // Presale countdown (start: July 4, 2025, 12:00 PM EST; end: July 25, 2025, 12:00 PM EST)
+        const presaleStart = new Date('2025-07-04T12:00:00-04:00').getTime();
+        const presaleEnd = new Date('2025-07-25T12:00:00-04:00').getTime();
+
+        const countdownLabel = document.getElementById('countdown-label');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            let target = presaleStart;
+            let label = 'Presale starts in:';
+
+            if (now >= presaleStart) {
+                target = presaleEnd;
+                label = 'Presale ends in:';
+            }
+
+            const timeLeft = target - now;
+
+            if (timeLeft <= 0) {
+                countdownLabel.textContent = now >= presaleEnd ? 'Presale ended!' : 'Presale started!';
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Pad numbers with leading zeros for cleaner display
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+
+            countdownLabel.textContent = label;
+
+            setTimeout(updateCountdown, 1000); // Update every second
+        }
+
+        updateCountdown();
+    </script>
+
+    <!-- Tokenomics Section -->
+    <section id="tokenomics" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Tokenomics</h2>
+            <p class="text-center text-lg mb-12">Designed for fairness, transparency, and community growth.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                    <h3 class="text-xl font-semibold mb-2">21-Day Presale</h3>
+                    <p class="text-lg">50% (500M $BUDDYCOIN) at tiered prices to reward early investors and ensure broad
+                        distribution.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                    <h3 class="text-xl font-semibold mb-2">Raydium Liquidity Pool</h3>
+                    <p class="text-lg">10% (100M $BUDDYCOIN) + SOL, locked for 24 months to ensure stable trading.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
+                    <h3 class="text-xl font-semibold mb-2">Staking Program</h3>
+                    <p class="text-lg">5–10% yield for long-term holders. Smart contract enrollment available at <a href="https://buddypond.com/app/staking">Buddy Pond</a></p>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-lg">Total Supply: <span class="font-bold text-[#1c6b74]">1 Billion
+                    $BUDDYCOIN</span>. 15% team (locked 24 months). CertiK-audited contracts for security.</p>
+            <p class="text-center mt-4 text-sm text-red-600 font-semibold">⚠️ Only trust tokenomics from <a
+                    href="https://buddypond.com" class="underline">buddypond.com</a> to avoid fake $BUDDYCOIN scams.</p>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Our Roadmap</h2>
+            <div class="space-y-8">
+
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div
+                        class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                        1</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold">Q2 2025: Launched Buddy Coins </h3>
+                        <p>Buddy Coins are an ecosystem of off-chain coins used as internal currencies inside the Buddy
+                            Pond.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div
+                        class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                        2</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold">Q3 2025: Launched $BUDDYCOIN</h3>
+                        <p>$BUDDYCOIN, the official crypto-coin of Buddy Pond goes live with a fair launch on Solana.
+                            Join the community and grab your tokens!</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div
+                        class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                        3</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold">Q4 2025: Community Growth and Buddy Trading Platform</h3>
+                        <p>New Features, Airdrops, meming contests, and an in-house trading platform to expand the Buddy
+                            Pond ecosystem. Your $BUDDYCOIN fuels the fun!</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div
+                        class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                        4</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold">Q1 2026: Ecosystem Integration</h3>
+                        <p>Integration of $BUDDYCOIN utility with the Buddy Pond: Buddy Files, Buddy Coins, Good Buddy
+                            Points, Orderbook, Trading Platform, User Mints, Gaming, and exclusive features, shaped by
+                            community feedback.</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <p class="text-center mt-8 text-sm text-red-600 font-semibold">⚠️ Only trust tokenomics from <a
-                href="https://buddypond.com">buddypond.com</a> to avoid fake $BUDDYCOIN scams.</p>
-    </div>
-</section>
-
-   <!-- Roadmap Section -->
-<section id="roadmap" class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Our Roadmap</h2>
-        <div class="space-y-8">
-
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div
-                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
-                    1</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-semibold">Q2 2025: Launched Buddy Coins </h3>
-                    <p>Buddy Coins are an ecosystem of off-chain coins used as internal currencies inside the Buddy
-                        Pond.</p>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div
-                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
-                    2</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-semibold">Q3 2025: Launched $BUDDYCOIN</h3>
-                    <p>$BUDDYCOIN, the official crypto-coin of Buddy Pond goes live with a fair launch on Solana. Join the community and grab your tokens!</p>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div
-                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
-                    3</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-semibold">Q4 2025: Community Growth and Buddy Trading Platform</h3>
-                    <p>New Features, Airdrops, meming contests, and an in-house trading platform to expand the Buddy
-                        Pond ecosystem. Your $BUDDYCOIN fuels the fun!</p>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div
-                    class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
-                    4</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-semibold">Q1 2026: Ecosystem Integration</h3>
-                    <p>Integration of $BUDDYCOIN utility with the Buddy Pond: Buddy Files, Buddy Coins, Good Buddy
-                        Points, Orderbook, Trading Platform, User Mints, Gaming, and exclusive features, shaped by
-                        community feedback.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
 
     <!-- Community Section -->
@@ -303,7 +455,7 @@
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">&copy; 2025 Buddy Pond. All rights reserved.</p>
-            <p class="text-sm">Disclaimer: $BUDDYCOIN is a community-driven meme coin. Invest responsibly and only trust
+            <p class="text-sm">Disclaimer: $BUDDYCOIN is a community-driven coin. Invest responsibly and only trust
                 information from buddypond.com.</p>
         </div>
     </footer>
@@ -327,10 +479,8 @@
             const rect = container.getBoundingClientRect();
             const x = e.clientX - rect.left - 25; // Offset to center flare
             const y = e.clientY - rect.top - 25;
-
             flare.style.transform = `translate(${x}px, ${y}px)`;
             flare.classList.add('active');
-            console.log('active flare', flare.classList);
         });
 
         container.addEventListener('mouseleave', () => {
