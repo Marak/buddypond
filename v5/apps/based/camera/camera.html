@@ -20,13 +20,8 @@
     <div class="snapDelaySliderControl snapControl" title="Delay Speed">
         <div id="snapDelaySlider" title="Delay Speed"></div>
     </div>
-    <div class="cameraControls desktop-section">
-        <form class="">
-            <!--
-                Audio Source
-                <select name="selectAudio" class="selectAudio">
-                </select>
-              -->
+    <div class="cameraControls">
+        <form class="cameraForm">
             <span class="cameraCountDownControl mirrorInput">
                 <label for="cameraCountdownEnabled">
                     Countdown Timer:
@@ -34,23 +29,17 @@
                         id="cameraCountdownEnabled" />
                 </label>
             </span>
-            &nbsp;&nbsp;&nbsp;
-            |
-            &nbsp;&nbsp;&nbsp;
-            Filter
-            <select name="selectMirrorFilter" class="selectMirrorFilter desktopSelect">
-                <option>None</option>
-                <!--
-                <option value='greyscale'>Greyscale</option>
-                -->
-            </select>
-            &nbsp;&nbsp;&nbsp;
-            |
-            &nbsp;&nbsp;&nbsp;
-            Camera
-            <select name="selectMirrorCamera" class="selectMirrorCamera desktopSelect">
-            </select>
-            &nbsp;
+            <label for="selectMirrorFilter" class="mirrorInput">
+                Filter
+                <select name="selectMirrorFilter" class="selectMirrorFilter">
+                    <option>None</option>
+                </select>
+            </label>
+            <label for ="selectMirrorCamera" class="mirrorInput">
+                Camera
+                <select name="selectMirrorCamera" class="selectMirrorCamera">
+                </select>
+            </label>
         </form>
     </div>
 </div>

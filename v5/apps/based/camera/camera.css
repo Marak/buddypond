@@ -152,7 +152,16 @@
 
 .mirrorInput {
     z-index: 99;
-    background-color: white;
+}
+
+.cameraForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    gap: 10px;
 }
 
 .mirrorVideoHolder {
@@ -316,4 +325,9 @@
         min-width: 2.75rem; /* ~44px */
         min-height: 2.75rem;
     }
+
+  .cameraForm {
+      flex-direction: column;
+  }
+
 }
