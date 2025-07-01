@@ -642,8 +642,7 @@
 }
 
 .ui-widget-content {
-    background: var(--desktop_element-background);
-    /* Removed !important */
+    background: var(--desktop_element-background) !important;
 }
 
 .cardContainer {
