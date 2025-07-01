@@ -18,6 +18,7 @@ business:
   icons:
     - copy
     - folder-arrow-up
+    - folder-tree
     - keynote
     - pencil
   label: Business

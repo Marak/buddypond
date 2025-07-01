@@ -442,6 +442,7 @@ readers do not read off random characters that represent icons */
 .fa-flag-swallowtail { --fa: "\f74c"; --fa--fa: "\f74c\f74c"; }
 .fa-folder-arrow-up { --fa: "\e054"; --fa--fa: "\e054\e054"; }
 .fa-folder-music { --fa: "\e18d"; --fa--fa: "\e18d\e18d"; }
+.fa-folder-tree { --fa: "\f802"; --fa--fa: "\f802\f802"; }
 .fa-folder-upload { --fa: "\e054"; --fa--fa: "\e054\e054"; }
 .fa-frog { --fa: "\f52e"; --fa--fa: "\f52e\f52e"; }
 .fa-gamepad-alt { --fa: "\e5a2"; --fa--fa: "\e5a2\e5a2"; }

@@ -438,6 +438,36 @@ stop:
       - stop button
   unicode: f04d
   voted: false
+folder-tree:
+  aliases:
+    unicodes:
+      secondary:
+        - 10f802
+  changes:
+    - 5.7.0
+    - 6.0.0-beta1
+    - 6.2.0
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.0
+  familyStylesByLicense:
+    free: []
+    pro:
+      - family: duotone
+        style: solid
+  label: Folder Tree
+  search:
+    terms:
+      - archive
+      - directory
+      - document
+      - file
+      - search
+      - structure
+  unicode: f802
+  voted: true
 folder-music:
   changes:
     - 6.0.0-beta1
