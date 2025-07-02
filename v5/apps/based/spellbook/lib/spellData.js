@@ -88,7 +88,7 @@ export default {
       description: 'Encases the target in ice.',
       cost: 80,
       costText: '🪙3',
-      costSymbol: 'U.webp',
+      costSymbol: 'U.webp,U.webp,U.webp',
       config: {
         targets: ['self', 'buddy', 'pond'],
         duration: { type: 'number', label: 'Duration (seconds)', value: 5, min: 1, max: 10 },
