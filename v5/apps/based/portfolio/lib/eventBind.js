@@ -6,6 +6,11 @@ export default function eventBind(parent) {
         $('.coin-error').text('');
     });
 
+    if (!this.bp.qtoken) {
+        let html = $('#portfolio-help', parent).html();
+        $('.loggedOutMessage', parent).append(html);
+    }
+
     $('.send-coin', parent).click(async () => {
         // alert('send-coin clicked');
         let sendTo = $('#coin-send-to').val();
@@ -48,6 +53,13 @@ export default function eventBind(parent) {
 
         // update coinBalance
         coinBalance.html(`${amount.toLocaleString('en-US')}`);
+    });
+
+    $('.portfolio-help', parent).on('click', () => {
+        // hide all tabs
+        // this.tabs.hideAllTabs();
+        // show the help div
+        this.tabs.navigateToTab('#portfolio-help');
     });
 
     $('.user-portfolio', parent).on('click', async () => {

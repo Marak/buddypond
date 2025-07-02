@@ -1,20 +1,18 @@
 <div class="portfolio-container">
     <!-- <h1 class="portfolio-title">My Portfolio</h1> -->
 
-    <div class="loggedOut" align="center">
-        <h1 class="portfolio-title">My Portfolio</h1>
-        <h3 class="portfolio-message">Please <button class="open-app action-button" data-app="buddylist">log in</button> to view your portfolio.</h3>
-    </div>
+    <div class="loggedOutMessage loggedOut" align="center">
 
+    </div>
     <div class="portfolio-actions loggedIn">
         <button class="action-button user-portfolio">My Portfolio</button>
         <button class="action-button user-transactions">Transactions</button>
         <button class="action-button send-coins">Send Coins</button>
+        <button class="action-button portfolio-help">Help</button>
         <!-- <button class="action-button trade-assets">Trade Coins</button> -->
         <!-- <button class="action-button mint-coins">Mint Coins</button> -->
         <button class="action-button admin" id="portfolio-admin-button">Admin</button>
     </div>
-
 
     <div id="portfolioTabs" class="tabs-container loggedIn">
         <!-- Portfolio Table -->
@@ -59,7 +57,7 @@
             <span class="coin-error error"></span>
             <span class="coin-send-message"></span>
             <img src="desktop/assets/images/gui/loading.gif" class="loading-transactions" />
-        
+
             <div class="transaction-table portfolio-table">
                 <table>
                     <thead>
@@ -121,12 +119,62 @@
             <label for="portfolio-admin-user">User:</label>
             <input type="text" id="portfolio-admin-user" placeholder="Enter user name">
             <label for="portfolio-admin-coin">Coin</label>
-            <input id="portfolio-admin-coin"/>
+            <input id="portfolio-admin-coin" />
 
             <button id="portfolio-admin-button-submit">Execute</button>
 
         </div>
 
+
+        <div id="portfolio-help" align="center" class="tab-content">
+            <h1 class="portfolio-title">My Portfolio</h1>
+            <h3 class="portfolio-message loggedOut">
+                <button class="open-app action-button" data-app="buddylist">Log in</button> to view your portfolio.
+            </h3>
+
+            <div class="portfolio-explainer">
+                <h2>Play. Trade. Share.</h2>
+
+                <p>
+                    Coins on Buddy Pond are meant to be fun, social, and functional. Whether you’re tipping friends,
+                    managing
+                    digital storage, or starting your own currency, your portfolio keeps it all organized.</p>
+
+                <h2>Create Your Own Coins</h2>
+                <p>
+                    Users can mint custom coins, build micro-economies, and trade with others — all off-chain, entirely
+                    within the Buddy Pond ecosystem.</p>
+
+                <h2>Smart Contract Bridge to $BUDDYCOIN (BPC) Solana Token</h2>
+                <p>
+                    Buddy Pond coins can be bridged to the $BUDDYCOIN (BPC) token on Solana allowing you to trade and
+                    use
+                    your BuddyCoins
+                    in the wider crypto ecosystem.</p>
+                </p>
+
+                <h2>Buddy Pond BuddyCoins Ecosystem</h2>
+                <h4>Off-chain / In-house Coins</h4>
+                <p><strong><span class="orange">$GBP</span> – Good Buddy Points</strong><br>
+                    The default off-chain currency of Buddy Pond. Earned automatically just for being online — 10 points per minute! Use $GBP to reward friends, cast spells, grow your aura, and more.
+                </p>
+
+                <p><strong><span class="orange">$MEGA</span> – Megabytes</strong><br>
+                    A coin tied to your BuddyFiles storage. Each $MEGA equals 1MB of storage. You start with 10 $MEGA and can trade it like any other coin in the system.
+                </p>
+
+                <p><strong><span class="orange">$BUX</span> – BuddyBux</strong><br>
+                    A stable coin locked to $1.00 USD. BUX is used to unlock premium Buddy Pond features and services. You can purchase BUX with real money.
+                </p>
+
+
+
+            </div>
+        </div>
+
+
     </div>
+
+
 
 </div>

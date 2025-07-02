@@ -1,20 +1,34 @@
 /* General Styles */
 
+.portfolio-window-content > .bp-window-content {
+    background-color: #121212 !important;
+}
+
 .portfolio-container {
     background-color: #121212;
     color: #fff;
     padding: 20px;
     margin: auto;
     background: #1e1e1e;
-    /* border-radius: 8px; */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    height: 100%;
+   
 }
 
-.portfolio-container h3 {
+.portfolio-explainer > h2 {
+    color: #00d1b2;
+    text-align: left;
+}
+
+.portfolio-copy > h3 {
     font-size: 1.5rem;
     color: #00d1b2;
     margin-bottom: 10px;
+}
+
+.portfolio-container > h4 {
+    font-size: 1rem;
+    color: #00d1b2;
+    margin-bottom: 5px;
 }
 
 .portfolio-container label {
@@ -22,6 +36,11 @@
     background-color: #222;
 }
 
+.portfolio-message {
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+}
 .portfolio-title {
     font-size: 2rem;
     text-align: center;
@@ -67,6 +86,10 @@
     background: #222;
 }
 
+.loggedOutMessage > h3{
+        color: #00d1b2;
+
+}
 .portfolio-table th, .portfolio-table td {
     padding: 10px;
     text-align: left;
@@ -207,6 +230,30 @@
     color: #00d1b2 !important;
 }
 
+.portfolio-explainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 20px;
+    gap: 20px;
+    max-width: 600px;
+}
+
+.portfolio-explainer > p {
+    color: #ddd;
+    text-align: left;
+}
+
+.portfolio-explainer > h4 {
+    color: #00d1b2;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.orange {
+    color: #ffcc00;
+}
+
 /* Responsive Design */
 @media (max-width: 767px) and (pointer: coarse) and (hover: none) {
     .coin-send-form {
@@ -239,6 +286,9 @@
 
 #user-portfolio > p {
     color: #ddd !important;
+}
+#portfolio-help {
+    text-align: center;
 }
 
 .total-value {
