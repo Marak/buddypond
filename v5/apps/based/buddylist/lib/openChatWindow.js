@@ -314,7 +314,7 @@ function buildWindowConfig(windowType, contextName, windowTitle, windowId, data)
 
 async function initializeChatWindow(windowType, contextName, chatWindow, client) {
     console.log('initializeChatWindow', windowType, contextName, chatWindow);
-    setupChatWindow.call(this, windowType, contextName, chatWindow);
+    setupChatWindow.call(this, windowType, contextName, chatWindow, client);
     client.addSubscription(windowType, contextName);
 
     if (windowType === "buddy") {
@@ -401,7 +401,7 @@ function ensureMessagesContainer(contextName, chatWindow, client) {
         newContainer.innerHTML = `
             <div class="aim-messages-header">
                 <h2 class="aim-chat-title"><span class="aim-chat-username">#${userListContext}</span></h2>
-                <button class="aim-close-chat-btn">Close</button>
+                <button class="aim-close-chat-btn" data-context="${contextName}">Close</button>
             </div>
             <div class="aim-no-messages">
                 Your conversation has just started. You can send a message using the form below.
@@ -417,7 +417,7 @@ function ensureMessagesContainer(contextName, chatWindow, client) {
         }
         $(".no-open-ponds", chatWindow.content).hide();
         $(".aim-message-controls", chatWindow.content).flexShow();
-    }
+    } 
 
     // Create user list if missing
     let existingUserList = $(`.aim-user-list[data-context="${userListContext}"][data-type="pond"]`, userListArea);
@@ -509,7 +509,7 @@ function toggleMessagesContainer(contextName, chatWindow) {
     this.scrollToBottom(chatWindow.content);
 }
 
-function setupChatWindow(windowType, contextName, chatWindow) {
+function setupChatWindow(windowType, contextName, chatWindow, client) {
     const chatWindowTemplate = this.messageTemplateString;
     const cloned = document.createElement("div");
     cloned.innerHTML = chatWindowTemplate;
@@ -588,26 +588,36 @@ function setupChatWindow(windowType, contextName, chatWindow) {
             }
         }
 
+        // create button bar at top
+        const buttonBar = document.createElement('div');
+        buttonBar.className = 'pond-button-bar';
+        buttonBar.setAttribute('data-context', contextName);
+        buttonBar.setAttribute('data-type', windowType);
+
         // Optional: Add buttons to toggle panels for accessibility
         const toggleRoomListBtn = document.createElement('button');
         toggleRoomListBtn.textContent = 'Ponds';
         toggleRoomListBtn.className = 'toggle-room-list';
-        toggleRoomListBtn.style.position = 'fixed';
-        toggleRoomListBtn.style.top = '4rem';
-        toggleRoomListBtn.style.left = '0.5rem';
-        toggleRoomListBtn.style.padding = '0.5rem';
-        toggleRoomListBtn.style.zIndex = '15000';
 
         const toggleUserListBtn = document.createElement('button');
         toggleUserListBtn.textContent = 'Buddies';
         toggleUserListBtn.className = 'toggle-user-list';
-        toggleUserListBtn.style.position = 'fixed';
-        toggleUserListBtn.style.top = '4rem';
-        toggleUserListBtn.style.right = '0.5rem';
-        toggleUserListBtn.style.padding = '0.5rem';
-        toggleUserListBtn.style.zIndex = '15000';
 
-        chatWindow.content.append(toggleRoomListBtn, toggleUserListBtn);
+        const closePondChatBtn = document.createElement('button');
+        closePondChatBtn.textContent = 'Close #' + contextName.replace("pond/", "");
+        //closePondChatBtn.className = 'aim-room-close-btn';
+        // add another className, aim-close-pond-chat-btn
+        closePondChatBtn.classList.add('aim-close-pond-chat-btn');
+        closePondChatBtn.classList.add('aim-room-close-btn');
+        closePondChatBtn.setAttribute('data-context', contextName);
+        closePondChatBtn.setAttribute('data-type', windowType);
+
+        chatWindow.content.appendChild(buttonBar);
+
+        chatWindow.content.append(toggleRoomListBtn, closePondChatBtn, toggleUserListBtn);
+        // Append the button bar to the chat window content
+
+        setupCloseButtonHandler.call(this, chatWindow, client);
 
         toggleRoomListBtn.addEventListener('click', () => {
             aimWindow.classList.toggle('show-room-list');
@@ -627,18 +637,22 @@ function setupChatWindow(windowType, contextName, chatWindow) {
     setupMessageForm.call(this, windowType, contextName, chatWindow);
     setupInputEvents.call(this, windowType, contextName, chatWindow);
 
+    // update the aim-close-chat-btn with contextName
+    const closeButton = $(".aim-close-chat-btn", chatWindow.content);
+    if (closeButton.length) {
+        closeButton.attr("data-context", contextName);
+    } else {
+        console.warn("No close button found in chat window for context:", contextName);
+    }
+
     if (windowType === "pond") {
         $(".aim-user-list-items").on("click", (e) => {
             const username = $(e.target).closest('.aim-user-item').data("username");
-
             if (!username) {
                 console.error("No username found in clicked element");
                 return;
             }
-
             this.openChatWindow({ name: username });
-
-
         });
 
         setupRoomListClickHandler.call(this, chatWindow);
@@ -674,14 +688,9 @@ function setupRoomListClickHandler(chatWindow) {
 }
 
 function setupCloseButtonHandler(chatWindow, client) {
-    // Handle both .aim-close-chat-btn (in .aim-messages-container) and .aim-room-close-btn (in room list)
-    $(".aim-chat-area, .aim-room-list-items", chatWindow.content).on("click", ".aim-close-chat-btn, .aim-room-close-btn", (ev) => {
+    $(chatWindow.content).on("click", ".aim-close-chat-btn, .aim-room-close-btn", (ev) => {
         ev.stopPropagation();
-        const parentElement = ev.target.closest(".aim-messages-container, .aim-room-item");
-        if (!parentElement) return;
-
-        const context = parentElement.getAttribute("data-context");
-        console.log("Closing pond chat for context:", context);
+        const context = ev.target.getAttribute("data-context");
 
         // Remove subscription and container
         client.removeSubscription("pond", context);
@@ -717,7 +726,6 @@ function setupCloseButtonHandler(chatWindow, client) {
 
         // get current count of .aim-chat-area, if 2 show .no-open-ponds
         const chatAreas = $(".aim-messages-container", chatWindow.content);
-        console.log("Current chat areas count:", chatAreas.length);
         if (chatAreas.length === 0) {
             $(".no-open-ponds", chatWindow.content).flexShow();
             $('.aim-message-controls', chatWindow.content).hide();

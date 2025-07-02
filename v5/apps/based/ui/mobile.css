@@ -13,6 +13,7 @@
 
     /* General styles for mobile view */
     .bp-window-content {
+        top: 0px;
         font-size: 0.875rem; /* ~14px, unchanged for readability */
         /* max-height: calc(100% - 3rem); */
     }

@@ -75,6 +75,11 @@ export default class SimpleTabs {
         this.container.find(tabId).show();
         this._onTab(tabId);
     }
+
+    hideAllTabs() {
+        this.container.find('.tab-content').hide();
+        this.container.find('.tab-list li').removeClass('active');
+    }
 }
 
 // easier to remember

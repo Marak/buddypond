@@ -79,9 +79,6 @@
 .aim-room-close-btn {
     display: none;
     /* Unchanged */
-    background: none;
-    border: none;
-    color: #dc2626;
     font-size: 0.875rem;
     /* ~14px */
     cursor: pointer;
@@ -609,10 +606,6 @@
     /* ~8px */
     padding: 0.125rem 0.375rem;
     /* ~2px 6px */
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    border-radius: 0.1875rem;
     /* ~3px */
     cursor: pointer;
     font-size: 0.75rem;
@@ -737,6 +730,15 @@
         z-index: 10;
     }
 
+    .pond-button-bar {
+        background-color: var(--desktop_element-background);
+        position: fixed;
+        top: 53px;
+        width: 100%;
+        height: 35px;
+        z-index: 99999;
+    }
+
     /* Show room list when active */
     .aim-window.show-room-list .aim-room-list {
         transform: translateX(0);
@@ -834,19 +836,60 @@
     }
 
     .aim-close-chat-btn {
-        position: absolute;
+        position: fixed;
         right: calc(50% - 3.25rem);
+        display: none;
         /* ~5px */
+    }
+
+    .aim-close-pond-chat-btn {
+        display: flex !important;
+        position: fixed;
+        right: calc(50% - 3.25rem);
+        height: 35px;
+        /* ~5px */
+        top: 52px !important;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+
+        /* ~10px */
     }
 
     .toggle-room-list {
         display: flex;
-        /* Unchanged */
+        position: fixed;
+        top: 50px;
+        left: 0;
+        z-index: 999999;
+        /* 
+
+        toggleRoomListBtn.style.position = 'fixed';
+        toggleRoomListBtn.style.top = '4rem';
+        toggleRoomListBtn.style.left = '0.5rem';
+        toggleRoomListBtn.style.padding = '0.5rem';
+        toggleRoomListBtn.style.zIndex = '15000';
+        */
+
+
     }
 
     .toggle-user-list {
         display: flex;
-        /* Unchanged */
+        position: fixed;
+        top: 50px;
+        right: 0;
+        z-index: 999999;
+        /* 
+        
+                toggleUserListBtn.style.position = 'fixed';
+        toggleUserListBtn.style.top = '4rem';
+        toggleUserListBtn.style.right = '0.5rem';
+        toggleUserListBtn.style.padding = '0.5rem';
+        toggleUserListBtn.style.zIndex = '15000';
+
+        
+        */
     }
 
     .aim-messages-header {
