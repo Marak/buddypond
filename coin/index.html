@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Introducing $BUDDYCOIN, the currency of friendship powering Buddy Pond’s vibrant community. Join the fair launch and be part of the Buddy revolution!">
+        content="Introducing $BUDDYPOND, the currency of friendship powering Buddy Pond’s vibrant community. Join the fair launch and be part of the Buddy revolution!">
     <meta name="keywords" content="BUDDYCOIN, Buddy Pond, Solana, cryptocurrency">
     <meta name="author" content="Buddy Pond Team">
-    <title>$BUDDYCOIN - The Currency of Friendship | Buddy Pond</title>
+    <title>$BUDDYPOND (BPC) - The Currency of Friendship | Buddy Pond</title>
     <!-- Tailwind CSS CDN for sleek styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Google Fonts for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Comic+Neue:wght@700&display=swap"
@@ -97,6 +99,7 @@
         .yellow-link:hover {
             color: #d4af37;
         }
+
     </style>
 </head>
 
@@ -105,11 +108,12 @@
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="https://buddypond.com" class="flex items-center space-x-2">
                 <img src="./buddycoin-256.png" alt="Buddy Pond Logo" class="h-10 w-10" />
-                <span class="text-2xl font-bold comic-font">$BUDDYCOIN</span>
+                <span class="text-2xl font-bold comic-font">$BUDDYPOND (BPC)</span>
             </a>
             <nav class="hidden md:flex space-x-6">
                 <a href="#about" class="hover:text-yellow-300 transition">About</a>
                 <a href="#tokenomics" class="hover:text-yellow-300 transition">Tokenomics</a>
+                <a href="#presale" class="hover:text-yellow-300 transition">Presale</a>
                 <a href="#roadmap" class="hover:text-yellow-300 transition">Roadmap</a>
                 <a href="#community" class="hover:text-yellow-300 transition">Community</a>
             </nav>
@@ -124,7 +128,7 @@
     <section class="bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
         <!-- <section class="bg-gradient-to-r from-[#1c6b74] via-[#7ba788] to-[#f2f6d2] text-white py-20"> -->
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold comic-font mb-4">Welcome to $BUDDYCOIN!</h1>
+            <h1 class="text-4xl md:text-6xl font-bold comic-font mb-4">Welcome to $BUDDYPOND!</h1>
 
             <p class="text-lg md:text-2xl mb-8">The currency of friendship powering Buddy Pond’s vibrant community.</p>
             <div class="flare-container">
@@ -135,14 +139,14 @@
                 <div class="lens-flare"></div>
             </div>
             <div class="flex justify-center space-x-4">
-                <a href="#" target="_blank"
+                <a href="#presale"
                     class="bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Join
                     the Launch</a>
                 <a href="https://buddypond.com" target="_blank"
                     class="bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Enter
                     Buddy Pond</a>
             </div>
-            <p class="mt-6 text-sm font-semibold text-yellow-100">⚠️ Beware of copycats! Only trust $BUDDYCOIN info from
+            <p class="mt-6 text-sm font-semibold text-yellow-100">⚠️ Beware of copycats! Only trust $BUDDYPOND info from
                 buddypond.com and our official socials.</p>
         </div>
     </section>
@@ -151,20 +155,20 @@
     <!-- About Section -->
     <section id="about" class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">What is $BUDDYCOIN?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">What is $BUDDYPOND?</h2>
             <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
                 <img src="./buddy-the-frog.png" alt="Buddy Pond Community"
                     class="w-full md:w-1/2 rounded-lg shadow-lg hover-scale" /> <!-- Replace with community image -->
                 <div>
-                    <p class="text-lg mb-4">$BUDDYCOIN is the coin that brings <a href="https://buddypond.com"
+                    <p class="text-lg mb-4">$BUDDYPOND (BPC) is the coin that brings <a href="https://buddypond.com"
                             target="_blank" class="text-link">Buddy Pond’s</a> spirit of friendship to
-                        the blockchain. Built on Solana $BUDDYCOIN is your ticket to join a
+                        the blockchain. Built on Solana $BUDDYPOND is your ticket to join a
                         thriving community that’s been connecting buddies for years.</p>
                     <p class="text-lg mb-4">Backed by <a href="https://buddypond.com" target="_blank">Buddy Pond’s</a>
-                        established platform, $BUDDYCOIN will power exclusive
-                        features like premium Buddy Files storage, community events, and more. Get ready for a fair,
-                        fun,
-                        and friendly launch!</p>
+                        established platform, $BUDDYPOND will power exclusive
+                        features like Buddy Apps, Buddy Files, Buddy Marketplace, Buddy Trading, community events, and
+                        more. Get ready for a fair,
+                        fun, and friendly launch!</p>
 
 
                     <a href="#join"
@@ -174,66 +178,125 @@
             </div>
         </div>
     </section>
-    <!-- Presale Section -->
-    <section id="presale" class="py-16 bg-gradient-to-r from-[#e2e8aa] to-[#f2f6d2] text-[#1c6b74]">
+    <!-- Hero Section -->
+    <a id="presale"></a>
+    <section class="bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold comic-font mb-4">Join the $BUDDYCOIN Presale!</h2>
-            <p class="text-lg md:text-xl mb-6">Grab 50% of $BUDDYCOIN (500M tokens) at tiered prices in our fair, 21-day
-                presale starting July 4, 2025.</p>
+            <h1 class="text-4xl md:text-6xl font-bold comic-font mb-4">$BUDDYPOND Presale</h1>
+            <p class="text-lg md:text-2xl mb-6">Hop into the $BUDDYPOND presale starting July 4, 2025! Grab 50% of our
+                tokens (500M $BUDDYPOND).</p>
+
             <div id="presale-countdown" class="mb-8 bg-[#1c6b74] text-white px-8 py-6 rounded-lg shadow-lg hover-scale">
                 <p id="countdown-label" class="text-xl font-semibold mb-6">Presale starts in:</p>
                 <div class="flex justify-center gap-4 text-lg font-bold font-mono">
-                    <div class="time-box">
-                        <span id="days" class="time-value">00</span>
-                        <span class="time-label">Days</span>
-                    </div>
-                    <div class="time-box">
-                        <span id="hours" class="time-value">00</span>
-                        <span class="time-label">Hours</span>
-                    </div>
-                    <div class="time-box">
-                        <span id="minutes" class="time-value">00</span>
-                        <span class="time-label">Minutes</span>
-                    </div>
-                    <div class="time-box">
-                        <span id="seconds" class="time-value">00</span>
-                        <span class="time-label">Seconds</span>
-                    </div>
-                </div>
-
-            </div>
-            <!--
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <h3 class="text-xl font-semibold mb-2">Pricing Tiers</h3>
-                    <ul class="text-lg text-left">
-                        <li>First 200M $BUDDYCOIN: 0.0002 SOL (~$0.035)</li>
-                        <li>Next 200M $BUDDYCOIN: 0.0003 SOL (~$0.0525)</li>
-                        <li>Final 100M $BUDDYCOIN: 0.0004 SOL (~$0.07)</li>
-                    </ul>
-                    <p class="mt-4 text-sm font-semibold">Join early to secure the lowest prices!</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <h3 class="text-xl font-semibold mb-2">Presale FAQs</h3>
-                    <div class="text-left text-lg">
-                        <p class="font-semibold">Q: How do I join?</p>
-                        <p>A: Use a Phantom wallet with SOL and visit <a href="https://buddypond.com/presale"
-                                class="text-link">buddypond.com/presale</a> on July 4.</p>
-                        <p class="font-semibold mt-4">Q: When will I receive tokens?</p>
-                        <p>A: Within 7 days after the presale ends (August 1, 2025).</p>
-                    </div>
+                    <div class="time-box"><span id="days" class="time-value">00</span><span
+                            class="time-label">Days</span></div>
+                    <div class="time-box"><span id="hours" class="time-value">00</span><span
+                            class="time-label">Hours</span></div>
+                    <div class="time-box"><span id="minutes" class="time-value">00</span><span
+                            class="time-label">Minutes</span></div>
+                    <div class="time-box"><span id="seconds" class="time-value">00</span><span
+                            class="time-label">Seconds</span></div>
                 </div>
             </div>
-                        -->
-
-            <a href="#" target="_blank"
-                class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">Join
-                the Presale Now</a>
-            <p class="mt-6 text-sm font-semibold text-[#3b4f51]">⚠️ Only use <a href="https://buddypond.com"
-                    class="underline">buddypond.com</a> for presale details to avoid scams. Powered by CertiK-audited
-                contracts.</p>
+            <div class="presaleLink flex flex-col md:flex-row justify-center gap-4 mb-4">
+                <a href="https://tools.smithii.io/launch/BuddyPond" target="_blank"
+                    class="presaleLink bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-yellow-300 transition hover-scale">Join
+                    the Presale Now</a>
+            </div>
+            <p class="presaleLink text-lg mb-4">For presale, we've partnered with <a href="https://tools.smithii.io/launch/BuddyPond"
+                    target="_blank" class="underline text-yellow-100">Smithii</a>, a trusted Solana launchpad with
+                CoinFabrik-audited contracts.</p>
+            <p class="mt-6 text-sm font-semibold text-yellow-100">⚠️ Only use the presale link found here on
+                buddypond.com to avoid scams.</p>
         </div>
     </section>
+
+    <!-- Presale Details Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Presale Pricing Tiers -->
+                <div class="bg-[#f2f6d2] p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-2xl font-bold comic-font text-center mb-6">Presale Pricing Tiers</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-lg table-auto border-separate border-spacing-y-2">
+                            <thead class="text-[#1c6b74]">
+                                <tr>
+                                    <th class="px-4 py-2">Tier</th>
+                                    <th class="px-4 py-2">Amount</th>
+                                    <th class="px-4 py-2">Price</th>
+                                    <th class="px-4 py-2">Max Cap</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white rounded-lg shadow-sm">
+                                    <td class="px-4 py-2 font-semibold">Tier 1</td>
+                                    <td class="px-4 py-2">200M</td>
+                                    <td class="px-4 py-2">0.0000006 SOL</td>
+                                    <td class="px-4 py-2">5 SOL</td>
+                                </tr>
+                                <tr class="bg-white rounded-lg shadow-sm">
+                                    <td class="px-4 py-2 font-semibold">Tier 2</td>
+                                    <td class="px-4 py-2">200M</td>
+                                    <td class="px-4 py-2">0.0000008 SOL</td>
+                                    <td class="px-4 py-2">10 SOL</td>
+                                </tr>
+                                <tr class="bg-white rounded-lg shadow-sm">
+                                    <td class="px-4 py-2 font-semibold">Tier 3</td>
+                                    <td class="px-4 py-2">100M</td>
+                                    <td class="px-4 py-2">0.000001 SOL</td>
+                                    <td class="px-4 py-2">No Cap</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6 text-center text-lg">
+                        <p><span class="font-semibold">Launch Price:</span> 0.0000011 SOL</p>
+                        <p class="text-sm font-semibold mt-2 text-[#1c6b74]">Join early to lock in the best rates!</p>
+                        <a target="_blank" href="https://tools.smithii.io/launch/BuddyPond"
+                            class="presaleLink mt-4 inline-block bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-md hover:bg-[#175f64] transition-transform transform hover:scale-105">
+                            Buy Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Presale FAQs -->
+                <div class="bg-[#f2f6d2] p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-2xl font-bold comic-font text-center mb-6">Presale FAQs</h3>
+                    <div class="text-left text-lg space-y-6">
+                        <div>
+                            <p class="font-semibold">Q: How do I participate?</p>
+                            <p>
+                                A: Install a Solana wallet like
+                                <a href="https://phantom.app" target="_blank"
+                                    class="text-[#1c6b74] underline font-medium">Phantom</a> or
+                                <a href="https://solflare.com" target="_blank"
+                                    class="text-[#1c6b74] underline font-medium">Solflare</a>,
+                                fund it with SOL, and visit our
+                                <a href="https://tools.smithii.io/launch/BuddyPond"
+                                    class="presaleLink text-[#1c6b74] underline font-medium">Presale Page</a> starting July 4, 2025.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Q: When will I receive my tokens?</p>
+                            <p>A: Tokens will be distributed within 7 days after the presale ends (July 25, 2025).</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Q: Is it safe?</p>
+                            <p>
+                                A: Absolutely! We've partnered with Smithii for our presale using CoinFabrik-audited
+                                contracts
+                                trusted by over 7,000 token launches.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <style>
         .time-box {
@@ -271,6 +334,8 @@
 
     <script>
         // Presale countdown (start: July 4, 2025, 12:00 PM EST; end: July 25, 2025, 12:00 PM EST)
+        // are these dates rendering with local timezone on the browser?
+        // If not, we can use UTC dates instead.
         const presaleStart = new Date('2025-07-04T12:00:00-04:00').getTime();
         const presaleEnd = new Date('2025-07-25T12:00:00-04:00').getTime();
 
@@ -328,22 +393,23 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
                     <h3 class="text-xl font-semibold mb-2">21-Day Presale</h3>
-                    <p class="text-lg">50% (500M $BUDDYCOIN) at tiered prices to reward early investors and ensure broad
+                    <p class="text-lg">50% (500M $BUDDYPOND) at tiered prices to reward early investors and ensure broad
                         distribution.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
                     <h3 class="text-xl font-semibold mb-2">Raydium Liquidity Pool</h3>
-                    <p class="text-lg">10% (100M $BUDDYCOIN) + SOL, locked for 24 months to ensure stable trading.</p>
+                    <p class="text-lg">15% (150M $BUDDYPOND) + SOL, locked for 24 months to ensure stable trading.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center hover-scale">
                     <h3 class="text-xl font-semibold mb-2">Staking Program</h3>
-                    <p class="text-lg">5–10% yield for long-term holders. Smart contract enrollment available at <a href="https://buddypond.com/app/staking">Buddy Pond</a></p>
+                    <p class="text-lg">5–10% yield for long-term holders. Smart contract enrollment available at <a
+                            href="https://buddypond.com/app/staking">Buddy Pond</a></p>
                 </div>
             </div>
             <p class="text-center mt-8 text-lg">Total Supply: <span class="font-bold text-[#1c6b74]">1 Billion
-                    $BUDDYCOIN</span>. 15% team (locked 24 months). CertiK-audited contracts for security.</p>
+                    $BUDDYPOND</span>. 15% team (locked 24 months). <br />Audited contracts for security.</p>
             <p class="text-center mt-4 text-sm text-red-600 font-semibold">⚠️ Only trust tokenomics from <a
-                    href="https://buddypond.com" class="underline">buddypond.com</a> to avoid fake $BUDDYCOIN scams.</p>
+                    href="https://buddypond.com" class="underline">buddypond.com</a> to avoid fake $BUDDYPOND scams.</p>
         </div>
     </section>
 
@@ -369,8 +435,8 @@
                         class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
                         2</div>
                     <div class="flex-1">
-                        <h3 class="text-xl font-semibold">Q3 2025: Launched $BUDDYCOIN</h3>
-                        <p>$BUDDYCOIN, the official crypto-coin of Buddy Pond goes live with a fair launch on Solana.
+                        <h3 class="text-xl font-semibold">Q3 2025: Launched $BUDDYPOND</h3>
+                        <p>$BUDDYPOND, the official crypto-coin of Buddy Pond goes live with a fair launch on Solana.
                             Join the community and grab your tokens!</p>
                     </div>
                 </div>
@@ -380,9 +446,11 @@
                         class="bg-[#1c6b74] text-white p-4 rounded-full w-12 h-12 flex items-center justify-center font-bold">
                         3</div>
                     <div class="flex-1">
-                        <h3 class="text-xl font-semibold">Q4 2025: Community Growth and Buddy Trading Platform</h3>
-                        <p>New Features, Airdrops, meming contests, and an in-house trading platform to expand the Buddy
-                            Pond ecosystem. Your $BUDDYCOIN fuels the fun!</p>
+                        <h3 class="text-xl font-semibold">Q4 2025: Community Growth, Markteplace, Buddy Trading Platform
+                        </h3>
+                        <p>New Features, Airdrops, Community Marketplace for Assets and Apps, and an in-house trading
+                            platform to expand the Buddy
+                            Pond ecosystem. Your $BUDDYPOND fuels the fun!</p>
                     </div>
                 </div>
 
@@ -392,8 +460,9 @@
                         4</div>
                     <div class="flex-1">
                         <h3 class="text-xl font-semibold">Q1 2026: Ecosystem Integration</h3>
-                        <p>Integration of $BUDDYCOIN utility with the Buddy Pond: Buddy Files, Buddy Coins, Good Buddy
-                            Points, Orderbook, Trading Platform, User Mints, Gaming, and exclusive features, shaped by
+                        <p>Integration of $BUDDYPOND utility with the Buddy Pond: Buddy Files, Buddy Coins, Buddy Mart,
+                            Good Buddy
+                            Points, Orderbooks, User Mints, Trading Platform, Gaming, and exclusive features, shaped by
                             community feedback.</p>
                     </div>
                 </div>
@@ -417,16 +486,13 @@
 
                 <a href="https://buddypond.com" target="_blank" class="hover-scale">
                     <img src="buddy-the-frog.png" alt="Official Buddy Pond Website" class="h-12 w-12" />
-                    <!-- Replace with Telegram icon -->
                 </a>
                 <a href="https://discord.com/invite/s7vrhN4grW" target="_blank" class="hover-scale">
                     <img src="./discord-icon.webp" alt="Discord" class="h-12 w-12" />
-                    <!-- Replace with Discord icon -->
                 </a>
                 <!-- telegram link-->
                 <a href="https://t.me/@BuddyPond" target="_blank" class="hover-scale">
                     <img src="./telegram-icon.webp" alt="Telegram" class="h-12 w-12" />
-                    <!-- Replace with Telegram icon -->
                 </a>
 
             </div>
@@ -442,20 +508,19 @@
         <div class="container mx-auto px-4 text-center relative z-10">
             <h2 class="text-3xl md:text-4xl font-bold comic-font mb-2">Ready to Be a Buddy?</h2>
             <p class="text-md uppercase tracking-wide font-semibold text-[#3b4f51] mb-6">Hop into the Pond!</p>
-            <p class="text-lg mb-8">Join the $BUDDYCOIN launch to help shape the future of Buddy Pond!</p>
-            <a href="#" target="_blank"
+            <p class="text-lg mb-8">Join the $BUDDYPOND launch to help shape the future of Buddy Pond!</p>
+            <a href="#presale" target="_blank"
                 class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">
-                Get $BUDDYCOIN Now
+                Get $BUDDYPOND Now
             </a>
         </div>
     </section>
-
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">&copy; 2025 Buddy Pond. All rights reserved.</p>
-            <p class="text-sm">Disclaimer: $BUDDYCOIN is a community-driven coin. Invest responsibly and only trust
+            <p class="text-sm">Disclaimer: $BUDDYPOND is a community-driven coin. Invest responsibly and only trust
                 information from buddypond.com.</p>
         </div>
     </footer>
@@ -488,6 +553,56 @@
         });
 
     </script>
+
+    <!-- JavaScript for Countdown and Tier Switching -->
+    <script>
+        // Presale configuration
+        const PRESALE_TIERS = [
+            { contract: 'YOUR_PRESALE_ADDRESS_TIER1', tokens: 200_000_000, pricePerToken: 0.0000006, maxCap: 5, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER1' },
+            { contract: 'YOUR_PRESALE_ADDRESS_TIER2', tokens: 200_000_000, pricePerToken: 0.0000008, maxCap: 10, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER2' },
+            { contract: 'YOUR_PRESALE_ADDRESS_TIER3', tokens: 100_000_000, pricePerToken: 0.000001, maxCap: null, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER3' },
+        ];
+        const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
+        const connection = new solanaWeb3.Connection(RPC_ENDPOINT, 'confirmed');
+
+        // DOM elements
+        const currentTierEl = document.getElementById('current-tier');
+        const tokensRemainingEl = document.getElementById('tokens-remaining');
+
+        // Check presale contract state
+        async function checkPresaleTier() {
+            for (let i = 0; i < PRESALE_TIERS.length; i++) {
+                const tier = PRESALE_TIERS[i];
+                try {
+                    const presaleAccount = new solanaWeb3.PublicKey(tier.contract);
+                    const accountInfo = await connection.getTokenAccountBalance(presaleAccount); // Adjust based on Smithii’s contract
+                    const tokensRemaining = Number(accountInfo.value.uiAmount || 0);
+
+                    if (tokensRemaining > 0) {
+                        currentTierEl.textContent = `Tier ${i + 1} (${(tier.pricePerToken * 1_000_000).toFixed(7)} SOL per $BUDDYPOND)`;
+                        tokensRemainingEl.textContent = `${tokensRemaining.toLocaleString()} $BUDDYPOND`;
+                        // set all .presaleLink elements to the current tier URL
+                        const presaleLinks = document.querySelectorAll('.presaleLink');
+                        presaleLinks.forEach(link => {
+                            link.href = tier.url;
+                        });
+                        // iframe.src = tier.url;
+                        return;
+                    }
+                } catch (err) {
+                    console.error(`Error checking tier ${i + 1}:`, err);
+                }
+            }
+            currentTierEl.textContent = 'All tiers sold out!';
+            tokensRemainingEl.textContent = '0 $BUDDYPOND';
+            // all tiers sold out, you can redirect to the main page or show a message
+        }
+
+        // Initialize
+        checkPresaleTier();
+        setInterval(checkPresaleTier, 60000); // Check every minute
+    </script>
+
 </body>
 
 </html>
