@@ -206,7 +206,7 @@ export default class BuddyList {
             this.openChatWindow(config);
         }
 
-        if (config.type === 'chat') {
+        if (config.type === 'chat' || config.type === 'buddy') {
             // the type of window is a chat window
             // we *don't* need to re-render the buddylist-profile 
             this.openChatWindow(config);

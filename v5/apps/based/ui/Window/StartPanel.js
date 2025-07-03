@@ -58,7 +58,6 @@ export default class StartPanel {
             });
         });
 
-
         const recentApps = (window.bp?.apps?.ui?.recentApps || []).slice(0, 10);
         recentApps.forEach(appData => {
             const app = this.createAppTile(appData);
@@ -134,29 +133,40 @@ export default class StartPanel {
         }
     }
 
-
-    createAppTile(appData, icon = 'icons/default.png') {
+    createAppTile(appData, icon) {
         // console.log('Creating app tile for:', appData);
         let name = appData.id || appData.appName || appData.name || appData.label || 'Unknown App';
-        icon = appData.icon || icon || 'icons/default.png';
+        icon = appData.icon || icon;
         const tile = document.createElement('div');
         tile.className = 'start-panel-app';
         tile.dataset.name = name;
         tile.dataset.id = appData.id || appData.app || name;
         tile.dataset.app = appData.app || appData.id || name;
-
-        const img = document.createElement('img');
-        img.src = icon;
-        img.alt = name;
+        if (!icon && appData.type === 'buddy' && this.bp.apps.buddylist) {
+            // Remark: special case for default dicebar avatars for buddies
+            let defautSvgAvatar = this.bp.apps.buddylist.defaultAvatarSvg(appData.id.replace('messages/', ''));
+            const svgContainer = document.createElement('div');
+            svgContainer.className = 'start-panel-app-icon';
+            svgContainer.innerHTML = defautSvgAvatar;
+            tile.appendChild(svgContainer);
+        } else {
+            const img = document.createElement('img');
+            img.src = icon;
+            img.alt = name;
+            tile.appendChild(img);
+        }
 
         const label = document.createElement('div');
         label.textContent = appData.label || name;
 
-        tile.appendChild(img);
         tile.appendChild(label);
 
         tile.onclick = async () => {
-            let win = await this.bp.open(appData.app || appData.id, { context: appData.context });
+            // TODO: this should be handled when adding the item to the recent apps list
+            if (appData.type === 'buddy' && appData.app === 'buddylist') {
+                appData.context = appData.id.replace('messages/', '');
+            }
+            let win = await this.bp.open(appData.app || appData.id, { context: appData.context, type: appData.type });
             this.onAppLaunch(name);
             this.close();
         };

@@ -220,7 +220,17 @@ export default class TaskBar {
             itemElement.appendChild(itemText);
         }
 
-        if (icon) {
+        if (!icon && app === 'buddylist' && this.bp.apps.buddylist) {
+            // Remark: special case for default dicebar avatars for buddies
+            let defautSvgAvatar = this.bp.apps.buddylist.defaultAvatarSvg(context.replace('messages/', ''));
+            const svgContainer = document.createElement('div');
+            svgContainer.className = 'start-panel-app-icon';
+            svgContainer.innerHTML = defautSvgAvatar;
+            svgContainer.title = context;
+            label = label || context.replace('messages/', '');
+            // itemText.textContent = label; // Update text content with context
+            itemElement.appendChild(svgContainer);
+        } else if (icon) {
             const itemIcon = document.createElement("img");
             itemIcon.src = icon;
             itemIcon.height = 32;
