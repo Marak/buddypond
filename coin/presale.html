@@ -1,209 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Join the $BUDDYPOND presale on Buddy Pond! Secure your tokens at exclusive tiered prices, powered by Smithii’s secure platform.">
-  <meta name="keywords" content="BUDDYCOIN, Buddy Pond, Solana, presale, cryptocurrency">
-  <meta name="author" content="Buddy Pond Team">
-  <title>$BUDDYPOND Presale | Buddy Pond</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Solana Web3.js -->
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-    }
-    .comic-font {
-      font-family: 'Comic Neue', cursive;
-    }
-    .hover-scale {
-      transition: transform 0.3s ease;
-    }
-    .hover-scale:hover {
-      transform: scale(1.05);
-    }
-.presale-iframe {
-  width: 100%;
-  height: 100vh; /* Full viewport height for mobile */
-  max-height: 800px; /* Cap for larger screens */
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  touch-action: auto;
-  overflow: auto; /* Allow scrolling within iframe */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-@media (max-width: 768px) {
-  .presale-iframe {
-    height: 600px; /* Adjust for smaller screens */
-  }
-}
-    .time-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #f2f6d2;
-      color: #1c6b74;
-      padding: 16px 12px;
-      border-radius: 12px;
-      min-width: 72px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease;
-    }
-    .time-value {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-    .time-label {
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      color: #3b4f51;
-    }
-    .time-box:hover {
-      transform: scale(1.05);
-    }
-    .text-link {
-      text-decoration: none;
-    }
-    .text-link:hover {
-      color: #1c6b74;
-    }
-    p > a {
-      color: #1c6b74;
-      text-decoration: underline !important;
-    }
-    p > a:hover {
-      color: #195960;
-      text-decoration: none;
-    }
-  </style>
-</head>
-<body class="smooth-scroll">
-  <!-- Header -->
-  <header class="bg-[#1c6b74] text-white py-4 sticky top-0 z-50 shadow-lg">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <a href="https://buddypond.com" class="flex items-center space-x-2">
-        <img src="./buddycoin-256.png" alt="Buddy Pond Logo" class="h-10 w-10" />
-        <span class="text-2xl font-bold comic-font">$BUDDYPOND (BPC)</span>
-      </a>
-      <nav class="hidden md:flex space-x-6">
-        <a href="https://buddypond.com#about" class="hover:text-yellow-300 transition">About</a>
-        <a href="https://buddypond.com#tokenomics" class="hover:text-yellow-300 transition">Tokenomics</a>
-        <a href="https://buddypond.com#roadmap" class="hover:text-yellow-300 transition">Roadmap</a>
-        <a href="https://buddypond.com#community" class="hover:text-yellow-300 transition">Community</a>
-      </nav>
-      <a href="#presale" class="bg-[#f2f6d2] text-[#1c6b74] px-4 py-2 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Join Presale</a>
-    </div>
-  </header>
-
-  <!-- Iframe Presale Section -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div id="presale-iframe-container">
-        <iframe id="presale-iframe" src="https://tools.smithii.io/launch/USCC" class="presale-iframe" title="BuddyPond Presale" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>      </div>
-      <p class="text-center mt-4 text-sm font-semibold text-red-600">⚠️ Only use the presale on <a href="https://buddypond.com" class="underline">buddypond.com</a> to avoid scams. Powered by <a href="https://smithii.io" target="_blank" class="underline">Smithii</a>.</p>
-    </div>
-  </section>
-
-  <!-- Presale Details Section -->
-  <section class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold comic-font text-center mb-8">Presale Details</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-[#f2f6d2] p-6 rounded-lg shadow-lg text-center">
-          <h3 class="text-xl font-semibold comic-font mb-2">Pricing Tiers</h3>
-          <ul class="text-lg text-left">
-            <li><strong>Tier 1:</strong> 200M $BUDDYPOND at 0.0000006 SOL (5 SOL Max Cap)</li>
-            <li><strong>Tier 2:</strong> 200M $BUDDYPOND at 0.0000008 SOL (10 SOL Max Cap)</li>
-            <li><strong>Tier 3:</strong> 100M $BUDDYPOND at 0.000001 SOL (No Cap)</li>
-          </ul>
-          <p class="mt-4 text-lg text-center">Liquidity Pool Launch Price: 0.0000011 SOL</p>
-          <p class="mt-4 text-sm font-semibold">Act fast to secure the lowest prices!</p>
-        </div>
-        <div class="bg-[#f2f6d2] p-6 rounded-lg shadow-lg text-center">
-          <h3 class="text-xl font-semibold comic-font mb-2">Presale FAQs</h3>
-          <div class="text-left text-lg">
-            <p class="font-semibold">Q: How do I join?</p>
-            <p>A: Install a Solana wallet like <a href="https://phantom.app" target="_blank" class="text-link">Phantom</a> or <a href="https://solflare.com" target="_blank" class="text-link">Solflare</a>, fund it with SOL, and use the presale interface below.</p>
-            <p class="font-semibold mt-4">Q: When will I receive my tokens?</p>
-            <p>A: Tokens will be distributed within 7 days after the presale ends (July 25, 2025).</p>
-            <p class="font-semibold mt-4">Q: Is it secure?</p>
-            <p>A: Yes! Our presale is powered by Smithii’s CoinFabrik-audited contracts, trusted by over 7,000 token launches.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto px-4 text-center">
-      <p class="mb-4">© 2025 Buddy Pond. All rights reserved.</p>
-      <p class="text-sm">Disclaimer: $BUDDYPOND is a community-driven coin. Invest responsibly and only trust information from <a href="https://buddypond.com" class="underline">buddypond.com</a>.</p>
-    </div>
-  </footer>
-
-  <!-- JavaScript for Countdown and Tier Switching -->
-  <script>
-    // Presale configuration
-    const PRESALE_TIERS = [
-      { contract: 'YOUR_PRESALE_ADDRESS_TIER1', tokens: 200_000_000, pricePerToken: 0.0000006, maxCap: 5, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER1' },
-      { contract: 'YOUR_PRESALE_ADDRESS_TIER2', tokens: 200_000_000, pricePerToken: 0.0000008, maxCap: 10, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER2' },
-      { contract: 'YOUR_PRESALE_ADDRESS_TIER3', tokens: 100_000_000, pricePerToken: 0.000001, maxCap: null, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER3' },
-    ];
-    const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
-    const connection = new solanaWeb3.Connection(RPC_ENDPOINT, 'confirmed');
-
-    // DOM elements
-    const iframe = document.getElementById('presale-iframe');
-    const currentTierEl = document.getElementById('current-tier');
-    const tokensRemainingEl = document.getElementById('tokens-remaining');
-    const countdownLabel = document.getElementById('countdown-label');
-    const daysEl = document.getElementById('days');
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-
-    // Check presale contract state
-    async function checkPresaleTier() {
-      for (let i = 0; i < PRESALE_TIERS.length; i++) {
-        const tier = PRESALE_TIERS[i];
-        try {
-          const presaleAccount = new solanaWeb3.PublicKey(tier.contract);
-          const accountInfo = await connection.getTokenAccountBalance(presaleAccount); // Adjust based on Smithii’s contract
-          const tokensRemaining = Number(accountInfo.value.uiAmount || 0);
-          
-          if (tokensRemaining > 0) {
-            currentTierEl.textContent = `Tier ${i + 1} (${(tier.pricePerToken * 1_000_000).toFixed(7)} SOL per $BUDDYPOND)`;
-            tokensRemainingEl.textContent = `${tokensRemaining.toLocaleString()} $BUDDYPOND`;
-            iframe.src = tier.url;
-            return;
-          }
-        } catch (err) {
-          console.error(`Error checking tier ${i + 1}:`, err);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Join the $BUDDYPOND presale on Buddy Pond! Secure your tokens at exclusive tiered prices, powered by Smithii’s secure platform.">
+    <meta name="keywords" content="BUDDYCOIN, Buddy Pond, Solana, presale, cryptocurrency">
+    <meta name="author" content="Buddy Pond Team">
+    <title>$BUDDYPOND Presale | Buddy Pond</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Solana Web3.js -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Comic+Neue:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
         }
-      }
-      currentTierEl.textContent = 'All tiers sold out!';
-      tokensRemainingEl.textContent = '0 $BUDDYPOND';
-      iframe.src = ''; // Hide iframe if sold out
-      iframe.src = 'https://tools.smithii.io/launch/USCC'; // Default to Smithii page
-    }
-  iframe.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent default scrolling
-    iframe.contentWindow.postMessage({ type: 'touchstart', touches: e.touches }, 'https://tools.smithii.io');
-  });
 
-    // Initialize
-    checkPresaleTier();
-    setInterval(checkPresaleTier, 60000); // Check every minute
-  </script>
+        .comic-font {
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+.presale-iframe {
+    width: 100%;
+    min-height: 100vh; /* Allow tall content */
+    height: auto;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Hide internal scrollbars if possible */
+    touch-action: manipulation;
+}
+
+
+        @media (max-width: 768px) {
+            .presale-iframe {
+                height: 600px;
+                /* Adjust for smaller screens */
+            }
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f2f6d2;
+            color: #1c6b74;
+            padding: 16px 12px;
+            border-radius: 12px;
+            min-width: 72px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .time-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #3b4f51;
+        }
+
+        .time-box:hover {
+            transform: scale(1.05);
+        }
+
+        .text-link {
+            text-decoration: none;
+        }
+
+        .text-link:hover {
+            color: #1c6b74;
+        }
+
+        p>a {
+            color: #1c6b74;
+            text-decoration: underline !important;
+        }
+
+        p>a:hover {
+            color: #195960;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body class="smooth-scroll">
+    <!-- Header -->
+    <header class="bg-[#1c6b74] text-white py-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="https://buddypond.com" class="flex items-center space-x-2">
+                <img src="./buddycoin-256.png" alt="Buddy Pond Logo" class="h-10 w-10" />
+                <span class="text-2xl font-bold comic-font">$BUDDYPOND (BPC)</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="https://buddypond.com/coin#about" class="hover:text-yellow-300 transition">About</a>
+                <a href="https://buddypond.com/coin#tokenomics" class="hover:text-yellow-300 transition">Tokenomics</a>
+                <a href="https://buddypond.com/coin#roadmap" class="hover:text-yellow-300 transition">Roadmap</a>
+                <a href="https://buddypond.com/coin#community" class="hover:text-yellow-300 transition">Community</a>
+            </nav>
+            <a href="/coin#join"
+                class="bg-[#f2f6d2] text-[#1c6b74] px-4 py-2 rounded-full font-semibold hover:bg-yellow-300 transition hover-scale">Join Now</a>
+        </div>
+    </header>
+
+<!-- Iframe Presale Section -->
+<section class="py-4 bg-white">
+  <div class="max-w-4xl mx-auto px-4">
+    <iframe id="presale-iframe"
+      src="https://tools.smithii.io/launch/BuddyPond"
+      class="presale-iframe"
+      title="BuddyPond Presale"
+      sandbox="allow-scripts allow-same-origin allow-popups"
+      scrolling="yes"
+      allow="touch"
+    ></iframe>
+
+    <p class="text-center mt-6 text-sm font-semibold text-red-600">
+      ⚠️ Only use the presale on <a href="https://buddypond.com" class="underline">buddypond.com</a> to avoid scams.
+      Powered by <a href="https://smithii.io" target="_blank" class="underline">Smithii</a>.
+    </p>
+  </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">© 2025 Buddy Pond. All rights reserved.</p>
+            <p class="text-sm">Disclaimer: $BUDDYPOND is a community-driven coin. Invest responsibly and only trust
+                information from <a href="https://buddypond.com" class="underline">buddypond.com</a>.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Countdown and Tier Switching -->
+    <script>
+        // Presale configuration
+        const PRESALE_TIERS = [
+            { contract: '4igvSftExsctL3UKV7PGsETFpyAvVq5JJViEeLRE1jpk', tokens: 200_000_000, pricePerToken: 0.0000006, maxCap: 5, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER1' },
+            { contract: 'YOUR_PRESALE_ADDRESS_TIER2', tokens: 200_000_000, pricePerToken: 0.0000008, maxCap: 10, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER2' },
+            { contract: 'YOUR_PRESALE_ADDRESS_TIER3', tokens: 100_000_000, pricePerToken: 0.000001, maxCap: null, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER3' },
+        ];
+        const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
+        const connection = new solanaWeb3.Connection(RPC_ENDPOINT, 'confirmed');
+
+        // DOM elements
+        const iframe = document.getElementById('presale-iframe');
+        const currentTierEl = document.getElementById('current-tier');
+        const tokensRemainingEl = document.getElementById('tokens-remaining');
+        const countdownLabel = document.getElementById('countdown-label');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        // Check presale contract state
+        async function checkPresaleTier() {
+            for (let i = 0; i < PRESALE_TIERS.length; i++) {
+                const tier = PRESALE_TIERS[i];
+                try {
+                    const presaleAccount = new solanaWeb3.PublicKey(tier.contract);
+                    const accountInfo = await connection.getTokenAccountBalance(presaleAccount); // Adjust based on Smithii’s contract
+                    const tokensRemaining = Number(accountInfo.value.uiAmount || 0);
+                    console.log(presaleAccount);
+                    console.log(accountInfo);
+                    console.log(`Tier ${i + 1} - Tokens Remaining: ${tokensRemaining}`);
+                    if (tokensRemaining > 0) {
+                        currentTierEl.textContent = `Tier ${i + 1} (${(tier.pricePerToken * 1_000_000).toFixed(7)} SOL per $BUDDYPOND)`;
+                        tokensRemainingEl.textContent = `${tokensRemaining.toLocaleString()} $BUDDYPOND`;
+                        iframe.src = tier.url;
+                        return;
+                    }
+                } catch (err) {
+                    console.error(`Error checking tier ${i + 1}:`, err);
+                }
+            }
+            currentTierEl.textContent = 'All tiers sold out!';
+            tokensRemainingEl.textContent = '0 $BUDDYPOND';
+            iframe.src = ''; // Hide iframe if sold out
+            iframe.src = 'https://tools.smithii.io/launch/BuddyPond'; // Default to Smithii page
+        }
+        iframe.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default scrolling
+            iframe.contentWindow.postMessage({ type: 'touchstart', touches: e.touches }, 'https://tools.smithii.io');
+        });
+
+        // TODO: auto-switch the presale link based on the current tier
+        // Initialize
+        //checkPresaleTier();
+        //setInterval(checkPresaleTier, 60000); // Check every minute
+    </script>
 </body>
+
 </html>

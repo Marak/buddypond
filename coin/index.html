@@ -123,8 +123,6 @@
         </div>
     </header>
 
-
-
     <section class="bg-gradient-to-r from-[#1c6b74] to-[#e2e8aa] text-white py-20">
         <!-- <section class="bg-gradient-to-r from-[#1c6b74] via-[#7ba788] to-[#f2f6d2] text-white py-20"> -->
         <div class="container mx-auto px-4 text-center">
@@ -200,11 +198,11 @@
                 </div>
             </div>
             <div class="presaleLink flex flex-col md:flex-row justify-center gap-4 mb-4">
-                <a href="https://tools.smithii.io/launch/BuddyPond" target="_blank"
+                <a href="./presale" target="_blank"
                     class="presaleLink bg-[#f2f6d2] text-[#1c6b74] px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-yellow-300 transition hover-scale">Join
                     the Presale Now</a>
             </div>
-            <p class="presaleLink text-lg mb-4">For presale, we've partnered with <a href="https://tools.smithii.io/launch/BuddyPond"
+            <p class="presaleLink text-lg mb-4">For presale, we've partnered with <a href="./presale"
                     target="_blank" class="underline text-yellow-100">Smithii</a>, a trusted Solana launchpad with
                 CoinFabrik-audited contracts.</p>
             <p class="mt-6 text-sm font-semibold text-yellow-100">⚠️ Only use the presale link found here on
@@ -255,7 +253,7 @@
                     <div class="mt-6 text-center text-lg">
                         <p><span class="font-semibold">Launch Price:</span> 0.0000011 SOL</p>
                         <p class="text-sm font-semibold mt-2 text-[#1c6b74]">Join early to lock in the best rates!</p>
-                        <a target="_blank" href="https://tools.smithii.io/launch/BuddyPond"
+                        <a target="_blank" href="./presale"
                             class="presaleLink mt-4 inline-block bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-md hover:bg-[#175f64] transition-transform transform hover:scale-105">
                             Buy Now
                         </a>
@@ -275,7 +273,7 @@
                                 <a href="https://solflare.com" target="_blank"
                                     class="text-[#1c6b74] underline font-medium">Solflare</a>,
                                 fund it with SOL, and visit our
-                                <a href="https://tools.smithii.io/launch/BuddyPond"
+                                <a href="./presale"
                                     class="presaleLink text-[#1c6b74] underline font-medium">Presale Page</a> starting July 4, 2025.
                             </p>
                         </div>
@@ -481,13 +479,13 @@
                 <!--
                 <a href="https://twitter.com/GetBuddyCoin" target="_blank" class="hover-scale">
                     <img src="x-icon.png" alt="Twitter" class="h-12 w-12" />
-                </a>
+                </a>    
                 -->
 
                 <a href="https://buddypond.com" target="_blank" class="hover-scale">
                     <img src="buddy-the-frog.png" alt="Official Buddy Pond Website" class="h-12 w-12" />
                 </a>
-                <a href="https://discord.com/invite/s7vrhN4grW" target="_blank" class="hover-scale">
+                <a href="https://buddypond.com/discord" target="_blank" class="hover-scale">
                     <img src="./discord-icon.webp" alt="Discord" class="h-12 w-12" />
                 </a>
                 <!-- telegram link-->
@@ -509,8 +507,7 @@
             <h2 class="text-3xl md:text-4xl font-bold comic-font mb-2">Ready to Be a Buddy?</h2>
             <p class="text-md uppercase tracking-wide font-semibold text-[#3b4f51] mb-6">Hop into the Pond!</p>
             <p class="text-lg mb-8">Join the $BUDDYPOND launch to help shape the future of Buddy Pond!</p>
-            <a href="#presale" target="_blank"
-                class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">
+            <a href="./presale" class="bg-[#1c6b74] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#175f64] transition hover-scale">
                 Get $BUDDYPOND Now
             </a>
         </div>
@@ -552,55 +549,6 @@
             flare.classList.remove('active');
         });
 
-    </script>
-
-    <!-- JavaScript for Countdown and Tier Switching -->
-    <script>
-        // Presale configuration
-        const PRESALE_TIERS = [
-            { contract: 'YOUR_PRESALE_ADDRESS_TIER1', tokens: 200_000_000, pricePerToken: 0.0000006, maxCap: 5, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER1' },
-            { contract: 'YOUR_PRESALE_ADDRESS_TIER2', tokens: 200_000_000, pricePerToken: 0.0000008, maxCap: 10, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER2' },
-            { contract: 'YOUR_PRESALE_ADDRESS_TIER3', tokens: 100_000_000, pricePerToken: 0.000001, maxCap: null, url: 'https://tools.smithii.io/launch-token/solana?token=YOUR_TOKEN_ADDRESS&contract=YOUR_PRESALE_ADDRESS_TIER3' },
-        ];
-        const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
-        const connection = new solanaWeb3.Connection(RPC_ENDPOINT, 'confirmed');
-
-        // DOM elements
-        const currentTierEl = document.getElementById('current-tier');
-        const tokensRemainingEl = document.getElementById('tokens-remaining');
-
-        // Check presale contract state
-        async function checkPresaleTier() {
-            for (let i = 0; i < PRESALE_TIERS.length; i++) {
-                const tier = PRESALE_TIERS[i];
-                try {
-                    const presaleAccount = new solanaWeb3.PublicKey(tier.contract);
-                    const accountInfo = await connection.getTokenAccountBalance(presaleAccount); // Adjust based on Smithii’s contract
-                    const tokensRemaining = Number(accountInfo.value.uiAmount || 0);
-
-                    if (tokensRemaining > 0) {
-                        currentTierEl.textContent = `Tier ${i + 1} (${(tier.pricePerToken * 1_000_000).toFixed(7)} SOL per $BUDDYPOND)`;
-                        tokensRemainingEl.textContent = `${tokensRemaining.toLocaleString()} $BUDDYPOND`;
-                        // set all .presaleLink elements to the current tier URL
-                        const presaleLinks = document.querySelectorAll('.presaleLink');
-                        presaleLinks.forEach(link => {
-                            link.href = tier.url;
-                        });
-                        // iframe.src = tier.url;
-                        return;
-                    }
-                } catch (err) {
-                    console.error(`Error checking tier ${i + 1}:`, err);
-                }
-            }
-            currentTierEl.textContent = 'All tiers sold out!';
-            tokensRemainingEl.textContent = '0 $BUDDYPOND';
-            // all tiers sold out, you can redirect to the main page or show a message
-        }
-
-        // Initialize
-        checkPresaleTier();
-        setInterval(checkPresaleTier, 60000); // Check every minute
     </script>
 
 </body>
