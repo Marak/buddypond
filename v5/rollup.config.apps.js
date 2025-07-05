@@ -406,6 +406,20 @@ export default [
   }
 ,
   {
+    input: 'apps/based/chess/chess.js',
+    output: {
+      file: 'dist/apps/based/chess.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
     input: 'apps/based/client/client.js',
     output: {
       file: 'dist/apps/based/client.js',
@@ -1594,6 +1608,49 @@ export default [
     input: 'apps/based/say/say.js',
     output: {
       file: 'dist/apps/based/say.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/screen-recorder/screen-recorder.js',
+    output: {
+      file: 'dist/apps/based/screen-recorder.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      terser(),
+    ]
+  }
+,
+  {
+    input: 'apps/based/screen-recorder/screen-recorder-style.js',
+    output: {
+      file: 'dist/dummy-css.js',
+      format: 'es',
+    },
+    plugins: [
+      postcss({
+        extract: path.resolve('dist/apps/based/screen-recorder.css'),
+        minimize: true,
+        sourceMap: true
+      })
+    ]
+  }
+,
+  {
+    input: 'apps/based/sequencer/sequencer.js',
+    output: {
+      file: 'dist/apps/based/sequencer.js',
       format: 'es',
       sourcemap: true,
     },
