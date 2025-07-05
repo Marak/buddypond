@@ -406,6 +406,7 @@ export default {
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
   },
+  /*
   "screen-recorder": {
     "icon": "desktop/assets/images/icons/icon_screen-recorder_64.png",
     "label": "Screen Recorder",
@@ -415,6 +416,8 @@ export default {
     "desktopOnly": true,
     "author": "BuddyPond"
   },
+  */
+  /*
   "chess": {
     "icon": "desktop/assets/images/icons/icon_chess_64.png",
     "label": "Chess",
@@ -424,6 +427,7 @@ export default {
     "author": "BuddyPond",
     "alias": ["buddy-chess"]
   },
+  */
 
   "aero-player": {
     "icon": "desktop/assets/images/icons/icon_aero-player_64.png",
@@ -435,6 +439,18 @@ export default {
     "authorUrl": "https://github.com/swayam25/Aero",
      adminOnly: true
   },
+  /*
+  "sequencer": {
+    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
+    "label": "Sequencer",
+    "description": "Create and edit music sequences",
+    "onClick": "bp.open('sequencer')",
+    "categories": ["audio", "music", "creative"],
+    "author": "BuddyPond",
+    // "alias": ["onlinesequencer", "sequencer-app"],
+    "authorUrl": "https://onlinesequencer.net/"
+  },
+  */
 
   "motd": {
     "icon": "desktop/assets/images/icons/icon_console_64.png",
