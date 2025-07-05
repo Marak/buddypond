@@ -73,7 +73,7 @@ export default class TaskBar {
                 anchor: "left"
             });
         }
-
+        // Handle context menu (desktop)
         this.taskBarElement.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             const target = e.target.closest('.taskbar-item');
@@ -82,6 +82,35 @@ export default class TaskBar {
             if (!id || id === 'home' || id === 'settings') return; // Exclude anchored items
             this.showContextMenu(id, e.clientX, e.clientY);
         });
+
+        // Handle long-press context menu (mobile)
+        if (this.bp.isMobile()) {
+            let pressTimer = null;
+            let startX = 0, startY = 0;
+
+            this.taskBarElement.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const target = e.target.closest('.taskbar-item');
+                if (!target) return;
+                const id = target.dataset.id;
+                if (!id || id === 'home' || id === 'settings') return;
+
+                startX = touch.clientX;
+                startY = touch.clientY;
+
+                pressTimer = setTimeout(() => {
+                    this.showContextMenu(id, startX, startY);
+                }, 600); // Long press threshold
+            });
+
+            this.taskBarElement.addEventListener('touchend', () => {
+                clearTimeout(pressTimer);
+            });
+
+            this.taskBarElement.addEventListener('touchmove', () => {
+                clearTimeout(pressTimer); // Cancel if finger moves
+            });
+        }
 
         this.enableDragAndDrop();
     }
