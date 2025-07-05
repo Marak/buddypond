@@ -1,0 +1,30 @@
+<div class="screen-recorder-controls">
+    <div class="screen-recorder-status">
+        <span id="screen-recorder-indicator" class="indicator-dot"></span>
+        <span id="screen-recorder-timer">00:00</span>
+    </div>
+    <div class="screen-recorder-buttons">
+        <button id="screen-recorder-preview">Start Preview</button>
+        <button id="screen-recorder-preview-stop" disabled>Stop Preview</button>
+        <button id="screen-recorder-start">Start Recording</button>
+        <button id="screen-recorder-stop">Stop</button>
+        <button id="screen-recorder-download">Download</button>
+        <button id="screen-recorder-screenshot">📸 Screenshot</button>
+    </div>
+
+</div>
+
+<div id="screen-recorder-live-preview">
+    <h3>🔴 Live Preview</h3>
+    <video id="screen-recorder-live-video" autoplay muted
+        style="width: 100%; max-height: 300px; border: 1px solid #ccc; border-radius: 8px;"></video>
+</div>
+
+
+<div id="screen-recorder-preview">
+    <h3>🎬 Video Recording</h3>
+    <div id="screen-recorder-preview-video"></div>
+
+    <h3>🖼 Screenshots</h3>
+    <div id="screen-recorder-preview-screenshots" class="screenshot-gallery"></div>
+</div>

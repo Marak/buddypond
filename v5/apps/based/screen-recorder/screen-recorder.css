@@ -1,0 +1,60 @@
+.screen-recorder-controls {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.screen-recorder-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-family: monospace;
+}
+
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: gray;
+    transition: background 0.3s;
+}
+.indicator-dot.recording {
+    background: red;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.screen-recorder-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.screen-recorder-buttons button {
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#screen-recorder-preview {
+    padding: 16px;
+}
+#screen-recorder-preview h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.screenshot-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.screen-recorder-screenshot {
+    max-width: 45%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
