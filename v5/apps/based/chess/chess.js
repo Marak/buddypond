@@ -6,27 +6,35 @@ export default class ChessApp {
     this.game = null;
     this.ws = null;
     this.playerColor = null;
+    this.stockfish = null;
+    this.mode = 'multiplayer'; // or 'stockfish'
   }
 
   async init() {
     this.html = await this.bp.load('/v5/apps/based/chess/chess.html');
-    alert(this.html);
-    //   <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.js"></script>
-    //  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js"></script>
-    //   <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     await this.bp.appendScript('https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.js');
     await this.bp.appendScript('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js');
+    await this.bp.appendScript('/v5/apps/based/chess/vendor/stockfish.min.js');
     await this.bp.appendCSS('https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css');
-
-    //await this.bp.load('/v5/apps/chess/chess.css');
     return 'loaded ChessApp';
   }
 
   async open() {
-    this.win = this.bp.apps.ui.windowManager.createWindow({
-      id: 'chess-app',
+    this.win = await this.bp.window(this.window());
+    this.bindUI();
+    // for now
+    this.mode = 'stockfish';
+
+     this.startStockfishGame();
+
+    return this.win;
+  } 
+
+  window () {
+    return {
+      id: 'chess',
       title: 'BuddyPond Chess',
-      icon: 'desktop/assets/images/icons/icon_console_64.png',
+      icon: 'desktop/assets/images/icons/icon_chess_64.png',
       x: 120,
       y: 80,
       width: 600,
@@ -34,26 +42,54 @@ export default class ChessApp {
       content: this.html,
       resizable: true,
       closable: true,
-      onclose: () => this.cleanup()
-    });
-
-    this.bindUI();
-    return this.win;
+      onClose: () => this.cleanup()
+    }
   }
 
   bindUI() {
-    $('#join-game').on('click', () => this.joinGame());
+    $('#join-game').on('click', () => {
+      this.mode = 'multiplayer';
+      this.joinGame();
+    });
+
+    $('#play-stockfish').on('click', () => {
+      this.mode = 'stockfish';
+      this.startStockfishGame();
+    });
+
     this.game = new Chess();
     let board = $('#chessboard', this.win.content);
-    console.log('Initializing chessboard', board);
     this.board = Chessboard(board, {
+      pieceTheme: '/v5/apps/based/chess/img/chesspieces/wikipedia/{piece}.png',
       draggable: true,
       position: 'start',
       onDragStart: this.onDragStart.bind(this),
       onDrop: this.onDrop.bind(this),
       onSnapEnd: this.onSnapEnd.bind(this)
     });
+
     this.updateStatus();
+  }
+
+  startStockfishGame() {
+    this.game.reset();
+    this.board.position('start');
+    this.playerColor = 'w';
+    this.setStatus('You are White. Make your move.');
+    // getting a same origin error here, do we need to vendor the dep on our site?
+    this.stockfish = new Worker('v5/apps/based/chess/vendor/stockfish.min.js');
+    this.stockfish.onmessage = (e) => {
+      if (typeof e.data === 'string' && e.data.startsWith('bestmove')) {
+        const move = e.data.split(' ')[1];
+        const from = move.substring(0, 2);
+        const to = move.substring(2, 4);
+        const result = this.game.move({ from, to, promotion: 'q' });
+        if (result) {
+          this.board.position(this.game.fen());
+          this.updateStatus();
+        }
+      }
+    };
   }
 
   joinGame() {
@@ -93,8 +129,12 @@ export default class ChessApp {
 
   onDragStart(source, piece) {
     if (this.game.game_over()) return false;
-    if (this.playerColor && piece[0] !== this.playerColor) return false;
-    if (this.game.turn() !== this.playerColor) return false;
+    if (this.mode === 'multiplayer') {
+      if (this.playerColor && piece[0] !== this.playerColor) return false;
+      if (this.game.turn() !== this.playerColor) return false;
+    } else if (this.mode === 'stockfish') {
+      if (this.game.turn() !== 'w') return false;
+    }
     return true;
   }
 
@@ -102,13 +142,19 @@ export default class ChessApp {
     const move = this.game.move({ from: source, to: target, promotion: 'q' });
     if (move === null) return 'snapback';
 
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+    if (this.mode === 'multiplayer' && this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
         type: 'move',
         gameId: document.getElementById('game-input').value,
         move: { from: source, to: target, promotion: 'q' }
       }));
+    } else if (this.mode === 'stockfish') {
+      setTimeout(() => {
+        this.stockfish.postMessage('position fen ' + this.game.fen());
+        this.stockfish.postMessage('go depth 15');
+      }, 200);
     }
+
     this.updateStatus();
   }
 
@@ -134,5 +180,9 @@ export default class ChessApp {
 
   cleanup() {
     if (this.ws) this.ws.close();
+    if (this.stockfish) {
+      this.stockfish.terminate();
+      this.stockfish = null;
+    }
   }
-} 
+}
