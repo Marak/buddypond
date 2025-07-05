@@ -349,7 +349,8 @@ export default {
     "label": "n64",
     "description": "Play Nintendo 64 games",
     "options": { "context": "n64" },
-    "categories": ["games", "emulators"]
+    "categories": ["games", "emulators"],
+    "desktopOnly": true
   },
   "solitaire": {
     "icon": "desktop/assets/images/icons/icon_solitaire_64.png",
@@ -404,6 +405,24 @@ export default {
     "label": "Maps",
     "description": "Access mapping and navigation tools",
     "categories": ["tools"]
+  },
+  "screen-recorder": {
+    "icon": "desktop/assets/images/icons/icon_screen-recorder_64.png",
+    "label": "Screen Recorder",
+    "description": "Record your screen activity",
+    "onClick": "bp.open('screen-recorder')",
+    "categories": ["tools", "productivity"],
+    "desktopOnly": true,
+    "author": "BuddyPond"
+  },
+  "chess": {
+    "icon": "desktop/assets/images/icons/icon_chess_64.png",
+    "label": "Chess",
+    "description": "Play chess online with friends",
+    "onClick": "bp.open('chess')",
+    "categories": ["games", "entertainment"],
+    "author": "BuddyPond",
+    "alias": ["buddy-chess"]
   },
 
   "aero-player": {
