@@ -432,6 +432,7 @@ export default {
   },
   */
   /*
+  */
   "chess": {
     "icon": "desktop/assets/images/icons/icon_chess_64.png",
     "label": "Chess",
@@ -439,9 +440,8 @@ export default {
     "onClick": "bp.open('chess')",
     "categories": ["games", "entertainment"],
     "author": "BuddyPond",
-    "alias": ["buddy-chess"]
+    // "alias": ["buddy-chess"]
   },
-  */
 
   "aero-player": {
     "icon": "desktop/assets/images/icons/icon_aero-player_64.png",
