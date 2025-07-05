@@ -116,6 +116,15 @@ export default {
     "categories": ["audio", "music", "creative"],
     "author": "Jono Brandel"
   },
+  "sequencer": {
+    "icon": "desktop/assets/images/icons/icon_sequencer_64.png",
+    "label": "Sequencer",
+    "description": "Create and edit music sequences",
+    "onClick": "bp.open('sequencer')",
+    "categories": ["audio", "music", "creative"],
+    "author": "BuddyPond",
+  },
+
   /*
   "sandspiel": {
     "icon": "desktop/assets/images/icons/icon_sandspiel_64.png",
@@ -313,7 +322,8 @@ export default {
     "label": "NES",
     "description": "Play Nintendo Entertainment System games",
     "options": { "context": "nes" },
-    "categories": ["games", "emulators"]
+    "categories": ["games", "emulators"],
+    "author": "LarryD"
   },
   "emulator-sega": {
     "icon": "desktop/assets/images/icons/icon_sega_64.png",
@@ -322,7 +332,8 @@ export default {
     "label": "Sega",
     "description": "Play Sega console games",
     "options": { "context": "sega" },
-    "categories": ["games", "emulators"]
+    "categories": ["games", "emulators"],
+    "author": "LarryD"
   },
   "emulator-snes": {
     "icon": "desktop/assets/images/icons/icon_snes_64.png",
@@ -331,7 +342,8 @@ export default {
     "label": "SNES",
     "description": "Play Super Nintendo games",
     "options": { "context": "snes" },
-    "categories": ["games", "emulators"]
+    "categories": ["games", "emulators"],
+    "author": "LarryD"
   },
   "emulator-atari2600": {
     "icon": "desktop/assets/images/icons/icon_atari2600_64.png",
@@ -340,7 +352,8 @@ export default {
     "label": "Atari 2600",
     "description": "Play Atari 2600 games",
     "options": { "context": "atari2600" },
-    "categories": ["games", "emulators"]
+    "categories": ["games", "emulators"],
+    "author": "LarryD"
   },
   "emulator-n64": {
     "icon": "desktop/assets/images/icons/icon_n64_64.png",
@@ -350,7 +363,8 @@ export default {
     "description": "Play Nintendo 64 games",
     "options": { "context": "n64" },
     "categories": ["games", "emulators"],
-    "desktopOnly": true
+    "desktopOnly": true,
+    "author": "LarryD"
   },
   "solitaire": {
     "icon": "desktop/assets/images/icons/icon_solitaire_64.png",
@@ -439,19 +453,7 @@ export default {
     "authorUrl": "https://github.com/swayam25/Aero",
      adminOnly: true
   },
-  /*
-  "sequencer": {
-    "icon": "desktop/assets/images/icons/icon_doodle-jump-extra_64.png",
-    "label": "Sequencer",
-    "description": "Create and edit music sequences",
-    "onClick": "bp.open('sequencer')",
-    "categories": ["audio", "music", "creative"],
-    "author": "BuddyPond",
-    // "alias": ["onlinesequencer", "sequencer-app"],
-    "authorUrl": "https://onlinesequencer.net/"
-  },
-  */
-
+  
   "motd": {
     "icon": "desktop/assets/images/icons/icon_console_64.png",
     "label": "MOTD",

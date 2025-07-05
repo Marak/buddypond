@@ -17,14 +17,14 @@ export default class Sequencer {
 
     window() {
 
-        let playProxy = 'http://192.168.200.59:7002';
-        // playProxy = 'https://sequencer.buddypond.com';
-        let iframeUrl = playProxy + '/';
+        let sequencerProxy = 'http://192.168.200.59:7002';
+        sequencerProxy = 'https://sequencer.buddypond.com';
+        let iframeUrl = sequencerProxy + '/';
 
         return {
             id: 'sequencer',
             title: 'Sequencer',
-            icon: 'desktop/assets/images/icons/icon_doodle-jump-extra_64.png',
+            icon: 'desktop/assets/images/icons/icon_sequencer_64.png',
             x: 250,
             y: 75,
             width: 600, // Increased width for two-column layout
@@ -32,7 +32,6 @@ export default class Sequencer {
             minWidth: 400,
             minHeight: 300,
             parent: $('#desktop')[0],
-            // iframeContent: 'https://plays.org/game/doodle-jump-extra/',
             iframeContent: iframeUrl,
             resizable: true,
             minimizable: true,
@@ -41,8 +40,7 @@ export default class Sequencer {
             focusable: true,
             maximized: false,
             minimized: false,
-            onclose: () => {
-                // this.bp.apps.ui.windowManager.destroyWindow('motd');
+            onClose: () => {
             }
         }
     }
